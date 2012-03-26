@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.xcolab.services.sample.service.SampleEntityLocalService" class="com.xcolab.services.sample.service.impl.SampleEntityLocalServiceImpl" />
+	<bean id="com.xcolab.services.sample.service.SampleEntityLocalServiceUtil" class="com.xcolab.services.sample.service.SampleEntityLocalServiceUtil">
+		<property name="service" ref="com.xcolab.services.sample.service.SampleEntityLocalService" />
+	</bean>
+	<bean id="com.xcolab.services.sample.service.SampleEntityService" class="com.xcolab.services.sample.service.impl.SampleEntityServiceImpl" />
+	<bean id="com.xcolab.services.sample.service.SampleEntityServiceUtil" class="com.xcolab.services.sample.service.SampleEntityServiceUtil">
+		<property name="service" ref="com.xcolab.services.sample.service.SampleEntityService" />
+	</bean>
+	<bean id="com.xcolab.services.sample.service.persistence.SampleEntityPersistence" class="com.xcolab.services.sample.service.persistence.SampleEntityPersistenceImpl" parent="basePersistence" />
+</beans>

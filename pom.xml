@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.xcolab</groupId>
+	<artifactId>xcolab-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>xcolab-parent POM</name>
+	<version>1.0-SNAPSHOT</version>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+    	</plugins>
+	</build>
+    <properties>
+        <main.basedir>${project.basedir}</main.basedir>
+        <liferay.version>6.2.0-SNAPSHOT</liferay.version>
+        <liferay.auto.deploy.dir>/home/xcolab/bundles/deploy</liferay.auto.deploy.dir>
+    </properties>
+</project>

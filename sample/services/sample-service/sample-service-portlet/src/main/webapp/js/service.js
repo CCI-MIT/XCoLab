@@ -1,0 +1,1 @@
+Liferay.Service.register("Liferay.Service.sample", "com.xcolab.services.sample.service", "sample-service-portlet");
