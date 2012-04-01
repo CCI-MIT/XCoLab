@@ -1,2 +1,6 @@
 XCoLab is a generic version of the ClimateCoLab (http://climatecolab.org). It is intended
 to be easy to customize to work in a variety of domains.
+
+To start development please take a look at docs/ directory especially docs/beginner_how_to_set_up_dev_environment.txt
+
+
