@@ -30,7 +30,6 @@
 			<groupId>com.xcolab.services</groupId>
 			<artifactId>sample-service-portlet-service</artifactId>
 			<version>${pom.version}</version>
-            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.portal</groupId>

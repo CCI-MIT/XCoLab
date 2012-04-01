@@ -1,5 +1,10 @@
 package com.xcolab.services.sample.service.impl;
 
+
+import java.util.List;
+
+import com.liferay.portal.kernel.exception.SystemException;
+import com.xcolab.services.sample.model.SampleEntity;
 import com.xcolab.services.sample.service.base.SampleEntityLocalServiceBaseImpl;
 
 /**
@@ -23,4 +28,20 @@ public class SampleEntityLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.xcolab.services.sample.service.SampleEntityLocalServiceUtil} to access the sample entity local service.
      */
+	
+	public List<SampleEntity> getAllEntities() throws SystemException {
+		return sampleEntityLocalService.getSampleEntities(0, Integer.MAX_VALUE);
+	}
+	
+	public void printSomething() {
+		System.out.println("Something!");
+	}
+	
+	public void printNotSomething() {
+		System.out.println("Not something!");
+	}	
+	
+	public void printSomethingElse() {
+		System.out.println("### Something else!");
+	}
 }

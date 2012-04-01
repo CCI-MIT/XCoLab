@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <parent>
+   <parent>
         <groupId>com.xcolab.portlets</groupId>
         <artifactId>xcolab-portlets</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xcolab.portlets</groupId>
 	<artifactId>sampleSpringMvc2</artifactId>
@@ -32,8 +31,8 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 	<dependencies>
 		<dependency>
 			<groupId>com.liferay.portal</groupId>
@@ -85,7 +84,7 @@
         	<groupId>com.xcolab.services</groupId>
         	<artifactId>sample-service-portlet-service</artifactId>
         	<version>1.0-SNAPSHOT</version>
-        	<scope>provided</scope>
+        	<!--<scope>provided</scope>-->
         </dependency>
         
 		<dependency>

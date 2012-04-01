@@ -80,6 +80,10 @@ public class SampleEntityClp extends BaseModelImpl<SampleEntity>
         _authorId = authorId;
     }
 
+    public void store() {
+        throw new UnsupportedOperationException();
+    }
+
     public void persist() throws SystemException {
         if (this.isNew()) {
             SampleEntityLocalServiceUtil.addSampleEntity(this);

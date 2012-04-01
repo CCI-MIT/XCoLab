@@ -190,6 +190,11 @@ public class SampleEntityWrapper implements SampleEntity,
         _sampleEntity.persist();
     }
 
+    public void store()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _sampleEntity.store();
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedModel}
      */

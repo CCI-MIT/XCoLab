@@ -17,4 +17,6 @@ public interface SampleEntity extends SampleEntityModel, PersistedModel {
      *
      * Never modify this interface directly. Add methods to {@link com.xcolab.services.sample.model.impl.SampleEntityImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
      */
+    public void store()
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

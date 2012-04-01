@@ -249,6 +249,23 @@ public class SampleEntityLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    public static java.util.List<com.xcolab.services.sample.model.SampleEntity> getAllEntities()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllEntities();
+    }
+
+    public static void printSomething() {
+        getService().printSomething();
+    }
+
+    public static void printNotSomething() {
+        getService().printNotSomething();
+    }
+
+    public static void printSomethingElse() {
+        getService().printSomethingElse();
+    }
+
     public static void clearService() {
         _service = null;
     }

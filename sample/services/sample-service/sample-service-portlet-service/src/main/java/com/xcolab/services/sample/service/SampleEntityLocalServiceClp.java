@@ -24,6 +24,10 @@ public class SampleEntityLocalServiceClp implements SampleEntityLocalService {
     private MethodKey _updateSampleEntityMethodKey14;
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
+    private MethodKey _getAllEntitiesMethodKey17;
+    private MethodKey _printSomethingMethodKey18;
+    private MethodKey _printNotSomethingMethodKey19;
+    private MethodKey _printSomethingElseMethodKey20;
 
     public SampleEntityLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -90,6 +94,18 @@ public class SampleEntityLocalServiceClp implements SampleEntityLocalService {
 
         _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setBeanIdentifier", java.lang.String.class);
+
+        _getAllEntitiesMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAllEntities");
+
+        _printSomethingMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "printSomething");
+
+        _printNotSomethingMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "printNotSomething");
+
+        _printSomethingElseMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "printSomethingElse");
     }
 
     public com.xcolab.services.sample.model.SampleEntity addSampleEntity(
@@ -509,6 +525,75 @@ public class SampleEntityLocalServiceClp implements SampleEntityLocalService {
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
                 ClpSerializer.translateInput(beanIdentifier));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public java.util.List<com.xcolab.services.sample.model.SampleEntity> getAllEntities()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAllEntitiesMethodKey17);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.xcolab.services.sample.model.SampleEntity>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void printSomething() {
+        MethodHandler methodHandler = new MethodHandler(_printSomethingMethodKey18);
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void printNotSomething() {
+        MethodHandler methodHandler = new MethodHandler(_printNotSomethingMethodKey19);
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void printSomethingElse() {
+        MethodHandler methodHandler = new MethodHandler(_printSomethingElseMethodKey20);
 
         try {
             _classLoaderProxy.invoke(methodHandler);

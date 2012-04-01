@@ -242,6 +242,23 @@ public class SampleEntityLocalServiceWrapper implements SampleEntityLocalService
         _sampleEntityLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    public java.util.List<com.xcolab.services.sample.model.SampleEntity> getAllEntities()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _sampleEntityLocalService.getAllEntities();
+    }
+
+    public void printSomething() {
+        _sampleEntityLocalService.printSomething();
+    }
+
+    public void printNotSomething() {
+        _sampleEntityLocalService.printNotSomething();
+    }
+
+    public void printSomethingElse() {
+        _sampleEntityLocalService.printSomethingElse();
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

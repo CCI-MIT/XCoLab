@@ -36,6 +36,5 @@
     </properties>
   <modules>
     <module>sample-service</module>
-    <module>sample-ext-service</module>
   </modules>
 </project>

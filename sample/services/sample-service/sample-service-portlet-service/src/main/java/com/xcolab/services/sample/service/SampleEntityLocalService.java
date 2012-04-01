@@ -221,4 +221,14 @@ public interface SampleEntityLocalService extends PersistedModelLocalService {
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.xcolab.services.sample.model.SampleEntity> getAllEntities()
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void printSomething();
+
+    public void printNotSomething();
+
+    public void printSomethingElse();
 }

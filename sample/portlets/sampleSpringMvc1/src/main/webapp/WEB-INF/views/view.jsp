@@ -1,5 +1,5 @@
 
-This is the <b>sampleSpringMvc1</b>.
+This is the <b>sampleSpringMvc1234123123124123</b>.
 
 ${sampleEntities }
 <label>State:</label>

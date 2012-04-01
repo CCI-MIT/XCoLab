@@ -89,7 +89,7 @@
         	<groupId>com.xcolab.services</groupId>
         	<artifactId>sample-service-portlet-service</artifactId>
         	<version>1.0-SNAPSHOT</version>
-        	<scope>provided</scope>
+        	<!--<scope>provided</scope>-->
         </dependency>
 
 	</dependencies>
