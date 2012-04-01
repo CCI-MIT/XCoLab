@@ -1,0 +1,21 @@
+### How to set up XCoLab development environment ###
+
+
+1. Download Liferay bundled with Tomcat from http://cognosis.mit.edu/xcolab-bundles.zip - this bundle has been compiled from trunk version of LR portal.
+
+2. Unzip downloaded bundle, let's call target folder XCOLAB_BUNDLES_DIR
+
+3. Clone XCoLab GitHub repository: git://github.com/jintrone/XCoLab.git - this is read only version, in order to be able to write to the repository, go to https://github.com/jintrone/XCoLab and choose proper type of url. Lets call directory to which repository was downloaded - XCOLAB_SRC.
+
+4. Edit file XCOLAB_SRC/pom.xml and in the properties section change value of <liferay.auto.deploy.dir>...</liferay.auto.deploy.dir> to "XCOLAB_BUNDLES_DIR/deploy"
+
+5. Go to XCOLAB_SRC/portlets and execute
+  mvn compile package install liferay:deploy
+
+6. Go to XCOLAB_SRC/services and execute
+  mvn compile package install liferay:deploy
+
+
+
+
+
