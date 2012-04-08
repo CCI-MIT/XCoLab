@@ -35,12 +35,12 @@ public class MainView {
 		e.persist();
 		
 		
-		System.out.println("fasdfasdf".matches("[^/\\.]+"));
+		System.out.println("abcdefg fasdfasdf".matches("[^/\\.]+"));
 		
 		
 		
 		System.out.println(request.getParameterMap());
-		System.out.println("Jsp page: " + jspPage);
+		System.out.println("#### no i  Jsp page: " + jspPage);
 		
 		
 		

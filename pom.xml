@@ -55,9 +55,13 @@
 			</plugin>
     	</plugins>
 	</build>
+    <modules>
+        <module>services</module>
+        <module>portlets</module>
+    </modules>
     <properties>
         <main.basedir>${project.basedir}</main.basedir>
         <liferay.version>6.1.0</liferay.version>
-        <liferay.auto.deploy.dir>/home/xcolab/xcolab-bundles/deploy</liferay.auto.deploy.dir>
+        <liferay.auto.deploy.dir>/home/xcolab/liferay-portal-6.1.0-ce-ga1/deploy</liferay.auto.deploy.dir>
     </properties>
 </project>
