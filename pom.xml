@@ -2,7 +2,7 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.xcolab</groupId>
+	<groupId>org.xcolab</groupId>
 	<artifactId>xcolab-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>xcolab-parent POM</name>
@@ -57,7 +57,7 @@
 	</build>
     <properties>
         <main.basedir>${project.basedir}</main.basedir>
-        <liferay.version>6.2.0-SNAPSHOT</liferay.version>
+        <liferay.version>6.1.0</liferay.version>
         <liferay.auto.deploy.dir>/home/xcolab/xcolab-bundles/deploy</liferay.auto.deploy.dir>
     </properties>
 </project>
