@@ -31,7 +31,7 @@ How to create a portlet:
 
 12. add classes, web views etc
 
-13. deploy with "mvn compile package liferay:deploy"
+13. deploy with "mvn initialize compile package liferay:deploy"
 
 
     ECLIPSE

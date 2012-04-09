@@ -58,7 +58,7 @@ How to create a service:
 
 17. When you're ready to reuse service across multiple portlets, execute:
   (in SERVICE_NAME-portlet-service) mvn install
-  (in SERVICE_NAME-portlet) mvn compile package liferay:deploy
+  (in SERVICE_NAME-portlet) mvn initialize compile package liferay:deploy
 
 
 
