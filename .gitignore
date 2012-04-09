@@ -38,3 +38,6 @@ target*
 
 # to prevent modification to xcolab bundles
 pom.xml
+*.settings
+*.project
+*.classpath
