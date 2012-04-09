@@ -53,6 +53,25 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <configuration>
+                  <files>
+                    <file>${user.home}/.xcolab.deploy.properties</file>
+                  </files>
+                </configuration>
+                
+                <executions>
+                  <execution>
+                    <phase>initialize</phase>
+                    <goals>
+                      <goal>read-project-properties</goal>
+                    </goals>
+                  </execution>
+                </executions>
+          </plugin>
     	</plugins>
 	</build>
     <modules>
@@ -60,8 +79,6 @@
         <module>portlets</module>
     </modules>
     <properties>
-        <main.basedir>${project.basedir}</main.basedir>
         <liferay.version>6.1.0</liferay.version>
-        <liferay.auto.deploy.dir>/home/xcolab/liferay-portal-6.1.0-ce-ga1/deploy</liferay.auto.deploy.dir>
     </properties>
 </project>

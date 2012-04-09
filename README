@@ -1,23 +1,19 @@
-XCoLab is a generic version of the ClimateCoLab (http://climatecolab.org). It is intended
-to be easy to customize to work in a variety of domains.
-
 ### How to set up XCoLab development environment ###
 
 
-1. Download Liferay bundled with Tomcat from http://cognosis.mit.edu/xcolab-bundles.zip - this bundle has been compiled from trunk version of LR portal.
+1. Download Liferay 6.1 bundled with Tomcat from http://www.liferay.com/downloads/liferay-portal/available-releases 
 
 2. Unzip downloaded bundle, let's call target folder XCOLAB_BUNDLES_DIR
 
 3. Clone XCoLab GitHub repository: git://github.com/jintrone/XCoLab.git - this is read only version, in order to be able to write to the repository, go to https://github.com/jintrone/XCoLab and choose proper type of url. Lets call directory to which repository was downloaded - XCOLAB_SRC.
 
-4. Edit file XCOLAB_SRC/pom.xml and in the properties section change value of <liferay.auto.deploy.dir>...</liferay.auto.deploy.dir> to "XCOLAB_BUNDLES_DIR/deploy"
+4. Copy file XCOLAB_SRC/conf/deploy.properties to ${HOME_DIR}/.xcolab.deploy.properties , edit that file and set "liferay.auto.deploy.dir" to XCOLAB_BUNDLES_DIR/deploy
 
 5. Go to XCOLAB_SRC/portlets and execute
   mvn compile package install liferay:deploy
 
 6. Go to XCOLAB_SRC/services and execute
   mvn compile package install liferay:deploy
-
 
 
 

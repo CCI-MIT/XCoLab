@@ -7,7 +7,7 @@
 
 3. Clone XCoLab GitHub repository: git://github.com/jintrone/XCoLab.git - this is read only version, in order to be able to write to the repository, go to https://github.com/jintrone/XCoLab and choose proper type of url. Lets call directory to which repository was downloaded - XCOLAB_SRC.
 
-4. Edit file XCOLAB_SRC/pom.xml and in the properties section change value of <liferay.auto.deploy.dir>...</liferay.auto.deploy.dir> to "XCOLAB_BUNDLES_DIR/deploy"
+4. Copy file XCOLAB_SRC/conf/deploy.properties to ${HOME_DIR}/.xcolab.deploy.properties , edit that file and set "liferay.auto.deploy.dir" to XCOLAB_BUNDLES_DIR/deploy
 
 5. Go to XCOLAB_SRC/portlets and execute
   mvn compile package install liferay:deploy

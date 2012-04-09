@@ -34,4 +34,5 @@
 		<module>sample-service-portlet</module>
 		<module>sample-service-portlet-service</module>
 	</modules>
+  
 </project>
