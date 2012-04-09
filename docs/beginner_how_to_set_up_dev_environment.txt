@@ -1,7 +1,7 @@
 ### How to set up XCoLab development environment ###
 
 
-1. Download Liferay bundled with Tomcat from http://cognosis.mit.edu/xcolab-bundles.zip - this bundle has been compiled from trunk version of LR portal.
+1. Download Liferay 6.1 bundled with Tomcat from http://www.liferay.com/downloads/liferay-portal/available-releases 
 
 2. Unzip downloaded bundle, let's call target folder XCOLAB_BUNDLES_DIR
 
