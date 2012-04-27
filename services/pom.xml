@@ -17,6 +17,7 @@
 	
   <modules>
     <module>sample-service</module>
+    <module>proposalsService</module>
   </modules>
 
 </project>

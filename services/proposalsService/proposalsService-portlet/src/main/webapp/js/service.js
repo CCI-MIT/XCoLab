@@ -1,0 +1,1 @@
+Liferay.Service.register("Liferay.Service.proposalsService", "org.xcolab.services.proposalsService.service", "proposalsService-portlet");
