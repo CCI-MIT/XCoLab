@@ -1,0 +1,10 @@
+<'xcolab'='http://xcolab.org'>
+
+[xcolab:baseType] > mix:versionable, nt:unstructured
+ 
+
+[xcolab:contest] > xcolab:baseType
+
+[xcolab:proposal] > xcolab:baseType
+
+[xcolab:contestPhase] > nt:unstructured
