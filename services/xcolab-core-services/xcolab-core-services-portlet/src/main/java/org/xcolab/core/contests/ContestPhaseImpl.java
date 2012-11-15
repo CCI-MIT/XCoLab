@@ -7,6 +7,7 @@ import org.xcolab.core.documententity.DocumentEntityException;
 import org.xcolab.core.documententity.impl.BaseDocumentEntityWrapper;
 import org.xcolab.core.proposals.Proposal;
 import org.xcolab.core.proposals.ProposalImpl;
+import org.xcolab.core.proposals.template.ProposalTemplate;
 
 public class ContestPhaseImpl extends BaseDocumentEntityWrapper implements ContestPhase {
 	private final static String PROPOSALS_PROPERTY = "proposals";
@@ -18,8 +19,20 @@ public class ContestPhaseImpl extends BaseDocumentEntityWrapper implements Conte
 	public Proposal[] getProposals() throws DocumentEntityException {
 	    return getChildren(PROPOSALS_PROPERTY, Proposal.class, ProposalImpl.class);
 	}
-	
-	public String toString() {
+
+    public void setTemplate(ProposalTemplate template) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public ProposalTemplate getTemplate() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Proposal createProposal() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public String toString() {
 		return "ContestPhaseImpl[" + getWrapped() + "]";
 	}
 
