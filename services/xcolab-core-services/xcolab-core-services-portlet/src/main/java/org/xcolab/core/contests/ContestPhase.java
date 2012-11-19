@@ -5,18 +5,23 @@ import org.xcolab.core.documententity.DocumentEntityWrapper;
 import org.xcolab.core.proposals.Proposal;
 import org.xcolab.core.proposals.template.ProposalTemplate;
 
+import java.lang.reflect.Type;
+import java.util.Calendar;
+
 public interface ContestPhase extends DocumentEntityWrapper {
 
-    void addProposal(Proposal proposal);
-
     void removeProposal(Proposal proposal) throws DocumentEntityException;
-	
-	Proposal[] getProposals() throws DocumentEntityException;
 
-    public void setTemplate(ProposalTemplate template);
+  	Proposal[] getProposals() throws DocumentEntityException;
 
-    public ProposalTemplate getTemplate();
+    public Calendar[] getActiveDates();
 
-    public Proposal createProposal();
+    public void setActiveDates(Calendar[] dates) throws ContestPhaseTimingException;
+
+    public ContestPhaseType getPhaseType();
+
+    public Contest getContest();
+
+
 
 }

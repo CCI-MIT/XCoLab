@@ -5,6 +5,8 @@ import java.util.List;
 import org.xcolab.core.documententity.DocumentEntity;
 import org.xcolab.core.documententity.DocumentEntityException;
 import org.xcolab.core.documententity.impl.BaseDocumentEntityWrapper;
+import org.xcolab.core.ontology.OntologyDimension;
+import org.xcolab.core.ontology.OntologyEntry;
 
 public class ContestImpl extends BaseDocumentEntityWrapper implements Contest {
 	public final static String NAME = "name";
@@ -36,7 +38,19 @@ public class ContestImpl extends BaseDocumentEntityWrapper implements Contest {
 		return super.addEntity(PHASES, ContestPhaseImpl.class);
 	}
 
-	public void setName(String val) {
+    public boolean isArchived() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setArchived(boolean b) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public ContestPhase getActivePhase() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setName(String val) {
 		wrapped.setString(NAME, val);
 		
 	}
@@ -50,6 +64,17 @@ public class ContestImpl extends BaseDocumentEntityWrapper implements Contest {
 		wrapped.setString(DESCRIPTION, val);
 		
 	}
-	
 
+
+    public void addOntologyEntry(OntologyEntry entry) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public List<OntologyEntry> getOntologyEntries() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public List<OntologyEntry> getOntologyEntries(OntologyDimension dimension) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

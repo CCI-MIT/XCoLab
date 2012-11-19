@@ -23,35 +23,78 @@ import java.util.List;
  */
 public interface ProposalTemplate extends DocumentEntityWrapper{
 
+
     public String getName();
 
     public void setName(String name);
 
+     /**
+     * Retrieve a list of groups used by this proposal template
+     * @return
+     */
+    public Collection<String> getGroups();
+
     /**
-     * Adds a proposal section to the end of the list of sections in the specified group.
-     * Creates the group if it does not already exist
+     * Add a new group for organizing this template.
+     *
+     * @param group
+     * @return whether or not the add was successful.  Fails if the group already exists.
+     */
+    public boolean addGroup(String group);
+
+    /**
+        * Removes a group from this template.
+        * @param group
+        * @return A list of proposal template sections that were previously associated with this group.
+        */
+       public List<ProposalTemplateSection> removeGroup(String group);
+
+
+
+    /**
+     * Add a set of proposal sections to the end of the list of sections in the specified group.
      *
      * @param group
      * @param section
+     * @throws ProposalTemplateStructureException if no such group exists
      */
-    public void addSection(String group, ProposalTemplateSection section);
-
-    public void insertSection(ProposalTemplateSection section, String group);
+    public void addSections(String group, ProposalTemplateSection... section) throws ProposalTemplateStructureException;
 
 
-    public void setSectionGroup(ProposalTemplateSection section, String group);
+     /**
+     * Insert a section a a position in a group
+     *
+     * @param group
+     * @param section
+     * @throws ProposalTemplateStructureException if no such group exists, ArrayIndexOutOfBounds if the position is
+      *  &lt;0 or &gt; the number of existing selections.
+     */
+    public void insertSection(String group, ProposalTemplateSection section, int position) throws ProposalTemplateStructureException;
 
-    public String getSectionGroup(ProposalTemplateSection section);
 
-    public Collection<String> getSectionGroups();
+    /**
+     * Removes the specified section from the group
+     *
+     * @param group
+     * @return True if the removal was successful
+     */
+    public boolean removeSection(String group, ProposalTemplateSection section);
 
-    public List<ProposalTemplateSection> getSectionsForGroup(String group);
+    /**
+     * Find the groups that this section is a part of.
+     *
+     * @param section
+     * @return A list of groups that a section appears in
+     */
+    public List<String> findSectionGroups(ProposalTemplateSection section);
 
+    /**
+     * Get all sections for this group. Sort order is stable and can be adjusted
+     * @param group
+     * @return A list of proposal sections
+     */
+    public List<ProposalTemplateSection> getSectionsInGroup(String group);
 
-
-    public ProposalTemplateSection removeSection(int i);
-
-    public void setSection(List<ProposalTemplateSection> sections);
 
     /**
      * Performs a shallow copy of the original proposal

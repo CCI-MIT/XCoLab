@@ -51,9 +51,20 @@ public interface OntologyEntry {
      */
     String getDescription();
 
+    /**
+     * A url associated with this ontology
+     *
+     * @return
+     */
     String getUrl();
 
-
+    /**
+     * Return all entities associate with this url of a certain type
+     *
+     * @param clazz
+     * @param <T>
+     * @return
+     */
     <T> Collection<T> getAssociatedEntities(Class<T> clazz);
 
 

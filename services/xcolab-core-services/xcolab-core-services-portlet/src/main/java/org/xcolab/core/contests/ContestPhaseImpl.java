@@ -1,5 +1,6 @@
 package org.xcolab.core.contests;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.xcolab.core.documententity.DocumentEntity;
@@ -10,7 +11,7 @@ import org.xcolab.core.proposals.ProposalImpl;
 import org.xcolab.core.proposals.template.ProposalTemplate;
 
 public class ContestPhaseImpl extends BaseDocumentEntityWrapper implements ContestPhase {
-	private final static String PROPOSALS_PROPERTY = "proposals";
+	final static String PROPOSALS_PROPERTY = "proposals";
 
 	public ContestPhaseImpl(DocumentEntity entity) {
 		super(entity);
@@ -20,25 +21,28 @@ public class ContestPhaseImpl extends BaseDocumentEntityWrapper implements Conte
 	    return getChildren(PROPOSALS_PROPERTY, Proposal.class, ProposalImpl.class);
 	}
 
-    public void setTemplate(ProposalTemplate template) {
+
+
+    public Calendar[] getActiveDates() {
+        return new Calendar[0];  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setActiveDates(Calendar[] dates) throws ContestPhaseTimingException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public ProposalTemplate getTemplate() {
+    public ContestPhaseType getPhaseType() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public Proposal createProposal() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Contest getContest() {
+        return null;
     }
 
     public String toString() {
 		return "ContestPhaseImpl[" + getWrapped() + "]";
 	}
 
-	public void addProposal(Proposal proposal) {
-	    addReference(PROPOSALS_PROPERTY, proposal);
-	}
 
 	public void removeProposal(Proposal proposal) throws DocumentEntityException {
 	    Proposal[] currentProposals = getChildren(PROPOSALS_PROPERTY, Proposal.class, ProposalImpl.class);
@@ -57,5 +61,7 @@ public class ContestPhaseImpl extends BaseDocumentEntityWrapper implements Conte
 	        setReferences(PROPOSALS_PROPERTY, newProposals);
 	    }
 	}
+
+
 
 }
