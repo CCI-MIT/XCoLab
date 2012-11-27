@@ -1,0 +1,579 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
+<service-builder package-path="com.ext.portlet.plans">
+    <namespace>Plans</namespace>
+    
+    
+    <entity name="Plan" remote-service="true" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanPersistenceImpl" >
+
+        <!-- PK field -->
+        <column name="planId" type="Long" primary="true" />
+
+        <!-- Main fields -->
+
+        <column name="name" type="String" />
+        <column name="content" type="String" />
+        <column name="shortcontent" type="String" />
+
+        <!-- References to other entities -->
+        
+        <column name="planTypeId" type="Long" />
+
+        <!-- Id of company -->
+        <column name="companyId" type="Long" />
+        <!-- Id of "parent" group, that is a group owning the portlet -->
+        <column name="groupId" type="Long" />
+        <!-- Id of group representing community working on a plan -->
+        <column name="childGroupId" type="Long" />
+        <!-- Id of forum category that holds discussion about a plan -->
+        <column name="MBCategoryId" type="Long" />
+        <!-- Id of referenced scenario -->
+        <column name="scenarioId" type="String" />
+        <!-- Id of debates topic related to plan -->
+        <column name="topicId" type="String" />
+
+
+        <column name="votes" type="Integer" />
+
+        <!-- Important dates -->
+        <column name="createDate" type="Date" />
+        <column name="publishDate" type="Date" />
+
+        <!-- Audit fields -->
+        <column name="userId" type="Long" />
+        <column name="userName" type="String" />
+        <column name="userScreenName" type="String" />
+        <column name="modifiedDate" type="Date" />
+       
+
+        <!-- Relationship -->
+        <column name="planAttributes" type="Collection" entity="PlanAttribute" mapping-key="planId"/>
+
+        <!-- Order columns -->
+
+        <order by="asc">
+            <order-column name="name" case-sensitive="false" />
+        </order>
+
+        <finder name="name" return-type="Collection">
+            <finder-column name="name" />
+        </finder>
+
+    </entity>
+    
+    <entity name="PlanAttribute" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanAttributePersistenceImpl">
+        <!-- PK field -->
+        <column name="attributeId" type="Long" primary="true"/>
+        
+        <column name="planId" type="Long" />
+        <column name="attributeName" type="String"/>
+        <column name="attributeValue" type="String"/>
+        
+        <finder name="planAttributes" return-type="Collection">
+            <finder-column name="planId" />
+        </finder>
+        
+        <finder name="attributeForPlan" return-type="String">
+            <finder-column name="planId"/>
+            <finder-column name="attributeName"/>
+        </finder>
+        <finder name="attributeByNameValue" return-type="Collection">
+            <finder-column name="attributeName"/>
+            <finder-column name="attributeValue"/>
+        </finder>
+    </entity>
+    
+    
+    <entity name="PlanPosition" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanPositionPersistenceImpl">
+
+        <!-- PK field -->
+        <column name="planId" type="Long" primary="true" />
+        <column name="positionId" type="Long" primary="true" />
+        
+        
+
+        <!-- Audit fields -->
+
+        <column name="userId" type="Long" />
+        <column name="userName" type="String" />
+        <column name="createDate" type="Date" />
+        <column name="modifiedDate" type="Date" />
+
+        <!-- Order columns -->
+
+        <order by="asc">
+            <order-column name="planId" />
+            <order-column name="positionId" />
+        </order>
+
+        <!-- Finder methods -->
+
+
+        <finder name="PositionId" return-type="Collection">
+            <finder-column name="positionId" />
+        </finder>
+    </entity>
+    
+    
+    
+    <entity name="PlansUserSettings" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansUserSettingsPersistenceImpl">
+       <column name="planUserSettingsId" type="Long" primary="true" />
+        <column name="userId" type="Long"/>
+        <column name="planTypeId" type="Long" />
+        
+        <column name="sortColumn" type="String" />
+        <column name="sortDirection" type="String" />
+        <column name="filterEnabled" type="Boolean" />
+        <column name="filterPositionsAll" type="Boolean" />
+        <column name="attributeFilters" type="Collection" entity="PlanAttributeFilter" mapping-key="planUserSettingsId"/>
+        <column name="columnSettings" type="Collection" entity="PlanColumnSettings" mapping-key="planUserSettingsId"/>
+        
+        <finder name="userIdPlanTypeId" return-type="PlanUserSettings">
+            <finder-column name="userId" />
+            <finder-column name="planTypeId" />
+        </finder>
+
+    </entity>
+    
+    <entity name="PlanVote" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanVotePersistenceImpl">
+        <column name="userId" type="Long" primary="true" />
+        <column name="contestId" type="Long" primary="true" />
+        <column name="planId" type="Long" />
+        
+        <column name="createDate" type="Date" />
+        
+        
+        <finder name="contestId" return-type="Collection">
+            <finder-column name="contestId" />
+        </finder>
+        
+        <finder name="PlanId" return-type="Collection">
+            <finder-column name="planId" />
+        </finder>        
+        
+        <finder name="ContestIdUserId" return-type="PlanVote">
+            <finder-column name="contestId" />
+            <finder-column name="userId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlansFilter" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansFilterPersistenceImpl">
+        <column name="userId" type="Long" primary="true" />
+        <column name="planTypeId" type="Long" primary="true" />
+        <column name="name" type="String" />
+        <column name="creator" type="String" />
+        <column name="description" type="String" />
+        <column name="CO2From" type="Double" />
+        <column name="CO2To" type="Double" />
+        <column name="votesFrom" type="Double" />
+        <column name="votesTo" type="Double" />
+        <column name="damageFrom" type="Double" />
+        <column name="damageTo" type="Double" />
+        <column name="mitigationFrom" type="Double" />
+        <column name="mitigationTo" type="Double" />
+        <column name="dateFrom" type="Date" />
+        <column name="dateTo" type="Date" />
+        <column name="filterPositionsAll" type="Boolean" />
+        <column name="enabled" type="Boolean" />
+    </entity>
+    
+    <entity name="PlanAttributeFilter" local-service="true">
+       <column name="planAttributeFilterId" type="Long" primary="true" />
+       <column name="attributeName" type="String"/>
+       <column name="planUserSettingsId" type="Long" />
+       <column name="max" type="Double" />
+       <column name="min" type="Double" />
+       <column name="stringVal" type="String" />
+       
+       <finder name="PlanUserSettingsIdAttributeName" return-type="PlanAttributeFilter">
+           <finder-column name="planUserSettingsId" />
+           <finder-column name="attributeName" />
+       </finder>
+    </entity>
+    
+    <entity name="PlanPropertyFilter" local-service="true">
+       <column name="planPropertyFilterId" type="Long" primary="true" />
+       <column name="propertyName" type="String" />
+       <column name="planUserSettingsId" type="Long" />
+       <column name="value" type="String" />
+       
+       <finder name="PlanUserSettingsIdPropertyName" return-type="PlanPropertyFilter">
+           <finder-column name="planUserSettingsId" />
+           <finder-column name="propertyName" />
+       </finder>
+    </entity>
+    
+    <entity name="PlanColumnSettings" local-service="true">
+       <column name="planColumnSettingsId" type="Long" primary="true" />
+       <column name="columnName" type="String" />
+       <column name="planUserSettingsId" type="Long" />
+       <column name="visible" type="Boolean" />
+       
+       <finder name="PlanUserSettingsIdColumnName" return-type="PlanColumnSettings">
+           <finder-column name="planUserSettingsId" />
+           <finder-column name="columnName" />
+       </finder>
+    </entity>
+
+    <entity name="PlansFilterPosition" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansFilterPositionPersistenceImpl">
+        <column name="userId" type="Long" primary="true" />
+        <column name="planTypeId" type="Long" primary="true" />
+        <column name="positionId" type="Long" primary="true" />
+                
+        <finder name="UserIdPlanTypeId" return-type="Collection">
+            <finder-column name="userId" />
+            <finder-column name="planTypeId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanType" local-service="true">
+       <column name="planTypeId" type="Long" primary="true" />
+       <column name="name" type="String" />
+       <column name="description" type="String" />
+       <column name="modelId" type="Long" />
+       <column name="modelTypeName" type="String"/>
+       <column name="published" type="Boolean" />
+       <column name="publishedCounterpartId" type="Long" />
+       <column name="isDefault" type="Boolean" />
+       <column name="defaultModelId" type="Long" />
+       <column name="defaultScenarioId" type="Long" />
+       <column name="planTypeAttributes" type="Collection" entity="PlanTypeAttribute" mapping-key="planTypeId"/>
+       <column name="planTypeColumns" type="Collection" entity="PlanTypeColumn" mapping-key="planTypeId"/>
+       
+       <finder name="default" return-type="PlanType">
+           <finder-column name="isDefault" />
+       </finder>
+       
+    </entity>
+    
+
+    
+    <entity name="PlanTypeAttribute" local-service="true">
+       <column name="planTypeAttributeId" type="Long" primary="true" />
+       <column name="planTypeId" type="Long" />
+       <column name="attributeName" type="String" />
+       
+       <finder name="PlanTypeIdAttributeName" return-type="PlanTypeAttribute" >
+            <finder-column name="planTypeId" />
+            <finder-column name="attributeName" />
+       </finder>
+    </entity>
+    
+    <entity name="PlanTypeColumn" local-service="true">
+        <column name="planTypeColumnId" type="Long" primary="true" />
+        <column name="planTypeId" type="Long" />
+        <column name="weight" type="Integer" />
+        <column name="columnName" type="String" />
+        <column name="visibleByDefault" type="Boolean" />
+        
+        <order by="asc">
+            <order-column name="weight" />
+            <order-column name="columnName" case-sensitive="false" />
+        </order>
+        
+    </entity>
+    
+    <entity name="PlanItem" local-service="true" remote-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="planId" type="Long" />
+        <column name="state" type="String" />
+        <column name="updated" type="Date" />
+        <column name="updateAuthorId" type="Long" />
+        <column name="updateType" type="String" />
+        <column name="version" type="Long" />
+
+        
+        <order by="desc">
+            <order-column name="id" />
+        </order>
+      
+        <finder name="AllByPlanId" return-type="Collection">
+                    <finder-column name="planId" />
+
+
+        </finder>
+        <finder name="PlanId" return-type="PlanItem">
+            <finder-column name="planId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanDescription" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="planId" type="Long" />
+        <column name="name" type="String" />
+        <column name="description" type="String" />
+        <column name="version" type="Long" />
+        <column name="planVersion" type="Long" />
+        <column name="created" type="Date" />
+        <column name="updateAuthorId" type="Long" />
+        <column name="image" type="Long" />
+        <column name="pitch" type="String" />
+        
+        <order by="desc">
+            <order-column name="id" />
+        </order>
+        
+        <finder name="CurrentByPlanId" return-type="PlanDescription">
+            <finder-column name="planId" />
+        </finder>
+        
+        <finder name="PlanIdPlanVersion" return-type="PlanDescription">
+            <finder-column name="planId" />
+            <finder-column name="planVersion" comparator="&lt;=" />
+        </finder>
+        
+        <finder name="AllByPlanId" return-type="Collection">
+            <finder-column name="planId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanMeta" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="planId" type="Long" />
+        <column name="planTypeId" type="Long" />
+        <column name="planCreated" type="Long" />
+        <column name="authorId" type="Long" />
+        <column name="votes" type="Integer" />
+        <!-- ID of community related to a plan -->
+        <column name="planGroupId" type="Long" />
+        <column name="open" type="Boolean" />
+        <column name="status" type="String" />
+        <!-- message boards category -->
+        <column name="mbCategoryId" type="Long" />
+        <column name="categoryGroupId" type="Long" />
+        <column name="version" type="Long" />
+        <column name="planVersion" type="Long" />
+        <column name="created" type="Date" />
+        <column name="updateAuthorId" type="Long" />
+        <!-- selected model -->
+        <column name="modelId" type="Long"/>
+        <!-- true if plan has been promoted to next phase -->
+        <column name="promoted" type="Boolean" />
+        
+        <!-- Id of a contest phase from which this plan has been promoted -->
+        <column name="previousContestPhase" type="Long" />
+
+         <column name="contestPhase" type="Long"/>
+        
+        <order by="desc">
+            <order-column name="id" />
+        </order>
+        
+        <finder name="CurrentByPlanId" return-type="PlanMeta">
+            <finder-column name="planId" />
+        </finder>
+        <finder name="AllByPlanId" return-type="Collection">
+            <finder-column name="planId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanModelRun" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="planId" type="Long" />
+        <column name="scenarioId" type="Long" />
+        <column name="planVersion" type="Long" />
+        <column name="version" type="Long" />
+        <column name="created" type="Date" /> 
+        <column name="updateAuthorId" type="Long" />
+        
+        <order by="desc">
+            <order-column name="id" />
+        </order>
+        
+        <finder name="CurrentByPlanId" return-type="PlanModelRun">
+            <finder-column name="planId" />
+        </finder>   
+        <finder name="AllByPlanId" return-type="Collection">
+            <finder-column name="planId" />
+        </finder>
+        
+        <finder name="PlanIdPlanVersion" return-type="PlanDescription">
+            <finder-column name="planId" />
+            <finder-column name="planVersion" comparator="&lt;=" />
+        </finder>
+        
+    </entity>
+    
+    <entity name="PlanPositions" local-service="true">
+        <column name="id" primary="true" type="Long" />
+        <column name="planId" type="Long" />
+        <column name="planVersion" type="Long" />
+        <column name="version" type="Long" />
+        <column name="created" type="Date" /> 
+        <column name="updateAuthorId" type="Long" />
+        
+        <order by="desc">
+            <order-column name="id" />
+        </order>
+        
+        <finder name="CurrentByPlanId" return-type="PlanPositions">
+            <finder-column name="planId" />
+        </finder>   
+        <finder name="AllByPlanId" return-type="Collection">
+            <finder-column name="planId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanPositionItem" local-service="true">
+        <!-- PK field -->
+        <column name="planPositionsId" type="Long" primary="true" />
+        <column name="positionId" type="Long" primary="true" />
+
+        <finder name="AllByPlanPositionsId" return-type="Collection">
+            <finder-column name="planPositionsId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanFan" local-service="true">
+        <!-- PK field -->
+        <column name="id" type="Long" primary="true" />
+        <column name="userId" type="Long" />
+        <column name="planId" type="Long" />
+        <column name="created" type="Date" />
+        <column name="deleted" type="Date" />
+        
+        <order by="asc">
+            <order-column name="id" />
+        </order>
+        
+        <finder name="PlanId" return-type="Collection" where="deleted is null">
+            <finder-column name="planId" />
+        </finder>
+        
+        <finder name="UserId" return-type="Collection" where="deleted is null">
+            <finder-column name="userId" />
+        </finder>
+        
+        <finder name="PlanIdUserId" return-type="PlanFan" where="deleted is null">
+            <finder-column name="planId" />
+            <finder-column name="userId" />
+        </finder>
+    
+    </entity>
+    
+    <entity name="PlanTeamHistory" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="planId" type="Long" />
+        <column name="userId" type="Long" />
+        <column name="action" type="String" />
+        <column name="payload" type="String" />
+        <column name="created" type="Date" />
+        <column name="updateAuthorId" type="Long" />
+                
+        <order by="asc">
+            <order-column name="id" />
+        </order>
+        
+        <finder name="PlanId" return-type="Collection">
+            <finder-column name="planId" />
+        </finder>
+        
+        <finder name="LastUserActionInPlan" return-type="PlanTeamHistory">
+            <finder-column name="planId" />
+            <finder-column name="userId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanSectionDefinition" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="adminTitle" type="String" />
+        <column name="title" type="String" />
+        <column name="defaultText" type="String" />
+        <column name="helpText" type="String" />
+        <column name="characterLimit" type="Integer" />
+        <column name="focusAreaId" type="Long" />
+        <column name="locked" type="Boolean" />
+    </entity>
+    
+    <entity name="PlanSection" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="planSectionDefinitionId" type="Long"  />
+        <column name="planId" type="Long" />
+        <column name="content" type="String" />
+        <column name="created" type="Date" />
+        
+        <column name="version" type="Long" />
+        <column name="planVersion" type="Long" />
+        <column name="updateAuthorId" type="Long" />
+                
+        <order by="desc">
+            <order-column name="id" />
+        </order>
+        
+        <finder name="PlanIdSectionDefinitionId" return-type="Collection">
+            <finder-column name="planId" />
+            <finder-column name="planSectionDefinitionId" />
+        </finder>
+        
+        <finder name="CurrentPlanIdSectionDefinitionId" return-type="PlanSection">
+            <finder-column name="planId" />
+            <finder-column name="planSectionDefinitionId" />
+        </finder>
+        
+        <finder name="PlanIdPlanVersion" return-type="PlanDescription">
+            <finder-column name="planId" />
+            <finder-column name="planSectionDefinitionId" />
+            <finder-column name="planVersion" comparator="&lt;=" />
+        </finder>
+        
+    </entity>
+    
+    
+    
+    <entity name="PlanSectionPlanMap" local-service="true">
+        <column name="sectionId" type="Long" primary="true" />
+        <column name="relatedPlanId" type="Long" primary="true" />
+        
+        <finder name="PlanId" return-type="Collection">
+            <finder-column name="relatedPlanId" />
+        </finder>
+        
+        <finder name="SectionId" return-type="Collection">
+            <finder-column name="sectionId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanRelated" local-service="true">
+        <column name="sectionId" type="Long" primary="true" />
+        <column name="relatedPlanId" type="Long" primary="true" />
+        
+        <finder name="PlanId" return-type="Collection">
+            <finder-column name="relatedPlanId" />
+        </finder>
+    </entity>
+    
+    <entity name="PlanTemplate" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="name" type="String" />
+    </entity>
+    
+    <entity name="PlanTemplateSection" local-service="true">
+        <column name="planTemplateId" type="Long" primary="true" />
+        <column name="planSectionId" type="Long" primary="true" />
+        <column name="weight" type="Integer" />
+        
+        <order by="asc">
+            <order-column name="weight" />
+        </order>
+        
+        <finder name="PlanTemplateId" return-type="Collection">
+            <finder-column name="planTemplateId" />
+        </finder>
+        
+    </entity>
+    
+    
+
+    <exceptions>
+        <exception>PlanName</exception>
+        <exception>NoSuchPlanPosition</exception>
+        <exception>NoSuchPlan</exception>
+        <exception>NoSuchVote</exception>
+    </exceptions>
+</service-builder>

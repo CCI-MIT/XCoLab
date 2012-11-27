@@ -1,0 +1,279 @@
+package com.ext.portlet.plans.service;
+
+import com.liferay.portal.service.ServiceWrapper;
+
+/**
+ * <p>
+ * This class is a wrapper for {@link PlanSectionPlanMapLocalService}.
+ * </p>
+ *
+ * @author    Brian Wing Shun Chan
+ * @see       PlanSectionPlanMapLocalService
+ * @generated
+ */
+public class PlanSectionPlanMapLocalServiceWrapper
+    implements PlanSectionPlanMapLocalService,
+        ServiceWrapper<PlanSectionPlanMapLocalService> {
+    private PlanSectionPlanMapLocalService _planSectionPlanMapLocalService;
+
+    public PlanSectionPlanMapLocalServiceWrapper(
+        PlanSectionPlanMapLocalService planSectionPlanMapLocalService) {
+        _planSectionPlanMapLocalService = planSectionPlanMapLocalService;
+    }
+
+    /**
+    * Adds the plan section plan map to the database. Also notifies the appropriate model listeners.
+    *
+    * @param planSectionPlanMap the plan section plan map
+    * @return the plan section plan map that was added
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.plans.model.PlanSectionPlanMap addPlanSectionPlanMap(
+        com.ext.portlet.plans.model.PlanSectionPlanMap planSectionPlanMap)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.addPlanSectionPlanMap(planSectionPlanMap);
+    }
+
+    /**
+    * Creates a new plan section plan map with the primary key. Does not add the plan section plan map to the database.
+    *
+    * @param planSectionPlanMapPK the primary key for the new plan section plan map
+    * @return the new plan section plan map
+    */
+    public com.ext.portlet.plans.model.PlanSectionPlanMap createPlanSectionPlanMap(
+        com.ext.portlet.plans.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK) {
+        return _planSectionPlanMapLocalService.createPlanSectionPlanMap(planSectionPlanMapPK);
+    }
+
+    /**
+    * Deletes the plan section plan map with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param planSectionPlanMapPK the primary key of the plan section plan map
+    * @throws PortalException if a plan section plan map with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public void deletePlanSectionPlanMap(
+        com.ext.portlet.plans.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _planSectionPlanMapLocalService.deletePlanSectionPlanMap(planSectionPlanMapPK);
+    }
+
+    /**
+    * Deletes the plan section plan map from the database. Also notifies the appropriate model listeners.
+    *
+    * @param planSectionPlanMap the plan section plan map
+    * @throws SystemException if a system exception occurred
+    */
+    public void deletePlanSectionPlanMap(
+        com.ext.portlet.plans.model.PlanSectionPlanMap planSectionPlanMap)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planSectionPlanMapLocalService.deletePlanSectionPlanMap(planSectionPlanMap);
+    }
+
+    /**
+    * Performs a dynamic query on the database and returns the matching rows.
+    *
+    * @param dynamicQuery the dynamic query
+    * @return the matching rows
+    * @throws SystemException if a system exception occurred
+    */
+    @SuppressWarnings("rawtypes")
+    public java.util.List dynamicQuery(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.dynamicQuery(dynamicQuery);
+    }
+
+    /**
+    * Performs a dynamic query on the database and returns a range of the matching rows.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param dynamicQuery the dynamic query
+    * @param start the lower bound of the range of model instances
+    * @param end the upper bound of the range of model instances (not inclusive)
+    * @return the range of matching rows
+    * @throws SystemException if a system exception occurred
+    */
+    @SuppressWarnings("rawtypes")
+    public java.util.List dynamicQuery(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+        int end) throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.dynamicQuery(dynamicQuery,
+            start, end);
+    }
+
+    /**
+    * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param dynamicQuery the dynamic query
+    * @param start the lower bound of the range of model instances
+    * @param end the upper bound of the range of model instances (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching rows
+    * @throws SystemException if a system exception occurred
+    */
+    @SuppressWarnings("rawtypes")
+    public java.util.List dynamicQuery(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+        int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.dynamicQuery(dynamicQuery,
+            start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.dynamicQueryCount(dynamicQuery);
+    }
+
+    public com.ext.portlet.plans.model.PlanSectionPlanMap fetchPlanSectionPlanMap(
+        com.ext.portlet.plans.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.fetchPlanSectionPlanMap(planSectionPlanMapPK);
+    }
+
+    /**
+    * Returns the plan section plan map with the primary key.
+    *
+    * @param planSectionPlanMapPK the primary key of the plan section plan map
+    * @return the plan section plan map
+    * @throws PortalException if a plan section plan map with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.plans.model.PlanSectionPlanMap getPlanSectionPlanMap(
+        com.ext.portlet.plans.service.persistence.PlanSectionPlanMapPK planSectionPlanMapPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.getPlanSectionPlanMap(planSectionPlanMapPK);
+    }
+
+    public com.liferay.portal.model.PersistedModel getPersistedModel(
+        java.io.Serializable primaryKeyObj)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.getPersistedModel(primaryKeyObj);
+    }
+
+    /**
+    * Returns a range of all the plan section plan maps.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param start the lower bound of the range of plan section plan maps
+    * @param end the upper bound of the range of plan section plan maps (not inclusive)
+    * @return the range of plan section plan maps
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.plans.model.PlanSectionPlanMap> getPlanSectionPlanMaps(
+        int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.getPlanSectionPlanMaps(start, end);
+    }
+
+    /**
+    * Returns the number of plan section plan maps.
+    *
+    * @return the number of plan section plan maps
+    * @throws SystemException if a system exception occurred
+    */
+    public int getPlanSectionPlanMapsCount()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.getPlanSectionPlanMapsCount();
+    }
+
+    /**
+    * Updates the plan section plan map in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+    *
+    * @param planSectionPlanMap the plan section plan map
+    * @return the plan section plan map that was updated
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.plans.model.PlanSectionPlanMap updatePlanSectionPlanMap(
+        com.ext.portlet.plans.model.PlanSectionPlanMap planSectionPlanMap)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.updatePlanSectionPlanMap(planSectionPlanMap);
+    }
+
+    /**
+    * Updates the plan section plan map in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+    *
+    * @param planSectionPlanMap the plan section plan map
+    * @param merge whether to merge the plan section plan map with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
+    * @return the plan section plan map that was updated
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.plans.model.PlanSectionPlanMap updatePlanSectionPlanMap(
+        com.ext.portlet.plans.model.PlanSectionPlanMap planSectionPlanMap,
+        boolean merge)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.updatePlanSectionPlanMap(planSectionPlanMap,
+            merge);
+    }
+
+    /**
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    public java.lang.String getBeanIdentifier() {
+        return _planSectionPlanMapLocalService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _planSectionPlanMapLocalService.setBeanIdentifier(beanIdentifier);
+    }
+
+    public java.util.List<java.lang.Long> findPlanIdsForSection(
+        java.lang.Long sectionId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionPlanMapLocalService.findPlanIdsForSection(sectionId);
+    }
+
+    /**
+     * @deprecated Renamed to {@link #getWrappedService}
+     */
+    public PlanSectionPlanMapLocalService getWrappedPlanSectionPlanMapLocalService() {
+        return _planSectionPlanMapLocalService;
+    }
+
+    /**
+     * @deprecated Renamed to {@link #setWrappedService}
+     */
+    public void setWrappedPlanSectionPlanMapLocalService(
+        PlanSectionPlanMapLocalService planSectionPlanMapLocalService) {
+        _planSectionPlanMapLocalService = planSectionPlanMapLocalService;
+    }
+
+    public PlanSectionPlanMapLocalService getWrappedService() {
+        return _planSectionPlanMapLocalService;
+    }
+
+    public void setWrappedService(
+        PlanSectionPlanMapLocalService planSectionPlanMapLocalService) {
+        _planSectionPlanMapLocalService = planSectionPlanMapLocalService;
+    }
+}

@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
+<service-builder package-path="com.ext.portlet.contests">
+    <namespace>Contests</namespace>
+
+    
+    <entity name="Contest" local-service="true" remote-service="true">
+        <column name="ContestPK" type="Long" primary="true" />
+        <column name="ContestName" type="String" />
+        <column name="ContestShortName" type="String" />
+        <column name="ContestDescription" type="String" />
+        <column name="ContestModelDescription" type="String" />
+        <column name="ContestPositionsDescription" type="String" />
+        <column name="defaultPlanDescription" type="String" />
+        <column name="PlanTypeId" type="Long" />
+        <column name="created" type="Date" />
+        <column name="updated" type="Date" />
+        <column name="authorId" type="Long" />
+        <column name="contestActive" type="Boolean"/>
+        <column name="planTemplateId" type="Long" />
+        <column name="focusAreaId" type="Long" />
+        <column name="contestLogoId" type="Long" />
+        <column name="featured" type="Boolean" />
+        <column name="plansOpenByDefault" type="Boolean" />
+        
+        <column name="flag" type="Integer" />
+        <column name="flagText" type="String" />
+        
+        <column name="groupId" type="Long" />
+        <column name="discussionGroupId" type="Long" />
+        <column name="weight" type="Integer" />
+        <column name="resourcesUrl" type="String" />
+        
+        <order by="asc">
+            <order-column name="weight" />
+            <order-column name="created" />
+        </order>
+        
+        <finder name="Type" return-type="Collection">
+            <finder-column name="PlanTypeId" />
+        </finder>
+        
+        <finder name="contestActive" return-type="Contest">
+            <finder-column name="contestActive" />
+        </finder>
+        <finder name="ActiveFeatured" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="featured" />
+        </finder>
+        <finder name="ActiveFlag" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="flag" />
+        </finder>
+        <finder name="ActiveFlagText" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="flagText" />
+        </finder>
+    </entity>
+    
+    <entity name="ContestDebate" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="debateId" type="Long" />
+        <column name="ContestPK" type="Long" />
+        
+        
+        <finder name="ContestPK" return-type="Collection">
+            <finder-column name="ContestPK" />
+        </finder>
+        
+    </entity>
+
+    <entity name="ContestPhase" local-service="true" remote-service="true">
+        <column name="ContestPhasePK" type="Long" primary="true" />
+        <column name="ContestPK" type="Long"/>
+        <column name="ContestPhaseName" type="String" />
+        <column name="ContestPhaseDescription" type="String"/>
+        <column name="ContestPhaseStatus" type="String" />
+        <column name="PhaseStartDate" type="Date" />
+        <column name="PhaseEndDate" type="Date" />
+        <column name="nextStatus" type="String" />
+        <column name="created" type="Date" />
+        <column name="updated" type="Date" />
+        <column name="authorId" type="Long" />
+
+        <order by="asc">
+            <order-column name="PhaseStartDate" />
+        </order>
+
+        <finder name="ContestIdStartEnd" return-type="ContestPhase">
+            <finder-column name="ContestPK" />
+            <finder-column name="PhaseStartDate" comparator="&lt;=" />
+            <finder-column name="PhaseEndDate" comparator="&gt;=" />
+        </finder>
+        
+        <finder name="ContestId" return-type="Collection">
+            <finder-column name="ContestPK"/>
+        </finder>
+      </entity>
+      
+      <entity name="ContestPhaseColumn" local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="ContestPhasePK" type="Long" />
+        <column name="columnName" type="String" />
+        <column name="columnWeight" type="Integer" />
+        <column name="defaultSort" type="Boolean" />
+        
+        
+        <order>
+            <order-column name="columnWeight" />
+        </order>
+        
+        <finder name="ContestPhasePK" return-type="Collection">
+            <finder-column name="ContestPhasePK" />
+        </finder>
+      </entity>
+      
+      <entity name="ContestTeamMember"  local-service="true">
+        <column name="id" type="Long" primary="true" />
+        <column name="contestId" type="Long" />
+        <column name="userId" type="Long" />
+        <column name="role" type="String" />
+        
+        <order>
+            <order-column name="id" />
+        </order>
+        
+        <finder name="ContestId" return-type="Collection">
+            <finder-column name="contestId" />
+        </finder>
+      
+      </entity>
+    
+    <exceptions>
+
+        <exception>NoSuchContestPhase</exception>
+        <exception>NoSuchContest</exception>
+    </exceptions>
+</service-builder>

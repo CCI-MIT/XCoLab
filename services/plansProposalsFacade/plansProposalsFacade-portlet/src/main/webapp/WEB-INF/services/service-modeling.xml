@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<service-builder package-path="com.ext.portlet.models">
+    <namespace>Models</namespace>
+
+    <entity name="ModelDiscussion" remote-service="true" local-service="true">
+        <!-- PK field -->
+        <column name="modelDiscussionId" type="Long" primary="true"/>
+        <column name="modelId" type="Long"/>
+        <column name="categoryId" type="Long"/>
+
+        <finder name="ModelId" return-type="Collection">
+            <finder-column name="modelId"/>
+        </finder>
+
+        <finder name="DiscussionId" return-type="Collection">
+            <finder-column name="categoryId"/>
+        </finder>
+    </entity>
+
+    <entity name="ModelPosition" local-service="true">
+        <column name="id" primary="true" type="Long" />
+        <column name="positionId" type="Long" />
+        <column name="modelId" type="Long" />
+        
+        <finder name="ModelId" return-type="Collection">
+            <finder-column name="modelId" />
+        </finder>
+    </entity>
+
+    <entity name="ModelGlobalPreference" local-service="true" remove-service="true">
+        <column name="modelGlobalPreferencePK" type="Long" primary="true"/>
+        <column name="modelId" type="Long"/>
+        <column name="visible" type="Boolean"/>
+        <column name="weight" type="Integer"/>
+        <column name="expertEvaluationPageId" type="Long"/>
+        <column name="modelCategoryId" type="Long"/>
+        <finder name="ModelId" return-type="ModelGlobalPreference">
+            <finder-column name="modelId"/>
+        </finder>
+        <finder name="ModelCategoryId" return-type="Collection">
+            <finder-column name="modelCategoryId"/>
+        </finder>
+    </entity>
+
+    <entity name="ModelCategory" local-service="true" remote-service="true">
+        <column name="modelCategoryPK" type="Long" primary="true"/>
+        <column name="modelCategoryName" type="String"/>
+        <column name="modelCategoryDescription" type="String"/>
+        <column name="modelCategoryDisplayWeight" type="Integer"/>
+    </entity>
+    
+    <entity name="ModelInputGroup" local-service="true" remote-service="true">
+        <column name="modelInputGroupPK" type="Long" primary="true"/>
+        <column name="modelId" type="Long"/>
+        <!-- The meta data element that can provide a name and description for the group -->
+        <column name="nameAndDescriptionMetaDataId" type="Long"/>
+        <!-- Optional name if no metadata id is provided (above) -->
+        <column name="name" type="String"/>
+        <column name="description" type="String"/>
+
+        <!-- Sort order for this item in on the page -->
+        <column name="displayItemOrder" type="Integer"/>
+
+        <column name="groupType" type="String"/>
+
+        <column name="parentGroupPK" type="Long"/>
+
+        <finder name="parentModelId" return-type="Collection">
+            <finder-column name="parentGroupPK"/>
+        </finder>
+        <finder name="ModelId" return-type="Collection">
+            <finder-column name="modelId"/>
+        </finder>
+    </entity>
+
+    <entity name="ModelInputItem" local-service="true" remote-service="true">
+        <column name="modelInputItemPK" type="Long" primary="true"/>
+        <column name="modelId" type="Long"/>
+
+
+        <!-- id of the item this entry describes -->
+        <column name="modelInputItemID" type="Long"/>
+
+        <!-- optional groupid, indicating association with a group -->
+        <column name="modelGroupId" type="Long"/>
+
+        <!-- Sort order for this item; relative to group if part of a group, relative to page if not -->
+        <column name="displayItemOrder" type="Integer"/>
+
+        <!-- Place holder for widget type - e.g. slider, textbox, etc. -->
+        <column name="type" type="String"/>
+
+          <!-- Free text for property configuration -->
+        <column name="properties" type="String"/>
+
+        <finder name="ModelGroupId" return-type="Collection">
+            <finder-column name="modelGroupId"/>
+        </finder>
+
+        <finder name="ModelInputId" return-type="ModelInputItem">
+            <finder-column name="modelInputItemID"/>
+        </finder>
+
+        <finder name="ModelId" return-type="Collection">
+            <finder-column name="modelId"/>
+        </finder>
+        
+        <finder name="ModelIdModelInputId" return-type="ModelInputItem">
+            <finder-column name="modelId"/>
+            <finder-column name="modelInputItemID"/>
+        </finder>
+        
+    </entity>
+
+
+
+
+    <entity name="ModelOutputChartOrder" local-service="true" remote-service="true">
+        <column name="modelOutputChartOrderPK" type="Long" primary="true"/>
+        <column name="modelId" type="Long"/>
+
+        <!-- variable "name" for the chart this entry describes; recall, output items are grouped into charts depending on the label name -->
+        <column name="modelOutputLabel" type="String"/>
+
+        <!-- Sort order for this chart -->
+        <column name="modelOutputChartOrder" type="Integer"/>
+
+        <column name="modelIndexRangePolicy" type="String"/>
+
+        <column name="modelIndexRangeMessage" type="String"/>
+
+        <column name="modelIndexErrorPolicy" type="String"/>
+
+        <column name="modelIndexErrorMessage" type="String"/>
+
+        <column name="modelChartIsVisible" type="Boolean"/>
+
+
+
+        <finder name="ModelIdAndLabel" return-type="ModelOutputChartOrder">
+            <finder-column name="modelId"/>
+            <finder-column name="modelOutputLabel"/>
+        </finder>
+
+    </entity>
+
+
+     <!-- this table is explicitly to indicate ordering of items in charts (e.g. for legends) -->
+    <entity name="ModelOutputItem" local-service="true" remote-service="true">
+        <column name="modelOutputItemModifierPK" type="Long" primary="true"/>
+        <column name="modelId" type="Long"/>
+
+        <!-- id of the model item this entry describes -->
+        <column name="modelOutputItemId" type="Long"/>
+
+        <!-- id of the model item this entry is applied to -->
+        <column name="modelOutputItemOrder" type="Integer"/>
+
+        <column name="modelItemRangePolicy" type="String"/>
+
+        <column name="modelItemRangeMessage" type="String"/>
+
+        <column name="modelItemErrorPolicy" type="String"/>
+
+        <column name="modelItemErrorMessage" type="String"/>
+        
+        <column name="modelItemLabelFormat" type="String"/>
+
+        <column name="modelItemIsVisible" type="Boolean"/>
+
+        <!-- Sort order for this chart -->
+        <column name="itemType"  type="String"/>
+
+        <!-- id of another item that this item is "about"; e.g. this may be a confidece interval -->
+        <column name="relatedOutputItem" type="Long"/>
+
+        <finder name="ModelOutputId" return-type="ModelOutputItem">
+            <finder-column name="modelOutputItemId"/>
+        </finder>
+
+    </entity>
+    
+
+
+
+
+
+
+
+<exceptions>
+<exception>ModelName</exception>
+<exception>NoSuchModelPosition</exception>
+<exception>NoSuchModel</exception>
+    <exception>NoSuchModelInputGroup</exception>
+    <exception>NoSuchModelInputItem</exception>
+    <exception>NoSuchModelOutputChartOrder</exception>
+    <exception>NoSuchModelOutputItem</exception>
+
+</exceptions>
+        </service-builder>

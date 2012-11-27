@@ -1,0 +1,643 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.ext.portlet.plans.model.PlanAttribute">
+		<field name="attributeId" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="attributeName" type="String" />
+		<field name="attributeValue" type="String" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanAttributeFilter">
+		<field name="planAttributeFilterId" type="Long" />
+		<field name="attributeName" type="String" />
+		<field name="planUserSettingsId" type="Long" />
+		<field name="max" type="Double" />
+		<field name="min" type="Double" />
+		<field name="stringVal" type="String" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanColumnSettings">
+		<field name="planColumnSettingsId" type="Long" />
+		<field name="columnName" type="String" />
+		<field name="planUserSettingsId" type="Long" />
+		<field name="visible" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanDescription">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="version" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+		<field name="image" type="Long" />
+		<field name="pitch" type="String" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanFan">
+		<field name="id" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="created" type="Date" />
+		<field name="deleted" type="Date" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanItem">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="state" type="String" />
+		<field name="updated" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+		<field name="updateType" type="String" />
+		<field name="version" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanMeta">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="planCreated" type="Long" />
+		<field name="authorId" type="Long" />
+		<field name="votes" type="Integer" />
+		<field name="planGroupId" type="Long" />
+		<field name="open" type="Boolean" />
+		<field name="status" type="String" />
+		<field name="mbCategoryId" type="Long" />
+		<field name="categoryGroupId" type="Long" />
+		<field name="version" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+		<field name="modelId" type="Long" />
+		<field name="promoted" type="Boolean" />
+		<field name="previousContestPhase" type="Long" />
+		<field name="contestPhase" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanModelRun">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="scenarioId" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="version" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanPosition">
+		<field name="planId" type="Long" />
+		<field name="positionId" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanPositionItem">
+		<field name="planPositionsId" type="Long" />
+		<field name="positionId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanPositions">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="version" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanPropertyFilter">
+		<field name="planPropertyFilterId" type="Long" />
+		<field name="propertyName" type="String" />
+		<field name="planUserSettingsId" type="Long" />
+		<field name="value" type="String" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanRelated">
+		<field name="sectionId" type="Long" />
+		<field name="relatedPlanId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanSection">
+		<field name="id" type="Long" />
+		<field name="planSectionDefinitionId" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="content" type="String" />
+		<field name="created" type="Date" />
+		<field name="version" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="updateAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanSectionDefinition">
+		<field name="id" type="Long" />
+		<field name="adminTitle" type="String" />
+		<field name="title" type="String" />
+		<field name="defaultText" type="String" />
+		<field name="helpText" type="String" />
+		<field name="characterLimit" type="Integer" />
+		<field name="focusAreaId" type="Long" />
+		<field name="locked" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanSectionPlanMap">
+		<field name="sectionId" type="Long" />
+		<field name="relatedPlanId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlansFilter">
+		<field name="userId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="name" type="String" />
+		<field name="creator" type="String" />
+		<field name="description" type="String" />
+		<field name="CO2From" type="Double" />
+		<field name="CO2To" type="Double" />
+		<field name="votesFrom" type="Double" />
+		<field name="votesTo" type="Double" />
+		<field name="damageFrom" type="Double" />
+		<field name="damageTo" type="Double" />
+		<field name="mitigationFrom" type="Double" />
+		<field name="mitigationTo" type="Double" />
+		<field name="dateFrom" type="Date" />
+		<field name="dateTo" type="Date" />
+		<field name="filterPositionsAll" type="Boolean" />
+		<field name="enabled" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlansFilterPosition">
+		<field name="userId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="positionId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlansUserSettings">
+		<field name="planUserSettingsId" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="sortColumn" type="String" />
+		<field name="sortDirection" type="String" />
+		<field name="filterEnabled" type="Boolean" />
+		<field name="filterPositionsAll" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanTeamHistory">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="action" type="String" />
+		<field name="payload" type="String" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanTemplate">
+		<field name="id" type="Long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanTemplateSection">
+		<field name="planTemplateId" type="Long" />
+		<field name="planSectionId" type="Long" />
+		<field name="weight" type="Integer" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanType">
+		<field name="planTypeId" type="Long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="modelId" type="Long" />
+		<field name="modelTypeName" type="String" />
+		<field name="published" type="Boolean" />
+		<field name="publishedCounterpartId" type="Long" />
+		<field name="isDefault" type="Boolean" />
+		<field name="defaultModelId" type="Long" />
+		<field name="defaultScenarioId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanTypeAttribute">
+		<field name="planTypeAttributeId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="attributeName" type="String" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanTypeColumn">
+		<field name="planTypeColumnId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="weight" type="Integer" />
+		<field name="columnName" type="String" />
+		<field name="visibleByDefault" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.plans.model.PlanVote">
+		<field name="userId" type="Long" />
+		<field name="contestId" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.Plan">
+		<field name="planId" type="Long" />
+		<field name="name" type="String" />
+		<field name="content" type="String" />
+		<field name="shortcontent" type="String" />
+		<field name="planTypeId" type="Long" />
+		<field name="companyId" type="Long" />
+		<field name="groupId" type="Long" />
+		<field name="childGroupId" type="Long" />
+		<field name="MBCategoryId" type="Long" />
+		<field name="scenarioId" type="String" />
+		<field name="topicId" type="String" />
+		<field name="votes" type="Integer" />
+		<field name="createDate" type="Date" />
+		<field name="publishDate" type="Date" />
+		<field name="userId" type="Long" />
+		<field name="userName" type="String" />
+		<field name="userScreenName" type="String" />
+		<field name="modifiedDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.PlanAttribute">
+		<field name="attributeId" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="attributeName" type="String" />
+		<field name="attributeValue" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.PlanAttributeFilter">
+		<field name="planAttributeFilterId" type="Long" />
+		<field name="attributeName" type="String" />
+		<field name="planUserSettingsId" type="Long" />
+		<field name="max" type="Double" />
+		<field name="min" type="Double" />
+		<field name="stringVal" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.PlanColumnSettings">
+		<field name="planColumnSettingsId" type="Long" />
+		<field name="columnName" type="String" />
+		<field name="planUserSettingsId" type="Long" />
+		<field name="visible" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.model.PlanDescription">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="version" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+		<field name="image" type="Long" />
+		<field name="pitch" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.PlanFan">
+		<field name="id" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="created" type="Date" />
+		<field name="deleted" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.PlanItem">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="state" type="String" />
+		<field name="updated" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+		<field name="updateType" type="String" />
+		<field name="version" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanMeta">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="planCreated" type="Long" />
+		<field name="authorId" type="Long" />
+		<field name="votes" type="Integer" />
+		<field name="planGroupId" type="Long" />
+		<field name="open" type="Boolean" />
+		<field name="status" type="String" />
+		<field name="mbCategoryId" type="Long" />
+		<field name="categoryGroupId" type="Long" />
+		<field name="version" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+		<field name="modelId" type="Long" />
+		<field name="promoted" type="Boolean" />
+		<field name="previousContestPhase" type="Long" />
+		<field name="contestPhase" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanModelRun">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="scenarioId" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="version" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanPosition">
+		<field name="planId" type="Long" />
+		<field name="positionId" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.PlanPositionItem">
+		<field name="planPositionsId" type="Long" />
+		<field name="positionId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanPositions">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="version" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanPropertyFilter">
+		<field name="planPropertyFilterId" type="Long" />
+		<field name="propertyName" type="String" />
+		<field name="planUserSettingsId" type="Long" />
+		<field name="value" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.PlanRelated">
+		<field name="sectionId" type="Long" />
+		<field name="relatedPlanId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanSection">
+		<field name="id" type="Long" />
+		<field name="planSectionDefinitionId" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="content" type="String" />
+		<field name="created" type="Date" />
+		<field name="version" type="Long" />
+		<field name="planVersion" type="Long" />
+		<field name="updateAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanSectionDefinition">
+		<field name="id" type="Long" />
+		<field name="adminTitle" type="String" />
+		<field name="title" type="String" />
+		<field name="defaultText" type="String" />
+		<field name="helpText" type="String" />
+		<field name="characterLimit" type="Integer" />
+		<field name="focusAreaId" type="Long" />
+		<field name="locked" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.model.PlanSectionPlanMap">
+		<field name="sectionId" type="Long" />
+		<field name="relatedPlanId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlansFilter">
+		<field name="userId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="name" type="String" />
+		<field name="creator" type="String" />
+		<field name="description" type="String" />
+		<field name="CO2From" type="Double" />
+		<field name="CO2To" type="Double" />
+		<field name="votesFrom" type="Double" />
+		<field name="votesTo" type="Double" />
+		<field name="damageFrom" type="Double" />
+		<field name="damageTo" type="Double" />
+		<field name="mitigationFrom" type="Double" />
+		<field name="mitigationTo" type="Double" />
+		<field name="dateFrom" type="Date" />
+		<field name="dateTo" type="Date" />
+		<field name="filterPositionsAll" type="Boolean" />
+		<field name="enabled" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.model.PlansFilterPosition">
+		<field name="userId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="positionId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlansUserSettings">
+		<field name="planUserSettingsId" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="sortColumn" type="String" />
+		<field name="sortDirection" type="String" />
+		<field name="filterEnabled" type="Boolean" />
+		<field name="filterPositionsAll" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.model.PlanTeamHistory">
+		<field name="id" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="action" type="String" />
+		<field name="payload" type="String" />
+		<field name="created" type="Date" />
+		<field name="updateAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanTemplate">
+		<field name="id" type="Long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.PlanTemplateSection">
+		<field name="planTemplateId" type="Long" />
+		<field name="planSectionId" type="Long" />
+		<field name="weight" type="Integer" />
+	</model>
+	<model name="com.ext.portlet.model.PlanType">
+		<field name="planTypeId" type="Long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="modelId" type="Long" />
+		<field name="modelTypeName" type="String" />
+		<field name="published" type="Boolean" />
+		<field name="publishedCounterpartId" type="Long" />
+		<field name="isDefault" type="Boolean" />
+		<field name="defaultModelId" type="Long" />
+		<field name="defaultScenarioId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanTypeAttribute">
+		<field name="planTypeAttributeId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="attributeName" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.PlanTypeColumn">
+		<field name="planTypeColumnId" type="Long" />
+		<field name="planTypeId" type="Long" />
+		<field name="weight" type="Integer" />
+		<field name="columnName" type="String" />
+		<field name="visibleByDefault" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.model.PlanVote">
+		<field name="userId" type="Long" />
+		<field name="contestId" type="Long" />
+		<field name="planId" type="Long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.contests.model.Contest">
+		<field name="ContestPK" type="Long" />
+		<field name="ContestName" type="String" />
+		<field name="ContestShortName" type="String" />
+		<field name="ContestDescription" type="String" />
+		<field name="ContestModelDescription" type="String" />
+		<field name="ContestPositionsDescription" type="String" />
+		<field name="defaultPlanDescription" type="String" />
+		<field name="PlanTypeId" type="Long" />
+		<field name="created" type="Date" />
+		<field name="updated" type="Date" />
+		<field name="authorId" type="Long" />
+		<field name="contestActive" type="Boolean" />
+		<field name="planTemplateId" type="Long" />
+		<field name="focusAreaId" type="Long" />
+		<field name="contestLogoId" type="Long" />
+		<field name="featured" type="Boolean" />
+		<field name="plansOpenByDefault" type="Boolean" />
+		<field name="flag" type="Integer" />
+		<field name="flagText" type="String" />
+		<field name="groupId" type="Long" />
+		<field name="discussionGroupId" type="Long" />
+		<field name="weight" type="Integer" />
+		<field name="resourcesUrl" type="String" />
+	</model>
+	<model name="com.ext.portlet.contests.model.ContestDebate">
+		<field name="id" type="Long" />
+		<field name="debateId" type="Long" />
+		<field name="ContestPK" type="Long" />
+	</model>
+	<model name="com.ext.portlet.contests.model.ContestPhase">
+		<field name="ContestPhasePK" type="Long" />
+		<field name="ContestPK" type="Long" />
+		<field name="ContestPhaseName" type="String" />
+		<field name="ContestPhaseDescription" type="String" />
+		<field name="ContestPhaseStatus" type="String" />
+		<field name="PhaseStartDate" type="Date" />
+		<field name="PhaseEndDate" type="Date" />
+		<field name="nextStatus" type="String" />
+		<field name="created" type="Date" />
+		<field name="updated" type="Date" />
+		<field name="authorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.contests.model.ContestPhaseColumn">
+		<field name="id" type="Long" />
+		<field name="ContestPhasePK" type="Long" />
+		<field name="columnName" type="String" />
+		<field name="columnWeight" type="Integer" />
+		<field name="defaultSort" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.contests.model.ContestTeamMember">
+		<field name="id" type="Long" />
+		<field name="contestId" type="Long" />
+		<field name="userId" type="Long" />
+		<field name="role" type="String" />
+	</model>
+	<model name="com.ext.portlet.discussions.model.DiscussionCategory">
+		<field name="pk" type="Long" />
+		<field name="categoryId" type="Long" />
+		<field name="categoryGroupId" type="Long" />
+		<field name="authorId" type="Long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="deleted" type="Date" />
+		<field name="threadsCount" type="Integer" />
+		<field name="lastActivityDate" type="Date" />
+		<field name="lastActivityAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.discussions.model.DiscussionCategoryGroup">
+		<field name="id" type="Long" />
+		<field name="description" type="String" />
+		<field name="url" type="String" />
+		<field name="commentsThread" type="Long" />
+	</model>
+	<model name="com.ext.portlet.discussions.model.DiscussionMessage">
+		<field name="pk" type="Long" />
+		<field name="messageId" type="Long" />
+		<field name="subject" type="String" />
+		<field name="body" type="String" />
+		<field name="threadId" type="Long" />
+		<field name="categoryId" type="Long" />
+		<field name="categoryGroupId" type="Long" />
+		<field name="authorId" type="Long" />
+		<field name="createDate" type="Date" />
+		<field name="version" type="Long" />
+		<field name="deleted" type="Date" />
+		<field name="responsesCount" type="Integer" />
+		<field name="lastActivityDate" type="Date" />
+		<field name="lastActivityAuthorId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.discussions.model.DiscussionMessageFlag">
+		<field name="pk" type="Long" />
+		<field name="messageId" type="Long" />
+		<field name="flagType" type="String" />
+		<field name="data" type="String" />
+		<field name="created" type="Date" />
+		<field name="userId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.ontology.model.FocusArea">
+		<field name="id" type="Long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.ontology.model.FocusAreaOntologyTerm">
+		<field name="focusAreaId" type="Long" />
+		<field name="ontologyTermId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.ontology.model.OntologySpace">
+		<field name="id" type="Long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+	</model>
+	<model name="com.ext.portlet.ontology.model.OntologyTerm">
+		<field name="id" type="Long" />
+		<field name="parentId" type="Long" />
+		<field name="ontologySpaceId" type="Long" />
+		<field name="name" type="String" />
+		<field name="descriptionUrl" type="String" />
+	</model>
+	<model name="com.ext.portlet.ontology.model.OntologyTermEntity">
+		<field name="id" type="Long" />
+		<field name="termId" type="Long" />
+		<field name="classNameId" type="Long" />
+		<field name="classPK" type="Long" />
+	</model>
+	<model name="com.ext.portlet.models.model.ModelCategory">
+		<field name="modelCategoryPK" type="Long" />
+		<field name="modelCategoryName" type="String" />
+		<field name="modelCategoryDescription" type="String" />
+		<field name="modelCategoryDisplayWeight" type="Integer" />
+	</model>
+	<model name="com.ext.portlet.models.model.ModelDiscussion">
+		<field name="modelDiscussionId" type="Long" />
+		<field name="modelId" type="Long" />
+		<field name="categoryId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.models.model.ModelGlobalPreference">
+		<field name="modelGlobalPreferencePK" type="Long" />
+		<field name="modelId" type="Long" />
+		<field name="visible" type="Boolean" />
+		<field name="weight" type="Integer" />
+		<field name="expertEvaluationPageId" type="Long" />
+		<field name="modelCategoryId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.models.model.ModelInputGroup">
+		<field name="modelInputGroupPK" type="Long" />
+		<field name="modelId" type="Long" />
+		<field name="nameAndDescriptionMetaDataId" type="Long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="displayItemOrder" type="Integer" />
+		<field name="groupType" type="String" />
+		<field name="parentGroupPK" type="Long" />
+	</model>
+	<model name="com.ext.portlet.models.model.ModelInputItem">
+		<field name="modelInputItemPK" type="Long" />
+		<field name="modelId" type="Long" />
+		<field name="modelInputItemID" type="Long" />
+		<field name="modelGroupId" type="Long" />
+		<field name="displayItemOrder" type="Integer" />
+		<field name="type" type="String" />
+		<field name="properties" type="String" />
+	</model>
+	<model name="com.ext.portlet.models.model.ModelOutputChartOrder">
+		<field name="modelOutputChartOrderPK" type="Long" />
+		<field name="modelId" type="Long" />
+		<field name="modelOutputLabel" type="String" />
+		<field name="modelOutputChartOrder" type="Integer" />
+		<field name="modelIndexRangePolicy" type="String" />
+		<field name="modelIndexRangeMessage" type="String" />
+		<field name="modelIndexErrorPolicy" type="String" />
+		<field name="modelIndexErrorMessage" type="String" />
+		<field name="modelChartIsVisible" type="Boolean" />
+	</model>
+	<model name="com.ext.portlet.models.model.ModelOutputItem">
+		<field name="modelOutputItemModifierPK" type="Long" />
+		<field name="modelId" type="Long" />
+		<field name="modelOutputItemId" type="Long" />
+		<field name="modelOutputItemOrder" type="Integer" />
+		<field name="modelItemRangePolicy" type="String" />
+		<field name="modelItemRangeMessage" type="String" />
+		<field name="modelItemErrorPolicy" type="String" />
+		<field name="modelItemErrorMessage" type="String" />
+		<field name="modelItemLabelFormat" type="String" />
+		<field name="modelItemIsVisible" type="Boolean" />
+		<field name="itemType" type="String" />
+		<field name="relatedOutputItem" type="Long" />
+	</model>
+	<model name="com.ext.portlet.models.model.ModelPosition">
+		<field name="id" type="Long" />
+		<field name="positionId" type="Long" />
+		<field name="modelId" type="Long" />
+	</model>
+</model-hints>

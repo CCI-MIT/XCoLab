@@ -1,0 +1,680 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.ext.portlet.plans.service.PlanAttributeLocalService" class="com.ext.portlet.plans.service.impl.PlanAttributeLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanAttributeLocalServiceUtil" class="com.ext.portlet.plans.service.PlanAttributeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanAttributeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanAttributeService" class="com.ext.portlet.plans.service.impl.PlanAttributeServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanAttributeServiceUtil" class="com.ext.portlet.plans.service.PlanAttributeServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanAttributeService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanAttributePersistence" class="com.ext.portlet.plans.service.persistence.PlanAttributePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanAttributeFilterLocalService" class="com.ext.portlet.plans.service.impl.PlanAttributeFilterLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanAttributeFilterLocalServiceUtil" class="com.ext.portlet.plans.service.PlanAttributeFilterLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanAttributeFilterLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanAttributeFilterService" class="com.ext.portlet.plans.service.impl.PlanAttributeFilterServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanAttributeFilterServiceUtil" class="com.ext.portlet.plans.service.PlanAttributeFilterServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanAttributeFilterService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanAttributeFilterPersistence" class="com.ext.portlet.plans.service.persistence.PlanAttributeFilterPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanColumnSettingsLocalService" class="com.ext.portlet.plans.service.impl.PlanColumnSettingsLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanColumnSettingsLocalServiceUtil" class="com.ext.portlet.plans.service.PlanColumnSettingsLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanColumnSettingsLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanColumnSettingsService" class="com.ext.portlet.plans.service.impl.PlanColumnSettingsServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanColumnSettingsServiceUtil" class="com.ext.portlet.plans.service.PlanColumnSettingsServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanColumnSettingsService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanColumnSettingsPersistence" class="com.ext.portlet.plans.service.persistence.PlanColumnSettingsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanDescriptionLocalService" class="com.ext.portlet.plans.service.impl.PlanDescriptionLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanDescriptionLocalServiceUtil" class="com.ext.portlet.plans.service.PlanDescriptionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanDescriptionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanDescriptionService" class="com.ext.portlet.plans.service.impl.PlanDescriptionServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanDescriptionServiceUtil" class="com.ext.portlet.plans.service.PlanDescriptionServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanDescriptionService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanDescriptionPersistence" class="com.ext.portlet.plans.service.persistence.PlanDescriptionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanFanLocalService" class="com.ext.portlet.plans.service.impl.PlanFanLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanFanLocalServiceUtil" class="com.ext.portlet.plans.service.PlanFanLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanFanLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanFanService" class="com.ext.portlet.plans.service.impl.PlanFanServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanFanServiceUtil" class="com.ext.portlet.plans.service.PlanFanServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanFanService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanFanPersistence" class="com.ext.portlet.plans.service.persistence.PlanFanPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanItemLocalService" class="com.ext.portlet.plans.service.impl.PlanItemLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanItemLocalServiceUtil" class="com.ext.portlet.plans.service.PlanItemLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanItemLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanItemService" class="com.ext.portlet.plans.service.impl.PlanItemServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanItemServiceUtil" class="com.ext.portlet.plans.service.PlanItemServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanItemService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanItemPersistence" class="com.ext.portlet.plans.service.persistence.PlanItemPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.persistence.PlanItemFinder" class="com.ext.portlet.plans.service.persistence.PlanItemFinderImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanMetaLocalService" class="com.ext.portlet.plans.service.impl.PlanMetaLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanMetaLocalServiceUtil" class="com.ext.portlet.plans.service.PlanMetaLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanMetaLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanMetaService" class="com.ext.portlet.plans.service.impl.PlanMetaServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanMetaServiceUtil" class="com.ext.portlet.plans.service.PlanMetaServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanMetaService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanMetaPersistence" class="com.ext.portlet.plans.service.persistence.PlanMetaPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanModelRunLocalService" class="com.ext.portlet.plans.service.impl.PlanModelRunLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanModelRunLocalServiceUtil" class="com.ext.portlet.plans.service.PlanModelRunLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanModelRunLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanModelRunService" class="com.ext.portlet.plans.service.impl.PlanModelRunServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanModelRunServiceUtil" class="com.ext.portlet.plans.service.PlanModelRunServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanModelRunService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanModelRunPersistence" class="com.ext.portlet.plans.service.persistence.PlanModelRunPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionLocalService" class="com.ext.portlet.plans.service.impl.PlanPositionLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionLocalServiceUtil" class="com.ext.portlet.plans.service.PlanPositionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanPositionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanPositionService" class="com.ext.portlet.plans.service.impl.PlanPositionServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionServiceUtil" class="com.ext.portlet.plans.service.PlanPositionServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanPositionService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanPositionPersistence" class="com.ext.portlet.plans.service.persistence.PlanPositionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionItemLocalService" class="com.ext.portlet.plans.service.impl.PlanPositionItemLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionItemLocalServiceUtil" class="com.ext.portlet.plans.service.PlanPositionItemLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanPositionItemLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanPositionItemService" class="com.ext.portlet.plans.service.impl.PlanPositionItemServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionItemServiceUtil" class="com.ext.portlet.plans.service.PlanPositionItemServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanPositionItemService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanPositionItemPersistence" class="com.ext.portlet.plans.service.persistence.PlanPositionItemPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionsLocalService" class="com.ext.portlet.plans.service.impl.PlanPositionsLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionsLocalServiceUtil" class="com.ext.portlet.plans.service.PlanPositionsLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanPositionsLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanPositionsService" class="com.ext.portlet.plans.service.impl.PlanPositionsServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanPositionsServiceUtil" class="com.ext.portlet.plans.service.PlanPositionsServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanPositionsService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanPositionsPersistence" class="com.ext.portlet.plans.service.persistence.PlanPositionsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanPropertyFilterLocalService" class="com.ext.portlet.plans.service.impl.PlanPropertyFilterLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanPropertyFilterLocalServiceUtil" class="com.ext.portlet.plans.service.PlanPropertyFilterLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanPropertyFilterLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanPropertyFilterService" class="com.ext.portlet.plans.service.impl.PlanPropertyFilterServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanPropertyFilterServiceUtil" class="com.ext.portlet.plans.service.PlanPropertyFilterServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanPropertyFilterService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanPropertyFilterPersistence" class="com.ext.portlet.plans.service.persistence.PlanPropertyFilterPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanRelatedLocalService" class="com.ext.portlet.plans.service.impl.PlanRelatedLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanRelatedLocalServiceUtil" class="com.ext.portlet.plans.service.PlanRelatedLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanRelatedLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanRelatedService" class="com.ext.portlet.plans.service.impl.PlanRelatedServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanRelatedServiceUtil" class="com.ext.portlet.plans.service.PlanRelatedServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanRelatedService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanRelatedPersistence" class="com.ext.portlet.plans.service.persistence.PlanRelatedPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionLocalService" class="com.ext.portlet.plans.service.impl.PlanSectionLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionLocalServiceUtil" class="com.ext.portlet.plans.service.PlanSectionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanSectionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanSectionService" class="com.ext.portlet.plans.service.impl.PlanSectionServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionServiceUtil" class="com.ext.portlet.plans.service.PlanSectionServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanSectionService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanSectionPersistence" class="com.ext.portlet.plans.service.persistence.PlanSectionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionDefinitionLocalService" class="com.ext.portlet.plans.service.impl.PlanSectionDefinitionLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionDefinitionLocalServiceUtil" class="com.ext.portlet.plans.service.PlanSectionDefinitionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanSectionDefinitionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanSectionDefinitionService" class="com.ext.portlet.plans.service.impl.PlanSectionDefinitionServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionDefinitionServiceUtil" class="com.ext.portlet.plans.service.PlanSectionDefinitionServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanSectionDefinitionService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanSectionDefinitionPersistence" class="com.ext.portlet.plans.service.persistence.PlanSectionDefinitionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionPlanMapLocalService" class="com.ext.portlet.plans.service.impl.PlanSectionPlanMapLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionPlanMapLocalServiceUtil" class="com.ext.portlet.plans.service.PlanSectionPlanMapLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanSectionPlanMapLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanSectionPlanMapService" class="com.ext.portlet.plans.service.impl.PlanSectionPlanMapServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanSectionPlanMapServiceUtil" class="com.ext.portlet.plans.service.PlanSectionPlanMapServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanSectionPlanMapService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanSectionPlanMapPersistence" class="com.ext.portlet.plans.service.persistence.PlanSectionPlanMapPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlansFilterLocalService" class="com.ext.portlet.plans.service.impl.PlansFilterLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlansFilterLocalServiceUtil" class="com.ext.portlet.plans.service.PlansFilterLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlansFilterLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlansFilterService" class="com.ext.portlet.plans.service.impl.PlansFilterServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlansFilterServiceUtil" class="com.ext.portlet.plans.service.PlansFilterServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlansFilterService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlansFilterPersistence" class="com.ext.portlet.plans.service.persistence.PlansFilterPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlansFilterPositionLocalService" class="com.ext.portlet.plans.service.impl.PlansFilterPositionLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlansFilterPositionLocalServiceUtil" class="com.ext.portlet.plans.service.PlansFilterPositionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlansFilterPositionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlansFilterPositionService" class="com.ext.portlet.plans.service.impl.PlansFilterPositionServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlansFilterPositionServiceUtil" class="com.ext.portlet.plans.service.PlansFilterPositionServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlansFilterPositionService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlansFilterPositionPersistence" class="com.ext.portlet.plans.service.persistence.PlansFilterPositionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlansUserSettingsLocalService" class="com.ext.portlet.plans.service.impl.PlansUserSettingsLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlansUserSettingsLocalServiceUtil" class="com.ext.portlet.plans.service.PlansUserSettingsLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlansUserSettingsLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlansUserSettingsService" class="com.ext.portlet.plans.service.impl.PlansUserSettingsServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlansUserSettingsServiceUtil" class="com.ext.portlet.plans.service.PlansUserSettingsServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlansUserSettingsService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlansUserSettingsPersistence" class="com.ext.portlet.plans.service.persistence.PlansUserSettingsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanTeamHistoryLocalService" class="com.ext.portlet.plans.service.impl.PlanTeamHistoryLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTeamHistoryLocalServiceUtil" class="com.ext.portlet.plans.service.PlanTeamHistoryLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTeamHistoryLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanTeamHistoryService" class="com.ext.portlet.plans.service.impl.PlanTeamHistoryServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTeamHistoryServiceUtil" class="com.ext.portlet.plans.service.PlanTeamHistoryServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTeamHistoryService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanTeamHistoryPersistence" class="com.ext.portlet.plans.service.persistence.PlanTeamHistoryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanTemplateLocalService" class="com.ext.portlet.plans.service.impl.PlanTemplateLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTemplateLocalServiceUtil" class="com.ext.portlet.plans.service.PlanTemplateLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTemplateLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanTemplateService" class="com.ext.portlet.plans.service.impl.PlanTemplateServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTemplateServiceUtil" class="com.ext.portlet.plans.service.PlanTemplateServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTemplateService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanTemplatePersistence" class="com.ext.portlet.plans.service.persistence.PlanTemplatePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanTemplateSectionLocalService" class="com.ext.portlet.plans.service.impl.PlanTemplateSectionLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTemplateSectionLocalServiceUtil" class="com.ext.portlet.plans.service.PlanTemplateSectionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTemplateSectionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanTemplateSectionService" class="com.ext.portlet.plans.service.impl.PlanTemplateSectionServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTemplateSectionServiceUtil" class="com.ext.portlet.plans.service.PlanTemplateSectionServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTemplateSectionService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanTemplateSectionPersistence" class="com.ext.portlet.plans.service.persistence.PlanTemplateSectionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeLocalService" class="com.ext.portlet.plans.service.impl.PlanTypeLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeLocalServiceUtil" class="com.ext.portlet.plans.service.PlanTypeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTypeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanTypeService" class="com.ext.portlet.plans.service.impl.PlanTypeServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeServiceUtil" class="com.ext.portlet.plans.service.PlanTypeServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTypeService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanTypePersistence" class="com.ext.portlet.plans.service.persistence.PlanTypePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeAttributeLocalService" class="com.ext.portlet.plans.service.impl.PlanTypeAttributeLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeAttributeLocalServiceUtil" class="com.ext.portlet.plans.service.PlanTypeAttributeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTypeAttributeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanTypeAttributeService" class="com.ext.portlet.plans.service.impl.PlanTypeAttributeServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeAttributeServiceUtil" class="com.ext.portlet.plans.service.PlanTypeAttributeServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTypeAttributeService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanTypeAttributePersistence" class="com.ext.portlet.plans.service.persistence.PlanTypeAttributePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeColumnLocalService" class="com.ext.portlet.plans.service.impl.PlanTypeColumnLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeColumnLocalServiceUtil" class="com.ext.portlet.plans.service.PlanTypeColumnLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTypeColumnLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanTypeColumnService" class="com.ext.portlet.plans.service.impl.PlanTypeColumnServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanTypeColumnServiceUtil" class="com.ext.portlet.plans.service.PlanTypeColumnServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanTypeColumnService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanTypeColumnPersistence" class="com.ext.portlet.plans.service.persistence.PlanTypeColumnPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.plans.service.PlanVoteLocalService" class="com.ext.portlet.plans.service.impl.PlanVoteLocalServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanVoteLocalServiceUtil" class="com.ext.portlet.plans.service.PlanVoteLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanVoteLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.PlanVoteService" class="com.ext.portlet.plans.service.impl.PlanVoteServiceImpl" />
+	<bean id="com.ext.portlet.plans.service.PlanVoteServiceUtil" class="com.ext.portlet.plans.service.PlanVoteServiceUtil">
+		<property name="service" ref="com.ext.portlet.plans.service.PlanVoteService" />
+	</bean>
+	<bean id="com.ext.portlet.plans.service.persistence.PlanVotePersistence" class="com.ext.portlet.plans.service.persistence.PlanVotePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanLocalService" class="com.ext.portlet.service.impl.PlanLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanLocalServiceUtil" class="com.ext.portlet.service.PlanLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanService" class="com.ext.portlet.service.impl.PlanServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanServiceUtil" class="com.ext.portlet.service.PlanServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanPersistence" class="com.ext.portlet.plans.service.persistence.PlanPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanAttributeLocalService" class="com.ext.portlet.service.impl.PlanAttributeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanAttributeLocalServiceUtil" class="com.ext.portlet.service.PlanAttributeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanAttributeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanAttributeService" class="com.ext.portlet.service.impl.PlanAttributeServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanAttributeServiceUtil" class="com.ext.portlet.service.PlanAttributeServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanAttributeService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanAttributePersistence" class="com.ext.portlet.plans.service.persistence.PlanAttributePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanAttributeFilterLocalService" class="com.ext.portlet.service.impl.PlanAttributeFilterLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanAttributeFilterLocalServiceUtil" class="com.ext.portlet.service.PlanAttributeFilterLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanAttributeFilterLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanAttributeFilterService" class="com.ext.portlet.service.impl.PlanAttributeFilterServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanAttributeFilterServiceUtil" class="com.ext.portlet.service.PlanAttributeFilterServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanAttributeFilterService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanAttributeFilterPersistence" class="com.ext.portlet.service.persistence.PlanAttributeFilterPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanColumnSettingsLocalService" class="com.ext.portlet.service.impl.PlanColumnSettingsLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanColumnSettingsLocalServiceUtil" class="com.ext.portlet.service.PlanColumnSettingsLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanColumnSettingsLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanColumnSettingsService" class="com.ext.portlet.service.impl.PlanColumnSettingsServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanColumnSettingsServiceUtil" class="com.ext.portlet.service.PlanColumnSettingsServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanColumnSettingsService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanColumnSettingsPersistence" class="com.ext.portlet.service.persistence.PlanColumnSettingsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanDescriptionLocalService" class="com.ext.portlet.service.impl.PlanDescriptionLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanDescriptionLocalServiceUtil" class="com.ext.portlet.service.PlanDescriptionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanDescriptionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanDescriptionService" class="com.ext.portlet.service.impl.PlanDescriptionServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanDescriptionServiceUtil" class="com.ext.portlet.service.PlanDescriptionServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanDescriptionService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanDescriptionPersistence" class="com.ext.portlet.service.persistence.PlanDescriptionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanFanLocalService" class="com.ext.portlet.service.impl.PlanFanLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanFanLocalServiceUtil" class="com.ext.portlet.service.PlanFanLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanFanLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanFanService" class="com.ext.portlet.service.impl.PlanFanServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanFanServiceUtil" class="com.ext.portlet.service.PlanFanServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanFanService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanFanPersistence" class="com.ext.portlet.service.persistence.PlanFanPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanItemLocalService" class="com.ext.portlet.service.impl.PlanItemLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanItemLocalServiceUtil" class="com.ext.portlet.service.PlanItemLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanItemLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanItemService" class="com.ext.portlet.service.impl.PlanItemServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanItemServiceUtil" class="com.ext.portlet.service.PlanItemServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanItemService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanItemPersistence" class="com.ext.portlet.service.persistence.PlanItemPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanMetaLocalService" class="com.ext.portlet.service.impl.PlanMetaLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanMetaLocalServiceUtil" class="com.ext.portlet.service.PlanMetaLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanMetaLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanMetaService" class="com.ext.portlet.service.impl.PlanMetaServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanMetaServiceUtil" class="com.ext.portlet.service.PlanMetaServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanMetaService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanMetaPersistence" class="com.ext.portlet.service.persistence.PlanMetaPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanModelRunLocalService" class="com.ext.portlet.service.impl.PlanModelRunLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanModelRunLocalServiceUtil" class="com.ext.portlet.service.PlanModelRunLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanModelRunLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanModelRunService" class="com.ext.portlet.service.impl.PlanModelRunServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanModelRunServiceUtil" class="com.ext.portlet.service.PlanModelRunServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanModelRunService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanModelRunPersistence" class="com.ext.portlet.service.persistence.PlanModelRunPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanPositionLocalService" class="com.ext.portlet.service.impl.PlanPositionLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanPositionLocalServiceUtil" class="com.ext.portlet.service.PlanPositionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanPositionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanPositionService" class="com.ext.portlet.service.impl.PlanPositionServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanPositionServiceUtil" class="com.ext.portlet.service.PlanPositionServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanPositionService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanPositionPersistence" class="com.ext.portlet.plans.service.persistence.PlanPositionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanPositionItemLocalService" class="com.ext.portlet.service.impl.PlanPositionItemLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanPositionItemLocalServiceUtil" class="com.ext.portlet.service.PlanPositionItemLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanPositionItemLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanPositionItemService" class="com.ext.portlet.service.impl.PlanPositionItemServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanPositionItemServiceUtil" class="com.ext.portlet.service.PlanPositionItemServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanPositionItemService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanPositionItemPersistence" class="com.ext.portlet.service.persistence.PlanPositionItemPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanPositionsLocalService" class="com.ext.portlet.service.impl.PlanPositionsLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanPositionsLocalServiceUtil" class="com.ext.portlet.service.PlanPositionsLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanPositionsLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanPositionsService" class="com.ext.portlet.service.impl.PlanPositionsServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanPositionsServiceUtil" class="com.ext.portlet.service.PlanPositionsServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanPositionsService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanPositionsPersistence" class="com.ext.portlet.service.persistence.PlanPositionsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanPropertyFilterLocalService" class="com.ext.portlet.service.impl.PlanPropertyFilterLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanPropertyFilterLocalServiceUtil" class="com.ext.portlet.service.PlanPropertyFilterLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanPropertyFilterLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanPropertyFilterService" class="com.ext.portlet.service.impl.PlanPropertyFilterServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanPropertyFilterServiceUtil" class="com.ext.portlet.service.PlanPropertyFilterServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanPropertyFilterService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanPropertyFilterPersistence" class="com.ext.portlet.service.persistence.PlanPropertyFilterPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanRelatedLocalService" class="com.ext.portlet.service.impl.PlanRelatedLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanRelatedLocalServiceUtil" class="com.ext.portlet.service.PlanRelatedLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanRelatedLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanRelatedService" class="com.ext.portlet.service.impl.PlanRelatedServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanRelatedServiceUtil" class="com.ext.portlet.service.PlanRelatedServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanRelatedService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanRelatedPersistence" class="com.ext.portlet.service.persistence.PlanRelatedPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanSectionLocalService" class="com.ext.portlet.service.impl.PlanSectionLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanSectionLocalServiceUtil" class="com.ext.portlet.service.PlanSectionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanSectionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanSectionService" class="com.ext.portlet.service.impl.PlanSectionServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanSectionServiceUtil" class="com.ext.portlet.service.PlanSectionServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanSectionService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanSectionPersistence" class="com.ext.portlet.service.persistence.PlanSectionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanSectionDefinitionLocalService" class="com.ext.portlet.service.impl.PlanSectionDefinitionLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil" class="com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanSectionDefinitionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanSectionDefinitionService" class="com.ext.portlet.service.impl.PlanSectionDefinitionServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanSectionDefinitionServiceUtil" class="com.ext.portlet.service.PlanSectionDefinitionServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanSectionDefinitionService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence" class="com.ext.portlet.service.persistence.PlanSectionDefinitionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanSectionPlanMapLocalService" class="com.ext.portlet.service.impl.PlanSectionPlanMapLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanSectionPlanMapLocalServiceUtil" class="com.ext.portlet.service.PlanSectionPlanMapLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanSectionPlanMapLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanSectionPlanMapService" class="com.ext.portlet.service.impl.PlanSectionPlanMapServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanSectionPlanMapServiceUtil" class="com.ext.portlet.service.PlanSectionPlanMapServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanSectionPlanMapService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence" class="com.ext.portlet.service.persistence.PlanSectionPlanMapPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlansFilterLocalService" class="com.ext.portlet.service.impl.PlansFilterLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlansFilterLocalServiceUtil" class="com.ext.portlet.service.PlansFilterLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlansFilterLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlansFilterService" class="com.ext.portlet.service.impl.PlansFilterServiceImpl" />
+	<bean id="com.ext.portlet.service.PlansFilterServiceUtil" class="com.ext.portlet.service.PlansFilterServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlansFilterService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlansFilterPersistence" class="com.ext.portlet.plans.service.persistence.PlansFilterPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlansFilterPositionLocalService" class="com.ext.portlet.service.impl.PlansFilterPositionLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlansFilterPositionLocalServiceUtil" class="com.ext.portlet.service.PlansFilterPositionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlansFilterPositionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlansFilterPositionService" class="com.ext.portlet.service.impl.PlansFilterPositionServiceImpl" />
+	<bean id="com.ext.portlet.service.PlansFilterPositionServiceUtil" class="com.ext.portlet.service.PlansFilterPositionServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlansFilterPositionService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlansFilterPositionPersistence" class="com.ext.portlet.plans.service.persistence.PlansFilterPositionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlansUserSettingsLocalService" class="com.ext.portlet.service.impl.PlansUserSettingsLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlansUserSettingsLocalServiceUtil" class="com.ext.portlet.service.PlansUserSettingsLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlansUserSettingsLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlansUserSettingsService" class="com.ext.portlet.service.impl.PlansUserSettingsServiceImpl" />
+	<bean id="com.ext.portlet.service.PlansUserSettingsServiceUtil" class="com.ext.portlet.service.PlansUserSettingsServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlansUserSettingsService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlansUserSettingsPersistence" class="com.ext.portlet.plans.service.persistence.PlansUserSettingsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanTeamHistoryLocalService" class="com.ext.portlet.service.impl.PlanTeamHistoryLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTeamHistoryLocalServiceUtil" class="com.ext.portlet.service.PlanTeamHistoryLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTeamHistoryLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanTeamHistoryService" class="com.ext.portlet.service.impl.PlanTeamHistoryServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTeamHistoryServiceUtil" class="com.ext.portlet.service.PlanTeamHistoryServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTeamHistoryService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanTeamHistoryPersistence" class="com.ext.portlet.service.persistence.PlanTeamHistoryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanTemplateLocalService" class="com.ext.portlet.service.impl.PlanTemplateLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTemplateLocalServiceUtil" class="com.ext.portlet.service.PlanTemplateLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTemplateLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanTemplateService" class="com.ext.portlet.service.impl.PlanTemplateServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTemplateServiceUtil" class="com.ext.portlet.service.PlanTemplateServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTemplateService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanTemplatePersistence" class="com.ext.portlet.service.persistence.PlanTemplatePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanTemplateSectionLocalService" class="com.ext.portlet.service.impl.PlanTemplateSectionLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil" class="com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTemplateSectionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanTemplateSectionService" class="com.ext.portlet.service.impl.PlanTemplateSectionServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTemplateSectionServiceUtil" class="com.ext.portlet.service.PlanTemplateSectionServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTemplateSectionService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanTemplateSectionPersistence" class="com.ext.portlet.service.persistence.PlanTemplateSectionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanTypeLocalService" class="com.ext.portlet.service.impl.PlanTypeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTypeLocalServiceUtil" class="com.ext.portlet.service.PlanTypeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTypeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanTypeService" class="com.ext.portlet.service.impl.PlanTypeServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTypeServiceUtil" class="com.ext.portlet.service.PlanTypeServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTypeService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanTypePersistence" class="com.ext.portlet.service.persistence.PlanTypePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanTypeAttributeLocalService" class="com.ext.portlet.service.impl.PlanTypeAttributeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTypeAttributeLocalServiceUtil" class="com.ext.portlet.service.PlanTypeAttributeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTypeAttributeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanTypeAttributeService" class="com.ext.portlet.service.impl.PlanTypeAttributeServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTypeAttributeServiceUtil" class="com.ext.portlet.service.PlanTypeAttributeServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTypeAttributeService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanTypeAttributePersistence" class="com.ext.portlet.service.persistence.PlanTypeAttributePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanTypeColumnLocalService" class="com.ext.portlet.service.impl.PlanTypeColumnLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTypeColumnLocalServiceUtil" class="com.ext.portlet.service.PlanTypeColumnLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTypeColumnLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanTypeColumnService" class="com.ext.portlet.service.impl.PlanTypeColumnServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanTypeColumnServiceUtil" class="com.ext.portlet.service.PlanTypeColumnServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanTypeColumnService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanTypeColumnPersistence" class="com.ext.portlet.service.persistence.PlanTypeColumnPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanVoteLocalService" class="com.ext.portlet.service.impl.PlanVoteLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanVoteLocalServiceUtil" class="com.ext.portlet.service.PlanVoteLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanVoteLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanVoteService" class="com.ext.portlet.service.impl.PlanVoteServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanVoteServiceUtil" class="com.ext.portlet.service.PlanVoteServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanVoteService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanVotePersistence" class="com.ext.portlet.plans.service.persistence.PlanVotePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.contests.service.ContestLocalService" class="com.ext.portlet.contests.service.impl.ContestLocalServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestLocalServiceUtil" class="com.ext.portlet.contests.service.ContestLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.ContestService" class="com.ext.portlet.contests.service.impl.ContestServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestServiceUtil" class="com.ext.portlet.contests.service.ContestServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.persistence.ContestPersistence" class="com.ext.portlet.contests.service.persistence.ContestPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.contests.service.ContestDebateLocalService" class="com.ext.portlet.contests.service.impl.ContestDebateLocalServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestDebateLocalServiceUtil" class="com.ext.portlet.contests.service.ContestDebateLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestDebateLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.ContestDebateService" class="com.ext.portlet.contests.service.impl.ContestDebateServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestDebateServiceUtil" class="com.ext.portlet.contests.service.ContestDebateServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestDebateService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.persistence.ContestDebatePersistence" class="com.ext.portlet.contests.service.persistence.ContestDebatePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.contests.service.ContestPhaseLocalService" class="com.ext.portlet.contests.service.impl.ContestPhaseLocalServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil" class="com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestPhaseLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.ContestPhaseService" class="com.ext.portlet.contests.service.impl.ContestPhaseServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestPhaseServiceUtil" class="com.ext.portlet.contests.service.ContestPhaseServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestPhaseService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.persistence.ContestPhasePersistence" class="com.ext.portlet.contests.service.persistence.ContestPhasePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.contests.service.ContestPhaseColumnLocalService" class="com.ext.portlet.contests.service.impl.ContestPhaseColumnLocalServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestPhaseColumnLocalServiceUtil" class="com.ext.portlet.contests.service.ContestPhaseColumnLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestPhaseColumnLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.ContestPhaseColumnService" class="com.ext.portlet.contests.service.impl.ContestPhaseColumnServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestPhaseColumnServiceUtil" class="com.ext.portlet.contests.service.ContestPhaseColumnServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestPhaseColumnService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.persistence.ContestPhaseColumnPersistence" class="com.ext.portlet.contests.service.persistence.ContestPhaseColumnPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.contests.service.ContestTeamMemberLocalService" class="com.ext.portlet.contests.service.impl.ContestTeamMemberLocalServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestTeamMemberLocalServiceUtil" class="com.ext.portlet.contests.service.ContestTeamMemberLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestTeamMemberLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.ContestTeamMemberService" class="com.ext.portlet.contests.service.impl.ContestTeamMemberServiceImpl" />
+	<bean id="com.ext.portlet.contests.service.ContestTeamMemberServiceUtil" class="com.ext.portlet.contests.service.ContestTeamMemberServiceUtil">
+		<property name="service" ref="com.ext.portlet.contests.service.ContestTeamMemberService" />
+	</bean>
+	<bean id="com.ext.portlet.contests.service.persistence.ContestTeamMemberPersistence" class="com.ext.portlet.contests.service.persistence.ContestTeamMemberPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionCategoryLocalService" class="com.ext.portlet.discussions.service.impl.DiscussionCategoryLocalServiceImpl" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionCategoryLocalServiceUtil" class="com.ext.portlet.discussions.service.DiscussionCategoryLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.discussions.service.DiscussionCategoryLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.discussions.service.DiscussionCategoryService" class="com.ext.portlet.discussions.service.impl.DiscussionCategoryServiceImpl" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionCategoryServiceUtil" class="com.ext.portlet.discussions.service.DiscussionCategoryServiceUtil">
+		<property name="service" ref="com.ext.portlet.discussions.service.DiscussionCategoryService" />
+	</bean>
+	<bean id="com.ext.portlet.discussions.service.persistence.DiscussionCategoryPersistence" class="com.ext.portlet.discussions.service.persistence.DiscussionCategoryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalService" class="com.ext.portlet.discussions.service.impl.DiscussionCategoryGroupLocalServiceImpl" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil" class="com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.discussions.service.DiscussionCategoryGroupService" class="com.ext.portlet.discussions.service.impl.DiscussionCategoryGroupServiceImpl" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionCategoryGroupServiceUtil" class="com.ext.portlet.discussions.service.DiscussionCategoryGroupServiceUtil">
+		<property name="service" ref="com.ext.portlet.discussions.service.DiscussionCategoryGroupService" />
+	</bean>
+	<bean id="com.ext.portlet.discussions.service.persistence.DiscussionCategoryGroupPersistence" class="com.ext.portlet.discussions.service.persistence.DiscussionCategoryGroupPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionMessageLocalService" class="com.ext.portlet.discussions.service.impl.DiscussionMessageLocalServiceImpl" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionMessageLocalServiceUtil" class="com.ext.portlet.discussions.service.DiscussionMessageLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.discussions.service.DiscussionMessageLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.discussions.service.DiscussionMessageService" class="com.ext.portlet.discussions.service.impl.DiscussionMessageServiceImpl" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionMessageServiceUtil" class="com.ext.portlet.discussions.service.DiscussionMessageServiceUtil">
+		<property name="service" ref="com.ext.portlet.discussions.service.DiscussionMessageService" />
+	</bean>
+	<bean id="com.ext.portlet.discussions.service.persistence.DiscussionMessagePersistence" class="com.ext.portlet.discussions.service.persistence.DiscussionMessagePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionMessageFlagLocalService" class="com.ext.portlet.discussions.service.impl.DiscussionMessageFlagLocalServiceImpl" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionMessageFlagLocalServiceUtil" class="com.ext.portlet.discussions.service.DiscussionMessageFlagLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.discussions.service.DiscussionMessageFlagLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.discussions.service.DiscussionMessageFlagService" class="com.ext.portlet.discussions.service.impl.DiscussionMessageFlagServiceImpl" />
+	<bean id="com.ext.portlet.discussions.service.DiscussionMessageFlagServiceUtil" class="com.ext.portlet.discussions.service.DiscussionMessageFlagServiceUtil">
+		<property name="service" ref="com.ext.portlet.discussions.service.DiscussionMessageFlagService" />
+	</bean>
+	<bean id="com.ext.portlet.discussions.service.persistence.DiscussionMessageFlagPersistence" class="com.ext.portlet.discussions.service.persistence.DiscussionMessageFlagPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.ontology.service.FocusAreaLocalService" class="com.ext.portlet.ontology.service.impl.FocusAreaLocalServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.FocusAreaLocalServiceUtil" class="com.ext.portlet.ontology.service.FocusAreaLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.FocusAreaLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.FocusAreaService" class="com.ext.portlet.ontology.service.impl.FocusAreaServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.FocusAreaServiceUtil" class="com.ext.portlet.ontology.service.FocusAreaServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.FocusAreaService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.persistence.FocusAreaPersistence" class="com.ext.portlet.ontology.service.persistence.FocusAreaPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.ontology.service.FocusAreaOntologyTermLocalService" class="com.ext.portlet.ontology.service.impl.FocusAreaOntologyTermLocalServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.FocusAreaOntologyTermLocalServiceUtil" class="com.ext.portlet.ontology.service.FocusAreaOntologyTermLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.FocusAreaOntologyTermLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.FocusAreaOntologyTermService" class="com.ext.portlet.ontology.service.impl.FocusAreaOntologyTermServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.FocusAreaOntologyTermServiceUtil" class="com.ext.portlet.ontology.service.FocusAreaOntologyTermServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.FocusAreaOntologyTermService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.persistence.FocusAreaOntologyTermPersistence" class="com.ext.portlet.ontology.service.persistence.FocusAreaOntologyTermPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.ontology.service.OntologySpaceLocalService" class="com.ext.portlet.ontology.service.impl.OntologySpaceLocalServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.OntologySpaceLocalServiceUtil" class="com.ext.portlet.ontology.service.OntologySpaceLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.OntologySpaceLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.OntologySpaceService" class="com.ext.portlet.ontology.service.impl.OntologySpaceServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.OntologySpaceServiceUtil" class="com.ext.portlet.ontology.service.OntologySpaceServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.OntologySpaceService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.persistence.OntologySpacePersistence" class="com.ext.portlet.ontology.service.persistence.OntologySpacePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.ontology.service.OntologyTermLocalService" class="com.ext.portlet.ontology.service.impl.OntologyTermLocalServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.OntologyTermLocalServiceUtil" class="com.ext.portlet.ontology.service.OntologyTermLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.OntologyTermLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.OntologyTermService" class="com.ext.portlet.ontology.service.impl.OntologyTermServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.OntologyTermServiceUtil" class="com.ext.portlet.ontology.service.OntologyTermServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.OntologyTermService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.persistence.OntologyTermPersistence" class="com.ext.portlet.ontology.service.persistence.OntologyTermPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.ontology.service.OntologyTermEntityLocalService" class="com.ext.portlet.ontology.service.impl.OntologyTermEntityLocalServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.OntologyTermEntityLocalServiceUtil" class="com.ext.portlet.ontology.service.OntologyTermEntityLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.OntologyTermEntityLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.OntologyTermEntityService" class="com.ext.portlet.ontology.service.impl.OntologyTermEntityServiceImpl" />
+	<bean id="com.ext.portlet.ontology.service.OntologyTermEntityServiceUtil" class="com.ext.portlet.ontology.service.OntologyTermEntityServiceUtil">
+		<property name="service" ref="com.ext.portlet.ontology.service.OntologyTermEntityService" />
+	</bean>
+	<bean id="com.ext.portlet.ontology.service.persistence.OntologyTermEntityPersistence" class="com.ext.portlet.ontology.service.persistence.OntologyTermEntityPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.models.service.ModelCategoryLocalService" class="com.ext.portlet.models.service.impl.ModelCategoryLocalServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelCategoryLocalServiceUtil" class="com.ext.portlet.models.service.ModelCategoryLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelCategoryLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.ModelCategoryService" class="com.ext.portlet.models.service.impl.ModelCategoryServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelCategoryServiceUtil" class="com.ext.portlet.models.service.ModelCategoryServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelCategoryService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.persistence.ModelCategoryPersistence" class="com.ext.portlet.models.service.persistence.ModelCategoryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.models.service.ModelDiscussionLocalService" class="com.ext.portlet.models.service.impl.ModelDiscussionLocalServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelDiscussionLocalServiceUtil" class="com.ext.portlet.models.service.ModelDiscussionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelDiscussionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.ModelDiscussionService" class="com.ext.portlet.models.service.impl.ModelDiscussionServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelDiscussionServiceUtil" class="com.ext.portlet.models.service.ModelDiscussionServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelDiscussionService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.persistence.ModelDiscussionPersistence" class="com.ext.portlet.models.service.persistence.ModelDiscussionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.models.service.ModelGlobalPreferenceLocalService" class="com.ext.portlet.models.service.impl.ModelGlobalPreferenceLocalServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelGlobalPreferenceLocalServiceUtil" class="com.ext.portlet.models.service.ModelGlobalPreferenceLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelGlobalPreferenceLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.ModelGlobalPreferenceService" class="com.ext.portlet.models.service.impl.ModelGlobalPreferenceServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelGlobalPreferenceServiceUtil" class="com.ext.portlet.models.service.ModelGlobalPreferenceServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelGlobalPreferenceService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.persistence.ModelGlobalPreferencePersistence" class="com.ext.portlet.models.service.persistence.ModelGlobalPreferencePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.models.service.ModelInputGroupLocalService" class="com.ext.portlet.models.service.impl.ModelInputGroupLocalServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelInputGroupLocalServiceUtil" class="com.ext.portlet.models.service.ModelInputGroupLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelInputGroupLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.ModelInputGroupService" class="com.ext.portlet.models.service.impl.ModelInputGroupServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelInputGroupServiceUtil" class="com.ext.portlet.models.service.ModelInputGroupServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelInputGroupService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.persistence.ModelInputGroupPersistence" class="com.ext.portlet.models.service.persistence.ModelInputGroupPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.models.service.ModelInputItemLocalService" class="com.ext.portlet.models.service.impl.ModelInputItemLocalServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelInputItemLocalServiceUtil" class="com.ext.portlet.models.service.ModelInputItemLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelInputItemLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.ModelInputItemService" class="com.ext.portlet.models.service.impl.ModelInputItemServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelInputItemServiceUtil" class="com.ext.portlet.models.service.ModelInputItemServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelInputItemService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.persistence.ModelInputItemPersistence" class="com.ext.portlet.models.service.persistence.ModelInputItemPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.models.service.ModelOutputChartOrderLocalService" class="com.ext.portlet.models.service.impl.ModelOutputChartOrderLocalServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelOutputChartOrderLocalServiceUtil" class="com.ext.portlet.models.service.ModelOutputChartOrderLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelOutputChartOrderLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.ModelOutputChartOrderService" class="com.ext.portlet.models.service.impl.ModelOutputChartOrderServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelOutputChartOrderServiceUtil" class="com.ext.portlet.models.service.ModelOutputChartOrderServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelOutputChartOrderService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.persistence.ModelOutputChartOrderPersistence" class="com.ext.portlet.models.service.persistence.ModelOutputChartOrderPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.models.service.ModelOutputItemLocalService" class="com.ext.portlet.models.service.impl.ModelOutputItemLocalServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelOutputItemLocalServiceUtil" class="com.ext.portlet.models.service.ModelOutputItemLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelOutputItemLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.ModelOutputItemService" class="com.ext.portlet.models.service.impl.ModelOutputItemServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelOutputItemServiceUtil" class="com.ext.portlet.models.service.ModelOutputItemServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelOutputItemService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.persistence.ModelOutputItemPersistence" class="com.ext.portlet.models.service.persistence.ModelOutputItemPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.models.service.ModelPositionLocalService" class="com.ext.portlet.models.service.impl.ModelPositionLocalServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelPositionLocalServiceUtil" class="com.ext.portlet.models.service.ModelPositionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelPositionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.ModelPositionService" class="com.ext.portlet.models.service.impl.ModelPositionServiceImpl" />
+	<bean id="com.ext.portlet.models.service.ModelPositionServiceUtil" class="com.ext.portlet.models.service.ModelPositionServiceUtil">
+		<property name="service" ref="com.ext.portlet.models.service.ModelPositionService" />
+	</bean>
+	<bean id="com.ext.portlet.models.service.persistence.ModelPositionPersistence" class="com.ext.portlet.models.service.persistence.ModelPositionPersistenceImpl" parent="basePersistence" />
+</beans>
