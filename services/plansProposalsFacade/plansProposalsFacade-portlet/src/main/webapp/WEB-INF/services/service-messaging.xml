@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
+<service-builder package-path="com.ext.portlet.messaging">
+	<namespace>Messaging</namespace>
+
+
+	<entity name="Message" remote-service="true" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessagePersistenceImpl">
+
+		<!-- PK field -->
+		<column name="messageId" type="Long" primary="true" />
+
+		<!-- Main fields -->
+
+		<column name="fromId" type="Long" />
+        <column name="repliesTo" type="Long"/>
+        <column name="createDate" type="Date" />
+
+		<column name="subject" type="String"/>
+        <column name="content" type="String" />
+        
+        <order by="desc">
+            <order-column name="createDate" />
+        </order>
+
+		<!-- Finder methods -->
+
+		<finder name="SendingUser" return-type="Collection">
+			<finder-column name="fromId" />
+		</finder>
+
+        <reference package-path="com.liferay.portal" entity="User" />
+
+	</entity>
+    	<entity name="MessageRecipientStatus" remote-service="true" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessageRecipientStatusPersistenceImpl">
+
+		<!-- PK field -->
+        <column name="messageRecipientId" type="Long" primary="true"/>
+
+		<column name="messageId" type="Long" />
+        <column name="userId" type="Long"  />
+        <column name="opened" type="Boolean"/>
+		<column name="archived" type="Boolean"/>
+        
+        <order by="desc">
+            <order-column name="messageId" />
+        </order>
+
+		<finder name="ReceivingUser" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+
+        <finder name="ReceivingUserArchived" return-type="Collection">
+			<finder-column name="userId" />
+            <finder-column name="archived"/>
+		</finder>
+
+
+        <finder name="MessageId" return-type="Collection">
+			<finder-column name="messageId" />
+		</finder>
+
+        <finder name="MessageReciever" return-type="MessageRecipientStatus">
+			<finder-column name="messageId" />
+            <finder-column name="userId" />
+		</finder>
+
+        <reference package-path="com.liferay.portal" entity="User" />
+
+
+	</entity>
+
+
+
+
+	<entity name="MessagingUserPreferences" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessagingUserPreferencesPersistenceImpl">
+		<column name="messagingPreferencesId" type="Long" primary="true"/>
+        <column name="userId" type="Long"/>
+		<column name="emailOnSend" type="Boolean"/>
+        <column name="emailOnReceipt" type="Boolean"/>
+        <column name="emailOnActivity" type="Boolean"/>
+
+
+
+    <finder name="messagingPreferences" return-type="MessagingUserPrefs">
+        <finder-column name="userId" />
+    </finder>
+
+	</entity>
+	<exceptions>
+		<exception>NoSuchMessageStatus</exception>
+        <exception>NoSuchMessageRecipient</exception>
+		<exception>NoSuchMessagingUserPreferences</exception>
+		<exception>NoSuchMessage</exception>
+	</exceptions>
+</service-builder>

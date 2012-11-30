@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:collab="http://climatecollaboratorium.org/facelets"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    
+    
+    <div class="headline prophead">
+    <ice:form>
+        <h2><span>#{planBean.plan.planMembersCount}</span> members</h2>
+  
+        <f:subview rendered="#{not planBean.plan.planMember and not planBean.membershipBean.requesting and not planBean.plan.hasRequestedMembership }">
+        <div class="prop-butt">
+            <img src="/climatecolab-theme/images/icon-request-membership.png" width="24" height="22" alt="request membership" />
+            <div class="blue-button">
+                <ice:commandLink actionListener="#{planBean.membershipBean.toggleRequestingOrJoin}"
+                                       escaped='false'
+                                       rendered="#{not planBean.plan.planMember and not planBean.membershipBean.requesting and not planBean.plan.hasRequestedMembership }"
+                                       onclick="if(!deferUntilLogin()) return false;">
+                    #{planBean.plan.open?'&lt;span&gt;JOIN&lt;/span&gt; this team':'&lt;span&gt;REQUEST&lt;/span&gt; membership'}
+                </ice:commandLink>
+                </div>
+        </div>
+        </f:subview>
+        </ice:form>
+    </div> <!-- /headline -->
+    
+    <ice:form>
+        <ice:panelGroup rendered="#{planBean.membershipBean.requesting}">
+                    <div class="manageMembersTop">
+                        <h4>Request Membership</h4>
+                    </div>
+                    <div class="manageMembersContent">
+                        Optional comment:
+                        <ice:inputTextarea value="#{planBean.membershipBean.comment}" styleClass="requestComment"/>
+                    </div>
+                    <div class="blue-button">
+                        <ice:commandLink actionListener="#{planBean.membershipBean.requestMembership}" styleClass="requestMembershipSubmitButton">
+                            REQUEST membership
+                        </ice:commandLink>
+                    </div>
+                    <div class="blue-button">
+                        <ice:commandLink actionListener="#{planBean.membershipBean.toggleRequestingOrJoin}" >
+                            CANCEL
+                        </ice:commandLink>
+                    </div>
+
+        </ice:panelGroup>
+    </ice:form>
+    
+    <ice:panelGroup rendered="#{planBean.plan.hasRequestedMembership}">
+        <br />
+        <h2>You have requested to be a member of this team.</h2>
+     </ice:panelGroup>
+                
+    <ice:form><ice:dataTable var="member" value="#{planBean.membershipBean.planMembers}"  styleClass="contributors" rowClasses="odd,even">
+        <ice:column style="width: 525px">
+            <collab:userPortrait screenName="#{member.screenName}" portraitId="#{member.portraitId}" width="42" height="42" />
+            <collab:userLinkSimple userId="#{member.userId}" text="#{member.screenName}" />
+        </ice:column>
+        <ice:column>
+        <!-- 
+            <f:subview rendered="#{(not permissions.canAdmin or permissions.planUserPermission gt member.planUserPermission or member.planUserPermission == 'OWNER') and not permissions.canAdminAll}">
+                <ice:outputText value="#{member.planUserPermission.description}"/>
+            </f:subview>
+        -->
+            #{member.planUserPermission.description}
+        
+        </ice:column>
+    </ice:dataTable></ice:form>
+
+<ice:form>
+    <div class="headline propsubhead">
+        <h2><span>#{planBean.plan.planFansCount}</span> supporters</h2>
+        <div class="prop-butt">
+            <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" /> 
+            <div class="blue-button">
+                <ice:commandLink actionListener="#{plan.plan.becomeAFan}" rendered="#{!votingPhase and not plan.plan.userAFan}" 
+                        onclick="if(!deferUntilLogin()) return false;">
+                        Support proposal
+                </ice:commandLink>
+                <ice:commandLink actionListener="#{plan.plan.unfan}" rendered="#{!votingPhase and plan.plan.userAFan}">
+                        Retract support
+                </ice:commandLink>
+            </div>
+        </div>
+    </div> <!-- /headline -->
+    <ice:dataTable value="#{planBean.plan.planFanPairs}" var="fan" styleClass="contributors" rendered="#{fn:length(planBean.plan.planFans) > 0}" rowClasses="odd,even">
+        <ice:column>
+            <collab:userLinkSimple userId="#{fan.first.user.userId}" text="#{fan.first.user.screenName}"/>
+        </ice:column>
+        <ice:column>
+            <collab:userLinkSimple userId="#{fan.second.user.userId}" text="#{fan.second.user.screenName}"/>
+        </ice:column>
+    </ice:dataTable>        
+</ice:form>
+        
+        
+        
+</f:view>

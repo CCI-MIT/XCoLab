@@ -74,14 +74,14 @@ public class PlanAttributeClp extends BaseModelImpl<PlanAttribute>
         return _attributeValue;
     }
 
+    public void setAttributeValue(String attributeValue) {
+        _attributeValue = attributeValue;
+    }
 
     public java.lang.Object getTypedValue() {
         throw new UnsupportedOperationException();
     }
 
-    public void setAttributeValue(java.lang.String attributeValue) {
-        throw new UnsupportedOperationException();
-    }
 
     public void persist() throws SystemException {
         if (this.isNew()) {

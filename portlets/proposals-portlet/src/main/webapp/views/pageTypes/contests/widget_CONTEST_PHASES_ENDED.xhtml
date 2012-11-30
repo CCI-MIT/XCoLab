@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<f:view
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:sharedcollab="http://climatecollaboratorium.org/components">
+        
+        <strong>Contest ended</strong>
+        
+        <span>Contest phases: 
+            <f:subview rendered="#{fn:length(contest.contest.activeOrPastPhases) gt 1}">
+                <ui:repeat value="#{contest.contest.activeOrPastPhases}" var="phase">
+                    <ui:include src="./widget_PHASE_LINK.xhtml" />
+                </ui:repeat>
+            </f:subview>
+            <f:subview rendered="#{fn:length(contest.contest.activeOrPastPhases) le 1}">
+                No previous phases
+            </f:subview>
+        </span>
+</f:view>

@@ -263,6 +263,17 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
         _planSectionDefinition.persist();
     }
 
+    public void store()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planSectionDefinition.store();
+    }
+
+    public com.ext.portlet.ontology.model.FocusArea getFocusArea()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionDefinition.getFocusArea();
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedModel}
      */

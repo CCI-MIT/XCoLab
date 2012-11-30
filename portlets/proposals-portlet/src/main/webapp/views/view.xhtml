@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<f:view 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:collab="http://climatecollaboratorium.org/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"  >
+    
+<ice:portlet>
+    <collab:navigationManager />
+    <ui:include src="./mainView.xhtml">
+        <ui:param value="#{navigation.contestBean}" name="contest" />
+        <ui:param value="#{navigation.planBean}" name="plan" />
+        <ui:param value="#{navigation.planBean}" name="proposal" />
+        <ui:param value="#{navigation.planBean}" name="planBean" />
+        <ui:param value="#{navigation.plansPermissionsBean}" name="permissions" />
+        <ui:param value="#{navigation.plansIndexBean}" name="plansIndex" />
+        <ui:param value="#{navigation.issuesBean}" name="issues" />
+        <ui:param value="#{navigation.pageType}" name="pageType" />
+        <ui:param value="#{navigation.contestsBean}" name="contests" />
+        <ui:param value="#{navigation.planBean.plan.contestPhase.contestStatus == 'VOTING'}" name="votingPhase" />
+    </ui:include>
+    
+    
+    <div class="hidden">
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+              if (${navigation.hasUserVoted}) {
+                // trigger click on vote
+                setTimeout(function() {
+                    jQuery('.voteForPlanTrigger_#{navigation.deferPlanIdVote}').click();
+                }, 500);
+                
+                // clear defer plan id
+              }
+            });
+              
+              function deferPlanVoteUntilLoggedIn(planId) {
+                jQuery(".deferVotePlanId").val(planId);
+                // send data
+                jQuery(".deferVoteCommit").click();
+              }
+            </script>
+         
+         
+         <ice:form>
+            <ice:inputText value="#{navigation.deferPlanIdVote}" styleClass="deferVotePlanId" />
+            <ice:commandButton value="" styleClass="deferVoteCommit" actionListener="#{navigation.deferVotingTo}" />
+         </ice:form>     
+    </div>
+</ice:portlet>
+</f:view>

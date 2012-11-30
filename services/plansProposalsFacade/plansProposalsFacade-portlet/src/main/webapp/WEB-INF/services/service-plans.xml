@@ -10,63 +10,6 @@
     <namespace>Plans</namespace>
     
     
-    <entity name="Plan" remote-service="true" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanPersistenceImpl" >
-
-        <!-- PK field -->
-        <column name="planId" type="Long" primary="true" />
-
-        <!-- Main fields -->
-
-        <column name="name" type="String" />
-        <column name="content" type="String" />
-        <column name="shortcontent" type="String" />
-
-        <!-- References to other entities -->
-        
-        <column name="planTypeId" type="Long" />
-
-        <!-- Id of company -->
-        <column name="companyId" type="Long" />
-        <!-- Id of "parent" group, that is a group owning the portlet -->
-        <column name="groupId" type="Long" />
-        <!-- Id of group representing community working on a plan -->
-        <column name="childGroupId" type="Long" />
-        <!-- Id of forum category that holds discussion about a plan -->
-        <column name="MBCategoryId" type="Long" />
-        <!-- Id of referenced scenario -->
-        <column name="scenarioId" type="String" />
-        <!-- Id of debates topic related to plan -->
-        <column name="topicId" type="String" />
-
-
-        <column name="votes" type="Integer" />
-
-        <!-- Important dates -->
-        <column name="createDate" type="Date" />
-        <column name="publishDate" type="Date" />
-
-        <!-- Audit fields -->
-        <column name="userId" type="Long" />
-        <column name="userName" type="String" />
-        <column name="userScreenName" type="String" />
-        <column name="modifiedDate" type="Date" />
-       
-
-        <!-- Relationship -->
-        <column name="planAttributes" type="Collection" entity="PlanAttribute" mapping-key="planId"/>
-
-        <!-- Order columns -->
-
-        <order by="asc">
-            <order-column name="name" case-sensitive="false" />
-        </order>
-
-        <finder name="name" return-type="Collection">
-            <finder-column name="name" />
-        </finder>
-
-    </entity>
-    
     <entity name="PlanAttribute" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanAttributePersistenceImpl">
         <!-- PK field -->
         <column name="attributeId" type="Long" primary="true"/>

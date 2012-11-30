@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<f:view
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:liferay-faces="http://liferay.com/tld/faces"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:h="http://java.sun.com/jsf/html">
+<div id="createPlanContainer" class="hidden">
+    <div id="createPlan" class="createPlan">
+        <div class="createPlan_top">
+            <h4>Add Plan</h4>
+        </div>
+        <div class="createPlan_content">
+            <table>
+                <tr>
+                    <td>Name:</td>
+                    <td>
+                        <ice:inputText value="#{createPlanBean.name}" id="planName" >
+                            <f:validator validatorId="planNameValidator" />
+                        </ice:inputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <ice:message for="planName" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="note">
+                        Note: You can change the name of your plan after it's been created.
+                    </td>
+                </tr>
+            </table>
+            
+            
+            <ice:commandLink value="Create" actionListener="#{createPlanBean.createPlan}" styleClass="hidden createPlanButton" />
+        </div>
+        <div class="createPlan_bottom">
+            <div class="actions">
+                <a class="checkBtn" href="javascript:;" onclick="createPlan()"></a>
+                <a class="cancelBtn"  href="javascript:;" onclick="hideCreatePlanDialog()" ></a>
+            <div class="clear"></div>
+        </div>
+    </div>
+    </div>
+</div>
+<div id="createPlanDialog" class="dialogdialog hidden"></div>
+<f:subview rendered="#{createPlanBean.navigateToPlan}">
+    <div class="hidden">
+        <collab:planLink planId="#{createPlanBean.planId}" contestId="#{contest.contestId}" hashString="plans=newPlan:true;planCondText=value:createNewProposal" text="createdPlanLink" linkClass="newlyCreatedPlanLink" />
+    </div>
+    <script language="javascript">
+        window.location = jQuery(".newlyCreatedPlanLink").attr("href");
+    </script>
+</f:subview>
+</f:view>

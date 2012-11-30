@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
+
+<service-builder package-path="com.ext.portlet.Activity">
+	<namespace>Activity</namespace>
+	<entity name="ActivitySubscription" local-service="true" persistence-class="com.ext.portlet.Activity.service.persistence.ActivitySubscriptionPersistenceImpl">
+        <column name="pk" type="Long" primary="true" />    
+		<column name="classNameId" type="Long" />
+		<column name="classPK" type="Long" />
+		<column name="type" type="Integer" />
+        
+        
+        <!--  TODO WRITE COMMENT -->
+        
+        
+		<column name="extraData" type="String" />
+        
+        
+        <column name="receiverId" type="Long" />
+		
+		<!-- Audit fields -->
+
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		
+
+		<finder name="receiverId" return-type="Collection">
+			<finder-column name="receiverId" />
+		</finder>
+        
+        <finder name="ClassNameIdClassPKReceiverId" return-type="Collection">
+            <finder-column name="classNameId" />
+            <finder-column name="classPK" />
+            <finder-column name="receiverId" />
+        </finder>
+        
+        <finder name="ClassNameIdClassPKTypeReceiverId" return-type="Collection">
+            <finder-column name="classNameId" />
+            <finder-column name="classPK" />
+            <finder-column name="type" />
+            <finder-column name="receiverId" />
+        </finder>
+        
+        <finder name="ClassNameIdClassPKTypeExtraDataReceiverId" return-type="Collection">
+            <finder-column name="classNameId" />
+            <finder-column name="classPK" />
+            <finder-column name="type" />
+            <finder-column name="extraData"  />
+            <finder-column name="receiverId" />
+        </finder>
+        
+        <finder name="ClassNameIdClassPKTypeExtraData" return-type="Collection">
+            <finder-column name="classNameId" />
+            <finder-column name="classPK" />
+            <finder-column name="type" />
+            <finder-column name="extraData"  />
+        </finder>
+
+		
+	</entity>
+	
+	
+	
+	<exceptions>
+
+		<exception>NoSuchActivitySubscription</exception>
+		<exception>NoSuchEntityId</exception>
+		
+	</exceptions>
+	
+	</service-builder>

@@ -114,6 +114,14 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         _locked = locked;
     }
 
+    public void store() {
+        throw new UnsupportedOperationException();
+    }
+
+    public com.ext.portlet.ontology.model.FocusArea getFocusArea() {
+        throw new UnsupportedOperationException();
+    }
+
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanSectionDefinitionLocalServiceUtil.addPlanSectionDefinition(this);

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<f:view
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets">
+  <div id="content">
+<div class="headline contest-page">
+    <div class="contest-image"><img src="#{contest.contest.logo}" width="52" height="52" alt="Contest Image" /></div>
+    <h1>${contest.contest.shortName}</h1>
+    <f:subview rendered="#{contest.contestState == 'ACTIVE'}">
+        <f:subview rendered="#{plansIndex.contestPhase.daysTillEnd gt 0}">
+            <div class="days-left"><span>#{plansIndex.contestPhase.daysTillEnd}</span> days until #{plansIndex.contestPhase.name} ends</div>
+        </f:subview>
+        <f:subview rendered="#{plansIndex.contestPhase.daysTillEnd eq 0}">
+            <f:subview rendered="#{plansIndex.contestPhase.hoursTillEnd gt 0}">
+                <div class="days-left"><span>#{plansIndex.contestPhase.hoursTillEnd}</span> hours until #{plansIndex.contestPhase.name} ends</div>
+            </f:subview>
+            <f:subview rendered="#{(plansIndex.contestPhase.hoursTillEnd eq 0) and (plansIndex.contestPhase.minutesTillEnd gt 0)}">
+                <div class="days-left"><span>#{plansIndex.contestPhase.minutesTillEnd}</span> minutes until #{plansIndex.contestPhase.name} ends</div>
+            </f:subview>
+        </f:subview>
+    </f:subview>
+    
+</div> <!-- /headline -->
+    <div>
+        <h1><span><ui:insert name="page_subtitle" /></span></h1>
+    </div>
+    
+    <f:subview rendered="#{showBread}">
+        <div id="bread" class="contest #{pageType}" >
+            <ui:insert name="plans_breadcrumb" />
+        </div>
+    </f:subview>
+    
+    <div class="plansContent">
+        <ui:insert name="plans_content" />
+    </div>
+  </div>
+   
+</f:view>

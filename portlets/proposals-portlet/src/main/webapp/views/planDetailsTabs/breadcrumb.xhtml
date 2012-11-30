@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+        xmlns:collab="http://climatecollaboratorium.org/facelets">
+        
+    <div id="bread" class="pro">
+        <collab:contestsPageLink text="Contests Index" />
+        <img src="/collaboratorium-theme/images/arrow.gif" width="8" height="8" />
+        <collab:contestLink contestId="#{contest.contestId}" text="#{contest.contest.shortName}" />
+        <img src="/collaboratorium-theme/images/arrow.gif" width="8" height="8" />
+        <ice:outputText value="#{plan.plan.name}"  escape="true" >
+            <f:converter converterId="StringTruncateConverter"/>
+            <f:attribute name="maxLength" value="95" />
+        </ice:outputText>
+        
+        <div id="breadbutt_wrap">
+            <ui:insert name="breadcrumbButtons" />
+        </div>
+  </div>
+        
+</f:view>

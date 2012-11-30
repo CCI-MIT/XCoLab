@@ -1,0 +1,251 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:liferay-faces="http://liferay.com/tld/faces"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:ui="http://java.sun.com/jsf/facelets" 
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    
+    <ui:decorate template="breadcrumb.xhtml">
+    </ui:decorate>
+    
+    
+    <div class="content">
+
+                <ice:panelGroup rendered="#{planBean.membershipBean.requesting}">
+                    <div class="manageMembersTop">
+                        <h4>Request Membership</h4>
+                    </div>
+                    <div class="manageMembersContent">
+                        Optional comment:
+                        <ice:inputTextarea value="#{planBean.membershipBean.comment}" styleClass="requestComment"/>
+                    </div>
+                    <ice:commandButton value="REQUEST MEMBERSHIP"
+                                       actionListener="#{planBean.membershipBean.requestMembership}" styleClass="requestMembershipSubmitButton mothButton"/>
+                    <ice:commandButton value="CANCEL" actionListener="#{planBean.membershipBean.toggleRequestingOrJoin}" styleClass="mothButton"/>
+
+                </ice:panelGroup>
+                <ice:panelGroup rendered="#{planBean.plan.hasRequestedMembership}">
+                    <br />
+                    <h2>You have requested to be a member of this team.</h2>
+                </ice:panelGroup>
+                <div class="clear">&amp;nbsp;</div>  
+    <div class="team_left">
+        <div class="team-top">
+        <div id="team-info"><img src="/collaboratorium-theme/images/icon_people-big.gif" width="47" height="42" /> <span>#{planBean.plan.planMembersCount}</span> members</div>
+      </div>
+            
+                <ice:dataTable value="#{planBean.membershipBean.planMembersHalf1}" var="member" styleClass="colab" rowClasses="t,nt" columnClasses="b name,b">
+                    <ice:column>
+                        <f:facet name="header">Name</f:facet>
+                        <collab:userLinkSimple userId="#{member.userId}" text="#{member.screenName}"/>
+                    </ice:column>
+                    
+                    <ice:column>
+                        <f:facet name="header">Status</f:facet>
+                        <f:subview
+                                rendered="#{(not permissions.canAdmin or permissions.planUserPermission gt member.planUserPermission or member.planUserPermission == 'OWNER') and not permissions.canAdminAll}">
+                            <ice:outputText value="#{member.planUserPermission.description}"/>
+                        </f:subview>
+                        <ice:selectOneMenu value="#{member.planUserPermissionStr}"
+                                           rendered="#{(permissions.canAdmin and permissions.planUserPermission le member.planUserPermission and not (member.planUserPermission == 'OWNER')) or permissions.canAdminAll}"
+                                           partialSubmit="true">
+                            <f:selectItems value="#{planBean.membershipBean.availableUserRoles}"/>
+                        </ice:selectOneMenu>
+                    </ice:column>
+                    <ice:column rendered="#{permissions.planOwner}">
+                        <f:facet name="header">Action</f:facet>
+                        <ice:commandLink value="remove" actionListener="#{member.remove}"/>
+                    </ice:column>
+                </ice:dataTable>
+        </div>
+  
+    <div class="team_right">
+        <div class="team-top">
+            <div class="buttgrid">
+                  
+                <ice:commandLink actionListener="#{planBean.membershipBean.toggleRequestingOrJoin}"
+                                       escaped='false'
+                                       rendered="#{not planBean.plan.planMember and not planBean.membershipBean.requesting and not planBean.plan.hasRequestedMembership }"
+                                       onclick="if(!deferUntilLogin()) return false;">
+                    #{planBean.plan.open?'&lt;span&gt;JOIN&lt;/span&gt; this team':'&lt;span&gt;REQUEST&lt;/span&gt; membership'}
+                </ice:commandLink>
+                <ice:commandLink actionListener="#{planBean.membershipBean.removeCurrentUser}"
+                                       rendered="#{planBean.plan.planMember and not planBean.membershipBean.requesting}"
+                                       onclick="if (! confirm('Do you really want to leave this plan?')) { return; }"
+                                       >
+                                       &lt;span&gt;REMOVE&lt;/span&gt; me
+                                       </ice:commandLink>
+                </div>
+
+      </div>
+      
+                <ice:dataTable value="#{planBean.membershipBean.planMembersHalf2}" rendered="#{fn:length(planBean.membershipBean.planMembersHalf2) > 0}" var="member" styleClass="colab" rowClasses="t,nt" columnClasses="b name,b">
+                    <ice:column>
+                        <f:facet name="header">Name</f:facet>
+                        <collab:userLinkSimple userId="#{member.userId}" text="#{member.screenName}"/>
+                    </ice:column>
+                    
+                    <ice:column>
+                        <f:facet name="header">Status</f:facet>
+                        <f:subview
+                                rendered="#{(not permissions.canAdmin or permissions.planUserPermission gt member.planUserPermission or member.planUserPermission == 'OWNER') and not permissions.canAdminAll}">
+                            <ice:outputText value="#{member.planUserPermission.description}"/>
+                        </f:subview>
+                        <ice:selectOneMenu value="#{member.planUserPermissionStr}"
+                                           rendered="#{(permissions.canAdmin and permissions.planUserPermission le member.planUserPermission and not (member.planUserPermission == 'OWNER')) or permissions.canAdminAll}"
+                                           partialSubmit="true">
+                            <f:selectItems value="#{planBean.membershipBean.availableUserRoles}"/>
+                        </ice:selectOneMenu>
+                    </ice:column>
+                    <ice:column rendered="#{permissions.planOwner}">
+                        <f:facet name="header">Action</f:facet>
+                        <ice:commandLink value="remove" actionListener="#{member.remove}"/>
+                    </ice:column>
+                </ice:dataTable>
+    </div>
+  
+        <div class="clearfix">&amp;nbsp;</div>
+        
+    <div class="team_left">
+        <div class="team-top">
+        <div id="team-info"><img src="/collaboratorium-theme/images/icon_thumb-up-big.gif" width="37" height="42" /> <span>#{planBean.plan.planFansCount}</span> supporters</div>
+      </div>
+      <ice:dataTable value="#{planBean.plan.planFansHalf1}" var="fan" styleClass="colab" rendered="#{fn:length(planBean.plan.planFans) > 0}" rowClasses="t,nt" columnClasses="b">
+                        <ice:column>
+                            <f:facet name="header">Name</f:facet>
+                            <collab:userLinkSimple userId="#{fan.user.userId}" text="#{fan.user.screenName}"/>
+                        </ice:column>
+      </ice:dataTable>
+    </div>
+  
+    <div class="team_right">
+        <div class="team-top">
+            <div class="buttgrid">
+                    <ice:commandLink actionListener="#{planBean.plan.becomeAFan}"
+                                       rendered="#{not planBean.plan.userAFan}"
+                                       onclick="if(!deferUntilLogin()) return false;" >
+                        <span>SUPPORT</span> this proposal
+                    </ice:commandLink>
+                    <ice:commandLink actionListener="#{planBean.plan.unfan}"
+                                       rendered="#{planBean.plan.userAFan}" >
+                        <span>REMOVE</span> me
+                    </ice:commandLink>
+            
+            
+            </div>
+      </div>
+            <ice:dataTable value="#{planBean.plan.planFansHalf2}" var="fan" styleClass="colab" rendered="#{fn:length(planBean.plan.planFans) > 0}" rowClasses="t,nt" columnClasses="b">
+                        <ice:column>
+                            <f:facet name="header">Name</f:facet>
+                            <collab:userLinkSimple userId="#{fan.user.userId}" text="#{fan.user.screenName}"/>
+                        </ice:column>
+      </ice:dataTable>
+    </div>
+  
+        <div class="clearfix"></div>
+  </div> <!-- /content -->
+    
+
+<!-- 
+    <table class="teamGrid">
+        <tr>
+            <td class="left">
+                <h2>Team:</h2>
+                 <div class="supportStatus">
+
+                    <ice:outputText rendered="#{planBean.plan.planMember}" escape="false"
+                                    styleClass="floatLeft">
+                        <h3>You are part of this team.</h3>
+                    </ice:outputText>
+                    <ice:outputText rendered="#{planBean.plan.hasRequestedMembership}" escape="false"
+                                    styleClass="floatLeft">
+                        <h3>You have asked to be a part of this team.</h3>
+                    </ice:outputText>
+                     <ice:outputText rendered="#{not planBean.plan.planMember and not planBean.membershipBean.requesting}" escape="false"
+                                    styleClass="floatLeft">
+                        <h3>Become a part of this team!</h3>
+                    </ice:outputText>
+
+                    <ice:commandButton value="#{planBean.plan.open?'Join this team':'Request membership'}"
+                                       actionListener="#{planBean.membershipBean.toggleRequestingOrJoin}"
+                                       rendered="#{not planBean.plan.planMember and not planBean.membershipBean.requesting and not planBean.plan.hasRequestedMembership }"
+                                       onclick="if(!deferUntilLogin()) return false;" styleClass="floatRight"/>
+                    <ice:commandButton value="Remove me" actionListener="#{planBean.membershipBean.removeCurrentUser}"
+                                       rendered="#{planBean.plan.planMember and not planBean.membershipBean.requesting}"
+                                       styleClass="#{planBean.plan.planMember ? 'disabled' : ''} floatRight"/>
+                </div>
+                <div class="clear"></div>
+
+                <ice:panelGroup rendered="#{planBean.membershipBean.requesting}">
+                    <div class="manageMembersTop">
+                        <h4>Request Membership</h4>
+                    </div>
+                    <div class="manageMembersContent">
+                        Optional comment:
+                        <ice:inputTextarea value="#{planBean.membershipBean.comment}" styleClass="requestComment"/>
+                    </div>
+                    <ice:commandButton value="Request membership" styleClass="requestMembershipSubmitButton"
+                                       actionListener="#{planBean.membershipBean.requestMembership}"/>
+                    <ice:commandButton value="Cancel" actionListener="#{planBean.membershipBean.toggleRequesting}"/>
+
+                </ice:panelGroup>
+            </td>
+            <td class="right">
+                <h2>Supporters:</h2>
+
+                <div class="supportStatus">
+
+                    <ice:outputText rendered="#{planBean.plan.userAFan}" escape="false"
+                                    styleClass="floatLeft">
+                        <h3>You are a supporter</h3>
+                    </ice:outputText>
+                    <ice:outputText rendered="#{not planBean.plan.userAFan}" escape="false"
+                                    styleClass="floatLeft">
+                        <h3>You are not a supporter</h3>
+                    </ice:outputText>
+
+                    <ice:commandButton value="Become a supporter!" actionListener="#{planBean.plan.becomeAFan}"
+                                       rendered="#{not planBean.plan.userAFan}"
+                                       onclick="if(!deferUntilLogin()) return false;" styleClass="floatRight"/>
+                    <ice:commandButton value="Remove me" actionListener="#{planBean.plan.unfan}"
+                                       rendered="#{planBean.plan.userAFan}" styleClass="floatRight"/>
+                </div>
+                <div class="clear"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+
+                <ice:panelGroup styleClass="entryCount" rendered="#{planBean.plan.planFansCount > 0}">
+                    <i>#{planBean.plan.planFansCount} Supporter#{planBean.plan.planFansCount>1?'s':''} </i>
+                </ice:panelGroup>
+                <ice:panelGroup styleClass="entries">
+                    <ice:panelGroup rendered="#{fn:length(planBean.plan.planFans) == 0}" escape="false"
+                                    styleClass="noEntries">
+                        <i>No supporters</i>
+                    </ice:panelGroup>
+                    <ice:dataTable value="#{planBean.plan.planFans}" var="fan" styleClass="basicTable"
+                                   rendered="#{fn:length(planBean.plan.planFans) > 0}" rowClasses="odd,even">
+                        <ice:column>
+                            <f:facet name="header">Name</f:facet>
+                            <collab:userLinkSimple userId="#{fan.user.userId}" text="#{fan.user.screenName}"/>
+                        </ice:column>
+                        <ice:column>
+                            <f:facet name="header">Since</f:facet>
+                            <ice:outputText value="#{fan.created}">
+                                <f:convertDateTime type="both" dateStyle="short" timeStyle="short"/>
+                            </ice:outputText>
+                        </ice:column>
+                    </ice:dataTable>
+                </ice:panelGroup>
+
+            </td>
+
+
+        </tr>
+
+    </table>
+    -->
+</f:view>

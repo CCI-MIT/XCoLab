@@ -1,13 +1,15 @@
 package com.ext.portlet.plans.model;
 
-import java.io.Serializable;
-import java.lang.reflect.Proxy;
-
 import com.ext.portlet.plans.service.PlanAttributeFilterLocalServiceUtil;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+
+import java.io.Serializable;
+
+import java.lang.reflect.Proxy;
 
 
 public class PlanAttributeFilterClp extends BaseModelImpl<PlanAttributeFilter>
@@ -90,11 +92,11 @@ public class PlanAttributeFilterClp extends BaseModelImpl<PlanAttributeFilter>
         return _stringVal;
     }
 
-    public java.lang.Object getTypedValue() {
-        throw new UnsupportedOperationException();
+    public void setStringVal(String stringVal) {
+        _stringVal = stringVal;
     }
 
-    public void setStringVal(java.lang.String stringVal) {
+    public java.lang.Object getTypedValue() {
         throw new UnsupportedOperationException();
     }
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource-action-mapping>
+    <portlet-resource>
+        <portlet-name>plansportlet</portlet-name>
+        <supports>
+            <action-key>CAN_VIEW</action-key>
+            <action-key>CAN_EDIT</action-key>
+            <action-key>CAN_ADMIN</action-key>
+            <action-key>CAN_ADMIN_ALL</action-key>
+            <action-key>DEBATES_CAN_EDIT</action-key>
+            <action-key>DEBATES_CAN_ADMIN</action-key>
+            <action-key>DEBATES_CAN_VOTE</action-key>
+            <action-key>DEBATES_CAN_ADD_COMMENT</action-key>
+            <action-key>DEBATES_CAN_EDIT_DEBATE_MAP</action-key>
+        </supports>
+        <community-defaults>
+            <action-key>CAN_VIEW</action-key>
+            <action-key>DEBATES_CAN_EDIT</action-key>
+            <action-key>DEBATES_CAN_VOTE</action-key>
+            <action-key>DEBATES_CAN_ADD_COMMENT</action-key>
+        </community-defaults>
+        <guest-defaults>
+            <action-key>CAN_VIEW</action-key>
+        </guest-defaults>
+        <guest-unsupported />
+    </portlet-resource>
+    <!--  this isn't used in debates but left for convenience if needed for in the future or as a sample for 
+    other portlets  -->
+    <!-- 
+    <model-resource>
+        <model-name>com.sample.permissions.model.Something</model-name>
+        <portlet-ref>
+            <portlet-name>1</portlet-name>
+        </portlet-ref>
+        <supports>
+            <action-key>DELETE</action-key>
+            <action-key>PERMISSIONS</action-key>
+            <action-key>UPDATE</action-key>
+            <action-key>VIEW</action-key>
+        </supports>
+        <community-defaults>
+            <action-key>VIEW</action-key>
+        </community-defaults>
+        <guest-defaults>
+            <action-key>VIEW</action-key>
+        </guest-defaults>
+        <guest-unsupported>
+            <action-key>UPDATE</action-key>
+        </guest-unsupported>
+    </model-resource>
+     -->
+</resource-action-mapping>

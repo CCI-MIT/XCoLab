@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<f:view
+
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"   
+        xmlns:collab="http://climatecollaboratorium.org/facelets">
+
+<ice:form>
+    <ui:include src="../createPlan.xhtml">
+        <ui:param value="#{navigation.createPlanBean}" name="createPlanBean"/>
+    </ui:include>
+</ice:form>
+
+<div id="content">
+<div class="headline contest-page">
+    <div class="contest-image"><img src="#{contest.contest.logo}" width="52" height="52" alt="Contest Image" /></div>
+    <h1>${contest.contest.shortName}</h1>
+    <f:subview rendered="#{contest.contestState == 'ACTIVE'}">
+        <f:subview rendered="#{plansIndex.contestPhase.daysTillEnd gt 0}">
+            <div class="days-left"><span>#{plansIndex.contestPhase.daysTillEnd}</span> days until #{plansIndex.contestPhase.name} ends</div>
+        </f:subview>
+        <f:subview rendered="#{plansIndex.contestPhase.daysTillEnd eq 0}">
+            <f:subview rendered="#{plansIndex.contestPhase.hoursTillEnd gt 0}">
+                <div class="days-left"><span>#{plansIndex.contestPhase.hoursTillEnd}</span> hours until #{plansIndex.contestPhase.name} ends</div>
+            </f:subview>
+                <f:subview rendered="#{(plansIndex.contestPhase.hoursTillEnd eq 0) and (plansIndex.contestPhase.minutesTillEnd gt 0)}">
+                    <div class="days-left"><span>#{plansIndex.contestPhase.minutesTillEnd}</span> minutes until #{plansIndex.contestPhase.name} ends</div>
+                </f:subview>
+        </f:subview>
+    </f:subview>
+    
+</div> <!-- /headline -->
+
+ <div class="blueheaderbar">
+    <div class="contestbar">
+        <ui:include src="./contests/widget_CONTEST_PHASES_#{contest.contestState}.xhtml" />
+        <div class="contestSubscribe">
+            <ice:form>
+                <f:subview rendered="#{not contest.userSubscribed}">
+                    <ice:commandLink onclick="if(!deferUntilLogin()) return false;" actionListener="#{contest.subscribe}"><img src="/climatecolab-theme/images/icon_star.png" /> Subscribe</ice:commandLink>
+                </f:subview>
+                <f:subview rendered="#{contest.userSubscribed}">
+                    <ice:commandLink actionListener="#{contest.unsubscribe}"><img src="/climatecolab-theme/images/unsubscribe.png" />Unsubscribe</ice:commandLink>
+                </f:subview>
+            </ice:form>
+        </div>
+    </div>
+ </div>
+ <div class="shadebar"></div>
+
+
+<div class="contest-detail">
+    <div class="heading">#{contest.contest.name}</div>
+    <div class="description">
+        <p>#{contest.contest.description}</p>
+        <f:subview rendered="#{contest.contest.hasFocusArea}">
+            <ice:panelGroup styleClass="what" rendered="#{not empty contest.contest.what}"><strong>What:</strong>
+                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
+                    <ui:param name="whatWhoWhere" value="#{contest.contest.what}" />
+                </ui:include>
+            </ice:panelGroup>
+            
+            <ice:panelGroup styleClass="where" rendered="#{not empty contest.contest.where}"><strong>Where:</strong> 
+                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
+                    <ui:param name="whatWhoWhere" value="#{contest.contest.where}" />
+                </ui:include>
+            </ice:panelGroup>
+            
+            <ice:panelGroup styleClass="who" rendered="#{not empty contest.contest.who}"><strong>Who:</strong> 
+                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
+                    <ui:param name="whatWhoWhere" value="#{contest.contest.who}" />
+                </ui:include>
+            
+            </ice:panelGroup>
+        </f:subview>
+    </div>
+    <div class="moreinfo">
+        <f:subview rendered="#{fn:length(contest.contest.contest.teamMembers) gt 0}">
+            <ice:panelSeries styleClass="advisors" var="teamMember" value="#{contest.contest.contest.teamMembers}">
+            <span>#{teamMember.role}:&amp;nbsp;
+                <collab:userPortrait screenName="#{empty proposal.plan.team ? teamMember.user.screenName : ''}" portraitId="#{teamMember.user.portraitId}" width="30" height="30" />
+                <collab:userLinkSimple userId="#{teamMember.userId}" text="#{teamMember.user.fullName}" />
+            </span>
+            
+            </ice:panelSeries>
+        </f:subview>
+        <div class="buttons">
+            <f:subview rendered="#{not empty contest.contest.resourcesUrl}">
+                <a href="#{contest.contest.resourcesUrl}">Resources</a>
+            </f:subview>
+            <a href="/web/guest/plans/-/plans/contestId/#{contest.contestId}/page/discussion">Discussion</a></div>
+    </div>
+ </div>
+ 
+  
+ 
+ <div class="headline subhead">
+    <h2><span>#{contest.contest.plansIndex.plansCount}</span> proposals</h2>
+    <div class="right">
+        <f:subview rendered="#{contest.contestState == 'ACTIVE' and plansIndex.contestPhase.status == 'OPEN_FOR_SUBMISSION'}">
+            <ice:form>
+                <div class="blue-button">
+                    <ice:commandLink onclick="if(!deferUntilLogin()) return false; Collab.nav.block();"
+                            actionListener="#{navigation.createPlanBean.createPlan}">
+                        <span>CREATE</span> proposal
+                    </ice:commandLink>
+                </div>
+            </ice:form>
+        </f:subview>
+    </div>
+</div> <!-- /headline.subhead -->
+ 
+ <ice:form>
+    <div class="blueheaderbar tooltips">
+        <div class="proposalname">
+            <div style="display: inline-block">
+                <ice:commandLink actionListener="#{plansIndex.updateSortColumn}" value="Proposal name">
+                    <f:attribute name="sortColumn" value="NAME" />
+                </ice:commandLink>
+                <ui:include src="./contests/widget_SORT_ARROW.xhtml">
+                    <ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+                    <ui:param name="currentColumn" value="NAME" />
+                    <ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+                </ui:include>
+                <div class="tooltip">click to sort by name<div class="tt-arrow"></div></div>
+            </div>
+             /&amp;nbsp;
+            
+            <div style="display: inline-block">
+                <ice:commandLink actionListener="#{plansIndex.updateSortColumn}" value="Author(s)">
+                    <f:attribute name="sortColumn" value="CREATOR" />
+                </ice:commandLink>
+                <ui:include src="./contests/widget_SORT_ARROW.xhtml">
+                    <ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+                    <ui:param name="currentColumn" value="CREATOR" />
+                    <ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+                </ui:include>
+                
+                <div class="tooltip">click to sort by author<div class="tt-arrow"></div></div>
+            </div>
+        </div>
+        <div class="thumbs">
+            <ice:commandLink actionListener="#{plansIndex.updateSortColumn}" value=" ">
+                <f:attribute name="sortColumn" value="SUPPORTERS" />
+            </ice:commandLink>
+            <ui:include src="./contests/widget_SORT_ARROW.xhtml">
+                <ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+                <ui:param name="currentColumn" value="SUPPORTERS" />
+                <ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+            </ui:include>
+            <div class="tooltip">click to sort by<br />number of supporters<div class="tt-arrow"></div></div>
+        </div>
+        <div class="propcomm">
+            <ice:commandLink actionListener="#{plansIndex.updateSortColumn}" value=" ">
+                <f:attribute name="sortColumn" value="COMMENTS" />
+            </ice:commandLink>
+            <ui:include src="./contests/widget_SORT_ARROW.xhtml">
+                <ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+                <ui:param name="currentColumn" value="COMMENTS" />
+                <ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+            </ui:include>
+            <div class="tooltip">click to sort by<br />number of comments<div class="tt-arrow"></div></div>
+        </div>
+        <div class="modified">
+            <ice:commandLink actionListener="#{plansIndex.updateSortColumn}" value="Modified">
+                <f:attribute name="sortColumn" value="UPDATE_DATE" />
+            </ice:commandLink>
+            <ui:include src="./contests/widget_SORT_ARROW.xhtml">
+                <ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+                <ui:param name="currentColumn" value="UPDATE_DATE" />
+                <ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+            </ui:include>
+            <div class="tooltip">click to sort by date<div class="tt-arrow"></div></div>
+        </div>
+        <div class="contributor">
+            <ice:commandLink actionListener="#{plansIndex.updateSortColumn}" value="Contributors">
+                <f:attribute name="sortColumn" value="IS_PLAN_OPEN" />
+            </ice:commandLink>
+            <ui:include src="./contests/widget_SORT_ARROW.xhtml">
+                <ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+                <ui:param name="currentColumn" value="IS_PLAN_OPEN" />
+                <ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+            </ui:include>
+            <div class="tooltip">click to sort by contributor<div class="tt-arrow"></div></div>
+        </div>
+    </div></ice:form>
+ 
+    <ui:decorate template="./contests/widget_PLANS_LIST.xhtml">
+        <ui:param name="maxRows" value="#{contest.contest.plansIndex.pageSize}" />
+        <ui:param name="renderPaginator" value="true" />
+        <ui:param name="plansList" value="#{plansIndex.plansWithRibbons}" />
+        <ui:param name="showShadebar" value="#{true}" />
+    </ui:decorate>
+    
+    <ui:decorate template="./contests/widget_PLANS_LIST.xhtml">
+        <ui:param name="maxRows" value="#{contest.contest.plansIndex.pageSize}" />
+        <ui:param name="renderPaginator" value="true" />
+        <ui:param name="plansList" value="#{plansIndex.plansFeatured}" />
+        <ui:param name="showShadebar" value="true" />
+    </ui:decorate>
+    <h1></h1>
+    <ui:decorate template="./contests/widget_PLANS_LIST.xhtml">
+        <ui:param name="maxRows" value="#{contest.contest.plansIndex.pageSize}" />
+        <ui:param name="renderPaginator" value="true" />
+        <ui:param name="plansList" value="#{plansIndex.plansWithProperName}" />
+        <ui:param name="showShadebar" value="#{fn:length(plansIndex.plansFeatured) eq 0}" />
+    </ui:decorate>
+    <ui:decorate template="./contests/widget_PLANS_LIST.xhtml">
+        <ui:param name="maxRows" value="#{contest.contest.plansIndex.pageSize}" />
+        <ui:param name="renderPaginator" value="true" />
+        <ui:param name="plansList" value="#{plansIndex.plansUntitled}" />
+        <ui:param name="showShadebar" value="#{(fn:length(plansIndex.plansFeatured) eq 0) and (fn:length(plansIndex.plansWithProperName) eq 0)}" />
+    </ui:decorate>
+    
+    
+    
+     </div>
+</f:view>
