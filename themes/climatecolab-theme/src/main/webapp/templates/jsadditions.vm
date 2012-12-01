@@ -1,0 +1,9 @@
+<script>
+#if ($request.getParameter('isSigningIn') == 'true' and not $themeDisplay.signedIn)
+    jQuery("#popup_login").show();
+#end
+
+#if ($request.getParameter('isPasswordReminder') == 'true' and not $themeDisplay.signedIn)
+    jQuery('#popup_forgotpassword').show();
+#end
+</script>

@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+#parse ($init)
+
+<html dir="#language ("lang.dir")" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>$the_title - $company_name</title>
+
+	$theme.include($top_head_include)
+	
+    <link type="text/css" rel="stylesheet" href="$css_folder/jquery/jquery.css?tt=$themeTimestamp" media="all"/>
+	
+    <link rel="stylesheet" href="$css_folder/jquery.jqplot.min.css?tt=$themeTimestamp" type="text/css"/>
+    <link rel="stylesheet" href="$css_folder/style.css" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/style_additions.css" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/autoSuggest.css" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/ui.dynatree.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    
+    <script type="text/javascript" src="http://use.typekit.com/zdq3gry.js?kisc"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <!--[if IE]>
+        <script type="text/javascript" src="$javascript_folder/excanvas.js"></script>
+    <![endif]-->
+    
+    
+    <!-- AddThis Button BEGIN -->
+    <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=climatecolab"></script>
+    <script type="text/javascript" src="$javascript_folder/moth_init_script.js?tt=$themeTimestamp"></script>
+    <!-- AddThis Button END -->
+    
+</head>
+
+
+
+#if ($page.getName($locale).toLowerCase().replaceAll("\s","") == 'home')
+    #set ($body_style_class = " home ")
+#else
+    #set ($body_style_class = "other_pages")
+#end
+
+#set ($pageName=$page.getName($locale).toLowerCase().replaceAll("\s",""))
+#if ($page.parentLayoutId > 0) 
+    ## we have a parent page, find it's name
+    #foreach ($parentLayoutCand in $layouts) 
+        #if ($parentLayoutCand.layoutId == $page.parentLayoutId)
+            #set ($parentLayout = $parentLayoutCand)
+        #end
+    #end
+    #set ($parentPageName = $parentLayout.getName($locale).toLowerCase().replaceAll("\s",""))
+    #set ($subPage = true)
+    #set ($subPageClass = 'sub')
+#else 
+    #set ($subPageClass = '')
+    #set ($parentPageName = '')
+#end
+
+
+
+<body class="$css_class $page.getName($locale).toLowerCase() $body_style_class">
+<div id="header">
+ <div class="inner">
+  <div id="logo"><a href="/"><img src="$images_folder/logo-climate-colab.png" width="203" height="42" alt="Climate Colab" /></a></div>
+  <ul id="menu">
+   <li class="#if ($pageName== 'about' || $parentPageName == 'about')) c #end"><a href="/web/guest/about">About</a></li>
+   <li class="#if ($pageName == 'proposals') c #end"><a href="/web/guest/plans">Contests</a></li>
+   <li class="#if ($pageName== 'community' || $parentPageName == 'community')) c #end" ><a href="/web/guest/community">Community</a></li>
+   <li class="#if ($pageName == 'search') c #end"><a href="javascript:;" class="search" id="searchPopupTrigger" >Search</a></li>
+  </ul>
+
+#if ($themeDisplay.signedIn)
+  <ul id="menu-right">
+   <li class="user"><a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a></li>
+   <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
+  </ul>
+  
+  <!-- USER POPUP -->
+  <div class="userpop" id="userPopupContainer">
+   <div class="usertop"><img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></div>
+   <div class="userbox">
+    <ul>
+     <li><a href="/web/guest/member/-/member/userId/$user.userId">My profile</a></li>
+     <li><a href="/web/guest/messaging">My messages</a></li>
+     <li><a href="/web/guest/member/-/member/userId/$user.userId/page/subscriptions">My subscriptions</a></li>
+     #if ($permissionChecker.isOmniadmin())
+     #if ($show_control_panel)
+        <li>
+            <a href="$control_panel_url">$control_panel_text</a>
+        </li>
+     #end
+     #if ($show_add_content)
+         <li class="add-content">
+                    <a href="javascript: void(0);" onclick="$add_content_url">$add_content_text</a>
+                </li>
+                <li class="layout">
+                    <a href="javascript: void(0);" onclick="$layout_url">$layout_text</a>
+                </li>
+            #end
+
+            #if ($show_page_settings)
+                <li class="page-settings">
+                    <a href="$page_settings_url">$page_settings_text</a>
+                </li>
+            #end
+
+            #if ($show_staging)
+                <li class="staging">
+                    <a>$staging_text</a>
+
+                    $theme.staging()
+                </li>
+            #end
+
+        #end
+     <li><a href="/c/portal/logout">Log out</a></li>
+    </ul>
+   </div>
+  </div>
+<!-- /USER POPUP -->
+
+#else  
+  <ul id="menu-right">
+   <li class="register"><a href="/web/guest/loginregister?redirect=$escapeTool.url($themeDisplay.uRLCurrent)">Register</a></li>
+   <li class="login" ><a  href="javascript:;" id="loginPopupTrigger">Login</a></li>
+   <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
+  </ul>
+  
+<!-- LOGIN POPUP -->
+  <div class="loginpop" id="loginPopupContainer">
+   <div class="logintop"><img src="$images_folder/icon-menu-login3.png" width="26" height="18" /></div>
+   <div class="loginbox">
+    <!--
+    <div class="loginwith">
+     Login with: &nbsp;
+     <a href="javascript:;"><img src="$images_folder/icon-login-twitter.png" width="24" height="24" alt="Twitter" /></a>
+     <a href="javascript:;"><img src="$images_folder/icon-login-facebook.png" width="24" height="24" alt="Facebook" /></a>
+     <a href="javascript:;"><img src="$images_folder/icon-login-google.png" width="24" height="24" alt="Google" /></a>
+     <span><a href="javascript">other &raquo;</a></span>
+    </div>
+    -->
+    use your username &amp; password
+    <form id="signInFormPopup" method="post" action="/web/guest/loginregister?p_p_id=loginregister&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=0&_loginregister_struts_action=%2Fext%2Floginregister%2Flogin&_loginregister_isLoggingIn=true">
+     <input name="login" type="text" class="username" placeholder="username"  />
+     <input name="password" type="password" class="password" placeholder="password" />
+     <input name="redirect" type="hidden" />
+     <span><em><a href="javascript:;" class="forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span> <input name="submit" type="submit" class="login-submit" value="LOGIN" id="loginPopupTopSubmit"/>
+    </form>
+   </div>
+  </div>
+<!-- /LOGIN POPUP -->
+#end
+  
+<!-- SEARCH POPUP -->
+  <div class="searchpop" id="searchPopupContainer">
+   <div class="searchtop"><img src="$images_folder/icon-menu-search2.png" width="20" height="19" /></div>
+   <div class="searchbox">
+     <input name="search-term" type="text" class="search-term" value="" id="searchinput" />
+     <input name="submit" type="submit" class="search-submit" value="GO" id="searchsubmit" />
+    </div>
+  </div>
+<!-- /SEARCH POPUP -->
+  
+  
+ </div>
+</div> <!-- /header -->
+
+
+$theme.include($top_messages_include)
+
+
+        ##parse ("$full_templates_path/dock.vm")
+
+<div id="wrapper">
+
+	#if ($selectable)
+		$theme.include($content_include)
+	#else
+		$portletDisplay.recycle()
+
+		$portletDisplay.setTitle($the_title)
+
+		$theme.wrapPortlet("portlet.vm", $content_include)
+	#end
+	
+
+</div>
+
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    /* ]]> */
+</script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    try {
+        var path = window.location.pathname + window.location.search + window.location.hash;
+        var pageTracker = _gat._getTracker("UA-11944310-1");
+        pageTracker._setAllowAnchor(true);
+        pageTracker._trackPageview(path);
+    } catch(err) {
+    }
+    /* ]]> */
+</script>
+#if ($request.getSession().getAttribute('collab_user_has_registered'))
+    <script type="text/javascript">
+// disabled in test env
+//        $request.getSession().removeAttribute('collab_user_has_registered')
+//        pageTracker._trackPageview('/colab/$user.screenName/registered');
+    </script>
+#end
+
+#if ($request.getSession().getAttribute('user_from_landing_page'))
+    <script type="text/javascript">
+        pageTracker._trackPageview('$request.getSession().getAttribute("user_from_landing_page")');
+        $request.getSession().removeAttribute('user_from_landing_page')
+    </script>
+#end
+
+    #parse ("$full_templates_path/sign_in_popup.vm")
+    #parse ("$full_templates_path/jsadditions.vm")
+
+</body>
+
+$theme.include($bottom_include)
+
+</html>
