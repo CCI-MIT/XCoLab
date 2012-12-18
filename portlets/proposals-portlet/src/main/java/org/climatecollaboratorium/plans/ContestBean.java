@@ -22,7 +22,9 @@ import com.ext.portlet.contests.model.ContestPhase;
 import com.ext.portlet.contests.service.ContestLocalServiceUtil;
 import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.model.PlanType;
 import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -65,12 +67,12 @@ public class ContestBean {
         else {
             contest = new ContestWrapper(ContestLocalServiceUtil.getContestByActiveFlag(true));
         }
-        if (contest.getContest().getContestActive() && contest.getContest().isActive()) {
-            currentPhase = new ContestPhaseWrapper(contest, contest.getContest().getActivePhase());
+        if (contest.getContest().getContestActive() && ContestLocalServiceUtil.isActive(contest.getContest())) {
+            currentPhase = new ContestPhaseWrapper(contest, ContestLocalServiceUtil.getActivePhase(contest.getContest()));
             contestState = ContestState.ACTIVE;
         }
         else {
-            List<ContestPhase> phases = contest.getContest().getPhases();
+            List<ContestPhase> phases = ContestLocalServiceUtil.getPhases(contest.getContest());
             currentPhase = new ContestPhaseWrapper(contest, phases.get(phases.size()-1));
             if (currentPhase.getStartDate().after(new Date())) {
                 contestState = ContestState.NOT_STARTED;
@@ -115,10 +117,14 @@ public class ContestBean {
     
 
     public void initModels() throws SystemException, PortalException, NumberFormatException, IOException {
-        modelId = contest.getContest().getPlanType().getDefaultModelId();
+        System.out.println(contest.getContest());
+        //System.out.println(ContestLocalServiceUtil.getPlanType(contest.getContest()));
+        System.out.println(contest.getContest().getPlanTypeId());
+        PlanType planType = PlanTypeLocalServiceUtil.getPlanType(contest.getContest().getPlanTypeId());
+        modelId = planType.getDefaultModelId();
             availableModels.clear();
             try {
-            for (Simulation sim:contest.getContest().getPlanType().getAvailableModels()) {
+            for (Simulation sim: PlanTypeLocalServiceUtil.getAvailableModels(planType)) {
 
                 availableModels.add(new SelectItem(sim.getId(), sim.getName()));
             }
@@ -195,7 +201,8 @@ public class ContestBean {
                 ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), null, "",
                         Helper.getLiferayUser().getUserId());
 
-                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, planItem.getCategoryGroupId(), 
+                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
+                        PlanItemLocalServiceUtil.getCategoryGroupId(planItem),
                         null, "", Helper.getLiferayUser().getUserId());
     		}
     	}
@@ -209,8 +216,8 @@ public class ContestBean {
     		for (PlanItem planItem: PlanItemLocalServiceUtil.getPlansByContest(contest.getContest().getContestPK())) {
                 ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), PlanItem.class, planItem.getPlanId(), null, "");
 
-                ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), DiscussionCategoryGroup.class, planItem.getCategoryGroupId(), 
-                        null, "");
+                ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), DiscussionCategoryGroup.class, 
+                        PlanItemLocalServiceUtil.getCategoryGroupId(planItem), null, "");
     		}
     	}
     }

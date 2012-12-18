@@ -22,6 +22,8 @@ import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.model.DiscussionCategory;
 import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
 import com.ext.portlet.discussions.model.DiscussionMessage;
+import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.discussions.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -52,7 +54,7 @@ public class CategoryWrapper {
     public CategoryWrapper(DiscussionCategory category, DiscussionBean discussionBean) throws SystemException {
         this.wrapped = category;
         this.discussionBean = discussionBean;
-        for (DiscussionMessage thread: category.getThreads()) {
+        for (DiscussionMessage thread: DiscussionCategoryLocalServiceUtil.getThreads(category)) {
             this.threads.add(new MessageWrapper(thread, this, discussionBean, 1));
         }
         resort(null);
@@ -117,7 +119,8 @@ public class CategoryWrapper {
                 return;
             }
             
-            wrapped = discussionBean.getDiscussion().addCategory(title, description, Helper.getLiferayUser());
+            wrapped = DiscussionCategoryGroupLocalServiceUtil.addCategory(discussionBean.getDiscussion(), 
+                    title, description, Helper.getLiferayUser());
             discussionBean.categoryAdded(this);
             added = true;
             
@@ -159,12 +162,12 @@ public class CategoryWrapper {
     }
     
     public User getLastActivityAuthor() throws PortalException, SystemException {
-        return wrapped.getLastActivityAuthor();
+        return DiscussionCategoryLocalServiceUtil.getLastActivityAuthor(wrapped);
     }
     
     public void delete(ActionEvent e) throws SystemException {
         if (discussionBean.getPermissions().getCanAdminCategories()) {
-            wrapped.delete();
+            DiscussionCategoryLocalServiceUtil.delete(wrapped);
             discussionBean.categoryDeleted(this);
             Helper.sendInfoMessage("Category \"" + wrapped.getName() + "\" has been deleted.");
         }
@@ -195,7 +198,7 @@ public class CategoryWrapper {
                 return;
             }
             
-            wrapped.update(title, description);
+            DiscussionCategoryLocalServiceUtil.update(wrapped, title, description);
             editing = !editing;
         }        
     }

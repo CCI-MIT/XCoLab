@@ -33,6 +33,8 @@ public interface DocumentEntity {
 	DocumentEntity getReference(String property);
 	DocumentEntity[] getReferences(String property);
 	
+	DocumentEntity getParent() throws DocumentEntityException;
+	
 	//List<DocumentEntity> getEntities(String property);
 	
 	
@@ -69,5 +71,7 @@ public interface DocumentEntity {
 	DocumentEntity addChild(String property) throws DocumentEntityException;
 	
 	void removeProperty(String propertyName) throws DocumentEntityException;
+	
+	EntityVersion<DocumentEntity> getVersion() throws DocumentEntityException;
 	
 }

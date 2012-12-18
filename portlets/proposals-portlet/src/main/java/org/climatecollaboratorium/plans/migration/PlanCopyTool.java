@@ -13,6 +13,7 @@ import com.ext.portlet.Activity.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.contests.model.ContestPhase;
 import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
+import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.plans.model.PlanFan;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanVote;
@@ -41,7 +42,7 @@ public class PlanCopyTool {
         availableContestPhases.add(new SelectItem(-1, "-- Select --"));
         for (ContestPhase phase: ContestPhaseLocalServiceUtil.getContestPhases(0, Integer.MAX_VALUE)) {
             availableContestPhases.add(new SelectItem(phase.getContestPhasePK(), 
-                    phase.getContest().getContestShortName() + ": " + phase.getContestPhaseName()));
+                    ContestPhaseLocalServiceUtil.getContest(phase).getContestShortName() + ": " + phase.getContestPhaseName()));
         }
     }
 
@@ -81,14 +82,14 @@ public class PlanCopyTool {
                 // check if contest phases have the same plan types
                 ContestPhase sourcePhase = ContestPhaseLocalServiceUtil.getContestPhase(sourceContestPhase);
                 ContestPhase targetPhase = ContestPhaseLocalServiceUtil.getContestPhase(targetContestPhase);
-                if (! targetPhase.getContest().getPlanTypeId().equals(sourcePhase.getContest().getPlanTypeId())) {
+                if (ContestPhaseLocalServiceUtil.getContest(targetPhase).getPlanTypeId() != ContestPhaseLocalServiceUtil.getContest(sourcePhase).getPlanTypeId()) {
                     ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contest phases are incompatible", ""));
                     readyForCopy = false;
                 }
                 else {
                     readyForCopy = true;
                     planCopyItems = new ArrayList<PlanCopyItem>();
-                    for (PlanItem plan: sourcePhase.getPlans()) {
+                    for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(sourcePhase)) {
                         if (plan.getVersion() > 1 && !plan.getState().equals("DELETED")) {
                             planCopyItems.add(new PlanCopyItem(plan));
                         }
@@ -115,7 +116,7 @@ public class PlanCopyTool {
         // check if contest phases have the same plan types
         ContestPhase sourcePhase = ContestPhaseLocalServiceUtil.getContestPhase(sourceContestPhase);
         ContestPhase targetPhase = ContestPhaseLocalServiceUtil.getContestPhase(targetContestPhase);
-        if (! targetPhase.getContest().getPlanTypeId().equals(sourcePhase.getContest().getPlanTypeId())) {
+        if (ContestPhaseLocalServiceUtil.getContest(targetPhase).getPlanTypeId() != ContestPhaseLocalServiceUtil.getContest(sourcePhase).getPlanTypeId()) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contest phases are incompatible", ""));
             return;
         }
@@ -146,35 +147,35 @@ public class PlanCopyTool {
         for (PlanItem plan: plansToBeCopied) {
             count++;
             System.out.println("Copying plan " + count + " of " + plansToBeCopied.size());
-            PlanItem newPlan = PlanItemLocalServiceUtil.createPlan(plan, targetPhase, plan.getAuthorId());
+            PlanItem newPlan = PlanItemLocalServiceUtil.createPlan(plan, targetPhase, PlanItemLocalServiceUtil.getAuthorId(plan));
             //newPlan.setName(plan.getName(), plan.getAuthorId());
             
             // copy fans
-            for (PlanFan planFan: plan.getFans()) {
-                newPlan.addFan(planFan.getUserId());
+            for (PlanFan planFan: PlanItemLocalServiceUtil.getFans(plan)) {
+                PlanItemLocalServiceUtil.addFan(newPlan, planFan.getUserId());
             }
             
             // copy votes
-            for (PlanVote planVote: plan.getPlanVotes()) {
-                newPlan.vote(planVote.getUserId());
+            for (PlanVote planVote: PlanItemLocalServiceUtil.getPlanVotes(plan)) {
+                PlanItemLocalServiceUtil.vote(newPlan, planVote.getUserId());
             }
             
             
             // copy entire discussions, comments migration
-            DiscussionCategoryGroup dcg = newPlan.getDiscussionCategoryGroup();
-            dcg.copyEverything(plan.getDiscussionCategoryGroup());
+            DiscussionCategoryGroup dcg = PlanItemLocalServiceUtil.getDiscussionCategoryGroup(newPlan);
+            DiscussionCategoryGroupLocalServiceUtil.copyEverything(dcg, PlanItemLocalServiceUtil.getDiscussionCategoryGroup(plan));
             
 
             // update plan version
             newPlan.setVersion(2L);
-            newPlan.store();
+            PlanItemLocalServiceUtil.store(newPlan);
 
-            long[] userIds = UserLocalServiceUtil.getGroupUserIds(plan.getPlanGroupId());
-            UserLocalServiceUtil.addGroupUsers(newPlan.getPlanGroupId(), userIds);
+            long[] userIds = UserLocalServiceUtil.getGroupUserIds(PlanItemLocalServiceUtil.getPlanGroupId(plan));
+            UserLocalServiceUtil.addGroupUsers(PlanItemLocalServiceUtil.getPlanGroupId(newPlan), userIds);
             
             if (addSemiFinalistRibbon) {
-                plan.setRibbon(1);
-                plan.setRibbonText(planAdvancedText);
+                PlanItemLocalServiceUtil.setRibbon(plan, 1);
+                PlanItemLocalServiceUtil.setRibbonText(plan, planAdvancedText);
             }
             
             // copy subscriptions for plan
@@ -196,13 +197,14 @@ public class PlanCopyTool {
             
             cn = ClassNameLocalServiceUtil.getClassName(DiscussionCategoryGroup.class.getName());
             criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", cn.getClassNameId());
-            criterionClassPK = RestrictionsFactoryUtil.eq("classPK", plan.getCategoryGroupId());
+            criterionClassPK = RestrictionsFactoryUtil.eq("classPK", PlanItemLocalServiceUtil.getCategoryGroupId(plan));
             query.add(RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK));
             
             for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
                 ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
                 
-                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, newPlan.getCategoryGroupId(), null, "", subscription.getReceiverId());
+                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
+                        PlanItemLocalServiceUtil.getCategoryGroupId(newPlan), null, "", subscription.getReceiverId());
             }
             
             

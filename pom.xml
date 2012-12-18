@@ -15,6 +15,10 @@
                 <enabled>true</enabled>
             </snapshots> 
         </repository>
+	<repository>
+		<id>ibiblio</id>
+		<url>http://mirrors.ibiblio.org/maven2/</url>
+	</repository>
     </repositories>
 
     <pluginRepositories>
@@ -53,7 +57,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-            <plugin>
+              <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
                 <version>1.0-alpha-2</version>
@@ -72,7 +76,7 @@
                   </execution>
                 </executions>
           </plugin>
-    	</plugins>
+	  </plugins>
 	</build>
     <modules>
         <module>services</module>

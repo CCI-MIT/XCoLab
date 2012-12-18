@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.plans.migration;
 
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 public class PlanCopyItem {
@@ -22,7 +23,7 @@ public class PlanCopyItem {
     }
     
     public String getPlanName() throws SystemException {
-        return plan.getName();
+        return PlanItemLocalServiceUtil.getName(plan);
     }
     
     public Long getPlanId() {

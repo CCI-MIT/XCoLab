@@ -79,7 +79,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
 	        else {
 	            category = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(activity.getClassPK());
 	        }
-		    DiscussionCategoryGroup categoryGroup = category.getCategoryGroup();
+		    DiscussionCategoryGroup categoryGroup = DiscussionCategoryLocalServiceUtil.getCategoryGroup(category);
 		    
 		    body = String.format(CATEGORY_ADDED, getUser(activity), getCategory(category), getCategoryGroup(categoryGroup));
 		    mailBody = body;
@@ -99,8 +99,8 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             else {
                 discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(activity.getClassPK());
             }
-            DiscussionCategory category = discussion.getCategory();
-            DiscussionCategoryGroup categoryGroup = discussion.getCategoryGroup();
+            DiscussionCategory category = DiscussionMessageLocalServiceUtil.getCategory(discussion);
+            DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion);
             
 		    body = String.format(DISCUSSION_ADDED, getUser(activity), getDiscussion(discussion), getCategory(category));
 		    mailBody = getMailBodyForMessage(discussion);
@@ -115,13 +115,13 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
                 comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(activity.getClassPK());
             }
             
-            DiscussionMessage discussion = comment.getThread();
-            DiscussionCategoryGroup categoryGroup = comment.getCategoryGroup();
-		    if (discussion == categoryGroup.getCommentThread()) {
-	            body = String.format(DISCUSSION_COMMENT_ADDED, getUser(activity), getCategoryGroup(discussion.getCategoryGroup()));
+            DiscussionMessage discussion = DiscussionMessageLocalServiceUtil.getThread(comment);
+            DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(comment);
+		    if (discussion == DiscussionCategoryGroupLocalServiceUtil.getCommentThread(categoryGroup)) {
+	            body = String.format(DISCUSSION_COMMENT_ADDED, getUser(activity), getCategoryGroup(DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion)));
 		    }
 		    else {
-	            body = String.format(COMMENT_ADDED, getUser(activity),  getDiscussion(discussion), getCategory(discussion.getCategory()));
+	            body = String.format(COMMENT_ADDED, getUser(activity),  getDiscussion(discussion), getCategory(DiscussionMessageLocalServiceUtil.getCategory(discussion)));
 		    }
 		    mailBody = getMailBodyForMessage(comment);
         }
@@ -137,10 +137,10 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             
             
             
-            DiscussionCategoryGroup categoryGroup = comment.getCategoryGroup();
-            DiscussionMessage discussion = comment.getThread();
+            DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(comment);
+            DiscussionMessage discussion = DiscussionMessageLocalServiceUtil.getThread(comment);
 
-            body = String.format(DISCUSSION_COMMENT_ADDED, getUser(activity), getCategoryGroup(discussion.getCategoryGroup()));
+            body = String.format(DISCUSSION_COMMENT_ADDED, getUser(activity), getCategoryGroup(DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion)));
             mailBody = getMailBodyForMessage(comment);
 		}
 
@@ -174,28 +174,28 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
 	}
 	
 	public String getCategory(DiscussionCategory category) throws PortalException, SystemException {
-	    DiscussionCategoryGroup categoryGroup = category.getCategoryGroup();
+	    DiscussionCategoryGroup categoryGroup = DiscussionCategoryLocalServiceUtil.getCategoryGroup(category);
 
         NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
         
         return String.format(hyperlink, 
-                navUrl.getUrlWithParameters("discussion", "pageType", "CATEGORY", "categoryId", category.getCategoryId().toString()).toString(), 
+                navUrl.getUrlWithParameters("discussion", "pageType", "CATEGORY", "categoryId", String.valueOf(category.getCategoryId())).toString(), 
                 category.getName());
     }
 	
 	public String getDiscussion(DiscussionMessage discussion) throws PortalException, SystemException {
-        DiscussionCategoryGroup categoryGroup = discussion.getCategoryGroup();
+        DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion);
         
-        DiscussionMessage thread = discussion.getThreadId() != null ? discussion.getThread() : discussion;
+        DiscussionMessage thread = discussion.getThreadId() > 0 ? DiscussionMessageLocalServiceUtil.getThread(discussion) : discussion;
 
         NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
 	    return String.format(hyperlink, 
-	            navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId", thread.getMessageId().toString()).toString(), 
+	            navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId", String.valueOf(thread.getMessageId())).toString(), 
 	            thread.getSubject());
 	}
 	
 	public String getComment(DiscussionMessage comment) throws PortalException, SystemException {
-        DiscussionCategoryGroup categoryGroup = comment.getCategoryGroup();
+        DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(comment);
         NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
         
         String text = comment.getBody().trim();
@@ -203,8 +203,8 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
         
         return String.format(hyperlink,
                 navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId", 
-                        comment.getThreadId().toString(), "messageId", 
-                        comment.getMessageId().toString()).toString(), 
+                        String.valueOf(comment.getThreadId()), "messageId", 
+                                String.valueOf(comment.getMessageId())).toString(), 
                         text);
     }
 
@@ -265,7 +265,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
 	private final static String MESSAGE_LINK_PLACEHOLDER = "MESSAGE_LINK_PLACEHOLDER";
 	        
     private String getMailBodyForMessage(DiscussionMessage message) throws SystemException, PortalException {
-        DiscussionMessage thread = message.getThreadId() != null ? message.getThread() : message;
+        DiscussionMessage thread = message.getThreadId() > 0 ? DiscussionMessageLocalServiceUtil.getThread(message) : message;
         /*
         System.out.println(DISCUSSION_MSG_MAIL_BODY_TEMPLATE
                 .replaceAll(USER_LINK_PLACEHOLDER, getUserLink(message.getAuthor())));
@@ -281,7 +281,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
                 .replaceAll(MESSAGE_LINK_PLACEHOLDER, getDiscussion(message)));
                 */
         try {
-            String tmp = DISCUSSION_MSG_MAIL_BODY_TEMPLATE.replace(USER_LINK_PLACEHOLDER, getUserLink(message.getAuthor()));
+            String tmp = DISCUSSION_MSG_MAIL_BODY_TEMPLATE.replace(USER_LINK_PLACEHOLDER, getUserLink(DiscussionMessageLocalServiceUtil.getAuthor(message)));
             tmp = tmp.replace(THREAD_TOPIC_PLACEHOLDER, thread.getSubject());
             tmp = tmp.replace(MESSAGE_BODY_PLACEHOLDER, message.getBody());
             tmp = tmp.replace(MESSAGE_LINK_PLACEHOLDER, getDiscussion(message));
@@ -289,7 +289,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
         }
         catch (Throwable t) {
             t.printStackTrace();
-            System.out.println("user link: " + getUserLink(message.getAuthor()));
+            System.out.println("user link: " + getUserLink(DiscussionMessageLocalServiceUtil.getAuthor(message)));
             System.out.println("thread topic: " + thread.getSubject());
             System.out.println("body: " + message.getBody());
             System.out.println("message link: " + getDiscussion(message));

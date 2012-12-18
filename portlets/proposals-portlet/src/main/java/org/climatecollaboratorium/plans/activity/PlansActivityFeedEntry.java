@@ -111,7 +111,7 @@ public class PlansActivityFeedEntry extends BaseSocialActivityInterpreter implem
 		String result = "&lt;plan removed&gt;";
 		try {
 			PlanItem p = PlanItemLocalServiceUtil.getPlan(activity.getClassPK());
-			result = String.format(hyperlink, getPlanURL(p),p.getName());
+			result = String.format(hyperlink, getPlanURL(p),PlanItemLocalServiceUtil.getName(p));
 		} catch (PortalException e) {
 			// TODO Auto-generated catch block
 			_log.info(e.getMessage());
@@ -124,7 +124,7 @@ public class PlansActivityFeedEntry extends BaseSocialActivityInterpreter implem
 	
 
     private static String getPlanURL(PlanItem p) throws SystemException, PortalException {
-        return String.format("/web/guest/plans/-/plans/contestId/" + p.getContest().getContestPK() + "/planId/" + p.getPlanId());
+        return String.format("/web/guest/plans/-/plans/contestId/" + PlanItemLocalServiceUtil.getContest(p).getContestPK() + "/planId/" + p.getPlanId());
     }
 
 
@@ -133,7 +133,7 @@ public class PlansActivityFeedEntry extends BaseSocialActivityInterpreter implem
         // name of activity "stream" for given parameters is name of a plan that this activity relates to
         try {
             PlanItem plan = PlanItemLocalServiceUtil.getPlan(classPK);
-            return "Proposal: " + String.format(hyperlink, getPlanURL(plan),plan.getName());
+            return "Proposal: " + String.format(hyperlink, getPlanURL(plan),PlanItemLocalServiceUtil.getName(plan));
         }
         catch (NoSuchPlanItemException e) {
             _log.error("Can't find plan for id: " + classPK, e);

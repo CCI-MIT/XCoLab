@@ -25,8 +25,11 @@ import com.ext.portlet.contests.NoSuchContestPhaseException;
 import com.ext.portlet.contests.model.Contest;
 import com.ext.portlet.contests.model.ContestPhase;
 import com.ext.portlet.contests.service.ContestLocalServiceUtil;
+import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.ontology.model.FocusArea;
 import com.ext.portlet.ontology.model.OntologyTerm;
+import com.ext.portlet.ontology.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.ontology.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -55,7 +58,7 @@ public class ContestWrapper {
     public ContestWrapper(Contest contest) throws SystemException, PortalException {
         boolean addAsActiveOrPast = true;
         this.contest = contest;
-        for (ContestPhase phase:contest.getPhases()) {
+        for (ContestPhase phase: ContestLocalServiceUtil.getPhases(contest)) {
             ContestPhaseWrapper phaseWrapper = new ContestPhaseWrapper(this,phase);
             if (addAsActiveOrPast) {
                 activeOrPastPhases.add(phaseWrapper);
@@ -63,18 +66,18 @@ public class ContestWrapper {
                     pastPhases.add(phaseWrapper);
                 }
             }
-            if (phase.getPhaseActive()) {
+            if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
                 // don't add next phases as they haven't started yet
                 addAsActiveOrPast = false;
             }
             phases.add(phaseWrapper);
             index.put(phase.getContestPhasePK(),phaseWrapper);
-            if (phase.getPhaseActive()) {
+            if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
                 activePhase = phaseWrapper;
             }
         }
         if (activePhase == null) {
-            List<ContestPhase> phases = contest.getPhases();
+            List<ContestPhase> phases = ContestLocalServiceUtil.getPhases(contest);
             activePhase = new ContestPhaseWrapper(this, phases.get(phases.size()-1));
         }
         editor = new EditContestBean();
@@ -119,7 +122,7 @@ public class ContestWrapper {
     }
     
     public List<Long> getDebatesIds() throws SystemException {
-        return contest.getDebatesIds();
+        return ContestLocalServiceUtil.getDebatesIds(contest);
     }
 
     public String getShortName() {
@@ -132,7 +135,7 @@ public class ContestWrapper {
     
     public String getLogo() throws PortalException, SystemException {
         
-        return Helper.getThemeDisplay().getPathImage() + contest.getLogoPath();
+        return Helper.getThemeDisplay().getPathImage() + ContestLocalServiceUtil.getLogoPath(contest);
     }
     
     public boolean isFeatured() {
@@ -275,7 +278,7 @@ public class ContestWrapper {
     
     public Long getModelId() throws PortalException, SystemException {
         
-        return contest.getPlanType().getDefaultModelId();
+        return ContestLocalServiceUtil.getPlanType(contest).getDefaultModelId();
     }
     
     public PlansIndexBean getPlansIndex() {
@@ -297,7 +300,7 @@ public class ContestWrapper {
     }
     
     public boolean getHasModel() throws PortalException, SystemException {
-        Long modelId = getContest().getPlanType().getDefaultModelId();
+        Long modelId = ContestLocalServiceUtil.getPlanType(getContest()).getDefaultModelId();
         return modelId != null && modelId > 0;
     }
 
@@ -319,7 +322,7 @@ public class ContestWrapper {
     }
     
     public boolean getHasFocusArea() throws PortalException, SystemException {
-        return contest.getFocusArea() != null;
+        return contest.getFocusAreaId() > 0;
     }
     
     public List<OntologyTerm> getWho() throws PortalException, SystemException {
@@ -336,11 +339,13 @@ public class ContestWrapper {
     }
     
     public long getProposalsCount() throws SystemException, PortalException {
-        return contest.getProposalsCount();
+        //return ContestLocalServiceUtil.getProposalsCount(contest);
+        return 15;
     }
     
     public long getCommentsCount() throws PortalException, SystemException {
-        return contest.getTotalComments();
+        //return ContestLocalServiceUtil.getTotalComments(contest);
+        return 15;
     }
     
     public String getResourcesUrl() {
@@ -348,11 +353,12 @@ public class ContestWrapper {
     }
     
     private List<OntologyTerm> getTermFromSpace(String space) throws PortalException, SystemException {
-        FocusArea fa = contest.getFocusArea();
+        
+        FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
         if (fa == null) return null;
         List<OntologyTerm> terms = new ArrayList<OntologyTerm>();
-        for (OntologyTerm t: fa.getTerms()) {
-            if (t.getSpace().getName().equalsIgnoreCase(space)) {
+        for (OntologyTerm t: FocusAreaLocalServiceUtil.getTerms(fa)) {
+            if (OntologyTermLocalServiceUtil.getSpace(t).getName().equalsIgnoreCase(space)) {
                 terms.add(t);
             }
         }
@@ -360,7 +366,7 @@ public class ContestWrapper {
     }
     
     public Long getCategoryGroupId() throws PortalException, SystemException {
-        if (contest.getDiscussionGroupId() == null || contest.getDiscussionGroupId() <= 0) {
+        if (contest.getDiscussionGroupId() <= 0) {
             ContestLocalServiceUtil.updateContestGroupsAndDiscussions();
         }
         return contest.getDiscussionGroupId();

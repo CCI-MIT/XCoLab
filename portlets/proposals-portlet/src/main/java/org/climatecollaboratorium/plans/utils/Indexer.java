@@ -76,10 +76,10 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
 		doc.addKeyword(Field.COMPANY_ID, companyId);
 		doc.addKeyword(Field.PORTLET_ID, PORTLET_ID);
-		doc.addKeyword(Field.GROUP_ID, plan.getCategoryGroupId());
+		doc.addKeyword(Field.GROUP_ID, PlanItemLocalServiceUtil.getCategoryGroupId(plan));
 
-		doc.addText(Field.TITLE, plan.getName());
-        doc.addText(Field.CONTENT, plan.getDescription());
+		doc.addText(Field.TITLE, PlanItemLocalServiceUtil.getName(plan));
+        doc.addText(Field.CONTENT, PlanItemLocalServiceUtil.getDescription(plan));
 
 		doc.addKeyword(Field.ENTRY_CLASS_NAME, PlanItem.class.getName());
 		doc.addKeyword(Field.ENTRY_CLASS_PK, plan.getPlanId());

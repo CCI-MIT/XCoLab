@@ -33,7 +33,7 @@ public class PlanNameValidator implements Validator {
             else {
                 PlanItem item = ((PlanItemWrapper) comp.getAttributes().get("plan")).getWrapped();
 
-                if (! PlanItemLocalServiceUtil.isNameAvailable(name,item.getContest())) {
+                if (! PlanItemLocalServiceUtil.isNameAvailable(name, PlanItemLocalServiceUtil.getContest(item))) {
 
                     FacesMessage fm = new FacesMessage();
                     fm.setSummary("Plan with name \"" + name + "\" already existis, choose different name.");

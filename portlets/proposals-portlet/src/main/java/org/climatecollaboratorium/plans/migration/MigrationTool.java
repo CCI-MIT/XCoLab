@@ -272,12 +272,12 @@ public class MigrationTool {
     public String updateDiscussionUrlsAndDescriptions() throws SystemException, PortalException {
         for (PlanItem basePlan : PlanItemLocalServiceUtil.getPlans()) {
             DiscussionCategoryGroup categoryGroup = DiscussionCategoryGroupLocalServiceUtil
-                    .getDiscussionCategoryGroup(basePlan.getCategoryGroupId());
+                    .getDiscussionCategoryGroup(PlanItemLocalServiceUtil.getCategoryGroupId(basePlan));
 
-            categoryGroup.setDescription(basePlan.getName() + " discussion");
-            categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + basePlan.getContest().getContestPK()
+            categoryGroup.setDescription(PlanItemLocalServiceUtil.getName(basePlan) + " discussion");
+            categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + PlanItemLocalServiceUtil.getContest(basePlan).getContestPK()
                     + "/planId/" + basePlan.getPlanId() + "#plans=tab:comments");
-            categoryGroup.store();
+            DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
         }
         _log.info("Update successful");
         FacesMessage fm = new FacesMessage();
@@ -328,8 +328,8 @@ public class MigrationTool {
 
         for (PlanItem plan : PlanItemLocalServiceUtil.getPlans()) {
             for (Role role : rolesActionsMap.keySet()) {
-                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, plan
-                        .getPlanGroupId().toString(), rolesActionsMap.get(role));
+                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
+                        PlanItemLocalServiceUtil.getPlanGroupId(plan).toString(), rolesActionsMap.get(role));
 
             }
         }
@@ -347,8 +347,8 @@ public class MigrationTool {
     public String updatePlanOpenAttribute() throws SystemException {
 
         for (PlanItem basePlan : PlanItemLocalServiceUtil.getPlans()) {
-            basePlan.updateAttribute(Attribute.IS_PLAN_OPEN.name());
-            basePlan.updateAttribute(Attribute.SUPPORTERS.name());
+            PlanItemLocalServiceUtil.updateAttribute(basePlan, Attribute.IS_PLAN_OPEN.name());
+            PlanItemLocalServiceUtil.updateAttribute(basePlan, Attribute.SUPPORTERS.name());
         }
         FacesMessage fm = new FacesMessage();
         fm.setSeverity(FacesMessage.SEVERITY_INFO);
@@ -419,10 +419,10 @@ public class MigrationTool {
 
     public String setIntervals() throws SystemException {
         for (ModelInputItem modelInput : ModelInputItemLocalServiceUtil.getModelInputItems(0, Integer.MAX_VALUE)) {
-            Map<String, String> props = modelInput.getPropertyMap();
+            Map<String, String> props = ModelInputItemLocalServiceUtil.getPropertyMap(modelInput);
             if (props.size() > 0) {
                 props.put(ModelWidgetProperty.Slider.INTERVAL.name(), "5");
-                modelInput.saveProperties(props);
+                ModelInputItemLocalServiceUtil.saveProperties(modelInput, props);
             }
 
         }
@@ -435,9 +435,9 @@ public class MigrationTool {
 
     public String updateOldPlanVotes() throws SystemException {
         for (PlanVote planVote : PlanVoteLocalServiceUtil.getPlanVotes(0, Integer.MAX_VALUE)) {
-            if (planVote.getContestId() == null || planVote.getContestId().equals(0L)) {
+            if (planVote.getContestId() == 0L) {
                 planVote.setContestId(1L);
-                planVote.store();
+                PlanVoteLocalServiceUtil.store(planVote);
             }
         }
         FacesMessage fm = new FacesMessage();
@@ -452,12 +452,13 @@ public class MigrationTool {
                 .repository();
 
         for (PlanItem basePlan : PlanItemLocalServiceUtil.getPlans()) {
-            if (basePlan.getContest().getContestPK().equals(2L) && basePlan.getScenarioId() != null
-                    && basePlan.getScenarioId() > 0) {
-                _log.info("reruning simulation for plan: " + basePlan.getPlanId() + "\t" + basePlan.getName());
+            if (PlanItemLocalServiceUtil.getContest(basePlan).getContestPK() == 2L && 
+                    PlanItemLocalServiceUtil.getScenarioId(basePlan) != null
+                    && PlanItemLocalServiceUtil.getScenarioId(basePlan) > 0) {
+                _log.info("reruning simulation for plan: " + basePlan.getPlanId() + "\t" + PlanItemLocalServiceUtil.getName(basePlan));
                 // rerun only plans that belong to cancun contest
                 try {
-                    Scenario scenario = repository.getScenario(basePlan.getScenarioId());
+                    Scenario scenario = repository.getScenario(PlanItemLocalServiceUtil.getScenarioId(basePlan));
                     Map<Long, Object> values = new HashMap<Long, Object>();
                     for (Variable v : scenario.getInputSet()) {
                         values.put(v.getMetaData().getId(), v.getValue().get(0).getValues()[0]);
@@ -473,7 +474,7 @@ public class MigrationTool {
                     _log.error("Exception thrown when reruning plan: " + basePlan.getPlanId());
                     FacesMessage fm = new FacesMessage();
                     fm.setSeverity(FacesMessage.SEVERITY_ERROR);
-                    fm.setSummary("Error when reruning plan " + basePlan.getName());
+                    fm.setSummary("Error when reruning plan " + PlanItemLocalServiceUtil.getName(basePlan));
                     FacesContext.getCurrentInstance().addMessage(null, fm);
                 }
 
@@ -503,7 +504,7 @@ public class MigrationTool {
 
     public String updateLastUpdateDate() throws SystemException {
         for (PlanItem plan : PlanItemLocalServiceUtil.getPlans()) {
-            plan.updateAttribute(PlanConstants.Attribute.LAST_MOD_DATE.name());
+            PlanItemLocalServiceUtil.updateAttribute(plan, PlanConstants.Attribute.LAST_MOD_DATE.name());
         }
 
         return null;
@@ -511,15 +512,16 @@ public class MigrationTool {
 
     public String subscribePlanCreators() throws SystemException, PortalException {
         for (PlanItem plan : PlanItemLocalServiceUtil.getPlans()) {
-            if (!ActivitySubscriptionLocalServiceUtil.isSubscribed(plan.getAuthorId(), PlanItem.class,
+            if (!ActivitySubscriptionLocalServiceUtil.isSubscribed(
+                    PlanItemLocalServiceUtil.getAuthorId(plan), PlanItem.class,
                     plan.getPlanId(), null, "")) {
                 ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, plan.getPlanId(), null, "",
-                        plan.getAuthorId());
+                        PlanItemLocalServiceUtil.getAuthorId(plan));
             }
-            if (!ActivitySubscriptionLocalServiceUtil.isSubscribed(plan.getAuthorId(), DiscussionCategoryGroup.class,
-                    plan.getCategoryGroupId(), null, "")) {
+            if (!ActivitySubscriptionLocalServiceUtil.isSubscribed(PlanItemLocalServiceUtil.getAuthorId(plan), 
+                    DiscussionCategoryGroup.class, PlanItemLocalServiceUtil.getCategoryGroupId(plan), null, "")) {
                 ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class,
-                        plan.getCategoryGroupId(), null, "", plan.getAuthorId());
+                        PlanItemLocalServiceUtil.getCategoryGroupId(plan), null, "", PlanItemLocalServiceUtil.getAuthorId(plan));
             }
         }
 
@@ -529,7 +531,7 @@ public class MigrationTool {
     public String resetDiscussionCategoryGroupPermissions() throws PortalException, SystemException {
 
         for (PlanItem planItem : PlanItemLocalServiceUtil.getPlans()) {
-            Group group = GroupLocalServiceUtil.getGroup(planItem.getPlanGroupId());
+            Group group = GroupLocalServiceUtil.getGroup(PlanItemLocalServiceUtil.getPlanGroupId(planItem));
             Long companyId = group.getCompanyId();
             Role owner = RoleLocalServiceUtil.getRole(companyId, RoleConstants.OWNER);
             Role admin = RoleLocalServiceUtil.getRole(companyId, RoleConstants.ADMINISTRATOR);

@@ -6,15 +6,19 @@
 
 package org.climatecollaboratorium.plans;
 
+import java.util.Date;
+
 import com.ext.portlet.plans.model.PlanDescription;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanModelRun;
 import com.ext.portlet.plans.model.PlanPositions;
+import com.ext.portlet.plans.service.PlanDescriptionLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanModelRunLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanPositionsLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,7 +46,7 @@ public abstract class PlanHistoryWrapper<T> {
             @Override
             public User getUpdateAuthor() {
                try {
-                   return run.getUpdateAuthor();
+                   return PlanModelRunLocalServiceUtil.getUpdateAuthor(run);
                } catch (SystemException e) {
                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                } catch (PortalException e) {
@@ -79,7 +83,7 @@ public abstract class PlanHistoryWrapper<T> {
             @Override
             public User getUpdateAuthor() {
                 try {
-                    return desc.getUpdateAuthor();
+                    return PlanDescriptionLocalServiceUtil.getUpdateAuthor(desc);
                 } catch (PortalException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (SystemException e) {
@@ -116,7 +120,7 @@ public abstract class PlanHistoryWrapper<T> {
             @Override
             public User getUpdateAuthor() {
                 try {
-                    return positions.getUpdateAuthor();
+                    return PlanPositionsLocalServiceUtil.getUpdateAuthor(positions);
                 } catch (PortalException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (SystemException e) {
@@ -153,7 +157,7 @@ public abstract class PlanHistoryWrapper<T> {
             @Override
             public User getUpdateAuthor() {
                 try {
-                    return positions.getUpdateAuthor();
+                    return PlanItemLocalServiceUtil.getUpdateAuthor(positions);
                 } catch (PortalException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (SystemException e) {

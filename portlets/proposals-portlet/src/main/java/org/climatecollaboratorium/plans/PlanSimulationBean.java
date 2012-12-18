@@ -6,16 +6,16 @@
 
 package org.climatecollaboratorium.plans;
 
-import com.ext.portlet.plans.model.PlanItem;
+import javax.faces.event.ActionEvent;
 
+import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
+
+import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
-import javax.faces.event.ActionEvent;
-
-import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
 
 public class PlanSimulationBean {
     private Long scenario;
@@ -32,7 +32,7 @@ public class PlanSimulationBean {
 
     public void update(ActionEvent e) throws SystemException, PortalException {
         if (Helper.isUserLoggedIn()) {
-            plan.setScenarioId(scenario, Helper.getLiferayUser().getUserId());
+            PlanItemLocalServiceUtil.setScenarioId(plan, scenario, Helper.getLiferayUser().getUserId());
 
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                     PlanItem.class.getName(), plan.getPlanId(), PlanActivityKeys.EDIT_SCENARIO.id(),null, 0);

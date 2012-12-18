@@ -22,7 +22,7 @@ public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions
     private DiscussionBean discussionBean;
     
     public DefaultDiscussionsPermissionsImpl(DiscussionBean discussionBean) throws PortalException, SystemException {
-        primKey = discussionBean.getDiscussion().getId().toString();
+        primKey = String.valueOf(discussionBean.getDiscussion().getId());
         groupId = discussionBean.getOwningGroupId();
         this.discussionBean = discussionBean;
         /*

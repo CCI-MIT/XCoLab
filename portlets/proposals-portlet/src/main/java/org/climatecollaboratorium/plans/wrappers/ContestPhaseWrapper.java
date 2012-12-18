@@ -12,6 +12,8 @@ import java.util.List;
 
 import com.ext.portlet.contests.model.ContestPhase;
 import com.ext.portlet.contests.model.ContestStatus;
+import com.ext.portlet.contests.service.ContestLocalServiceUtil;
+import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanType;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -39,7 +41,7 @@ public class ContestPhaseWrapper {
     }
 
     public PlanType getPlanType() throws SystemException, PortalException {
-        return phase.getContest().getPlanType();
+        return ContestLocalServiceUtil.getPlanType(ContestPhaseLocalServiceUtil.getContest(phase));
     }
 
     public String getName() {
@@ -57,7 +59,7 @@ public class ContestPhaseWrapper {
     }
 
     public ContestStatus getStatus() {
-        return phase.getContestStatus();
+        return ContestPhaseLocalServiceUtil.getContestStatus(phase);
     }
 
     public boolean getCanVote() {
@@ -83,7 +85,7 @@ public class ContestPhaseWrapper {
     public List<PlanItem> getPlans() throws SystemException, PortalException {
 
         try {
-            List<PlanItem> result =  phase.getPlans();
+            List<PlanItem> result =  ContestPhaseLocalServiceUtil.getPlans(phase);
             return result;
         } catch (Throwable t) {
             t.printStackTrace();
@@ -102,7 +104,7 @@ public class ContestPhaseWrapper {
     }
     
     public boolean isActive() {
-        return phase.getPhaseActive();
+        return ContestPhaseLocalServiceUtil.getPhaseActive(phase);
     }
     
     public boolean getHasNextPhase() {

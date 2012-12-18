@@ -18,11 +18,11 @@ public class PlansTool {
 
         for (PlanItem basePlan : PlanItemLocalServiceUtil.getPlans()) {
             try {
-                basePlan.updateAllAttributes();
+                PlanItemLocalServiceUtil.updateAllAttributes(basePlan);
             }
             catch (Exception e) {
                 errorsCount ++;
-                _log.error("Error when updating attributes for plan " + basePlan.getName(), e);
+                _log.error("Error when updating attributes for plan " + PlanItemLocalServiceUtil.getName(basePlan), e);
             }
         }
         FacesMessage fm = new FacesMessage();

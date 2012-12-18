@@ -8,6 +8,7 @@ import org.climatecollaboratorium.plans.PlansPermissionsBean;
 
 import com.ext.portlet.plans.PlanUserPermission;
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -36,15 +37,15 @@ public class PlanMember {
     }
 
     public boolean isMember() throws SystemException {
-        return plan.isUserAMember(user.getUserId());
+        return PlanItemLocalServiceUtil.isUserAMember(plan, user.getUserId());
     }
 
     public boolean isOwner() throws PortalException, SystemException {
-        return plan.isOwner(user.getUserId());
+        return PlanItemLocalServiceUtil.isOwner(plan, user.getUserId());
     }
 
     public boolean isAdmin() throws PortalException, SystemException {
-        return plan.isAdmin(user.getUserId());
+        return PlanItemLocalServiceUtil.isAdmin(plan, user.getUserId());
     }
     
     public PlanUserPermission getPlanUserPermission() throws PortalException, SystemException {
@@ -77,12 +78,12 @@ public class PlanMember {
             }
             planUserPermission = tmp;
             
-            plan.setUserPermission(user.getUserId(), planUserPermission.name(), Helper.getLiferayUser().getUserId());
+            PlanItemLocalServiceUtil.setUserPermission(plan, user.getUserId(), planUserPermission.name(), Helper.getLiferayUser().getUserId());
         }
     }
     
     public void remove(ActionEvent e) throws SystemException, PortalException {
-        plan.removeMember(user.getUserId(), Helper.getLiferayUser().getUserId());
+        PlanItemLocalServiceUtil.removeMember(plan, user.getUserId(), Helper.getLiferayUser().getUserId());
         planMembershipBean.removeMember(this);
     }
 

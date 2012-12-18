@@ -1,7 +1,9 @@
 package org.climatecollaboratorium.plans;
 
+import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.plans.PlanUserPermission;
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.security.permission.PermissionChecker;
@@ -105,8 +107,8 @@ public class PlansPermissionsBean {
         this.plan = plan;
         if (plan!=null) {
             // use group id from plans community
-            planGroupId = plan.getPlanGroupId();
-            planIsEditable = plan.getContestPhase().getContestStatus().isCanEdit();
+            planGroupId = PlanItemLocalServiceUtil.getPlanGroupId(plan);
+            planIsEditable = ContestPhaseLocalServiceUtil.getContestStatus(PlanItemLocalServiceUtil.getContestPhase(plan)).isCanEdit();
             updatePlanUserPermission();
         }
     }
@@ -120,7 +122,7 @@ public class PlansPermissionsBean {
     }
     
     public boolean getPlanOpen() throws SystemException {
-        return plan == null ? false : plan.getOpen();
+        return plan == null ? false : PlanItemLocalServiceUtil.getOpen(plan);
     }
     
     public boolean getLoggedIn() {

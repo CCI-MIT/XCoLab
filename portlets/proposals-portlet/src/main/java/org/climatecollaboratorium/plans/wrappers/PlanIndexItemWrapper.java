@@ -17,11 +17,14 @@ import org.climatecollaboratorium.plans.NavigationBean;
 import org.climatecollaboratorium.plans.PlansIndexBean;
 import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
 
+import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.plans.NoSuchPlanPositionsException;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.PlanConstants.Columns;
 import com.ext.portlet.plans.model.PlanAttribute;
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanAttributeLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -54,9 +57,9 @@ public class PlanIndexItemWrapper {
     public boolean getHasPositions() throws SystemException, NoSuchPlanPositionsException {
         List<Long> positions = null;
         try {
-            positions = wrapped.getPositionsIds();
+            positions = PlanItemLocalServiceUtil.getPositionsIds(wrapped);
         } catch (Exception e) {
-            log.error("Error retrieving plan positions for " + wrapped.getName(), e);
+            log.error("Error retrieving plan positions for " + PlanItemLocalServiceUtil.getName(wrapped), e);
         }
         return positions != null && positions.size() > 0;
     }
@@ -66,7 +69,7 @@ public class PlanIndexItemWrapper {
     }
 
     public String getPlanName() throws SystemException {
-        return wrapped.getName();
+        return PlanItemLocalServiceUtil.getName(wrapped);
     }
 
     public Long getPlanId() {
@@ -74,21 +77,21 @@ public class PlanIndexItemWrapper {
     }
 
     public User getAuthor() throws PortalException, SystemException {
-        return wrapped.getAuthor();
+        return PlanItemLocalServiceUtil.getAuthor(wrapped);
     }
 
     public Long getContestPhaseId() throws SystemException, PortalException {
-        return wrapped.getContestPhase().getContestPhasePK();
+        return PlanItemLocalServiceUtil.getContestPhase(wrapped).getContestPhasePK();
     }
 
     public Long getContestId() throws PortalException, SystemException {
-        return wrapped.getContest().getContestPK();
+        return PlanItemLocalServiceUtil.getContest(wrapped).getContestPK();
     }
 
     public boolean isVotedOn() throws PortalException, SystemException {
         boolean voted = false;
         if (Helper.isUserLoggedIn()) {
-            voted = wrapped.hasUserVoted(Helper.getLiferayUser().getUserId());
+            voted = PlanItemLocalServiceUtil.hasUserVoted(wrapped, Helper.getLiferayUser().getUserId());
         }
         return voted;
     }
@@ -98,12 +101,12 @@ public class PlanIndexItemWrapper {
 
         if (Helper.isUserLoggedIn()) {
             if (isVotedOn()) {
-                wrapped.unvote(Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.unvote(wrapped, Helper.getLiferayUser().getUserId());
                 activityKey = PlanActivityKeys.RETRACT_VOTE_FOR_PLAN;
             } else {
                 try {
-                    if (PlanVoteLocalServiceUtil.getPlanVote(Helper.getLiferayUser().getUserId(), wrapped.getContest()
-                            .getContestPK()) != null) {
+                    if (PlanVoteLocalServiceUtil.getPlanVote(Helper.getLiferayUser().getUserId(), 
+                            PlanItemLocalServiceUtil.getContest(wrapped).getContestPK()) != null) {
                         activityKey = PlanActivityKeys.SWICTH_VOTE_FOR_PLAN;
                     }
 
@@ -111,7 +114,7 @@ public class PlanIndexItemWrapper {
                     // backend can throw no such vote exception, it should be
                     // ignored as this is a normal case
                 }
-                wrapped.vote(Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.vote(wrapped, Helper.getLiferayUser().getUserId());
             }
 
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(NavigationBean.DEFERED_PLAN_VOTE_ID_PARAM);
@@ -123,12 +126,12 @@ public class PlanIndexItemWrapper {
     }
 
     public Integer getPlace() throws SystemException {
-        PlanAttribute attr = wrapped.getPlanAttribute(PlanConstants.Attribute.PLAN_PLACE.name());
-        return attr != null ? (Integer) attr.getTypedValue() : -1;
+        PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.PLAN_PLACE.name());
+        return attr != null ? (Integer) PlanAttributeLocalServiceUtil.getTypedValue(attr) : -1;
     }
 
     public Integer getRibbon() throws SystemException {
-        PlanAttribute attr = wrapped.getPlanAttribute(PlanConstants.Attribute.PLAN_RIBBON.name());
+        PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.PLAN_RIBBON.name());
         try {
             return attr != null ? Integer.parseInt(attr.getAttributeValue()) : null;
         } catch (NumberFormatException e) {
@@ -137,13 +140,13 @@ public class PlanIndexItemWrapper {
     }
 
     public String getRibbonText() throws SystemException {
-        PlanAttribute attr = wrapped.getPlanAttribute(PlanConstants.Attribute.PLAN_RIBBON_TEXT.name());
+        PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.PLAN_RIBBON_TEXT.name());
         return attr != null ? attr.getAttributeValue() : null;
     }
 
 
     public boolean isScrapbook() throws SystemException {
-        PlanAttribute pa = wrapped.getPlanAttribute("SCRAPBOOK");
+        PlanAttribute pa = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, "SCRAPBOOK");
         if (pa == null ||! pa.getAttributeValue().equals("true")) {
             return false;
         }
@@ -151,25 +154,26 @@ public class PlanIndexItemWrapper {
     }
 
     public String getScrapbookText() throws SystemException {
-        PlanAttribute attr = wrapped.getPlanAttribute(PlanConstants.Attribute.SCRAPBOOK_HOVER.name());
+        PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.SCRAPBOOK_HOVER.name());
         return attr != null ? attr.getAttributeValue() : null;
     }
     
     public String getName() throws SystemException {
-        return wrapped.getName();
+        return PlanItemLocalServiceUtil.getName(wrapped);
     }
     
     public String getAbstract() throws SystemException {
-        PlanAttribute attr = wrapped.getPlanAttribute(PlanConstants.Attribute.ABSTRACT.name());
+        PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.ABSTRACT.name());
         return attr != null ? attr.getAttributeValue() : null;
     }
     
     public int getCommentsCount() throws SystemException, PortalException {
-        return wrapped.getDiscussionCategoryGroup().getCommentsCount();
+        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(
+                PlanItemLocalServiceUtil.getDiscussionCategoryGroup(wrapped));
     }
     
     public String getSupportersCount() throws SystemException {
-        PlanAttribute attr = wrapped.getPlanAttribute(PlanConstants.Attribute.SUPPORTERS.name());
+        PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.SUPPORTERS.name());
         return attr != null ? attr.getAttributeValue() : null;
     }
     
@@ -178,27 +182,27 @@ public class PlanIndexItemWrapper {
     }
     
     public boolean isOpen() throws SystemException {
-        return wrapped.getOpen();
+        return PlanItemLocalServiceUtil.getOpen(wrapped);
     }
     
     public String getTeam() throws SystemException {
-        return wrapped.getTeam();
+        return PlanItemLocalServiceUtil.getTeam(wrapped);
     }
     
     public boolean isFeatured() throws SystemException {
-        return wrapped.getRibbon() != null && wrapped.getRibbon() > 0;
+        return PlanItemLocalServiceUtil.getRibbon(wrapped) != null && PlanItemLocalServiceUtil.getRibbon(wrapped) > 0;
     }
     
     public String getTags() throws SystemException {
-        return wrapped.getTags();
+        return PlanItemLocalServiceUtil.getTags(wrapped);
     }
     
     public String getTagsHover() throws SystemException {
-        return wrapped.getTagsHover();
+        return PlanItemLocalServiceUtil.getTagsHover(wrapped);
     }
 
     public int getTagsOrder() throws SystemException {
-        return wrapped.getTagsOrder();
+        return PlanItemLocalServiceUtil.getTagsOrder(wrapped);
     }
     
     

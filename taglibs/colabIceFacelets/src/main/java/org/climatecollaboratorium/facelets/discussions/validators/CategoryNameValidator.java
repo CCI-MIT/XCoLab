@@ -26,8 +26,8 @@ public class CategoryNameValidator implements Validator {
         if (categoryGroupId != null) {
             try {
                 for (DiscussionCategory cat: 
-                    DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(categoryGroupId).getCategories()) {
-                    
+                    DiscussionCategoryGroupLocalServiceUtil.getCategories(
+                            DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(categoryGroupId))) {
                     if (cat.getName().equals(categoryName)) {
                         isValid = false;
                     }

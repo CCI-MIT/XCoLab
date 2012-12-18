@@ -1,7 +1,13 @@
 package org.climatecollaboratorium.plans;
 
-import com.ext.portlet.plans.model.PlanItem;
+import java.util.Date;
 
+import javax.faces.event.ActionEvent;
+
+import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
+
+import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.MembershipRequest;
@@ -9,12 +15,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
-import java.util.Date;
-
-import javax.faces.event.ActionEvent;
-
-import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
 
 public class PlanMembershipRequest {
     private MembershipRequest request;
@@ -71,13 +71,13 @@ public class PlanMembershipRequest {
             String responseStr = response == null || response.trim().length() == 0 ? "no comments" : response; 
             if (approve) {
                 
-                plan.approveMembershipRequest(user.getUserId(), request, responseStr, Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.approveMembershipRequest(plan, user.getUserId(), request, responseStr, Helper.getLiferayUser().getUserId());
 
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), plan.getPlanId(), PlanActivityKeys.USER_ADDED_TO_PLAN.id(),null, 0);
             }
             else {
-                plan.dennyMembershipRequest(user.getUserId(), request, responseStr, Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.dennyMembershipRequest(plan, user.getUserId(), request, responseStr, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), plan.getPlanId(), PlanActivityKeys.USER_REMOVED_FROM_PLAN.id(),null, 0);
             }

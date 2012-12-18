@@ -17,6 +17,7 @@ import javax.faces.event.ActionEvent;
 import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
 import com.ext.portlet.discussions.model.DiscussionMessage;
 import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.discussions.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.models.model.ModelGlobalPreference;
 import com.ext.portlet.models.model.ModelInputGroup;
 import com.ext.portlet.models.model.ModelInputItem;
@@ -93,16 +94,16 @@ public class MigrationTool {
     
     public void updateDiscussionCommentsTitles(ActionEvent e) throws SystemException, PortalException {
         for (DiscussionCategoryGroup dcg: DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroups(0, Integer.MAX_VALUE)) {
-            DiscussionMessage msg = dcg.getCommentThread();
+            DiscussionMessage msg = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(dcg);
             if (msg == null) {
                 continue;
             }
             msg.setSubject(dcg.getDescription() + " comment " + 1);
-            msg.store();
+            DiscussionMessageLocalServiceUtil.store(msg);
             int i = 2;
-            for (DiscussionMessage comment: msg.getThreadMessages()) {
+            for (DiscussionMessage comment: DiscussionMessageLocalServiceUtil.getThreadMessages(msg)) {
                 comment.setSubject(dcg.getDescription() + " comment " + i++);
-                comment.store();
+                DiscussionMessageLocalServiceUtil.store(comment);
             } 
         }
         FacesContext.getCurrentInstance().addMessage("Messages updated", getMsg("Messages updated"));
@@ -172,7 +173,7 @@ public class MigrationTool {
         /* model input group */
         for (ModelInputGroup mig: ModelInputGroupLocalServiceUtil.getModelInputGroups(0, Integer.MAX_VALUE)) {
             if (simulationMapping.containsKey(mig.getModelId())) {
-                if (mig.getNameAndDescriptionMetaDataId() != null && ! variableMapping.containsKey(mig.getNameAndDescriptionMetaDataId())) {
+                if (mig.getNameAndDescriptionMetaDataId() >= 0 && ! variableMapping.containsKey(mig.getNameAndDescriptionMetaDataId())) {
                     throw new MigrationException("There is setting for input group for input " + 
                             mig.getNameAndDescriptionMetaDataId() + " but no mapping has been defined");
                 }
@@ -224,7 +225,7 @@ public class MigrationTool {
                          throw new MigrationException("There is setting for input item for input " + 
                                  moi.getModelOutputItemId() + " but no mapping has been defined");
                     }
-                    if (moi.getRelatedOutputItem() != null && ! variableMapping.containsKey(moi.getRelatedOutputItem())) {
+                    if (moi.getRelatedOutputItem() >= 0 && ! variableMapping.containsKey(moi.getRelatedOutputItem())) {
                         throw new MigrationException("There is setting for input item for input " + 
                                 moi.getRelatedOutputItem() + " but no mapping has been defined");
                         
@@ -234,7 +235,7 @@ public class MigrationTool {
                         moi.setModelId(simulationMapping.get(moi.getModelId()));
                         moi.setModelOutputItemId(variableMapping.get(moi.getModelOutputItemId()));
                         
-                        if (moi.getRelatedOutputItem() != null) {
+                        if (moi.getRelatedOutputItem() >= 0) {
                             moi.setRelatedOutputItem(variableMapping.get(moi.getRelatedOutputItem()));
                         }
                         
@@ -252,7 +253,7 @@ public class MigrationTool {
                 if (update) {
                     pm.setModelId(simulationMapping.get(pm.getModelId()));
                     
-                    pm.store();
+                    PlanMetaLocalServiceUtil.store(pm);
                     
                     _log.info("PlanMeta " + pm.getId() + " migrated");
                 }
@@ -266,11 +267,11 @@ public class MigrationTool {
         
         /* Plan model run */
         for (PlanModelRun pmr: PlanModelRunLocalServiceUtil.getPlanModelRuns(0, Integer.MAX_VALUE)) {
-            if (pmr.getScenarioId() != null) {
+            if (pmr.getScenarioId() != 0L) {
                 if (scenarioMapping.containsKey(pmr.getScenarioId())) {
                     if (update) {
                         pmr.setScenarioId(scenarioMapping.get(pmr.getScenarioId()));
-                        pmr.store();
+                        PlanModelRunLocalServiceUtil.store(pmr);
 
                         _log.info("PlanModelRun " + pmr.getId() + " migrated");
                     }

@@ -17,5 +17,6 @@
 
   <modules>
     <module>sampleSpringMvc1</module>
+    <module>proposals-portlet</module>
   </modules>
 </project>

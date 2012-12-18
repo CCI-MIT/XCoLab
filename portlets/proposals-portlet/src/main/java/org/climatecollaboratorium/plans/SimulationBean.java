@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.plans;
 
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -63,7 +64,7 @@ public class SimulationBean {
                             saved = false;
                             return;
                         }
-                        plan.setScenarioId(arg0.getScenario().getId(), Helper.getLiferayUser().getUserId());
+                        PlanItemLocalServiceUtil.setScenarioId(plan, arg0.getScenario().getId(), Helper.getLiferayUser().getUserId());
                         //System.out.println("Scenario id: " + arg0.getScenario().getId());
 
                         SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),

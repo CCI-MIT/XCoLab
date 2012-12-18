@@ -1,9 +1,11 @@
 package org.climatecollaboratorium.plans;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,8 @@ import org.climatecollaboratorium.plans.wrappers.PlanIndexItemWrapper;
 
 import com.ext.portlet.contests.ContestPhaseHelper;
 import com.ext.portlet.contests.model.ContestPhase;
+import com.ext.portlet.contests.service.ContestLocalServiceUtil;
+import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.plans.NoSuchPlanVoteException;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.PlanConstants.Attribute;
@@ -33,10 +37,10 @@ import com.ext.portlet.plans.PlanConstants.Columns;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanVote;
 import com.ext.portlet.plans.model.PlansUserSettings;
+import com.ext.portlet.plans.service.PlanItemLocalService;
 import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
-import com.ext.portlet.plans.service.PlansUserSettingsLocalServiceUtil;
-import com.liferay.faces.bridge.component.icefaces.DataPaginator;
+import com.icesoft.faces.component.datapaginator.DataPaginator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -196,7 +200,7 @@ public class PlansIndexBean {
 
                 if (showPreviousProposals) {
                     queryPhases.clear();
-                    queryPhases.addAll(contestPhase.getPhase().getPreviousPhases());
+                    queryPhases.addAll(ContestPhaseLocalServiceUtil.getPreviousPhases(contestPhase.getPhase()));
                 }
             }
         } else {
@@ -362,9 +366,10 @@ public class PlansIndexBean {
                 sortAttribute = sortCol.getSortAttribute().name();
             }
             if (showPreviousProposals) {
-                notFilteredPlans = PlanItemLocalServiceUtil.getPlans(ectx.getSessionMap(), ectx.getRequestMap(), null, queryPhases, 0, 1000, sortAttribute, sortAscending ? "ASC" : "DESC", false);
+                notFilteredPlans = PlanItemLocalServiceUtil.getPlans(ectx.getSessionMap(), ectx.getRequestMap(), null, 
+                        queryPhases, 0, 1000, sortAttribute, sortAscending ? "ASC" : "DESC", false);
             } else {
-                notFilteredPlans = PlanItemLocalServiceUtil.getPlans(ectx.getSessionMap(), ectx.getRequestMap(), null, contestPhase.getPhase(), 0, 1000, sortAttribute, sortAscending ? "ASC" : "DESC", false);
+                notFilteredPlans = PlanItemLocalServiceUtil.getPlans(ectx.getSessionMap(), ectx.getRequestMap(), 0L, contestPhase.getPhase().getContestPK(), 0, 1000, sortAttribute, sortAscending ? "ASC" : "DESC", false);                
             }
             
             Attribute sortAttr = Attribute.valueOf(sortAttribute);
@@ -376,7 +381,10 @@ public class PlansIndexBean {
 
 
             final Long userId = Helper.isUserLoggedIn() ? Helper.getLiferayUser().getUserId() : -1;
-            for (Iterator<PlanItem> i = PlanItemLocalServiceUtil.applyFilters(ectx.getSessionMap(), ectx.getRequestMap(), contestPhase.getPhase().getContest().getPlanType(), notFilteredPlans).iterator();i.hasNext();) {
+            for (Iterator<PlanItem> i = PlanItemLocalServiceUtil.applyFilters(ectx.getSessionMap(), 
+                    ectx.getRequestMap(), ContestLocalServiceUtil.getPlanType(
+                            ContestPhaseLocalServiceUtil.getContest(contestPhase.getPhase())), 
+                    notFilteredPlans).iterator();i.hasNext();) {
                 PlanItem plan = i.next();
                 if (plan.getVersion() < 2) {
                     i.remove();
@@ -384,13 +392,13 @@ public class PlansIndexBean {
                 }
                 PlanIndexItemWrapper piiw = new PlanIndexItemWrapper(plan, this);
                 
-                if (plan.getRibbon() != null && plan.getRibbon() > 0) {
+                if (PlanItemLocalServiceUtil.getRibbon(plan) != null && PlanItemLocalServiceUtil.getRibbon(plan) > 0) {
                     plansWithRibbons.add(piiw);
                 }
-                else if (plan.getTags() != null) {
+                else if (PlanItemLocalServiceUtil.getTags(plan) != null) {
                     plansFeatured.add(piiw);
                 }
-                else if (plan.getName().startsWith("Untitled")) {
+                else if (PlanItemLocalServiceUtil.getName(plan).startsWith("Untitled")) {
                     plansUntitled.add(piiw);
                 }
                 else {
@@ -501,7 +509,7 @@ public class PlansIndexBean {
 
     private void columnsUpdate() throws PortalException, SystemException {
         ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
-        plansUserSettings = PlansUserSettingsLocalServiceUtil.getPlanUserSettings(ectx.getSessionMap(), ectx.getRequestMap(), contestPhase.getPlanType());
+        //plansUserSettings = PlansUserSettingsLocalServiceUtil.getPlanUserSettings(ectx.getSessionMap(), ectx.getRequestMap(), contestPhase.getPlanType());
         columns = new ArrayList<Columns>();
         for (Columns col : ContestPhaseHelper.getPhaseColumns(contestPhase.getPhase())) {
             columns.add(col);

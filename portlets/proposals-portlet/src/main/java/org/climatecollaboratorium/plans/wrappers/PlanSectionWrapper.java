@@ -9,10 +9,13 @@ import javax.faces.model.SelectItem;
 import org.climatecollaboratorium.plans.Helper;
 import org.climatecollaboratorium.plans.utils.ContentFilteringHelper;
 
+import com.ext.portlet.ontology.model.FocusArea;
 import com.ext.portlet.plans.NoSuchPlanItemException;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanSection;
 import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanSectionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -29,7 +32,7 @@ public class PlanSectionWrapper {
         this.section = section;
         piw = planItemWrapper;
         referencedPlans = new ArrayList<Long>();
-        for (PlanItem plan: section.getReferencedPlans()) {
+        for (PlanItem plan: PlanSectionLocalServiceUtil.getReferencedPlans(section)) {
             referencedPlans.add(plan.getId());
         }
         oryginalContent = section.getContent();
@@ -58,8 +61,11 @@ public class PlanSectionWrapper {
         boolean changed = false;
         if (Helper.isUserLoggedIn() && !section.getContent().trim().equals(oryginalContent)) {
             
-            PlanItemLocalServiceUtil.getPlan(section.getPlanId())
-                    .setSectionContent(section.getDefinition(), ContentFilteringHelper.removeStylingFromHTMLContent(section.getContent()), referencedPlans, Helper.getLiferayUser().getUserId());
+            PlanItemLocalServiceUtil
+                    .setSectionContent(PlanItemLocalServiceUtil.getPlan(section.getPlanId()), 
+                            PlanSectionLocalServiceUtil.getDefinition(section), 
+                            ContentFilteringHelper.removeStylingFromHTMLContent(section.getContent()), 
+                            referencedPlans, Helper.getLiferayUser().getUserId());
             changed = true;
         }
         toggleEditing(e);
@@ -71,9 +77,11 @@ public class PlanSectionWrapper {
     public List<SelectItem> getPlansForReference() throws PortalException, SystemException {
         List<SelectItem> ret = new ArrayList<SelectItem>();
         
-        if (section.getDefinition().getFocusArea() != null) {
-            for (PlanItem plan: PlanItemLocalServiceUtil.findPlansForFocusArea(section.getDefinition().getFocusArea())) {
-                ret.add(new SelectItem(plan.getPlanId(), plan.getName()));
+        FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(
+                PlanSectionLocalServiceUtil.getDefinition(section));
+        if (fa != null) {
+            for (PlanItem plan: PlanItemLocalServiceUtil.findPlansForFocusArea(fa)) {
+                ret.add(new SelectItem(plan.getPlanId(), PlanItemLocalServiceUtil.getName(plan)));
             }
         }
 

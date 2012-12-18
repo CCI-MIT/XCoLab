@@ -3,20 +3,29 @@
 <portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
 	<portlet>
 		<portlet-name>proposals-portlet</portlet-name>
-		<display-name>proposals-portlet</display-name>
-		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+		<display-name>MIT Climate Collaboratorium Plans Portlet (ICE)</display-name>
+		<portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
 		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/views/view.xhtml</value>
+			<name>com.icesoft.faces.VIEW</name>
+			<value>/xhtml/view.iface</value>
 		</init-param>
-		<expiration-cache>0</expiration-cache>
+		<init-param>
+			<name>com.icesoft.faces.EDIT</name>
+			<value>/xhtml/edit.iface</value>
+		</init-param>
+		<init-param>
+			<name>com.icesoft.faces.HELP</name>
+			<value>/xhtml/help.iface</value>
+		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>
+			<portlet-mode>edit</portlet-mode>
+			<portlet-mode>help</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>proposals-portlet</title>
-			<short-title>proposals-portlet</short-title>
-			<keywords>proposals-portlet</keywords>
+			<title>Mit Climate Collaboratorium Plans Portlet</title>
+			<short-title>Plans Portlet</short-title>
+			<keywords>Plans</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>

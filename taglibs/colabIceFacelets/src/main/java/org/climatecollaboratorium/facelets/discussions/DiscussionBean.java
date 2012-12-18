@@ -116,8 +116,8 @@ public class DiscussionBean {
 
             updatePageType();
             
-            if (discussion.getCommentThread() != null) { 
-                commentsThread = new MessageWrapper(discussion.getCommentThread(), null, this, 0);
+            if (DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion) != null) { 
+                commentsThread = new MessageWrapper(DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion), null, this, 0);
             }
         } catch (Exception e) {
             _log.error("Error when initializing discussion bean", e);
@@ -261,8 +261,8 @@ public class DiscussionBean {
         }
         if (showOnlyComments) {
             pageType = DiscussionPageType.COMMENTS;
-            if (commentsThread == null && discussion.getCommentThread() != null) { 
-                commentsThread = new MessageWrapper(discussion.getCommentThread(), null, this, 0);
+            if (commentsThread == null && DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion) != null) { 
+                commentsThread = new MessageWrapper(DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion), null, this, 0);
             }
         }
         else if (pageType == DiscussionPageType.CATEGORY) {
@@ -305,7 +305,7 @@ public class DiscussionBean {
         if (categories == null && discussion != null) {
             categories = new ArrayList<CategoryWrapper>();
             categoriesById = new HashMap<Long, CategoryWrapper>();
-            for (DiscussionCategory category : discussion.getCategories()) {
+            for (DiscussionCategory category : DiscussionCategoryGroupLocalServiceUtil.getCategories(discussion)) {
                 CategoryWrapper catWrapper = new CategoryWrapper(category, this);
                 categories.add(catWrapper);
                 categoriesById.put(catWrapper.getId(), catWrapper);
@@ -503,7 +503,7 @@ public class DiscussionBean {
     }
     
     public int getCommentsCount() throws SystemException, PortalException {
-        return discussion.getCommentsCount();
+        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(discussion);
     }
     
     public int getThreadsCount() throws SystemException {

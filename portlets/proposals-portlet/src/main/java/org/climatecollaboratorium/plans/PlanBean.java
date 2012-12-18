@@ -25,6 +25,7 @@ import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanTypeAttribute;
 import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -127,12 +128,12 @@ public class PlanBean {
 
         if (parameters.containsKey(NEW_PLAN_PARAM) && permissions.getCanEdit()) {
             // 
-            if (planItem.getPlanDescriptions().get(0).getVersion() == 1) {
+            if (PlanItemLocalServiceUtil.getPlanDescriptions(planItem).get(0).getVersion() == 1) {
                 editingDescription = true;
                 editingName = true;
                 editing = true;
             }
-            if (planItem.getAllPlanModelRuns().get(0).getVersion() == 0) {
+            if (PlanItemLocalServiceUtil.getAllPlanModelRuns(planItem).get(0).getVersion() == 0) {
                 if (!simulationBean.isEditing()) {
                     simulationBean.edit(null);
                     externalSimulationBean.editActions(null);
@@ -151,7 +152,8 @@ public class PlanBean {
     }
 
     public int getDefaultTab() throws SystemException, PortalException {
-        if (planItem != null && planItem.getAllPlanModelRuns().get(0).getVersion() == 0 && permissions.getCanEdit() && planItem.getPlanType().getModelId() > 0) {
+        if (planItem != null && PlanItemLocalServiceUtil.getAllPlanModelRuns(planItem).get(0).getVersion() == 0 && 
+                permissions.getCanEdit() && PlanItemLocalServiceUtil.getPlanType(planItem).getModelId() > 0) {
             return tabNameIndexMap.get("actionsimpacts");
         } else
             return tabNameIndexMap.get("description");
@@ -210,8 +212,8 @@ public class PlanBean {
         editingDescription = !editingDescription;
         editingName = !editingName;
         
-        plan.setName(plan.getWrapped().getName());
-        plan.setDescription(plan.getWrapped().getDescription());
+        plan.setName(PlanItemLocalServiceUtil.getName(plan.getWrapped()));
+        plan.setDescription(PlanItemLocalServiceUtil.getDescription(plan.getWrapped()));
         
         plan.refresh();
     }
@@ -226,8 +228,8 @@ public class PlanBean {
     }
 
     public void editName(ActionEvent e) throws SystemException {
-        plan.setName(plan.getWrapped().getName());
-        plan.setDescription(plan.getWrapped().getDescription());
+        plan.setName(PlanItemLocalServiceUtil.getName(plan.getWrapped()));
+        plan.setDescription(PlanItemLocalServiceUtil.getDescription(plan.getWrapped()));
         editingName = !editingName;
     }
 
@@ -324,8 +326,8 @@ public class PlanBean {
     public String getRelativeUrl() throws SystemException, PortalException, UnsupportedEncodingException {
         String result;
         if (plan != null) {
-            result = "http://climatecolab.org/web/guest/plans/-/plans/contestId/" + 
-                plan.getWrapped().getContest().getContestPK() + "/planId/" + getPlanId();
+            result = "http://climatecolab.org/web/guest/plans/-/plans/contestId/" +
+                    PlanItemLocalServiceUtil.getContest(plan.getWrapped()).getContestPK() + "/planId/" + getPlanId();
         }
         else {
             result = "http://climatecolab.org/web/guest/plans/-/plans/";
@@ -376,7 +378,7 @@ public class PlanBean {
     public boolean getHasAbstract() throws SystemException, PortalException {
         if (hasAbstract == null) {
             hasAbstract = false;
-            for (PlanTypeAttribute a:  planItem.getPlanType().getAttributes()) {
+            for (PlanTypeAttribute a:  PlanTypeLocalServiceUtil.getAttributes(PlanItemLocalServiceUtil.getPlanType(planItem))) {
                 if (a.getAttributeName().equals(PlanConstants.Columns.ABSTRACT.name())) {
                     hasAbstract = true; 
                     break;
@@ -429,7 +431,7 @@ public class PlanBean {
             if (oldEditing) {
                 this.refresh();
                 if (planItem.getVersion() == 1) {
-                    planItem.delete(Helper.getLiferayUser().getUserId());
+                    PlanItemLocalServiceUtil.delete(planItem, Helper.getLiferayUser().getUserId());
                     leaveThisPlan = true;
                 }
                 else {
@@ -500,9 +502,9 @@ public class PlanBean {
         
         public int getActivityCount() throws SystemException, PortalException {
             if (tab == PlanTab.COMMENTS) 
-                return plan.getCommentsCount();
+                return PlanItemLocalServiceUtil.getCommentsCount(plan);
             else if (tab == PlanTab.TEAM) 
-                return plan.getMembers().size();
+                return PlanItemLocalServiceUtil.getMembers(plan).size();
             return 0;
         }
         

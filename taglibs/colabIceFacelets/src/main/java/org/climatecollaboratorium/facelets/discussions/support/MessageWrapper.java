@@ -21,6 +21,9 @@ import com.ext.portlet.discussions.DiscussionMessageFlagType;
 import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
 import com.ext.portlet.discussions.model.DiscussionMessage;
 import com.ext.portlet.discussions.model.DiscussionMessageFlag;
+import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.discussions.service.DiscussionCategoryLocalServiceUtil;
+import com.ext.portlet.discussions.service.DiscussionMessageLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -72,7 +75,7 @@ public class MessageWrapper {
         }
         
         
-        if (wrapped.getThreadId() == null) {
+        if (wrapped.getThreadId() <= 0) {
             // message represents a thread create placeholder for new message
             newMessage = new MessageWrapper(this);
         }
@@ -116,7 +119,7 @@ public class MessageWrapper {
         if (messages == null || messages.size() == 0) {
             messages = new ArrayList<MessageWrapper>();
             messages.add(this);
-            for (DiscussionMessage message: wrapped.getThreadMessages()) {
+            for (DiscussionMessage message: DiscussionMessageLocalServiceUtil.getThreadMessages(wrapped)) {
                 messages.add(new MessageWrapper(message, category, discussionBean, 0));
             }
             
@@ -141,7 +144,7 @@ public class MessageWrapper {
     }
     
     public int getThreadMessagesCount() throws SystemException {
-        return wrapped.getThreadMessagesCount();
+        return DiscussionMessageLocalServiceUtil.getThreadMessagesCount(wrapped);
     }
     
     public void save(ActionEvent e) throws SystemException, PortalException {
@@ -156,7 +159,8 @@ public class MessageWrapper {
             
             
             category = discussionBean.getCategoryById(categoryId);
-            wrapped = category.getWrapped().addThread(title, description, Helper.getLiferayUser());
+            wrapped = DiscussionCategoryLocalServiceUtil.addThread(category.getWrapped(), 
+                    title, description, Helper.getLiferayUser());
             added = true;
             category.threadAdded(this);
             newMessage = new MessageWrapper(this);
@@ -187,7 +191,8 @@ public class MessageWrapper {
             // title set by default
             title = "message title";
             
-            wrapped = thread.getWrapped().addThreadMessage(title, description, Helper.getLiferayUser());
+            wrapped = DiscussionMessageLocalServiceUtil.addThreadMessage(thread.getWrapped(), title, description, 
+                    Helper.getLiferayUser());
             added = true;
             thread.addMessage(this);
             filteredDescription = ContentFilterHelper.filterContent(description);
@@ -212,7 +217,7 @@ public class MessageWrapper {
                 return;
             }
             title = discussionBean.getDiscussion().getDescription() + " comment"; 
-            wrapped = discussionBean.getDiscussion().addComment(title, description, Helper.getLiferayUser());
+            wrapped = DiscussionCategoryGroupLocalServiceUtil.addComment(discussionBean.getDiscussion(), title, description, Helper.getLiferayUser());
             added = true;
 
             discussionBean.commentAdded(this);
@@ -245,7 +250,7 @@ public class MessageWrapper {
             }
             
             
-            wrapped.update(title, description);
+            DiscussionMessageLocalServiceUtil.update(wrapped, title, description);
             filteredDescription = ContentFilterHelper.filterContent(description);
             editing = false;
         }
@@ -256,7 +261,7 @@ public class MessageWrapper {
     }
     
     private Long getThreadId(DiscussionMessage msg) {
-        return msg.getThreadId() != null ? msg.getThreadId() : msg.getMessageId();
+        return msg.getThreadId() > 0 ? msg.getThreadId() : msg.getMessageId();
     }
     
     public MessageWrapper getNewMessage() {
@@ -264,7 +269,7 @@ public class MessageWrapper {
     }
 
     public User getAuthor() throws PortalException, SystemException {
-        return wrapped.getAuthor();
+        return DiscussionMessageLocalServiceUtil.getAuthor(wrapped);
     }
     
     public Date getCreateDate() {
@@ -317,7 +322,7 @@ public class MessageWrapper {
     }
     
     public User getLastActivityAuthor() throws PortalException, SystemException {
-        return wrapped.getLastActivityAuthor();
+        return DiscussionMessageLocalServiceUtil.getLastActivityAuthor(wrapped);
     }
 
     public Long getCategoryId() {
@@ -330,7 +335,7 @@ public class MessageWrapper {
     
     public void delete(ActionEvent e) throws SystemException, PortalException {
         if (discussionBean.getPermissions().getCanAdminMessages()) {
-            wrapped.delete();
+            DiscussionMessageLocalServiceUtil.delete(wrapped);
             if (thread != null) {
                 // this is a message within a thread
                 thread.messageDeleted(this);
@@ -369,7 +374,7 @@ public class MessageWrapper {
     }
     
     public Long getThreadId() {
-        return wrapped.getThreadId() != null ? wrapped.getThreadId() : wrapped.getMessageId();
+        return wrapped.getThreadId() > 0 ? wrapped.getThreadId() : wrapped.getMessageId();
     }
 
     public void setGoTo(boolean goTo) {
@@ -414,8 +419,8 @@ public class MessageWrapper {
     }
     
     public boolean hasFlag(String flagType) throws SystemException {
-        if (wrapped != null && wrapped.getMessageId() != null) {
-            for (DiscussionMessageFlag flag: wrapped.getFlags()) {
+        if (wrapped != null && wrapped.getMessageId() > 0) {
+            for (DiscussionMessageFlag flag: DiscussionMessageLocalServiceUtil.getFlags(wrapped)) {
                 if (flag.getFlagType().equals(flagType)) {
                     return true;
                 }
@@ -427,12 +432,12 @@ public class MessageWrapper {
     public void addFlag(ActionEvent e) throws SystemException {
         String flagType = e.getComponent().getAttributes().get("flagType").toString();
         
-        wrapped.addFlag(flagType, null, Helper.getLiferayUser());
+        DiscussionMessageLocalServiceUtil.addFlag(wrapped, flagType, null, Helper.getLiferayUser());
     }
     
     public void removeFlag(ActionEvent e) throws SystemException {
         String flagType = e.getComponent().getAttributes().get("flagType").toString();
         
-        wrapped.removeFlag(flagType);
+        DiscussionMessageLocalServiceUtil.removeFlag(wrapped, flagType);
     }
 }

@@ -17,6 +17,7 @@ import com.ext.portlet.Activity.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.contests.model.Contest;
 import com.ext.portlet.contests.model.ContestPhase;
 import com.ext.portlet.contests.service.ContestLocalServiceUtil;
+import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
@@ -77,28 +78,28 @@ public class CreatePlanBean {
                 Contest contest = ContestLocalServiceUtil.getContest(contestId);
                 
                 String defaultDescription = contest.getDefaultPlanDescription();
-                planItem = PlanItemLocalServiceUtil.createPlan(contest.getActivePhase(), Helper.getLiferayUser().getUserId());
+                planItem = PlanItemLocalServiceUtil.createPlan(ContestLocalServiceUtil.getActivePhase(contest), Helper.getLiferayUser().getUserId());
 
-                planItem.setDescription(defaultDescription, Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.setDescription(planItem, defaultDescription, Helper.getLiferayUser().getUserId());
             }
             else if (contestWrapper != null) {
                 String defaultDescription = contestWrapper.getContest().getDefaultPlanDescription();
                 
-                planItem = PlanItemLocalServiceUtil.createPlan(contestWrapper.getContest().getActivePhase(), Helper.getLiferayUser().getUserId());
-                planItem.setDescription(defaultDescription, Helper.getLiferayUser().getUserId());
+                planItem = PlanItemLocalServiceUtil.createPlan(ContestLocalServiceUtil.getActivePhase(contestWrapper.getContest()), Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.setDescription(planItem, defaultDescription, Helper.getLiferayUser().getUserId());
             } else if (plansIndexBean != null) {
                 // get default description
-                String defaultDescription = plansIndexBean.getContestPhase().getPhase().getContest().getDefaultPlanDescription();
+                String defaultDescription = ContestPhaseLocalServiceUtil.getContest(plansIndexBean.getContestPhase().getPhase()).getDefaultPlanDescription();
                 planItem = PlanItemLocalServiceUtil.createPlan(plansIndexBean.getContestPhase().getPhase(), Helper.getLiferayUser().getUserId());
-                planItem.setDescription(defaultDescription, Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.setDescription(planItem, defaultDescription, Helper.getLiferayUser().getUserId());
             }
             else if (planBean != null) {
                 // we need to create a plan based on a plan that is currently visible
                 PlanItemWrapper wrapper = planBean.getPlan();
                 PlanItem item = wrapper.getWrapped();
-                ContestPhase phase = item.getContestPhase();
-                if (!phase.getContestStatus().isCanEdit()) {
-                    List<ContestPhase> active = phase.getContest().getActivePhases();
+                ContestPhase phase = PlanItemLocalServiceUtil.getContestPhase(item);
+                if (!ContestPhaseLocalServiceUtil.getContestStatus(phase).isCanEdit()) {
+                    List<ContestPhase> active = ContestLocalServiceUtil.getActivePhases(ContestPhaseLocalServiceUtil.getContest(phase));
                     if (active == null || active.isEmpty()) {
                         _log.warn("Connect create plan ");
                         return;
@@ -107,7 +108,7 @@ public class CreatePlanBean {
                     }
                 }
                 planItem = PlanItemLocalServiceUtil.createPlan(planBean.getPlan().getWrapped(), phase, Helper.getLiferayUser().getUserId());
-                planItem.setName(planItem.getName()+"(copy of "+planBean.getPlan().getWrapped().getName()+")",Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.setName(planItem, PlanItemLocalServiceUtil.getName(planItem)+"(copy of "+ PlanItemLocalServiceUtil.getName(planBean.getPlan().getWrapped())+")",Helper.getLiferayUser().getUserId());
             } else {
 
                 //i don't think this is actually called.
@@ -115,16 +116,16 @@ public class CreatePlanBean {
                 plansIndexBean = (PlansIndexBean) e.getComponent().getAttributes().get("plansIndexBean");
                 String defaultDescription = preferences.getDefaultDescription();
                 planItem = PlanItemLocalServiceUtil.createPlan(plansIndexBean.getContestPhase().getPhase(), Helper.getLiferayUser().getUserId());
-                planItem.setDescription(defaultDescription, Helper.getLiferayUser().getUserId());
+                PlanItemLocalServiceUtil.setDescription(planItem, defaultDescription, Helper.getLiferayUser().getUserId());
 
             }
             eventBus.fireEvent(new PlanCreatedEvent(planItem));
             
-            if (planItem.getContest().getPlansOpenByDefault()) {
-            	planItem.setOpen(true);
+            if (PlanItemLocalServiceUtil.getContest(planItem).getPlansOpenByDefault()) {
+                PlanItemLocalServiceUtil.setOpen(planItem, true);
             }
             else {
-            	planItem.setOpen(false);
+                PlanItemLocalServiceUtil.setOpen(planItem, false);
             }
             
             // subscribe plan
@@ -132,18 +133,22 @@ public class CreatePlanBean {
             
             
             // fetch all users subscribed to current contest, and subscribe them to this proposal too
-            for (ActivitySubscription subscription: ActivitySubscriptionLocalServiceUtil.getActivitySubscriptions(Contest.class, planItem.getContest().getContestPK(), null, "")) {
+            for (ActivitySubscription subscription: ActivitySubscriptionLocalServiceUtil.getActivitySubscriptions(Contest.class, 
+                    PlanItemLocalServiceUtil.getContest(planItem).getContestPK(), null, "")) {
             	//subscription.getReceiverId();
                 ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), null, "",
                         subscription.getReceiverId());
 
-                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, planItem.getCategoryGroupId(), 
+                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
+                        PlanItemLocalServiceUtil.getCategoryGroupId(planItem), 
                         null, "", subscription.getReceiverId());
             }
 
             ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), null, "", Helper.getLiferayUser().getUserId());
             // subscribe to comments
-            ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, planItem.getCategoryGroupId(), null, "", planItem.getAuthorId());
+            ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
+                    PlanItemLocalServiceUtil.getCategoryGroupId(planItem), null, "", 
+                    PlanItemLocalServiceUtil.getAuthorId(planItem));
             planId = planItem.getPlanId();
             navigateToPlan = true;
         }

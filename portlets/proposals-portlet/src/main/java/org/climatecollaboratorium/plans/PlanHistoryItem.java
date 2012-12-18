@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.ext.portlet.plans.UpdateType;
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -15,7 +16,7 @@ public class PlanHistoryItem {
 
     public PlanHistoryItem(PlanItem plan) throws PortalException, SystemException  {
         this.plan = plan;
-        updateAuthor = plan.getUpdateAuthor();
+        updateAuthor = PlanItemLocalServiceUtil.getUpdateAuthor(plan);
         updateType = plan.getUpdateType();
     }
 

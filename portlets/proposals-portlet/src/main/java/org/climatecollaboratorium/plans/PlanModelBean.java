@@ -6,14 +6,11 @@
 
 package org.climatecollaboratorium.plans;
 
-import com.ext.portlet.plans.model.PlanItem;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.event.ActionEvent;
@@ -21,6 +18,13 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.climatecollaboratorium.plans.wrappers.PlanModelWrapper;
+
+import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import edu.mit.cci.simulation.client.Simulation;
 
@@ -55,17 +59,17 @@ public class PlanModelBean {
         this.planItem = item;
 
         try {
-            List<Simulation> available = planItem.getPlanType().getAvailableModels();
+            List<Simulation> available = PlanTypeLocalServiceUtil.getAvailableModels(PlanItemLocalServiceUtil.getPlanType(planItem));
             boolean simple = (available.size() == 1);
 
 
-            for (Simulation sim : planItem.getPlanType().getAvailableModels()) {
+            for (Simulation sim : PlanTypeLocalServiceUtil.getAvailableModels(PlanItemLocalServiceUtil.getPlanType(planItem))) {
                 PlanModelWrapper wrapper = new PlanModelWrapper(sim,simple);
                 SelectItem sitem = new SelectItem(sim.getId(), sim.getName());
                 availableItems.add(sitem);
                 
                 availableMap.put(wrapper.getId(),wrapper);
-                if (sim.getId().equals(planItem.getPlanMeta().getModelId())) {
+                if (sim.getId().equals(PlanItemLocalServiceUtil.getPlanMeta(planItem).getModelId())) {
                     selectedItem = wrapper.getId();
                     currentItem = wrapper.getId();
                 }
@@ -82,12 +86,12 @@ public class PlanModelBean {
 
         //This is terrible - shouldn't happen, but if it does, just reset to the default model.
         if (currentItem == null) {
-           Long id = planItem.getPlanType().getDefaultModelId();
+           Long id = PlanItemLocalServiceUtil.getPlanType(planItem).getDefaultModelId();
            for (SelectItem sitem:availableItems) {
               if (sitem.getValue().equals(id)) {
                   currentItem = selectedItem = (Long) sitem.getValue();
-                  planItem.setModelId(id,10144L);
-                  planItem.store();
+                  PlanItemLocalServiceUtil.setModelId(planItem, id, 10144L);
+                  PlanItemLocalServiceUtil.store(planItem);
               }
            }
         }
@@ -134,7 +138,7 @@ public class PlanModelBean {
     public void submit(ActionEvent e) {
         currentItem = selectedItem;
         try {
-            planItem.setModelId(getCurrentModel().getCoreModel().getId(),td.getUserId());
+            PlanItemLocalServiceUtil.setModelId(planItem, getCurrentModel().getCoreModel().getId(),td.getUserId());
         } catch (PortalException e1) {
             e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (SystemException e1) {
