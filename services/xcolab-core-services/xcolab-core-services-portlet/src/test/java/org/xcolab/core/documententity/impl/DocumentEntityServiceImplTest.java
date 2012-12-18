@@ -48,7 +48,7 @@ public class DocumentEntityServiceImplTest {
 		long prev = System.currentTimeMillis();
 		
 		DocumentEntity entity = svc.createEntity("/proposals");
-		for (int i=0; i < 1000; i++) {
+		for (int i=0; i < 10; i++) {
 			entity = svc.createEntity("/proposals");
 			System.out.print(i + " " + (System.currentTimeMillis() - prev) + "\t");
 			prev = System.currentTimeMillis();

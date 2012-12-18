@@ -6,11 +6,14 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Random;
 
+import javax.jcr.RepositoryException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.xcolab.core.documententity.DocumentEntityException;
 import org.xcolab.core.documententity.EntityVersion;
 import org.xcolab.core.documententity.impl.DocumentEntityServiceImpl;
+import org.xcolab.core.documententity.impl.HasNode;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -78,7 +81,7 @@ public class ContestServiceImplTest {
 		contest.setShortName("This is a short name");
 		contestsSvc.updateEntity(contest);
 
-		contest.setName("Contest name 2");
+		contest.setName("Contest name 3");
 		contest.setShortName("This is a short name");
 		contest.setDescription("This is a description");
 		contestsSvc.updateEntity(contest);
@@ -87,8 +90,19 @@ public class ContestServiceImplTest {
 		
 		List<EntityVersion<Contest>> versions = contestsSvc.getVersions(contestFromRepo);
 		for (EntityVersion<Contest> v: versions) {
-			System.out.println(Arrays.toString(v.getTags()));
+			Contest c = v.getEntity();
+			try {
+                System.out.println(((HasNode) c).getNode().getPath());
+                System.out.println(c.getVersion());
+            } catch (RepositoryException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 		}
+		
+		contest.getVersion();
+		
+		
 		
 	}
 	

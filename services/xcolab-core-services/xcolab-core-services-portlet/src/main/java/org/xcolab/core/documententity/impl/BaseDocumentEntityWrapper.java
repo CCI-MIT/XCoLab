@@ -12,6 +12,7 @@ import javax.jcr.Node;
 import org.xcolab.core.documententity.DocumentEntity;
 import org.xcolab.core.documententity.DocumentEntityException;
 import org.xcolab.core.documententity.DocumentEntityWrapper;
+import org.xcolab.core.documententity.EntityVersion;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -258,6 +259,17 @@ public class BaseDocumentEntityWrapper implements DocumentEntityWrapper, HasNode
             Class<IT> itemType) throws DocumentEntityException {
         return wrapArray(wrapped.getChildren(property), listType, itemType);
     }
+
+    @Override
+    public DocumentEntity getParent() throws DocumentEntityException {
+        return wrapped.getParent();
+    }
+
+    @Override
+    public EntityVersion<DocumentEntity> getVersion() throws DocumentEntityException {
+        return wrapped.getVersion();
+    }
+
 
 
 

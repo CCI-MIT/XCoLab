@@ -7,6 +7,7 @@ import org.xcolab.core.documententity.DocumentEntityException;
 import org.xcolab.core.documententity.impl.BaseDocumentEntityWrapper;
 import org.xcolab.core.ontology.OntologyDimension;
 import org.xcolab.core.ontology.OntologyEntry;
+import org.xcolab.core.proposals.template.ProposalTemplate;
 
 public class ContestImpl extends BaseDocumentEntityWrapper implements Contest {
 	public final static String NAME = "name";
@@ -76,5 +77,15 @@ public class ContestImpl extends BaseDocumentEntityWrapper implements Contest {
 
     public List<OntologyEntry> getOntologyEntries(OntologyDimension dimension) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setTemplate(ProposalTemplate template) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public ProposalTemplate getTemplate() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -8,6 +8,7 @@ import javax.jcr.ValueFormatException;
 import javax.jcr.version.Version;
 
 import org.xcolab.core.documententity.DocumentEntity;
+import org.xcolab.core.documententity.DocumentEntityException;
 import org.xcolab.core.documententity.EntityVersion;
 
 import com.liferay.portal.kernel.log.Log;
@@ -34,7 +35,7 @@ public class EntityVersionImpl<T extends DocumentEntity> implements EntityVersio
 		return null;
 	} 
 
-	public Long getAuthor() {
+	public Object getAuthor() {
 		try {
 			return JcrVersionUtils.getVersionAuthor(version.getFrozenNode());
 		} catch (ValueFormatException e) {
@@ -63,6 +64,54 @@ public class EntityVersionImpl<T extends DocumentEntity> implements EntityVersio
 	public T getEntity() {
 		return entity;
 	}
+
+    @Override
+    public boolean isLatest() throws DocumentEntityException {
+        try {
+            System.out.println("successors: " + version.getSuccessors().length);
+            return version.getSuccessors().length == 0;
+        }
+        catch (RepositoryException e) {
+            throw new DocumentEntityException(e);
+        }
+    }
+    
+    @Override
+    public boolean isFirst() throws DocumentEntityException {
+        try {
+            System.out.println("predecessors: " + version.getPredecessors().length);
+            return version.getPredecessors().length == 0;
+        }
+        catch (RepositoryException e) {
+            throw new DocumentEntityException(e);
+        }
+    }
+
+    @Override
+    public EntityVersion<T> getPrev() throws DocumentEntityException {
+        try {
+            Version[] versions = version.getPredecessors();
+            if (versions.length == 0) return null;
+            
+            return new EntityVersionImpl(versions[0], new DocumentEntityImpl(versions[0].getFrozenNode()));
+        }
+        catch (RepositoryException e) {
+            throw new DocumentEntityException(e);
+        }
+    }
+
+    @Override
+    public EntityVersion<T> getNext() throws DocumentEntityException {
+        try {
+            Version[] versions = version.getSuccessors();
+            if (versions.length == 0) return null;
+            
+            return new EntityVersionImpl(versions[0], new DocumentEntityImpl(versions[0].getFrozenNode()));
+        }
+        catch (RepositoryException e) {
+            throw new DocumentEntityException(e);
+        }
+    }
 	
 
 

@@ -6,4 +6,9 @@
 		<constructor-arg name="service" ref="documentEntityServiceImpl" />
 	</bean>
 	
+	<bean id="eventBusImpl" class="org.xcolab.core.events.EventBusImpl" />
+	<bean id="eventBusLocalServiceUtil" class="org.xcolab.core.events.EventBusLocalServiceUtil">
+		<constructor-arg name="eventBus" ref="eventBusImpl" />
+	</bean>
+	
 </beans>

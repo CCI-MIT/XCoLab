@@ -9,16 +9,20 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import javax.jcr.ValueFactory;
 import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
+import javax.jcr.version.Version;
 import javax.jcr.version.VersionException;
+import javax.jcr.version.VersionIterator;
 
 import org.xcolab.core.documententity.DocumentEntity;
 import org.xcolab.core.documententity.DocumentEntityException;
+import org.xcolab.core.documententity.EntityVersion;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -501,6 +505,42 @@ public class DocumentEntityImpl implements DocumentEntity, HasNode {
             return false;
         
         return node.equals(((DocumentEntityImpl) obj).node);
+        
+    }
+
+    @Override
+    public DocumentEntity getParent() throws DocumentEntityException {
+        try {
+            return new DocumentEntityImpl(node.getParent());
+        }
+        catch (RepositoryException e) {
+            throw new DocumentEntityException("Can't access node parent for node: " + node, e);
+        }
+    }
+
+    @Override
+    public EntityVersion<DocumentEntity> getVersion() throws DocumentEntityException {
+        try {
+            Version version = null;
+            if (! node.isNodeType("nt:frozenNode")) {
+                version = node.getSession().getWorkspace().getVersionManager().getBaseVersion(node.getPath());
+            }
+            else {
+                Node baseNode = node.getProperty("jcr:frozenUuid").getNode();
+                
+                VersionIterator iterator = 
+                        node.getSession().getWorkspace().getVersionManager().getVersionHistory(baseNode.getPath()).getAllVersions();
+                while (iterator.hasNext()) {
+                    version = iterator.nextVersion();
+                    if (version.getFrozenNode().getIdentifier().equals(node.getIdentifier())) break;
+                }
+            }
+
+            return new EntityVersionImpl<DocumentEntity>(version, new DocumentEntityImpl(version.getFrozenNode()));
+        } catch (RepositoryException e) {
+            throw new DocumentEntityException(e);
+        }
+        
         
     }
     
