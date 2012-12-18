@@ -28,6 +28,7 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
     private MethodKey _findPlanAttributeMethodKey18;
     private MethodKey _getPlanAttributesMethodKey19;
     private MethodKey _getPlanAttributesByNameValueMethodKey20;
+    private MethodKey _getTypedValueMethodKey21;
 
     public PlanAttributeLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -37,10 +38,10 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
                 com.ext.portlet.plans.model.PlanAttribute.class);
 
         _createPlanAttributeMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanAttribute", java.lang.Long.class);
+                "createPlanAttribute", long.class);
 
         _deletePlanAttributeMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanAttribute", java.lang.Long.class);
+                "deletePlanAttribute", long.class);
 
         _deletePlanAttributeMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanAttribute",
@@ -66,10 +67,10 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanAttributeMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanAttribute", java.lang.Long.class);
+                "fetchPlanAttribute", long.class);
 
         _getPlanAttributeMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanAttribute", java.lang.Long.class);
+                "getPlanAttribute", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -107,6 +108,9 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
         _getPlanAttributesByNameValueMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPlanAttributesByNameValue", java.lang.String.class,
                 java.lang.String.class);
+
+        _getTypedValueMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getTypedValue", com.ext.portlet.plans.model.PlanAttribute.class);
     }
 
     public com.ext.portlet.plans.model.PlanAttribute addPlanAttribute(
@@ -136,11 +140,11 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
     }
 
     public com.ext.portlet.plans.model.PlanAttribute createPlanAttribute(
-        java.lang.Long attributeId) {
+        long attributeId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanAttributeMethodKey1,
-                ClpSerializer.translateInput(attributeId));
+                attributeId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -156,11 +160,11 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
         return (com.ext.portlet.plans.model.PlanAttribute) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanAttribute(java.lang.Long attributeId)
+    public void deletePlanAttribute(long attributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanAttributeMethodKey2,
-                ClpSerializer.translateInput(attributeId));
+                attributeId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -315,12 +319,12 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
     }
 
     public com.ext.portlet.plans.model.PlanAttribute fetchPlanAttribute(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanAttributeMethodKey8,
-                ClpSerializer.translateInput(attributeId));
+                attributeId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -341,13 +345,13 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
     }
 
     public com.ext.portlet.plans.model.PlanAttribute getPlanAttribute(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanAttributeMethodKey9,
-                ClpSerializer.translateInput(attributeId));
+                attributeId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -639,6 +643,27 @@ public class PlanAttributeLocalServiceClp implements PlanAttributeLocalService {
         }
 
         return (java.util.List<com.ext.portlet.plans.model.PlanAttribute>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.lang.Object getTypedValue(
+        com.ext.portlet.plans.model.PlanAttribute pa) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getTypedValueMethodKey21,
+                ClpSerializer.translateInput(pa));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.Object) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

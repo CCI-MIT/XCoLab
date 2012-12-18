@@ -45,7 +45,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @param id the primary key for the new plan team history
     * @return the new plan team history
     */
-    public com.ext.portlet.plans.model.PlanTeamHistory create(java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanTeamHistory create(long id);
 
     /**
     * Removes the plan team history with the primary key from the database. Also notifies the appropriate model listeners.
@@ -55,7 +55,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanTeamHistory remove(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanTeamHistory remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -72,8 +72,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanTeamHistory findByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanTeamHistory findByPrimaryKey(long id)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -85,8 +84,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTeamHistory fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the plan team histories where planId = &#63;.
@@ -96,8 +94,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanTeamHistory> findByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long planId) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns a range of all the plan team histories where planId = &#63;.
@@ -113,7 +110,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanTeamHistory> findByPlanId(
-        java.lang.Long planId, int start, int end)
+        long planId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -131,7 +128,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanTeamHistory> findByPlanId(
-        java.lang.Long planId, int start, int end,
+        long planId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -149,7 +146,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTeamHistory findByPlanId_First(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -168,7 +165,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTeamHistory findByPlanId_Last(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -188,7 +185,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTeamHistory[] findByPlanId_PrevAndNext(
-        java.lang.Long id, java.lang.Long planId,
+        long id, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -203,7 +200,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTeamHistory findByLastUserActionInPlan(
-        java.lang.Long planId, java.lang.Long userId)
+        long planId, long userId)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -216,7 +213,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTeamHistory fetchByLastUserActionInPlan(
-        java.lang.Long planId, java.lang.Long userId)
+        long planId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -229,7 +226,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTeamHistory fetchByLastUserActionInPlan(
-        java.lang.Long planId, java.lang.Long userId, boolean retrieveFromCache)
+        long planId, long userId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -281,7 +278,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanId(java.lang.Long planId)
+    public void removeByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -291,8 +288,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByLastUserActionInPlan(java.lang.Long planId,
-        java.lang.Long userId)
+    public void removeByLastUserActionInPlan(long planId, long userId)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -311,7 +307,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @return the number of matching plan team histories
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanId(java.lang.Long planId)
+    public int countByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -322,8 +318,7 @@ public interface PlanTeamHistoryPersistence extends BasePersistence<PlanTeamHist
     * @return the number of matching plan team histories
     * @throws SystemException if a system exception occurred
     */
-    public int countByLastUserActionInPlan(java.lang.Long planId,
-        java.lang.Long userId)
+    public int countByLastUserActionInPlan(long planId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

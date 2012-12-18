@@ -1,6 +1,6 @@
 package com.ext.portlet.Activity.service.persistence;
 
-import com.ext.portlet.Activity.NoSuchSubscriptionException;
+import com.ext.portlet.Activity.NoSuchActivitySubscriptionException;
 import com.ext.portlet.Activity.model.ActivitySubscription;
 import com.ext.portlet.Activity.model.impl.ActivitySubscriptionImpl;
 import com.ext.portlet.Activity.model.impl.ActivitySubscriptionModelImpl;
@@ -403,7 +403,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param pk the primary key for the new activity subscription
      * @return the new activity subscription
      */
-    public ActivitySubscription create(Long pk) {
+    public ActivitySubscription create(long pk) {
         ActivitySubscription activitySubscription = new ActivitySubscriptionImpl();
 
         activitySubscription.setNew(true);
@@ -417,12 +417,12 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      *
      * @param pk the primary key of the activity subscription
      * @return the activity subscription that was removed
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ActivitySubscription remove(Long pk)
-        throws NoSuchSubscriptionException, SystemException {
-        return remove((Serializable) pk);
+    public ActivitySubscription remove(long pk)
+        throws NoSuchActivitySubscriptionException, SystemException {
+        return remove(Long.valueOf(pk));
     }
 
     /**
@@ -430,12 +430,12 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      *
      * @param primaryKey the primary key of the activity subscription
      * @return the activity subscription that was removed
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public ActivitySubscription remove(Serializable primaryKey)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         Session session = null;
 
         try {
@@ -449,12 +449,12 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
                     _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
                 }
 
-                throw new NoSuchSubscriptionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                throw new NoSuchActivitySubscriptionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                     primaryKey);
             }
 
             return remove(activitySubscription);
-        } catch (NoSuchSubscriptionException nsee) {
+        } catch (NoSuchActivitySubscriptionException nsee) {
             throw nsee;
         } catch (Exception e) {
             throw processException(e);
@@ -690,19 +690,19 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
     @Override
     public ActivitySubscription findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
-     * Returns the activity subscription with the primary key or throws a {@link com.ext.portlet.Activity.NoSuchSubscriptionException} if it could not be found.
+     * Returns the activity subscription with the primary key or throws a {@link com.ext.portlet.Activity.NoSuchActivitySubscriptionException} if it could not be found.
      *
      * @param pk the primary key of the activity subscription
      * @return the activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ActivitySubscription findByPrimaryKey(Long pk)
-        throws NoSuchSubscriptionException, SystemException {
+    public ActivitySubscription findByPrimaryKey(long pk)
+        throws NoSuchActivitySubscriptionException, SystemException {
         ActivitySubscription activitySubscription = fetchByPrimaryKey(pk);
 
         if (activitySubscription == null) {
@@ -710,7 +710,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
                 _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + pk);
             }
 
-            throw new NoSuchSubscriptionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+            throw new NoSuchActivitySubscriptionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                 pk);
         }
 
@@ -727,7 +727,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
     @Override
     public ActivitySubscription fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -737,7 +737,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @return the activity subscription, or <code>null</code> if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ActivitySubscription fetchByPrimaryKey(Long pk)
+    public ActivitySubscription fetchByPrimaryKey(long pk)
         throws SystemException {
         ActivitySubscription activitySubscription = (ActivitySubscription) EntityCacheUtil.getResult(ActivitySubscriptionModelImpl.ENTITY_CACHE_ENABLED,
                 ActivitySubscriptionImpl.class, pk);
@@ -783,7 +783,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @return the matching activity subscriptions
      * @throws SystemException if a system exception occurred
      */
-    public List<ActivitySubscription> findByreceiverId(Long receiverId)
+    public List<ActivitySubscription> findByreceiverId(long receiverId)
         throws SystemException {
         return findByreceiverId(receiverId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -802,7 +802,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @return the range of matching activity subscriptions
      * @throws SystemException if a system exception occurred
      */
-    public List<ActivitySubscription> findByreceiverId(Long receiverId,
+    public List<ActivitySubscription> findByreceiverId(long receiverId,
         int start, int end) throws SystemException {
         return findByreceiverId(receiverId, start, end, null);
     }
@@ -821,7 +821,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @return the ordered range of matching activity subscriptions
      * @throws SystemException if a system exception occurred
      */
-    public List<ActivitySubscription> findByreceiverId(Long receiverId,
+    public List<ActivitySubscription> findByreceiverId(long receiverId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -869,7 +869,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(receiverId.longValue());
+                qPos.add(receiverId);
 
                 list = (List<ActivitySubscription>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -901,12 +901,12 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ActivitySubscription findByreceiverId_First(Long receiverId,
+    public ActivitySubscription findByreceiverId_First(long receiverId,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         List<ActivitySubscription> list = findByreceiverId(receiverId, 0, 1,
                 orderByComparator);
 
@@ -920,7 +920,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -936,12 +936,12 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the last matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ActivitySubscription findByreceiverId_Last(Long receiverId,
+    public ActivitySubscription findByreceiverId_Last(long receiverId,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         int count = countByreceiverId(receiverId);
 
         List<ActivitySubscription> list = findByreceiverId(receiverId,
@@ -957,7 +957,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -974,12 +974,12 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the previous, current, and next activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ActivitySubscription[] findByreceiverId_PrevAndNext(Long pk,
-        Long receiverId, OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+    public ActivitySubscription[] findByreceiverId_PrevAndNext(long pk,
+        long receiverId, OrderByComparator orderByComparator)
+        throws NoSuchActivitySubscriptionException, SystemException {
         ActivitySubscription activitySubscription = findByPrimaryKey(pk);
 
         Session session = null;
@@ -1007,7 +1007,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
     protected ActivitySubscription getByreceiverId_PrevAndNext(
         Session session, ActivitySubscription activitySubscription,
-        Long receiverId, OrderByComparator orderByComparator, boolean previous) {
+        long receiverId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -1080,7 +1080,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(receiverId.longValue());
+        qPos.add(receiverId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(activitySubscription);
@@ -1109,7 +1109,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKReceiverId(
-        Long classNameId, Long classPK, Long receiverId)
+        long classNameId, long classPK, long receiverId)
         throws SystemException {
         return findByClassNameIdClassPKReceiverId(classNameId, classPK,
             receiverId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -1131,7 +1131,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKReceiverId(
-        Long classNameId, Long classPK, Long receiverId, int start, int end)
+        long classNameId, long classPK, long receiverId, int start, int end)
         throws SystemException {
         return findByClassNameIdClassPKReceiverId(classNameId, classPK,
             receiverId, start, end, null);
@@ -1154,7 +1154,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKReceiverId(
-        Long classNameId, Long classPK, Long receiverId, int start, int end,
+        long classNameId, long classPK, long receiverId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1209,11 +1209,11 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
-                qPos.add(receiverId.longValue());
+                qPos.add(receiverId);
 
                 list = (List<ActivitySubscription>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1247,13 +1247,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription findByClassNameIdClassPKReceiverId_First(
-        Long classNameId, Long classPK, Long receiverId,
+        long classNameId, long classPK, long receiverId,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         List<ActivitySubscription> list = findByClassNameIdClassPKReceiverId(classNameId,
                 classPK, receiverId, 0, 1, orderByComparator);
 
@@ -1273,7 +1273,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -1291,13 +1291,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the last matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription findByClassNameIdClassPKReceiverId_Last(
-        Long classNameId, Long classPK, Long receiverId,
+        long classNameId, long classPK, long receiverId,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         int count = countByClassNameIdClassPKReceiverId(classNameId, classPK,
                 receiverId);
 
@@ -1320,7 +1320,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -1339,13 +1339,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the previous, current, and next activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription[] findByClassNameIdClassPKReceiverId_PrevAndNext(
-        Long pk, Long classNameId, Long classPK, Long receiverId,
+        long pk, long classNameId, long classPK, long receiverId,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         ActivitySubscription activitySubscription = findByPrimaryKey(pk);
 
         Session session = null;
@@ -1375,7 +1375,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
     protected ActivitySubscription getByClassNameIdClassPKReceiverId_PrevAndNext(
         Session session, ActivitySubscription activitySubscription,
-        Long classNameId, Long classPK, Long receiverId,
+        long classNameId, long classPK, long receiverId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1453,11 +1453,11 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(classNameId.longValue());
+        qPos.add(classNameId);
 
-        qPos.add(classPK.longValue());
+        qPos.add(classPK);
 
-        qPos.add(receiverId.longValue());
+        qPos.add(receiverId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(activitySubscription);
@@ -1487,7 +1487,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeReceiverId(
-        Long classNameId, Long classPK, Integer type, Long receiverId)
+        long classNameId, long classPK, int type, long receiverId)
         throws SystemException {
         return findByClassNameIdClassPKTypeReceiverId(classNameId, classPK,
             type, receiverId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -1510,8 +1510,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeReceiverId(
-        Long classNameId, Long classPK, Integer type, Long receiverId,
-        int start, int end) throws SystemException {
+        long classNameId, long classPK, int type, long receiverId, int start,
+        int end) throws SystemException {
         return findByClassNameIdClassPKTypeReceiverId(classNameId, classPK,
             type, receiverId, start, end, null);
     }
@@ -1534,9 +1534,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeReceiverId(
-        Long classNameId, Long classPK, Integer type, Long receiverId,
-        int start, int end, OrderByComparator orderByComparator)
-        throws SystemException {
+        long classNameId, long classPK, int type, long receiverId, int start,
+        int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
@@ -1592,13 +1591,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
-                qPos.add(type.intValue());
+                qPos.add(type);
 
-                qPos.add(receiverId.longValue());
+                qPos.add(receiverId);
 
                 list = (List<ActivitySubscription>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1633,13 +1632,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription findByClassNameIdClassPKTypeReceiverId_First(
-        Long classNameId, Long classPK, Integer type, Long receiverId,
+        long classNameId, long classPK, int type, long receiverId,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         List<ActivitySubscription> list = findByClassNameIdClassPKTypeReceiverId(classNameId,
                 classPK, type, receiverId, 0, 1, orderByComparator);
 
@@ -1662,7 +1661,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -1681,13 +1680,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the last matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription findByClassNameIdClassPKTypeReceiverId_Last(
-        Long classNameId, Long classPK, Integer type, Long receiverId,
+        long classNameId, long classPK, int type, long receiverId,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         int count = countByClassNameIdClassPKTypeReceiverId(classNameId,
                 classPK, type, receiverId);
 
@@ -1713,7 +1712,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -1733,13 +1732,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the previous, current, and next activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription[] findByClassNameIdClassPKTypeReceiverId_PrevAndNext(
-        Long pk, Long classNameId, Long classPK, Integer type, Long receiverId,
+        long pk, long classNameId, long classPK, int type, long receiverId,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         ActivitySubscription activitySubscription = findByPrimaryKey(pk);
 
         Session session = null;
@@ -1769,7 +1768,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
     protected ActivitySubscription getByClassNameIdClassPKTypeReceiverId_PrevAndNext(
         Session session, ActivitySubscription activitySubscription,
-        Long classNameId, Long classPK, Integer type, Long receiverId,
+        long classNameId, long classPK, int type, long receiverId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1849,13 +1848,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(classNameId.longValue());
+        qPos.add(classNameId);
 
-        qPos.add(classPK.longValue());
+        qPos.add(classPK);
 
-        qPos.add(type.intValue());
+        qPos.add(type);
 
-        qPos.add(receiverId.longValue());
+        qPos.add(receiverId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(activitySubscription);
@@ -1886,8 +1885,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeExtraDataReceiverId(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        Long receiverId) throws SystemException {
+        long classNameId, long classPK, int type, String extraData,
+        long receiverId) throws SystemException {
         return findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId,
             classPK, type, extraData, receiverId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -1911,8 +1910,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeExtraDataReceiverId(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        Long receiverId, int start, int end) throws SystemException {
+        long classNameId, long classPK, int type, String extraData,
+        long receiverId, int start, int end) throws SystemException {
         return findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId,
             classPK, type, extraData, receiverId, start, end, null);
     }
@@ -1936,8 +1935,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeExtraDataReceiverId(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        Long receiverId, int start, int end, OrderByComparator orderByComparator)
+        long classNameId, long classPK, int type, String extraData,
+        long receiverId, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -2006,17 +2005,17 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
-                qPos.add(type.intValue());
+                qPos.add(type);
 
                 if (extraData != null) {
                     qPos.add(extraData);
                 }
 
-                qPos.add(receiverId.longValue());
+                qPos.add(receiverId);
 
                 list = (List<ActivitySubscription>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -2052,13 +2051,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription findByClassNameIdClassPKTypeExtraDataReceiverId_First(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        Long receiverId, OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        long classNameId, long classPK, int type, String extraData,
+        long receiverId, OrderByComparator orderByComparator)
+        throws NoSuchActivitySubscriptionException, SystemException {
         List<ActivitySubscription> list = findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId,
                 classPK, type, extraData, receiverId, 0, 1, orderByComparator);
 
@@ -2084,7 +2083,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -2104,13 +2103,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the last matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription findByClassNameIdClassPKTypeExtraDataReceiverId_Last(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        Long receiverId, OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        long classNameId, long classPK, int type, String extraData,
+        long receiverId, OrderByComparator orderByComparator)
+        throws NoSuchActivitySubscriptionException, SystemException {
         int count = countByClassNameIdClassPKTypeExtraDataReceiverId(classNameId,
                 classPK, type, extraData, receiverId);
 
@@ -2140,7 +2139,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -2161,13 +2160,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the previous, current, and next activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription[] findByClassNameIdClassPKTypeExtraDataReceiverId_PrevAndNext(
-        Long pk, Long classNameId, Long classPK, Integer type,
-        String extraData, Long receiverId, OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        long pk, long classNameId, long classPK, int type, String extraData,
+        long receiverId, OrderByComparator orderByComparator)
+        throws NoSuchActivitySubscriptionException, SystemException {
         ActivitySubscription activitySubscription = findByPrimaryKey(pk);
 
         Session session = null;
@@ -2197,8 +2196,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
     protected ActivitySubscription getByClassNameIdClassPKTypeExtraDataReceiverId_PrevAndNext(
         Session session, ActivitySubscription activitySubscription,
-        Long classNameId, Long classPK, Integer type, String extraData,
-        Long receiverId, OrderByComparator orderByComparator, boolean previous) {
+        long classNameId, long classPK, int type, String extraData,
+        long receiverId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -2287,17 +2286,17 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(classNameId.longValue());
+        qPos.add(classNameId);
 
-        qPos.add(classPK.longValue());
+        qPos.add(classPK);
 
-        qPos.add(type.intValue());
+        qPos.add(type);
 
         if (extraData != null) {
             qPos.add(extraData);
         }
 
-        qPos.add(receiverId.longValue());
+        qPos.add(receiverId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(activitySubscription);
@@ -2327,7 +2326,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeExtraData(
-        Long classNameId, Long classPK, Integer type, String extraData)
+        long classNameId, long classPK, int type, String extraData)
         throws SystemException {
         return findByClassNameIdClassPKTypeExtraData(classNameId, classPK,
             type, extraData, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -2350,8 +2349,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeExtraData(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        int start, int end) throws SystemException {
+        long classNameId, long classPK, int type, String extraData, int start,
+        int end) throws SystemException {
         return findByClassNameIdClassPKTypeExtraData(classNameId, classPK,
             type, extraData, start, end, null);
     }
@@ -2374,9 +2373,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public List<ActivitySubscription> findByClassNameIdClassPKTypeExtraData(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        int start, int end, OrderByComparator orderByComparator)
-        throws SystemException {
+        long classNameId, long classPK, int type, String extraData, int start,
+        int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
@@ -2440,11 +2438,11 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
-                qPos.add(type.intValue());
+                qPos.add(type);
 
                 if (extraData != null) {
                     qPos.add(extraData);
@@ -2483,13 +2481,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param extraData the extra data
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription findByClassNameIdClassPKTypeExtraData_First(
-        Long classNameId, Long classPK, Integer type, String extraData,
+        long classNameId, long classPK, int type, String extraData,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         List<ActivitySubscription> list = findByClassNameIdClassPKTypeExtraData(classNameId,
                 classPK, type, extraData, 0, 1, orderByComparator);
 
@@ -2512,7 +2510,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -2531,13 +2529,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param extraData the extra data
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the last matching activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription findByClassNameIdClassPKTypeExtraData_Last(
-        Long classNameId, Long classPK, Integer type, String extraData,
+        long classNameId, long classPK, int type, String extraData,
         OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        throws NoSuchActivitySubscriptionException, SystemException {
         int count = countByClassNameIdClassPKTypeExtraData(classNameId,
                 classPK, type, extraData);
 
@@ -2563,7 +2561,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchSubscriptionException(msg.toString());
+            throw new NoSuchActivitySubscriptionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -2583,13 +2581,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param extraData the extra data
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the previous, current, and next activity subscription
-     * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+     * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public ActivitySubscription[] findByClassNameIdClassPKTypeExtraData_PrevAndNext(
-        Long pk, Long classNameId, Long classPK, Integer type,
-        String extraData, OrderByComparator orderByComparator)
-        throws NoSuchSubscriptionException, SystemException {
+        long pk, long classNameId, long classPK, int type, String extraData,
+        OrderByComparator orderByComparator)
+        throws NoSuchActivitySubscriptionException, SystemException {
         ActivitySubscription activitySubscription = findByPrimaryKey(pk);
 
         Session session = null;
@@ -2619,7 +2617,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
     protected ActivitySubscription getByClassNameIdClassPKTypeExtraData_PrevAndNext(
         Session session, ActivitySubscription activitySubscription,
-        Long classNameId, Long classPK, Integer type, String extraData,
+        long classNameId, long classPK, int type, String extraData,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -2707,11 +2705,11 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(classNameId.longValue());
+        qPos.add(classNameId);
 
-        qPos.add(classPK.longValue());
+        qPos.add(classPK);
 
-        qPos.add(type.intValue());
+        qPos.add(type);
 
         if (extraData != null) {
             qPos.add(extraData);
@@ -2849,7 +2847,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByreceiverId(Long receiverId) throws SystemException {
+    public void removeByreceiverId(long receiverId) throws SystemException {
         for (ActivitySubscription activitySubscription : findByreceiverId(
                 receiverId)) {
             remove(activitySubscription);
@@ -2864,8 +2862,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByClassNameIdClassPKReceiverId(Long classNameId,
-        Long classPK, Long receiverId) throws SystemException {
+    public void removeByClassNameIdClassPKReceiverId(long classNameId,
+        long classPK, long receiverId) throws SystemException {
         for (ActivitySubscription activitySubscription : findByClassNameIdClassPKReceiverId(
                 classNameId, classPK, receiverId)) {
             remove(activitySubscription);
@@ -2881,8 +2879,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param receiverId the receiver ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByClassNameIdClassPKTypeReceiverId(Long classNameId,
-        Long classPK, Integer type, Long receiverId) throws SystemException {
+    public void removeByClassNameIdClassPKTypeReceiverId(long classNameId,
+        long classPK, int type, long receiverId) throws SystemException {
         for (ActivitySubscription activitySubscription : findByClassNameIdClassPKTypeReceiverId(
                 classNameId, classPK, type, receiverId)) {
             remove(activitySubscription);
@@ -2900,8 +2898,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public void removeByClassNameIdClassPKTypeExtraDataReceiverId(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        Long receiverId) throws SystemException {
+        long classNameId, long classPK, int type, String extraData,
+        long receiverId) throws SystemException {
         for (ActivitySubscription activitySubscription : findByClassNameIdClassPKTypeExtraDataReceiverId(
                 classNameId, classPK, type, extraData, receiverId)) {
             remove(activitySubscription);
@@ -2917,8 +2915,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @param extraData the extra data
      * @throws SystemException if a system exception occurred
      */
-    public void removeByClassNameIdClassPKTypeExtraData(Long classNameId,
-        Long classPK, Integer type, String extraData) throws SystemException {
+    public void removeByClassNameIdClassPKTypeExtraData(long classNameId,
+        long classPK, int type, String extraData) throws SystemException {
         for (ActivitySubscription activitySubscription : findByClassNameIdClassPKTypeExtraData(
                 classNameId, classPK, type, extraData)) {
             remove(activitySubscription);
@@ -2943,7 +2941,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @return the number of matching activity subscriptions
      * @throws SystemException if a system exception occurred
      */
-    public int countByreceiverId(Long receiverId) throws SystemException {
+    public int countByreceiverId(long receiverId) throws SystemException {
         Object[] finderArgs = new Object[] { receiverId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_RECEIVERID,
@@ -2967,7 +2965,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(receiverId.longValue());
+                qPos.add(receiverId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2996,8 +2994,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @return the number of matching activity subscriptions
      * @throws SystemException if a system exception occurred
      */
-    public int countByClassNameIdClassPKReceiverId(Long classNameId,
-        Long classPK, Long receiverId) throws SystemException {
+    public int countByClassNameIdClassPKReceiverId(long classNameId,
+        long classPK, long receiverId) throws SystemException {
         Object[] finderArgs = new Object[] { classNameId, classPK, receiverId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CLASSNAMEIDCLASSPKRECEIVERID,
@@ -3025,11 +3023,11 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
-                qPos.add(receiverId.longValue());
+                qPos.add(receiverId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -3059,8 +3057,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @return the number of matching activity subscriptions
      * @throws SystemException if a system exception occurred
      */
-    public int countByClassNameIdClassPKTypeReceiverId(Long classNameId,
-        Long classPK, Integer type, Long receiverId) throws SystemException {
+    public int countByClassNameIdClassPKTypeReceiverId(long classNameId,
+        long classPK, int type, long receiverId) throws SystemException {
         Object[] finderArgs = new Object[] {
                 classNameId, classPK, type, receiverId
             };
@@ -3092,13 +3090,13 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
-                qPos.add(type.intValue());
+                qPos.add(type);
 
-                qPos.add(receiverId.longValue());
+                qPos.add(receiverId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -3130,8 +3128,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @throws SystemException if a system exception occurred
      */
     public int countByClassNameIdClassPKTypeExtraDataReceiverId(
-        Long classNameId, Long classPK, Integer type, String extraData,
-        Long receiverId) throws SystemException {
+        long classNameId, long classPK, int type, String extraData,
+        long receiverId) throws SystemException {
         Object[] finderArgs = new Object[] {
                 classNameId, classPK, type, extraData, receiverId
             };
@@ -3173,17 +3171,17 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
-                qPos.add(type.intValue());
+                qPos.add(type);
 
                 if (extraData != null) {
                     qPos.add(extraData);
                 }
 
-                qPos.add(receiverId.longValue());
+                qPos.add(receiverId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -3213,8 +3211,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
      * @return the number of matching activity subscriptions
      * @throws SystemException if a system exception occurred
      */
-    public int countByClassNameIdClassPKTypeExtraData(Long classNameId,
-        Long classPK, Integer type, String extraData) throws SystemException {
+    public int countByClassNameIdClassPKTypeExtraData(long classNameId,
+        long classPK, int type, String extraData) throws SystemException {
         Object[] finderArgs = new Object[] { classNameId, classPK, type, extraData };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CLASSNAMEIDCLASSPKTYPEEXTRADATA,
@@ -3252,11 +3250,11 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
-                qPos.add(type.intValue());
+                qPos.add(type);
 
                 if (extraData != null) {
                     qPos.add(extraData);

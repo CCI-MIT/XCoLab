@@ -48,7 +48,7 @@ public interface ContestDebateLocalService extends PersistedModelLocalService {
     * @return the new contest debate
     */
     public com.ext.portlet.contests.model.ContestDebate createContestDebate(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the contest debate with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ContestDebateLocalService extends PersistedModelLocalService {
     * @throws PortalException if a contest debate with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteContestDebate(java.lang.Long id)
+    public void deleteContestDebate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,8 +135,7 @@ public interface ContestDebateLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.contests.model.ContestDebate fetchContestDebate(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the contest debate with the primary key.
@@ -148,7 +147,7 @@ public interface ContestDebateLocalService extends PersistedModelLocalService {
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.contests.model.ContestDebate getContestDebate(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -230,5 +229,13 @@ public interface ContestDebateLocalService extends PersistedModelLocalService {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.contests.model.ContestDebate> getContestDebates(
         java.lang.Long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(
+        com.ext.portlet.contests.model.ContestDebate contestDebate)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void delete(
+        com.ext.portlet.contests.model.ContestDebate contestDebate)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

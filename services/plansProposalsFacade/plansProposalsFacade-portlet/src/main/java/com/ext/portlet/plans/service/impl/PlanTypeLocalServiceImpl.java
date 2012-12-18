@@ -1,14 +1,21 @@
 package com.ext.portlet.plans.service.impl;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.plans.NoSuchPlanTypeAttributeException;
 import com.ext.portlet.plans.NoSuchPlanTypeException;
 import com.ext.portlet.plans.model.PlanType;
 import com.ext.portlet.plans.model.PlanTypeAttribute;
 import com.ext.portlet.plans.model.PlanTypeColumn;
+import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanTypeLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import edu.mit.cci.simulation.client.Simulation;
 
 /**
  * The implementation of the plan type local service.
@@ -49,5 +56,49 @@ public class PlanTypeLocalServiceImpl extends PlanTypeLocalServiceBaseImpl {
         catch (NoSuchPlanTypeAttributeException e) {
         }
         return false;
+    }
+    
+
+    public List<Simulation> getAvailableModels(PlanType planType) throws SystemException {
+
+        if (planType.getModelTypeName()!=null && planType.getModelTypeName().trim().length() > 0) {
+               //return new ArrayList<Simulation>(CollaboratoriumModelingService.repository().getSimulationsOfType(planType.getModelTypeName()));
+            return new ArrayList<Simulation>();
+        } else if (planType.getModelId()>0) {
+            try {
+                return Collections.singletonList(CollaboratoriumModelingService.repository().getSimulation(planType.getModelId()));
+            }
+            catch (IOException e) {
+                throw new SystemException(e);
+            }
+        } else return Collections.emptyList();
+       }
+
+    public Simulation getDefaultModel(PlanType planType) throws SystemException {
+        if (planType.getDefaultModelId() <= 0L) {
+            return null;
+        } else {
+            try {
+                return CollaboratoriumModelingService.repository().getSimulation(planType.getDefaultModelId());
+            }
+            catch (IOException e) {
+                throw new SystemException(e);
+            }
+        }
+    }
+
+    
+    public List<PlanTypeColumn> getColumns(PlanType planType) throws SystemException {
+        List<PlanTypeColumn> cols= PlanTypeLocalServiceUtil.getColumnsByPlanTypeId(planType.getPlanTypeId());
+        return cols == null?Collections.<PlanTypeColumn>emptyList():cols;
+    }
+    
+    public List<PlanTypeAttribute> getAttributes(PlanType planType) throws SystemException {
+        List<PlanTypeAttribute> atts = PlanTypeLocalServiceUtil.getAttributesByPlanTypeId(planType.getPlanTypeId());
+        return atts==null? Collections.<PlanTypeAttribute>emptyList() :atts;
+    }
+    
+    public boolean isRegional(PlanType planType) throws SystemException {
+        return PlanTypeLocalServiceUtil.isRegionalType(planType.getPlanTypeId());
     }
 }

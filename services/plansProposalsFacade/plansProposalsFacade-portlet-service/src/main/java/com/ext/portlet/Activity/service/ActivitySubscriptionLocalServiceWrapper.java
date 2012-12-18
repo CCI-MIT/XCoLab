@@ -41,7 +41,7 @@ public class ActivitySubscriptionLocalServiceWrapper
     * @return the new activity subscription
     */
     public com.ext.portlet.Activity.model.ActivitySubscription createActivitySubscription(
-        java.lang.Long pk) {
+        long pk) {
         return _activitySubscriptionLocalService.createActivitySubscription(pk);
     }
 
@@ -52,7 +52,7 @@ public class ActivitySubscriptionLocalServiceWrapper
     * @throws PortalException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteActivitySubscription(java.lang.Long pk)
+    public void deleteActivitySubscription(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _activitySubscriptionLocalService.deleteActivitySubscription(pk);
@@ -143,8 +143,7 @@ public class ActivitySubscriptionLocalServiceWrapper
     }
 
     public com.ext.portlet.Activity.model.ActivitySubscription fetchActivitySubscription(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return _activitySubscriptionLocalService.fetchActivitySubscription(pk);
     }
 
@@ -157,7 +156,7 @@ public class ActivitySubscriptionLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription getActivitySubscription(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _activitySubscriptionLocalService.getActivitySubscription(pk);
@@ -334,6 +333,33 @@ public class ActivitySubscriptionLocalServiceWrapper
         throws com.liferay.portal.kernel.exception.SystemException {
         return _activitySubscriptionLocalService.getActivities(userId, start,
             count);
+    }
+
+    public void store(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _activitySubscriptionLocalService.store(activitySubscription);
+    }
+
+    public com.ext.portlet.Activity.ICollabActivityInterpreter getInterpreter(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription) {
+        return _activitySubscriptionLocalService.getInterpreter(activitySubscription);
+    }
+
+    public java.lang.String getName(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription) {
+        return _activitySubscriptionLocalService.getName(activitySubscription);
+    }
+
+    public com.ext.portlet.Activity.SubscriptionType getSubscriptionType(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription) {
+        return _activitySubscriptionLocalService.getSubscriptionType(activitySubscription);
+    }
+
+    public void delete(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _activitySubscriptionLocalService.delete(activitySubscription);
     }
 
     /**

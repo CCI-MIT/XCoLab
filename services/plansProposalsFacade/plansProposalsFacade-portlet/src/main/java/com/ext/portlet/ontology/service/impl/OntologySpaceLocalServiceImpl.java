@@ -2,6 +2,7 @@ package com.ext.portlet.ontology.service.impl;
 
 import com.ext.portlet.ontology.model.OntologySpace;
 import com.ext.portlet.ontology.model.OntologyTerm;
+import com.ext.portlet.ontology.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.ontology.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.ontology.service.base.OntologySpaceLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -34,12 +35,25 @@ public class OntologySpaceLocalServiceImpl
         
         space.setName(name);
         space.setDescription(description);
-        space.store();
+        store(space);
         
         // create parent term for new space
         OntologyTerm t = OntologyTermLocalServiceUtil.createTerm(null, "all", space.getId(), null);
         
         return space;
+    }
+    
+    public void store(OntologySpace space) throws SystemException {
+        if (space.isNew()) {
+            OntologySpaceLocalServiceUtil.addOntologySpace(space);
+        }
+        else {
+            OntologySpaceLocalServiceUtil.updateOntologySpace(space);
+        }
+    }
+    
+    public OntologyTerm getTopTerm(OntologySpace space) throws SystemException {
+        return OntologyTermLocalServiceUtil.findByParentIdSpaceId(null, space.getId()).get(0);
     }
     
 }

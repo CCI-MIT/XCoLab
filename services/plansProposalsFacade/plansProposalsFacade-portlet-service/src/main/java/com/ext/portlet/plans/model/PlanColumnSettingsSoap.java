@@ -13,10 +13,10 @@ import java.util.List;
  * @generated
  */
 public class PlanColumnSettingsSoap implements Serializable {
-    private Long _planColumnSettingsId;
+    private long _planColumnSettingsId;
     private String _columnName;
-    private Long _planUserSettingsId;
-    private Boolean _visible;
+    private long _planUserSettingsId;
+    private boolean _visible;
 
     public PlanColumnSettingsSoap() {
     }
@@ -71,19 +71,19 @@ public class PlanColumnSettingsSoap implements Serializable {
         return soapModels.toArray(new PlanColumnSettingsSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planColumnSettingsId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setPlanColumnSettingsId(pk);
     }
 
-    public Long getPlanColumnSettingsId() {
+    public long getPlanColumnSettingsId() {
         return _planColumnSettingsId;
     }
 
-    public void setPlanColumnSettingsId(Long planColumnSettingsId) {
+    public void setPlanColumnSettingsId(long planColumnSettingsId) {
         _planColumnSettingsId = planColumnSettingsId;
     }
 
@@ -95,19 +95,23 @@ public class PlanColumnSettingsSoap implements Serializable {
         _columnName = columnName;
     }
 
-    public Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
-    public void setPlanUserSettingsId(Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planUserSettingsId = planUserSettingsId;
     }
 
-    public Boolean getVisible() {
+    public boolean getVisible() {
         return _visible;
     }
 
-    public void setVisible(Boolean visible) {
+    public boolean isVisible() {
+        return _visible;
+    }
+
+    public void setVisible(boolean visible) {
         _visible = visible;
     }
 }

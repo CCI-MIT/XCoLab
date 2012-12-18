@@ -32,7 +32,7 @@ public class OntologySpaceWrapper implements OntologySpace,
     *
     * @return the primary key of this ontology space
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _ontologySpace.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class OntologySpaceWrapper implements OntologySpace,
     *
     * @param primaryKey the primary key of this ontology space
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _ontologySpace.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class OntologySpaceWrapper implements OntologySpace,
     *
     * @return the ID of this ontology space
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _ontologySpace.getId();
     }
 
@@ -59,7 +59,7 @@ public class OntologySpaceWrapper implements OntologySpace,
     *
     * @param id the ID of this ontology space
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _ontologySpace.setId(id);
     }
 
@@ -170,16 +170,6 @@ public class OntologySpaceWrapper implements OntologySpace,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _ontologySpace.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _ontologySpace.store();
-    }
-
-    public com.ext.portlet.ontology.model.OntologyTerm getTopTerm()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _ontologySpace.getTopTerm();
     }
 
     /**

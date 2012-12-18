@@ -149,7 +149,7 @@ public abstract class ContestTeamMemberLocalServiceBaseImpl
      * @param id the primary key for the new contest team member
      * @return the new contest team member
      */
-    public ContestTeamMember createContestTeamMember(Long id) {
+    public ContestTeamMember createContestTeamMember(long id) {
         return contestTeamMemberPersistence.create(id);
     }
 
@@ -160,7 +160,7 @@ public abstract class ContestTeamMemberLocalServiceBaseImpl
      * @throws PortalException if a contest team member with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteContestTeamMember(Long id)
+    public void deleteContestTeamMember(long id)
         throws PortalException, SystemException {
         ContestTeamMember contestTeamMember = contestTeamMemberPersistence.remove(id);
 
@@ -266,7 +266,7 @@ public abstract class ContestTeamMemberLocalServiceBaseImpl
         return contestTeamMemberPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ContestTeamMember fetchContestTeamMember(Long id)
+    public ContestTeamMember fetchContestTeamMember(long id)
         throws SystemException {
         return contestTeamMemberPersistence.fetchByPrimaryKey(id);
     }
@@ -279,7 +279,7 @@ public abstract class ContestTeamMemberLocalServiceBaseImpl
      * @throws PortalException if a contest team member with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestTeamMember getContestTeamMember(Long id)
+    public ContestTeamMember getContestTeamMember(long id)
         throws PortalException, SystemException {
         return contestTeamMemberPersistence.findByPrimaryKey(id);
     }

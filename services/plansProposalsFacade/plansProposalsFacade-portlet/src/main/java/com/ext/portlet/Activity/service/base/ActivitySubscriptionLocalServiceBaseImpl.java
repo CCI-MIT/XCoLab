@@ -113,7 +113,7 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
      * @param pk the primary key for the new activity subscription
      * @return the new activity subscription
      */
-    public ActivitySubscription createActivitySubscription(Long pk) {
+    public ActivitySubscription createActivitySubscription(long pk) {
         return activitySubscriptionPersistence.create(pk);
     }
 
@@ -124,7 +124,7 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
      * @throws PortalException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteActivitySubscription(Long pk)
+    public void deleteActivitySubscription(long pk)
         throws PortalException, SystemException {
         ActivitySubscription activitySubscription = activitySubscriptionPersistence.remove(pk);
 
@@ -230,7 +230,7 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
         return activitySubscriptionPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ActivitySubscription fetchActivitySubscription(Long pk)
+    public ActivitySubscription fetchActivitySubscription(long pk)
         throws SystemException {
         return activitySubscriptionPersistence.fetchByPrimaryKey(pk);
     }
@@ -243,7 +243,7 @@ public abstract class ActivitySubscriptionLocalServiceBaseImpl
      * @throws PortalException if a activity subscription with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ActivitySubscription getActivitySubscription(Long pk)
+    public ActivitySubscription getActivitySubscription(long pk)
         throws PortalException, SystemException {
         return activitySubscriptionPersistence.findByPrimaryKey(pk);
     }

@@ -26,23 +26,4 @@ public class PlanSectionDefinitionImpl extends PlanSectionDefinitionBaseImpl {
     public PlanSectionDefinitionImpl() {
     }
 
-    public void store() throws SystemException {
-        if (isNew()) {
-            if (getId() == null || getId() <= 0) {
-                this.setId(CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName()));
-            }
-            
-            PlanSectionDefinitionLocalServiceUtil.addPlanSectionDefinition(this);
-        }
-        else {
-            PlanSectionDefinitionLocalServiceUtil.updatePlanSectionDefinition(this);
-        }
-    }
-    
-    public FocusArea getFocusArea() throws PortalException, SystemException {
-        if (getFocusAreaId() != null) {
-            return FocusAreaLocalServiceUtil.getFocusArea(getFocusAreaId());
-        }
-        return null;
-    }
 }

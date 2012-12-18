@@ -13,7 +13,7 @@ import java.util.List;
  * @generated
  */
 public class FocusAreaSoap implements Serializable {
-    private Long _id;
+    private long _id;
     private String _name;
 
     public FocusAreaSoap() {
@@ -64,19 +64,19 @@ public class FocusAreaSoap implements Serializable {
         return soapModels.toArray(new FocusAreaSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 

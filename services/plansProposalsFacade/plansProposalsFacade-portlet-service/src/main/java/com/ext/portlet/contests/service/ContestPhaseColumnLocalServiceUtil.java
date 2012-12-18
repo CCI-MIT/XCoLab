@@ -47,7 +47,7 @@ public class ContestPhaseColumnLocalServiceUtil {
     * @return the new contest phase column
     */
     public static com.ext.portlet.contests.model.ContestPhaseColumn createContestPhaseColumn(
-        java.lang.Long id) {
+        long id) {
         return getService().createContestPhaseColumn(id);
     }
 
@@ -58,7 +58,7 @@ public class ContestPhaseColumnLocalServiceUtil {
     * @throws PortalException if a contest phase column with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteContestPhaseColumn(java.lang.Long id)
+    public static void deleteContestPhaseColumn(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteContestPhaseColumn(id);
@@ -148,8 +148,7 @@ public class ContestPhaseColumnLocalServiceUtil {
     }
 
     public static com.ext.portlet.contests.model.ContestPhaseColumn fetchContestPhaseColumn(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchContestPhaseColumn(id);
     }
 
@@ -162,7 +161,7 @@ public class ContestPhaseColumnLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestPhaseColumn getContestPhaseColumn(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestPhaseColumn(id);

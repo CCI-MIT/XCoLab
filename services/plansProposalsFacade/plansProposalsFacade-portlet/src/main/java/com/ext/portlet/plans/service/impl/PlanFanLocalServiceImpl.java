@@ -4,10 +4,17 @@ import java.util.Date;
 import java.util.List;
 
 import com.ext.portlet.plans.NoSuchPlanFanException;
+import com.ext.portlet.plans.NoSuchPlanItemException;
 import com.ext.portlet.plans.model.PlanFan;
+import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanFanLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanFanLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the plan fan local service.
@@ -51,7 +58,7 @@ public class PlanFanLocalServiceImpl extends PlanFanLocalServiceBaseImpl {
         planFan.setUserId(userId);
         planFan.setCreated(new Date());
         
-        planFan.store();
+        store(planFan);
         
         return planFan;
     }
@@ -60,7 +67,7 @@ public class PlanFanLocalServiceImpl extends PlanFanLocalServiceBaseImpl {
         try {
             PlanFan planFan = planFanPersistence.findByPlanIdUserId(planId, userId);
             planFan.setDeleted(new Date());
-            planFan.store();
+            store(planFan);
             
             // flush the cache
             planFanPersistence.fetchByPlanIdUserId(planId, userId, false);
@@ -80,5 +87,22 @@ public class PlanFanLocalServiceImpl extends PlanFanLocalServiceBaseImpl {
     
     public List<PlanFan> getByUserId(Long userId, int start, int end) throws SystemException {
         return planFanPersistence.findByUserId(userId, start, end);
+    }
+    
+    public void store(PlanFan pf) throws SystemException {
+        if (pf.isNew()) {
+            PlanFanLocalServiceUtil.addPlanFan(pf);
+        }
+        else {
+            PlanFanLocalServiceUtil.updatePlanFan(pf);
+        }
+    }
+    
+    public User getUser(PlanFan pf) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(pf.getUserId());
+    }
+    
+    public PlanItem getPlan(PlanFan pf) throws NoSuchPlanItemException, SystemException {
+        return PlanItemLocalServiceUtil.getPlan(pf.getPlanId());
     }
 }

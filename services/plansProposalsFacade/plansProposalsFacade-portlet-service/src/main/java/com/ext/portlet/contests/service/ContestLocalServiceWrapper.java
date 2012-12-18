@@ -38,8 +38,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     * @param ContestPK the primary key for the new contest
     * @return the new contest
     */
-    public com.ext.portlet.contests.model.Contest createContest(
-        java.lang.Long ContestPK) {
+    public com.ext.portlet.contests.model.Contest createContest(long ContestPK) {
         return _contestLocalService.createContest(ContestPK);
     }
 
@@ -50,7 +49,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     * @throws PortalException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteContest(java.lang.Long ContestPK)
+    public void deleteContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _contestLocalService.deleteContest(ContestPK);
@@ -138,8 +137,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.dynamicQueryCount(dynamicQuery);
     }
 
-    public com.ext.portlet.contests.model.Contest fetchContest(
-        java.lang.Long ContestPK)
+    public com.ext.portlet.contests.model.Contest fetchContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.fetchContest(ContestPK);
     }
@@ -152,8 +150,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     * @throws PortalException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.contests.model.Contest getContest(
-        java.lang.Long ContestPK)
+    public com.ext.portlet.contests.model.Contest getContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContest(ContestPK);
@@ -276,6 +273,138 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         boolean active, java.lang.String flagText)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.findByActiveFlagText(active, flagText);
+    }
+
+    /**
+    * Methods from ContestImpl
+    */
+    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getPhases(
+        com.ext.portlet.contests.model.Contest contest) {
+        return _contestLocalService.getPhases(contest);
+    }
+
+    public com.ext.portlet.plans.model.PlanType getPlanType(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getPlanType(contest);
+    }
+
+    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getActivePhases(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getActivePhases(contest);
+    }
+
+    public com.ext.portlet.contests.model.ContestPhase getActivePhase(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.ext.portlet.contests.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getActivePhase(contest);
+    }
+
+    public boolean isActive(com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.isActive(contest);
+    }
+
+    public java.util.List<java.lang.Long> getDebatesIds(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getDebatesIds(contest);
+    }
+
+    public java.lang.Integer getTotalVotes(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getTotalVotes(contest);
+    }
+
+    public void updateDefaultPlanDescription(
+        com.ext.portlet.contests.model.Contest contest,
+        java.lang.String description)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _contestLocalService.updateDefaultPlanDescription(contest, description);
+    }
+
+    public void store(com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _contestLocalService.store(contest);
+    }
+
+    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getPlanTemplate(contest);
+    }
+
+    public com.ext.portlet.ontology.model.FocusArea getFocusArea(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getFocusArea(contest);
+    }
+
+    public com.liferay.portal.model.Image getLogo(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getLogo(contest);
+    }
+
+    public void setLogo(com.ext.portlet.contests.model.Contest contest,
+        java.io.File logoFile)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        _contestLocalService.setLogo(contest, logoFile);
+    }
+
+    public java.lang.String getLogoPath(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getLogoPath(contest);
+    }
+
+    public long getProposalsCount(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getProposalsCount(contest);
+    }
+
+    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getDiscussionCategoryGroup(contest);
+    }
+
+    public long getCommentsCount(com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getCommentsCount(contest);
+    }
+
+    public long getProposalsCommentsCount(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getProposalsCommentsCount(contest);
+    }
+
+    public long getTotalComments(com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getTotalComments(contest);
+    }
+
+    public java.util.List<com.ext.portlet.contests.model.ContestTeamMember> getTeamMembers(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getTeamMembers(contest);
     }
 
     /**

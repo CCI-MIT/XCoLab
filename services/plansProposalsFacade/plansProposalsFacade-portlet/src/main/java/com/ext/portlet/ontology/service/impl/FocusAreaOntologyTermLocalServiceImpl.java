@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.ext.portlet.ontology.model.FocusArea;
 import com.ext.portlet.ontology.model.FocusAreaOntologyTerm;
+import com.ext.portlet.ontology.model.OntologyTerm;
 import com.ext.portlet.ontology.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.ontology.service.FocusAreaOntologyTermLocalServiceUtil;
+import com.ext.portlet.ontology.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.ontology.service.base.FocusAreaOntologyTermLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -37,12 +40,30 @@ public class FocusAreaOntologyTermLocalServiceImpl
     
     public void addAreaTerm(Long focusAreaId, Long termId) throws PortalException, SystemException {
         FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
-        fa.addTerm(termId);
+        FocusAreaLocalServiceUtil.addTerm(fa, termId);
     }
     
     public void removeAreaTerm(Long focusAreaId, Long termId) throws PortalException, SystemException {
         FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
-        fa.removeTerm(termId);
+        FocusAreaLocalServiceUtil.removeTerm(fa, termId);
         
+    }
+    
+    
+    public void store(FocusAreaOntologyTerm faot) throws SystemException {
+        if (faot.isNew()) {
+            FocusAreaOntologyTermLocalServiceUtil.addFocusAreaOntologyTerm(faot);
+        }
+        else {
+            FocusAreaOntologyTermLocalServiceUtil.updateFocusAreaOntologyTerm(faot);
+        }
+    }
+    
+    public OntologyTerm getTerm(FocusAreaOntologyTerm faot) throws PortalException, SystemException {
+        return OntologyTermLocalServiceUtil.getOntologyTerm(faot.getOntologyTermId());
+    }
+    
+    public FocusArea getArea(FocusAreaOntologyTerm faot) throws PortalException, SystemException {
+        return FocusAreaLocalServiceUtil.getFocusArea(faot.getFocusAreaId());
     }
 }

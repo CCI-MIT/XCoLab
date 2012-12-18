@@ -16,8 +16,8 @@ import java.io.Serializable;
  */
 public class FocusAreaOntologyTermCacheModel implements CacheModel<FocusAreaOntologyTerm>,
     Serializable {
-    public Long focusAreaId;
-    public Long ontologyTermId;
+    public long focusAreaId;
+    public long ontologyTermId;
 
     @Override
     public String toString() {

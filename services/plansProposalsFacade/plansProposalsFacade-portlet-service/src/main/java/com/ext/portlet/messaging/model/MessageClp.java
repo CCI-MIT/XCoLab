@@ -16,9 +16,9 @@ import java.util.Date;
 
 
 public class MessageClp extends BaseModelImpl<Message> implements Message {
-    private Long _messageId;
-    private Long _fromId;
-    private Long _repliesTo;
+    private long _messageId;
+    private long _fromId;
+    private long _repliesTo;
     private Date _createDate;
     private String _subject;
     private String _content;
@@ -34,11 +34,11 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
         return Message.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _messageId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setMessageId(primaryKey);
     }
 
@@ -50,27 +50,27 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getMessageId() {
+    public long getMessageId() {
         return _messageId;
     }
 
-    public void setMessageId(Long messageId) {
+    public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
-    public Long getFromId() {
+    public long getFromId() {
         return _fromId;
     }
 
-    public void setFromId(Long fromId) {
+    public void setFromId(long fromId) {
         _fromId = fromId;
     }
 
-    public Long getRepliesTo() {
+    public long getRepliesTo() {
         return _repliesTo;
     }
 
-    public void setRepliesTo(Long repliesTo) {
+    public void setRepliesTo(long repliesTo) {
         _repliesTo = repliesTo;
     }
 
@@ -96,30 +96,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 
     public void setContent(String content) {
         _content = content;
-    }
-
-    public java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> getRecipients() {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean hasReciever(long userid) {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isOpened(long userid) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setOpened(long userid) {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isArchived(long userid) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setArchived(long userid) {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -178,7 +154,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
             return false;
         }
 
-        Long primaryKey = message.getPrimaryKey();
+        long primaryKey = message.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -189,7 +165,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

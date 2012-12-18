@@ -335,7 +335,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @param id the primary key for the new plan fan
      * @return the new plan fan
      */
-    public PlanFan create(Long id) {
+    public PlanFan create(long id) {
         PlanFan planFan = new PlanFanImpl();
 
         planFan.setNew(true);
@@ -352,9 +352,9 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a plan fan with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan remove(Long id)
+    public PlanFan remove(long id)
         throws NoSuchPlanFanException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -543,7 +543,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
     @Override
     public PlanFan findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -554,7 +554,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a plan fan with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan findByPrimaryKey(Long id)
+    public PlanFan findByPrimaryKey(long id)
         throws NoSuchPlanFanException, SystemException {
         PlanFan planFan = fetchByPrimaryKey(id);
 
@@ -580,7 +580,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
     @Override
     public PlanFan fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -590,7 +590,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the plan fan, or <code>null</code> if a plan fan with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanFan fetchByPrimaryKey(long id) throws SystemException {
         PlanFan planFan = (PlanFan) EntityCacheUtil.getResult(PlanFanModelImpl.ENTITY_CACHE_ENABLED,
                 PlanFanImpl.class, id);
 
@@ -634,7 +634,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanFan> findByPlanId(Long planId) throws SystemException {
+    public List<PlanFan> findByPlanId(long planId) throws SystemException {
         return findByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
 
@@ -651,7 +651,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the range of matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanFan> findByPlanId(Long planId, int start, int end)
+    public List<PlanFan> findByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByPlanId(planId, start, end, null);
     }
@@ -670,7 +670,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the ordered range of matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanFan> findByPlanId(Long planId, int start, int end,
+    public List<PlanFan> findByPlanId(long planId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -720,7 +720,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanFan>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -755,7 +755,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan findByPlanId_First(Long planId,
+    public PlanFan findByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanFanException, SystemException {
         List<PlanFan> list = findByPlanId(planId, 0, 1, orderByComparator);
@@ -789,7 +789,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan findByPlanId_Last(Long planId,
+    public PlanFan findByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanFanException, SystemException {
         int count = countByPlanId(planId);
@@ -827,7 +827,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a plan fan with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan[] findByPlanId_PrevAndNext(Long id, Long planId,
+    public PlanFan[] findByPlanId_PrevAndNext(long id, long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanFanException, SystemException {
         PlanFan planFan = findByPrimaryKey(id);
@@ -856,7 +856,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
     }
 
     protected PlanFan getByPlanId_PrevAndNext(Session session, PlanFan planFan,
-        Long planId, OrderByComparator orderByComparator, boolean previous) {
+        long planId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -932,7 +932,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planFan);
@@ -958,7 +958,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanFan> findByUserId(Long userId) throws SystemException {
+    public List<PlanFan> findByUserId(long userId) throws SystemException {
         return findByUserId(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
 
@@ -975,7 +975,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the range of matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanFan> findByUserId(Long userId, int start, int end)
+    public List<PlanFan> findByUserId(long userId, int start, int end)
         throws SystemException {
         return findByUserId(userId, start, end, null);
     }
@@ -994,7 +994,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the ordered range of matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanFan> findByUserId(Long userId, int start, int end,
+    public List<PlanFan> findByUserId(long userId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1044,7 +1044,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 list = (List<PlanFan>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -1079,7 +1079,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan findByUserId_First(Long userId,
+    public PlanFan findByUserId_First(long userId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanFanException, SystemException {
         List<PlanFan> list = findByUserId(userId, 0, 1, orderByComparator);
@@ -1113,7 +1113,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan findByUserId_Last(Long userId,
+    public PlanFan findByUserId_Last(long userId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanFanException, SystemException {
         int count = countByUserId(userId);
@@ -1151,7 +1151,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a plan fan with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan[] findByUserId_PrevAndNext(Long id, Long userId,
+    public PlanFan[] findByUserId_PrevAndNext(long id, long userId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanFanException, SystemException {
         PlanFan planFan = findByPrimaryKey(id);
@@ -1180,7 +1180,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
     }
 
     protected PlanFan getByUserId_PrevAndNext(Session session, PlanFan planFan,
-        Long userId, OrderByComparator orderByComparator, boolean previous) {
+        long userId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -1256,7 +1256,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(userId.longValue());
+        qPos.add(userId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planFan);
@@ -1284,7 +1284,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan findByPlanIdUserId(Long planId, Long userId)
+    public PlanFan findByPlanIdUserId(long planId, long userId)
         throws NoSuchPlanFanException, SystemException {
         PlanFan planFan = fetchByPlanIdUserId(planId, userId);
 
@@ -1319,7 +1319,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the matching plan fan, or <code>null</code> if a matching plan fan could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan fetchByPlanIdUserId(Long planId, Long userId)
+    public PlanFan fetchByPlanIdUserId(long planId, long userId)
         throws SystemException {
         return fetchByPlanIdUserId(planId, userId, true);
     }
@@ -1333,7 +1333,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the matching plan fan, or <code>null</code> if a matching plan fan could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan fetchByPlanIdUserId(Long planId, Long userId,
+    public PlanFan fetchByPlanIdUserId(long planId, long userId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId, userId };
 
@@ -1366,9 +1366,9 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 List<PlanFan> list = q.list();
 
@@ -1525,7 +1525,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanId(Long planId) throws SystemException {
+    public void removeByPlanId(long planId) throws SystemException {
         for (PlanFan planFan : findByPlanId(planId)) {
             remove(planFan);
         }
@@ -1537,7 +1537,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByUserId(Long userId) throws SystemException {
+    public void removeByUserId(long userId) throws SystemException {
         for (PlanFan planFan : findByUserId(userId)) {
             remove(planFan);
         }
@@ -1550,7 +1550,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanIdUserId(Long planId, Long userId)
+    public void removeByPlanIdUserId(long planId, long userId)
         throws NoSuchPlanFanException, SystemException {
         PlanFan planFan = findByPlanIdUserId(planId, userId);
 
@@ -1575,7 +1575,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the number of matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanId(Long planId) throws SystemException {
+    public int countByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANID,
@@ -1599,7 +1599,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1626,7 +1626,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the number of matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public int countByUserId(Long userId) throws SystemException {
+    public int countByUserId(long userId) throws SystemException {
         Object[] finderArgs = new Object[] { userId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_USERID,
@@ -1650,7 +1650,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1678,7 +1678,7 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
      * @return the number of matching plan fans
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanIdUserId(Long planId, Long userId)
+    public int countByPlanIdUserId(long planId, long userId)
         throws SystemException {
         Object[] finderArgs = new Object[] { planId, userId };
 
@@ -1705,9 +1705,9 @@ public class PlanFanPersistenceImpl extends BasePersistenceImpl<PlanFan>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

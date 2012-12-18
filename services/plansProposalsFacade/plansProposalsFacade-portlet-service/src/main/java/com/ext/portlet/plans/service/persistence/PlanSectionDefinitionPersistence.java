@@ -45,8 +45,7 @@ public interface PlanSectionDefinitionPersistence extends BasePersistence<PlanSe
     * @param id the primary key for the new plan section definition
     * @return the new plan section definition
     */
-    public com.ext.portlet.plans.model.PlanSectionDefinition create(
-        java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanSectionDefinition create(long id);
 
     /**
     * Removes the plan section definition with the primary key from the database. Also notifies the appropriate model listeners.
@@ -56,8 +55,7 @@ public interface PlanSectionDefinitionPersistence extends BasePersistence<PlanSe
     * @throws com.ext.portlet.plans.NoSuchPlanSectionDefinitionException if a plan section definition with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanSectionDefinition remove(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanSectionDefinition remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanSectionDefinitionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +73,7 @@ public interface PlanSectionDefinitionPersistence extends BasePersistence<PlanSe
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionDefinition findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.plans.NoSuchPlanSectionDefinitionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,8 +85,7 @@ public interface PlanSectionDefinitionPersistence extends BasePersistence<PlanSe
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionDefinition fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the plan section definitions.

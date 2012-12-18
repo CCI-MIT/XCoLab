@@ -17,11 +17,11 @@ import java.io.Serializable;
  */
 public class ContestPhaseColumnCacheModel implements CacheModel<ContestPhaseColumn>,
     Serializable {
-    public Long id;
-    public Long ContestPhasePK;
+    public long id;
+    public long ContestPhasePK;
     public String columnName;
-    public Integer columnWeight;
-    public Boolean defaultSort;
+    public int columnWeight;
+    public boolean defaultSort;
 
     @Override
     public String toString() {

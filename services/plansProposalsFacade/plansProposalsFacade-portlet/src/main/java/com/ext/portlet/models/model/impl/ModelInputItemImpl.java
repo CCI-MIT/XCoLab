@@ -29,54 +29,5 @@ public class ModelInputItemImpl extends ModelInputItemBaseImpl {
      */
     public ModelInputItemImpl() {
     }
-    
 
-    public MetaData getMetaData() throws SystemException, IOException {
-        return CollaboratoriumModelingService.repository().getMetaData(getModelInputItemID());
-    }
-
-    public Simulation getModel() throws SystemException, IOException {
-        return CollaboratoriumModelingService.repository().getSimulation(getModelId());
-    }
-
-    public Map<String,String> getPropertyMap() {
-        return parseTypes(getProperties());
-    }
-
-
-     public static Map<String,String> parseTypes(String props) {
-        if (props == null) return Collections.emptyMap();
-        Map<String,String> result = new HashMap<String,String>();
-        for (String type:props.split(";")) {
-            String[] kv = type.split("=");
-            if (kv.length>1) {
-                result.put(kv[0],kv[1]);
-            }
-        }
-        return result;
-    }
-     
-    public void saveProperties(Map<String, String> props) throws SystemException {
-        StringBuilder sb = new StringBuilder();
-        
-        for (String key: props.keySet()) {
-            sb.append(key);
-            sb.append("=");
-            sb.append(props.get(key));
-            sb.append(";");
-        }
-        
-        setProperties(sb.toString());
-        store();
-        
-    }
-    
-    public void store() throws SystemException {
-        if (isNew()) {
-            ModelInputItemLocalServiceUtil.addModelInputItem(this);
-        }
-        else {
-            ModelInputItemLocalServiceUtil.updateModelInputItem(this);
-        }
-    }
 }

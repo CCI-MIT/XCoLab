@@ -49,7 +49,7 @@ public interface PlanSectionDefinitionLocalService
     * @return the new plan section definition
     */
     public com.ext.portlet.plans.model.PlanSectionDefinition createPlanSectionDefinition(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the plan section definition with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface PlanSectionDefinitionLocalService
     * @throws PortalException if a plan section definition with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanSectionDefinition(java.lang.Long id)
+    public void deletePlanSectionDefinition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,8 +136,7 @@ public interface PlanSectionDefinitionLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanSectionDefinition fetchPlanSectionDefinition(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the plan section definition with the primary key.
@@ -149,7 +148,7 @@ public interface PlanSectionDefinitionLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanSectionDefinition getPlanSectionDefinition(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -223,4 +222,13 @@ public interface PlanSectionDefinitionLocalService
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    public void store(com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.ontology.model.FocusArea getFocusArea(
+        com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

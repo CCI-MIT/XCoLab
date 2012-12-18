@@ -32,7 +32,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @return the primary key of this plan type column
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTypeColumn.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @param primaryKey the primary key of this plan type column
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planTypeColumn.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @return the plan type column ID of this plan type column
     */
-    public java.lang.Long getPlanTypeColumnId() {
+    public long getPlanTypeColumnId() {
         return _planTypeColumn.getPlanTypeColumnId();
     }
 
@@ -59,7 +59,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @param planTypeColumnId the plan type column ID of this plan type column
     */
-    public void setPlanTypeColumnId(java.lang.Long planTypeColumnId) {
+    public void setPlanTypeColumnId(long planTypeColumnId) {
         _planTypeColumn.setPlanTypeColumnId(planTypeColumnId);
     }
 
@@ -68,7 +68,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @return the plan type ID of this plan type column
     */
-    public java.lang.Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeColumn.getPlanTypeId();
     }
 
@@ -77,7 +77,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @param planTypeId the plan type ID of this plan type column
     */
-    public void setPlanTypeId(java.lang.Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeColumn.setPlanTypeId(planTypeId);
     }
 
@@ -86,7 +86,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @return the weight of this plan type column
     */
-    public java.lang.Integer getWeight() {
+    public int getWeight() {
         return _planTypeColumn.getWeight();
     }
 
@@ -95,7 +95,7 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @param weight the weight of this plan type column
     */
-    public void setWeight(java.lang.Integer weight) {
+    public void setWeight(int weight) {
         _planTypeColumn.setWeight(weight);
     }
 
@@ -122,16 +122,25 @@ public class PlanTypeColumnWrapper implements PlanTypeColumn,
     *
     * @return the visible by default of this plan type column
     */
-    public java.lang.Boolean getVisibleByDefault() {
+    public boolean getVisibleByDefault() {
         return _planTypeColumn.getVisibleByDefault();
     }
 
     /**
-    * Sets the visible by default of this plan type column.
+    * Returns <code>true</code> if this plan type column is visible by default.
+    *
+    * @return <code>true</code> if this plan type column is visible by default; <code>false</code> otherwise
+    */
+    public boolean isVisibleByDefault() {
+        return _planTypeColumn.isVisibleByDefault();
+    }
+
+    /**
+    * Sets whether this plan type column is visible by default.
     *
     * @param visibleByDefault the visible by default of this plan type column
     */
-    public void setVisibleByDefault(java.lang.Boolean visibleByDefault) {
+    public void setVisibleByDefault(boolean visibleByDefault) {
         _planTypeColumn.setVisibleByDefault(visibleByDefault);
     }
 

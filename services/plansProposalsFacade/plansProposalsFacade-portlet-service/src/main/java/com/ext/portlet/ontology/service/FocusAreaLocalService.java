@@ -47,8 +47,7 @@ public interface FocusAreaLocalService extends PersistedModelLocalService {
     * @param id the primary key for the new focus area
     * @return the new focus area
     */
-    public com.ext.portlet.ontology.model.FocusArea createFocusArea(
-        java.lang.Long id);
+    public com.ext.portlet.ontology.model.FocusArea createFocusArea(long id);
 
     /**
     * Deletes the focus area with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +56,7 @@ public interface FocusAreaLocalService extends PersistedModelLocalService {
     * @throws PortalException if a focus area with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteFocusArea(java.lang.Long id)
+    public void deleteFocusArea(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -134,8 +133,7 @@ public interface FocusAreaLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.ontology.model.FocusArea fetchFocusArea(
-        java.lang.Long id)
+    public com.ext.portlet.ontology.model.FocusArea fetchFocusArea(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -147,8 +145,7 @@ public interface FocusAreaLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.ontology.model.FocusArea getFocusArea(
-        java.lang.Long id)
+    public com.ext.portlet.ontology.model.FocusArea getFocusArea(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -221,4 +218,28 @@ public interface FocusAreaLocalService extends PersistedModelLocalService {
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    public void store(com.ext.portlet.ontology.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.ontology.model.OntologyTerm> getTerms(
+        com.ext.portlet.ontology.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void removeTerm(com.ext.portlet.ontology.model.FocusArea focusArea,
+        java.lang.Long termId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void addTerm(com.ext.portlet.ontology.model.FocusArea focusArea,
+        java.lang.Long termId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void tagClass(com.ext.portlet.ontology.model.FocusArea focusArea,
+        java.lang.Class clasz, java.lang.Long pk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

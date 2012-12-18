@@ -308,7 +308,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @param id the primary key for the new plan item
      * @return the new plan item
      */
-    public PlanItem create(Long id) {
+    public PlanItem create(long id) {
         PlanItem planItem = new PlanItemImpl();
 
         planItem.setNew(true);
@@ -325,9 +325,9 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @throws com.ext.portlet.plans.NoSuchPlanItemException if a plan item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem remove(Long id)
+    public PlanItem remove(long id)
         throws NoSuchPlanItemException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -495,7 +495,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
     @Override
     public PlanItem findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -506,7 +506,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @throws com.ext.portlet.plans.NoSuchPlanItemException if a plan item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem findByPrimaryKey(Long id)
+    public PlanItem findByPrimaryKey(long id)
         throws NoSuchPlanItemException, SystemException {
         PlanItem planItem = fetchByPrimaryKey(id);
 
@@ -532,7 +532,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
     @Override
     public PlanItem fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -542,7 +542,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @return the plan item, or <code>null</code> if a plan item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanItem fetchByPrimaryKey(long id) throws SystemException {
         PlanItem planItem = (PlanItem) EntityCacheUtil.getResult(PlanItemModelImpl.ENTITY_CACHE_ENABLED,
                 PlanItemImpl.class, id);
 
@@ -586,7 +586,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @return the matching plan items
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanItem> findByAllByPlanId(Long planId)
+    public List<PlanItem> findByAllByPlanId(long planId)
         throws SystemException {
         return findByAllByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -605,7 +605,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @return the range of matching plan items
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanItem> findByAllByPlanId(Long planId, int start, int end)
+    public List<PlanItem> findByAllByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByAllByPlanId(planId, start, end, null);
     }
@@ -624,7 +624,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @return the ordered range of matching plan items
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanItem> findByAllByPlanId(Long planId, int start, int end,
+    public List<PlanItem> findByAllByPlanId(long planId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -674,7 +674,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanItem>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -709,7 +709,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @throws com.ext.portlet.plans.NoSuchPlanItemException if a matching plan item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem findByAllByPlanId_First(Long planId,
+    public PlanItem findByAllByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanItemException, SystemException {
         List<PlanItem> list = findByAllByPlanId(planId, 0, 1, orderByComparator);
@@ -743,7 +743,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @throws com.ext.portlet.plans.NoSuchPlanItemException if a matching plan item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem findByAllByPlanId_Last(Long planId,
+    public PlanItem findByAllByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanItemException, SystemException {
         int count = countByAllByPlanId(planId);
@@ -781,7 +781,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @throws com.ext.portlet.plans.NoSuchPlanItemException if a plan item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem[] findByAllByPlanId_PrevAndNext(Long id, Long planId,
+    public PlanItem[] findByAllByPlanId_PrevAndNext(long id, long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanItemException, SystemException {
         PlanItem planItem = findByPrimaryKey(id);
@@ -810,7 +810,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
     }
 
     protected PlanItem getByAllByPlanId_PrevAndNext(Session session,
-        PlanItem planItem, Long planId, OrderByComparator orderByComparator,
+        PlanItem planItem, long planId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -887,7 +887,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planItem);
@@ -914,7 +914,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @throws com.ext.portlet.plans.NoSuchPlanItemException if a matching plan item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem findByPlanId(Long planId)
+    public PlanItem findByPlanId(long planId)
         throws NoSuchPlanItemException, SystemException {
         PlanItem planItem = fetchByPlanId(planId);
 
@@ -945,7 +945,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @return the matching plan item, or <code>null</code> if a matching plan item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem fetchByPlanId(Long planId) throws SystemException {
+    public PlanItem fetchByPlanId(long planId) throws SystemException {
         return fetchByPlanId(planId, true);
     }
 
@@ -957,7 +957,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @return the matching plan item, or <code>null</code> if a matching plan item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem fetchByPlanId(Long planId, boolean retrieveFromCache)
+    public PlanItem fetchByPlanId(long planId, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
@@ -988,7 +988,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 List<PlanItem> list = q.list();
 
@@ -1144,7 +1144,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByAllByPlanId(Long planId) throws SystemException {
+    public void removeByAllByPlanId(long planId) throws SystemException {
         for (PlanItem planItem : findByAllByPlanId(planId)) {
             remove(planItem);
         }
@@ -1156,7 +1156,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanId(Long planId)
+    public void removeByPlanId(long planId)
         throws NoSuchPlanItemException, SystemException {
         PlanItem planItem = findByPlanId(planId);
 
@@ -1181,7 +1181,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @return the number of matching plan items
      * @throws SystemException if a system exception occurred
      */
-    public int countByAllByPlanId(Long planId) throws SystemException {
+    public int countByAllByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
@@ -1205,7 +1205,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1232,7 +1232,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
      * @return the number of matching plan items
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanId(Long planId) throws SystemException {
+    public int countByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANID,
@@ -1256,7 +1256,7 @@ public class PlanItemPersistenceImpl extends BasePersistenceImpl<PlanItem>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

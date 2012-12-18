@@ -125,7 +125,7 @@ public class PlanAttributeUtil {
     * @return the new plan attribute
     */
     public static com.ext.portlet.plans.model.PlanAttribute create(
-        java.lang.Long attributeId) {
+        long attributeId) {
         return getPersistence().create(attributeId);
     }
 
@@ -138,7 +138,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute remove(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.ext.portlet.plans.NoSuchPlanAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(attributeId);
@@ -159,7 +159,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute findByPrimaryKey(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.ext.portlet.plans.NoSuchPlanAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(attributeId);
@@ -173,7 +173,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute fetchByPrimaryKey(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(attributeId);
     }
@@ -186,8 +186,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanAttribute> findByplanAttributes(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByplanAttributes(planId);
     }
 
@@ -205,7 +204,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanAttribute> findByplanAttributes(
-        java.lang.Long planId, int start, int end)
+        long planId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByplanAttributes(planId, start, end);
     }
@@ -225,7 +224,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanAttribute> findByplanAttributes(
-        java.lang.Long planId, int start, int end,
+        long planId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -246,7 +245,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute findByplanAttributes_First(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -268,7 +267,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute findByplanAttributes_Last(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -291,7 +290,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute[] findByplanAttributes_PrevAndNext(
-        java.lang.Long attributeId, java.lang.Long planId,
+        long attributeId, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -310,7 +309,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute findByattributeForPlan(
-        java.lang.Long planId, java.lang.String attributeName)
+        long planId, java.lang.String attributeName)
         throws com.ext.portlet.plans.NoSuchPlanAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByattributeForPlan(planId, attributeName);
@@ -325,7 +324,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute fetchByattributeForPlan(
-        java.lang.Long planId, java.lang.String attributeName)
+        long planId, java.lang.String attributeName)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByattributeForPlan(planId, attributeName);
     }
@@ -340,8 +339,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute fetchByattributeForPlan(
-        java.lang.Long planId, java.lang.String attributeName,
-        boolean retrieveFromCache)
+        long planId, java.lang.String attributeName, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByattributeForPlan(planId, attributeName,
@@ -475,7 +473,7 @@ public class PlanAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute[] findByattributeByNameValue_PrevAndNext(
-        java.lang.Long attributeId, java.lang.String attributeName,
+        long attributeId, java.lang.String attributeName,
         java.lang.String attributeValue,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanAttributeException,
@@ -540,7 +538,7 @@ public class PlanAttributeUtil {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByplanAttributes(java.lang.Long planId)
+    public static void removeByplanAttributes(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByplanAttributes(planId);
     }
@@ -552,7 +550,7 @@ public class PlanAttributeUtil {
     * @param attributeName the attribute name
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByattributeForPlan(java.lang.Long planId,
+    public static void removeByattributeForPlan(long planId,
         java.lang.String attributeName)
         throws com.ext.portlet.plans.NoSuchPlanAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -590,7 +588,7 @@ public class PlanAttributeUtil {
     * @return the number of matching plan attributes
     * @throws SystemException if a system exception occurred
     */
-    public static int countByplanAttributes(java.lang.Long planId)
+    public static int countByplanAttributes(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByplanAttributes(planId);
     }
@@ -603,7 +601,7 @@ public class PlanAttributeUtil {
     * @return the number of matching plan attributes
     * @throws SystemException if a system exception occurred
     */
-    public static int countByattributeForPlan(java.lang.Long planId,
+    public static int countByattributeForPlan(long planId,
         java.lang.String attributeName)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByattributeForPlan(planId, attributeName);

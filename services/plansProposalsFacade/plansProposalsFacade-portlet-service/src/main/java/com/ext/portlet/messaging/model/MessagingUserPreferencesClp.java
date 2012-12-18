@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -14,11 +15,12 @@ import java.lang.reflect.Proxy;
 
 public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPreferences>
     implements MessagingUserPreferences {
-    private Long _messagingPreferencesId;
-    private Long _userId;
-    private Boolean _emailOnSend;
-    private Boolean _emailOnReceipt;
-    private Boolean _emailOnActivity;
+    private long _messagingPreferencesId;
+    private long _userId;
+    private String _userUuid;
+    private boolean _emailOnSend;
+    private boolean _emailOnReceipt;
+    private boolean _emailOnActivity;
 
     public MessagingUserPreferencesClp() {
     }
@@ -31,11 +33,11 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
         return MessagingUserPreferences.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _messagingPreferencesId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setMessagingPreferencesId(primaryKey);
     }
 
@@ -47,43 +49,63 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getMessagingPreferencesId() {
+    public long getMessagingPreferencesId() {
         return _messagingPreferencesId;
     }
 
-    public void setMessagingPreferencesId(Long messagingPreferencesId) {
+    public void setMessagingPreferencesId(long messagingPreferencesId) {
         _messagingPreferencesId = messagingPreferencesId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Boolean getEmailOnSend() {
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public boolean getEmailOnSend() {
         return _emailOnSend;
     }
 
-    public void setEmailOnSend(Boolean emailOnSend) {
+    public boolean isEmailOnSend() {
+        return _emailOnSend;
+    }
+
+    public void setEmailOnSend(boolean emailOnSend) {
         _emailOnSend = emailOnSend;
     }
 
-    public Boolean getEmailOnReceipt() {
+    public boolean getEmailOnReceipt() {
         return _emailOnReceipt;
     }
 
-    public void setEmailOnReceipt(Boolean emailOnReceipt) {
+    public boolean isEmailOnReceipt() {
+        return _emailOnReceipt;
+    }
+
+    public void setEmailOnReceipt(boolean emailOnReceipt) {
         _emailOnReceipt = emailOnReceipt;
     }
 
-    public Boolean getEmailOnActivity() {
+    public boolean getEmailOnActivity() {
         return _emailOnActivity;
     }
 
-    public void setEmailOnActivity(Boolean emailOnActivity) {
+    public boolean isEmailOnActivity() {
+        return _emailOnActivity;
+    }
+
+    public void setEmailOnActivity(boolean emailOnActivity) {
         _emailOnActivity = emailOnActivity;
     }
 
@@ -116,7 +138,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
     }
 
     public int compareTo(MessagingUserPreferences messagingUserPreferences) {
-        Long primaryKey = messagingUserPreferences.getPrimaryKey();
+        long primaryKey = messagingUserPreferences.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -141,7 +163,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
             return false;
         }
 
-        Long primaryKey = messagingUserPreferences.getPrimaryKey();
+        long primaryKey = messagingUserPreferences.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -152,7 +174,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

@@ -176,7 +176,7 @@ public abstract class ModelOutputItemLocalServiceBaseImpl
      * @param modelOutputItemModifierPK the primary key for the new model output item
      * @return the new model output item
      */
-    public ModelOutputItem createModelOutputItem(Long modelOutputItemModifierPK) {
+    public ModelOutputItem createModelOutputItem(long modelOutputItemModifierPK) {
         return modelOutputItemPersistence.create(modelOutputItemModifierPK);
     }
 
@@ -187,7 +187,7 @@ public abstract class ModelOutputItemLocalServiceBaseImpl
      * @throws PortalException if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteModelOutputItem(Long modelOutputItemModifierPK)
+    public void deleteModelOutputItem(long modelOutputItemModifierPK)
         throws PortalException, SystemException {
         ModelOutputItem modelOutputItem = modelOutputItemPersistence.remove(modelOutputItemModifierPK);
 
@@ -293,7 +293,7 @@ public abstract class ModelOutputItemLocalServiceBaseImpl
         return modelOutputItemPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ModelOutputItem fetchModelOutputItem(Long modelOutputItemModifierPK)
+    public ModelOutputItem fetchModelOutputItem(long modelOutputItemModifierPK)
         throws SystemException {
         return modelOutputItemPersistence.fetchByPrimaryKey(modelOutputItemModifierPK);
     }
@@ -306,7 +306,7 @@ public abstract class ModelOutputItemLocalServiceBaseImpl
      * @throws PortalException if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputItem getModelOutputItem(Long modelOutputItemModifierPK)
+    public ModelOutputItem getModelOutputItem(long modelOutputItemModifierPK)
         throws PortalException, SystemException {
         return modelOutputItemPersistence.findByPrimaryKey(modelOutputItemModifierPK);
     }

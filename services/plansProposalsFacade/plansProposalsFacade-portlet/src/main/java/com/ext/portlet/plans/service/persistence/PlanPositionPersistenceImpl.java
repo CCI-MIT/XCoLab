@@ -550,7 +550,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
      * @return the matching plan positions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanPosition> findByPositionId(Long positionId)
+    public List<PlanPosition> findByPositionId(long positionId)
         throws SystemException {
         return findByPositionId(positionId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -569,7 +569,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
      * @return the range of matching plan positions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanPosition> findByPositionId(Long positionId, int start,
+    public List<PlanPosition> findByPositionId(long positionId, int start,
         int end) throws SystemException {
         return findByPositionId(positionId, start, end, null);
     }
@@ -588,7 +588,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
      * @return the ordered range of matching plan positions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanPosition> findByPositionId(Long positionId, int start,
+    public List<PlanPosition> findByPositionId(long positionId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -638,7 +638,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(positionId.longValue());
+                qPos.add(positionId);
 
                 list = (List<PlanPosition>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -673,7 +673,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
      * @throws com.ext.portlet.plans.NoSuchPlanPositionException if a matching plan position could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPosition findByPositionId_First(Long positionId,
+    public PlanPosition findByPositionId_First(long positionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionException, SystemException {
         List<PlanPosition> list = findByPositionId(positionId, 0, 1,
@@ -708,7 +708,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
      * @throws com.ext.portlet.plans.NoSuchPlanPositionException if a matching plan position could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPosition findByPositionId_Last(Long positionId,
+    public PlanPosition findByPositionId_Last(long positionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionException, SystemException {
         int count = countByPositionId(positionId);
@@ -747,7 +747,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
      * @throws SystemException if a system exception occurred
      */
     public PlanPosition[] findByPositionId_PrevAndNext(
-        PlanPositionPK planPositionPK, Long positionId,
+        PlanPositionPK planPositionPK, long positionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionException, SystemException {
         PlanPosition planPosition = findByPrimaryKey(planPositionPK);
@@ -776,7 +776,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
     }
 
     protected PlanPosition getByPositionId_PrevAndNext(Session session,
-        PlanPosition planPosition, Long positionId,
+        PlanPosition planPosition, long positionId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -853,7 +853,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(positionId.longValue());
+        qPos.add(positionId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planPosition);
@@ -987,7 +987,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
      * @param positionId the position ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPositionId(Long positionId) throws SystemException {
+    public void removeByPositionId(long positionId) throws SystemException {
         for (PlanPosition planPosition : findByPositionId(positionId)) {
             remove(planPosition);
         }
@@ -1011,7 +1011,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
      * @return the number of matching plan positions
      * @throws SystemException if a system exception occurred
      */
-    public int countByPositionId(Long positionId) throws SystemException {
+    public int countByPositionId(long positionId) throws SystemException {
         Object[] finderArgs = new Object[] { positionId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_POSITIONID,
@@ -1035,7 +1035,7 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(positionId.longValue());
+                qPos.add(positionId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

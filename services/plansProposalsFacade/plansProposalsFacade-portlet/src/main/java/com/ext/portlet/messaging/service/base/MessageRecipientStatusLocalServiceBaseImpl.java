@@ -133,7 +133,7 @@ public abstract class MessageRecipientStatusLocalServiceBaseImpl
      * @return the new message recipient status
      */
     public MessageRecipientStatus createMessageRecipientStatus(
-        Long messageRecipientId) {
+        long messageRecipientId) {
         return messageRecipientStatusPersistence.create(messageRecipientId);
     }
 
@@ -144,7 +144,7 @@ public abstract class MessageRecipientStatusLocalServiceBaseImpl
      * @throws PortalException if a message recipient status with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteMessageRecipientStatus(Long messageRecipientId)
+    public void deleteMessageRecipientStatus(long messageRecipientId)
         throws PortalException, SystemException {
         MessageRecipientStatus messageRecipientStatus = messageRecipientStatusPersistence.remove(messageRecipientId);
 
@@ -252,7 +252,7 @@ public abstract class MessageRecipientStatusLocalServiceBaseImpl
     }
 
     public MessageRecipientStatus fetchMessageRecipientStatus(
-        Long messageRecipientId) throws SystemException {
+        long messageRecipientId) throws SystemException {
         return messageRecipientStatusPersistence.fetchByPrimaryKey(messageRecipientId);
     }
 
@@ -265,7 +265,7 @@ public abstract class MessageRecipientStatusLocalServiceBaseImpl
      * @throws SystemException if a system exception occurred
      */
     public MessageRecipientStatus getMessageRecipientStatus(
-        Long messageRecipientId) throws PortalException, SystemException {
+        long messageRecipientId) throws PortalException, SystemException {
         return messageRecipientStatusPersistence.findByPrimaryKey(messageRecipientId);
     }
 

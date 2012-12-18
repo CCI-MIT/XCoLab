@@ -6,13 +6,13 @@
   -->
 
 <service-builder package-path="com.ext.portlet.models">
-    <namespace>Models</namespace>
+    <namespace>xcolab</namespace>
 
     <entity name="ModelDiscussion" remote-service="true" local-service="true">
         <!-- PK field -->
-        <column name="modelDiscussionId" type="Long" primary="true"/>
-        <column name="modelId" type="Long"/>
-        <column name="categoryId" type="Long"/>
+        <column name="modelDiscussionId" type="long" primary="true"/>
+        <column name="modelId" type="long"/>
+        <column name="categoryId" type="long"/>
 
         <finder name="ModelId" return-type="Collection">
             <finder-column name="modelId"/>
@@ -24,9 +24,9 @@
     </entity>
 
     <entity name="ModelPosition" local-service="true">
-        <column name="id" primary="true" type="Long" />
-        <column name="positionId" type="Long" />
-        <column name="modelId" type="Long" />
+        <column name="id" primary="true" type="long" />
+        <column name="positionId" type="long" />
+        <column name="modelId" type="long" />
         
         <finder name="ModelId" return-type="Collection">
             <finder-column name="modelId" />
@@ -34,12 +34,12 @@
     </entity>
 
     <entity name="ModelGlobalPreference" local-service="true" remove-service="true">
-        <column name="modelGlobalPreferencePK" type="Long" primary="true"/>
-        <column name="modelId" type="Long"/>
-        <column name="visible" type="Boolean"/>
-        <column name="weight" type="Integer"/>
-        <column name="expertEvaluationPageId" type="Long"/>
-        <column name="modelCategoryId" type="Long"/>
+        <column name="modelGlobalPreferencePK" type="long" primary="true"/>
+        <column name="modelId" type="long"/>
+        <column name="visible" type="boolean"/>
+        <column name="weight" type="int"/>
+        <column name="expertEvaluationPageId" type="long"/>
+        <column name="modelCategoryId" type="long"/>
         <finder name="ModelId" return-type="ModelGlobalPreference">
             <finder-column name="modelId"/>
         </finder>
@@ -49,27 +49,27 @@
     </entity>
 
     <entity name="ModelCategory" local-service="true" remote-service="true">
-        <column name="modelCategoryPK" type="Long" primary="true"/>
+        <column name="modelCategoryPK" type="long" primary="true"/>
         <column name="modelCategoryName" type="String"/>
         <column name="modelCategoryDescription" type="String"/>
-        <column name="modelCategoryDisplayWeight" type="Integer"/>
+        <column name="modelCategoryDisplayWeight" type="int"/>
     </entity>
     
     <entity name="ModelInputGroup" local-service="true" remote-service="true">
-        <column name="modelInputGroupPK" type="Long" primary="true"/>
-        <column name="modelId" type="Long"/>
+        <column name="modelInputGroupPK" type="long" primary="true"/>
+        <column name="modelId" type="long"/>
         <!-- The meta data element that can provide a name and description for the group -->
-        <column name="nameAndDescriptionMetaDataId" type="Long"/>
+        <column name="nameAndDescriptionMetaDataId" type="long"/>
         <!-- Optional name if no metadata id is provided (above) -->
         <column name="name" type="String"/>
         <column name="description" type="String"/>
 
         <!-- Sort order for this item in on the page -->
-        <column name="displayItemOrder" type="Integer"/>
+        <column name="displayItemOrder" type="int"/>
 
         <column name="groupType" type="String"/>
 
-        <column name="parentGroupPK" type="Long"/>
+        <column name="parentGroupPK" type="long"/>
 
         <finder name="parentModelId" return-type="Collection">
             <finder-column name="parentGroupPK"/>
@@ -80,18 +80,18 @@
     </entity>
 
     <entity name="ModelInputItem" local-service="true" remote-service="true">
-        <column name="modelInputItemPK" type="Long" primary="true"/>
-        <column name="modelId" type="Long"/>
+        <column name="modelInputItemPK" type="long" primary="true"/>
+        <column name="modelId" type="long"/>
 
 
         <!-- id of the item this entry describes -->
-        <column name="modelInputItemID" type="Long"/>
+        <column name="modelInputItemID" type="long"/>
 
         <!-- optional groupid, indicating association with a group -->
-        <column name="modelGroupId" type="Long"/>
+        <column name="modelGroupId" type="long"/>
 
         <!-- Sort order for this item; relative to group if part of a group, relative to page if not -->
-        <column name="displayItemOrder" type="Integer"/>
+        <column name="displayItemOrder" type="int"/>
 
         <!-- Place holder for widget type - e.g. slider, textbox, etc. -->
         <column name="type" type="String"/>
@@ -122,14 +122,14 @@
 
 
     <entity name="ModelOutputChartOrder" local-service="true" remote-service="true">
-        <column name="modelOutputChartOrderPK" type="Long" primary="true"/>
-        <column name="modelId" type="Long"/>
+        <column name="modelOutputChartOrderPK" type="long" primary="true"/>
+        <column name="modelId" type="long"/>
 
         <!-- variable "name" for the chart this entry describes; recall, output items are grouped into charts depending on the label name -->
         <column name="modelOutputLabel" type="String"/>
 
         <!-- Sort order for this chart -->
-        <column name="modelOutputChartOrder" type="Integer"/>
+        <column name="modelOutputChartOrder" type="int"/>
 
         <column name="modelIndexRangePolicy" type="String"/>
 
@@ -139,7 +139,7 @@
 
         <column name="modelIndexErrorMessage" type="String"/>
 
-        <column name="modelChartIsVisible" type="Boolean"/>
+        <column name="modelChartIsVisible" type="boolean"/>
 
 
 
@@ -153,14 +153,14 @@
 
      <!-- this table is explicitly to indicate ordering of items in charts (e.g. for legends) -->
     <entity name="ModelOutputItem" local-service="true" remote-service="true">
-        <column name="modelOutputItemModifierPK" type="Long" primary="true"/>
-        <column name="modelId" type="Long"/>
+        <column name="modelOutputItemModifierPK" type="long" primary="true"/>
+        <column name="modelId" type="long"/>
 
         <!-- id of the model item this entry describes -->
-        <column name="modelOutputItemId" type="Long"/>
+        <column name="modelOutputItemId" type="long"/>
 
         <!-- id of the model item this entry is applied to -->
-        <column name="modelOutputItemOrder" type="Integer"/>
+        <column name="modelOutputItemOrder" type="int"/>
 
         <column name="modelItemRangePolicy" type="String"/>
 
@@ -172,13 +172,13 @@
         
         <column name="modelItemLabelFormat" type="String"/>
 
-        <column name="modelItemIsVisible" type="Boolean"/>
+        <column name="modelItemIsVisible" type="boolean"/>
 
         <!-- Sort order for this chart -->
         <column name="itemType"  type="String"/>
 
         <!-- id of another item that this item is "about"; e.g. this may be a confidece interval -->
-        <column name="relatedOutputItem" type="Long"/>
+        <column name="relatedOutputItem" type="long"/>
 
         <finder name="ModelOutputId" return-type="ModelOutputItem">
             <finder-column name="modelOutputItemId"/>

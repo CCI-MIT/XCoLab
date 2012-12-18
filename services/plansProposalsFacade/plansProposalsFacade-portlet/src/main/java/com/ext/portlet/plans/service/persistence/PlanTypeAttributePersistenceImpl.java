@@ -310,7 +310,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @param planTypeAttributeId the primary key for the new plan type attribute
      * @return the new plan type attribute
      */
-    public PlanTypeAttribute create(Long planTypeAttributeId) {
+    public PlanTypeAttribute create(long planTypeAttributeId) {
         PlanTypeAttribute planTypeAttribute = new PlanTypeAttributeImpl();
 
         planTypeAttribute.setNew(true);
@@ -327,9 +327,9 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @throws com.ext.portlet.plans.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeAttribute remove(Long planTypeAttributeId)
+    public PlanTypeAttribute remove(long planTypeAttributeId)
         throws NoSuchPlanTypeAttributeException, SystemException {
-        return remove((Serializable) planTypeAttributeId);
+        return remove(Long.valueOf(planTypeAttributeId));
     }
 
     /**
@@ -488,7 +488,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
     @Override
     public PlanTypeAttribute findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -499,7 +499,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @throws com.ext.portlet.plans.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeAttribute findByPrimaryKey(Long planTypeAttributeId)
+    public PlanTypeAttribute findByPrimaryKey(long planTypeAttributeId)
         throws NoSuchPlanTypeAttributeException, SystemException {
         PlanTypeAttribute planTypeAttribute = fetchByPrimaryKey(planTypeAttributeId);
 
@@ -526,7 +526,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
     @Override
     public PlanTypeAttribute fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -536,7 +536,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the plan type attribute, or <code>null</code> if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeAttribute fetchByPrimaryKey(Long planTypeAttributeId)
+    public PlanTypeAttribute fetchByPrimaryKey(long planTypeAttributeId)
         throws SystemException {
         PlanTypeAttribute planTypeAttribute = (PlanTypeAttribute) EntityCacheUtil.getResult(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
                 PlanTypeAttributeImpl.class, planTypeAttributeId);
@@ -584,7 +584,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @throws com.ext.portlet.plans.NoSuchPlanTypeAttributeException if a matching plan type attribute could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeAttribute findByPlanTypeIdAttributeName(Long planTypeId,
+    public PlanTypeAttribute findByPlanTypeIdAttributeName(long planTypeId,
         String attributeName)
         throws NoSuchPlanTypeAttributeException, SystemException {
         PlanTypeAttribute planTypeAttribute = fetchByPlanTypeIdAttributeName(planTypeId,
@@ -621,7 +621,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the matching plan type attribute, or <code>null</code> if a matching plan type attribute could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeAttribute fetchByPlanTypeIdAttributeName(Long planTypeId,
+    public PlanTypeAttribute fetchByPlanTypeIdAttributeName(long planTypeId,
         String attributeName) throws SystemException {
         return fetchByPlanTypeIdAttributeName(planTypeId, attributeName, true);
     }
@@ -635,7 +635,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the matching plan type attribute, or <code>null</code> if a matching plan type attribute could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeAttribute fetchByPlanTypeIdAttributeName(Long planTypeId,
+    public PlanTypeAttribute fetchByPlanTypeIdAttributeName(long planTypeId,
         String attributeName, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { planTypeId, attributeName };
@@ -675,7 +675,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planTypeId.longValue());
+                qPos.add(planTypeId);
 
                 if (attributeName != null) {
                     qPos.add(attributeName);
@@ -840,7 +840,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @param attributeName the attribute name
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanTypeIdAttributeName(Long planTypeId,
+    public void removeByPlanTypeIdAttributeName(long planTypeId,
         String attributeName)
         throws NoSuchPlanTypeAttributeException, SystemException {
         PlanTypeAttribute planTypeAttribute = findByPlanTypeIdAttributeName(planTypeId,
@@ -868,7 +868,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the number of matching plan type attributes
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanTypeIdAttributeName(Long planTypeId,
+    public int countByPlanTypeIdAttributeName(long planTypeId,
         String attributeName) throws SystemException {
         Object[] finderArgs = new Object[] { planTypeId, attributeName };
 
@@ -903,7 +903,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planTypeId.longValue());
+                qPos.add(planTypeId);
 
                 if (attributeName != null) {
                     qPos.add(attributeName);

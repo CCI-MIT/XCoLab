@@ -263,7 +263,7 @@ public class PlanTypeColumnPersistenceImpl extends BasePersistenceImpl<PlanTypeC
      * @param planTypeColumnId the primary key for the new plan type column
      * @return the new plan type column
      */
-    public PlanTypeColumn create(Long planTypeColumnId) {
+    public PlanTypeColumn create(long planTypeColumnId) {
         PlanTypeColumn planTypeColumn = new PlanTypeColumnImpl();
 
         planTypeColumn.setNew(true);
@@ -280,9 +280,9 @@ public class PlanTypeColumnPersistenceImpl extends BasePersistenceImpl<PlanTypeC
      * @throws com.ext.portlet.plans.NoSuchPlanTypeColumnException if a plan type column with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeColumn remove(Long planTypeColumnId)
+    public PlanTypeColumn remove(long planTypeColumnId)
         throws NoSuchPlanTypeColumnException, SystemException {
-        return remove((Serializable) planTypeColumnId);
+        return remove(Long.valueOf(planTypeColumnId));
     }
 
     /**
@@ -388,7 +388,7 @@ public class PlanTypeColumnPersistenceImpl extends BasePersistenceImpl<PlanTypeC
         planTypeColumnImpl.setPlanTypeId(planTypeColumn.getPlanTypeId());
         planTypeColumnImpl.setWeight(planTypeColumn.getWeight());
         planTypeColumnImpl.setColumnName(planTypeColumn.getColumnName());
-        planTypeColumnImpl.setVisibleByDefault(planTypeColumn.getVisibleByDefault());
+        planTypeColumnImpl.setVisibleByDefault(planTypeColumn.isVisibleByDefault());
 
         return planTypeColumnImpl;
     }
@@ -404,7 +404,7 @@ public class PlanTypeColumnPersistenceImpl extends BasePersistenceImpl<PlanTypeC
     @Override
     public PlanTypeColumn findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -415,7 +415,7 @@ public class PlanTypeColumnPersistenceImpl extends BasePersistenceImpl<PlanTypeC
      * @throws com.ext.portlet.plans.NoSuchPlanTypeColumnException if a plan type column with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeColumn findByPrimaryKey(Long planTypeColumnId)
+    public PlanTypeColumn findByPrimaryKey(long planTypeColumnId)
         throws NoSuchPlanTypeColumnException, SystemException {
         PlanTypeColumn planTypeColumn = fetchByPrimaryKey(planTypeColumnId);
 
@@ -441,7 +441,7 @@ public class PlanTypeColumnPersistenceImpl extends BasePersistenceImpl<PlanTypeC
     @Override
     public PlanTypeColumn fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -451,7 +451,7 @@ public class PlanTypeColumnPersistenceImpl extends BasePersistenceImpl<PlanTypeC
      * @return the plan type column, or <code>null</code> if a plan type column with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeColumn fetchByPrimaryKey(Long planTypeColumnId)
+    public PlanTypeColumn fetchByPrimaryKey(long planTypeColumnId)
         throws SystemException {
         PlanTypeColumn planTypeColumn = (PlanTypeColumn) EntityCacheUtil.getResult(PlanTypeColumnModelImpl.ENTITY_CACHE_ENABLED,
                 PlanTypeColumnImpl.class, planTypeColumnId);

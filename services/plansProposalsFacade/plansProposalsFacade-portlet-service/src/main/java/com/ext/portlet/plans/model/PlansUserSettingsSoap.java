@@ -13,13 +13,13 @@ import java.util.List;
  * @generated
  */
 public class PlansUserSettingsSoap implements Serializable {
-    private Long _planUserSettingsId;
-    private Long _userId;
-    private Long _planTypeId;
+    private long _planUserSettingsId;
+    private long _userId;
+    private long _planTypeId;
     private String _sortColumn;
     private String _sortDirection;
-    private Boolean _filterEnabled;
-    private Boolean _filterPositionsAll;
+    private boolean _filterEnabled;
+    private boolean _filterPositionsAll;
 
     public PlansUserSettingsSoap() {
     }
@@ -77,35 +77,35 @@ public class PlansUserSettingsSoap implements Serializable {
         return soapModels.toArray(new PlansUserSettingsSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planUserSettingsId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setPlanUserSettingsId(pk);
     }
 
-    public Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
-    public void setPlanUserSettingsId(Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planUserSettingsId = planUserSettingsId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
@@ -125,19 +125,27 @@ public class PlansUserSettingsSoap implements Serializable {
         _sortDirection = sortDirection;
     }
 
-    public Boolean getFilterEnabled() {
+    public boolean getFilterEnabled() {
         return _filterEnabled;
     }
 
-    public void setFilterEnabled(Boolean filterEnabled) {
+    public boolean isFilterEnabled() {
+        return _filterEnabled;
+    }
+
+    public void setFilterEnabled(boolean filterEnabled) {
         _filterEnabled = filterEnabled;
     }
 
-    public Boolean getFilterPositionsAll() {
+    public boolean getFilterPositionsAll() {
         return _filterPositionsAll;
     }
 
-    public void setFilterPositionsAll(Boolean filterPositionsAll) {
+    public boolean isFilterPositionsAll() {
+        return _filterPositionsAll;
+    }
+
+    public void setFilterPositionsAll(boolean filterPositionsAll) {
         _filterPositionsAll = filterPositionsAll;
     }
 }

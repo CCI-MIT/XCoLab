@@ -18,9 +18,9 @@ import java.util.Date;
  * @generated
  */
 public class MessageCacheModel implements CacheModel<Message>, Serializable {
-    public Long messageId;
-    public Long fromId;
-    public Long repliesTo;
+    public long messageId;
+    public long fromId;
+    public long repliesTo;
     public long createDate;
     public String subject;
     public String content;

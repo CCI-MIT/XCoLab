@@ -40,8 +40,9 @@
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
+<!--	<modules>
 		<module>plansProposalsFacade-portlet</module>
 		<module>plansProposalsFacade-portlet-service</module>
 	</modules>
+-->
 </project>

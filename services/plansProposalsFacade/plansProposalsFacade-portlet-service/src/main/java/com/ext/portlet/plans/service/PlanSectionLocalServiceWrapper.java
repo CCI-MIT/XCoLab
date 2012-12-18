@@ -39,8 +39,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @param id the primary key for the new plan section
     * @return the new plan section
     */
-    public com.ext.portlet.plans.model.PlanSection createPlanSection(
-        java.lang.Long id) {
+    public com.ext.portlet.plans.model.PlanSection createPlanSection(long id) {
         return _planSectionLocalService.createPlanSection(id);
     }
 
@@ -51,7 +50,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @throws PortalException if a plan section with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanSection(java.lang.Long id)
+    public void deletePlanSection(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planSectionLocalService.deletePlanSection(id);
@@ -140,8 +139,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
         return _planSectionLocalService.dynamicQueryCount(dynamicQuery);
     }
 
-    public com.ext.portlet.plans.model.PlanSection fetchPlanSection(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanSection fetchPlanSection(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planSectionLocalService.fetchPlanSection(id);
     }
@@ -154,8 +152,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @throws PortalException if a plan section with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanSection getPlanSection(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanSection getPlanSection(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planSectionLocalService.getPlanSection(id);
@@ -303,6 +300,31 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
         com.ext.portlet.plans.model.PlanSectionDefinition def)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planSectionLocalService.getAllForPlanDefinition(plan, def);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanSection ps)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planSectionLocalService.store(ps);
+    }
+
+    public com.ext.portlet.plans.model.PlanSectionDefinition getDefinition(
+        com.ext.portlet.plans.model.PlanSection ps)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionLocalService.getDefinition(ps);
+    }
+
+    public void addPlanReference(com.ext.portlet.plans.model.PlanSection ps,
+        java.lang.Long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planSectionLocalService.addPlanReference(ps, planId);
+    }
+
+    public java.util.List<com.ext.portlet.plans.model.PlanItem> getReferencedPlans(
+        com.ext.portlet.plans.model.PlanSection ps)
+        throws com.ext.portlet.plans.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionLocalService.getReferencedPlans(ps);
     }
 
     /**

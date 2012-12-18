@@ -207,7 +207,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
     public int getOrder() {
 
-        return null == chartModel ? -1 : (chartModel.getModelOutputChartOrder() == null ? -1 : chartModel.getModelOutputChartOrder());
+        return null == chartModel ? -1 : (chartModel.getModelOutputChartOrder());
     }
 
     @Override
@@ -348,14 +348,14 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     @Override
     public boolean isVisible() {
         _log.debug("Checking if "+chartModel.getModelId()+":"+chartModel.getModelOutputLabel()+" is visible");
-        if (chartModel.getModelChartIsVisible() == null) {
+        if (chartModel.getModelChartIsVisible()) {
             try {
                 setVisible(true);
             } catch (SystemException e) {
                 _log.error("Error setting chart visibility to default of true", e);
             }
         }
-        boolean result = chartModel.getModelChartIsVisible() == null || chartModel.getModelChartIsVisible();
+        boolean result = chartModel.getModelChartIsVisible();
         _log.debug(result);
         return  result;
     }

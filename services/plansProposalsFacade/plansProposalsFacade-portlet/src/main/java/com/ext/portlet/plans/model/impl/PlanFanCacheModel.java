@@ -17,9 +17,9 @@ import java.util.Date;
  * @generated
  */
 public class PlanFanCacheModel implements CacheModel<PlanFan>, Serializable {
-    public Long id;
-    public Long userId;
-    public Long planId;
+    public long id;
+    public long userId;
+    public long planId;
     public long created;
     public long deleted;
 

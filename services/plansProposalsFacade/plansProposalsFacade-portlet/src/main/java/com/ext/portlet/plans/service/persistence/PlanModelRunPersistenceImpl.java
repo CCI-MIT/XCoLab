@@ -334,7 +334,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @param id the primary key for the new plan model run
      * @return the new plan model run
      */
-    public PlanModelRun create(Long id) {
+    public PlanModelRun create(long id) {
         PlanModelRun planModelRun = new PlanModelRunImpl();
 
         planModelRun.setNew(true);
@@ -351,9 +351,9 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a plan model run with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun remove(Long id)
+    public PlanModelRun remove(long id)
         throws NoSuchPlanModelRunException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -553,7 +553,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
     @Override
     public PlanModelRun findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -564,7 +564,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a plan model run with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun findByPrimaryKey(Long id)
+    public PlanModelRun findByPrimaryKey(long id)
         throws NoSuchPlanModelRunException, SystemException {
         PlanModelRun planModelRun = fetchByPrimaryKey(id);
 
@@ -590,7 +590,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
     @Override
     public PlanModelRun fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -600,7 +600,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the plan model run, or <code>null</code> if a plan model run with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanModelRun fetchByPrimaryKey(long id) throws SystemException {
         PlanModelRun planModelRun = (PlanModelRun) EntityCacheUtil.getResult(PlanModelRunModelImpl.ENTITY_CACHE_ENABLED,
                 PlanModelRunImpl.class, id);
 
@@ -645,7 +645,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a matching plan model run could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun findByCurrentByPlanId(Long planId)
+    public PlanModelRun findByCurrentByPlanId(long planId)
         throws NoSuchPlanModelRunException, SystemException {
         PlanModelRun planModelRun = fetchByCurrentByPlanId(planId);
 
@@ -676,7 +676,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the matching plan model run, or <code>null</code> if a matching plan model run could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun fetchByCurrentByPlanId(Long planId)
+    public PlanModelRun fetchByCurrentByPlanId(long planId)
         throws SystemException {
         return fetchByCurrentByPlanId(planId, true);
     }
@@ -689,7 +689,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the matching plan model run, or <code>null</code> if a matching plan model run could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun fetchByCurrentByPlanId(Long planId,
+    public PlanModelRun fetchByCurrentByPlanId(long planId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
@@ -720,7 +720,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 List<PlanModelRun> list = q.list();
 
@@ -769,7 +769,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the matching plan model runs
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanModelRun> findByAllByPlanId(Long planId)
+    public List<PlanModelRun> findByAllByPlanId(long planId)
         throws SystemException {
         return findByAllByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -788,7 +788,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the range of matching plan model runs
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanModelRun> findByAllByPlanId(Long planId, int start, int end)
+    public List<PlanModelRun> findByAllByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByAllByPlanId(planId, start, end, null);
     }
@@ -807,7 +807,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the ordered range of matching plan model runs
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanModelRun> findByAllByPlanId(Long planId, int start,
+    public List<PlanModelRun> findByAllByPlanId(long planId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -857,7 +857,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanModelRun>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -892,7 +892,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a matching plan model run could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun findByAllByPlanId_First(Long planId,
+    public PlanModelRun findByAllByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanModelRunException, SystemException {
         List<PlanModelRun> list = findByAllByPlanId(planId, 0, 1,
@@ -927,7 +927,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a matching plan model run could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun findByAllByPlanId_Last(Long planId,
+    public PlanModelRun findByAllByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanModelRunException, SystemException {
         int count = countByAllByPlanId(planId);
@@ -965,7 +965,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a plan model run with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun[] findByAllByPlanId_PrevAndNext(Long id, Long planId,
+    public PlanModelRun[] findByAllByPlanId_PrevAndNext(long id, long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanModelRunException, SystemException {
         PlanModelRun planModelRun = findByPrimaryKey(id);
@@ -994,7 +994,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
     }
 
     protected PlanModelRun getByAllByPlanId_PrevAndNext(Session session,
-        PlanModelRun planModelRun, Long planId,
+        PlanModelRun planModelRun, long planId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1071,7 +1071,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planModelRun);
@@ -1099,7 +1099,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a matching plan model run could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun findByPlanIdPlanVersion(Long planId, Long planVersion)
+    public PlanModelRun findByPlanIdPlanVersion(long planId, long planVersion)
         throws NoSuchPlanModelRunException, SystemException {
         PlanModelRun planModelRun = fetchByPlanIdPlanVersion(planId, planVersion);
 
@@ -1134,7 +1134,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the matching plan model run, or <code>null</code> if a matching plan model run could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun fetchByPlanIdPlanVersion(Long planId, Long planVersion)
+    public PlanModelRun fetchByPlanIdPlanVersion(long planId, long planVersion)
         throws SystemException {
         return fetchByPlanIdPlanVersion(planId, planVersion, true);
     }
@@ -1148,7 +1148,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the matching plan model run, or <code>null</code> if a matching plan model run could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun fetchByPlanIdPlanVersion(Long planId, Long planVersion,
+    public PlanModelRun fetchByPlanIdPlanVersion(long planId, long planVersion,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId, planVersion };
 
@@ -1181,9 +1181,9 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planVersion.longValue());
+                qPos.add(planVersion);
 
                 List<PlanModelRun> list = q.list();
 
@@ -1341,7 +1341,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByCurrentByPlanId(Long planId)
+    public void removeByCurrentByPlanId(long planId)
         throws NoSuchPlanModelRunException, SystemException {
         PlanModelRun planModelRun = findByCurrentByPlanId(planId);
 
@@ -1354,7 +1354,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByAllByPlanId(Long planId) throws SystemException {
+    public void removeByAllByPlanId(long planId) throws SystemException {
         for (PlanModelRun planModelRun : findByAllByPlanId(planId)) {
             remove(planModelRun);
         }
@@ -1367,7 +1367,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @param planVersion the plan version
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanIdPlanVersion(Long planId, Long planVersion)
+    public void removeByPlanIdPlanVersion(long planId, long planVersion)
         throws NoSuchPlanModelRunException, SystemException {
         PlanModelRun planModelRun = findByPlanIdPlanVersion(planId, planVersion);
 
@@ -1392,7 +1392,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the number of matching plan model runs
      * @throws SystemException if a system exception occurred
      */
-    public int countByCurrentByPlanId(Long planId) throws SystemException {
+    public int countByCurrentByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
@@ -1416,7 +1416,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1443,7 +1443,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the number of matching plan model runs
      * @throws SystemException if a system exception occurred
      */
-    public int countByAllByPlanId(Long planId) throws SystemException {
+    public int countByAllByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
@@ -1467,7 +1467,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1495,7 +1495,7 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
      * @return the number of matching plan model runs
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanIdPlanVersion(Long planId, Long planVersion)
+    public int countByPlanIdPlanVersion(long planId, long planVersion)
         throws SystemException {
         Object[] finderArgs = new Object[] { planId, planVersion };
 
@@ -1522,9 +1522,9 @@ public class PlanModelRunPersistenceImpl extends BasePersistenceImpl<PlanModelRu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planVersion.longValue());
+                qPos.add(planVersion);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

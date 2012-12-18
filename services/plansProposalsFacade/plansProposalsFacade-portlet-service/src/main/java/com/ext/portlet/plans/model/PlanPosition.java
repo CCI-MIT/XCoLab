@@ -3,7 +3,7 @@ package com.ext.portlet.plans.model;
 import com.liferay.portal.model.PersistedModel;
 
 /**
- * The extended model interface for the PlanPosition service. Represents a row in the &quot;Plans_PlanPosition&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the PlanPosition service. Represents a row in the &quot;xcolab_PlanPosition&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
  * @see PlanPositionModel

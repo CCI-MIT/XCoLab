@@ -1,12 +1,19 @@
 package com.ext.portlet.models.service.impl;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.model.ModelInputGroup;
+import com.ext.portlet.models.model.ModelInputItem;
+import com.ext.portlet.models.service.ModelInputGroupLocalServiceUtil;
+import com.ext.portlet.models.service.ModelInputItemLocalServiceUtil;
 import com.ext.portlet.models.service.base.ModelInputGroupLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import edu.mit.cci.simulation.client.MetaData;
 import edu.mit.cci.simulation.client.Simulation;
 
 /**
@@ -49,5 +56,34 @@ public class ModelInputGroupLocalServiceImpl
 
          }
          return Collections.emptyList();
+     }
+     
+     
+
+     public List<ModelInputItem> getInputItems(ModelInputGroup group) {
+         return ModelInputItemLocalServiceUtil.getItemForGroupId(group.getModelInputGroupPK());
+        
+     }
+
+     public ModelInputGroup getParent(ModelInputGroup group) {
+         try {
+             return ModelInputGroupLocalServiceUtil.getModelInputGroup(group.getParentGroupPK());
+         } catch (PortalException e) {
+             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+         } catch (SystemException e) {
+             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+         }
+         return null;
+     }
+
+      public Simulation getModel(ModelInputGroup group) throws SystemException, IOException {
+         return CollaboratoriumModelingService.repository().getSimulation(group.getModelId());       
+     }
+
+     public MetaData getMetaData(ModelInputGroup group) throws SystemException, IOException {
+         if (group.getNameAndDescriptionMetaDataId() > 0) {
+             return CollaboratoriumModelingService.repository().getMetaData(group.getNameAndDescriptionMetaDataId());
+         }
+         return null;
      }
 }

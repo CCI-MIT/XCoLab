@@ -14,14 +14,14 @@ import java.lang.reflect.Proxy;
 
 public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
     implements ModelInputGroup {
-    private Long _modelInputGroupPK;
-    private Long _modelId;
-    private Long _nameAndDescriptionMetaDataId;
+    private long _modelInputGroupPK;
+    private long _modelId;
+    private long _nameAndDescriptionMetaDataId;
     private String _name;
     private String _description;
-    private Integer _displayItemOrder;
+    private int _displayItemOrder;
     private String _groupType;
-    private Long _parentGroupPK;
+    private long _parentGroupPK;
 
     public ModelInputGroupClp() {
     }
@@ -34,11 +34,11 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
         return ModelInputGroup.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelInputGroupPK;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setModelInputGroupPK(primaryKey);
     }
 
@@ -50,28 +50,28 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getModelInputGroupPK() {
+    public long getModelInputGroupPK() {
         return _modelInputGroupPK;
     }
 
-    public void setModelInputGroupPK(Long modelInputGroupPK) {
+    public void setModelInputGroupPK(long modelInputGroupPK) {
         _modelInputGroupPK = modelInputGroupPK;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Long getNameAndDescriptionMetaDataId() {
+    public long getNameAndDescriptionMetaDataId() {
         return _nameAndDescriptionMetaDataId;
     }
 
     public void setNameAndDescriptionMetaDataId(
-        Long nameAndDescriptionMetaDataId) {
+        long nameAndDescriptionMetaDataId) {
         _nameAndDescriptionMetaDataId = nameAndDescriptionMetaDataId;
     }
 
@@ -91,11 +91,11 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
         _description = description;
     }
 
-    public Integer getDisplayItemOrder() {
+    public int getDisplayItemOrder() {
         return _displayItemOrder;
     }
 
-    public void setDisplayItemOrder(Integer displayItemOrder) {
+    public void setDisplayItemOrder(int displayItemOrder) {
         _displayItemOrder = displayItemOrder;
     }
 
@@ -107,32 +107,12 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
         _groupType = groupType;
     }
 
-    public Long getParentGroupPK() {
+    public long getParentGroupPK() {
         return _parentGroupPK;
     }
 
-    public void setParentGroupPK(Long parentGroupPK) {
+    public void setParentGroupPK(long parentGroupPK) {
         _parentGroupPK = parentGroupPK;
-    }
-
-    public java.util.List<com.ext.portlet.models.model.ModelInputItem> getInputItems() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.models.model.ModelInputGroup> getChildGroups() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.models.model.ModelInputGroup getParent() {
-        throw new UnsupportedOperationException();
-    }
-
-    public edu.mit.cci.simulation.client.Simulation getModel() {
-        throw new UnsupportedOperationException();
-    }
-
-    public edu.mit.cci.simulation.client.MetaData getMetaData() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -167,7 +147,7 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
     }
 
     public int compareTo(ModelInputGroup modelInputGroup) {
-        Long primaryKey = modelInputGroup.getPrimaryKey();
+        long primaryKey = modelInputGroup.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -192,7 +172,7 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
             return false;
         }
 
-        Long primaryKey = modelInputGroup.getPrimaryKey();
+        long primaryKey = modelInputGroup.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -203,7 +183,7 @@ public class ModelInputGroupClp extends BaseModelImpl<ModelInputGroup>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

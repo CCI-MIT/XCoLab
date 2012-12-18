@@ -17,8 +17,8 @@ import java.io.Serializable;
  */
 public class PlanTypeAttributeCacheModel implements CacheModel<PlanTypeAttribute>,
     Serializable {
-    public Long planTypeAttributeId;
-    public Long planTypeId;
+    public long planTypeAttributeId;
+    public long planTypeId;
     public String attributeName;
 
     @Override

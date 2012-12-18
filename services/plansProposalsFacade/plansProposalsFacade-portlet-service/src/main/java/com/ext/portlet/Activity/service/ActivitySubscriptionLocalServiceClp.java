@@ -37,6 +37,11 @@ public class ActivitySubscriptionLocalServiceClp
     private MethodKey _getInterpreterForClassMethodKey26;
     private MethodKey _getInterpreterForClassMethodKey27;
     private MethodKey _getActivitiesMethodKey28;
+    private MethodKey _storeMethodKey29;
+    private MethodKey _getInterpreterMethodKey30;
+    private MethodKey _getNameMethodKey31;
+    private MethodKey _getSubscriptionTypeMethodKey32;
+    private MethodKey _deleteMethodKey33;
 
     public ActivitySubscriptionLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -47,10 +52,10 @@ public class ActivitySubscriptionLocalServiceClp
                 com.ext.portlet.Activity.model.ActivitySubscription.class);
 
         _createActivitySubscriptionMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createActivitySubscription", java.lang.Long.class);
+                "createActivitySubscription", long.class);
 
         _deleteActivitySubscriptionMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteActivitySubscription", java.lang.Long.class);
+                "deleteActivitySubscription", long.class);
 
         _deleteActivitySubscriptionMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteActivitySubscription",
@@ -76,10 +81,10 @@ public class ActivitySubscriptionLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchActivitySubscriptionMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchActivitySubscription", java.lang.Long.class);
+                "fetchActivitySubscription", long.class);
 
         _getActivitySubscriptionMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getActivitySubscription", java.lang.Long.class);
+                "getActivitySubscription", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -155,6 +160,26 @@ public class ActivitySubscriptionLocalServiceClp
 
         _getActivitiesMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getActivities", java.lang.Long.class, int.class, int.class);
+
+        _storeMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store",
+                com.ext.portlet.Activity.model.ActivitySubscription.class);
+
+        _getInterpreterMethodKey30 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getInterpreter",
+                com.ext.portlet.Activity.model.ActivitySubscription.class);
+
+        _getNameMethodKey31 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getName",
+                com.ext.portlet.Activity.model.ActivitySubscription.class);
+
+        _getSubscriptionTypeMethodKey32 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getSubscriptionType",
+                com.ext.portlet.Activity.model.ActivitySubscription.class);
+
+        _deleteMethodKey33 = new MethodKey(_classLoaderProxy.getClassName(),
+                "delete",
+                com.ext.portlet.Activity.model.ActivitySubscription.class);
     }
 
     public com.ext.portlet.Activity.model.ActivitySubscription addActivitySubscription(
@@ -184,11 +209,11 @@ public class ActivitySubscriptionLocalServiceClp
     }
 
     public com.ext.portlet.Activity.model.ActivitySubscription createActivitySubscription(
-        java.lang.Long pk) {
+        long pk) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createActivitySubscriptionMethodKey1,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -204,11 +229,11 @@ public class ActivitySubscriptionLocalServiceClp
         return (com.ext.portlet.Activity.model.ActivitySubscription) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteActivitySubscription(java.lang.Long pk)
+    public void deleteActivitySubscription(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteActivitySubscriptionMethodKey2,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -363,12 +388,11 @@ public class ActivitySubscriptionLocalServiceClp
     }
 
     public com.ext.portlet.Activity.model.ActivitySubscription fetchActivitySubscription(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchActivitySubscriptionMethodKey8,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -389,13 +413,13 @@ public class ActivitySubscriptionLocalServiceClp
     }
 
     public com.ext.portlet.Activity.model.ActivitySubscription getActivitySubscription(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getActivitySubscriptionMethodKey9,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -922,6 +946,113 @@ public class ActivitySubscriptionLocalServiceClp
         }
 
         return (java.util.List<com.liferay.portlet.social.model.SocialActivity>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey29,
+                ClpSerializer.translateInput(activitySubscription));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.ext.portlet.Activity.ICollabActivityInterpreter getInterpreter(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getInterpreterMethodKey30,
+                ClpSerializer.translateInput(activitySubscription));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.Activity.ICollabActivityInterpreter) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.lang.String getName(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getNameMethodKey31,
+                ClpSerializer.translateInput(activitySubscription));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.Activity.SubscriptionType getSubscriptionType(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getSubscriptionTypeMethodKey32,
+                ClpSerializer.translateInput(activitySubscription));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.Activity.SubscriptionType) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void delete(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_deleteMethodKey33,
+                ClpSerializer.translateInput(activitySubscription));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

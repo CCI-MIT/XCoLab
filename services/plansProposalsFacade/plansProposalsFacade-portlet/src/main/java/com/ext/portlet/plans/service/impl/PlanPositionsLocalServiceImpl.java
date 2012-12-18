@@ -1,15 +1,22 @@
 package com.ext.portlet.plans.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.ext.portlet.plans.NoSuchPlanPositionsException;
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.model.PlanPositionItem;
 import com.ext.portlet.plans.model.PlanPositions;
+import com.ext.portlet.plans.service.PlanPositionItemLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanPositionsLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanPositionsLocalServiceBaseImpl;
+import com.ext.portlet.plans.service.persistence.PlanPositionItemPK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the plan positions local service.
@@ -46,7 +53,7 @@ public class PlanPositionsLocalServiceImpl
         planPositions.setUpdateAuthorId(plan.getUpdateAuthorId());
         planPositions.setVersion(0L);
         
-        planPositions.store();
+        store(planPositions);
         return planPositions;
     }
     
@@ -71,9 +78,46 @@ public class PlanPositionsLocalServiceImpl
         newPositions.setCreated(new Date());
 
         if (store) {
-            newPositions.store();
+            store(newPositions);
         }
         
         return newPositions;
+    }
+    
+    public List<Long> getPositionsIds(PlanPositions pp) throws SystemException {
+        List<Long> ret = new ArrayList<Long>();
+        for (PlanPositionItem item: PlanPositionItemLocalServiceUtil.getAllIdsForPlanPositions(pp)) {
+            ret.add(item.getPositionId());
+        }
+        return ret;
+    }
+    
+    
+    public void store(PlanPositions pp) throws SystemException {
+        if (pp.isNew()) {
+            PlanPositionsLocalServiceUtil.addPlanPositions(pp);
+        }
+        else {
+            PlanPositionsLocalServiceUtil.updatePlanPositions(pp);
+        }
+    }
+    
+    public void setPositionsIds(PlanPositions pp, List<Long> positionsIds) throws PortalException, SystemException {
+        // delete egzisting associations
+        List<Long> actual = getPositionsIds(pp);
+        for (Long id: actual) {
+            PlanPositionItem planPositionItem = PlanPositionItemLocalServiceUtil.getPlanPositionItem(new PlanPositionItemPK(pp.getId(), id));
+            PlanPositionItemLocalServiceUtil.deletePlanPositionItem(planPositionItem);
+        }
+        
+        // add new associations) 
+        for (Long id: positionsIds) {
+            PlanPositionItem planPositionItem = PlanPositionItemLocalServiceUtil.createPlanPositionItem(new PlanPositionItemPK(pp.getId(), id));
+            PlanPositionItemLocalServiceUtil.addPlanPositionItem(planPositionItem);       
+        }
+    }
+    
+    public User getUpdateAuthor(PlanPositions pp) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(pp.getUpdateAuthorId());
     }
 }

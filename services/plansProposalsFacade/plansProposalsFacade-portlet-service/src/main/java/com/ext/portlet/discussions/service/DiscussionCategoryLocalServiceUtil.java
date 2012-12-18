@@ -47,7 +47,7 @@ public class DiscussionCategoryLocalServiceUtil {
     * @return the new discussion category
     */
     public static com.ext.portlet.discussions.model.DiscussionCategory createDiscussionCategory(
-        java.lang.Long pk) {
+        long pk) {
         return getService().createDiscussionCategory(pk);
     }
 
@@ -58,7 +58,7 @@ public class DiscussionCategoryLocalServiceUtil {
     * @throws PortalException if a discussion category with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteDiscussionCategory(java.lang.Long pk)
+    public static void deleteDiscussionCategory(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteDiscussionCategory(pk);
@@ -148,8 +148,7 @@ public class DiscussionCategoryLocalServiceUtil {
     }
 
     public static com.ext.portlet.discussions.model.DiscussionCategory fetchDiscussionCategory(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchDiscussionCategory(pk);
     }
 
@@ -162,7 +161,7 @@ public class DiscussionCategoryLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionCategory getDiscussionCategory(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getDiscussionCategory(pk);
@@ -270,6 +269,60 @@ public class DiscussionCategoryLocalServiceUtil {
         return getService()
                    .createDebateCategory(categoryGroupId, name, description,
             author);
+    }
+
+    public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> getThreads(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getThreads(dCategory);
+    }
+
+    public static com.ext.portlet.discussions.model.DiscussionMessage addThread(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory,
+        java.lang.String subject, java.lang.String body,
+        com.liferay.portal.model.User author)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().addThread(dCategory, subject, body, author);
+    }
+
+    public static void store(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(dCategory);
+    }
+
+    public static com.liferay.portal.model.User getAuthor(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAuthor(dCategory);
+    }
+
+    public static com.liferay.portal.model.User getLastActivityAuthor(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getLastActivityAuthor(dCategory);
+    }
+
+    public static void delete(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().delete(dCategory);
+    }
+
+    public static void update(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory,
+        java.lang.String name, java.lang.String description)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().update(dCategory, name, description);
+    }
+
+    public static com.ext.portlet.discussions.model.DiscussionCategoryGroup getCategoryGroup(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCategoryGroup(dCategory);
     }
 
     public static void clearService() {

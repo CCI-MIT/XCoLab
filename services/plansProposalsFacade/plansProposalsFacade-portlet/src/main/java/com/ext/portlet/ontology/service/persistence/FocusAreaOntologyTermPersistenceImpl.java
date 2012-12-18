@@ -499,7 +499,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @return the matching focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
-    public List<FocusAreaOntologyTerm> findByFocusAreaId(Long focusAreaId)
+    public List<FocusAreaOntologyTerm> findByFocusAreaId(long focusAreaId)
         throws SystemException {
         return findByFocusAreaId(focusAreaId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -518,7 +518,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @return the range of matching focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
-    public List<FocusAreaOntologyTerm> findByFocusAreaId(Long focusAreaId,
+    public List<FocusAreaOntologyTerm> findByFocusAreaId(long focusAreaId,
         int start, int end) throws SystemException {
         return findByFocusAreaId(focusAreaId, start, end, null);
     }
@@ -537,7 +537,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @return the ordered range of matching focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
-    public List<FocusAreaOntologyTerm> findByFocusAreaId(Long focusAreaId,
+    public List<FocusAreaOntologyTerm> findByFocusAreaId(long focusAreaId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -585,7 +585,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(focusAreaId.longValue());
+                qPos.add(focusAreaId);
 
                 list = (List<FocusAreaOntologyTerm>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -620,7 +620,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @throws com.ext.portlet.ontology.NoSuchFocusAreaOntologyTermException if a matching focus area ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
-    public FocusAreaOntologyTerm findByFocusAreaId_First(Long focusAreaId,
+    public FocusAreaOntologyTerm findByFocusAreaId_First(long focusAreaId,
         OrderByComparator orderByComparator)
         throws NoSuchFocusAreaOntologyTermException, SystemException {
         List<FocusAreaOntologyTerm> list = findByFocusAreaId(focusAreaId, 0, 1,
@@ -655,7 +655,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @throws com.ext.portlet.ontology.NoSuchFocusAreaOntologyTermException if a matching focus area ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
-    public FocusAreaOntologyTerm findByFocusAreaId_Last(Long focusAreaId,
+    public FocusAreaOntologyTerm findByFocusAreaId_Last(long focusAreaId,
         OrderByComparator orderByComparator)
         throws NoSuchFocusAreaOntologyTermException, SystemException {
         int count = countByFocusAreaId(focusAreaId);
@@ -694,7 +694,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @throws SystemException if a system exception occurred
      */
     public FocusAreaOntologyTerm[] findByFocusAreaId_PrevAndNext(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK, Long focusAreaId,
+        FocusAreaOntologyTermPK focusAreaOntologyTermPK, long focusAreaId,
         OrderByComparator orderByComparator)
         throws NoSuchFocusAreaOntologyTermException, SystemException {
         FocusAreaOntologyTerm focusAreaOntologyTerm = findByPrimaryKey(focusAreaOntologyTermPK);
@@ -724,7 +724,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
     protected FocusAreaOntologyTerm getByFocusAreaId_PrevAndNext(
         Session session, FocusAreaOntologyTerm focusAreaOntologyTerm,
-        Long focusAreaId, OrderByComparator orderByComparator, boolean previous) {
+        long focusAreaId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -797,7 +797,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(focusAreaId.longValue());
+        qPos.add(focusAreaId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(focusAreaOntologyTerm);
@@ -931,7 +931,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @param focusAreaId the focus area ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByFocusAreaId(Long focusAreaId) throws SystemException {
+    public void removeByFocusAreaId(long focusAreaId) throws SystemException {
         for (FocusAreaOntologyTerm focusAreaOntologyTerm : findByFocusAreaId(
                 focusAreaId)) {
             remove(focusAreaOntologyTerm);
@@ -956,7 +956,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @return the number of matching focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
-    public int countByFocusAreaId(Long focusAreaId) throws SystemException {
+    public int countByFocusAreaId(long focusAreaId) throws SystemException {
         Object[] finderArgs = new Object[] { focusAreaId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_FOCUSAREAID,
@@ -980,7 +980,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(focusAreaId.longValue());
+                qPos.add(focusAreaId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

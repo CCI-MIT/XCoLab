@@ -23,25 +23,45 @@ import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUt
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.ontology.model.FocusArea;
 import com.ext.portlet.ontology.model.OntologyTerm;
+import com.ext.portlet.ontology.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.ontology.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.plans.EntityState;
+import com.ext.portlet.plans.NoSuchPlanFanException;
 import com.ext.portlet.plans.NoSuchPlanItemException;
+import com.ext.portlet.plans.NoSuchPlanPositionsException;
+import com.ext.portlet.plans.NoSuchPlanTeamHistoryException;
+import com.ext.portlet.plans.NoSuchPlanVoteException;
+import com.ext.portlet.plans.PlanConstants;
+import com.ext.portlet.plans.PlanTeamActions;
+import com.ext.portlet.plans.PlanUserPermission;
 import com.ext.portlet.plans.PlanConstants.Attribute;
 import com.ext.portlet.plans.UpdateType;
 import com.ext.portlet.plans.model.PlanAttribute;
 import com.ext.portlet.plans.model.PlanDescription;
+import com.ext.portlet.plans.model.PlanFan;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanMeta;
 import com.ext.portlet.plans.model.PlanModelRun;
 import com.ext.portlet.plans.model.PlanPositions;
+import com.ext.portlet.plans.model.PlanSection;
+import com.ext.portlet.plans.model.PlanSectionDefinition;
+import com.ext.portlet.plans.model.PlanTeamHistory;
+import com.ext.portlet.plans.model.PlanTemplate;
 import com.ext.portlet.plans.model.PlanType;
+import com.ext.portlet.plans.model.PlanVote;
 import com.ext.portlet.plans.model.PlansUserSettings;
 import com.ext.portlet.plans.service.PlanAttributeLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanDescriptionLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanFanLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanMetaLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanModelRunLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanPositionsLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanSectionLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTeamHistoryLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.plans.service.PlansUserSettingsLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanItemLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -49,17 +69,25 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
+import com.liferay.portal.model.Image;
+import com.liferay.portal.model.MembershipRequest;
+import com.liferay.portal.model.MembershipRequestConstants;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.GroupServiceUtil;
+import com.liferay.portal.service.ImageLocalServiceUtil;
+import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import edu.mit.cci.simulation.client.Simulation;
@@ -125,7 +153,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         
         long planItemId = CounterLocalServiceUtil.increment(PlanItem.class.getName());
         long planId = CounterLocalServiceUtil.increment(PlanItem.class.getName() + PLAN_ID_NAME_SUFFIX);
-        long planTypeId = phase.getContest().getPlanTypeId();
+        long planTypeId = ContestPhaseLocalServiceUtil.getContest(phase).getPlanTypeId();
         String name = DEFAULT_UNTITLED_PLAN_STEM_NAME + planId;
         PlanItem planItem = PlanItemLocalServiceUtil.createPlanItem(planItemId);
         planItem.setPlanId(planId);
@@ -143,11 +171,11 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
         PlanMeta meta = PlanMetaLocalServiceUtil.createPlanMeta(planItem, planTypeId);
         PlanType type = PlanTypeLocalServiceUtil.getPlanType(planTypeId);
-        Simulation defaultmodel = type.getDefaultModel();
+        Simulation defaultmodel = PlanTypeLocalServiceUtil.getDefaultModel(type);
         if (defaultmodel != null) {
             meta.setModelId(defaultmodel.getId());
         } else {
-            List<Simulation> models = type.getAvailableModels();
+            List<Simulation> models = PlanTypeLocalServiceUtil.getAvailableModels(type);
             if (models.size() > 0) {
                 meta.setModelId(models.get(0).getId());
             }
@@ -160,16 +188,16 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
         /* update/create all attributes */
         // planItem.updateAllAttributes();
-        planItem.updateAttribute(Attribute.CREATOR.name());
-        planItem.updateAttribute(Attribute.NAME.name());
-        planItem.updateAttribute(Attribute.DESCRIPTION.name());
-        planItem.updateAttribute(Attribute.CREATE_DATE.name());
-        planItem.updateAttribute(Attribute.PUBLISH_DATE.name());
-        planItem.updateAttribute(Attribute.VOTES.name());
-        planItem.updateAttribute(Attribute.SUPPORTERS.name());
-        planItem.updateAttribute(Attribute.IS_PLAN_OPEN.name());
-        planItem.updateAttribute(Attribute.SEEKING_ASSISTANCE.name());
-        planItem.updateAttribute(Attribute.STATUS.name());
+        updateAttribute(planItem, Attribute.CREATOR.name());
+        updateAttribute(planItem, Attribute.NAME.name());
+        updateAttribute(planItem, Attribute.DESCRIPTION.name());
+        updateAttribute(planItem, Attribute.CREATE_DATE.name());
+        updateAttribute(planItem, Attribute.PUBLISH_DATE.name());
+        updateAttribute(planItem, Attribute.VOTES.name());
+        updateAttribute(planItem, Attribute.SUPPORTERS.name());
+        updateAttribute(planItem, Attribute.IS_PLAN_OPEN.name());
+        updateAttribute(planItem, Attribute.SEEKING_ASSISTANCE.name());
+        updateAttribute(planItem, Attribute.STATUS.name());
 
         // populate fields with default values
 
@@ -210,17 +238,17 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
         /* update/create all attributes */
         // planItem.updateAllAttributes();
-        planItem.updateAttribute(Attribute.CREATOR.name());
-        planItem.updateAttribute(Attribute.NAME.name());
-        planItem.updateAttribute(Attribute.DESCRIPTION.name());
-        planItem.updateAttribute(Attribute.CREATE_DATE.name());
-        planItem.updateAttribute(Attribute.PUBLISH_DATE.name());
-        planItem.updateAttribute(Attribute.VOTES.name());
+        updateAttribute(planItem, Attribute.CREATOR.name());
+        updateAttribute(planItem, Attribute.NAME.name());
+        updateAttribute(planItem, Attribute.DESCRIPTION.name());
+        updateAttribute(planItem, Attribute.CREATE_DATE.name());
+        updateAttribute(planItem, Attribute.PUBLISH_DATE.name());
+        updateAttribute(planItem, Attribute.VOTES.name());
 
-        planItem.updateAttribute(Attribute.SUPPORTERS.name());
-        planItem.updateAttribute(Attribute.IS_PLAN_OPEN.name());
-        planItem.updateAttribute(Attribute.SEEKING_ASSISTANCE.name());
-        planItem.updateAttribute(Attribute.STATUS.name());
+        updateAttribute(planItem, Attribute.SUPPORTERS.name());
+        updateAttribute(planItem, Attribute.IS_PLAN_OPEN.name());
+        updateAttribute(planItem, Attribute.SEEKING_ASSISTANCE.name());
+        updateAttribute(planItem, Attribute.STATUS.name());
 
         // populate fields with default values
 
@@ -271,21 +299,21 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
     public PlanItem createPlan(PlanItem basePlan, ContestPhase contestPhase, Long authorId) throws SystemException,
             PortalException {
         planItemFinder.clearPhaseCache(contestPhase.getContestPhasePK());
-            
-        long type = basePlan.getPlanTypeId();
-        if (contestPhase.getContest().getPlanType().getPlanTypeId() != type) {
+        long type = getPlanTypeId(basePlan);
+        if (ContestLocalServiceUtil.getPlanType(ContestPhaseLocalServiceUtil.getContest(contestPhase)).getPlanTypeId() != type) {
             _log.error("Cannot create plan of type " + type + " for contest phase "
                     + contestPhase.getContestPhaseName());
         }
 
-        PlanItem plan = createPlan(contestPhase.getContest().getPlanType().getPlanTypeId(), authorId);
+        PlanItem plan = createPlan(ContestLocalServiceUtil.getPlanType(
+                ContestPhaseLocalServiceUtil.getContest(contestPhase)).getPlanTypeId(), authorId);
 
         plan.setUpdated(basePlan.getUpdated());
-        plan.store();
+        store(plan);
 
-        plan.getPlanMeta().setContestPhase(contestPhase.getContestPhasePK());
-        plan.getPlanMeta().setModelId(basePlan.getPlanMeta().getModelId());
-        PlanMetaLocalServiceUtil.updatePlanMeta(plan.getPlanMeta());
+        getPlanMeta(plan).setContestPhase(contestPhase.getContestPhasePK());
+        getPlanMeta(plan).setModelId(getPlanMeta(basePlan).getModelId());
+        PlanMetaLocalServiceUtil.updatePlanMeta(getPlanMeta(plan));
         PlanDescription description = PlanDescriptionLocalServiceUtil.getCurrentForPlan(plan);
         PlanModelRun planModelRun = PlanModelRunLocalServiceUtil.getCurrentForPlan(plan);
         PlanPositions planPositions = PlanPositionsLocalServiceUtil.getCurrentForPlan(plan);
@@ -293,45 +321,45 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         initPlan(plan);
 
         // copy description
-        description.setDescription(basePlan.getDescription());
-        description.setName(basePlan.getName());
-        description.store();
+        description.setDescription(getDescription(basePlan));
+        description.setName(getName(basePlan));
+        PlanDescriptionLocalServiceUtil.store(description);
 
         // copy scenario id
         // check if there is a scenario with given ID
         try {
-            if (basePlan.getScenarioId() != null
-                    && CollaboratoriumModelingService.repository().getScenario(basePlan.getScenarioId()) != null) {
-                planModelRun.setScenarioId(basePlan.getScenarioId());
+            if (getScenarioId(basePlan) != null
+                    && CollaboratoriumModelingService.repository().getScenario(getScenarioId(basePlan)) != null) {
+                planModelRun.setScenarioId(getScenarioId(basePlan));
 
             }
         } catch (Throwable e) {
             // ignore, no such scenario
-            _log.error("Can't find scenario with id: " + basePlan.getScenarioId(), e);
+            _log.error("Can't find scenario with id: " + getScenarioId(basePlan), e);
         }
-        planModelRun.store();
+        PlanModelRunLocalServiceUtil.store(planModelRun);
 
         // copy positions
-        planPositions.setPositionsIds(basePlan.getPositionsIds());
-        planPositions.store();
+        PlanPositionsLocalServiceUtil.setPositionsIds(planPositions, getPositionsIds(basePlan));
+        PlanPositionsLocalServiceUtil.store(planPositions);
 
-        if (basePlan.getScenarioId() != null) {
+        if (getScenarioId(basePlan) != null) {
             // update all attributes
-            plan.updateAllAttributes();
+            updateAllAttributes(plan);
         }
         // update only attributes related to new values
 
-        plan.updateAttribute(Attribute.DESCRIPTION.name());
-        plan.updateAttribute(Attribute.NAME.name());
-        plan.updateAttribute(Attribute.POSITIONS.name());
-        plan.updateAttribute(Attribute.LAST_MOD_DATE.name());
-        plan.updateAttribute(Attribute.IS_PLAN_OPEN.name());
-        plan.updateAttribute(Attribute.SEEKING_ASSISTANCE.name());
-        plan.updateAttribute(Attribute.STATUS.name());
+        updateAttribute(plan, Attribute.DESCRIPTION.name());
+        updateAttribute(plan, Attribute.NAME.name());
+        updateAttribute(plan, Attribute.POSITIONS.name());
+        updateAttribute(plan, Attribute.LAST_MOD_DATE.name());
+        updateAttribute(plan, Attribute.IS_PLAN_OPEN.name());
+        updateAttribute(plan, Attribute.SEEKING_ASSISTANCE.name());
+        updateAttribute(plan, Attribute.STATUS.name());
 
-        if (basePlan.getOpen()) {
-            plan.getPlanMeta().setOpen(true);
-            plan.getPlanMeta().store();
+        if (getOpen(basePlan)) {
+            getPlanMeta(plan).setOpen(true);
+            PlanMetaLocalServiceUtil.store(getPlanMeta(plan));
         }
 
         // set abstract and pitch
@@ -339,9 +367,9 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
                 Attribute.SUBREGION, Attribute.REGION, Attribute.SEEKING_ASSISTANCE, Attribute.IS_PLAN_OPEN };
 
         for (Attribute attr : attributesToCopy) {
-            PlanAttribute pa = basePlan.getPlanAttribute(attr.name());
+            PlanAttribute pa = getPlanAttribute(basePlan, attr.name());
             if (pa != null) {
-                plan.setAttribute(pa.getAttributeName(), pa.getAttributeValue());
+                setAttribute(plan, pa.getAttributeName(), pa.getAttributeValue());
             }
         }
 
@@ -359,10 +387,10 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         // add timestamp and random long value to plan name when setting group
         // name
         Random rand = new Random();
-        String groupName = plan.getName() + "_" + System.currentTimeMillis() + "_" + rand.nextLong();
+        String groupName = getName(plan) + "_" + System.currentTimeMillis() + "_" + rand.nextLong();
         Group group = null;
         try {
-            group = GroupServiceUtil.addGroup(plan.getName(), String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
+            group = GroupServiceUtil.addGroup(getName(plan), String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
                     GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
         } catch (Exception e) {
             System.err.println("Got error " + e.getMessage());
@@ -371,15 +399,15 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         }
         Long parentCategoryId = 0L;
         DiscussionCategoryGroup categoryGroup = DiscussionCategoryGroupLocalServiceUtil
-                .createDiscussionCategoryGroup(plan.getName() + " discussion");
+                .createDiscussionCategoryGroup(getName(plan) + " discussion");
 
-        categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + plan.getContest().getContestPK() + "/planId/"
+        categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + getContest(plan).getContestPK() + "/planId/"
                 + plan.getPlanId() + "#plans=tab:comments");
         
-        categoryGroup.store();
+        DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
 
-        DiscussionCategory category = categoryGroup.addCategory("General discussion", null,
-                UserLocalServiceUtil.getUser(plan.getAuthorId()));
+        DiscussionCategory category = DiscussionCategoryGroupLocalServiceUtil.addCategory(categoryGroup, "General discussion", null,
+                UserLocalServiceUtil.getUser(getAuthorId(plan)));
 
         // set up permissions
 
@@ -428,21 +456,21 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         }
 
         // populate plan with id of created group, category
-        PlanMeta planMeta = plan.getPlanMeta();
+        PlanMeta planMeta = getPlanMeta(plan);
 
         planMeta.setCategoryGroupId(categoryGroup.getId());
         planMeta.setPlanGroupId(group.getGroupId());
-        planMeta.store();
+        PlanMetaLocalServiceUtil.store(planMeta);
     }
 
     public List<PlanItem> getPlans() throws SystemException {
         return this.planItemFinder.getPlans();
     }
 
-    public List<PlanItem> getPlansInContestPhase(ContestPhase contestPhase) throws SystemException, PortalException {
+    public List<PlanItem> getPlansInContestPhase(long contestPhaseId) throws SystemException, PortalException {
 
         
-        return this.getPlans(Collections.emptyMap(), Collections.emptyMap(), null, contestPhase, 0, Integer.MAX_VALUE,
+        return this.getPlans(Collections.emptyMap(), Collections.emptyMap(), 0L, contestPhaseId, 0, Integer.MAX_VALUE,
                 "", "", false);
     }
 
@@ -450,14 +478,17 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         return this.planItemFinder.findLatestVersion(planId);
     }
 
-    public List<PlanItem> getPlans(Map sessionMap, Map requestMap, PlanType planType, ContestPhase phase, int start,
+    public List<PlanItem> getPlans(Map sessionMap, Map requestMap, long planTypeId, long contestPhaseId, int start,
             int end, final String sortColumn, String sortDirection) throws SystemException, PortalException {
-        return getPlans(sessionMap, requestMap, planType, phase, start, end, sortColumn, sortDirection, true);
+        return getPlans(sessionMap, requestMap, planTypeId, contestPhaseId, start, end, sortColumn, sortDirection, true);
     }
 
-    public List<PlanItem> getPlans(Map sessionMap, Map requestMap, PlanType planType, ContestPhase phase, int start,
+    public List<PlanItem> getPlans(Map sessionMap, Map requestMap, long planTypeId, long contestPhaseId, int start,
             int end, final String sortColumn, String sortDirection, boolean applyFilters) throws SystemException,
             PortalException {
+        
+        PlanType planType = planTypeId > 0 ? PlanTypeLocalServiceUtil.getPlanType(planTypeId) : null;
+        ContestPhase phase = contestPhaseId > 0 ? ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId) : null;
         /*
          * PlansUserSettings planUserSettings =
          * PlansUserSettingsLocalServiceUtil.getPlanUserSettings(sessionMap,
@@ -468,12 +499,19 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
          */
 
         List<PlanItem> plans = new ArrayList<PlanItem>();
+        
         if (phase != null) {
-            plans = new ArrayList(planItemFinder.getPlansForPhase(phase.getContestPhasePK()));
+            try {
+                plans = new ArrayList(planItemFinder.getPlansForPhase(phase.getContestPhasePK()));
+            }
+            catch (Throwable t) {
+                t.printStackTrace();
+                throw t;
+            }
         } else {
             for (PlanItem planItem : planItemFinder.getPlans()) {
                 if (planType == null
-                        || (planItem.getPlanTypeId() != null && planItem.getPlanTypeId().equals(
+                        || (getPlanTypeId(planItem) != null && getPlanTypeId(planItem).equals(
                                 planType.getPlanTypeId()))) {
                     plans.add(planItem);
                 }
@@ -481,7 +519,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         }
 
         if (planType == null && phase != null) {
-            planType = phase.getContest().getPlanType();
+            planType = ContestLocalServiceUtil.getPlanType(ContestPhaseLocalServiceUtil.getContest(phase));
         }
 
         if (sortColumn != null || sortColumn.trim().length() > 0) {
@@ -493,14 +531,14 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
                     try {
                         Comparable val1 = null;
                         Comparable val2 = null;
-                        PlanAttribute plan1Attr = arg0.getPlanAttribute(sortColumn);
-                        PlanAttribute plan2Attr = arg1.getPlanAttribute(sortColumn);
+                        PlanAttribute plan1Attr = getPlanAttribute(arg0, sortColumn);
+                        PlanAttribute plan2Attr = getPlanAttribute(arg1, sortColumn);
 
                         if (plan1Attr != null) {
-                            val1 = (Comparable) plan1Attr.getTypedValue();
+                            val1 = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(plan1Attr);
                         }
                         if (plan2Attr != null) {
-                            val2 = (Comparable) plan2Attr.getTypedValue();
+                            val2 = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(plan2Attr);
 
                         }
                         if (val1 == null || val2 == null) {
@@ -558,16 +596,16 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
         List<PlanItem> plans = new ArrayList<PlanItem>();
         for (PlanItem planItem : planItemFinder.getPlans()) {
-            if ((planType == null || (planItem.getPlanTypeId() != null && planItem.getPlanTypeId().equals(
+            if ((planType == null || (getPlanTypeId(planItem) != null && getPlanTypeId(planItem).equals(
                     planType.getPlanTypeId())))
-                    && (planItem.getPlanMeta().getContestPhase() != null && phasesIds.contains(planItem.getPlanMeta()
+                    && (getPlanMeta(planItem).getContestPhase() != 0 && phasesIds.contains(getPlanMeta(planItem)
                             .getContestPhase()))) {
                 plans.add(planItem);
             }
         }
 
         if (planType == null && phases != null && !phases.isEmpty()) {
-            planType = phases.get(0).getContest().getPlanType();
+            planType = ContestLocalServiceUtil.getPlanType(ContestPhaseLocalServiceUtil.getContest(phases.get(0)));
         }
 
         final int directionModifier = sortDirection.equals("DESC") ? -1 : 1;
@@ -576,10 +614,10 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
             @Override
             public int compare(PlanItem arg0, PlanItem arg1) {
                 try {
-                    PlanAttribute plan1Attr = arg0.getPlanAttribute(sortColumn);
-                    PlanAttribute plan2Attr = arg1.getPlanAttribute(sortColumn);
-                    Comparable val1 = (Comparable) (plan1Attr != null ? plan1Attr.getTypedValue() : null);
-                    Comparable val2 = (Comparable) (plan2Attr != null ? plan2Attr.getTypedValue() : null);
+                    PlanAttribute plan1Attr = getPlanAttribute(arg0, sortColumn);
+                    PlanAttribute plan2Attr = getPlanAttribute(arg1, sortColumn);
+                    Comparable val1 = (Comparable) (plan1Attr != null ? PlanAttributeLocalServiceUtil.getTypedValue(plan1Attr) : null);
+                    Comparable val2 = (Comparable) (plan2Attr != null ? PlanAttributeLocalServiceUtil.getTypedValue(plan2Attr) : null);
                     if (val1 != null) {
                         if (val2 != null) {
                             return val1.compareTo(val2) * directionModifier;
@@ -603,9 +641,9 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
     }
 
     public boolean isNameAvailable(String planName, Contest c) throws SystemException, PortalException {
-        for (ContestPhase phase : c.getPhases()) {
-            for (PlanItem item : phase.getPlans()) {
-                if (item.getName().equals(planName))
+        for (ContestPhase phase : ContestLocalServiceUtil.getPhases(c)) {
+            for (PlanItem item : ContestPhaseLocalServiceUtil.getPlans(phase)) {
+                if (getName(item).equals(planName))
                     return false;
             }
         }
@@ -684,7 +722,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
     }
     
     public List<PlanItem> findPlansForFocusArea(FocusArea fa) throws PortalException, SystemException {
-        return findPlansForOntologyTerms(fa.getTerms());
+        return findPlansForOntologyTerms(FocusAreaLocalServiceUtil.getTerms(fa));
     }
 
     public List<PlanItem> findPlansForOntologyTerms(OntologyTerm...terms) throws NoSuchPlanItemException, SystemException {
@@ -695,7 +733,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         Set<Long> ids = null;
         
         for (OntologyTerm term: terms) {
-            List<Long> tmp = term.findTagedIdsForClass(PlanItem.class);
+            List<Long> tmp = OntologyTermLocalServiceUtil.findTagedIdsForClass(term, PlanItem.class);
             if (ids == null) {
                 ids = new HashSet<Long>(tmp);
             }
@@ -751,8 +789,874 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
     
     
     public void planDeleted(PlanItem plan) throws PortalException, SystemException {
-        planItemFinder.clearPhaseCache(plan.getContestPhase().getContestPhasePK());
+        planItemFinder.clearPhaseCache(getContestPhase(plan).getContestPhasePK());
         
+    }
+
+    
+    /** methods from PlanItemImpl.java **/
+
+    /* Description related stuff */
+    public String getDescription(PlanItem pi) throws SystemException {
+        return PlanDescriptionLocalServiceUtil.getForPlan(pi).getDescription();
+    }
+
+    public String getName(PlanItem pi) throws SystemException {
+        return PlanDescriptionLocalServiceUtil.getForPlan(pi).getName();
+    }
+    
+    public Long getImageId(PlanItem pi) throws SystemException {
+        return PlanDescriptionLocalServiceUtil.getForPlan(pi).getImage();
+    }
+    
+    public String getPitch(PlanItem pi) throws SystemException {
+        return PlanDescriptionLocalServiceUtil.getForPlan(pi).getPitch();
+    }
+    
+    
+    public Image getImage(PlanItem pi) throws SystemException, PortalException {
+        Long imageId = getImageId(pi);
+        if (imageId != null) {
+            return ImageLocalServiceUtil.getImage(imageId);
+        }
+        return null;
+    }
+
+    public void setDescription(PlanItem pi, String description, Long updateAuthorId) throws SystemException, PortalException {
+        newVersion(pi, UpdateType.DESCRIPTION_UPDATED, updateAuthorId);
+
+        PlanDescription planDescription = PlanDescriptionLocalServiceUtil.createNewVersionForPlan(pi);
+        planDescription.setDescription(description);
+        PlanDescriptionLocalServiceUtil.store(planDescription);
+        updateAttribute(pi, Attribute.DESCRIPTION);
+        
+       //joinIfNotAMember(updateAuthorId);
+        updateSearchIndex(pi);
+    }
+
+    public void setName(PlanItem pi, String name, Long updateAuthorId) throws SystemException, PortalException {
+        newVersion(pi, UpdateType.NAME_UPDATED, updateAuthorId);
+        // update plan name attribute
+
+        PlanDescription planDescription = PlanDescriptionLocalServiceUtil.createNewVersionForPlan(pi);
+        planDescription.setName(name);
+        PlanDescriptionLocalServiceUtil.store(planDescription);
+        updateAttribute(pi, Attribute.NAME);
+        //joinIfNotAMember(updateAuthorId);
+        updateSearchIndex(pi);
+        // update referenced discussion category group
+        DiscussionCategoryGroup dcg = getDiscussionCategoryGroup(pi);
+        dcg.setDescription(name + " discussion");
+        DiscussionCategoryGroupLocalServiceUtil.store(dcg);
+    }
+    
+    public void setImage(PlanItem pi, Long imageId, Long updateAuthorId) throws SystemException, PortalException {
+        newVersion(pi, UpdateType.IMAGE_UPDATED, updateAuthorId);
+        // update plan name attribute
+
+        PlanDescription planDescription = PlanDescriptionLocalServiceUtil.createNewVersionForPlan(pi);
+        planDescription.setImage(imageId);
+        PlanDescriptionLocalServiceUtil.store(planDescription);
+        updateAttribute(pi, Attribute.IMAGE);
+        //joinIfNotAMember(updateAuthorId);
+        updateSearchIndex(pi);
+    }
+    
+    public void setPitch(PlanItem pi, String pitch, Long updateAuthorId) throws SystemException, SearchException {
+        newVersion(pi, UpdateType.PITCH_UPDATED, updateAuthorId);
+        
+        PlanDescription planDescription = PlanDescriptionLocalServiceUtil.createNewVersionForPlan(pi);
+        planDescription.setPitch(pitch);
+        PlanDescriptionLocalServiceUtil.store(planDescription);
+        updateAttribute(pi, Attribute.ABSTRACT);
+        updateSearchIndex(pi);
+    }
+
+    public List<PlanDescription> getAllDescriptionVersions(PlanItem pi) throws SystemException {
+        return PlanDescriptionLocalServiceUtil.getAllForPlan(pi);
+    }
+
+    /**
+     * List of all versions of PlanDescription objects related to given plan
+     * 
+     * @see com.ext.portlet.plans.model.PlanItem#getPlanDescriptions()
+     */
+    public List<PlanDescription> getPlanDescriptions(PlanItem pi) throws SystemException {
+        return PlanDescriptionLocalServiceUtil.getAllForPlan(pi);
+    }
+
+    /*
+     * 
+     * Scenarios
+     */
+    public Long getScenarioId(PlanItem pi) throws SystemException {
+        return PlanModelRunLocalServiceUtil.getCurrentForPlan(pi).getScenarioId();
+    }
+
+    public void setScenarioId(PlanItem pi, Long scenarioId, Long authorId) throws SystemException, PortalException {
+        newVersion(pi, UpdateType.SCENARIO_UPDATED, authorId);
+
+        PlanModelRun planModelRun = PlanModelRunLocalServiceUtil.createNewVersionForPlan(pi);
+        planModelRun.setScenarioId(scenarioId);
+        PlanModelRunLocalServiceUtil.store(planModelRun);
+
+        // update plan attributes to reflect values from new scenario
+        PlanType planType = getPlanType(pi);
+
+        for (PlanConstants.Attribute attribute : PlanConstants.Attribute.getPlanTypeAttributes(planType)) {
+            updateAttribute(pi, attribute);
+        }
+        
+        //joinIfNotAMember(authorId);
+    }
+
+    public void setModelId(PlanItem pi, Long simulationId, Long authorId) throws SystemException, PortalException {
+
+        PlanType planType = getPlanType(pi);
+        List<Simulation> sims = PlanTypeLocalServiceUtil.getAvailableModels(planType);
+        boolean found = false;
+        for (Simulation sim : sims) {
+            if (simulationId.equals(sim.getId())) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            throw new SystemException("Model id " + simulationId + " not valid for planType");
+        }
+
+        newVersion(pi, UpdateType.MODEL_UPDATED, authorId);
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setModelId(simulationId);
+        PlanMetaLocalServiceUtil.store(planMeta);
+
+        setScenarioId(pi, null, authorId);
+        //joinIfNotAMember(authorId);
+    }
+
+    public List<PlanModelRun> getAllPlanModelRuns(PlanItem pi) throws SystemException {
+        return PlanModelRunLocalServiceUtil.getAllForPlan(pi);
+    }
+
+    /*
+     * Plan meta informations.
+     */
+
+    public PlanMeta getPlanMeta(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi);
+    }
+
+    public List<PlanMeta> getAllPlanMetas(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getAllForPlan(pi);
+    }
+
+    public Long getPlanTypeId(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getPlanTypeId();
+    }
+
+    public PlanType getPlanType(PlanItem pi) throws SystemException, PortalException {
+        return PlanTypeLocalServiceUtil.getPlanType(getPlanTypeId(pi));
+    }
+
+    public Contest getContest(PlanItem pi) throws SystemException, PortalException {
+       ContestPhase phase = getContestPhase(pi);
+        return phase == null?null: ContestPhaseLocalServiceUtil.getContest(phase);
+    }
+
+    public ContestPhase getContestPhase(PlanItem pi) throws SystemException, PortalException {
+        Long phase =  getPlanMeta(pi).getContestPhase();
+        return phase == null?null:ContestPhaseLocalServiceUtil.getContestPhase(phase);
+    }
+
+    public void setContestPhase(PlanItem pi, ContestPhase phase, Long updateAuthorId) throws SystemException {
+        newVersion(pi, UpdateType.PLAN_TYPE_UPDATED, updateAuthorId);
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setContestPhase(phase.getContestPhasePK());
+        PlanMetaLocalServiceUtil.store(planMeta);
+
+        //joinIfNotAMember(updateAuthorId);
+    }
+
+    public void setPlanTypeId(PlanItem pi, Long planTypeId, Long updateAuthorId) throws SystemException, PortalException {
+        newVersion(pi, UpdateType.PLAN_TYPE_UPDATED, updateAuthorId);
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setPlanTypeId(planTypeId);
+        PlanMetaLocalServiceUtil.store(planMeta);
+        
+        //joinIfNotAMember(updateAuthorId);
+    }
+
+    public Long getMBCategoryId(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getMbCategoryId();
+    }
+
+    public void setMBCategoryId(PlanItem pi, Long mbCategoryId, Long updateAuthorId) throws SystemException {
+        newVersion(pi, UpdateType.MB_GROUP_UPDATED, updateAuthorId);
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setMbCategoryId(mbCategoryId);
+        PlanMetaLocalServiceUtil.store(planMeta);
+    }
+
+    public Long getCategoryGroupId(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getCategoryGroupId();
+    }
+
+    public void setCategoryGroupId(PlanItem pi, Long categoryGroupId, Long updateAuthorId) throws SystemException {
+        newVersion(pi, UpdateType.MB_GROUP_UPDATED, updateAuthorId);
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setCategoryGroupId(categoryGroupId);
+        PlanMetaLocalServiceUtil.store(planMeta);
+    }
+
+    public Long getPlanGroupId(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getPlanGroupId();
+    }
+
+    public void setPlanGroupId(PlanItem pi, Long groupId, Long updateAuthorId) throws SystemException {
+        newVersion(pi, UpdateType.PLAN_GROUP_UPDATED, updateAuthorId);
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setPlanGroupId(groupId);
+        PlanMetaLocalServiceUtil.store(planMeta);
+    }
+
+    public Long getAuthorId(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getAuthorId();
+    }
+
+    public User getAuthor(PlanItem pi) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(getAuthorId(pi));
+    }
+
+    public void setAuthorId(PlanItem pi, Long authorId, Long updateAuthorId) throws SystemException {
+        newVersion(pi, UpdateType.PLAN_GROUP_UPDATED, updateAuthorId);
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setAuthorId(authorId);
+        PlanMetaLocalServiceUtil.store(planMeta);
+    }
+
+    public Date getCreateDate(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getCreated();
+    }
+
+    public Date getPublishDate(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getCreated();
+    }
+
+    public String getCreator(PlanItem pi) throws PortalException, SystemException {
+        return getAuthor(pi).getScreenName();
+
+    }
+
+    public Integer getVotes(PlanItem pi) throws SystemException {
+        //return PlanMetaLocalServiceUtil.getCurrentForPlan(this).getVotes();
+        return PlanVoteLocalServiceUtil.countPlanVotesByPlanId(pi.getPlanId());
+    }
+
+    public boolean getOpen(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getOpen();
+    }
+
+    public void setOpen(PlanItem pi, boolean open, Long updateAuthorId) throws SystemException {
+        if (open) {
+            newVersion(pi, UpdateType.PLAN_OPENED, updateAuthorId);
+        }
+        else {
+            newVersion(pi, UpdateType.PLAN_CLOSED, updateAuthorId);
+            
+        }
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setOpen(open);
+        PlanMetaLocalServiceUtil.store(planMeta);
+        updateAttribute(pi, Attribute.IS_PLAN_OPEN);
+
+    }
+    
+    public void setOpen(PlanItem pi, boolean open) throws SystemException {
+        PlanMeta planMeta = getPlanMeta(pi);
+        planMeta.setOpen(open);
+        PlanMetaLocalServiceUtil.store(planMeta);
+        updateAttribute(pi, Attribute.IS_PLAN_OPEN);
+
+    }
+
+    public String getStatus(PlanItem pi) throws SystemException {
+        return PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getStatus();
+    }
+
+    public void setStatus(PlanItem pi, String status, Long updateAuthorId) throws SystemException {
+        newVersion(pi, UpdateType.PLAN_STATUS_UPDATED, updateAuthorId);
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setStatus(status);
+        PlanMetaLocalServiceUtil.store(planMeta);
+        updateAttribute(pi, PlanConstants.Attribute.STATUS);
+
+    }
+
+    /*
+     * POSITIONS
+     */
+
+    public PlanPositions getPlanPositions(PlanItem pi) throws NoSuchPlanPositionsException, SystemException {
+        return PlanPositionsLocalServiceUtil.getCurrentForPlan(pi);
+    }
+
+    public List<Long> getPositionsIds(PlanItem pi) throws SystemException, NoSuchPlanPositionsException {
+        PlanPositions x = PlanPositionsLocalServiceUtil.getCurrentForPlan(pi);
+        return PlanPositionsLocalServiceUtil.getPositionsIds(x);
+    }
+
+    public Long[] getPositionsIdsArray(PlanItem pi) throws SystemException, NoSuchPlanPositionsException {
+        List<Long> idsList = getPositionsIds(pi);
+        Long[] ret = new Long[idsList.size()];
+        return idsList.toArray(ret);
+    }
+
+    public void setPositions(PlanItem pi, List<Long> positionsIds, Long updateAuthorId) throws PortalException, SystemException {
+        newVersion(pi, UpdateType.PLAN_POSITIONS_UPDATED, updateAuthorId);
+
+        PlanPositions planPositions = PlanPositionsLocalServiceUtil.createNewVersionForPlan(pi);
+        PlanPositionsLocalServiceUtil.store(planPositions);
+        PlanPositionsLocalServiceUtil.setPositionsIds(planPositions, positionsIds);
+        updateAttribute(pi, Attribute.POSITIONS);
+        
+        //joinIfNotAMember(updateAuthorId);
+    }
+
+    public List<PlanPositions> getAllPositionsVersions(PlanItem pi) throws SystemException {
+        return PlanPositionsLocalServiceUtil.getAllForPlan(pi);
+    }
+
+    /*
+     * VOTES
+     */
+    public boolean hasUserVoted(PlanItem pi, Long userId) throws PortalException, SystemException {
+        try {
+            PlanVote vote = PlanVoteLocalServiceUtil.getPlanVote(userId, getContest(pi).getContestPK());
+            return vote.getPlanId() == pi.getPlanId();
+        } catch (NoSuchPlanVoteException e) {
+            // ignore
+        }
+        return false;
+    }
+
+    public void vote(PlanItem pi, Long userId) throws PortalException, SystemException {
+        if (PlanVoteLocalServiceUtil.voteForPlan(pi.getPlanId(), userId)) {
+            PlanMetaLocalServiceUtil.vote(PlanMetaLocalServiceUtil.getCurrentForPlan(pi));
+        }
+        updateAttribute(pi, Attribute.VOTES);
+    }
+
+    public void unvote(PlanItem pi, Long userId) throws PortalException, SystemException {
+        if (PlanVoteLocalServiceUtil.unvote(userId, getContest(pi).getContestPK())) {
+            PlanMetaLocalServiceUtil.unvote(PlanMetaLocalServiceUtil.getCurrentForPlan(pi));
+        }
+        updateAttribute(pi, Attribute.VOTES);
+    }
+
+
+    private PlanItem newVersion(PlanItem pi, UpdateType updateType, Long updateAuthorId) throws SystemException {
+        PlanItem latestVersion = pi;
+        try {
+            /*
+             *
+             // i don't think that this is a problem
+            if (!latestVersion.equals()) {
+                throw new SystemException(
+                        "Can only create a new version of a plan from the latest version in existence");
+            }
+            */
+            latestVersion = PlanItemLocalServiceUtil.getPlan(pi.getPlanId());
+        } catch (NoSuchPlanItemException e) {
+            // ignore
+        }
+        PlanItem oldVersion = (PlanItem) latestVersion.clone();
+        //newVersion.setId();
+        store(oldVersion);
+
+        pi.setId(CounterLocalServiceUtil.increment(PlanItem.class.getName()));
+        pi.setVersion(Math.max(pi.getVersion(), latestVersion.getVersion()) + 1);
+        pi.setUpdated(new Date());
+        pi.setUpdateType(updateType.name());
+        pi.setUpdateAuthorId(updateAuthorId);
+        pi.setNew(true);
+        store(pi);
+        
+        setAttribute(pi, PlanConstants.Attribute.LAST_MOD_DATE, String.valueOf(pi.getUpdated()));
+
+        return pi;
+    }
+
+    public void store(PlanItem pi) throws SystemException {
+        if (pi.isNew()) {
+            PlanItemLocalServiceUtil.addPlanItem(pi);
+        } else {
+            PlanItemLocalServiceUtil.updatePlanItem(pi);
+        }
+    }
+
+    /**
+     * Updates values of all available attributes.
+     * 
+     * @throws SystemException
+     */
+
+    public void updateAllAttributes(PlanItem pi) throws SystemException {
+        for (Attribute attribute : Attribute.values()) {
+            updateAttribute(pi, attribute);
+        }
+    }
+
+    /**
+     * Updates value of a given attribute, should be used only for property
+     * attributes.
+     * 
+     * @param attributeName
+     *            attribute which value should be updated
+     * @throws SystemException
+     *             in case of any error
+     */
+    public void updateAttribute(PlanItem pi, String attributeName) throws SystemException {
+        updateAttribute(pi, Attribute.valueOf(attributeName));
+    }
+
+    /**
+     * Updates value of a given attribute, should be used only for property
+     * attributes.
+     * 
+     * @param attribute
+     *            attribute which value should be updated
+     * @throws SystemException
+     *             in case of any error
+     */
+    private void updateAttribute(PlanItem pi, Attribute attribute) throws SystemException {
+        String value = attribute.calculateValue(pi).toString();
+        PlanAttribute att = PlanAttributeLocalServiceUtil.findPlanAttribute(pi.getPlanId(), attribute.name());
+        if (att != null) {
+            if (! att.getAttributeValue().equals(value)) {
+                att.setAttributeValue(value);
+                PlanAttributeLocalServiceUtil.updatePlanAttribute(att);
+            }
+        } else {
+            PlanAttributeLocalServiceUtil.addPlanAttribute(pi.getPlanId(), attribute.name(), value);
+        }
+    }
+    
+    /**
+     * Updates value of a given attribute, should be used only for property
+     * attributes.
+     * 
+     * @param attribute
+     *            attribute which value should be updated
+     * @throws SystemException
+     *             in case of any error
+     */
+    private void setAttribute(PlanItem pi, Attribute attribute, String value) throws SystemException {
+        PlanAttribute att = PlanAttributeLocalServiceUtil.findPlanAttribute(pi.getPlanId(), attribute.name());
+        if (att != null) {
+            att.setAttributeValue(value);
+            PlanAttributeLocalServiceUtil.updatePlanAttribute(att);
+        }
+        else {
+            PlanAttributeLocalServiceUtil.addPlanAttribute(pi.getPlanId(), attribute.name(), value);
+        }
+    }
+    
+    /**
+     * Updates value of a given attribute, should be used only for property
+     * attributes.
+     * 
+     * @param attribute
+     *            attribute which value should be updated
+     * @throws SystemException
+     *             in case of any error
+     */
+    private String getAttribute(PlanItem pi, Attribute attribute) throws SystemException {
+        PlanAttribute att = PlanAttributeLocalServiceUtil.findPlanAttribute(pi.getPlanId(), attribute.name());
+        if (att != null) {
+            return att.getAttributeValue();
+        }
+        return null;
+    }
+    
+
+    /*
+     * Plan membership related stuff
+     */
+
+    /**
+     * Returns list of plan members.
+     */
+    public List<User> getMembers(PlanItem pi) throws SystemException {
+        return UserLocalServiceUtil.getGroupUsers(getPlanGroupId(pi));
+    }
+
+    public List<MembershipRequest> getMembershipRequests(PlanItem pi) throws SystemException {
+        return MembershipRequestLocalServiceUtil.search(getPlanGroupId(pi), MembershipRequestConstants.STATUS_PENDING, 0,
+                Integer.MAX_VALUE);
+    }
+
+    public void addMembershipRequest(PlanItem pi, Long userId, String comments) throws PortalException, SystemException {
+        PlanTeamHistoryLocalServiceUtil.newHistoryItem(pi.getPlanId(), userId,
+                PlanTeamActions.MEMBERSHIP_REQUESTED.name(), userId);
+        MembershipRequestLocalServiceUtil.addMembershipRequest(userId, getPlanGroupId(pi), comments, null);
+    }
+
+    public void dennyMembershipRequest(PlanItem pi, Long userId, MembershipRequest request, String reply, Long updateAuthorId)
+            throws PortalException, SystemException {
+        PlanTeamHistoryLocalServiceUtil.newHistoryItem(pi.getPlanId(), userId,
+                PlanTeamActions.MEMBERSHIP_DECLEINED.name(), updateAuthorId);
+        MembershipRequestLocalServiceUtil.updateStatus(userId, request.getMembershipRequestId(), reply,
+                MembershipRequestConstants.STATUS_DENIED, false, null);
+    }
+
+    public void approveMembershipRequest(PlanItem pi, Long userId, MembershipRequest request, String reply, Long updateAuthorId)
+            throws PortalException, SystemException {
+        PlanTeamHistoryLocalServiceUtil.newHistoryItem(pi.getPlanId(), userId,
+                PlanTeamActions.MEMBERSHIP_APPROVED.name(), updateAuthorId);
+        MembershipRequestLocalServiceUtil.updateStatus(userId, request.getMembershipRequestId(), reply,
+                MembershipRequestConstants.STATUS_APPROVED, true, null);
+    }
+
+    /*
+     * Plan actions, publishing/deleting
+     */
+    public void publish(PlanItem pi, Long updateAuthorId) throws SystemException, PortalException {
+        newVersion(pi, UpdateType.PLAN_PUBLISHED, updateAuthorId);
+
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
+        planMeta.setPlanTypeId(getPlanType(pi).getPublishedCounterpartId());
+        PlanMetaLocalServiceUtil.store(planMeta);
+    }
+
+    public void delete(PlanItem pi, Long updateAuthorId) throws SystemException, PortalException {
+        newVersion(pi, UpdateType.PLAN_DELETED, updateAuthorId);
+        pi.setState(EntityState.DELETED.name());
+        store(pi);
+        PlanItemLocalServiceUtil.planDeleted(pi);
+        /*
+        try {
+            Indexer.deleteEntry(10112L, getPlanId());
+        } catch (SearchException e) {
+            _log.error("can't remove plan " + getPlanId() + " from search index", e);
+        }
+        */
+    }
+
+    public User getUpdateAuthor(PlanItem pi) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(pi.getUpdateAuthorId());
+    }
+
+    public List<PlanFan> getFans(PlanItem pi) throws SystemException {
+        return PlanFanLocalServiceUtil.getPlanFansForPlan(pi.getPlanId());
+    }
+
+    public PlanFan addFan(PlanItem pi, Long userId) throws SystemException {
+        if (!isUserAFan(pi, userId)) {
+            PlanFan planFan = PlanFanLocalServiceUtil.addFan(pi.getPlanId(), userId);
+            setAttribute(pi, Attribute.SUPPORTERS, String.valueOf(PlanFanLocalServiceUtil.countPlanFansForPlan(pi.getPlanId())));
+            return planFan;
+        }
+        return null;
+    }
+
+    public void removeFan(PlanItem pi, Long userId) throws SystemException {
+        if (isUserAFan(pi, userId)) {
+            PlanFanLocalServiceUtil.removePlanFan(pi.getPlanId(), userId);
+            setAttribute(pi, Attribute.SUPPORTERS, String.valueOf(PlanFanLocalServiceUtil.countPlanFansForPlan(pi.getPlanId())));
+        }
+    }
+
+    public boolean isUserAFan(PlanItem pi, Long userId) throws SystemException {
+        try {
+            return PlanFanLocalServiceUtil.getPlanFanByPlanIdUserId(pi.getPlanId(), userId) != null;
+        } catch (NoSuchPlanFanException e) {
+            return false;
+        }
+    }
+
+    public boolean isUserAMember(PlanItem pi, Long userId) throws SystemException {
+        return GroupLocalServiceUtil.hasUserGroup(userId, getPlanGroupId(pi));
+    }
+
+    public boolean hasUserRequestedMembership(PlanItem pi, Long userId) throws SystemException {
+        try {
+            PlanTeamHistory action = PlanTeamHistoryLocalServiceUtil.getLastUserActionInPlan(pi.getPlanId(), userId);
+            if (action.getAction().equals(PlanTeamActions.MEMBERSHIP_REQUESTED.name())) {
+                return true;
+            }
+        } catch (NoSuchPlanTeamHistoryException e) {
+            // ignore
+        }
+        return false;
+    }
+
+    public boolean isAdmin(PlanItem pi, Long userId) throws PortalException, SystemException {
+        return UserGroupRoleLocalServiceUtil.hasUserGroupRole(userId, getPlanGroupId(pi),
+                RoleConstants.SITE_ADMINISTRATOR)
+                || isOwner(pi, userId);
+    }
+
+    public boolean isOwner(PlanItem pi, Long userId) throws PortalException, SystemException {
+        return UserGroupRoleLocalServiceUtil.hasUserGroupRole(userId, getPlanGroupId(pi), RoleConstants.SITE_OWNER);
+    }
+
+    public void setUserPermission(PlanItem pi, Long userId, String userPermission, Long updateAuthorId) throws SystemException,
+            PortalException {
+        PlanUserPermission userPerm = PlanUserPermission.valueOf(userPermission);
+
+        Group group = GroupLocalServiceUtil.getGroup(getPlanGroupId(pi));
+        UserGroupRoleLocalServiceUtil.deleteUserGroupRoles(userId, new long[] { getPlanGroupId(pi) });
+        String roleName = RoleConstants.SITE_MEMBER;
+
+        if (userPerm == PlanUserPermission.OWNER) {
+            roleName = RoleConstants.SITE_OWNER;
+        } else if (userPerm == PlanUserPermission.ADMIN) {
+            roleName = RoleConstants.SITE_ADMINISTRATOR;
+        }
+
+        Role role = RoleLocalServiceUtil.getRole(group.getCompanyId(), roleName);
+        UserGroupRoleLocalServiceUtil.addUserGroupRoles(userId, getPlanGroupId(pi), new long[] { role.getRoleId() });
+        PlanTeamHistoryLocalServiceUtil.newHistoryItem(pi.getPlanId(), userId, PlanTeamActions.PERMISSIONS_CHANGED.name(),
+                userPermission, updateAuthorId);
+    }
+
+    public void removeMember(PlanItem pi, Long userId, Long updateAuthorId) throws SystemException, PortalException {
+        UserLocalServiceUtil.unsetGroupUsers(getPlanGroupId(pi), new long[] { userId }, null);
+        PlanTeamHistoryLocalServiceUtil.newHistoryItem(pi.getPlanId(), userId, PlanTeamActions.MEMBER_REMOVED.name(),
+                updateAuthorId);
+    }
+    
+
+    public void joinIfNotAMember(PlanItem pi, Long userId) throws SystemException, PortalException {
+        if (! isUserAMember(pi, userId)) {
+            GroupLocalServiceUtil.addUserGroups(userId, new long[] {getPlanGroupId(pi)});
+            PlanTeamHistoryLocalServiceUtil.newHistoryItem(pi.getPlanId(), userId, PlanTeamActions.MEMBERSHIP_APPROVED.name(),
+                    userId);
+        }
+        
+    }
+    
+    public void setSeekingAssistance(PlanItem pi, boolean seekingAssistance) throws SystemException {
+        setAttribute(pi, Attribute.SEEKING_ASSISTANCE, String.valueOf(seekingAssistance));
+    }
+    
+    public boolean isSeekingAssistance(PlanItem pi) throws SystemException {
+        Object value = Attribute.SEEKING_ASSISTANCE.getValue(pi);
+        if ("true".equals(value)) {
+            return true;
+        }
+        return false;
+    }
+    
+
+    private void updateSearchIndex(PlanItem pi) throws SearchException, SystemException {
+        //Indexer.updateEntry(10112L, this);
+        
+    }
+    
+    public DiscussionCategoryGroup getDiscussionCategoryGroup(PlanItem pi) throws PortalException, SystemException {
+        return DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(getCategoryGroupId(pi));
+        
+    }
+    
+    public PlanItem promote(PlanItem pi, User user) throws SystemException, PortalException {
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getNextContestPhase(getContestPhase(pi));
+        
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.getCurrentForPlan(pi);
+        planMeta.setPromoted(true);
+        planMeta.setPreviousContestPhase(planMeta.getContestPhase());
+        planMeta.setContestPhase(contestPhase.getContestPhasePK());
+        
+        PlanMetaLocalServiceUtil.store(planMeta);
+        setAttribute(pi, Attribute.PLAN_PLACE, String.valueOf(1));
+
+        return pi;
+    }
+    
+    
+    
+    public boolean getPromoted(PlanItem pi) throws SystemException {
+        Boolean promoted = PlanMetaLocalServiceUtil.getCurrentForPlan(pi).getPromoted();
+        return promoted != null ? promoted : false;
+        
+    }
+    
+    public int getCommentsCount(PlanItem pi) throws PortalException, SystemException {
+        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(pi));
+    }
+    
+    public void setPlace(PlanItem pi, int place) throws SystemException {
+        setAttribute(pi, Attribute.PLAN_PLACE, String.valueOf(place));
+    }
+    
+    public void removePlace(PlanItem pi) throws SystemException {
+        setAttribute(pi, Attribute.PLAN_PLACE, String.valueOf(-1));
+    }
+    
+    public List<PlanVote> getPlanVotes(PlanItem pi) throws SystemException {
+        return PlanVoteLocalServiceUtil.getPlanVotes(pi.getPlanId());
+    }
+    
+    public void setRibbon(PlanItem pi, Integer ribbon) throws SystemException {
+        setAttribute(pi, Attribute.PLAN_RIBBON, String.valueOf(ribbon));
+    }
+    
+
+    public void setRibbonText(PlanItem pi, String ribbonText) throws SystemException {
+        setAttribute(pi, Attribute.PLAN_RIBBON_TEXT, String.valueOf(ribbonText));
+    }
+    
+    
+    public void setAttribute(PlanItem pi, String attributeName, String value) throws SystemException {
+        setAttribute(pi, Attribute.valueOf(attributeName), value);
+    }
+    
+    public void removeAttribute(PlanItem pi, String attributeName) throws SystemException {
+        PlanAttribute attr = PlanAttributeLocalServiceUtil.findPlanAttribute(pi.getPlanId(), attributeName);
+        
+        if (attr != null) {
+            PlanAttributeLocalServiceUtil.deletePlanAttribute(attr);
+        }
+    }
+    
+    public PlanTemplate getPlanTemplate(PlanItem pi) throws PortalException, SystemException {
+        return ContestLocalServiceUtil.getPlanTemplate(getContest(pi));
+    }
+    
+    public List<PlanSection> getPlanSections(PlanItem pi) throws PortalException, SystemException {
+        PlanTemplate tmpl = getPlanTemplate(pi);
+        if (tmpl != null) {
+            List<PlanSection> ret = new ArrayList<PlanSection>();
+            
+            for (PlanSectionDefinition psd: PlanTemplateLocalServiceUtil.getSections(tmpl)) {
+                ret.add(PlanSectionLocalServiceUtil.getForPlanSectionDef(pi, psd));
+            }
+            return ret;
+        }
+        
+        return null;
+    }
+    
+    public void setSectionContent(PlanItem pi, PlanSectionDefinition psd, String content, List<Long> referencedPlans, Long updateAuthorId) 
+    throws SystemException, PortalException {
+        newVersion(pi, UpdateType.PLAN_SECTION_UPDATED, updateAuthorId);
+        PlanSection ps = PlanSectionLocalServiceUtil.createNewVersionForPlanSectionDefinition(pi, psd, false);
+        ps.setUpdateAuthorId(updateAuthorId);
+        ps.setContent(content);
+        
+        for (Long planId: referencedPlans) {
+            PlanSectionLocalServiceUtil.addPlanReference(ps, planId);
+        }
+        
+        PlanSectionLocalServiceUtil.store(ps);
+        
+    }
+    
+    public List<PlanSection> getAllPlanSections(PlanItem pi, PlanSectionDefinition psd) throws SystemException {
+        return PlanSectionLocalServiceUtil.getAllForPlanDefinition(pi, psd);
+    }
+
+    public Integer getRibbon(PlanItem pi) throws SystemException {
+        PlanAttribute attr = getPlanAttribute(pi, PlanConstants.Attribute.PLAN_RIBBON.name());
+        try {
+            return attr != null && attr.getAttributeValue() != null && attr.getAttributeValue().trim().length() > 0 ? 
+                    Integer.parseInt(attr.getAttributeValue()) : null;
+        }
+        catch (NumberFormatException e) {
+            return null;
+        }
+    }
+    
+    public void setTeam(PlanItem pi, String team) throws SystemException {
+        setAttribute(pi, PlanConstants.Attribute.TEAM, team);
+    }
+    
+    public String getTeam(PlanItem pi) throws SystemException {
+        String team = getAttribute(pi, Attribute.TEAM);
+        if (team == null || team.trim().length() == 0) {
+            return null;
+        }
+        return team;
+    }
+    
+    public void revertTo(PlanItem pi, Long updateAuthorId) throws SystemException, PortalException {
+        
+        
+        PlanDescription oldDesc = PlanDescriptionLocalServiceUtil.getForPlan(pi);
+        PlanModelRun oldAi = PlanModelRunLocalServiceUtil.getForPlan(pi);
+        List<PlanSection> oldSections = getPlanSections(pi);
+        
+        newVersion(pi, UpdateType.PLAN_REVERTED, updateAuthorId);
+        
+        PlanDescriptionLocalServiceUtil.createNewVersionForPlanFrom(pi, oldDesc, true);
+        PlanModelRunLocalServiceUtil.createNewVersionForPlanFrom(pi, oldAi, true);
+        
+        PlanTemplate tmpl = getPlanTemplate(pi);
+        for (PlanSection section: oldSections) {
+            PlanSectionLocalServiceUtil.createForPlanFrom(pi, section, true);
+        }
+        
+        updateAttribute(pi, Attribute.ABSTRACT);
+        updateAttribute(pi, Attribute.DESCRIPTION);
+        updateAttribute(pi, Attribute.NAME);
+        updateAttribute(pi, Attribute.IMAGE);        
+        
+        PlanType planType = getPlanType(pi);
+
+        for (PlanConstants.Attribute attribute : PlanConstants.Attribute.getPlanTypeAttributes(planType)) {
+            updateAttribute(pi, attribute);
+        }
+    }
+    
+    public String getTags(PlanItem pi) throws SystemException {
+        String tags = getAttribute(pi, Attribute.TAGS);
+        if (tags == null || tags.trim().length() == 0) {
+            return null;
+        }
+        return tags;
+    }
+    
+    public void setTags(PlanItem pi, String tags) throws SystemException {
+        setAttribute(pi, Attribute.TAGS, tags);
+    }
+    
+    public String getTagsHover(PlanItem pi) throws SystemException {
+        String tagsHover = getAttribute(pi, Attribute.TAGS_HOVER);
+        if (tagsHover == null || tagsHover.trim().length() == 0) {
+            return null;
+        }
+        return tagsHover;
+    }
+    
+    public void setTagsHover(PlanItem pi, String tagsHover) throws SystemException {
+        setAttribute(pi, Attribute.TAGS_HOVER, tagsHover);
+    }
+    
+    public Integer getTagsOrder(PlanItem pi) throws SystemException {
+        String tagsOrderStr = getAttribute(pi, Attribute.TAGS_ORDER);
+        int ret = 0;
+        if (tagsOrderStr != null && tagsOrderStr.trim().length() > 0) {
+            try {
+                ret = Integer.parseInt(tagsOrderStr);
+                
+            }
+            catch (NumberFormatException e) {
+                // ignore
+            }
+        }
+        return ret;
+    }
+    
+    public void setTagsOrder(PlanItem pi, int tagsOrder) throws SystemException {
+        setAttribute(pi, Attribute.TAGS_ORDER, String.valueOf(tagsOrder));
     }
 
 }

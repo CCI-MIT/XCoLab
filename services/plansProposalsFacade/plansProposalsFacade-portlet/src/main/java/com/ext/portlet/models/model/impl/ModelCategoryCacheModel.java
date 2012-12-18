@@ -17,10 +17,10 @@ import java.io.Serializable;
  */
 public class ModelCategoryCacheModel implements CacheModel<ModelCategory>,
     Serializable {
-    public Long modelCategoryPK;
+    public long modelCategoryPK;
     public String modelCategoryName;
     public String modelCategoryDescription;
-    public Integer modelCategoryDisplayWeight;
+    public int modelCategoryDisplayWeight;
 
     @Override
     public String toString() {

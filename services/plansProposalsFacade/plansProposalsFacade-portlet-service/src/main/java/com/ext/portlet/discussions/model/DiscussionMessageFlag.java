@@ -3,7 +3,7 @@ package com.ext.portlet.discussions.model;
 import com.liferay.portal.model.PersistedModel;
 
 /**
- * The extended model interface for the DiscussionMessageFlag service. Represents a row in the &quot;Discussions_DiscussionMessageFlag&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the DiscussionMessageFlag service. Represents a row in the &quot;xcolab_DiscussionMessageFlag&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
  * @see DiscussionMessageFlagModel

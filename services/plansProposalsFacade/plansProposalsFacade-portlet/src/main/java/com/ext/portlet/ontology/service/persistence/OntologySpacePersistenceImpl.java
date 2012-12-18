@@ -229,7 +229,7 @@ public class OntologySpacePersistenceImpl extends BasePersistenceImpl<OntologySp
      * @param id the primary key for the new ontology space
      * @return the new ontology space
      */
-    public OntologySpace create(Long id) {
+    public OntologySpace create(long id) {
         OntologySpace ontologySpace = new OntologySpaceImpl();
 
         ontologySpace.setNew(true);
@@ -246,9 +246,9 @@ public class OntologySpacePersistenceImpl extends BasePersistenceImpl<OntologySp
      * @throws com.ext.portlet.ontology.NoSuchOntologySpaceException if a ontology space with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologySpace remove(Long id)
+    public OntologySpace remove(long id)
         throws NoSuchOntologySpaceException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -394,7 +394,7 @@ public class OntologySpacePersistenceImpl extends BasePersistenceImpl<OntologySp
     @Override
     public OntologySpace findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -405,7 +405,7 @@ public class OntologySpacePersistenceImpl extends BasePersistenceImpl<OntologySp
      * @throws com.ext.portlet.ontology.NoSuchOntologySpaceException if a ontology space with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologySpace findByPrimaryKey(Long id)
+    public OntologySpace findByPrimaryKey(long id)
         throws NoSuchOntologySpaceException, SystemException {
         OntologySpace ontologySpace = fetchByPrimaryKey(id);
 
@@ -431,7 +431,7 @@ public class OntologySpacePersistenceImpl extends BasePersistenceImpl<OntologySp
     @Override
     public OntologySpace fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -441,7 +441,7 @@ public class OntologySpacePersistenceImpl extends BasePersistenceImpl<OntologySp
      * @return the ontology space, or <code>null</code> if a ontology space with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologySpace fetchByPrimaryKey(Long id) throws SystemException {
+    public OntologySpace fetchByPrimaryKey(long id) throws SystemException {
         OntologySpace ontologySpace = (OntologySpace) EntityCacheUtil.getResult(OntologySpaceModelImpl.ENTITY_CACHE_ENABLED,
                 OntologySpaceImpl.class, id);
 

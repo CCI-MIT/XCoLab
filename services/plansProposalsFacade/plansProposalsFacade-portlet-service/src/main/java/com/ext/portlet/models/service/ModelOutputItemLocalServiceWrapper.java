@@ -41,7 +41,7 @@ public class ModelOutputItemLocalServiceWrapper
     * @return the new model output item
     */
     public com.ext.portlet.models.model.ModelOutputItem createModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK) {
+        long modelOutputItemModifierPK) {
         return _modelOutputItemLocalService.createModelOutputItem(modelOutputItemModifierPK);
     }
 
@@ -52,7 +52,7 @@ public class ModelOutputItemLocalServiceWrapper
     * @throws PortalException if a model output item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelOutputItem(java.lang.Long modelOutputItemModifierPK)
+    public void deleteModelOutputItem(long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _modelOutputItemLocalService.deleteModelOutputItem(modelOutputItemModifierPK);
@@ -143,7 +143,7 @@ public class ModelOutputItemLocalServiceWrapper
     }
 
     public com.ext.portlet.models.model.ModelOutputItem fetchModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelOutputItemLocalService.fetchModelOutputItem(modelOutputItemModifierPK);
     }
@@ -157,7 +157,7 @@ public class ModelOutputItemLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelOutputItem getModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _modelOutputItemLocalService.getModelOutputItem(modelOutputItemModifierPK);

@@ -18,25 +18,25 @@ import java.util.Date;
  * @generated
  */
 public class PlanMetaCacheModel implements CacheModel<PlanMeta>, Serializable {
-    public Long id;
-    public Long planId;
-    public Long planTypeId;
-    public Long planCreated;
-    public Long authorId;
-    public Integer votes;
-    public Long planGroupId;
-    public Boolean open;
+    public long id;
+    public long planId;
+    public long planTypeId;
+    public long planCreated;
+    public long authorId;
+    public int votes;
+    public long planGroupId;
+    public boolean open;
     public String status;
-    public Long mbCategoryId;
-    public Long categoryGroupId;
-    public Long version;
-    public Long planVersion;
+    public long mbCategoryId;
+    public long categoryGroupId;
+    public long version;
+    public long planVersion;
     public long created;
-    public Long updateAuthorId;
-    public Long modelId;
-    public Boolean promoted;
-    public Long previousContestPhase;
-    public Long contestPhase;
+    public long updateAuthorId;
+    public long modelId;
+    public boolean promoted;
+    public long previousContestPhase;
+    public long contestPhase;
 
     @Override
     public String toString() {

@@ -13,11 +13,11 @@ import java.util.List;
  * @generated
  */
 public class MessagingUserPreferencesSoap implements Serializable {
-    private Long _messagingPreferencesId;
-    private Long _userId;
-    private Boolean _emailOnSend;
-    private Boolean _emailOnReceipt;
-    private Boolean _emailOnActivity;
+    private long _messagingPreferencesId;
+    private long _userId;
+    private boolean _emailOnSend;
+    private boolean _emailOnReceipt;
+    private boolean _emailOnActivity;
 
     public MessagingUserPreferencesSoap() {
     }
@@ -74,51 +74,63 @@ public class MessagingUserPreferencesSoap implements Serializable {
         return soapModels.toArray(new MessagingUserPreferencesSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _messagingPreferencesId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setMessagingPreferencesId(pk);
     }
 
-    public Long getMessagingPreferencesId() {
+    public long getMessagingPreferencesId() {
         return _messagingPreferencesId;
     }
 
-    public void setMessagingPreferencesId(Long messagingPreferencesId) {
+    public void setMessagingPreferencesId(long messagingPreferencesId) {
         _messagingPreferencesId = messagingPreferencesId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Boolean getEmailOnSend() {
+    public boolean getEmailOnSend() {
         return _emailOnSend;
     }
 
-    public void setEmailOnSend(Boolean emailOnSend) {
+    public boolean isEmailOnSend() {
+        return _emailOnSend;
+    }
+
+    public void setEmailOnSend(boolean emailOnSend) {
         _emailOnSend = emailOnSend;
     }
 
-    public Boolean getEmailOnReceipt() {
+    public boolean getEmailOnReceipt() {
         return _emailOnReceipt;
     }
 
-    public void setEmailOnReceipt(Boolean emailOnReceipt) {
+    public boolean isEmailOnReceipt() {
+        return _emailOnReceipt;
+    }
+
+    public void setEmailOnReceipt(boolean emailOnReceipt) {
         _emailOnReceipt = emailOnReceipt;
     }
 
-    public Boolean getEmailOnActivity() {
+    public boolean getEmailOnActivity() {
         return _emailOnActivity;
     }
 
-    public void setEmailOnActivity(Boolean emailOnActivity) {
+    public boolean isEmailOnActivity() {
+        return _emailOnActivity;
+    }
+
+    public void setEmailOnActivity(boolean emailOnActivity) {
         _emailOnActivity = emailOnActivity;
     }
 }

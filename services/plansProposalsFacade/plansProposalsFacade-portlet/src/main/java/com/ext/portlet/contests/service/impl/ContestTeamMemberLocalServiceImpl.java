@@ -2,10 +2,17 @@ package com.ext.portlet.contests.service.impl;
 
 import java.util.List;
 
+import com.ext.portlet.contests.model.Contest;
 import com.ext.portlet.contests.model.ContestTeamMember;
 import com.ext.portlet.contests.model.impl.ContestTeamMemberImpl;
+import com.ext.portlet.contests.service.ContestLocalServiceUtil;
+import com.ext.portlet.contests.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.contests.service.base.ContestTeamMemberLocalServiceBaseImpl;
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the contest team member local service.
@@ -35,12 +42,37 @@ public class ContestTeamMemberLocalServiceImpl
         member.setUserId(userId);
         member.setContestId(contestPk);
         member.setRole(role);
-        member.store();
+        store(member);
         
         return member;
     }
     
     public List<ContestTeamMember> findForContest(Long contestPk) throws SystemException {
         return contestTeamMemberPersistence.findByContestId(contestPk);
+    }
+    
+
+    public void store(ContestTeamMember contestTeamMember) throws SystemException {
+        if (contestTeamMember.isNew()) {
+            if (contestTeamMember.getId() <= 0) {
+                contestTeamMember.setId(CounterLocalServiceUtil.increment(ContestTeamMember.class.getName()));
+            }
+            ContestTeamMemberLocalServiceUtil.addContestTeamMember(contestTeamMember);
+        }
+        else {
+            ContestTeamMemberLocalServiceUtil.updateContestTeamMember(contestTeamMember);
+        }
+    }
+    
+    public void delete(ContestTeamMember contestTeamMember) throws SystemException {
+        ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
+    }
+    
+    public User getUser(ContestTeamMember contestTeamMember) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(contestTeamMember.getUserId());
+    }
+    
+    public Contest getContest(ContestTeamMember contestTeamMember) throws PortalException, SystemException {
+        return ContestLocalServiceUtil.getContest(contestTeamMember.getContestId());
     }
 }

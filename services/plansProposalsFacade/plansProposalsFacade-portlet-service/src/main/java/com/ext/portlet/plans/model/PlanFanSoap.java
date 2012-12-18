@@ -14,9 +14,9 @@ import java.util.List;
  * @generated
  */
 public class PlanFanSoap implements Serializable {
-    private Long _id;
-    private Long _userId;
-    private Long _planId;
+    private long _id;
+    private long _userId;
+    private long _planId;
     private Date _created;
     private Date _deleted;
 
@@ -71,35 +71,35 @@ public class PlanFanSoap implements Serializable {
         return soapModels.toArray(new PlanFanSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 

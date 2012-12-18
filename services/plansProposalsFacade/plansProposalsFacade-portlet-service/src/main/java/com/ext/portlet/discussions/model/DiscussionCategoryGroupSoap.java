@@ -13,10 +13,10 @@ import java.util.List;
  * @generated
  */
 public class DiscussionCategoryGroupSoap implements Serializable {
-    private Long _id;
+    private long _id;
     private String _description;
     private String _url;
-    private Long _commentsThread;
+    private long _commentsThread;
 
     public DiscussionCategoryGroupSoap() {
     }
@@ -72,19 +72,19 @@ public class DiscussionCategoryGroupSoap implements Serializable {
         return soapModels.toArray(new DiscussionCategoryGroupSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
@@ -104,11 +104,11 @@ public class DiscussionCategoryGroupSoap implements Serializable {
         _url = url;
     }
 
-    public Long getCommentsThread() {
+    public long getCommentsThread() {
         return _commentsThread;
     }
 
-    public void setCommentsThread(Long commentsThread) {
+    public void setCommentsThread(long commentsThread) {
         _commentsThread = commentsThread;
     }
 }

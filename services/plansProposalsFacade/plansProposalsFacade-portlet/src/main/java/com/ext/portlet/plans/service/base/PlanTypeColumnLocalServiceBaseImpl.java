@@ -340,7 +340,7 @@ public abstract class PlanTypeColumnLocalServiceBaseImpl
      * @param planTypeColumnId the primary key for the new plan type column
      * @return the new plan type column
      */
-    public PlanTypeColumn createPlanTypeColumn(Long planTypeColumnId) {
+    public PlanTypeColumn createPlanTypeColumn(long planTypeColumnId) {
         return planTypeColumnPersistence.create(planTypeColumnId);
     }
 
@@ -351,7 +351,7 @@ public abstract class PlanTypeColumnLocalServiceBaseImpl
      * @throws PortalException if a plan type column with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanTypeColumn(Long planTypeColumnId)
+    public void deletePlanTypeColumn(long planTypeColumnId)
         throws PortalException, SystemException {
         PlanTypeColumn planTypeColumn = planTypeColumnPersistence.remove(planTypeColumnId);
 
@@ -457,7 +457,7 @@ public abstract class PlanTypeColumnLocalServiceBaseImpl
         return planTypeColumnPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanTypeColumn fetchPlanTypeColumn(Long planTypeColumnId)
+    public PlanTypeColumn fetchPlanTypeColumn(long planTypeColumnId)
         throws SystemException {
         return planTypeColumnPersistence.fetchByPrimaryKey(planTypeColumnId);
     }
@@ -470,7 +470,7 @@ public abstract class PlanTypeColumnLocalServiceBaseImpl
      * @throws PortalException if a plan type column with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeColumn getPlanTypeColumn(Long planTypeColumnId)
+    public PlanTypeColumn getPlanTypeColumn(long planTypeColumnId)
         throws PortalException, SystemException {
         return planTypeColumnPersistence.findByPrimaryKey(planTypeColumnId);
     }

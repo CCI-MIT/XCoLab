@@ -32,7 +32,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @return the primary key of this plan section
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planSection.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @param primaryKey the primary key of this plan section
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planSection.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @return the ID of this plan section
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _planSection.getId();
     }
 
@@ -59,7 +59,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @param id the ID of this plan section
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _planSection.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @return the plan section definition ID of this plan section
     */
-    public java.lang.Long getPlanSectionDefinitionId() {
+    public long getPlanSectionDefinitionId() {
         return _planSection.getPlanSectionDefinitionId();
     }
 
@@ -77,8 +77,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @param planSectionDefinitionId the plan section definition ID of this plan section
     */
-    public void setPlanSectionDefinitionId(
-        java.lang.Long planSectionDefinitionId) {
+    public void setPlanSectionDefinitionId(long planSectionDefinitionId) {
         _planSection.setPlanSectionDefinitionId(planSectionDefinitionId);
     }
 
@@ -87,7 +86,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @return the plan ID of this plan section
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planSection.getPlanId();
     }
 
@@ -96,7 +95,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @param planId the plan ID of this plan section
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planSection.setPlanId(planId);
     }
 
@@ -141,7 +140,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @return the version of this plan section
     */
-    public java.lang.Long getVersion() {
+    public long getVersion() {
         return _planSection.getVersion();
     }
 
@@ -150,7 +149,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @param version the version of this plan section
     */
-    public void setVersion(java.lang.Long version) {
+    public void setVersion(long version) {
         _planSection.setVersion(version);
     }
 
@@ -159,7 +158,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @return the plan version of this plan section
     */
-    public java.lang.Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planSection.getPlanVersion();
     }
 
@@ -168,7 +167,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @param planVersion the plan version of this plan section
     */
-    public void setPlanVersion(java.lang.Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planSection.setPlanVersion(planVersion);
     }
 
@@ -177,7 +176,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @return the update author ID of this plan section
     */
-    public java.lang.Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _planSection.getUpdateAuthorId();
     }
 
@@ -186,7 +185,7 @@ public class PlanSectionWrapper implements PlanSection,
     *
     * @param updateAuthorId the update author ID of this plan section
     */
-    public void setUpdateAuthorId(java.lang.Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _planSection.setUpdateAuthorId(updateAuthorId);
     }
 
@@ -261,28 +260,6 @@ public class PlanSectionWrapper implements PlanSection,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planSection.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planSection.store();
-    }
-
-    public com.ext.portlet.plans.model.PlanSectionDefinition getDefinition()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planSection.getDefinition();
-    }
-
-    public void addPlanReference(java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planSection.addPlanReference(planId);
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanItem> getReferencedPlans()
-        throws com.ext.portlet.plans.NoSuchPlanItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planSection.getReferencedPlans();
     }
 
     /**

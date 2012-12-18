@@ -3,7 +3,7 @@ package com.ext.portlet.plans.model;
 import com.liferay.portal.model.PersistedModel;
 
 /**
- * The extended model interface for the PlanMeta service. Represents a row in the &quot;Plans_PlanMeta&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the PlanMeta service. Represents a row in the &quot;xcolab_PlanMeta&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
  * @see PlanMetaModel
@@ -17,12 +17,4 @@ public interface PlanMeta extends PlanMetaModel, PersistedModel {
      *
      * Never modify this interface directly. Add methods to {@link com.ext.portlet.plans.model.impl.PlanMetaImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
      */
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void vote()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void unvote()
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

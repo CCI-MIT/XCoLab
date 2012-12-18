@@ -124,8 +124,7 @@ public class PlanTeamHistoryUtil {
     * @param id the primary key for the new plan team history
     * @return the new plan team history
     */
-    public static com.ext.portlet.plans.model.PlanTeamHistory create(
-        java.lang.Long id) {
+    public static com.ext.portlet.plans.model.PlanTeamHistory create(long id) {
         return getPersistence().create(id);
     }
 
@@ -137,8 +136,7 @@ public class PlanTeamHistoryUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanTeamHistory remove(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanTeamHistory remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -160,7 +158,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -174,8 +172,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 
@@ -187,8 +184,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTeamHistory> findByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPlanId(planId);
     }
 
@@ -206,7 +202,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTeamHistory> findByPlanId(
-        java.lang.Long planId, int start, int end)
+        long planId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPlanId(planId, start, end);
     }
@@ -226,7 +222,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTeamHistory> findByPlanId(
-        java.lang.Long planId, int start, int end,
+        long planId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -247,7 +243,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory findByPlanId_First(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -268,7 +264,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory findByPlanId_Last(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -290,7 +286,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory[] findByPlanId_PrevAndNext(
-        java.lang.Long id, java.lang.Long planId,
+        long id, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -308,7 +304,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory findByLastUserActionInPlan(
-        java.lang.Long planId, java.lang.Long userId)
+        long planId, long userId)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByLastUserActionInPlan(planId, userId);
@@ -323,7 +319,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory fetchByLastUserActionInPlan(
-        java.lang.Long planId, java.lang.Long userId)
+        long planId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByLastUserActionInPlan(planId, userId);
     }
@@ -338,7 +334,7 @@ public class PlanTeamHistoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory fetchByLastUserActionInPlan(
-        java.lang.Long planId, java.lang.Long userId, boolean retrieveFromCache)
+        long planId, long userId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByLastUserActionInPlan(planId, userId,
@@ -400,7 +396,7 @@ public class PlanTeamHistoryUtil {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByPlanId(java.lang.Long planId)
+    public static void removeByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByPlanId(planId);
     }
@@ -412,8 +408,7 @@ public class PlanTeamHistoryUtil {
     * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByLastUserActionInPlan(java.lang.Long planId,
-        java.lang.Long userId)
+    public static void removeByLastUserActionInPlan(long planId, long userId)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByLastUserActionInPlan(planId, userId);
@@ -436,7 +431,7 @@ public class PlanTeamHistoryUtil {
     * @return the number of matching plan team histories
     * @throws SystemException if a system exception occurred
     */
-    public static int countByPlanId(java.lang.Long planId)
+    public static int countByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByPlanId(planId);
     }
@@ -449,8 +444,7 @@ public class PlanTeamHistoryUtil {
     * @return the number of matching plan team histories
     * @throws SystemException if a system exception occurred
     */
-    public static int countByLastUserActionInPlan(java.lang.Long planId,
-        java.lang.Long userId)
+    public static int countByLastUserActionInPlan(long planId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByLastUserActionInPlan(planId, userId);
     }

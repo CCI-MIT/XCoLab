@@ -47,7 +47,7 @@ public class ModelPositionLocalServiceUtil {
     * @return the new model position
     */
     public static com.ext.portlet.models.model.ModelPosition createModelPosition(
-        java.lang.Long id) {
+        long id) {
         return getService().createModelPosition(id);
     }
 
@@ -58,7 +58,7 @@ public class ModelPositionLocalServiceUtil {
     * @throws PortalException if a model position with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteModelPosition(java.lang.Long id)
+    public static void deleteModelPosition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteModelPosition(id);
@@ -148,8 +148,7 @@ public class ModelPositionLocalServiceUtil {
     }
 
     public static com.ext.portlet.models.model.ModelPosition fetchModelPosition(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchModelPosition(id);
     }
 
@@ -162,7 +161,7 @@ public class ModelPositionLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelPosition getModelPosition(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getModelPosition(id);

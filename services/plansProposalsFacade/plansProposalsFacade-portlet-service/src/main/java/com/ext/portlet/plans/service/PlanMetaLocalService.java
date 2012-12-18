@@ -47,8 +47,7 @@ public interface PlanMetaLocalService extends PersistedModelLocalService {
     * @param id the primary key for the new plan meta
     * @return the new plan meta
     */
-    public com.ext.portlet.plans.model.PlanMeta createPlanMeta(
-        java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanMeta createPlanMeta(long id);
 
     /**
     * Deletes the plan meta with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +56,7 @@ public interface PlanMetaLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan meta with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanMeta(java.lang.Long id)
+    public void deletePlanMeta(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -133,7 +132,7 @@ public interface PlanMetaLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanMeta fetchPlanMeta(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanMeta fetchPlanMeta(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -145,7 +144,7 @@ public interface PlanMetaLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanMeta getPlanMeta(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanMeta getPlanMeta(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -240,5 +239,14 @@ public interface PlanMetaLocalService extends PersistedModelLocalService {
 
     public com.ext.portlet.plans.model.PlanMeta createNewVersionForPlan(
         com.ext.portlet.plans.model.PlanItem plan, boolean store)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void vote(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void unvote(com.ext.portlet.plans.model.PlanMeta pm)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

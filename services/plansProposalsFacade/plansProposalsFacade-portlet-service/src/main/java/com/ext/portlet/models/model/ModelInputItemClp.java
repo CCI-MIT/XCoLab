@@ -14,11 +14,11 @@ import java.lang.reflect.Proxy;
 
 public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
     implements ModelInputItem {
-    private Long _modelInputItemPK;
-    private Long _modelId;
-    private Long _modelInputItemID;
-    private Long _modelGroupId;
-    private Integer _displayItemOrder;
+    private long _modelInputItemPK;
+    private long _modelId;
+    private long _modelInputItemID;
+    private long _modelGroupId;
+    private int _displayItemOrder;
     private String _type;
     private String _properties;
 
@@ -33,11 +33,11 @@ public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
         return ModelInputItem.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelInputItemPK;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setModelInputItemPK(primaryKey);
     }
 
@@ -49,43 +49,43 @@ public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getModelInputItemPK() {
+    public long getModelInputItemPK() {
         return _modelInputItemPK;
     }
 
-    public void setModelInputItemPK(Long modelInputItemPK) {
+    public void setModelInputItemPK(long modelInputItemPK) {
         _modelInputItemPK = modelInputItemPK;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Long getModelInputItemID() {
+    public long getModelInputItemID() {
         return _modelInputItemID;
     }
 
-    public void setModelInputItemID(Long modelInputItemID) {
+    public void setModelInputItemID(long modelInputItemID) {
         _modelInputItemID = modelInputItemID;
     }
 
-    public Long getModelGroupId() {
+    public long getModelGroupId() {
         return _modelGroupId;
     }
 
-    public void setModelGroupId(Long modelGroupId) {
+    public void setModelGroupId(long modelGroupId) {
         _modelGroupId = modelGroupId;
     }
 
-    public Integer getDisplayItemOrder() {
+    public int getDisplayItemOrder() {
         return _displayItemOrder;
     }
 
-    public void setDisplayItemOrder(Integer displayItemOrder) {
+    public void setDisplayItemOrder(int displayItemOrder) {
         _displayItemOrder = displayItemOrder;
     }
 
@@ -103,27 +103,6 @@ public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
 
     public void setProperties(String properties) {
         _properties = properties;
-    }
-
-    public edu.mit.cci.simulation.client.MetaData getMetaData() {
-        throw new UnsupportedOperationException();
-    }
-
-    public edu.mit.cci.simulation.client.Simulation getModel() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.Map<java.lang.String, java.lang.String> getPropertyMap() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void saveProperties(
-        java.util.Map<java.lang.String, java.lang.String> props) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -157,7 +136,7 @@ public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
     }
 
     public int compareTo(ModelInputItem modelInputItem) {
-        Long primaryKey = modelInputItem.getPrimaryKey();
+        long primaryKey = modelInputItem.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -182,7 +161,7 @@ public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
             return false;
         }
 
-        Long primaryKey = modelInputItem.getPrimaryKey();
+        long primaryKey = modelInputItem.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -193,7 +172,7 @@ public class ModelInputItemClp extends BaseModelImpl<ModelInputItem>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

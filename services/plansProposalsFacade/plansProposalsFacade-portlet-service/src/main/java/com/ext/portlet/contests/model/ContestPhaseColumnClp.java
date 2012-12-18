@@ -14,11 +14,11 @@ import java.lang.reflect.Proxy;
 
 public class ContestPhaseColumnClp extends BaseModelImpl<ContestPhaseColumn>
     implements ContestPhaseColumn {
-    private Long _id;
-    private Long _ContestPhasePK;
+    private long _id;
+    private long _ContestPhasePK;
     private String _columnName;
-    private Integer _columnWeight;
-    private Boolean _defaultSort;
+    private int _columnWeight;
+    private boolean _defaultSort;
 
     public ContestPhaseColumnClp() {
     }
@@ -31,11 +31,11 @@ public class ContestPhaseColumnClp extends BaseModelImpl<ContestPhaseColumn>
         return ContestPhaseColumn.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -47,19 +47,19 @@ public class ContestPhaseColumnClp extends BaseModelImpl<ContestPhaseColumn>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getContestPhasePK() {
+    public long getContestPhasePK() {
         return _ContestPhasePK;
     }
 
-    public void setContestPhasePK(Long ContestPhasePK) {
+    public void setContestPhasePK(long ContestPhasePK) {
         _ContestPhasePK = ContestPhasePK;
     }
 
@@ -71,19 +71,23 @@ public class ContestPhaseColumnClp extends BaseModelImpl<ContestPhaseColumn>
         _columnName = columnName;
     }
 
-    public Integer getColumnWeight() {
+    public int getColumnWeight() {
         return _columnWeight;
     }
 
-    public void setColumnWeight(Integer columnWeight) {
+    public void setColumnWeight(int columnWeight) {
         _columnWeight = columnWeight;
     }
 
-    public Boolean getDefaultSort() {
+    public boolean getDefaultSort() {
         return _defaultSort;
     }
 
-    public void setDefaultSort(Boolean defaultSort) {
+    public boolean isDefaultSort() {
+        return _defaultSort;
+    }
+
+    public void setDefaultSort(boolean defaultSort) {
         _defaultSort = defaultSort;
     }
 
@@ -147,7 +151,7 @@ public class ContestPhaseColumnClp extends BaseModelImpl<ContestPhaseColumn>
             return false;
         }
 
-        Long primaryKey = contestPhaseColumn.getPrimaryKey();
+        long primaryKey = contestPhaseColumn.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -158,7 +162,7 @@ public class ContestPhaseColumnClp extends BaseModelImpl<ContestPhaseColumn>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

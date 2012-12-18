@@ -51,7 +51,7 @@ public class PlanSectionPlanMapWrapper implements PlanSectionPlanMap,
     *
     * @return the section ID of this plan section plan map
     */
-    public java.lang.Long getSectionId() {
+    public long getSectionId() {
         return _planSectionPlanMap.getSectionId();
     }
 
@@ -60,7 +60,7 @@ public class PlanSectionPlanMapWrapper implements PlanSectionPlanMap,
     *
     * @param sectionId the section ID of this plan section plan map
     */
-    public void setSectionId(java.lang.Long sectionId) {
+    public void setSectionId(long sectionId) {
         _planSectionPlanMap.setSectionId(sectionId);
     }
 
@@ -69,7 +69,7 @@ public class PlanSectionPlanMapWrapper implements PlanSectionPlanMap,
     *
     * @return the related plan ID of this plan section plan map
     */
-    public java.lang.Long getRelatedPlanId() {
+    public long getRelatedPlanId() {
         return _planSectionPlanMap.getRelatedPlanId();
     }
 
@@ -78,7 +78,7 @@ public class PlanSectionPlanMapWrapper implements PlanSectionPlanMap,
     *
     * @param relatedPlanId the related plan ID of this plan section plan map
     */
-    public void setRelatedPlanId(java.lang.Long relatedPlanId) {
+    public void setRelatedPlanId(long relatedPlanId) {
         _planSectionPlanMap.setRelatedPlanId(relatedPlanId);
     }
 
@@ -153,11 +153,6 @@ public class PlanSectionPlanMapWrapper implements PlanSectionPlanMap,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planSectionPlanMap.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planSectionPlanMap.store();
     }
 
     /**

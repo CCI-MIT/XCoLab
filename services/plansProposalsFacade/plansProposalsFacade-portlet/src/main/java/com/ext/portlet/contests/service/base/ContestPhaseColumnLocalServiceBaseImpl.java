@@ -149,7 +149,7 @@ public abstract class ContestPhaseColumnLocalServiceBaseImpl
      * @param id the primary key for the new contest phase column
      * @return the new contest phase column
      */
-    public ContestPhaseColumn createContestPhaseColumn(Long id) {
+    public ContestPhaseColumn createContestPhaseColumn(long id) {
         return contestPhaseColumnPersistence.create(id);
     }
 
@@ -160,7 +160,7 @@ public abstract class ContestPhaseColumnLocalServiceBaseImpl
      * @throws PortalException if a contest phase column with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteContestPhaseColumn(Long id)
+    public void deleteContestPhaseColumn(long id)
         throws PortalException, SystemException {
         ContestPhaseColumn contestPhaseColumn = contestPhaseColumnPersistence.remove(id);
 
@@ -266,7 +266,7 @@ public abstract class ContestPhaseColumnLocalServiceBaseImpl
         return contestPhaseColumnPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ContestPhaseColumn fetchContestPhaseColumn(Long id)
+    public ContestPhaseColumn fetchContestPhaseColumn(long id)
         throws SystemException {
         return contestPhaseColumnPersistence.fetchByPrimaryKey(id);
     }
@@ -279,7 +279,7 @@ public abstract class ContestPhaseColumnLocalServiceBaseImpl
      * @throws PortalException if a contest phase column with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhaseColumn getContestPhaseColumn(Long id)
+    public ContestPhaseColumn getContestPhaseColumn(long id)
         throws PortalException, SystemException {
         return contestPhaseColumnPersistence.findByPrimaryKey(id);
     }

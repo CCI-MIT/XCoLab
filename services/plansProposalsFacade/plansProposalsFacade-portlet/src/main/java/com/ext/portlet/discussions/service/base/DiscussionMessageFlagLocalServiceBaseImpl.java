@@ -140,7 +140,7 @@ public abstract class DiscussionMessageFlagLocalServiceBaseImpl
      * @param pk the primary key for the new discussion message flag
      * @return the new discussion message flag
      */
-    public DiscussionMessageFlag createDiscussionMessageFlag(Long pk) {
+    public DiscussionMessageFlag createDiscussionMessageFlag(long pk) {
         return discussionMessageFlagPersistence.create(pk);
     }
 
@@ -151,7 +151,7 @@ public abstract class DiscussionMessageFlagLocalServiceBaseImpl
      * @throws PortalException if a discussion message flag with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteDiscussionMessageFlag(Long pk)
+    public void deleteDiscussionMessageFlag(long pk)
         throws PortalException, SystemException {
         DiscussionMessageFlag discussionMessageFlag = discussionMessageFlagPersistence.remove(pk);
 
@@ -257,7 +257,7 @@ public abstract class DiscussionMessageFlagLocalServiceBaseImpl
         return discussionMessageFlagPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public DiscussionMessageFlag fetchDiscussionMessageFlag(Long pk)
+    public DiscussionMessageFlag fetchDiscussionMessageFlag(long pk)
         throws SystemException {
         return discussionMessageFlagPersistence.fetchByPrimaryKey(pk);
     }
@@ -270,7 +270,7 @@ public abstract class DiscussionMessageFlagLocalServiceBaseImpl
      * @throws PortalException if a discussion message flag with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessageFlag getDiscussionMessageFlag(Long pk)
+    public DiscussionMessageFlag getDiscussionMessageFlag(long pk)
         throws PortalException, SystemException {
         return discussionMessageFlagPersistence.findByPrimaryKey(pk);
     }

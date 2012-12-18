@@ -314,7 +314,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @param planAttributeFilterId the primary key for the new plan attribute filter
      * @return the new plan attribute filter
      */
-    public PlanAttributeFilter create(Long planAttributeFilterId) {
+    public PlanAttributeFilter create(long planAttributeFilterId) {
         PlanAttributeFilter planAttributeFilter = new PlanAttributeFilterImpl();
 
         planAttributeFilter.setNew(true);
@@ -331,9 +331,9 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.plans.NoSuchPlanAttributeFilterException if a plan attribute filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttributeFilter remove(Long planAttributeFilterId)
+    public PlanAttributeFilter remove(long planAttributeFilterId)
         throws NoSuchPlanAttributeFilterException, SystemException {
-        return remove((Serializable) planAttributeFilterId);
+        return remove(Long.valueOf(planAttributeFilterId));
     }
 
     /**
@@ -496,7 +496,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
     @Override
     public PlanAttributeFilter findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -507,7 +507,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.plans.NoSuchPlanAttributeFilterException if a plan attribute filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttributeFilter findByPrimaryKey(Long planAttributeFilterId)
+    public PlanAttributeFilter findByPrimaryKey(long planAttributeFilterId)
         throws NoSuchPlanAttributeFilterException, SystemException {
         PlanAttributeFilter planAttributeFilter = fetchByPrimaryKey(planAttributeFilterId);
 
@@ -534,7 +534,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
     @Override
     public PlanAttributeFilter fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -544,7 +544,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the plan attribute filter, or <code>null</code> if a plan attribute filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttributeFilter fetchByPrimaryKey(Long planAttributeFilterId)
+    public PlanAttributeFilter fetchByPrimaryKey(long planAttributeFilterId)
         throws SystemException {
         PlanAttributeFilter planAttributeFilter = (PlanAttributeFilter) EntityCacheUtil.getResult(PlanAttributeFilterModelImpl.ENTITY_CACHE_ENABLED,
                 PlanAttributeFilterImpl.class, planAttributeFilterId);
@@ -593,7 +593,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws SystemException if a system exception occurred
      */
     public PlanAttributeFilter findByPlanUserSettingsIdAttributeName(
-        Long planUserSettingsId, String attributeName)
+        long planUserSettingsId, String attributeName)
         throws NoSuchPlanAttributeFilterException, SystemException {
         PlanAttributeFilter planAttributeFilter = fetchByPlanUserSettingsIdAttributeName(planUserSettingsId,
                 attributeName);
@@ -630,7 +630,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws SystemException if a system exception occurred
      */
     public PlanAttributeFilter fetchByPlanUserSettingsIdAttributeName(
-        Long planUserSettingsId, String attributeName)
+        long planUserSettingsId, String attributeName)
         throws SystemException {
         return fetchByPlanUserSettingsIdAttributeName(planUserSettingsId,
             attributeName, true);
@@ -646,7 +646,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws SystemException if a system exception occurred
      */
     public PlanAttributeFilter fetchByPlanUserSettingsIdAttributeName(
-        Long planUserSettingsId, String attributeName, boolean retrieveFromCache)
+        long planUserSettingsId, String attributeName, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { planUserSettingsId, attributeName };
 
@@ -685,7 +685,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planUserSettingsId.longValue());
+                qPos.add(planUserSettingsId);
 
                 if (attributeName != null) {
                     qPos.add(attributeName);
@@ -851,7 +851,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws SystemException if a system exception occurred
      */
     public void removeByPlanUserSettingsIdAttributeName(
-        Long planUserSettingsId, String attributeName)
+        long planUserSettingsId, String attributeName)
         throws NoSuchPlanAttributeFilterException, SystemException {
         PlanAttributeFilter planAttributeFilter = findByPlanUserSettingsIdAttributeName(planUserSettingsId,
                 attributeName);
@@ -878,7 +878,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the number of matching plan attribute filters
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanUserSettingsIdAttributeName(Long planUserSettingsId,
+    public int countByPlanUserSettingsIdAttributeName(long planUserSettingsId,
         String attributeName) throws SystemException {
         Object[] finderArgs = new Object[] { planUserSettingsId, attributeName };
 
@@ -913,7 +913,7 @@ public class PlanAttributeFilterPersistenceImpl extends BasePersistenceImpl<Plan
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planUserSettingsId.longValue());
+                qPos.add(planUserSettingsId);
 
                 if (attributeName != null) {
                     qPos.add(attributeName);

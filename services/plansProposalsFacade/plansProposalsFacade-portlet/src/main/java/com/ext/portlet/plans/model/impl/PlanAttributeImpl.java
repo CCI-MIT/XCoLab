@@ -18,24 +18,8 @@ public class PlanAttributeImpl extends PlanAttributeBaseImpl {
      *
      * Never reference this class directly. All methods that expect a plan attribute model instance should use the {@link com.ext.portlet.plans.model.PlanAttribute} interface instead.
      */
-
-    private Object typedValue;
     
     public PlanAttributeImpl() {
     }
-    
-    public Object getTypedValue() {
-        if (typedValue != null) {
-            return typedValue;
-        }
-        Attribute attribute = Attribute.valueOf(getAttributeName());
-        typedValue = TypedValueConverter.getValue(attribute.getAttributeClass(), getAttributeValue());
-        return typedValue;
-    }
-    
-    @Override
-    public void setAttributeValue(String attributeValue) {
-        typedValue = null;
-        super.setAttributeValue(attributeValue);
-    }
+
 }

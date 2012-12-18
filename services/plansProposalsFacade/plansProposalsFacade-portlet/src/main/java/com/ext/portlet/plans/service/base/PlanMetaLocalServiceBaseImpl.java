@@ -339,7 +339,7 @@ public abstract class PlanMetaLocalServiceBaseImpl
      * @param id the primary key for the new plan meta
      * @return the new plan meta
      */
-    public PlanMeta createPlanMeta(Long id) {
+    public PlanMeta createPlanMeta(long id) {
         return planMetaPersistence.create(id);
     }
 
@@ -350,7 +350,7 @@ public abstract class PlanMetaLocalServiceBaseImpl
      * @throws PortalException if a plan meta with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanMeta(Long id) throws PortalException, SystemException {
+    public void deletePlanMeta(long id) throws PortalException, SystemException {
         PlanMeta planMeta = planMetaPersistence.remove(id);
 
         Indexer indexer = IndexerRegistryUtil.getIndexer(getModelClassName());
@@ -453,7 +453,7 @@ public abstract class PlanMetaLocalServiceBaseImpl
         return planMetaPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanMeta fetchPlanMeta(Long id) throws SystemException {
+    public PlanMeta fetchPlanMeta(long id) throws SystemException {
         return planMetaPersistence.fetchByPrimaryKey(id);
     }
 
@@ -465,7 +465,7 @@ public abstract class PlanMetaLocalServiceBaseImpl
      * @throws PortalException if a plan meta with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta getPlanMeta(Long id)
+    public PlanMeta getPlanMeta(long id)
         throws PortalException, SystemException {
         return planMetaPersistence.findByPrimaryKey(id);
     }

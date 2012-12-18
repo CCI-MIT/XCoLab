@@ -2,6 +2,7 @@ package com.ext.portlet.plans.service.impl;
 
 import java.util.Map;
 
+import com.ext.portlet.plans.NoSuchPlansUserSettingsException;
 import com.ext.portlet.plans.NoSuchUserSettingsException;
 import com.ext.portlet.plans.model.PlanAttributeFilter;
 import com.ext.portlet.plans.model.PlanColumnSettings;
@@ -52,8 +53,8 @@ public class PlansUserSettingsLocalServiceImpl
 
     private static Log _log = LogFactoryUtil.getLog(PlansUserSettingsLocalServiceImpl.class);
 
-    public PlansUserSettings getByUserIdPlanTypeId(Long userId, Long planTypeId) throws NoSuchUserSettingsException,
-            SystemException {
+    public PlansUserSettings getByUserIdPlanTypeId(Long userId, Long planTypeId) throws
+            SystemException, NoSuchPlansUserSettingsException {
         return plansUserSettingsPersistence.findByuserIdPlanTypeId(userId, planTypeId);
     }
 
@@ -83,20 +84,20 @@ public class PlansUserSettingsLocalServiceImpl
                         */
                     }
 
-                } catch (NoSuchUserSettingsException e) {
+                } catch (NoSuchPlansUserSettingsException e) {
                     System.out.print(e);
                 }
             }
 
             if (userSettings == null || user.isDefaultUser()) {
-                userSettings = createPlansUserSettings(null);
+                userSettings = createPlansUserSettings(0L);
                 userSettings.setPlanTypeId(planType.getPlanTypeId());
                 userSettings.setUserId(userId);
                 userSettings.setFilterEnabled(false);
                 userSettings.setFilterPositionsAll(false);
 
-                for (PlanTypeColumn planTypeColumn : planType.getColumns()) {
-                    PlanColumnSettings settings = PlanColumnSettingsLocalServiceUtil.createPlanColumnSettings(null);
+                for (PlanTypeColumn planTypeColumn : PlanTypeLocalServiceUtil.getColumns(planType)) {
+                    PlanColumnSettings settings = PlanColumnSettingsLocalServiceUtil.createPlanColumnSettings(0L);
                     settings.setColumnName(planTypeColumn.getColumnName());
                     settings.setPlanUserSettingsId(userSettings.getPlanUserSettingsId());
                     settings.setVisible(planTypeColumn.getVisibleByDefault());
@@ -137,7 +138,7 @@ public class PlansUserSettingsLocalServiceImpl
             _log.debug(PlansUserSettingsModelImpl.class.getClassLoader().hashCode() + " " + plansUserSettings.getClass().getClassLoader().hashCode() + " " + this.getClass().getClassLoader().hashCode());
             PlansUserSettingsModelImpl plansUserSettingsModelImpl = (PlansUserSettingsModelImpl) plansUserSettings;
             
-            if (plansUserSettings.getPlanUserSettingsId() == null) {
+            if (plansUserSettings.getPlanUserSettingsId() <= 0L) {
                 long planUserSettingsId = CounterLocalServiceUtil.increment(PlanItem.class.getName());
                 plansUserSettings.setPlanUserSettingsId(planUserSettingsId);
                 add = true;
@@ -150,7 +151,7 @@ public class PlansUserSettingsLocalServiceImpl
 
             for (PlanColumnSettings columnSettings : plansUserSettings.getUpdatedColumnSettings()) {
                 add = false;
-                if (columnSettings.getPlanColumnSettingsId() == null) {
+                if (columnSettings.getPlanColumnSettingsId() <= 0L) {
                     /*long planColumnSettingsId = CounterServiceUtil.increment(PlanColumnSettings.class.getName());
                     columnSettings.setPlanColumnSettingsId(planColumnSettingsId);
                     columnSettings.setPlanUserSettingsId(plansUserSettings.getPlanUserSettingsId());
@@ -166,7 +167,7 @@ public class PlansUserSettingsLocalServiceImpl
 
             for (PlanAttributeFilter attributeFilter : plansUserSettings.getUpdatedPlanAttributeFilters()) {
                 add = false;
-                if (attributeFilter.getPlanAttributeFilterId() == null) {
+                if (attributeFilter.getPlanAttributeFilterId() <= 0L) {
                     /*
                     long planAttributeFilterId = CounterServiceUtil.increment(PlanColumnSettings.class.getName());
                     attributeFilter.setPlanAttributeFilterId(planAttributeFilterId);
@@ -183,7 +184,7 @@ public class PlansUserSettingsLocalServiceImpl
 
             for (PlanPropertyFilter propertyFilter : plansUserSettings.getUpdatedPlanPropertyFilters()) {
                 add = false;
-                if (propertyFilter.getPlanPropertyFilterId() == null) {
+                if (propertyFilter.getPlanPropertyFilterId() <= 0L) {
                     /*long planAttributeFilterId = CounterServiceUtil.increment(PlanColumnSettings.class.getName());
                     propertyFilter.setPlanPropertyFilterId(planAttributeFilterId);
                     propertyFilter.setPlanUserSettingsId(plansUserSettings.getPlanUserSettingsId());

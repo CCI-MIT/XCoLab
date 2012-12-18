@@ -17,8 +17,8 @@ import java.util.Date;
 
 public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     implements ContestPhase {
-    private Long _ContestPhasePK;
-    private Long _ContestPK;
+    private long _ContestPhasePK;
+    private long _ContestPK;
     private String _ContestPhaseName;
     private String _ContestPhaseDescription;
     private String _ContestPhaseStatus;
@@ -27,7 +27,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     private String _nextStatus;
     private Date _created;
     private Date _updated;
-    private Long _authorId;
+    private long _authorId;
 
     public ContestPhaseClp() {
     }
@@ -40,11 +40,11 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         return ContestPhase.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _ContestPhasePK;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setContestPhasePK(primaryKey);
     }
 
@@ -56,19 +56,19 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getContestPhasePK() {
+    public long getContestPhasePK() {
         return _ContestPhasePK;
     }
 
-    public void setContestPhasePK(Long ContestPhasePK) {
+    public void setContestPhasePK(long ContestPhasePK) {
         _ContestPhasePK = ContestPhasePK;
     }
 
-    public Long getContestPK() {
+    public long getContestPK() {
         return _ContestPK;
     }
 
-    public void setContestPK(Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _ContestPK = ContestPK;
     }
 
@@ -136,44 +136,12 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         _updated = updated;
     }
 
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return _authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(long authorId) {
         _authorId = authorId;
-    }
-
-    public com.ext.portlet.contests.model.Contest getContest() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanItem> getPlans() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.contests.model.ContestStatus getContestStatus() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<java.lang.String> getPhaseColumns() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestPhaseColumn> getPhaseColumnsRaw() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getPreviousPhases() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.contests.model.ContestPhase getNextContestPhase() {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean getPhaseActive() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -236,7 +204,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
             return false;
         }
 
-        Long primaryKey = contestPhase.getPrimaryKey();
+        long primaryKey = contestPhase.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -247,7 +215,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

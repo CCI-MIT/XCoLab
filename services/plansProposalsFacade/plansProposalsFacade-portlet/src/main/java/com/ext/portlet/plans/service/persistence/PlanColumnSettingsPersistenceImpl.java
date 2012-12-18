@@ -313,7 +313,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @param planColumnSettingsId the primary key for the new plan column settings
      * @return the new plan column settings
      */
-    public PlanColumnSettings create(Long planColumnSettingsId) {
+    public PlanColumnSettings create(long planColumnSettingsId) {
         PlanColumnSettings planColumnSettings = new PlanColumnSettingsImpl();
 
         planColumnSettings.setNew(true);
@@ -330,9 +330,9 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @throws com.ext.portlet.plans.NoSuchPlanColumnSettingsException if a plan column settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanColumnSettings remove(Long planColumnSettingsId)
+    public PlanColumnSettings remove(long planColumnSettingsId)
         throws NoSuchPlanColumnSettingsException, SystemException {
-        return remove((Serializable) planColumnSettingsId);
+        return remove(Long.valueOf(planColumnSettingsId));
     }
 
     /**
@@ -476,7 +476,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
         planColumnSettingsImpl.setPlanColumnSettingsId(planColumnSettings.getPlanColumnSettingsId());
         planColumnSettingsImpl.setColumnName(planColumnSettings.getColumnName());
         planColumnSettingsImpl.setPlanUserSettingsId(planColumnSettings.getPlanUserSettingsId());
-        planColumnSettingsImpl.setVisible(planColumnSettings.getVisible());
+        planColumnSettingsImpl.setVisible(planColumnSettings.isVisible());
 
         return planColumnSettingsImpl;
     }
@@ -492,7 +492,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
     @Override
     public PlanColumnSettings findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -503,7 +503,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @throws com.ext.portlet.plans.NoSuchPlanColumnSettingsException if a plan column settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanColumnSettings findByPrimaryKey(Long planColumnSettingsId)
+    public PlanColumnSettings findByPrimaryKey(long planColumnSettingsId)
         throws NoSuchPlanColumnSettingsException, SystemException {
         PlanColumnSettings planColumnSettings = fetchByPrimaryKey(planColumnSettingsId);
 
@@ -530,7 +530,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
     @Override
     public PlanColumnSettings fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -540,7 +540,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @return the plan column settings, or <code>null</code> if a plan column settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanColumnSettings fetchByPrimaryKey(Long planColumnSettingsId)
+    public PlanColumnSettings fetchByPrimaryKey(long planColumnSettingsId)
         throws SystemException {
         PlanColumnSettings planColumnSettings = (PlanColumnSettings) EntityCacheUtil.getResult(PlanColumnSettingsModelImpl.ENTITY_CACHE_ENABLED,
                 PlanColumnSettingsImpl.class, planColumnSettingsId);
@@ -589,7 +589,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @throws SystemException if a system exception occurred
      */
     public PlanColumnSettings findByPlanUserSettingsIdColumnName(
-        Long planUserSettingsId, String columnName)
+        long planUserSettingsId, String columnName)
         throws NoSuchPlanColumnSettingsException, SystemException {
         PlanColumnSettings planColumnSettings = fetchByPlanUserSettingsIdColumnName(planUserSettingsId,
                 columnName);
@@ -626,7 +626,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @throws SystemException if a system exception occurred
      */
     public PlanColumnSettings fetchByPlanUserSettingsIdColumnName(
-        Long planUserSettingsId, String columnName) throws SystemException {
+        long planUserSettingsId, String columnName) throws SystemException {
         return fetchByPlanUserSettingsIdColumnName(planUserSettingsId,
             columnName, true);
     }
@@ -641,7 +641,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @throws SystemException if a system exception occurred
      */
     public PlanColumnSettings fetchByPlanUserSettingsIdColumnName(
-        Long planUserSettingsId, String columnName, boolean retrieveFromCache)
+        long planUserSettingsId, String columnName, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { planUserSettingsId, columnName };
 
@@ -680,7 +680,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planUserSettingsId.longValue());
+                qPos.add(planUserSettingsId);
 
                 if (columnName != null) {
                     qPos.add(columnName);
@@ -845,7 +845,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @param columnName the column name
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanUserSettingsIdColumnName(Long planUserSettingsId,
+    public void removeByPlanUserSettingsIdColumnName(long planUserSettingsId,
         String columnName)
         throws NoSuchPlanColumnSettingsException, SystemException {
         PlanColumnSettings planColumnSettings = findByPlanUserSettingsIdColumnName(planUserSettingsId,
@@ -873,7 +873,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
      * @return the number of matching plan column settingses
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanUserSettingsIdColumnName(Long planUserSettingsId,
+    public int countByPlanUserSettingsIdColumnName(long planUserSettingsId,
         String columnName) throws SystemException {
         Object[] finderArgs = new Object[] { planUserSettingsId, columnName };
 
@@ -908,7 +908,7 @@ public class PlanColumnSettingsPersistenceImpl extends BasePersistenceImpl<PlanC
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planUserSettingsId.longValue());
+                qPos.add(planUserSettingsId);
 
                 if (columnName != null) {
                     qPos.add(columnName);

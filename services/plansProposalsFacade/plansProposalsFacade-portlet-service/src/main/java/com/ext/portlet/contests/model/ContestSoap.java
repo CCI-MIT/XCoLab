@@ -14,28 +14,28 @@ import java.util.List;
  * @generated
  */
 public class ContestSoap implements Serializable {
-    private Long _ContestPK;
+    private long _ContestPK;
     private String _ContestName;
     private String _ContestShortName;
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
     private String _defaultPlanDescription;
-    private Long _PlanTypeId;
+    private long _PlanTypeId;
     private Date _created;
     private Date _updated;
-    private Long _authorId;
-    private Boolean _contestActive;
-    private Long _planTemplateId;
-    private Long _focusAreaId;
-    private Long _contestLogoId;
-    private Boolean _featured;
-    private Boolean _plansOpenByDefault;
-    private Integer _flag;
+    private long _authorId;
+    private boolean _contestActive;
+    private long _planTemplateId;
+    private long _focusAreaId;
+    private long _contestLogoId;
+    private boolean _featured;
+    private boolean _plansOpenByDefault;
+    private int _flag;
     private String _flagText;
-    private Long _groupId;
-    private Long _discussionGroupId;
-    private Integer _weight;
+    private long _groupId;
+    private long _discussionGroupId;
+    private int _weight;
     private String _resourcesUrl;
 
     public ContestSoap() {
@@ -107,19 +107,19 @@ public class ContestSoap implements Serializable {
         return soapModels.toArray(new ContestSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _ContestPK;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setContestPK(pk);
     }
 
-    public Long getContestPK() {
+    public long getContestPK() {
         return _ContestPK;
     }
 
-    public void setContestPK(Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _ContestPK = ContestPK;
     }
 
@@ -172,11 +172,11 @@ public class ContestSoap implements Serializable {
         _defaultPlanDescription = defaultPlanDescription;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _PlanTypeId;
     }
 
-    public void setPlanTypeId(Long PlanTypeId) {
+    public void setPlanTypeId(long PlanTypeId) {
         _PlanTypeId = PlanTypeId;
     }
 
@@ -196,67 +196,79 @@ public class ContestSoap implements Serializable {
         _updated = updated;
     }
 
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return _authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
-    public Boolean getContestActive() {
+    public boolean getContestActive() {
         return _contestActive;
     }
 
-    public void setContestActive(Boolean contestActive) {
+    public boolean isContestActive() {
+        return _contestActive;
+    }
+
+    public void setContestActive(boolean contestActive) {
         _contestActive = contestActive;
     }
 
-    public Long getPlanTemplateId() {
+    public long getPlanTemplateId() {
         return _planTemplateId;
     }
 
-    public void setPlanTemplateId(Long planTemplateId) {
+    public void setPlanTemplateId(long planTemplateId) {
         _planTemplateId = planTemplateId;
     }
 
-    public Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return _focusAreaId;
     }
 
-    public void setFocusAreaId(Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
     }
 
-    public Long getContestLogoId() {
+    public long getContestLogoId() {
         return _contestLogoId;
     }
 
-    public void setContestLogoId(Long contestLogoId) {
+    public void setContestLogoId(long contestLogoId) {
         _contestLogoId = contestLogoId;
     }
 
-    public Boolean getFeatured() {
+    public boolean getFeatured() {
         return _featured;
     }
 
-    public void setFeatured(Boolean featured) {
+    public boolean isFeatured() {
+        return _featured;
+    }
+
+    public void setFeatured(boolean featured) {
         _featured = featured;
     }
 
-    public Boolean getPlansOpenByDefault() {
+    public boolean getPlansOpenByDefault() {
         return _plansOpenByDefault;
     }
 
-    public void setPlansOpenByDefault(Boolean plansOpenByDefault) {
+    public boolean isPlansOpenByDefault() {
+        return _plansOpenByDefault;
+    }
+
+    public void setPlansOpenByDefault(boolean plansOpenByDefault) {
         _plansOpenByDefault = plansOpenByDefault;
     }
 
-    public Integer getFlag() {
+    public int getFlag() {
         return _flag;
     }
 
-    public void setFlag(Integer flag) {
+    public void setFlag(int flag) {
         _flag = flag;
     }
 
@@ -268,27 +280,27 @@ public class ContestSoap implements Serializable {
         _flagText = flagText;
     }
 
-    public Long getGroupId() {
+    public long getGroupId() {
         return _groupId;
     }
 
-    public void setGroupId(Long groupId) {
+    public void setGroupId(long groupId) {
         _groupId = groupId;
     }
 
-    public Long getDiscussionGroupId() {
+    public long getDiscussionGroupId() {
         return _discussionGroupId;
     }
 
-    public void setDiscussionGroupId(Long discussionGroupId) {
+    public void setDiscussionGroupId(long discussionGroupId) {
         _discussionGroupId = discussionGroupId;
     }
 
-    public Integer getWeight() {
+    public int getWeight() {
         return _weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(int weight) {
         _weight = weight;
     }
 

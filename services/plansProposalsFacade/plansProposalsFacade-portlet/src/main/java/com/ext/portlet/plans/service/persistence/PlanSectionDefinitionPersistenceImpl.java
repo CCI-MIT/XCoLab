@@ -267,7 +267,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @param id the primary key for the new plan section definition
      * @return the new plan section definition
      */
-    public PlanSectionDefinition create(Long id) {
+    public PlanSectionDefinition create(long id) {
         PlanSectionDefinition planSectionDefinition = new PlanSectionDefinitionImpl();
 
         planSectionDefinition.setNew(true);
@@ -284,9 +284,9 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @throws com.ext.portlet.plans.NoSuchPlanSectionDefinitionException if a plan section definition with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSectionDefinition remove(Long id)
+    public PlanSectionDefinition remove(long id)
         throws NoSuchPlanSectionDefinitionException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -396,7 +396,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
         planSectionDefinitionImpl.setHelpText(planSectionDefinition.getHelpText());
         planSectionDefinitionImpl.setCharacterLimit(planSectionDefinition.getCharacterLimit());
         planSectionDefinitionImpl.setFocusAreaId(planSectionDefinition.getFocusAreaId());
-        planSectionDefinitionImpl.setLocked(planSectionDefinition.getLocked());
+        planSectionDefinitionImpl.setLocked(planSectionDefinition.isLocked());
 
         return planSectionDefinitionImpl;
     }
@@ -412,7 +412,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
     @Override
     public PlanSectionDefinition findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -423,7 +423,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @throws com.ext.portlet.plans.NoSuchPlanSectionDefinitionException if a plan section definition with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSectionDefinition findByPrimaryKey(Long id)
+    public PlanSectionDefinition findByPrimaryKey(long id)
         throws NoSuchPlanSectionDefinitionException, SystemException {
         PlanSectionDefinition planSectionDefinition = fetchByPrimaryKey(id);
 
@@ -449,7 +449,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
     @Override
     public PlanSectionDefinition fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -459,7 +459,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @return the plan section definition, or <code>null</code> if a plan section definition with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSectionDefinition fetchByPrimaryKey(Long id)
+    public PlanSectionDefinition fetchByPrimaryKey(long id)
         throws SystemException {
         PlanSectionDefinition planSectionDefinition = (PlanSectionDefinition) EntityCacheUtil.getResult(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
                 PlanSectionDefinitionImpl.class, id);

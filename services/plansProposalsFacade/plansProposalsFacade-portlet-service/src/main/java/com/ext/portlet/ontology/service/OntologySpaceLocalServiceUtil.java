@@ -47,7 +47,7 @@ public class OntologySpaceLocalServiceUtil {
     * @return the new ontology space
     */
     public static com.ext.portlet.ontology.model.OntologySpace createOntologySpace(
-        java.lang.Long id) {
+        long id) {
         return getService().createOntologySpace(id);
     }
 
@@ -58,7 +58,7 @@ public class OntologySpaceLocalServiceUtil {
     * @throws PortalException if a ontology space with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteOntologySpace(java.lang.Long id)
+    public static void deleteOntologySpace(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteOntologySpace(id);
@@ -148,8 +148,7 @@ public class OntologySpaceLocalServiceUtil {
     }
 
     public static com.ext.portlet.ontology.model.OntologySpace fetchOntologySpace(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchOntologySpace(id);
     }
 
@@ -162,7 +161,7 @@ public class OntologySpaceLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologySpace getOntologySpace(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getOntologySpace(id);
@@ -254,6 +253,17 @@ public class OntologySpaceLocalServiceUtil {
         java.lang.String name, java.lang.String description)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().createSpace(name, description);
+    }
+
+    public static void store(com.ext.portlet.ontology.model.OntologySpace space)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(space);
+    }
+
+    public static com.ext.portlet.ontology.model.OntologyTerm getTopTerm(
+        com.ext.portlet.ontology.model.OntologySpace space)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getTopTerm(space);
     }
 
     public static void clearService() {

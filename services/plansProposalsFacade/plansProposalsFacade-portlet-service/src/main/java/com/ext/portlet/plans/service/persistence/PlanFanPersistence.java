@@ -44,7 +44,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @param id the primary key for the new plan fan
     * @return the new plan fan
     */
-    public com.ext.portlet.plans.model.PlanFan create(java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanFan create(long id);
 
     /**
     * Removes the plan fan with the primary key from the database. Also notifies the appropriate model listeners.
@@ -54,7 +54,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws com.ext.portlet.plans.NoSuchPlanFanException if a plan fan with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan remove(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanFan remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -70,8 +70,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws com.ext.portlet.plans.NoSuchPlanFanException if a plan fan with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan findByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanFan findByPrimaryKey(long id)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -82,8 +81,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @return the plan fan, or <code>null</code> if a plan fan with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan fetchByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanFan fetchByPrimaryKey(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -94,8 +92,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanFan> findByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long planId) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns a range of all the plan fans where planId = &#63;.
@@ -111,7 +108,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanFan> findByPlanId(
-        java.lang.Long planId, int start, int end)
+        long planId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -129,7 +126,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanFan> findByPlanId(
-        java.lang.Long planId, int start, int end,
+        long planId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -146,8 +143,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan findByPlanId_First(
-        java.lang.Long planId,
+    public com.ext.portlet.plans.model.PlanFan findByPlanId_First(long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -165,8 +161,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan findByPlanId_Last(
-        java.lang.Long planId,
+    public com.ext.portlet.plans.model.PlanFan findByPlanId_Last(long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -186,7 +181,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanFan[] findByPlanId_PrevAndNext(
-        java.lang.Long id, java.lang.Long planId,
+        long id, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -199,8 +194,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanFan> findByUserId(
-        java.lang.Long userId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long userId) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns a range of all the plan fans where userId = &#63;.
@@ -216,7 +210,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanFan> findByUserId(
-        java.lang.Long userId, int start, int end)
+        long userId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -234,7 +228,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanFan> findByUserId(
-        java.lang.Long userId, int start, int end,
+        long userId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -251,8 +245,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan findByUserId_First(
-        java.lang.Long userId,
+    public com.ext.portlet.plans.model.PlanFan findByUserId_First(long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -270,8 +263,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan findByUserId_Last(
-        java.lang.Long userId,
+    public com.ext.portlet.plans.model.PlanFan findByUserId_Last(long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -291,7 +283,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanFan[] findByUserId_PrevAndNext(
-        java.lang.Long id, java.lang.Long userId,
+        long id, long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -305,8 +297,8 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws com.ext.portlet.plans.NoSuchPlanFanException if a matching plan fan could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan findByPlanIdUserId(
-        java.lang.Long planId, java.lang.Long userId)
+    public com.ext.portlet.plans.model.PlanFan findByPlanIdUserId(long planId,
+        long userId)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -319,7 +311,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanFan fetchByPlanIdUserId(
-        java.lang.Long planId, java.lang.Long userId)
+        long planId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -332,7 +324,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanFan fetchByPlanIdUserId(
-        java.lang.Long planId, java.lang.Long userId, boolean retrieveFromCache)
+        long planId, long userId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -384,7 +376,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanId(java.lang.Long planId)
+    public void removeByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -393,7 +385,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByUserId(java.lang.Long userId)
+    public void removeByUserId(long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -403,8 +395,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanIdUserId(java.lang.Long planId,
-        java.lang.Long userId)
+    public void removeByPlanIdUserId(long planId, long userId)
         throws com.ext.portlet.plans.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -423,7 +414,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @return the number of matching plan fans
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanId(java.lang.Long planId)
+    public int countByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -433,7 +424,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @return the number of matching plan fans
     * @throws SystemException if a system exception occurred
     */
-    public int countByUserId(java.lang.Long userId)
+    public int countByUserId(long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -444,7 +435,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * @return the number of matching plan fans
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanIdUserId(java.lang.Long planId, java.lang.Long userId)
+    public int countByPlanIdUserId(long planId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

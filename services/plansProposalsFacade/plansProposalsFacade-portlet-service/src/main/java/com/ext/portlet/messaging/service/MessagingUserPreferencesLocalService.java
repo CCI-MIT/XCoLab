@@ -49,7 +49,7 @@ public interface MessagingUserPreferencesLocalService
     * @return the new messaging user preferences
     */
     public com.ext.portlet.messaging.model.MessagingUserPreferences createMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId);
+        long messagingPreferencesId);
 
     /**
     * Deletes the messaging user preferences with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,8 +58,7 @@ public interface MessagingUserPreferencesLocalService
     * @throws PortalException if a messaging user preferences with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+    public void deleteMessagingUserPreferences(long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -137,7 +136,7 @@ public interface MessagingUserPreferencesLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.messaging.model.MessagingUserPreferences fetchMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -150,7 +149,7 @@ public interface MessagingUserPreferencesLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.messaging.model.MessagingUserPreferences getMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

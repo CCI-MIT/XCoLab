@@ -39,8 +39,7 @@ public class PlanMetaLocalServiceWrapper implements PlanMetaLocalService,
     * @param id the primary key for the new plan meta
     * @return the new plan meta
     */
-    public com.ext.portlet.plans.model.PlanMeta createPlanMeta(
-        java.lang.Long id) {
+    public com.ext.portlet.plans.model.PlanMeta createPlanMeta(long id) {
         return _planMetaLocalService.createPlanMeta(id);
     }
 
@@ -51,7 +50,7 @@ public class PlanMetaLocalServiceWrapper implements PlanMetaLocalService,
     * @throws PortalException if a plan meta with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanMeta(java.lang.Long id)
+    public void deletePlanMeta(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planMetaLocalService.deletePlanMeta(id);
@@ -139,7 +138,7 @@ public class PlanMetaLocalServiceWrapper implements PlanMetaLocalService,
         return _planMetaLocalService.dynamicQueryCount(dynamicQuery);
     }
 
-    public com.ext.portlet.plans.model.PlanMeta fetchPlanMeta(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanMeta fetchPlanMeta(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planMetaLocalService.fetchPlanMeta(id);
     }
@@ -152,7 +151,7 @@ public class PlanMetaLocalServiceWrapper implements PlanMetaLocalService,
     * @throws PortalException if a plan meta with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanMeta getPlanMeta(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanMeta getPlanMeta(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planMetaLocalService.getPlanMeta(id);
@@ -268,6 +267,21 @@ public class PlanMetaLocalServiceWrapper implements PlanMetaLocalService,
         com.ext.portlet.plans.model.PlanItem plan, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planMetaLocalService.createNewVersionForPlan(plan, store);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planMetaLocalService.store(pm);
+    }
+
+    public void vote(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planMetaLocalService.vote(pm);
+    }
+
+    public void unvote(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planMetaLocalService.unvote(pm);
     }
 
     /**

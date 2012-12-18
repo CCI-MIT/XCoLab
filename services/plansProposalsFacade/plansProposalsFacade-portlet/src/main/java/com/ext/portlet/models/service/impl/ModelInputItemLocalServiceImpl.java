@@ -1,10 +1,15 @@
 package com.ext.portlet.models.service.impl;
 
+import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.NoSuchModelInputItemException;
 import com.ext.portlet.models.model.ModelInputItem;
+import com.ext.portlet.models.service.ModelInputItemLocalServiceUtil;
 import com.ext.portlet.models.service.base.ModelInputItemLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -70,5 +75,56 @@ public class ModelInputItemLocalServiceImpl
         }
         return null;
 
+    }
+    
+    
+
+    public MetaData getMetaData(ModelInputItem item) throws SystemException, IOException {
+        return CollaboratoriumModelingService.repository().getMetaData(item.getModelInputItemID());
+    }
+
+    public Simulation getModel(ModelInputItem item) throws SystemException, IOException {
+        return CollaboratoriumModelingService.repository().getSimulation(item.getModelId());
+    }
+
+    public Map<String,String> getPropertyMap(ModelInputItem item) {
+        return parseTypes(item.getProperties());
+    }
+
+
+     public static Map<String,String> parseTypes(String props) {
+        if (props == null) return Collections.emptyMap();
+        Map<String,String> result = new HashMap<String,String>();
+        for (String type:props.split(";")) {
+            String[] kv = type.split("=");
+            if (kv.length>1) {
+                result.put(kv[0],kv[1]);
+            }
+        }
+        return result;
+    }
+     
+    public void saveProperties(ModelInputItem item, Map<String, String> props) throws SystemException {
+        StringBuilder sb = new StringBuilder();
+        
+        for (String key: props.keySet()) {
+            sb.append(key);
+            sb.append("=");
+            sb.append(props.get(key));
+            sb.append(";");
+        }
+        
+        item.setProperties(sb.toString());
+        store(item);
+        
+    }
+    
+    public void store(ModelInputItem item) throws SystemException {
+        if (item.isNew()) {
+            ModelInputItemLocalServiceUtil.addModelInputItem(item);
+        }
+        else {
+            ModelInputItemLocalServiceUtil.updateModelInputItem(item);
+        }
     }
 }

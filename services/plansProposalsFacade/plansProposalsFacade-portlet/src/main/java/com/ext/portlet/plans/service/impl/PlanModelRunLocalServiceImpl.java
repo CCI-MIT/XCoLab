@@ -8,7 +8,10 @@ import com.ext.portlet.plans.model.PlanModelRun;
 import com.ext.portlet.plans.service.PlanModelRunLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanModelRunLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the plan model run local service.
@@ -85,5 +88,19 @@ public class PlanModelRunLocalServiceImpl
         }
         
         return newModelRun;
+    }
+    
+    
+    public void store(PlanModelRun pmr) throws SystemException {
+        if (pmr.isNew()) {
+            PlanModelRunLocalServiceUtil.addPlanModelRun(pmr);
+        }
+        else {
+            PlanModelRunLocalServiceUtil.updatePlanModelRun(pmr);
+        }
+    }
+    
+    public User getUpdateAuthor(PlanModelRun pmr) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(pmr.getUpdateAuthorId());
     }
 }

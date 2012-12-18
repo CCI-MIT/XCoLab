@@ -28,6 +28,9 @@ public class PlanTeamHistoryLocalServiceClp
     private MethodKey _newHistoryItemMethodKey17;
     private MethodKey _newHistoryItemMethodKey18;
     private MethodKey _getLastUserActionInPlanMethodKey19;
+    private MethodKey _storeMethodKey20;
+    private MethodKey _getUserMethodKey21;
+    private MethodKey _getPlanMethodKey22;
 
     public PlanTeamHistoryLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -37,10 +40,10 @@ public class PlanTeamHistoryLocalServiceClp
                 com.ext.portlet.plans.model.PlanTeamHistory.class);
 
         _createPlanTeamHistoryMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanTeamHistory", java.lang.Long.class);
+                "createPlanTeamHistory", long.class);
 
         _deletePlanTeamHistoryMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanTeamHistory", java.lang.Long.class);
+                "deletePlanTeamHistory", long.class);
 
         _deletePlanTeamHistoryMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanTeamHistory",
@@ -66,10 +69,10 @@ public class PlanTeamHistoryLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanTeamHistoryMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanTeamHistory", java.lang.Long.class);
+                "fetchPlanTeamHistory", long.class);
 
         _getPlanTeamHistoryMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanTeamHistory", java.lang.Long.class);
+                "getPlanTeamHistory", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -106,6 +109,15 @@ public class PlanTeamHistoryLocalServiceClp
         _getLastUserActionInPlanMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getLastUserActionInPlan", java.lang.Long.class,
                 java.lang.Long.class);
+
+        _storeMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.plans.model.PlanTeamHistory.class);
+
+        _getUserMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getUser", com.ext.portlet.plans.model.PlanTeamHistory.class);
+
+        _getPlanMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getPlan", com.ext.portlet.plans.model.PlanTeamHistory.class);
     }
 
     public com.ext.portlet.plans.model.PlanTeamHistory addPlanTeamHistory(
@@ -135,11 +147,11 @@ public class PlanTeamHistoryLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanTeamHistory createPlanTeamHistory(
-        java.lang.Long id) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanTeamHistoryMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -155,11 +167,11 @@ public class PlanTeamHistoryLocalServiceClp
         return (com.ext.portlet.plans.model.PlanTeamHistory) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanTeamHistory(java.lang.Long id)
+    public void deletePlanTeamHistory(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanTeamHistoryMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -314,12 +326,11 @@ public class PlanTeamHistoryLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanTeamHistory fetchPlanTeamHistory(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanTeamHistoryMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -340,13 +351,13 @@ public class PlanTeamHistoryLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanTeamHistory getPlanTeamHistory(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanTeamHistoryMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -630,6 +641,89 @@ public class PlanTeamHistoryLocalServiceClp
         }
 
         return (com.ext.portlet.plans.model.PlanTeamHistory) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey20,
+                ClpSerializer.translateInput(pth));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.liferay.portal.model.User getUser(
+        com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getUserMethodKey21,
+                ClpSerializer.translateInput(pth));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.model.User) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.plans.model.PlanItem getPlan(
+        com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.ext.portlet.plans.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getPlanMethodKey22,
+                ClpSerializer.translateInput(pth));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.ext.portlet.plans.NoSuchPlanItemException) {
+                throw (com.ext.portlet.plans.NoSuchPlanItemException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.plans.model.PlanItem) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

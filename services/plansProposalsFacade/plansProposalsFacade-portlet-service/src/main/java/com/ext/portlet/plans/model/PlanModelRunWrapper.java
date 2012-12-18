@@ -32,7 +32,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the primary key of this plan model run
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planModelRun.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param primaryKey the primary key of this plan model run
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planModelRun.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the ID of this plan model run
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _planModelRun.getId();
     }
 
@@ -59,7 +59,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param id the ID of this plan model run
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _planModelRun.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the plan ID of this plan model run
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planModelRun.getPlanId();
     }
 
@@ -77,7 +77,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param planId the plan ID of this plan model run
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planModelRun.setPlanId(planId);
     }
 
@@ -86,7 +86,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the scenario ID of this plan model run
     */
-    public java.lang.Long getScenarioId() {
+    public long getScenarioId() {
         return _planModelRun.getScenarioId();
     }
 
@@ -95,7 +95,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param scenarioId the scenario ID of this plan model run
     */
-    public void setScenarioId(java.lang.Long scenarioId) {
+    public void setScenarioId(long scenarioId) {
         _planModelRun.setScenarioId(scenarioId);
     }
 
@@ -104,7 +104,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the plan version of this plan model run
     */
-    public java.lang.Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planModelRun.getPlanVersion();
     }
 
@@ -113,7 +113,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param planVersion the plan version of this plan model run
     */
-    public void setPlanVersion(java.lang.Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planModelRun.setPlanVersion(planVersion);
     }
 
@@ -122,7 +122,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the version of this plan model run
     */
-    public java.lang.Long getVersion() {
+    public long getVersion() {
         return _planModelRun.getVersion();
     }
 
@@ -131,7 +131,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param version the version of this plan model run
     */
-    public void setVersion(java.lang.Long version) {
+    public void setVersion(long version) {
         _planModelRun.setVersion(version);
     }
 
@@ -158,7 +158,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the update author ID of this plan model run
     */
-    public java.lang.Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _planModelRun.getUpdateAuthorId();
     }
 
@@ -167,7 +167,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param updateAuthorId the update author ID of this plan model run
     */
-    public void setUpdateAuthorId(java.lang.Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _planModelRun.setUpdateAuthorId(updateAuthorId);
     }
 
@@ -242,17 +242,6 @@ public class PlanModelRunWrapper implements PlanModelRun,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planModelRun.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planModelRun.store();
-    }
-
-    public com.liferay.portal.model.User getUpdateAuthor()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planModelRun.getUpdateAuthor();
     }
 
     /**

@@ -14,12 +14,12 @@ import java.util.List;
  * @generated
  */
 public class ActivitySubscriptionSoap implements Serializable {
-    private Long _pk;
-    private Long _classNameId;
-    private Long _classPK;
-    private Integer _type;
+    private long _pk;
+    private long _classNameId;
+    private long _classPK;
+    private int _type;
     private String _extraData;
-    private Long _receiverId;
+    private long _receiverId;
     private Date _createDate;
     private Date _modifiedDate;
 
@@ -81,43 +81,43 @@ public class ActivitySubscriptionSoap implements Serializable {
         return soapModels.toArray(new ActivitySubscriptionSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _pk;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setPk(pk);
     }
 
-    public Long getPk() {
+    public long getPk() {
         return _pk;
     }
 
-    public void setPk(Long pk) {
+    public void setPk(long pk) {
         _pk = pk;
     }
 
-    public Long getClassNameId() {
+    public long getClassNameId() {
         return _classNameId;
     }
 
-    public void setClassNameId(Long classNameId) {
+    public void setClassNameId(long classNameId) {
         _classNameId = classNameId;
     }
 
-    public Long getClassPK() {
+    public long getClassPK() {
         return _classPK;
     }
 
-    public void setClassPK(Long classPK) {
+    public void setClassPK(long classPK) {
         _classPK = classPK;
     }
 
-    public Integer getType() {
+    public int getType() {
         return _type;
     }
 
-    public void setType(Integer type) {
+    public void setType(int type) {
         _type = type;
     }
 
@@ -129,11 +129,11 @@ public class ActivitySubscriptionSoap implements Serializable {
         _extraData = extraData;
     }
 
-    public Long getReceiverId() {
+    public long getReceiverId() {
         return _receiverId;
     }
 
-    public void setReceiverId(Long receiverId) {
+    public void setReceiverId(long receiverId) {
         _receiverId = receiverId;
     }
 

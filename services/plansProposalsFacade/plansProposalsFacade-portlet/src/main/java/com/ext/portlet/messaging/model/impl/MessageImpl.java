@@ -24,40 +24,6 @@ public class MessageImpl extends MessageBaseImpl {
      */
     public MessageImpl() {
     }
-    
-
-    public List<MessageRecipientStatus> getRecipients() throws SystemException {
-        return MessageRecipientStatusLocalServiceUtil.findByMessageId(getMessageId(),0,Short.MAX_VALUE);
-    }
-
-    public boolean hasReciever(long userid) throws SystemException {
-        MessageRecipientStatus status = null;
-        try {
-            status = MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid,getMessageId());
-        }  catch (NoSuchMessageRecipientStatusException e) {
-           //no worries
-        }
-        return status!=null;
-    }
-
-    public boolean isOpened(long userid) throws SystemException, NoSuchMessageRecipientStatusException {
-        return MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid,getMessageId()).getOpened();
-    }
-
-    public void setOpened(long userid) throws SystemException, NoSuchMessageRecipientStatusException {
-        MessageRecipientStatus status = MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid,getMessageId());
-        status.setOpened(true);
-        MessageRecipientStatusLocalServiceUtil.updateMessageRecipientStatus(status);
-    }
-
-    public boolean isArchived(long userid) throws SystemException, NoSuchMessageRecipientStatusException {
-        return MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid,getMessageId()).getArchived();
-    }
-
-    public void setArchived(long userid) throws SystemException, NoSuchMessageRecipientStatusException {
-        MessageRecipientStatus status = MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(userid,getMessageId());
-        status.setArchived(true);
-        MessageRecipientStatusLocalServiceUtil.updateMessageRecipientStatus(status);
-    }
+   
 
 }

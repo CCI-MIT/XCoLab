@@ -14,12 +14,12 @@ import java.util.List;
  * @generated
  */
 public class PlanPositionsSoap implements Serializable {
-    private Long _id;
-    private Long _planId;
-    private Long _planVersion;
-    private Long _version;
+    private long _id;
+    private long _planId;
+    private long _planVersion;
+    private long _version;
     private Date _created;
-    private Long _updateAuthorId;
+    private long _updateAuthorId;
 
     public PlanPositionsSoap() {
     }
@@ -73,43 +73,43 @@ public class PlanPositionsSoap implements Serializable {
         return soapModels.toArray(new PlanPositionsSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
-    public Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planVersion;
     }
 
-    public void setPlanVersion(Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planVersion = planVersion;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return _version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(long version) {
         _version = version;
     }
 
@@ -121,11 +121,11 @@ public class PlanPositionsSoap implements Serializable {
         _created = created;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
 }

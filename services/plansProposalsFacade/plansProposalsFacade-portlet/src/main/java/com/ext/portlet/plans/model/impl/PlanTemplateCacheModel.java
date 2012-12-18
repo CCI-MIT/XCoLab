@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 public class PlanTemplateCacheModel implements CacheModel<PlanTemplate>,
     Serializable {
-    public Long id;
+    public long id;
     public String name;
 
     @Override

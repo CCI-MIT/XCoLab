@@ -17,14 +17,14 @@ import java.io.Serializable;
  */
 public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDefinition>,
     Serializable {
-    public Long id;
+    public long id;
     public String adminTitle;
     public String title;
     public String defaultText;
     public String helpText;
-    public Integer characterLimit;
-    public Long focusAreaId;
-    public Boolean locked;
+    public int characterLimit;
+    public long focusAreaId;
+    public boolean locked;
 
     @Override
     public String toString() {

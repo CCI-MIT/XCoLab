@@ -235,7 +235,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @param id the primary key for the new model position
      * @return the new model position
      */
-    public ModelPosition create(Long id) {
+    public ModelPosition create(long id) {
         ModelPosition modelPosition = new ModelPositionImpl();
 
         modelPosition.setNew(true);
@@ -252,9 +252,9 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @throws com.ext.portlet.models.NoSuchModelPositionException if a model position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelPosition remove(Long id)
+    public ModelPosition remove(long id)
         throws NoSuchModelPositionException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -402,7 +402,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
     @Override
     public ModelPosition findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -413,7 +413,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @throws com.ext.portlet.models.NoSuchModelPositionException if a model position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelPosition findByPrimaryKey(Long id)
+    public ModelPosition findByPrimaryKey(long id)
         throws NoSuchModelPositionException, SystemException {
         ModelPosition modelPosition = fetchByPrimaryKey(id);
 
@@ -439,7 +439,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
     @Override
     public ModelPosition fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -449,7 +449,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @return the model position, or <code>null</code> if a model position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelPosition fetchByPrimaryKey(Long id) throws SystemException {
+    public ModelPosition fetchByPrimaryKey(long id) throws SystemException {
         ModelPosition modelPosition = (ModelPosition) EntityCacheUtil.getResult(ModelPositionModelImpl.ENTITY_CACHE_ENABLED,
                 ModelPositionImpl.class, id);
 
@@ -493,7 +493,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @return the matching model positions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelPosition> findByModelId(Long modelId)
+    public List<ModelPosition> findByModelId(long modelId)
         throws SystemException {
         return findByModelId(modelId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -511,7 +511,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @return the range of matching model positions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelPosition> findByModelId(Long modelId, int start, int end)
+    public List<ModelPosition> findByModelId(long modelId, int start, int end)
         throws SystemException {
         return findByModelId(modelId, start, end, null);
     }
@@ -530,7 +530,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @return the ordered range of matching model positions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelPosition> findByModelId(Long modelId, int start, int end,
+    public List<ModelPosition> findByModelId(long modelId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -577,7 +577,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 list = (List<ModelPosition>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -612,7 +612,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @throws com.ext.portlet.models.NoSuchModelPositionException if a matching model position could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelPosition findByModelId_First(Long modelId,
+    public ModelPosition findByModelId_First(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelPositionException, SystemException {
         List<ModelPosition> list = findByModelId(modelId, 0, 1,
@@ -647,7 +647,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @throws com.ext.portlet.models.NoSuchModelPositionException if a matching model position could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelPosition findByModelId_Last(Long modelId,
+    public ModelPosition findByModelId_Last(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelPositionException, SystemException {
         int count = countByModelId(modelId);
@@ -685,7 +685,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @throws com.ext.portlet.models.NoSuchModelPositionException if a model position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelPosition[] findByModelId_PrevAndNext(Long id, Long modelId,
+    public ModelPosition[] findByModelId_PrevAndNext(long id, long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelPositionException, SystemException {
         ModelPosition modelPosition = findByPrimaryKey(id);
@@ -714,7 +714,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
     }
 
     protected ModelPosition getByModelId_PrevAndNext(Session session,
-        ModelPosition modelPosition, Long modelId,
+        ModelPosition modelPosition, long modelId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -788,7 +788,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(modelId.longValue());
+        qPos.add(modelId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(modelPosition);
@@ -922,7 +922,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @param modelId the model ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelId(Long modelId) throws SystemException {
+    public void removeByModelId(long modelId) throws SystemException {
         for (ModelPosition modelPosition : findByModelId(modelId)) {
             remove(modelPosition);
         }
@@ -946,7 +946,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
      * @return the number of matching model positions
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelId(Long modelId) throws SystemException {
+    public int countByModelId(long modelId) throws SystemException {
         Object[] finderArgs = new Object[] { modelId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MODELID,
@@ -970,7 +970,7 @@ public class ModelPositionPersistenceImpl extends BasePersistenceImpl<ModelPosit
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

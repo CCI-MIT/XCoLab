@@ -26,6 +26,7 @@ public class PlanSectionPlanMapLocalServiceClp
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _findPlanIdsForSectionMethodKey17;
+    private MethodKey _storeMethodKey18;
 
     public PlanSectionPlanMapLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -99,6 +100,9 @@ public class PlanSectionPlanMapLocalServiceClp
 
         _findPlanIdsForSectionMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "findPlanIdsForSection", java.lang.Long.class);
+
+        _storeMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.plans.model.PlanSectionPlanMap.class);
     }
 
     public com.ext.portlet.plans.model.PlanSectionPlanMap addPlanSectionPlanMap(
@@ -557,6 +561,27 @@ public class PlanSectionPlanMapLocalServiceClp
         }
 
         return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanSectionPlanMap pspm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey18,
+                ClpSerializer.translateInput(pspm));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

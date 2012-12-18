@@ -7,34 +7,32 @@
 
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet.contests">
-    <namespace>Contests</namespace>
-
-    
+    <namespace>xcolab</namespace>
     <entity name="Contest" local-service="true" remote-service="true">
-        <column name="ContestPK" type="Long" primary="true" />
+        <column name="ContestPK" type="long" primary="true" />
         <column name="ContestName" type="String" />
         <column name="ContestShortName" type="String" />
         <column name="ContestDescription" type="String" />
         <column name="ContestModelDescription" type="String" />
         <column name="ContestPositionsDescription" type="String" />
         <column name="defaultPlanDescription" type="String" />
-        <column name="PlanTypeId" type="Long" />
+        <column name="PlanTypeId" type="long" />
         <column name="created" type="Date" />
         <column name="updated" type="Date" />
-        <column name="authorId" type="Long" />
-        <column name="contestActive" type="Boolean"/>
-        <column name="planTemplateId" type="Long" />
-        <column name="focusAreaId" type="Long" />
-        <column name="contestLogoId" type="Long" />
-        <column name="featured" type="Boolean" />
-        <column name="plansOpenByDefault" type="Boolean" />
+        <column name="authorId" type="long" />
+        <column name="contestActive" type="boolean"/>
+        <column name="planTemplateId" type="long" />
+        <column name="focusAreaId" type="long" />
+        <column name="contestLogoId" type="long" />
+        <column name="featured" type="boolean" />
+        <column name="plansOpenByDefault" type="boolean" />
         
-        <column name="flag" type="Integer" />
+        <column name="flag" type="int" />
         <column name="flagText" type="String" />
         
-        <column name="groupId" type="Long" />
-        <column name="discussionGroupId" type="Long" />
-        <column name="weight" type="Integer" />
+        <column name="groupId" type="long" />
+        <column name="discussionGroupId" type="long" />
+        <column name="weight" type="int" />
         <column name="resourcesUrl" type="String" />
         
         <order by="asc">
@@ -64,9 +62,9 @@
     </entity>
     
     <entity name="ContestDebate" local-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="debateId" type="Long" />
-        <column name="ContestPK" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="debateId" type="long" />
+        <column name="ContestPK" type="long" />
         
         
         <finder name="ContestPK" return-type="Collection">
@@ -76,8 +74,8 @@
     </entity>
 
     <entity name="ContestPhase" local-service="true" remote-service="true">
-        <column name="ContestPhasePK" type="Long" primary="true" />
-        <column name="ContestPK" type="Long"/>
+        <column name="ContestPhasePK" type="long" primary="true" />
+        <column name="ContestPK" type="long"/>
         <column name="ContestPhaseName" type="String" />
         <column name="ContestPhaseDescription" type="String"/>
         <column name="ContestPhaseStatus" type="String" />
@@ -86,7 +84,7 @@
         <column name="nextStatus" type="String" />
         <column name="created" type="Date" />
         <column name="updated" type="Date" />
-        <column name="authorId" type="Long" />
+        <column name="authorId" type="long" />
 
         <order by="asc">
             <order-column name="PhaseStartDate" />
@@ -104,11 +102,11 @@
       </entity>
       
       <entity name="ContestPhaseColumn" local-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="ContestPhasePK" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="ContestPhasePK" type="long" />
         <column name="columnName" type="String" />
-        <column name="columnWeight" type="Integer" />
-        <column name="defaultSort" type="Boolean" />
+        <column name="columnWeight" type="int" />
+        <column name="defaultSort" type="boolean" />
         
         
         <order>
@@ -121,9 +119,9 @@
       </entity>
       
       <entity name="ContestTeamMember"  local-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="contestId" type="Long" />
-        <column name="userId" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="contestId" type="long" />
+        <column name="userId" type="long" />
         <column name="role" type="String" />
         
         <order>

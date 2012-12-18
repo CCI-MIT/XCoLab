@@ -176,7 +176,7 @@ public abstract class ModelInputGroupLocalServiceBaseImpl
      * @param modelInputGroupPK the primary key for the new model input group
      * @return the new model input group
      */
-    public ModelInputGroup createModelInputGroup(Long modelInputGroupPK) {
+    public ModelInputGroup createModelInputGroup(long modelInputGroupPK) {
         return modelInputGroupPersistence.create(modelInputGroupPK);
     }
 
@@ -187,7 +187,7 @@ public abstract class ModelInputGroupLocalServiceBaseImpl
      * @throws PortalException if a model input group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteModelInputGroup(Long modelInputGroupPK)
+    public void deleteModelInputGroup(long modelInputGroupPK)
         throws PortalException, SystemException {
         ModelInputGroup modelInputGroup = modelInputGroupPersistence.remove(modelInputGroupPK);
 
@@ -293,7 +293,7 @@ public abstract class ModelInputGroupLocalServiceBaseImpl
         return modelInputGroupPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ModelInputGroup fetchModelInputGroup(Long modelInputGroupPK)
+    public ModelInputGroup fetchModelInputGroup(long modelInputGroupPK)
         throws SystemException {
         return modelInputGroupPersistence.fetchByPrimaryKey(modelInputGroupPK);
     }
@@ -306,7 +306,7 @@ public abstract class ModelInputGroupLocalServiceBaseImpl
      * @throws PortalException if a model input group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup getModelInputGroup(Long modelInputGroupPK)
+    public ModelInputGroup getModelInputGroup(long modelInputGroupPK)
         throws PortalException, SystemException {
         return modelInputGroupPersistence.findByPrimaryKey(modelInputGroupPK);
     }

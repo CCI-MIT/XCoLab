@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
+import com.ext.portlet.Activity.SubscriptionType;
 import com.ext.portlet.Activity.model.ActivitySubscription;
 import com.ext.portlet.Activity.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.Activity.service.base.ActivitySubscriptionLocalServiceBaseImpl;
@@ -72,7 +73,7 @@ public class ActivitySubscriptionLocalServiceImpl
         List<ActivitySubscription> subscriptions = 
             activitySubscriptionPersistence.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type, extraData, userId);
         for (ActivitySubscription subscription: subscriptions) {
-            subscription.delete();
+            delete(subscription);
         }
         
     }
@@ -102,7 +103,7 @@ public class ActivitySubscriptionLocalServiceImpl
         subscription.setModifiedDate(new Date());
         subscription.setCreateDate(new Date());
 
-        subscription.store();
+        store(subscription);
     }
 
     public void addSubscription(Class clasz, Long classPK, Integer type, String extraData, Long userId)
@@ -140,10 +141,10 @@ public class ActivitySubscriptionLocalServiceImpl
         for (ActivitySubscription sub : subscriptions) {
             //Map<String, Number> criterion = new HashMap<String, Number>();
             Criterion criterion = RestrictionsFactoryUtil.eq("classNameId", sub.getClassNameId());
-            if (sub.getClassPK() != null) {
+            if (sub.getClassPK() <= 0) {
                 RestrictionsFactoryUtil.and(crit, RestrictionsFactoryUtil.eq("classPk", sub.getClassPK()));
             }
-            if (sub.getType() != null) {
+            if (sub.getType() >= 0) {
                 RestrictionsFactoryUtil.and(crit, RestrictionsFactoryUtil.eq("type", sub.getType()));
             }
             
@@ -172,4 +173,34 @@ public class ActivitySubscriptionLocalServiceImpl
     }
 
     
+    
+
+    public void store(ActivitySubscription activitySubscription) throws SystemException {
+        if (activitySubscription.isNew()) {
+            ActivitySubscriptionLocalServiceUtil.addActivitySubscription(activitySubscription);
+        }
+        else {
+            ActivitySubscriptionLocalServiceUtil.updateActivitySubscription(activitySubscription);
+        }
+    }
+    
+    public ICollabActivityInterpreter getInterpreter(ActivitySubscription activitySubscription) {
+        return ActivitySubscriptionLocalServiceUtil.getInterpreterForClass(activitySubscription.getClassNameId());   
+    }
+    
+    public String getName(ActivitySubscription activitySubscription) {
+        return getInterpreter(activitySubscription).getName(
+                activitySubscription.getClassNameId(), 
+                activitySubscription.getClassPK(), 
+                activitySubscription.getType(), 
+                activitySubscription.getExtraData());
+    }
+    
+    public SubscriptionType getSubscriptionType(ActivitySubscription activitySubscription) {
+        return SubscriptionType.getSubscriptionType(getInterpreter(activitySubscription));
+    }
+    
+    public void delete(ActivitySubscription activitySubscription) throws SystemException {
+        ActivitySubscriptionLocalServiceUtil.deleteActivitySubscription(activitySubscription);
+    }
 }

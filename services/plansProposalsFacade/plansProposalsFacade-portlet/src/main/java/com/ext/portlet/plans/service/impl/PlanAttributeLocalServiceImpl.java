@@ -3,6 +3,8 @@ package com.ext.portlet.plans.service.impl;
 import java.util.List;
 
 import com.ext.portlet.plans.NoSuchPlanAttributeException;
+import com.ext.portlet.plans.TypedValueConverter;
+import com.ext.portlet.plans.PlanConstants.Attribute;
 import com.ext.portlet.plans.model.PlanAttribute;
 import com.ext.portlet.plans.service.base.PlanAttributeLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -57,4 +59,9 @@ public class PlanAttributeLocalServiceImpl
     }
     
     
+    public Object getTypedValue(PlanAttribute pa) {
+        Attribute attribute = Attribute.valueOf(pa.getAttributeName());
+        return TypedValueConverter.getValue(attribute.getAttributeClass(), pa.getAttributeValue());
+    }
+        
 }

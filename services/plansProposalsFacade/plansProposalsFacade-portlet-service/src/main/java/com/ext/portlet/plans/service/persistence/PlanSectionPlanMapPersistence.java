@@ -98,7 +98,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanSectionPlanMap> findByPlanId(
-        java.lang.Long relatedPlanId)
+        long relatedPlanId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -115,7 +115,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanSectionPlanMap> findByPlanId(
-        java.lang.Long relatedPlanId, int start, int end)
+        long relatedPlanId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -133,7 +133,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanSectionPlanMap> findByPlanId(
-        java.lang.Long relatedPlanId, int start, int end,
+        long relatedPlanId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -151,7 +151,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionPlanMap findByPlanId_First(
-        java.lang.Long relatedPlanId,
+        long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -170,7 +170,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionPlanMap findByPlanId_Last(
-        java.lang.Long relatedPlanId,
+        long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -190,8 +190,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionPlanMap[] findByPlanId_PrevAndNext(
-        PlanSectionPlanMapPK planSectionPlanMapPK,
-        java.lang.Long relatedPlanId,
+        PlanSectionPlanMapPK planSectionPlanMapPK, long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -204,7 +203,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanSectionPlanMap> findBySectionId(
-        java.lang.Long sectionId)
+        long sectionId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -221,7 +220,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanSectionPlanMap> findBySectionId(
-        java.lang.Long sectionId, int start, int end)
+        long sectionId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -239,7 +238,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanSectionPlanMap> findBySectionId(
-        java.lang.Long sectionId, int start, int end,
+        long sectionId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -257,7 +256,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionPlanMap findBySectionId_First(
-        java.lang.Long sectionId,
+        long sectionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -276,7 +275,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionPlanMap findBySectionId_Last(
-        java.lang.Long sectionId,
+        long sectionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -296,7 +295,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionPlanMap[] findBySectionId_PrevAndNext(
-        PlanSectionPlanMapPK planSectionPlanMapPK, java.lang.Long sectionId,
+        PlanSectionPlanMapPK planSectionPlanMapPK, long sectionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -350,7 +349,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @param relatedPlanId the related plan ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanId(java.lang.Long relatedPlanId)
+    public void removeByPlanId(long relatedPlanId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -359,7 +358,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @param sectionId the section ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeBySectionId(java.lang.Long sectionId)
+    public void removeBySectionId(long sectionId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -377,7 +376,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @return the number of matching plan section plan maps
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanId(java.lang.Long relatedPlanId)
+    public int countByPlanId(long relatedPlanId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -387,7 +386,7 @@ public interface PlanSectionPlanMapPersistence extends BasePersistence<PlanSecti
     * @return the number of matching plan section plan maps
     * @throws SystemException if a system exception occurred
     */
-    public int countBySectionId(java.lang.Long sectionId)
+    public int countBySectionId(long sectionId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

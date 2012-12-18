@@ -37,10 +37,10 @@ public class DiscussionMessageFlagLocalServiceClp
                 com.ext.portlet.discussions.model.DiscussionMessageFlag.class);
 
         _createDiscussionMessageFlagMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createDiscussionMessageFlag", java.lang.Long.class);
+                "createDiscussionMessageFlag", long.class);
 
         _deleteDiscussionMessageFlagMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteDiscussionMessageFlag", java.lang.Long.class);
+                "deleteDiscussionMessageFlag", long.class);
 
         _deleteDiscussionMessageFlagMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteDiscussionMessageFlag",
@@ -66,10 +66,10 @@ public class DiscussionMessageFlagLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchDiscussionMessageFlagMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchDiscussionMessageFlag", java.lang.Long.class);
+                "fetchDiscussionMessageFlag", long.class);
 
         _getDiscussionMessageFlagMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDiscussionMessageFlag", java.lang.Long.class);
+                "getDiscussionMessageFlag", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -130,11 +130,11 @@ public class DiscussionMessageFlagLocalServiceClp
     }
 
     public com.ext.portlet.discussions.model.DiscussionMessageFlag createDiscussionMessageFlag(
-        java.lang.Long pk) {
+        long pk) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createDiscussionMessageFlagMethodKey1,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -150,11 +150,11 @@ public class DiscussionMessageFlagLocalServiceClp
         return (com.ext.portlet.discussions.model.DiscussionMessageFlag) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteDiscussionMessageFlag(java.lang.Long pk)
+    public void deleteDiscussionMessageFlag(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteDiscussionMessageFlagMethodKey2,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -309,12 +309,11 @@ public class DiscussionMessageFlagLocalServiceClp
     }
 
     public com.ext.portlet.discussions.model.DiscussionMessageFlag fetchDiscussionMessageFlag(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchDiscussionMessageFlagMethodKey8,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -335,13 +334,13 @@ public class DiscussionMessageFlagLocalServiceClp
     }
 
     public com.ext.portlet.discussions.model.DiscussionMessageFlag getDiscussionMessageFlag(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getDiscussionMessageFlagMethodKey9,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

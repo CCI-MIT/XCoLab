@@ -47,7 +47,7 @@ public class PlansUserSettingsLocalServiceUtil {
     * @return the new plans user settings
     */
     public static com.ext.portlet.plans.model.PlansUserSettings createPlansUserSettings(
-        java.lang.Long planUserSettingsId) {
+        long planUserSettingsId) {
         return getService().createPlansUserSettings(planUserSettingsId);
     }
 
@@ -58,8 +58,7 @@ public class PlansUserSettingsLocalServiceUtil {
     * @throws PortalException if a plans user settings with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlansUserSettings(
-        java.lang.Long planUserSettingsId)
+    public static void deletePlansUserSettings(long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlansUserSettings(planUserSettingsId);
@@ -149,7 +148,7 @@ public class PlansUserSettingsLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlansUserSettings fetchPlansUserSettings(
-        java.lang.Long planUserSettingsId)
+        long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlansUserSettings(planUserSettingsId);
     }
@@ -163,7 +162,7 @@ public class PlansUserSettingsLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansUserSettings getPlansUserSettings(
-        java.lang.Long planUserSettingsId)
+        long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlansUserSettings(planUserSettingsId);
@@ -253,7 +252,7 @@ public class PlansUserSettingsLocalServiceUtil {
 
     public static com.ext.portlet.plans.model.PlansUserSettings getByUserIdPlanTypeId(
         java.lang.Long userId, java.lang.Long planTypeId)
-        throws com.ext.portlet.plans.NoSuchUserSettingsException,
+        throws com.ext.portlet.plans.NoSuchPlansUserSettingsException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getByUserIdPlanTypeId(userId, planTypeId);
     }

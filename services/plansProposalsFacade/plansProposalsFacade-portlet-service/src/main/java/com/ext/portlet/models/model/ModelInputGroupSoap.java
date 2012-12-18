@@ -13,14 +13,14 @@ import java.util.List;
  * @generated
  */
 public class ModelInputGroupSoap implements Serializable {
-    private Long _modelInputGroupPK;
-    private Long _modelId;
-    private Long _nameAndDescriptionMetaDataId;
+    private long _modelInputGroupPK;
+    private long _modelId;
+    private long _nameAndDescriptionMetaDataId;
     private String _name;
     private String _description;
-    private Integer _displayItemOrder;
+    private int _displayItemOrder;
     private String _groupType;
-    private Long _parentGroupPK;
+    private long _parentGroupPK;
 
     public ModelInputGroupSoap() {
     }
@@ -78,36 +78,36 @@ public class ModelInputGroupSoap implements Serializable {
         return soapModels.toArray(new ModelInputGroupSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelInputGroupPK;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setModelInputGroupPK(pk);
     }
 
-    public Long getModelInputGroupPK() {
+    public long getModelInputGroupPK() {
         return _modelInputGroupPK;
     }
 
-    public void setModelInputGroupPK(Long modelInputGroupPK) {
+    public void setModelInputGroupPK(long modelInputGroupPK) {
         _modelInputGroupPK = modelInputGroupPK;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Long getNameAndDescriptionMetaDataId() {
+    public long getNameAndDescriptionMetaDataId() {
         return _nameAndDescriptionMetaDataId;
     }
 
     public void setNameAndDescriptionMetaDataId(
-        Long nameAndDescriptionMetaDataId) {
+        long nameAndDescriptionMetaDataId) {
         _nameAndDescriptionMetaDataId = nameAndDescriptionMetaDataId;
     }
 
@@ -127,11 +127,11 @@ public class ModelInputGroupSoap implements Serializable {
         _description = description;
     }
 
-    public Integer getDisplayItemOrder() {
+    public int getDisplayItemOrder() {
         return _displayItemOrder;
     }
 
-    public void setDisplayItemOrder(Integer displayItemOrder) {
+    public void setDisplayItemOrder(int displayItemOrder) {
         _displayItemOrder = displayItemOrder;
     }
 
@@ -143,11 +143,11 @@ public class ModelInputGroupSoap implements Serializable {
         _groupType = groupType;
     }
 
-    public Long getParentGroupPK() {
+    public long getParentGroupPK() {
         return _parentGroupPK;
     }
 
-    public void setParentGroupPK(Long parentGroupPK) {
+    public void setParentGroupPK(long parentGroupPK) {
         _parentGroupPK = parentGroupPK;
     }
 }

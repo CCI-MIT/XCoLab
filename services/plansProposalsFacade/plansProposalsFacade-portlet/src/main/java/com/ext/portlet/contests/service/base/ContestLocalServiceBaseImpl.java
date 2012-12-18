@@ -147,7 +147,7 @@ public abstract class ContestLocalServiceBaseImpl implements ContestLocalService
      * @param ContestPK the primary key for the new contest
      * @return the new contest
      */
-    public Contest createContest(Long ContestPK) {
+    public Contest createContest(long ContestPK) {
         return contestPersistence.create(ContestPK);
     }
 
@@ -158,7 +158,7 @@ public abstract class ContestLocalServiceBaseImpl implements ContestLocalService
      * @throws PortalException if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteContest(Long ContestPK)
+    public void deleteContest(long ContestPK)
         throws PortalException, SystemException {
         Contest contest = contestPersistence.remove(ContestPK);
 
@@ -262,7 +262,7 @@ public abstract class ContestLocalServiceBaseImpl implements ContestLocalService
         return contestPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public Contest fetchContest(Long ContestPK) throws SystemException {
+    public Contest fetchContest(long ContestPK) throws SystemException {
         return contestPersistence.fetchByPrimaryKey(ContestPK);
     }
 
@@ -274,7 +274,7 @@ public abstract class ContestLocalServiceBaseImpl implements ContestLocalService
      * @throws PortalException if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest getContest(Long ContestPK)
+    public Contest getContest(long ContestPK)
         throws PortalException, SystemException {
         return contestPersistence.findByPrimaryKey(ContestPK);
     }

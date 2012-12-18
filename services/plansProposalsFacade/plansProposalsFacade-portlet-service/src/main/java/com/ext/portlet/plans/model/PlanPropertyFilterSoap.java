@@ -13,9 +13,9 @@ import java.util.List;
  * @generated
  */
 public class PlanPropertyFilterSoap implements Serializable {
-    private Long _planPropertyFilterId;
+    private long _planPropertyFilterId;
     private String _propertyName;
-    private Long _planUserSettingsId;
+    private long _planUserSettingsId;
     private String _value;
 
     public PlanPropertyFilterSoap() {
@@ -71,19 +71,19 @@ public class PlanPropertyFilterSoap implements Serializable {
         return soapModels.toArray(new PlanPropertyFilterSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planPropertyFilterId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setPlanPropertyFilterId(pk);
     }
 
-    public Long getPlanPropertyFilterId() {
+    public long getPlanPropertyFilterId() {
         return _planPropertyFilterId;
     }
 
-    public void setPlanPropertyFilterId(Long planPropertyFilterId) {
+    public void setPlanPropertyFilterId(long planPropertyFilterId) {
         _planPropertyFilterId = planPropertyFilterId;
     }
 
@@ -95,11 +95,11 @@ public class PlanPropertyFilterSoap implements Serializable {
         _propertyName = propertyName;
     }
 
-    public Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
-    public void setPlanUserSettingsId(Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planUserSettingsId = planUserSettingsId;
     }
 

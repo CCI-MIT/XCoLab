@@ -14,10 +14,10 @@ import java.lang.reflect.Proxy;
 
 public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategoryGroup>
     implements DiscussionCategoryGroup {
-    private Long _id;
+    private long _id;
     private String _description;
     private String _url;
-    private Long _commentsThread;
+    private long _commentsThread;
 
     public DiscussionCategoryGroupClp() {
     }
@@ -30,11 +30,11 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
         return DiscussionCategoryGroup.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -46,11 +46,11 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
@@ -70,55 +70,12 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
         _url = url;
     }
 
-    public Long getCommentsThread() {
+    public long getCommentsThread() {
         return _commentsThread;
     }
 
-    public void setCommentsThread(Long commentsThread) {
+    public void setCommentsThread(long commentsThread) {
         _commentsThread = commentsThread;
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategory getCategoryById(
-        java.lang.Long categoryId) {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage getThreadById(
-        java.lang.Long threadId) {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.discussions.model.DiscussionCategory> getCategories() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategory addCategory(
-        java.lang.String name, java.lang.String description,
-        com.liferay.portal.model.User creator) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage getCommentThread() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage addComment(
-        java.lang.String title, java.lang.String description,
-        com.liferay.portal.model.User author) {
-        throw new UnsupportedOperationException();
-    }
-
-    public int getCommentsCount() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void copyEverything(
-        com.ext.portlet.discussions.model.DiscussionCategoryGroup source) {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -149,7 +106,7 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
     }
 
     public int compareTo(DiscussionCategoryGroup discussionCategoryGroup) {
-        Long primaryKey = discussionCategoryGroup.getPrimaryKey();
+        long primaryKey = discussionCategoryGroup.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -174,7 +131,7 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
             return false;
         }
 
-        Long primaryKey = discussionCategoryGroup.getPrimaryKey();
+        long primaryKey = discussionCategoryGroup.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -185,7 +142,7 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

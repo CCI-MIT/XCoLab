@@ -47,8 +47,7 @@ public interface MessageLocalService extends PersistedModelLocalService {
     * @param messageId the primary key for the new message
     * @return the new message
     */
-    public com.ext.portlet.messaging.model.Message createMessage(
-        java.lang.Long messageId);
+    public com.ext.portlet.messaging.model.Message createMessage(long messageId);
 
     /**
     * Deletes the message with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +56,7 @@ public interface MessageLocalService extends PersistedModelLocalService {
     * @throws PortalException if a message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessage(java.lang.Long messageId)
+    public void deleteMessage(long messageId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -133,8 +132,7 @@ public interface MessageLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.messaging.model.Message fetchMessage(
-        java.lang.Long messageId)
+    public com.ext.portlet.messaging.model.Message fetchMessage(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -146,8 +144,7 @@ public interface MessageLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.messaging.model.Message getMessage(
-        java.lang.Long messageId)
+    public com.ext.portlet.messaging.model.Message getMessage(long messageId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -227,4 +224,35 @@ public interface MessageLocalService extends PersistedModelLocalService {
     public java.util.List<com.ext.portlet.messaging.model.Message> findSentMessages(
         long userid, int pagerstart, int pagerend)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> getRecipients(
+        com.ext.portlet.messaging.model.Message msg)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasReciever(com.ext.portlet.messaging.model.Message msg,
+        long userid) throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isOpened(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setOpened(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isArchived(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setArchived(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

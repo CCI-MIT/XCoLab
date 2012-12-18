@@ -308,7 +308,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @param id the primary key for the new plan meta
      * @return the new plan meta
      */
-    public PlanMeta create(Long id) {
+    public PlanMeta create(long id) {
         PlanMeta planMeta = new PlanMetaImpl();
 
         planMeta.setNew(true);
@@ -325,9 +325,9 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @throws com.ext.portlet.plans.NoSuchPlanMetaException if a plan meta with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta remove(Long id)
+    public PlanMeta remove(long id)
         throws NoSuchPlanMetaException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -482,7 +482,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
         planMetaImpl.setAuthorId(planMeta.getAuthorId());
         planMetaImpl.setVotes(planMeta.getVotes());
         planMetaImpl.setPlanGroupId(planMeta.getPlanGroupId());
-        planMetaImpl.setOpen(planMeta.getOpen());
+        planMetaImpl.setOpen(planMeta.isOpen());
         planMetaImpl.setStatus(planMeta.getStatus());
         planMetaImpl.setMbCategoryId(planMeta.getMbCategoryId());
         planMetaImpl.setCategoryGroupId(planMeta.getCategoryGroupId());
@@ -491,7 +491,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
         planMetaImpl.setCreated(planMeta.getCreated());
         planMetaImpl.setUpdateAuthorId(planMeta.getUpdateAuthorId());
         planMetaImpl.setModelId(planMeta.getModelId());
-        planMetaImpl.setPromoted(planMeta.getPromoted());
+        planMetaImpl.setPromoted(planMeta.isPromoted());
         planMetaImpl.setPreviousContestPhase(planMeta.getPreviousContestPhase());
         planMetaImpl.setContestPhase(planMeta.getContestPhase());
 
@@ -509,7 +509,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
     @Override
     public PlanMeta findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -520,7 +520,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @throws com.ext.portlet.plans.NoSuchPlanMetaException if a plan meta with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta findByPrimaryKey(Long id)
+    public PlanMeta findByPrimaryKey(long id)
         throws NoSuchPlanMetaException, SystemException {
         PlanMeta planMeta = fetchByPrimaryKey(id);
 
@@ -546,7 +546,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
     @Override
     public PlanMeta fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -556,7 +556,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @return the plan meta, or <code>null</code> if a plan meta with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanMeta fetchByPrimaryKey(long id) throws SystemException {
         PlanMeta planMeta = (PlanMeta) EntityCacheUtil.getResult(PlanMetaModelImpl.ENTITY_CACHE_ENABLED,
                 PlanMetaImpl.class, id);
 
@@ -601,7 +601,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @throws com.ext.portlet.plans.NoSuchPlanMetaException if a matching plan meta could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta findByCurrentByPlanId(Long planId)
+    public PlanMeta findByCurrentByPlanId(long planId)
         throws NoSuchPlanMetaException, SystemException {
         PlanMeta planMeta = fetchByCurrentByPlanId(planId);
 
@@ -632,7 +632,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @return the matching plan meta, or <code>null</code> if a matching plan meta could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta fetchByCurrentByPlanId(Long planId)
+    public PlanMeta fetchByCurrentByPlanId(long planId)
         throws SystemException {
         return fetchByCurrentByPlanId(planId, true);
     }
@@ -645,7 +645,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @return the matching plan meta, or <code>null</code> if a matching plan meta could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta fetchByCurrentByPlanId(Long planId,
+    public PlanMeta fetchByCurrentByPlanId(long planId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
@@ -676,7 +676,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 List<PlanMeta> list = q.list();
 
@@ -725,7 +725,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @return the matching plan metas
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanMeta> findByAllByPlanId(Long planId)
+    public List<PlanMeta> findByAllByPlanId(long planId)
         throws SystemException {
         return findByAllByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -744,7 +744,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @return the range of matching plan metas
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanMeta> findByAllByPlanId(Long planId, int start, int end)
+    public List<PlanMeta> findByAllByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByAllByPlanId(planId, start, end, null);
     }
@@ -763,7 +763,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @return the ordered range of matching plan metas
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanMeta> findByAllByPlanId(Long planId, int start, int end,
+    public List<PlanMeta> findByAllByPlanId(long planId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -813,7 +813,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanMeta>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -848,7 +848,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @throws com.ext.portlet.plans.NoSuchPlanMetaException if a matching plan meta could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta findByAllByPlanId_First(Long planId,
+    public PlanMeta findByAllByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanMetaException, SystemException {
         List<PlanMeta> list = findByAllByPlanId(planId, 0, 1, orderByComparator);
@@ -882,7 +882,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @throws com.ext.portlet.plans.NoSuchPlanMetaException if a matching plan meta could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta findByAllByPlanId_Last(Long planId,
+    public PlanMeta findByAllByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanMetaException, SystemException {
         int count = countByAllByPlanId(planId);
@@ -920,7 +920,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @throws com.ext.portlet.plans.NoSuchPlanMetaException if a plan meta with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanMeta[] findByAllByPlanId_PrevAndNext(Long id, Long planId,
+    public PlanMeta[] findByAllByPlanId_PrevAndNext(long id, long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanMetaException, SystemException {
         PlanMeta planMeta = findByPrimaryKey(id);
@@ -949,7 +949,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
     }
 
     protected PlanMeta getByAllByPlanId_PrevAndNext(Session session,
-        PlanMeta planMeta, Long planId, OrderByComparator orderByComparator,
+        PlanMeta planMeta, long planId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -1026,7 +1026,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planMeta);
@@ -1159,7 +1159,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByCurrentByPlanId(Long planId)
+    public void removeByCurrentByPlanId(long planId)
         throws NoSuchPlanMetaException, SystemException {
         PlanMeta planMeta = findByCurrentByPlanId(planId);
 
@@ -1172,7 +1172,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByAllByPlanId(Long planId) throws SystemException {
+    public void removeByAllByPlanId(long planId) throws SystemException {
         for (PlanMeta planMeta : findByAllByPlanId(planId)) {
             remove(planMeta);
         }
@@ -1196,7 +1196,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @return the number of matching plan metas
      * @throws SystemException if a system exception occurred
      */
-    public int countByCurrentByPlanId(Long planId) throws SystemException {
+    public int countByCurrentByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
@@ -1220,7 +1220,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1247,7 +1247,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
      * @return the number of matching plan metas
      * @throws SystemException if a system exception occurred
      */
-    public int countByAllByPlanId(Long planId) throws SystemException {
+    public int countByAllByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
@@ -1271,7 +1271,7 @@ public class PlanMetaPersistenceImpl extends BasePersistenceImpl<PlanMeta>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

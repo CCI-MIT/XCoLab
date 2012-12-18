@@ -32,7 +32,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the primary key of this plan description
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planDescription.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param primaryKey the primary key of this plan description
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planDescription.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the ID of this plan description
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _planDescription.getId();
     }
 
@@ -59,7 +59,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param id the ID of this plan description
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _planDescription.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the plan ID of this plan description
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planDescription.getPlanId();
     }
 
@@ -77,7 +77,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param planId the plan ID of this plan description
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planDescription.setPlanId(planId);
     }
 
@@ -122,7 +122,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the version of this plan description
     */
-    public java.lang.Long getVersion() {
+    public long getVersion() {
         return _planDescription.getVersion();
     }
 
@@ -131,7 +131,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param version the version of this plan description
     */
-    public void setVersion(java.lang.Long version) {
+    public void setVersion(long version) {
         _planDescription.setVersion(version);
     }
 
@@ -140,7 +140,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the plan version of this plan description
     */
-    public java.lang.Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planDescription.getPlanVersion();
     }
 
@@ -149,7 +149,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param planVersion the plan version of this plan description
     */
-    public void setPlanVersion(java.lang.Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planDescription.setPlanVersion(planVersion);
     }
 
@@ -176,7 +176,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the update author ID of this plan description
     */
-    public java.lang.Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _planDescription.getUpdateAuthorId();
     }
 
@@ -185,7 +185,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param updateAuthorId the update author ID of this plan description
     */
-    public void setUpdateAuthorId(java.lang.Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _planDescription.setUpdateAuthorId(updateAuthorId);
     }
 
@@ -194,7 +194,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the image of this plan description
     */
-    public java.lang.Long getImage() {
+    public long getImage() {
         return _planDescription.getImage();
     }
 
@@ -203,7 +203,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param image the image of this plan description
     */
-    public void setImage(java.lang.Long image) {
+    public void setImage(long image) {
         _planDescription.setImage(image);
     }
 
@@ -296,17 +296,6 @@ public class PlanDescriptionWrapper implements PlanDescription,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planDescription.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planDescription.store();
-    }
-
-    public com.liferay.portal.model.User getUpdateAuthor()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planDescription.getUpdateAuthor();
     }
 
     /**

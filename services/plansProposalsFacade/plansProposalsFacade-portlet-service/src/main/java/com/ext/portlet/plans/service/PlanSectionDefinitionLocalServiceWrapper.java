@@ -41,7 +41,7 @@ public class PlanSectionDefinitionLocalServiceWrapper
     * @return the new plan section definition
     */
     public com.ext.portlet.plans.model.PlanSectionDefinition createPlanSectionDefinition(
-        java.lang.Long id) {
+        long id) {
         return _planSectionDefinitionLocalService.createPlanSectionDefinition(id);
     }
 
@@ -52,7 +52,7 @@ public class PlanSectionDefinitionLocalServiceWrapper
     * @throws PortalException if a plan section definition with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanSectionDefinition(java.lang.Long id)
+    public void deletePlanSectionDefinition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planSectionDefinitionLocalService.deletePlanSectionDefinition(id);
@@ -143,8 +143,7 @@ public class PlanSectionDefinitionLocalServiceWrapper
     }
 
     public com.ext.portlet.plans.model.PlanSectionDefinition fetchPlanSectionDefinition(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return _planSectionDefinitionLocalService.fetchPlanSectionDefinition(id);
     }
 
@@ -157,7 +156,7 @@ public class PlanSectionDefinitionLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanSectionDefinition getPlanSectionDefinition(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planSectionDefinitionLocalService.getPlanSectionDefinition(id);
@@ -245,6 +244,18 @@ public class PlanSectionDefinitionLocalServiceWrapper
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _planSectionDefinitionLocalService.setBeanIdentifier(beanIdentifier);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planSectionDefinitionLocalService.store(psd);
+    }
+
+    public com.ext.portlet.ontology.model.FocusArea getFocusArea(
+        com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionDefinitionLocalService.getFocusArea(psd);
     }
 
     /**

@@ -16,9 +16,9 @@ import java.io.Serializable;
  */
 public class ContestDebateCacheModel implements CacheModel<ContestDebate>,
     Serializable {
-    public Long id;
-    public Long debateId;
-    public Long ContestPK;
+    public long id;
+    public long debateId;
+    public long ContestPK;
 
     @Override
     public String toString() {

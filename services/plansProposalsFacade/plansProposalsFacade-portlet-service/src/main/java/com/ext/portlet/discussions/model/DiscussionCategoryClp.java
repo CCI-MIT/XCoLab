@@ -17,17 +17,17 @@ import java.util.Date;
 
 public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
     implements DiscussionCategory {
-    private Long _pk;
-    private Long _categoryId;
-    private Long _categoryGroupId;
-    private Long _authorId;
+    private long _pk;
+    private long _categoryId;
+    private long _categoryGroupId;
+    private long _authorId;
     private String _name;
     private String _description;
     private Date _createDate;
     private Date _deleted;
-    private Integer _threadsCount;
+    private int _threadsCount;
     private Date _lastActivityDate;
-    private Long _lastActivityAuthorId;
+    private long _lastActivityAuthorId;
 
     public DiscussionCategoryClp() {
     }
@@ -40,11 +40,11 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
         return DiscussionCategory.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _pk;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPk(primaryKey);
     }
 
@@ -56,35 +56,35 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPk() {
+    public long getPk() {
         return _pk;
     }
 
-    public void setPk(Long pk) {
+    public void setPk(long pk) {
         _pk = pk;
     }
 
-    public Long getCategoryId() {
+    public long getCategoryId() {
         return _categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(long categoryId) {
         _categoryId = categoryId;
     }
 
-    public Long getCategoryGroupId() {
+    public long getCategoryGroupId() {
         return _categoryGroupId;
     }
 
-    public void setCategoryGroupId(Long categoryGroupId) {
+    public void setCategoryGroupId(long categoryGroupId) {
         _categoryGroupId = categoryGroupId;
     }
 
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return _authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
@@ -120,11 +120,11 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
         _deleted = deleted;
     }
 
-    public Integer getThreadsCount() {
+    public int getThreadsCount() {
         return _threadsCount;
     }
 
-    public void setThreadsCount(Integer threadsCount) {
+    public void setThreadsCount(int threadsCount) {
         _threadsCount = threadsCount;
     }
 
@@ -136,46 +136,12 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
         _lastActivityDate = lastActivityDate;
     }
 
-    public Long getLastActivityAuthorId() {
+    public long getLastActivityAuthorId() {
         return _lastActivityAuthorId;
     }
 
-    public void setLastActivityAuthorId(Long lastActivityAuthorId) {
+    public void setLastActivityAuthorId(long lastActivityAuthorId) {
         _lastActivityAuthorId = lastActivityAuthorId;
-    }
-
-    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> getThreads() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage addThread(
-        java.lang.String subject, java.lang.String body,
-        com.liferay.portal.model.User author) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getAuthor() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getLastActivityAuthor() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void delete() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void update(java.lang.String name, java.lang.String description) {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getCategoryGroup() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -241,7 +207,7 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
             return false;
         }
 
-        Long primaryKey = discussionCategory.getPrimaryKey();
+        long primaryKey = discussionCategory.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -252,7 +218,7 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

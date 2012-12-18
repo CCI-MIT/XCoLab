@@ -125,7 +125,7 @@ public class ModelInputGroupUtil {
     * @return the new model input group
     */
     public static com.ext.portlet.models.model.ModelInputGroup create(
-        java.lang.Long modelInputGroupPK) {
+        long modelInputGroupPK) {
         return getPersistence().create(modelInputGroupPK);
     }
 
@@ -138,7 +138,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup remove(
-        java.lang.Long modelInputGroupPK)
+        long modelInputGroupPK)
         throws com.ext.portlet.models.NoSuchModelInputGroupException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(modelInputGroupPK);
@@ -160,7 +160,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup findByPrimaryKey(
-        java.lang.Long modelInputGroupPK)
+        long modelInputGroupPK)
         throws com.ext.portlet.models.NoSuchModelInputGroupException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(modelInputGroupPK);
@@ -174,7 +174,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup fetchByPrimaryKey(
-        java.lang.Long modelInputGroupPK)
+        long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(modelInputGroupPK);
     }
@@ -187,7 +187,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputGroup> findByparentModelId(
-        java.lang.Long parentGroupPK)
+        long parentGroupPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByparentModelId(parentGroupPK);
     }
@@ -206,7 +206,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputGroup> findByparentModelId(
-        java.lang.Long parentGroupPK, int start, int end)
+        long parentGroupPK, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByparentModelId(parentGroupPK, start, end);
     }
@@ -226,7 +226,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputGroup> findByparentModelId(
-        java.lang.Long parentGroupPK, int start, int end,
+        long parentGroupPK, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -248,7 +248,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup findByparentModelId_First(
-        java.lang.Long parentGroupPK,
+        long parentGroupPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputGroupException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -270,7 +270,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup findByparentModelId_Last(
-        java.lang.Long parentGroupPK,
+        long parentGroupPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputGroupException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -293,7 +293,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup[] findByparentModelId_PrevAndNext(
-        java.lang.Long modelInputGroupPK, java.lang.Long parentGroupPK,
+        long modelInputGroupPK, long parentGroupPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputGroupException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -310,7 +310,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputGroup> findByModelId(
-        java.lang.Long modelId)
+        long modelId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelId(modelId);
     }
@@ -329,7 +329,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputGroup> findByModelId(
-        java.lang.Long modelId, int start, int end)
+        long modelId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelId(modelId, start, end);
     }
@@ -349,7 +349,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputGroup> findByModelId(
-        java.lang.Long modelId, int start, int end,
+        long modelId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -370,7 +370,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup findByModelId_First(
-        java.lang.Long modelId,
+        long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputGroupException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -391,7 +391,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup findByModelId_Last(
-        java.lang.Long modelId,
+        long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputGroupException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -413,7 +413,7 @@ public class ModelInputGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup[] findByModelId_PrevAndNext(
-        java.lang.Long modelInputGroupPK, java.lang.Long modelId,
+        long modelInputGroupPK, long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputGroupException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -477,7 +477,7 @@ public class ModelInputGroupUtil {
     * @param parentGroupPK the parent group p k
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByparentModelId(java.lang.Long parentGroupPK)
+    public static void removeByparentModelId(long parentGroupPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByparentModelId(parentGroupPK);
     }
@@ -488,7 +488,7 @@ public class ModelInputGroupUtil {
     * @param modelId the model ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByModelId(java.lang.Long modelId)
+    public static void removeByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByModelId(modelId);
     }
@@ -510,7 +510,7 @@ public class ModelInputGroupUtil {
     * @return the number of matching model input groups
     * @throws SystemException if a system exception occurred
     */
-    public static int countByparentModelId(java.lang.Long parentGroupPK)
+    public static int countByparentModelId(long parentGroupPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByparentModelId(parentGroupPK);
     }
@@ -522,7 +522,7 @@ public class ModelInputGroupUtil {
     * @return the number of matching model input groups
     * @throws SystemException if a system exception occurred
     */
-    public static int countByModelId(java.lang.Long modelId)
+    public static int countByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByModelId(modelId);
     }

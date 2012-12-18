@@ -48,7 +48,7 @@ public interface ModelPositionLocalService extends PersistedModelLocalService {
     * @return the new model position
     */
     public com.ext.portlet.models.model.ModelPosition createModelPosition(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the model position with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelPositionLocalService extends PersistedModelLocalService {
     * @throws PortalException if a model position with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelPosition(java.lang.Long id)
+    public void deleteModelPosition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,8 +135,7 @@ public interface ModelPositionLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelPosition fetchModelPosition(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the model position with the primary key.
@@ -147,8 +146,7 @@ public interface ModelPositionLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.models.model.ModelPosition getModelPosition(
-        java.lang.Long id)
+    public com.ext.portlet.models.model.ModelPosition getModelPosition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

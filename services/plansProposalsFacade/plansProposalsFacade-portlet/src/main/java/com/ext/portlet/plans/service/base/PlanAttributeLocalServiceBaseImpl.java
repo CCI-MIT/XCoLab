@@ -340,7 +340,7 @@ public abstract class PlanAttributeLocalServiceBaseImpl
      * @param attributeId the primary key for the new plan attribute
      * @return the new plan attribute
      */
-    public PlanAttribute createPlanAttribute(Long attributeId) {
+    public PlanAttribute createPlanAttribute(long attributeId) {
         return planAttributePersistence.create(attributeId);
     }
 
@@ -351,7 +351,7 @@ public abstract class PlanAttributeLocalServiceBaseImpl
      * @throws PortalException if a plan attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanAttribute(Long attributeId)
+    public void deletePlanAttribute(long attributeId)
         throws PortalException, SystemException {
         PlanAttribute planAttribute = planAttributePersistence.remove(attributeId);
 
@@ -457,7 +457,7 @@ public abstract class PlanAttributeLocalServiceBaseImpl
         return planAttributePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanAttribute fetchPlanAttribute(Long attributeId)
+    public PlanAttribute fetchPlanAttribute(long attributeId)
         throws SystemException {
         return planAttributePersistence.fetchByPrimaryKey(attributeId);
     }
@@ -470,7 +470,7 @@ public abstract class PlanAttributeLocalServiceBaseImpl
      * @throws PortalException if a plan attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute getPlanAttribute(Long attributeId)
+    public PlanAttribute getPlanAttribute(long attributeId)
         throws PortalException, SystemException {
         return planAttributePersistence.findByPrimaryKey(attributeId);
     }

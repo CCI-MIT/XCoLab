@@ -128,7 +128,7 @@ public class ModelOutputChartOrderUtil {
     * @return the new model output chart order
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder create(
-        java.lang.Long modelOutputChartOrderPK) {
+        long modelOutputChartOrderPK) {
         return getPersistence().create(modelOutputChartOrderPK);
     }
 
@@ -141,7 +141,7 @@ public class ModelOutputChartOrderUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder remove(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.ext.portlet.models.NoSuchModelOutputChartOrderException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(modelOutputChartOrderPK);
@@ -163,7 +163,7 @@ public class ModelOutputChartOrderUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder findByPrimaryKey(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.ext.portlet.models.NoSuchModelOutputChartOrderException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(modelOutputChartOrderPK);
@@ -177,7 +177,7 @@ public class ModelOutputChartOrderUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder fetchByPrimaryKey(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(modelOutputChartOrderPK);
     }
@@ -192,7 +192,7 @@ public class ModelOutputChartOrderUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder findByModelIdAndLabel(
-        java.lang.Long modelId, java.lang.String modelOutputLabel)
+        long modelId, java.lang.String modelOutputLabel)
         throws com.ext.portlet.models.NoSuchModelOutputChartOrderException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelIdAndLabel(modelId, modelOutputLabel);
@@ -207,7 +207,7 @@ public class ModelOutputChartOrderUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder fetchByModelIdAndLabel(
-        java.lang.Long modelId, java.lang.String modelOutputLabel)
+        long modelId, java.lang.String modelOutputLabel)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByModelIdAndLabel(modelId, modelOutputLabel);
     }
@@ -222,7 +222,7 @@ public class ModelOutputChartOrderUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder fetchByModelIdAndLabel(
-        java.lang.Long modelId, java.lang.String modelOutputLabel,
+        long modelId, java.lang.String modelOutputLabel,
         boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -286,7 +286,7 @@ public class ModelOutputChartOrderUtil {
     * @param modelOutputLabel the model output label
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByModelIdAndLabel(java.lang.Long modelId,
+    public static void removeByModelIdAndLabel(long modelId,
         java.lang.String modelOutputLabel)
         throws com.ext.portlet.models.NoSuchModelOutputChartOrderException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -311,7 +311,7 @@ public class ModelOutputChartOrderUtil {
     * @return the number of matching model output chart orders
     * @throws SystemException if a system exception occurred
     */
-    public static int countByModelIdAndLabel(java.lang.Long modelId,
+    public static int countByModelIdAndLabel(long modelId,
         java.lang.String modelOutputLabel)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByModelIdAndLabel(modelId, modelOutputLabel);

@@ -340,7 +340,7 @@ public abstract class PlanModelRunLocalServiceBaseImpl
      * @param id the primary key for the new plan model run
      * @return the new plan model run
      */
-    public PlanModelRun createPlanModelRun(Long id) {
+    public PlanModelRun createPlanModelRun(long id) {
         return planModelRunPersistence.create(id);
     }
 
@@ -351,7 +351,7 @@ public abstract class PlanModelRunLocalServiceBaseImpl
      * @throws PortalException if a plan model run with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanModelRun(Long id)
+    public void deletePlanModelRun(long id)
         throws PortalException, SystemException {
         PlanModelRun planModelRun = planModelRunPersistence.remove(id);
 
@@ -457,7 +457,7 @@ public abstract class PlanModelRunLocalServiceBaseImpl
         return planModelRunPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanModelRun fetchPlanModelRun(Long id) throws SystemException {
+    public PlanModelRun fetchPlanModelRun(long id) throws SystemException {
         return planModelRunPersistence.fetchByPrimaryKey(id);
     }
 
@@ -469,7 +469,7 @@ public abstract class PlanModelRunLocalServiceBaseImpl
      * @throws PortalException if a plan model run with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanModelRun getPlanModelRun(Long id)
+    public PlanModelRun getPlanModelRun(long id)
         throws PortalException, SystemException {
         return planModelRunPersistence.findByPrimaryKey(id);
     }

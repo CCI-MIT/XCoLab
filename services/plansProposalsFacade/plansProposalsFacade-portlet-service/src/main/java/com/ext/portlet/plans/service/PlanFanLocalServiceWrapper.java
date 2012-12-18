@@ -38,7 +38,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @param id the primary key for the new plan fan
     * @return the new plan fan
     */
-    public com.ext.portlet.plans.model.PlanFan createPlanFan(java.lang.Long id) {
+    public com.ext.portlet.plans.model.PlanFan createPlanFan(long id) {
         return _planFanLocalService.createPlanFan(id);
     }
 
@@ -49,7 +49,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @throws PortalException if a plan fan with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanFan(java.lang.Long id)
+    public void deletePlanFan(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planFanLocalService.deletePlanFan(id);
@@ -137,7 +137,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
         return _planFanLocalService.dynamicQueryCount(dynamicQuery);
     }
 
-    public com.ext.portlet.plans.model.PlanFan fetchPlanFan(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanFan fetchPlanFan(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.fetchPlanFan(id);
     }
@@ -150,7 +150,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @throws PortalException if a plan fan with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanFan getPlanFan(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanFan getPlanFan(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.getPlanFan(id);
@@ -281,6 +281,25 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
         java.lang.Long userId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.getByUserId(userId, start, end);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanFan pf)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planFanLocalService.store(pf);
+    }
+
+    public com.liferay.portal.model.User getUser(
+        com.ext.portlet.plans.model.PlanFan pf)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planFanLocalService.getUser(pf);
+    }
+
+    public com.ext.portlet.plans.model.PlanItem getPlan(
+        com.ext.portlet.plans.model.PlanFan pf)
+        throws com.ext.portlet.plans.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planFanLocalService.getPlan(pf);
     }
 
     /**

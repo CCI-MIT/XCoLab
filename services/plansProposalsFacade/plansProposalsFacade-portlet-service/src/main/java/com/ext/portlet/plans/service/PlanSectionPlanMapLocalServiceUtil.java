@@ -257,6 +257,12 @@ public class PlanSectionPlanMapLocalServiceUtil {
         return getService().findPlanIdsForSection(sectionId);
     }
 
+    public static void store(
+        com.ext.portlet.plans.model.PlanSectionPlanMap pspm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(pspm);
+    }
+
     public static void clearService() {
         _service = null;
     }

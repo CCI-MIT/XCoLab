@@ -148,7 +148,7 @@ public abstract class FocusAreaLocalServiceBaseImpl
      * @param id the primary key for the new focus area
      * @return the new focus area
      */
-    public FocusArea createFocusArea(Long id) {
+    public FocusArea createFocusArea(long id) {
         return focusAreaPersistence.create(id);
     }
 
@@ -159,7 +159,7 @@ public abstract class FocusAreaLocalServiceBaseImpl
      * @throws PortalException if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteFocusArea(Long id)
+    public void deleteFocusArea(long id)
         throws PortalException, SystemException {
         FocusArea focusArea = focusAreaPersistence.remove(id);
 
@@ -264,7 +264,7 @@ public abstract class FocusAreaLocalServiceBaseImpl
         return focusAreaPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public FocusArea fetchFocusArea(Long id) throws SystemException {
+    public FocusArea fetchFocusArea(long id) throws SystemException {
         return focusAreaPersistence.fetchByPrimaryKey(id);
     }
 
@@ -276,7 +276,7 @@ public abstract class FocusAreaLocalServiceBaseImpl
      * @throws PortalException if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public FocusArea getFocusArea(Long id)
+    public FocusArea getFocusArea(long id)
         throws PortalException, SystemException {
         return focusAreaPersistence.findByPrimaryKey(id);
     }

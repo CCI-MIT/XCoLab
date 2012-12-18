@@ -39,8 +39,7 @@ public class PlanModelRunLocalServiceWrapper implements PlanModelRunLocalService
     * @param id the primary key for the new plan model run
     * @return the new plan model run
     */
-    public com.ext.portlet.plans.model.PlanModelRun createPlanModelRun(
-        java.lang.Long id) {
+    public com.ext.portlet.plans.model.PlanModelRun createPlanModelRun(long id) {
         return _planModelRunLocalService.createPlanModelRun(id);
     }
 
@@ -51,7 +50,7 @@ public class PlanModelRunLocalServiceWrapper implements PlanModelRunLocalService
     * @throws PortalException if a plan model run with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanModelRun(java.lang.Long id)
+    public void deletePlanModelRun(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planModelRunLocalService.deletePlanModelRun(id);
@@ -140,8 +139,7 @@ public class PlanModelRunLocalServiceWrapper implements PlanModelRunLocalService
         return _planModelRunLocalService.dynamicQueryCount(dynamicQuery);
     }
 
-    public com.ext.portlet.plans.model.PlanModelRun fetchPlanModelRun(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanModelRun fetchPlanModelRun(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planModelRunLocalService.fetchPlanModelRun(id);
     }
@@ -154,8 +152,7 @@ public class PlanModelRunLocalServiceWrapper implements PlanModelRunLocalService
     * @throws PortalException if a plan model run with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanModelRun getPlanModelRun(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanModelRun getPlanModelRun(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planModelRunLocalService.getPlanModelRun(id);
@@ -284,6 +281,18 @@ public class PlanModelRunLocalServiceWrapper implements PlanModelRunLocalService
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planModelRunLocalService.createNewVersionForPlanFrom(plan,
             from, store);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanModelRun pmr)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planModelRunLocalService.store(pmr);
+    }
+
+    public com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanModelRun pmr)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planModelRunLocalService.getUpdateAuthor(pmr);
     }
 
     /**

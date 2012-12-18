@@ -10,6 +10,7 @@ import com.ext.portlet.plans.PlanConstants.Attribute;
 import com.ext.portlet.plans.model.PlanAttribute;
 import com.ext.portlet.plans.model.PlanAttributeFilter;
 import com.ext.portlet.plans.model.PlansUserSettings;
+import com.ext.portlet.plans.service.PlanAttributeLocalServiceUtil;
 
 public enum PlanFilterOperatorType {
     LIKE(new PlanFilterOperator.LikeOperator()),
@@ -57,7 +58,7 @@ public enum PlanFilterOperatorType {
                 if (planAttributeFilter.getTypedValue() == null) {
                     return true;
                 }
-                Comparable attributeVal = (Comparable) planAttribute.getTypedValue();
+                Comparable attributeVal = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
                 return attributeVal == null ? false : attributeVal.compareTo(planAttributeFilter.getTypedValue()) <= 0;
             }
         }
@@ -70,7 +71,7 @@ public enum PlanFilterOperatorType {
                         planAttributeFilter.getStringVal());
                 if (filterValues.length > 1) {
                    Comparable filterVal = (Comparable) filterValues[0];
-                    Comparable attributeVal = (Comparable) planAttribute.getTypedValue();
+                    Comparable attributeVal = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
 
                    return filterVal == null ? true : attributeVal==null?filterValues[1] == null:attributeVal.compareTo(filterVal) <= 0;
                 } else {
@@ -87,7 +88,7 @@ public enum PlanFilterOperatorType {
                 if (planAttributeFilter.getTypedValue() == null) {
                     return true;
                 }
-                Comparable attributeVal = (Comparable) planAttribute.getTypedValue();
+                Comparable attributeVal = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
                 return attributeVal == null ? false : attributeVal.compareTo(planAttributeFilter.getTypedValue()) >= 0;
             }
         }
@@ -100,7 +101,7 @@ public enum PlanFilterOperatorType {
                         planAttributeFilter.getStringVal());
                 if (filterValues.length > 1) {
                    Comparable filterVal = (Comparable) filterValues[0];
-                    Comparable attributeVal = (Comparable) planAttribute.getTypedValue();
+                    Comparable attributeVal = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
 
                    return filterVal == null ? true : attributeVal==null?filterValues[1] == null:attributeVal.compareTo(filterVal) >= 0;
                 } else {
@@ -118,7 +119,7 @@ public enum PlanFilterOperatorType {
                 if (planAttributeFilter.getMin() == null || planAttributeFilter.getMax() == null) {
                     return true;
                 }
-                Comparable attributeVal = (Comparable) planAttribute.getTypedValue();
+                Comparable attributeVal = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
                 return attributeVal == null ? false : attributeVal.compareTo(planAttributeFilter.getMax()) <= 0 &&
                     attributeVal.compareTo(planAttributeFilter.getMin()) >= 0;
             }
@@ -136,7 +137,7 @@ public enum PlanFilterOperatorType {
                 Object[] dates = TypedValueConverter.getValues(Date.class, planAttributeFilter.getStringVal());
                 dateFrom = (Date) (dates.length > 0 ? dates[0] : null);
                 dateTo = (Date) (dates.length > 1 ? dates[1] : null); 
-                Date planDate = (Date) planAttribute.getTypedValue();
+                Date planDate = (Date) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
                 
                 if ((dateFrom != null || dateTo != null) && planDate == null) {
                     return false;
@@ -171,7 +172,7 @@ public enum PlanFilterOperatorType {
                     return true;
                 }
                 Set<Long> positionsIds = new HashSet<Long>(userSettings.getPositionsIds());
-                Object typedValue = planAttribute.getTypedValue();
+                Object typedValue = PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
                 if (typedValue == null) {
                     typedValue = new Long[0];
                 }

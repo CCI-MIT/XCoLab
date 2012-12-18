@@ -32,6 +32,7 @@ public class PlanVoteLocalServiceClp implements PlanVoteLocalService {
     private MethodKey _countPlanVotesMethodKey22;
     private MethodKey _countPlanVotesMethodKey23;
     private MethodKey _countPlanVotesByPlanIdMethodKey24;
+    private MethodKey _storeMethodKey25;
 
     public PlanVoteLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -122,6 +123,9 @@ public class PlanVoteLocalServiceClp implements PlanVoteLocalService {
 
         _countPlanVotesByPlanIdMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
                 "countPlanVotesByPlanId", java.lang.Long.class);
+
+        _storeMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.plans.model.PlanVote.class);
     }
 
     public com.ext.portlet.plans.model.PlanVote addPlanVote(
@@ -772,6 +776,27 @@ public class PlanVoteLocalServiceClp implements PlanVoteLocalService {
         }
 
         return ((Integer) returnObj).intValue();
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanVote planVote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey25,
+                ClpSerializer.translateInput(planVote));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

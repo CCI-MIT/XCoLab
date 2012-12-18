@@ -35,10 +35,10 @@ public class PlanAttributeFilterLocalServiceClp
                 com.ext.portlet.plans.model.PlanAttributeFilter.class);
 
         _createPlanAttributeFilterMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanAttributeFilter", java.lang.Long.class);
+                "createPlanAttributeFilter", long.class);
 
         _deletePlanAttributeFilterMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanAttributeFilter", java.lang.Long.class);
+                "deletePlanAttributeFilter", long.class);
 
         _deletePlanAttributeFilterMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanAttributeFilter",
@@ -64,10 +64,10 @@ public class PlanAttributeFilterLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanAttributeFilterMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanAttributeFilter", java.lang.Long.class);
+                "fetchPlanAttributeFilter", long.class);
 
         _getPlanAttributeFilterMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanAttributeFilter", java.lang.Long.class);
+                "getPlanAttributeFilter", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -125,11 +125,11 @@ public class PlanAttributeFilterLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanAttributeFilter createPlanAttributeFilter(
-        java.lang.Long planAttributeFilterId) {
+        long planAttributeFilterId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanAttributeFilterMethodKey1,
-                ClpSerializer.translateInput(planAttributeFilterId));
+                planAttributeFilterId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -145,11 +145,11 @@ public class PlanAttributeFilterLocalServiceClp
         return (com.ext.portlet.plans.model.PlanAttributeFilter) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanAttributeFilter(java.lang.Long planAttributeFilterId)
+    public void deletePlanAttributeFilter(long planAttributeFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanAttributeFilterMethodKey2,
-                ClpSerializer.translateInput(planAttributeFilterId));
+                planAttributeFilterId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -304,12 +304,12 @@ public class PlanAttributeFilterLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanAttributeFilter fetchPlanAttributeFilter(
-        java.lang.Long planAttributeFilterId)
+        long planAttributeFilterId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanAttributeFilterMethodKey8,
-                ClpSerializer.translateInput(planAttributeFilterId));
+                planAttributeFilterId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -330,13 +330,13 @@ public class PlanAttributeFilterLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanAttributeFilter getPlanAttributeFilter(
-        java.lang.Long planAttributeFilterId)
+        long planAttributeFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanAttributeFilterMethodKey9,
-                ClpSerializer.translateInput(planAttributeFilterId));
+                planAttributeFilterId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

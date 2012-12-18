@@ -237,4 +237,10 @@ public interface PlanTemplateSectionLocalService
         java.lang.Long sectionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanTemplateSection section)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void remove(com.ext.portlet.plans.model.PlanTemplateSection section)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

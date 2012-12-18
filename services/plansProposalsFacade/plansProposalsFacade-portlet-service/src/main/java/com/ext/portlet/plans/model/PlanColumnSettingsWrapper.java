@@ -32,7 +32,7 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     *
     * @return the primary key of this plan column settings
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planColumnSettings.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     *
     * @param primaryKey the primary key of this plan column settings
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planColumnSettings.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     *
     * @return the plan column settings ID of this plan column settings
     */
-    public java.lang.Long getPlanColumnSettingsId() {
+    public long getPlanColumnSettingsId() {
         return _planColumnSettings.getPlanColumnSettingsId();
     }
 
@@ -59,7 +59,7 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     *
     * @param planColumnSettingsId the plan column settings ID of this plan column settings
     */
-    public void setPlanColumnSettingsId(java.lang.Long planColumnSettingsId) {
+    public void setPlanColumnSettingsId(long planColumnSettingsId) {
         _planColumnSettings.setPlanColumnSettingsId(planColumnSettingsId);
     }
 
@@ -86,7 +86,7 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     *
     * @return the plan user settings ID of this plan column settings
     */
-    public java.lang.Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planColumnSettings.getPlanUserSettingsId();
     }
 
@@ -95,7 +95,7 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     *
     * @param planUserSettingsId the plan user settings ID of this plan column settings
     */
-    public void setPlanUserSettingsId(java.lang.Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planColumnSettings.setPlanUserSettingsId(planUserSettingsId);
     }
 
@@ -104,16 +104,25 @@ public class PlanColumnSettingsWrapper implements PlanColumnSettings,
     *
     * @return the visible of this plan column settings
     */
-    public java.lang.Boolean getVisible() {
+    public boolean getVisible() {
         return _planColumnSettings.getVisible();
     }
 
     /**
-    * Sets the visible of this plan column settings.
+    * Returns <code>true</code> if this plan column settings is visible.
+    *
+    * @return <code>true</code> if this plan column settings is visible; <code>false</code> otherwise
+    */
+    public boolean isVisible() {
+        return _planColumnSettings.isVisible();
+    }
+
+    /**
+    * Sets whether this plan column settings is visible.
     *
     * @param visible the visible of this plan column settings
     */
-    public void setVisible(java.lang.Boolean visible) {
+    public void setVisible(boolean visible) {
         _planColumnSettings.setVisible(visible);
     }
 

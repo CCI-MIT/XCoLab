@@ -16,11 +16,11 @@ import java.io.Serializable;
  */
 public class MessagingUserPreferencesCacheModel implements CacheModel<MessagingUserPreferences>,
     Serializable {
-    public Long messagingPreferencesId;
-    public Long userId;
-    public Boolean emailOnSend;
-    public Boolean emailOnReceipt;
-    public Boolean emailOnActivity;
+    public long messagingPreferencesId;
+    public long userId;
+    public boolean emailOnSend;
+    public boolean emailOnReceipt;
+    public boolean emailOnActivity;
 
     @Override
     public String toString() {

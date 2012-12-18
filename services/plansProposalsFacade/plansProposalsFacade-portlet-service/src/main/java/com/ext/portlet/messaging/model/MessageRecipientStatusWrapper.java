@@ -33,7 +33,7 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @return the primary key of this message recipient status
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _messageRecipientStatus.getPrimaryKey();
     }
 
@@ -42,7 +42,7 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @param primaryKey the primary key of this message recipient status
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _messageRecipientStatus.setPrimaryKey(primaryKey);
     }
 
@@ -51,7 +51,7 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @return the message recipient ID of this message recipient status
     */
-    public java.lang.Long getMessageRecipientId() {
+    public long getMessageRecipientId() {
         return _messageRecipientStatus.getMessageRecipientId();
     }
 
@@ -60,7 +60,7 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @param messageRecipientId the message recipient ID of this message recipient status
     */
-    public void setMessageRecipientId(java.lang.Long messageRecipientId) {
+    public void setMessageRecipientId(long messageRecipientId) {
         _messageRecipientStatus.setMessageRecipientId(messageRecipientId);
     }
 
@@ -69,7 +69,7 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @return the message ID of this message recipient status
     */
-    public java.lang.Long getMessageId() {
+    public long getMessageId() {
         return _messageRecipientStatus.getMessageId();
     }
 
@@ -78,7 +78,7 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @param messageId the message ID of this message recipient status
     */
-    public void setMessageId(java.lang.Long messageId) {
+    public void setMessageId(long messageId) {
         _messageRecipientStatus.setMessageId(messageId);
     }
 
@@ -87,7 +87,7 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @return the user ID of this message recipient status
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _messageRecipientStatus.getUserId();
     }
 
@@ -96,8 +96,28 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @param userId the user ID of this message recipient status
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _messageRecipientStatus.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this message recipient status.
+    *
+    * @return the user uuid of this message recipient status
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _messageRecipientStatus.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this message recipient status.
+    *
+    * @param userUuid the user uuid of this message recipient status
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _messageRecipientStatus.setUserUuid(userUuid);
     }
 
     /**
@@ -105,16 +125,25 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @return the opened of this message recipient status
     */
-    public java.lang.Boolean getOpened() {
+    public boolean getOpened() {
         return _messageRecipientStatus.getOpened();
     }
 
     /**
-    * Sets the opened of this message recipient status.
+    * Returns <code>true</code> if this message recipient status is opened.
+    *
+    * @return <code>true</code> if this message recipient status is opened; <code>false</code> otherwise
+    */
+    public boolean isOpened() {
+        return _messageRecipientStatus.isOpened();
+    }
+
+    /**
+    * Sets whether this message recipient status is opened.
     *
     * @param opened the opened of this message recipient status
     */
-    public void setOpened(java.lang.Boolean opened) {
+    public void setOpened(boolean opened) {
         _messageRecipientStatus.setOpened(opened);
     }
 
@@ -123,16 +152,25 @@ public class MessageRecipientStatusWrapper implements MessageRecipientStatus,
     *
     * @return the archived of this message recipient status
     */
-    public java.lang.Boolean getArchived() {
+    public boolean getArchived() {
         return _messageRecipientStatus.getArchived();
     }
 
     /**
-    * Sets the archived of this message recipient status.
+    * Returns <code>true</code> if this message recipient status is archived.
+    *
+    * @return <code>true</code> if this message recipient status is archived; <code>false</code> otherwise
+    */
+    public boolean isArchived() {
+        return _messageRecipientStatus.isArchived();
+    }
+
+    /**
+    * Sets whether this message recipient status is archived.
     *
     * @param archived the archived of this message recipient status
     */
-    public void setArchived(java.lang.Boolean archived) {
+    public void setArchived(boolean archived) {
         _messageRecipientStatus.setArchived(archived);
     }
 

@@ -13,10 +13,10 @@ import java.util.List;
  * @generated
  */
 public class OntologyTermEntitySoap implements Serializable {
-    private Long _id;
-    private Long _termId;
-    private Long _classNameId;
-    private Long _classPK;
+    private long _id;
+    private long _termId;
+    private long _classNameId;
+    private long _classPK;
 
     public OntologyTermEntitySoap() {
     }
@@ -71,43 +71,43 @@ public class OntologyTermEntitySoap implements Serializable {
         return soapModels.toArray(new OntologyTermEntitySoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getTermId() {
+    public long getTermId() {
         return _termId;
     }
 
-    public void setTermId(Long termId) {
+    public void setTermId(long termId) {
         _termId = termId;
     }
 
-    public Long getClassNameId() {
+    public long getClassNameId() {
         return _classNameId;
     }
 
-    public void setClassNameId(Long classNameId) {
+    public void setClassNameId(long classNameId) {
         _classNameId = classNameId;
     }
 
-    public Long getClassPK() {
+    public long getClassPK() {
         return _classPK;
     }
 
-    public void setClassPK(Long classPK) {
+    public void setClassPK(long classPK) {
         _classPK = classPK;
     }
 }

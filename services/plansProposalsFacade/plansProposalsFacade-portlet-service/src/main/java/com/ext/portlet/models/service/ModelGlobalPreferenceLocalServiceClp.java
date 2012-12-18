@@ -44,10 +44,10 @@ public class ModelGlobalPreferenceLocalServiceClp
                 com.ext.portlet.models.model.ModelGlobalPreference.class);
 
         _createModelGlobalPreferenceMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createModelGlobalPreference", java.lang.Long.class);
+                "createModelGlobalPreference", long.class);
 
         _deleteModelGlobalPreferenceMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteModelGlobalPreference", java.lang.Long.class);
+                "deleteModelGlobalPreference", long.class);
 
         _deleteModelGlobalPreferenceMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteModelGlobalPreference",
@@ -73,10 +73,10 @@ public class ModelGlobalPreferenceLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchModelGlobalPreferenceMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchModelGlobalPreference", java.lang.Long.class);
+                "fetchModelGlobalPreference", long.class);
 
         _getModelGlobalPreferenceMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getModelGlobalPreference", java.lang.Long.class);
+                "getModelGlobalPreference", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -165,11 +165,11 @@ public class ModelGlobalPreferenceLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelGlobalPreference createModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK) {
+        long modelGlobalPreferencePK) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createModelGlobalPreferenceMethodKey1,
-                ClpSerializer.translateInput(modelGlobalPreferencePK));
+                modelGlobalPreferencePK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -185,12 +185,11 @@ public class ModelGlobalPreferenceLocalServiceClp
         return (com.ext.portlet.models.model.ModelGlobalPreference) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+    public void deleteModelGlobalPreference(long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteModelGlobalPreferenceMethodKey2,
-                ClpSerializer.translateInput(modelGlobalPreferencePK));
+                modelGlobalPreferencePK);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -345,12 +344,12 @@ public class ModelGlobalPreferenceLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelGlobalPreference fetchModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchModelGlobalPreferenceMethodKey8,
-                ClpSerializer.translateInput(modelGlobalPreferencePK));
+                modelGlobalPreferencePK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -371,13 +370,13 @@ public class ModelGlobalPreferenceLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelGlobalPreference getModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getModelGlobalPreferenceMethodKey9,
-                ClpSerializer.translateInput(modelGlobalPreferencePK));
+                modelGlobalPreferencePK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

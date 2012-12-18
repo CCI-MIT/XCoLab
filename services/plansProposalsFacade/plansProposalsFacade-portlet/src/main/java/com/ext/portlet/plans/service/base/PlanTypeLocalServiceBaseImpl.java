@@ -339,7 +339,7 @@ public abstract class PlanTypeLocalServiceBaseImpl
      * @param planTypeId the primary key for the new plan type
      * @return the new plan type
      */
-    public PlanType createPlanType(Long planTypeId) {
+    public PlanType createPlanType(long planTypeId) {
         return planTypePersistence.create(planTypeId);
     }
 
@@ -350,7 +350,7 @@ public abstract class PlanTypeLocalServiceBaseImpl
      * @throws PortalException if a plan type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanType(Long planTypeId)
+    public void deletePlanType(long planTypeId)
         throws PortalException, SystemException {
         PlanType planType = planTypePersistence.remove(planTypeId);
 
@@ -454,7 +454,7 @@ public abstract class PlanTypeLocalServiceBaseImpl
         return planTypePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanType fetchPlanType(Long planTypeId) throws SystemException {
+    public PlanType fetchPlanType(long planTypeId) throws SystemException {
         return planTypePersistence.fetchByPrimaryKey(planTypeId);
     }
 
@@ -466,7 +466,7 @@ public abstract class PlanTypeLocalServiceBaseImpl
      * @throws PortalException if a plan type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanType getPlanType(Long planTypeId)
+    public PlanType getPlanType(long planTypeId)
         throws PortalException, SystemException {
         return planTypePersistence.findByPrimaryKey(planTypeId);
     }

@@ -45,8 +45,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @param id the primary key for the new contest phase column
     * @return the new contest phase column
     */
-    public com.ext.portlet.contests.model.ContestPhaseColumn create(
-        java.lang.Long id);
+    public com.ext.portlet.contests.model.ContestPhaseColumn create(long id);
 
     /**
     * Removes the contest phase column with the primary key from the database. Also notifies the appropriate model listeners.
@@ -56,8 +55,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws com.ext.portlet.contests.NoSuchContestPhaseColumnException if a contest phase column with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.contests.model.ContestPhaseColumn remove(
-        java.lang.Long id)
+    public com.ext.portlet.contests.model.ContestPhaseColumn remove(long id)
         throws com.ext.portlet.contests.NoSuchContestPhaseColumnException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +73,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhaseColumn findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.contests.NoSuchContestPhaseColumnException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,8 +85,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhaseColumn fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the contest phase columns where ContestPhasePK = &#63;.
@@ -98,7 +95,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.ContestPhaseColumn> findByContestPhasePK(
-        java.lang.Long ContestPhasePK)
+        long ContestPhasePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -115,7 +112,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.ContestPhaseColumn> findByContestPhasePK(
-        java.lang.Long ContestPhasePK, int start, int end)
+        long ContestPhasePK, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -133,7 +130,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.ContestPhaseColumn> findByContestPhasePK(
-        java.lang.Long ContestPhasePK, int start, int end,
+        long ContestPhasePK, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -151,7 +148,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhaseColumn findByContestPhasePK_First(
-        java.lang.Long ContestPhasePK,
+        long ContestPhasePK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestPhaseColumnException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -170,7 +167,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhaseColumn findByContestPhasePK_Last(
-        java.lang.Long ContestPhasePK,
+        long ContestPhasePK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestPhaseColumnException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -190,7 +187,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhaseColumn[] findByContestPhasePK_PrevAndNext(
-        java.lang.Long id, java.lang.Long ContestPhasePK,
+        long id, long ContestPhasePK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestPhaseColumnException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -244,7 +241,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @param ContestPhasePK the contest phase p k
     * @throws SystemException if a system exception occurred
     */
-    public void removeByContestPhasePK(java.lang.Long ContestPhasePK)
+    public void removeByContestPhasePK(long ContestPhasePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -262,7 +259,7 @@ public interface ContestPhaseColumnPersistence extends BasePersistence<ContestPh
     * @return the number of matching contest phase columns
     * @throws SystemException if a system exception occurred
     */
-    public int countByContestPhasePK(java.lang.Long ContestPhasePK)
+    public int countByContestPhasePK(long ContestPhasePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

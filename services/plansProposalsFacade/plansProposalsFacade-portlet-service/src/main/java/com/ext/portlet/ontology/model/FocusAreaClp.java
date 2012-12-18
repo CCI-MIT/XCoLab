@@ -13,7 +13,7 @@ import java.lang.reflect.Proxy;
 
 
 public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea {
-    private Long _id;
+    private long _id;
     private String _name;
 
     public FocusAreaClp() {
@@ -27,11 +27,11 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
         return FocusArea.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -43,11 +43,11 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
@@ -57,26 +57,6 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
 
     public void setName(String name) {
         _name = name;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.ontology.model.OntologyTerm> getTerms() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void removeTerm(java.lang.Long termId) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void addTerm(java.lang.Long termId) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void tagClass(java.lang.Class clasz, java.lang.Long pk) {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -104,7 +84,7 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
     }
 
     public int compareTo(FocusArea focusArea) {
-        Long primaryKey = focusArea.getPrimaryKey();
+        long primaryKey = focusArea.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -129,7 +109,7 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
             return false;
         }
 
-        Long primaryKey = focusArea.getPrimaryKey();
+        long primaryKey = focusArea.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -140,7 +120,7 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

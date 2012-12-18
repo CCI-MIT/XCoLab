@@ -49,7 +49,7 @@ public interface PlansUserSettingsLocalService
     * @return the new plans user settings
     */
     public com.ext.portlet.plans.model.PlansUserSettings createPlansUserSettings(
-        java.lang.Long planUserSettingsId);
+        long planUserSettingsId);
 
     /**
     * Deletes the plans user settings with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface PlansUserSettingsLocalService
     * @throws PortalException if a plans user settings with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlansUserSettings(java.lang.Long planUserSettingsId)
+    public void deletePlansUserSettings(long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,7 +136,7 @@ public interface PlansUserSettingsLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlansUserSettings fetchPlansUserSettings(
-        java.lang.Long planUserSettingsId)
+        long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -149,7 +149,7 @@ public interface PlansUserSettingsLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlansUserSettings getPlansUserSettings(
-        java.lang.Long planUserSettingsId)
+        long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -227,7 +227,7 @@ public interface PlansUserSettingsLocalService
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlansUserSettings getByUserIdPlanTypeId(
         java.lang.Long userId, java.lang.Long planTypeId)
-        throws com.ext.portlet.plans.NoSuchUserSettingsException,
+        throws com.ext.portlet.plans.NoSuchPlansUserSettingsException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

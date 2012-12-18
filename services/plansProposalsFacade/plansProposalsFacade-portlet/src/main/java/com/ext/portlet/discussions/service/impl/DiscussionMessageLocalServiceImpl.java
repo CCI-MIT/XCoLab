@@ -6,17 +6,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ext.portlet.discussions.NoSuchDiscussionCategoryException;
 import com.ext.portlet.discussions.NoSuchDiscussionMessageException;
+import com.ext.portlet.discussions.model.DiscussionCategory;
+import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
 import com.ext.portlet.discussions.model.DiscussionMessage;
+import com.ext.portlet.discussions.model.DiscussionMessageFlag;
+import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.discussions.service.DiscussionCategoryLocalServiceUtil;
+import com.ext.portlet.discussions.service.DiscussionMessageFlagLocalServiceUtil;
 import com.ext.portlet.discussions.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.discussions.service.base.DiscussionMessageLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the discussion message local service.
@@ -43,7 +52,7 @@ public class DiscussionMessageLocalServiceImpl
  private final static Log _log = LogFactoryUtil.getLog(DiscussionMessageLocalServiceImpl.class);
     
     public List<DiscussionMessage> getThreadsByCategory(Long categoryId) throws SystemException {
-        return discussionMessagePersistence.findByCategoryIdThreadId(categoryId, null);
+        return discussionMessagePersistence.findByCategoryIdThreadId(categoryId, -1);
     }
     
     public List<DiscussionMessage> getThreadMessages(Long threadId) throws SystemException {
@@ -78,7 +87,7 @@ public class DiscussionMessageLocalServiceImpl
         message.setResponsesCount(0);
         message.setCategoryGroupId(categoryGroupId);
         
-        message.store();
+        store(message);
         /*
         try {
             Indexer.addEntry(10112L, message);
@@ -135,5 +144,151 @@ public class DiscussionMessageLocalServiceImpl
             _log.error("An exception has been thrown when reindexing message with id: " + messageId, e);
         }
         */
+    }
+    
+    
+    
+    public List<DiscussionMessage> getThreadMessages(DiscussionMessage dMessage) throws SystemException {
+        if (dMessage.getThreadId() <= 0) {
+            // threadId is null so we have first message (that represents the thread) 
+            // use messageId instead of threadId
+            return DiscussionMessageLocalServiceUtil.getThreadMessages(dMessage.getMessageId());
+        }
+        return DiscussionMessageLocalServiceUtil.getThreadMessages(dMessage.getThreadId());
+        
+    }
+    
+    public int getThreadMessagesCount(DiscussionMessage dMessage) throws SystemException {
+        if (dMessage.getThreadId() <= 0) {
+            return DiscussionMessageLocalServiceUtil.getThreadMessagesCount(dMessage.getMessageId());
+        }
+        return DiscussionMessageLocalServiceUtil.getThreadMessagesCount(dMessage.getThreadId());
+        
+    }
+    
+    public void store(DiscussionMessage dMessage) throws SystemException {
+        if (dMessage.isNew()) {
+            DiscussionMessageLocalServiceUtil.addDiscussionMessage(dMessage);
+        }
+        else {
+            DiscussionMessageLocalServiceUtil.updateDiscussionMessage(dMessage);
+        }
+    }
+    
+    public DiscussionMessage addThreadMessage(DiscussionMessage dMessage, String subject, String body, User author) throws SystemException, NoSuchDiscussionCategoryException {
+        Long threadId = dMessage.getThreadId();
+        if (threadId == null) {
+            // threadId is null so we have first message (that represents the thread) 
+            // use messageId instead of threadId
+            threadId = dMessage.getMessageId();
+        }
+        DiscussionMessage msg = DiscussionMessageLocalServiceUtil.addMessage(dMessage.getCategoryGroupId(), dMessage.getCategoryId(), threadId, subject, body, author);
+        
+        dMessage.setResponsesCount(dMessage.getResponsesCount() + 1);
+        dMessage.setLastActivityAuthorId(msg.getAuthorId());
+        dMessage.setLastActivityDate(msg.getCreateDate());
+        store(dMessage);
+        
+        // set last activity info in category
+        if (dMessage.getCategoryId() > 0) {
+            DiscussionCategory category = getCategory(dMessage);
+        
+            category.setLastActivityAuthorId(msg.getAuthorId());
+            category.setLastActivityDate(msg.getCreateDate());
+            DiscussionCategoryLocalServiceUtil.store(category);
+        }
+        
+        
+        return msg;
+    }
+    
+    public User getAuthor(DiscussionMessage dMessage) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(dMessage.getAuthorId());
+    }
+    
+    public User getLastActivityAuthor(DiscussionMessage dMessage) throws PortalException, SystemException {
+        Long lastActAuthorId = dMessage.getLastActivityAuthorId();
+        if (lastActAuthorId == null) {
+            return getAuthor(dMessage);
+        }
+        return UserLocalServiceUtil.getUser(lastActAuthorId);
+    }
+    
+    public void delete(DiscussionMessage dMessage) throws SystemException, PortalException {
+        dMessage.setDeleted(new Date());
+        store(dMessage);
+        /*
+        try {
+            Indexer.deleteEntry(10112L, getMessageId());
+            // if this is a thread, then remove all sub messages from search cache
+            if (getThreadId() == null) {
+                for (DiscussionMessage msg: DiscussionMessageLocalServiceUtil.getThreadMessages(getMessageId())) {
+                    Indexer.deleteEntry(10112L, msg.getMessageId());
+                }
+            }
+            if (getCategoryGroup().getCommentsThread() == getMessageId()) {
+                // this is a comment thread, remove it from discussion
+                DiscussionCategoryGroup discussion = getCategoryGroup();
+                discussion.setCommentsThread(null);
+                discussion.store();
+            }
+        } catch (SearchException e) {
+            _log.warn("Can't remove message with id: " + getMessageId() + " from search cache", e);
+        }
+        */
+    }
+    
+    public void update(DiscussionMessage dMessage, String subject, String body) throws SystemException {
+        dMessage.setSubject(subject);
+        dMessage.setBody(body);
+        store(dMessage);
+        /*
+        try {
+            Indexer.updateEntry(10112L, this);
+        } catch (SearchException e) {
+            _log.error("Can't update message with id: " + getMessageId() + " in search cache", e);
+        }
+        */
+    }
+    
+    public DiscussionCategory getCategory(DiscussionMessage dMessage) throws NoSuchDiscussionCategoryException, SystemException {
+        return DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(dMessage.getCategoryId());
+    }
+    
+    public DiscussionCategoryGroup getCategoryGroup(DiscussionMessage dMessage) throws PortalException, SystemException {
+        return DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(dMessage.getCategoryGroupId());
+    }
+    
+    public DiscussionMessage getThread(DiscussionMessage dMessage) throws NoSuchDiscussionMessageException, SystemException {
+        if (dMessage.getThreadId() > 0) {
+            // this is a comment of a thread
+            return DiscussionMessageLocalServiceUtil.getThreadByThreadId(dMessage.getThreadId());
+        }
+        // this is a thread itself
+        return dMessage;
+    }
+    
+    public List<DiscussionMessageFlag> getFlags(DiscussionMessage dMessage) throws SystemException {
+        return DiscussionMessageFlagLocalServiceUtil.findMessageFlags(dMessage.getMessageId());
+    }
+    
+    public void addFlag(DiscussionMessage dMessage, String flagType, String data, User user) throws SystemException  {
+        DiscussionMessageFlagLocalServiceUtil.createFlag(dMessage.getMessageId(), flagType, data, user.getUserId());
+    }
+    
+    public void removeFlag(DiscussionMessage dMessage, String flagType) throws SystemException {
+        DiscussionMessageFlag flag = findFlag(dMessage, flagType);
+        if (flag != null) {
+            DiscussionMessageFlagLocalServiceUtil.deleteDiscussionMessageFlag(flag);
+        }
+    }
+    
+    private DiscussionMessageFlag findFlag(DiscussionMessage dMessage, String flagType) throws SystemException {
+        for (DiscussionMessageFlag flag: getFlags(dMessage)) {
+            if (flag.getFlagType().equals(flagType)) {
+                return flag;
+            }
+        }
+        return null;
     }
 }

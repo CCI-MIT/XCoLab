@@ -561,7 +561,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the matching plan template sections
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanTemplateSection> findByPlanTemplateId(Long planTemplateId)
+    public List<PlanTemplateSection> findByPlanTemplateId(long planTemplateId)
         throws SystemException {
         return findByPlanTemplateId(planTemplateId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -580,7 +580,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the range of matching plan template sections
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanTemplateSection> findByPlanTemplateId(Long planTemplateId,
+    public List<PlanTemplateSection> findByPlanTemplateId(long planTemplateId,
         int start, int end) throws SystemException {
         return findByPlanTemplateId(planTemplateId, start, end, null);
     }
@@ -599,7 +599,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the ordered range of matching plan template sections
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanTemplateSection> findByPlanTemplateId(Long planTemplateId,
+    public List<PlanTemplateSection> findByPlanTemplateId(long planTemplateId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -654,7 +654,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planTemplateId.longValue());
+                qPos.add(planTemplateId);
 
                 list = (List<PlanTemplateSection>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -689,7 +689,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.plans.NoSuchPlanTemplateSectionException if a matching plan template section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTemplateSection findByPlanTemplateId_First(Long planTemplateId,
+    public PlanTemplateSection findByPlanTemplateId_First(long planTemplateId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTemplateSectionException, SystemException {
         List<PlanTemplateSection> list = findByPlanTemplateId(planTemplateId,
@@ -724,7 +724,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.plans.NoSuchPlanTemplateSectionException if a matching plan template section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTemplateSection findByPlanTemplateId_Last(Long planTemplateId,
+    public PlanTemplateSection findByPlanTemplateId_Last(long planTemplateId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTemplateSectionException, SystemException {
         int count = countByPlanTemplateId(planTemplateId);
@@ -763,7 +763,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws SystemException if a system exception occurred
      */
     public PlanTemplateSection[] findByPlanTemplateId_PrevAndNext(
-        PlanTemplateSectionPK planTemplateSectionPK, Long planTemplateId,
+        PlanTemplateSectionPK planTemplateSectionPK, long planTemplateId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTemplateSectionException, SystemException {
         PlanTemplateSection planTemplateSection = findByPrimaryKey(planTemplateSectionPK);
@@ -794,7 +794,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
 
     protected PlanTemplateSection getByPlanTemplateId_PrevAndNext(
         Session session, PlanTemplateSection planTemplateSection,
-        Long planTemplateId, OrderByComparator orderByComparator,
+        long planTemplateId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -871,7 +871,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planTemplateId.longValue());
+        qPos.add(planTemplateId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planTemplateSection);
@@ -1005,7 +1005,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @param planTemplateId the plan template ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanTemplateId(Long planTemplateId)
+    public void removeByPlanTemplateId(long planTemplateId)
         throws SystemException {
         for (PlanTemplateSection planTemplateSection : findByPlanTemplateId(
                 planTemplateId)) {
@@ -1031,7 +1031,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the number of matching plan template sections
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanTemplateId(Long planTemplateId)
+    public int countByPlanTemplateId(long planTemplateId)
         throws SystemException {
         Object[] finderArgs = new Object[] { planTemplateId };
 
@@ -1056,7 +1056,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planTemplateId.longValue());
+                qPos.add(planTemplateId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

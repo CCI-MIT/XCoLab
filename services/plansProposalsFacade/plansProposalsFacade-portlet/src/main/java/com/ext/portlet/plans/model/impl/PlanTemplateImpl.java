@@ -32,46 +32,4 @@ public class PlanTemplateImpl extends PlanTemplateBaseImpl {
     public PlanTemplateImpl() {
     }
 
-    public void store() throws SystemException {
-        if (isNew()) {
-            if (getId() == null) {
-                setId(CounterLocalServiceUtil.increment(PlanTemplate.class.getName()));
-            }
-            
-            PlanTemplateLocalServiceUtil.addPlanTemplate(this);
-        }
-        else {
-
-            PlanTemplateLocalServiceUtil.updatePlanTemplate(this);
-        }
-    }
-    
-    public List<PlanSectionDefinition> getSections() throws SystemException, PortalException {
-        List<PlanSectionDefinition> ret = new ArrayList<PlanSectionDefinition>();
-        for (PlanTemplateSection pts: PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(getId())) {
-            ret.add(PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(pts.getPlanSectionId()));
-        }
-        
-        return ret;
-    }
-    
-    public void addSection(PlanSectionDefinition section) throws SystemException, PortalException {
-        
-        int maxWeight = 0;
-        for (PlanTemplateSection def: PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(getId())) {
-            maxWeight = Math.max(maxWeight, def.getWeight());
-        }
-        
-        PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(this.getId(), section.getId(), maxWeight+1);
-    }
-    
-    public void removeSection(PlanSectionDefinition section) throws SystemException, PortalException {
-        PlanTemplateSectionLocalServiceUtil.removePlanTemplateSection(getId(), section.getId());
-    }
-    
-    public void updateSectionWeight(PlanSectionDefinition section, int weight) throws SystemException, PortalException {
-        PlanTemplateSection pts = PlanTemplateSectionLocalServiceUtil.getPlanTemplateSection(new PlanTemplateSectionPK(getId(), section.getId()));
-        pts.setWeight(weight);
-        pts.store();
-    }
 }

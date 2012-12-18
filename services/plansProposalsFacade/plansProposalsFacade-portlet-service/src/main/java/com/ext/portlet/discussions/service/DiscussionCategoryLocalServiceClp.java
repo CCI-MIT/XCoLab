@@ -28,6 +28,14 @@ public class DiscussionCategoryLocalServiceClp
     private MethodKey _getCategoriesByCategoryGroupIdMethodKey17;
     private MethodKey _getDiscussionCategoryByIdMethodKey18;
     private MethodKey _createDebateCategoryMethodKey19;
+    private MethodKey _getThreadsMethodKey20;
+    private MethodKey _addThreadMethodKey21;
+    private MethodKey _storeMethodKey22;
+    private MethodKey _getAuthorMethodKey23;
+    private MethodKey _getLastActivityAuthorMethodKey24;
+    private MethodKey _deleteMethodKey25;
+    private MethodKey _updateMethodKey26;
+    private MethodKey _getCategoryGroupMethodKey27;
 
     public DiscussionCategoryLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -37,10 +45,10 @@ public class DiscussionCategoryLocalServiceClp
                 com.ext.portlet.discussions.model.DiscussionCategory.class);
 
         _createDiscussionCategoryMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createDiscussionCategory", java.lang.Long.class);
+                "createDiscussionCategory", long.class);
 
         _deleteDiscussionCategoryMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteDiscussionCategory", java.lang.Long.class);
+                "deleteDiscussionCategory", long.class);
 
         _deleteDiscussionCategoryMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteDiscussionCategory",
@@ -66,10 +74,10 @@ public class DiscussionCategoryLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchDiscussionCategoryMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchDiscussionCategory", java.lang.Long.class);
+                "fetchDiscussionCategory", long.class);
 
         _getDiscussionCategoryMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDiscussionCategory", java.lang.Long.class);
+                "getDiscussionCategory", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -105,6 +113,41 @@ public class DiscussionCategoryLocalServiceClp
                 "createDebateCategory", java.lang.Long.class,
                 java.lang.String.class, java.lang.String.class,
                 com.liferay.portal.model.User.class);
+
+        _getThreadsMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getThreads",
+                com.ext.portlet.discussions.model.DiscussionCategory.class);
+
+        _addThreadMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "addThread",
+                com.ext.portlet.discussions.model.DiscussionCategory.class,
+                java.lang.String.class, java.lang.String.class,
+                com.liferay.portal.model.User.class);
+
+        _storeMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store",
+                com.ext.portlet.discussions.model.DiscussionCategory.class);
+
+        _getAuthorMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAuthor",
+                com.ext.portlet.discussions.model.DiscussionCategory.class);
+
+        _getLastActivityAuthorMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getLastActivityAuthor",
+                com.ext.portlet.discussions.model.DiscussionCategory.class);
+
+        _deleteMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
+                "delete",
+                com.ext.portlet.discussions.model.DiscussionCategory.class);
+
+        _updateMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
+                "update",
+                com.ext.portlet.discussions.model.DiscussionCategory.class,
+                java.lang.String.class, java.lang.String.class);
+
+        _getCategoryGroupMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getCategoryGroup",
+                com.ext.portlet.discussions.model.DiscussionCategory.class);
     }
 
     public com.ext.portlet.discussions.model.DiscussionCategory addDiscussionCategory(
@@ -134,11 +177,11 @@ public class DiscussionCategoryLocalServiceClp
     }
 
     public com.ext.portlet.discussions.model.DiscussionCategory createDiscussionCategory(
-        java.lang.Long pk) {
+        long pk) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createDiscussionCategoryMethodKey1,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -154,11 +197,11 @@ public class DiscussionCategoryLocalServiceClp
         return (com.ext.portlet.discussions.model.DiscussionCategory) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteDiscussionCategory(java.lang.Long pk)
+    public void deleteDiscussionCategory(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteDiscussionCategoryMethodKey2,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -313,12 +356,11 @@ public class DiscussionCategoryLocalServiceClp
     }
 
     public com.ext.portlet.discussions.model.DiscussionCategory fetchDiscussionCategory(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchDiscussionCategoryMethodKey8,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -339,13 +381,13 @@ public class DiscussionCategoryLocalServiceClp
     }
 
     public com.ext.portlet.discussions.model.DiscussionCategory getDiscussionCategory(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getDiscussionCategoryMethodKey9,
-                ClpSerializer.translateInput(pk));
+                pk);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -623,6 +665,225 @@ public class DiscussionCategoryLocalServiceClp
         }
 
         return (com.ext.portlet.discussions.model.DiscussionCategory) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> getThreads(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getThreadsMethodKey20,
+                ClpSerializer.translateInput(dCategory));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.discussions.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.discussions.model.DiscussionMessage addThread(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory,
+        java.lang.String subject, java.lang.String body,
+        com.liferay.portal.model.User author)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_addThreadMethodKey21,
+                ClpSerializer.translateInput(dCategory),
+                ClpSerializer.translateInput(subject),
+                ClpSerializer.translateInput(body),
+                ClpSerializer.translateInput(author));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.discussions.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey22,
+                ClpSerializer.translateInput(dCategory));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.liferay.portal.model.User getAuthor(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAuthorMethodKey23,
+                ClpSerializer.translateInput(dCategory));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.model.User) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.liferay.portal.model.User getLastActivityAuthor(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getLastActivityAuthorMethodKey24,
+                ClpSerializer.translateInput(dCategory));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.model.User) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void delete(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_deleteMethodKey25,
+                ClpSerializer.translateInput(dCategory));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void update(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory,
+        java.lang.String name, java.lang.String description)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_updateMethodKey26,
+                ClpSerializer.translateInput(dCategory),
+                ClpSerializer.translateInput(name),
+                ClpSerializer.translateInput(description));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getCategoryGroup(
+        com.ext.portlet.discussions.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getCategoryGroupMethodKey27,
+                ClpSerializer.translateInput(dCategory));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.discussions.model.DiscussionCategoryGroup) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

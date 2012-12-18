@@ -17,18 +17,18 @@ import java.io.Serializable;
  */
 public class ModelOutputItemCacheModel implements CacheModel<ModelOutputItem>,
     Serializable {
-    public Long modelOutputItemModifierPK;
-    public Long modelId;
-    public Long modelOutputItemId;
-    public Integer modelOutputItemOrder;
+    public long modelOutputItemModifierPK;
+    public long modelId;
+    public long modelOutputItemId;
+    public int modelOutputItemOrder;
     public String modelItemRangePolicy;
     public String modelItemRangeMessage;
     public String modelItemErrorPolicy;
     public String modelItemErrorMessage;
     public String modelItemLabelFormat;
-    public Boolean modelItemIsVisible;
+    public boolean modelItemIsVisible;
     public String itemType;
-    public Long relatedOutputItem;
+    public long relatedOutputItem;
 
     @Override
     public String toString() {

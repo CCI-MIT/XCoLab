@@ -48,7 +48,7 @@ public interface ModelOutputItemLocalService extends PersistedModelLocalService 
     * @return the new model output item
     */
     public com.ext.portlet.models.model.ModelOutputItem createModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK);
+        long modelOutputItemModifierPK);
 
     /**
     * Deletes the model output item with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelOutputItemLocalService extends PersistedModelLocalService 
     * @throws PortalException if a model output item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelOutputItem(java.lang.Long modelOutputItemModifierPK)
+    public void deleteModelOutputItem(long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,7 +135,7 @@ public interface ModelOutputItemLocalService extends PersistedModelLocalService 
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelOutputItem fetchModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -148,7 +148,7 @@ public interface ModelOutputItemLocalService extends PersistedModelLocalService 
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelOutputItem getModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

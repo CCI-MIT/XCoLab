@@ -260,7 +260,7 @@ public class PlanTemplatePersistenceImpl extends BasePersistenceImpl<PlanTemplat
      * @param id the primary key for the new plan template
      * @return the new plan template
      */
-    public PlanTemplate create(Long id) {
+    public PlanTemplate create(long id) {
         PlanTemplate planTemplate = new PlanTemplateImpl();
 
         planTemplate.setNew(true);
@@ -277,9 +277,9 @@ public class PlanTemplatePersistenceImpl extends BasePersistenceImpl<PlanTemplat
      * @throws com.ext.portlet.plans.NoSuchPlanTemplateException if a plan template with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTemplate remove(Long id)
+    public PlanTemplate remove(long id)
         throws NoSuchPlanTemplateException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -397,7 +397,7 @@ public class PlanTemplatePersistenceImpl extends BasePersistenceImpl<PlanTemplat
     @Override
     public PlanTemplate findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -408,7 +408,7 @@ public class PlanTemplatePersistenceImpl extends BasePersistenceImpl<PlanTemplat
      * @throws com.ext.portlet.plans.NoSuchPlanTemplateException if a plan template with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTemplate findByPrimaryKey(Long id)
+    public PlanTemplate findByPrimaryKey(long id)
         throws NoSuchPlanTemplateException, SystemException {
         PlanTemplate planTemplate = fetchByPrimaryKey(id);
 
@@ -434,7 +434,7 @@ public class PlanTemplatePersistenceImpl extends BasePersistenceImpl<PlanTemplat
     @Override
     public PlanTemplate fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -444,7 +444,7 @@ public class PlanTemplatePersistenceImpl extends BasePersistenceImpl<PlanTemplat
      * @return the plan template, or <code>null</code> if a plan template with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTemplate fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanTemplate fetchByPrimaryKey(long id) throws SystemException {
         PlanTemplate planTemplate = (PlanTemplate) EntityCacheUtil.getResult(PlanTemplateModelImpl.ENTITY_CACHE_ENABLED,
                 PlanTemplateImpl.class, id);
 

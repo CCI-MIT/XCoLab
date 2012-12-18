@@ -28,6 +28,9 @@ public class FocusAreaOntologyTermLocalServiceClp
     private MethodKey _findTermsByFocusAreaMethodKey17;
     private MethodKey _addAreaTermMethodKey18;
     private MethodKey _removeAreaTermMethodKey19;
+    private MethodKey _storeMethodKey20;
+    private MethodKey _getTermMethodKey21;
+    private MethodKey _getAreaMethodKey22;
 
     public FocusAreaOntologyTermLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -108,6 +111,18 @@ public class FocusAreaOntologyTermLocalServiceClp
 
         _removeAreaTermMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
                 "removeAreaTerm", java.lang.Long.class, java.lang.Long.class);
+
+        _storeMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store",
+                com.ext.portlet.ontology.model.FocusAreaOntologyTerm.class);
+
+        _getTermMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getTerm",
+                com.ext.portlet.ontology.model.FocusAreaOntologyTerm.class);
+
+        _getAreaMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getArea",
+                com.ext.portlet.ontology.model.FocusAreaOntologyTerm.class);
     }
 
     public com.ext.portlet.ontology.model.FocusAreaOntologyTerm addFocusAreaOntologyTerm(
@@ -620,6 +635,89 @@ public class FocusAreaOntologyTermLocalServiceClp
                     " is not a valid exception");
             }
         }
+    }
+
+    public void store(com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey20,
+                ClpSerializer.translateInput(faot));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.ext.portlet.ontology.model.OntologyTerm getTerm(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getTermMethodKey21,
+                ClpSerializer.translateInput(faot));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.ontology.model.OntologyTerm) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.ontology.model.FocusArea getArea(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAreaMethodKey22,
+                ClpSerializer.translateInput(faot));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.ontology.model.FocusArea) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

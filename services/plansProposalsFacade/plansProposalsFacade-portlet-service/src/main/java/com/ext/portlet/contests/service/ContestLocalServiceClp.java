@@ -30,6 +30,26 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private MethodKey _findByActiveFeaturedMethodKey20;
     private MethodKey _findByActiveFlagMethodKey21;
     private MethodKey _findByActiveFlagTextMethodKey22;
+    private MethodKey _getPhasesMethodKey23;
+    private MethodKey _getPlanTypeMethodKey24;
+    private MethodKey _getActivePhasesMethodKey25;
+    private MethodKey _getActivePhaseMethodKey26;
+    private MethodKey _isActiveMethodKey27;
+    private MethodKey _getDebatesIdsMethodKey28;
+    private MethodKey _getTotalVotesMethodKey29;
+    private MethodKey _updateDefaultPlanDescriptionMethodKey30;
+    private MethodKey _storeMethodKey31;
+    private MethodKey _getPlanTemplateMethodKey32;
+    private MethodKey _getFocusAreaMethodKey33;
+    private MethodKey _getLogoMethodKey34;
+    private MethodKey _setLogoMethodKey35;
+    private MethodKey _getLogoPathMethodKey36;
+    private MethodKey _getProposalsCountMethodKey37;
+    private MethodKey _getDiscussionCategoryGroupMethodKey38;
+    private MethodKey _getCommentsCountMethodKey39;
+    private MethodKey _getProposalsCommentsCountMethodKey40;
+    private MethodKey _getTotalCommentsMethodKey41;
+    private MethodKey _getTeamMembersMethodKey42;
 
     public ContestLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -38,10 +58,10 @@ public class ContestLocalServiceClp implements ContestLocalService {
                 "addContest", com.ext.portlet.contests.model.Contest.class);
 
         _createContestMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createContest", java.lang.Long.class);
+                "createContest", long.class);
 
         _deleteContestMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteContest", java.lang.Long.class);
+                "deleteContest", long.class);
 
         _deleteContestMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteContest", com.ext.portlet.contests.model.Contest.class);
@@ -66,10 +86,10 @@ public class ContestLocalServiceClp implements ContestLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchContestMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchContest", java.lang.Long.class);
+                "fetchContest", long.class);
 
         _getContestMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getContest", java.lang.Long.class);
+                "getContest", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -110,6 +130,72 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         _findByActiveFlagTextMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
                 "findByActiveFlagText", boolean.class, java.lang.String.class);
+
+        _getPhasesMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getPhases", com.ext.portlet.contests.model.Contest.class);
+
+        _getPlanTypeMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getPlanType", com.ext.portlet.contests.model.Contest.class);
+
+        _getActivePhasesMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getActivePhases", com.ext.portlet.contests.model.Contest.class);
+
+        _getActivePhaseMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getActivePhase", com.ext.portlet.contests.model.Contest.class);
+
+        _isActiveMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
+                "isActive", com.ext.portlet.contests.model.Contest.class);
+
+        _getDebatesIdsMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getDebatesIds", com.ext.portlet.contests.model.Contest.class);
+
+        _getTotalVotesMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getTotalVotes", com.ext.portlet.contests.model.Contest.class);
+
+        _updateDefaultPlanDescriptionMethodKey30 = new MethodKey(_classLoaderProxy.getClassName(),
+                "updateDefaultPlanDescription",
+                com.ext.portlet.contests.model.Contest.class,
+                java.lang.String.class);
+
+        _storeMethodKey31 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.contests.model.Contest.class);
+
+        _getPlanTemplateMethodKey32 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getPlanTemplate", com.ext.portlet.contests.model.Contest.class);
+
+        _getFocusAreaMethodKey33 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getFocusArea", com.ext.portlet.contests.model.Contest.class);
+
+        _getLogoMethodKey34 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getLogo", com.ext.portlet.contests.model.Contest.class);
+
+        _setLogoMethodKey35 = new MethodKey(_classLoaderProxy.getClassName(),
+                "setLogo", com.ext.portlet.contests.model.Contest.class,
+                java.io.File.class);
+
+        _getLogoPathMethodKey36 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getLogoPath", com.ext.portlet.contests.model.Contest.class);
+
+        _getProposalsCountMethodKey37 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getProposalsCount",
+                com.ext.portlet.contests.model.Contest.class);
+
+        _getDiscussionCategoryGroupMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getDiscussionCategoryGroup",
+                com.ext.portlet.contests.model.Contest.class);
+
+        _getCommentsCountMethodKey39 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getCommentsCount", com.ext.portlet.contests.model.Contest.class);
+
+        _getProposalsCommentsCountMethodKey40 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getProposalsCommentsCount",
+                com.ext.portlet.contests.model.Contest.class);
+
+        _getTotalCommentsMethodKey41 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getTotalComments", com.ext.portlet.contests.model.Contest.class);
+
+        _getTeamMembersMethodKey42 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getTeamMembers", com.ext.portlet.contests.model.Contest.class);
     }
 
     public com.ext.portlet.contests.model.Contest addContest(
@@ -138,12 +224,11 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.contests.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.contests.model.Contest createContest(
-        java.lang.Long ContestPK) {
+    public com.ext.portlet.contests.model.Contest createContest(long ContestPK) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createContestMethodKey1,
-                ClpSerializer.translateInput(ContestPK));
+                ContestPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -159,11 +244,11 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.contests.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteContest(java.lang.Long ContestPK)
+    public void deleteContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteContestMethodKey2,
-                ClpSerializer.translateInput(ContestPK));
+                ContestPK);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -316,13 +401,12 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Long) returnObj).longValue();
     }
 
-    public com.ext.portlet.contests.model.Contest fetchContest(
-        java.lang.Long ContestPK)
+    public com.ext.portlet.contests.model.Contest fetchContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchContestMethodKey8,
-                ClpSerializer.translateInput(ContestPK));
+                ContestPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -342,14 +426,13 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.contests.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.contests.model.Contest getContest(
-        java.lang.Long ContestPK)
+    public com.ext.portlet.contests.model.Contest getContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getContestMethodKey9,
-                ClpSerializer.translateInput(ContestPK));
+                ContestPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -705,6 +788,573 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
 
         return (java.util.List<com.ext.portlet.contests.model.Contest>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getPhases(
+        com.ext.portlet.contests.model.Contest contest) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getPhasesMethodKey23,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.contests.model.ContestPhase>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.plans.model.PlanType getPlanType(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getPlanTypeMethodKey24,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.plans.model.PlanType) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getActivePhases(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getActivePhasesMethodKey25,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.contests.model.ContestPhase>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.contests.model.ContestPhase getActivePhase(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.ext.portlet.contests.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getActivePhaseMethodKey26,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.ext.portlet.contests.NoSuchContestPhaseException) {
+                throw (com.ext.portlet.contests.NoSuchContestPhaseException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.contests.model.ContestPhase) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public boolean isActive(com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_isActiveMethodKey27,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
+    }
+
+    public java.util.List<java.lang.Long> getDebatesIds(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getDebatesIdsMethodKey28,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.lang.Integer getTotalVotes(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getTotalVotesMethodKey29,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.Integer) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void updateDefaultPlanDescription(
+        com.ext.portlet.contests.model.Contest contest,
+        java.lang.String description)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_updateDefaultPlanDescriptionMethodKey30,
+                ClpSerializer.translateInput(contest),
+                ClpSerializer.translateInput(description));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void store(com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey31,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getPlanTemplateMethodKey32,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.plans.model.PlanTemplate) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.ontology.model.FocusArea getFocusArea(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getFocusAreaMethodKey33,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.ontology.model.FocusArea) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.liferay.portal.model.Image getLogo(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getLogoMethodKey34,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.model.Image) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void setLogo(com.ext.portlet.contests.model.Contest contest,
+        java.io.File logoFile)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        MethodHandler methodHandler = new MethodHandler(_setLogoMethodKey35,
+                ClpSerializer.translateInput(contest),
+                ClpSerializer.translateInput(logoFile));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof java.io.IOException) {
+                throw (java.io.IOException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public java.lang.String getLogoPath(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getLogoPathMethodKey36,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public long getProposalsCount(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getProposalsCountMethodKey37,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getDiscussionCategoryGroupMethodKey38,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.discussions.model.DiscussionCategoryGroup) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public long getCommentsCount(com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey39,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    public long getProposalsCommentsCount(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getProposalsCommentsCountMethodKey40,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    public long getTotalComments(com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getTotalCommentsMethodKey41,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    public java.util.List<com.ext.portlet.contests.model.ContestTeamMember> getTeamMembers(
+        com.ext.portlet.contests.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getTeamMembersMethodKey42,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.contests.model.ContestTeamMember>) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

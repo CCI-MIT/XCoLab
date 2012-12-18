@@ -16,9 +16,9 @@ import java.util.List;
  * @generated
  */
 public class PlanVoteSoap implements Serializable {
-    private Long _userId;
-    private Long _contestId;
-    private Long _planId;
+    private long _userId;
+    private long _contestId;
+    private long _planId;
     private Date _createDate;
 
     public PlanVoteSoap() {
@@ -80,27 +80,27 @@ public class PlanVoteSoap implements Serializable {
         setContestId(pk.contestId);
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getContestId() {
+    public long getContestId() {
         return _contestId;
     }
 
-    public void setContestId(Long contestId) {
+    public void setContestId(long contestId) {
         _contestId = contestId;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 

@@ -46,7 +46,7 @@ public interface ModelCategoryPersistence extends BasePersistence<ModelCategory>
     * @return the new model category
     */
     public com.ext.portlet.models.model.ModelCategory create(
-        java.lang.Long modelCategoryPK);
+        long modelCategoryPK);
 
     /**
     * Removes the model category with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelCategoryPersistence extends BasePersistence<ModelCategory>
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelCategory remove(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.ext.portlet.models.NoSuchModelCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -74,7 +74,7 @@ public interface ModelCategoryPersistence extends BasePersistence<ModelCategory>
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelCategory findByPrimaryKey(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.ext.portlet.models.NoSuchModelCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -86,7 +86,7 @@ public interface ModelCategoryPersistence extends BasePersistence<ModelCategory>
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelCategory fetchByPrimaryKey(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

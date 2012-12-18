@@ -50,7 +50,7 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     *
     * @return the user ID of this plan vote
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _planVote.getUserId();
     }
 
@@ -59,8 +59,28 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     *
     * @param userId the user ID of this plan vote
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _planVote.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this plan vote.
+    *
+    * @return the user uuid of this plan vote
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planVote.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this plan vote.
+    *
+    * @param userUuid the user uuid of this plan vote
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _planVote.setUserUuid(userUuid);
     }
 
     /**
@@ -68,7 +88,7 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     *
     * @return the contest ID of this plan vote
     */
-    public java.lang.Long getContestId() {
+    public long getContestId() {
         return _planVote.getContestId();
     }
 
@@ -77,7 +97,7 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     *
     * @param contestId the contest ID of this plan vote
     */
-    public void setContestId(java.lang.Long contestId) {
+    public void setContestId(long contestId) {
         _planVote.setContestId(contestId);
     }
 
@@ -86,7 +106,7 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     *
     * @return the plan ID of this plan vote
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planVote.getPlanId();
     }
 
@@ -95,7 +115,7 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     *
     * @param planId the plan ID of this plan vote
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planVote.setPlanId(planId);
     }
 
@@ -188,11 +208,6 @@ public class PlanVoteWrapper implements PlanVote, ModelWrapper<PlanVote> {
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planVote.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planVote.store();
     }
 
     /**

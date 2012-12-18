@@ -51,7 +51,7 @@ public class PlanPositionWrapper implements PlanPosition,
     *
     * @return the plan ID of this plan position
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planPosition.getPlanId();
     }
 
@@ -60,7 +60,7 @@ public class PlanPositionWrapper implements PlanPosition,
     *
     * @param planId the plan ID of this plan position
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planPosition.setPlanId(planId);
     }
 
@@ -69,7 +69,7 @@ public class PlanPositionWrapper implements PlanPosition,
     *
     * @return the position ID of this plan position
     */
-    public java.lang.Long getPositionId() {
+    public long getPositionId() {
         return _planPosition.getPositionId();
     }
 
@@ -78,7 +78,7 @@ public class PlanPositionWrapper implements PlanPosition,
     *
     * @param positionId the position ID of this plan position
     */
-    public void setPositionId(java.lang.Long positionId) {
+    public void setPositionId(long positionId) {
         _planPosition.setPositionId(positionId);
     }
 
@@ -87,7 +87,7 @@ public class PlanPositionWrapper implements PlanPosition,
     *
     * @return the user ID of this plan position
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _planPosition.getUserId();
     }
 
@@ -96,8 +96,28 @@ public class PlanPositionWrapper implements PlanPosition,
     *
     * @param userId the user ID of this plan position
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _planPosition.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this plan position.
+    *
+    * @return the user uuid of this plan position
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planPosition.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this plan position.
+    *
+    * @param userUuid the user uuid of this plan position
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _planPosition.setUserUuid(userUuid);
     }
 
     /**

@@ -94,7 +94,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanVote> findBycontestId(
-        java.lang.Long contestId)
+        long contestId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -111,7 +111,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanVote> findBycontestId(
-        java.lang.Long contestId, int start, int end)
+        long contestId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -129,7 +129,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanVote> findBycontestId(
-        java.lang.Long contestId, int start, int end,
+        long contestId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -147,7 +147,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanVote findBycontestId_First(
-        java.lang.Long contestId,
+        long contestId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -166,7 +166,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanVote findBycontestId_Last(
-        java.lang.Long contestId,
+        long contestId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -186,7 +186,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanVote[] findBycontestId_PrevAndNext(
-        PlanVotePK planVotePK, java.lang.Long contestId,
+        PlanVotePK planVotePK, long contestId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -199,8 +199,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanVote> findByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long planId) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns a range of all the plan votes where planId = &#63;.
@@ -216,7 +215,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanVote> findByPlanId(
-        java.lang.Long planId, int start, int end)
+        long planId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -234,7 +233,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanVote> findByPlanId(
-        java.lang.Long planId, int start, int end,
+        long planId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -252,7 +251,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanVote findByPlanId_First(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -270,8 +269,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws com.ext.portlet.plans.NoSuchPlanVoteException if a matching plan vote could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanVote findByPlanId_Last(
-        java.lang.Long planId,
+    public com.ext.portlet.plans.model.PlanVote findByPlanId_Last(long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -291,7 +289,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanVote[] findByPlanId_PrevAndNext(
-        PlanVotePK planVotePK, java.lang.Long planId,
+        PlanVotePK planVotePK, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -306,7 +304,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanVote findByContestIdUserId(
-        java.lang.Long contestId, java.lang.Long userId)
+        long contestId, long userId)
         throws com.ext.portlet.plans.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -319,7 +317,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanVote fetchByContestIdUserId(
-        java.lang.Long contestId, java.lang.Long userId)
+        long contestId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -332,8 +330,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanVote fetchByContestIdUserId(
-        java.lang.Long contestId, java.lang.Long userId,
-        boolean retrieveFromCache)
+        long contestId, long userId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -385,7 +382,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @param contestId the contest ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeBycontestId(java.lang.Long contestId)
+    public void removeBycontestId(long contestId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -394,7 +391,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanId(java.lang.Long planId)
+    public void removeByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -404,8 +401,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByContestIdUserId(java.lang.Long contestId,
-        java.lang.Long userId)
+    public void removeByContestIdUserId(long contestId, long userId)
         throws com.ext.portlet.plans.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -424,7 +420,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @return the number of matching plan votes
     * @throws SystemException if a system exception occurred
     */
-    public int countBycontestId(java.lang.Long contestId)
+    public int countBycontestId(long contestId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -434,7 +430,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @return the number of matching plan votes
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanId(java.lang.Long planId)
+    public int countByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -445,8 +441,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @return the number of matching plan votes
     * @throws SystemException if a system exception occurred
     */
-    public int countByContestIdUserId(java.lang.Long contestId,
-        java.lang.Long userId)
+    public int countByContestIdUserId(long contestId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

@@ -35,10 +35,10 @@ public class ModelOutputItemLocalServiceClp
                 com.ext.portlet.models.model.ModelOutputItem.class);
 
         _createModelOutputItemMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createModelOutputItem", java.lang.Long.class);
+                "createModelOutputItem", long.class);
 
         _deleteModelOutputItemMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteModelOutputItem", java.lang.Long.class);
+                "deleteModelOutputItem", long.class);
 
         _deleteModelOutputItemMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteModelOutputItem",
@@ -64,10 +64,10 @@ public class ModelOutputItemLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchModelOutputItemMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchModelOutputItem", java.lang.Long.class);
+                "fetchModelOutputItem", long.class);
 
         _getModelOutputItemMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getModelOutputItem", java.lang.Long.class);
+                "getModelOutputItem", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -124,11 +124,11 @@ public class ModelOutputItemLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelOutputItem createModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK) {
+        long modelOutputItemModifierPK) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createModelOutputItemMethodKey1,
-                ClpSerializer.translateInput(modelOutputItemModifierPK));
+                modelOutputItemModifierPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -144,11 +144,11 @@ public class ModelOutputItemLocalServiceClp
         return (com.ext.portlet.models.model.ModelOutputItem) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteModelOutputItem(java.lang.Long modelOutputItemModifierPK)
+    public void deleteModelOutputItem(long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteModelOutputItemMethodKey2,
-                ClpSerializer.translateInput(modelOutputItemModifierPK));
+                modelOutputItemModifierPK);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -303,12 +303,12 @@ public class ModelOutputItemLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelOutputItem fetchModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchModelOutputItemMethodKey8,
-                ClpSerializer.translateInput(modelOutputItemModifierPK));
+                modelOutputItemModifierPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -329,13 +329,13 @@ public class ModelOutputItemLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelOutputItem getModelOutputItem(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getModelOutputItemMethodKey9,
-                ClpSerializer.translateInput(modelOutputItemModifierPK));
+                modelOutputItemModifierPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

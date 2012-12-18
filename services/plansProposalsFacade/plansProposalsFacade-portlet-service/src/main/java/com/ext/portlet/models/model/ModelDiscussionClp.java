@@ -14,9 +14,9 @@ import java.lang.reflect.Proxy;
 
 public class ModelDiscussionClp extends BaseModelImpl<ModelDiscussion>
     implements ModelDiscussion {
-    private Long _modelDiscussionId;
-    private Long _modelId;
-    private Long _categoryId;
+    private long _modelDiscussionId;
+    private long _modelId;
+    private long _categoryId;
 
     public ModelDiscussionClp() {
     }
@@ -29,11 +29,11 @@ public class ModelDiscussionClp extends BaseModelImpl<ModelDiscussion>
         return ModelDiscussion.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelDiscussionId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setModelDiscussionId(primaryKey);
     }
 
@@ -45,27 +45,27 @@ public class ModelDiscussionClp extends BaseModelImpl<ModelDiscussion>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getModelDiscussionId() {
+    public long getModelDiscussionId() {
         return _modelDiscussionId;
     }
 
-    public void setModelDiscussionId(Long modelDiscussionId) {
+    public void setModelDiscussionId(long modelDiscussionId) {
         _modelDiscussionId = modelDiscussionId;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Long getCategoryId() {
+    public long getCategoryId() {
         return _categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(long categoryId) {
         _categoryId = categoryId;
     }
 
@@ -96,7 +96,7 @@ public class ModelDiscussionClp extends BaseModelImpl<ModelDiscussion>
     }
 
     public int compareTo(ModelDiscussion modelDiscussion) {
-        Long primaryKey = modelDiscussion.getPrimaryKey();
+        long primaryKey = modelDiscussion.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -121,7 +121,7 @@ public class ModelDiscussionClp extends BaseModelImpl<ModelDiscussion>
             return false;
         }
 
-        Long primaryKey = modelDiscussion.getPrimaryKey();
+        long primaryKey = modelDiscussion.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -132,7 +132,7 @@ public class ModelDiscussionClp extends BaseModelImpl<ModelDiscussion>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

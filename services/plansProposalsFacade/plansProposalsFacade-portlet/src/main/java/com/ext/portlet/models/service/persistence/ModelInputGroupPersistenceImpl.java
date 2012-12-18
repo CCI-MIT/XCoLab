@@ -260,7 +260,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @param modelInputGroupPK the primary key for the new model input group
      * @return the new model input group
      */
-    public ModelInputGroup create(Long modelInputGroupPK) {
+    public ModelInputGroup create(long modelInputGroupPK) {
         ModelInputGroup modelInputGroup = new ModelInputGroupImpl();
 
         modelInputGroup.setNew(true);
@@ -277,9 +277,9 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @throws com.ext.portlet.models.NoSuchModelInputGroupException if a model input group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup remove(Long modelInputGroupPK)
+    public ModelInputGroup remove(long modelInputGroupPK)
         throws NoSuchModelInputGroupException, SystemException {
-        return remove((Serializable) modelInputGroupPK);
+        return remove(Long.valueOf(modelInputGroupPK));
     }
 
     /**
@@ -453,7 +453,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
     @Override
     public ModelInputGroup findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -464,7 +464,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @throws com.ext.portlet.models.NoSuchModelInputGroupException if a model input group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup findByPrimaryKey(Long modelInputGroupPK)
+    public ModelInputGroup findByPrimaryKey(long modelInputGroupPK)
         throws NoSuchModelInputGroupException, SystemException {
         ModelInputGroup modelInputGroup = fetchByPrimaryKey(modelInputGroupPK);
 
@@ -490,7 +490,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
     @Override
     public ModelInputGroup fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -500,7 +500,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the model input group, or <code>null</code> if a model input group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup fetchByPrimaryKey(Long modelInputGroupPK)
+    public ModelInputGroup fetchByPrimaryKey(long modelInputGroupPK)
         throws SystemException {
         ModelInputGroup modelInputGroup = (ModelInputGroup) EntityCacheUtil.getResult(ModelInputGroupModelImpl.ENTITY_CACHE_ENABLED,
                 ModelInputGroupImpl.class, modelInputGroupPK);
@@ -546,7 +546,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the matching model input groups
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputGroup> findByparentModelId(Long parentGroupPK)
+    public List<ModelInputGroup> findByparentModelId(long parentGroupPK)
         throws SystemException {
         return findByparentModelId(parentGroupPK, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -565,7 +565,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the range of matching model input groups
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputGroup> findByparentModelId(Long parentGroupPK,
+    public List<ModelInputGroup> findByparentModelId(long parentGroupPK,
         int start, int end) throws SystemException {
         return findByparentModelId(parentGroupPK, start, end, null);
     }
@@ -584,7 +584,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the ordered range of matching model input groups
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputGroup> findByparentModelId(Long parentGroupPK,
+    public List<ModelInputGroup> findByparentModelId(long parentGroupPK,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -636,7 +636,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(parentGroupPK.longValue());
+                qPos.add(parentGroupPK);
 
                 list = (List<ModelInputGroup>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -671,7 +671,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @throws com.ext.portlet.models.NoSuchModelInputGroupException if a matching model input group could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup findByparentModelId_First(Long parentGroupPK,
+    public ModelInputGroup findByparentModelId_First(long parentGroupPK,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputGroupException, SystemException {
         List<ModelInputGroup> list = findByparentModelId(parentGroupPK, 0, 1,
@@ -706,7 +706,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @throws com.ext.portlet.models.NoSuchModelInputGroupException if a matching model input group could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup findByparentModelId_Last(Long parentGroupPK,
+    public ModelInputGroup findByparentModelId_Last(long parentGroupPK,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputGroupException, SystemException {
         int count = countByparentModelId(parentGroupPK);
@@ -745,7 +745,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @throws SystemException if a system exception occurred
      */
     public ModelInputGroup[] findByparentModelId_PrevAndNext(
-        Long modelInputGroupPK, Long parentGroupPK,
+        long modelInputGroupPK, long parentGroupPK,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputGroupException, SystemException {
         ModelInputGroup modelInputGroup = findByPrimaryKey(modelInputGroupPK);
@@ -774,7 +774,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
     }
 
     protected ModelInputGroup getByparentModelId_PrevAndNext(Session session,
-        ModelInputGroup modelInputGroup, Long parentGroupPK,
+        ModelInputGroup modelInputGroup, long parentGroupPK,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -848,7 +848,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(parentGroupPK.longValue());
+        qPos.add(parentGroupPK);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(modelInputGroup);
@@ -874,7 +874,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the matching model input groups
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputGroup> findByModelId(Long modelId)
+    public List<ModelInputGroup> findByModelId(long modelId)
         throws SystemException {
         return findByModelId(modelId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -892,7 +892,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the range of matching model input groups
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputGroup> findByModelId(Long modelId, int start, int end)
+    public List<ModelInputGroup> findByModelId(long modelId, int start, int end)
         throws SystemException {
         return findByModelId(modelId, start, end, null);
     }
@@ -911,7 +911,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the ordered range of matching model input groups
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputGroup> findByModelId(Long modelId, int start,
+    public List<ModelInputGroup> findByModelId(long modelId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -958,7 +958,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 list = (List<ModelInputGroup>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -993,7 +993,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @throws com.ext.portlet.models.NoSuchModelInputGroupException if a matching model input group could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup findByModelId_First(Long modelId,
+    public ModelInputGroup findByModelId_First(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputGroupException, SystemException {
         List<ModelInputGroup> list = findByModelId(modelId, 0, 1,
@@ -1028,7 +1028,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @throws com.ext.portlet.models.NoSuchModelInputGroupException if a matching model input group could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup findByModelId_Last(Long modelId,
+    public ModelInputGroup findByModelId_Last(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputGroupException, SystemException {
         int count = countByModelId(modelId);
@@ -1066,8 +1066,8 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @throws com.ext.portlet.models.NoSuchModelInputGroupException if a model input group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputGroup[] findByModelId_PrevAndNext(Long modelInputGroupPK,
-        Long modelId, OrderByComparator orderByComparator)
+    public ModelInputGroup[] findByModelId_PrevAndNext(long modelInputGroupPK,
+        long modelId, OrderByComparator orderByComparator)
         throws NoSuchModelInputGroupException, SystemException {
         ModelInputGroup modelInputGroup = findByPrimaryKey(modelInputGroupPK);
 
@@ -1095,7 +1095,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
     }
 
     protected ModelInputGroup getByModelId_PrevAndNext(Session session,
-        ModelInputGroup modelInputGroup, Long modelId,
+        ModelInputGroup modelInputGroup, long modelId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1169,7 +1169,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(modelId.longValue());
+        qPos.add(modelId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(modelInputGroup);
@@ -1303,7 +1303,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @param parentGroupPK the parent group p k
      * @throws SystemException if a system exception occurred
      */
-    public void removeByparentModelId(Long parentGroupPK)
+    public void removeByparentModelId(long parentGroupPK)
         throws SystemException {
         for (ModelInputGroup modelInputGroup : findByparentModelId(
                 parentGroupPK)) {
@@ -1317,7 +1317,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @param modelId the model ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelId(Long modelId) throws SystemException {
+    public void removeByModelId(long modelId) throws SystemException {
         for (ModelInputGroup modelInputGroup : findByModelId(modelId)) {
             remove(modelInputGroup);
         }
@@ -1341,7 +1341,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the number of matching model input groups
      * @throws SystemException if a system exception occurred
      */
-    public int countByparentModelId(Long parentGroupPK)
+    public int countByparentModelId(long parentGroupPK)
         throws SystemException {
         Object[] finderArgs = new Object[] { parentGroupPK };
 
@@ -1366,7 +1366,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(parentGroupPK.longValue());
+                qPos.add(parentGroupPK);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1393,7 +1393,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
      * @return the number of matching model input groups
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelId(Long modelId) throws SystemException {
+    public int countByModelId(long modelId) throws SystemException {
         Object[] finderArgs = new Object[] { modelId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MODELID,
@@ -1417,7 +1417,7 @@ public class ModelInputGroupPersistenceImpl extends BasePersistenceImpl<ModelInp
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

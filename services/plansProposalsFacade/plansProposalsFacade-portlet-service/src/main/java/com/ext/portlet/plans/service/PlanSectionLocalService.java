@@ -47,8 +47,7 @@ public interface PlanSectionLocalService extends PersistedModelLocalService {
     * @param id the primary key for the new plan section
     * @return the new plan section
     */
-    public com.ext.portlet.plans.model.PlanSection createPlanSection(
-        java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanSection createPlanSection(long id);
 
     /**
     * Deletes the plan section with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +56,7 @@ public interface PlanSectionLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan section with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanSection(java.lang.Long id)
+    public void deletePlanSection(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -134,8 +133,7 @@ public interface PlanSectionLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanSection fetchPlanSection(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanSection fetchPlanSection(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -147,8 +145,7 @@ public interface PlanSectionLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanSection getPlanSection(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanSection getPlanSection(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -269,4 +266,23 @@ public interface PlanSectionLocalService extends PersistedModelLocalService {
         com.ext.portlet.plans.model.PlanItem plan,
         com.ext.portlet.plans.model.PlanSectionDefinition def)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanSection ps)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.plans.model.PlanSectionDefinition getDefinition(
+        com.ext.portlet.plans.model.PlanSection ps)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void addPlanReference(com.ext.portlet.plans.model.PlanSection ps,
+        java.lang.Long planId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanItem> getReferencedPlans(
+        com.ext.portlet.plans.model.PlanSection ps)
+        throws com.ext.portlet.plans.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

@@ -18,12 +18,12 @@ import java.util.Date;
  */
 public class PlanPositionsCacheModel implements CacheModel<PlanPositions>,
     Serializable {
-    public Long id;
-    public Long planId;
-    public Long planVersion;
-    public Long version;
+    public long id;
+    public long planId;
+    public long planVersion;
+    public long version;
     public long created;
-    public Long updateAuthorId;
+    public long updateAuthorId;
 
     @Override
     public String toString() {

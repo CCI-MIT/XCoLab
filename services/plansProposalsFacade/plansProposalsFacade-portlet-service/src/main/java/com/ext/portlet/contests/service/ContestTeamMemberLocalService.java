@@ -49,7 +49,7 @@ public interface ContestTeamMemberLocalService
     * @return the new contest team member
     */
     public com.ext.portlet.contests.model.ContestTeamMember createContestTeamMember(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the contest team member with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface ContestTeamMemberLocalService
     * @throws PortalException if a contest team member with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteContestTeamMember(java.lang.Long id)
+    public void deleteContestTeamMember(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,8 +136,7 @@ public interface ContestTeamMemberLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.contests.model.ContestTeamMember fetchContestTeamMember(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the contest team member with the primary key.
@@ -149,7 +148,7 @@ public interface ContestTeamMemberLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.contests.model.ContestTeamMember getContestTeamMember(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -231,4 +230,24 @@ public interface ContestTeamMemberLocalService
     public java.util.List<com.ext.portlet.contests.model.ContestTeamMember> findForContest(
         java.lang.Long contestPk)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(
+        com.ext.portlet.contests.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void delete(
+        com.ext.portlet.contests.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.User getUser(
+        com.ext.portlet.contests.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.contests.model.Contest getContest(
+        com.ext.portlet.contests.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

@@ -8,29 +8,29 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 
 <service-builder package-path="com.ext.portlet.discussions">
-	<namespace>Discussions</namespace>
+	<namespace>xcolab</namespace>
 	<entity name="DiscussionCategoryGroup" local-service="true" >
 	<!-- PK field -->
-		<column name="id" type="Long" primary="true" />
+		<column name="id" type="long" primary="true" />
         <column name="description" type="String" />
         <column name="url" type="String" />
-        <column name="commentsThread" type="Long" />
+        <column name="commentsThread" type="long" />
 	</entity>
     
     <entity name="DiscussionCategory" local-service='true'>
-        <column name="pk" type="Long" primary="true" />
-        <column name="categoryId" type="Long" />
-        <column name="categoryGroupId" type="Long" />
-        <column name="authorId" type="Long" />
+        <column name="pk" type="long" primary="true" />
+        <column name="categoryId" type="long" />
+        <column name="categoryGroupId" type="long" />
+        <column name="authorId" type="long" />
         <column name="name" type="String" />
         <column name="description" type="String" />
         <column name="createDate" type="Date" />
         <column name="deleted" type="Date" />
         
         
-        <column name="threadsCount" type="Integer" />
+        <column name="threadsCount" type="int" />
         <column name="lastActivityDate" type="Date" />
-        <column name="lastActivityAuthorId" type="Long" />
+        <column name="lastActivityAuthorId" type="long" />
         
         <order by="desc">
             <order-column name="createDate" case-sensitive="false" />
@@ -46,26 +46,26 @@
     </entity>
     
     <entity name="DiscussionMessage" local-service="true">
-        <column name="pk" type="Long" primary="true" />
-        <column name="messageId" type="Long" />
+        <column name="pk" type="long" primary="true" />
+        <column name="messageId" type="long" />
         
         <column name="subject" type="String" />
         <column name="body" type="String" />
         
-        <column name="threadId" type="Long" />
-        <column name="categoryId" type="Long" />
-        <column name="categoryGroupId" type="Long" />
-        <column name="authorId" type="Long" />
+        <column name="threadId" type="long" />
+        <column name="categoryId" type="long" />
+        <column name="categoryGroupId" type="long" />
+        <column name="authorId" type="long" />
         
         <column name="createDate" type="Date" />
         
-        <column name="version" type="Long" />
+        <column name="version" type="long" />
         <column name="deleted" type="Date" />
         
         
-        <column name="responsesCount" type="Integer" />
+        <column name="responsesCount" type="int" />
         <column name="lastActivityDate" type="Date" />
-        <column name="lastActivityAuthorId" type="Long" />
+        <column name="lastActivityAuthorId" type="long" />
         
         <order by="desc">
             <order-column name="createDate" case-sensitive="false" />
@@ -101,12 +101,12 @@
     </entity>
     
     <entity name="DiscussionMessageFlag" local-service="true">
-        <column name="pk" type="Long" primary="true" />
-        <column name="messageId" type="Long" />
+        <column name="pk" type="long" primary="true" />
+        <column name="messageId" type="long" />
         <column name="flagType" type="String" />
         <column name="data" type="String" />
         <column name="created" type="Date" />
-        <column name="userId" type="Long" />
+        <column name="userId" type="long" />
         
         
         <finder name="MessageId" return-type="Collection">

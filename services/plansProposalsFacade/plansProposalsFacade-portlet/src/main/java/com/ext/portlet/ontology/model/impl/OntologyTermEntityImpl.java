@@ -22,21 +22,4 @@ public class OntologyTermEntityImpl extends OntologyTermEntityBaseImpl {
      */
     public OntologyTermEntityImpl() {
     }
-
-    
-    public void store() throws SystemException {
-        if (isNew()) {
-            if (getId() == null) {
-                setId(CounterLocalServiceUtil.increment(OntologyTermEntity.class.getName()));
-            }
-            OntologyTermEntityLocalServiceUtil.addOntologyTermEntity(this);
-        }
-        else {
-            OntologyTermEntityLocalServiceUtil.updateOntologyTermEntity(this);
-        }
-    }
-    
-    public void remove() throws SystemException {
-        OntologyTermEntityLocalServiceUtil.deleteOntologyTermEntity(this);
-    }
 }

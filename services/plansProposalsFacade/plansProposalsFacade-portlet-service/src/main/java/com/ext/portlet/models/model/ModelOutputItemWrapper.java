@@ -32,7 +32,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @return the primary key of this model output item
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelOutputItem.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @param primaryKey the primary key of this model output item
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _modelOutputItem.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @return the model output item modifier p k of this model output item
     */
-    public java.lang.Long getModelOutputItemModifierPK() {
+    public long getModelOutputItemModifierPK() {
         return _modelOutputItem.getModelOutputItemModifierPK();
     }
 
@@ -59,8 +59,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @param modelOutputItemModifierPK the model output item modifier p k of this model output item
     */
-    public void setModelOutputItemModifierPK(
-        java.lang.Long modelOutputItemModifierPK) {
+    public void setModelOutputItemModifierPK(long modelOutputItemModifierPK) {
         _modelOutputItem.setModelOutputItemModifierPK(modelOutputItemModifierPK);
     }
 
@@ -69,7 +68,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @return the model ID of this model output item
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _modelOutputItem.getModelId();
     }
 
@@ -78,7 +77,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @param modelId the model ID of this model output item
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _modelOutputItem.setModelId(modelId);
     }
 
@@ -87,7 +86,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @return the model output item ID of this model output item
     */
-    public java.lang.Long getModelOutputItemId() {
+    public long getModelOutputItemId() {
         return _modelOutputItem.getModelOutputItemId();
     }
 
@@ -96,7 +95,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @param modelOutputItemId the model output item ID of this model output item
     */
-    public void setModelOutputItemId(java.lang.Long modelOutputItemId) {
+    public void setModelOutputItemId(long modelOutputItemId) {
         _modelOutputItem.setModelOutputItemId(modelOutputItemId);
     }
 
@@ -105,7 +104,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @return the model output item order of this model output item
     */
-    public java.lang.Integer getModelOutputItemOrder() {
+    public int getModelOutputItemOrder() {
         return _modelOutputItem.getModelOutputItemOrder();
     }
 
@@ -114,7 +113,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @param modelOutputItemOrder the model output item order of this model output item
     */
-    public void setModelOutputItemOrder(java.lang.Integer modelOutputItemOrder) {
+    public void setModelOutputItemOrder(int modelOutputItemOrder) {
         _modelOutputItem.setModelOutputItemOrder(modelOutputItemOrder);
     }
 
@@ -213,16 +212,25 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @return the model item is visible of this model output item
     */
-    public java.lang.Boolean getModelItemIsVisible() {
+    public boolean getModelItemIsVisible() {
         return _modelOutputItem.getModelItemIsVisible();
     }
 
     /**
-    * Sets the model item is visible of this model output item.
+    * Returns <code>true</code> if this model output item is model item is visible.
+    *
+    * @return <code>true</code> if this model output item is model item is visible; <code>false</code> otherwise
+    */
+    public boolean isModelItemIsVisible() {
+        return _modelOutputItem.isModelItemIsVisible();
+    }
+
+    /**
+    * Sets whether this model output item is model item is visible.
     *
     * @param modelItemIsVisible the model item is visible of this model output item
     */
-    public void setModelItemIsVisible(java.lang.Boolean modelItemIsVisible) {
+    public void setModelItemIsVisible(boolean modelItemIsVisible) {
         _modelOutputItem.setModelItemIsVisible(modelItemIsVisible);
     }
 
@@ -249,7 +257,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @return the related output item of this model output item
     */
-    public java.lang.Long getRelatedOutputItem() {
+    public long getRelatedOutputItem() {
         return _modelOutputItem.getRelatedOutputItem();
     }
 
@@ -258,7 +266,7 @@ public class ModelOutputItemWrapper implements ModelOutputItem,
     *
     * @param relatedOutputItem the related output item of this model output item
     */
-    public void setRelatedOutputItem(java.lang.Long relatedOutputItem) {
+    public void setRelatedOutputItem(long relatedOutputItem) {
         _modelOutputItem.setRelatedOutputItem(relatedOutputItem);
     }
 

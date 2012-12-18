@@ -127,7 +127,7 @@ public class ContestTeamMemberUtil {
     * @return the new contest team member
     */
     public static com.ext.portlet.contests.model.ContestTeamMember create(
-        java.lang.Long id) {
+        long id) {
         return getPersistence().create(id);
     }
 
@@ -140,7 +140,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestTeamMember remove(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.contests.NoSuchContestTeamMemberException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -162,7 +162,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestTeamMember findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.contests.NoSuchContestTeamMemberException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -176,8 +176,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestTeamMember fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 
@@ -189,7 +188,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.contests.model.ContestTeamMember> findByContestId(
-        java.lang.Long contestId)
+        long contestId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByContestId(contestId);
     }
@@ -208,7 +207,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.contests.model.ContestTeamMember> findByContestId(
-        java.lang.Long contestId, int start, int end)
+        long contestId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByContestId(contestId, start, end);
     }
@@ -228,7 +227,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.contests.model.ContestTeamMember> findByContestId(
-        java.lang.Long contestId, int start, int end,
+        long contestId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -249,7 +248,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestTeamMember findByContestId_First(
-        java.lang.Long contestId,
+        long contestId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestTeamMemberException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -271,7 +270,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestTeamMember findByContestId_Last(
-        java.lang.Long contestId,
+        long contestId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestTeamMemberException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -294,7 +293,7 @@ public class ContestTeamMemberUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestTeamMember[] findByContestId_PrevAndNext(
-        java.lang.Long id, java.lang.Long contestId,
+        long id, long contestId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestTeamMemberException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -357,7 +356,7 @@ public class ContestTeamMemberUtil {
     * @param contestId the contest ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByContestId(java.lang.Long contestId)
+    public static void removeByContestId(long contestId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByContestId(contestId);
     }
@@ -379,7 +378,7 @@ public class ContestTeamMemberUtil {
     * @return the number of matching contest team members
     * @throws SystemException if a system exception occurred
     */
-    public static int countByContestId(java.lang.Long contestId)
+    public static int countByContestId(long contestId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByContestId(contestId);
     }

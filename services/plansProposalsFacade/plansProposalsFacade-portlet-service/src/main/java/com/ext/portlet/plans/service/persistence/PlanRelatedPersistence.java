@@ -96,7 +96,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanRelated> findByPlanId(
-        java.lang.Long relatedPlanId)
+        long relatedPlanId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -113,7 +113,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanRelated> findByPlanId(
-        java.lang.Long relatedPlanId, int start, int end)
+        long relatedPlanId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -131,7 +131,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanRelated> findByPlanId(
-        java.lang.Long relatedPlanId, int start, int end,
+        long relatedPlanId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -149,7 +149,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanRelated findByPlanId_First(
-        java.lang.Long relatedPlanId,
+        long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -168,7 +168,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanRelated findByPlanId_Last(
-        java.lang.Long relatedPlanId,
+        long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -188,7 +188,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanRelated[] findByPlanId_PrevAndNext(
-        PlanRelatedPK planRelatedPK, java.lang.Long relatedPlanId,
+        PlanRelatedPK planRelatedPK, long relatedPlanId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanRelatedException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -242,7 +242,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @param relatedPlanId the related plan ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanId(java.lang.Long relatedPlanId)
+    public void removeByPlanId(long relatedPlanId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -260,7 +260,7 @@ public interface PlanRelatedPersistence extends BasePersistence<PlanRelated> {
     * @return the number of matching plan relateds
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanId(java.lang.Long relatedPlanId)
+    public int countByPlanId(long relatedPlanId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

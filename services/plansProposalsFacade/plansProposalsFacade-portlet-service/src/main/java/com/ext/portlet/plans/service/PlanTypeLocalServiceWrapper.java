@@ -39,8 +39,7 @@ public class PlanTypeLocalServiceWrapper implements PlanTypeLocalService,
     * @param planTypeId the primary key for the new plan type
     * @return the new plan type
     */
-    public com.ext.portlet.plans.model.PlanType createPlanType(
-        java.lang.Long planTypeId) {
+    public com.ext.portlet.plans.model.PlanType createPlanType(long planTypeId) {
         return _planTypeLocalService.createPlanType(planTypeId);
     }
 
@@ -51,7 +50,7 @@ public class PlanTypeLocalServiceWrapper implements PlanTypeLocalService,
     * @throws PortalException if a plan type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanType(java.lang.Long planTypeId)
+    public void deletePlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planTypeLocalService.deletePlanType(planTypeId);
@@ -139,8 +138,7 @@ public class PlanTypeLocalServiceWrapper implements PlanTypeLocalService,
         return _planTypeLocalService.dynamicQueryCount(dynamicQuery);
     }
 
-    public com.ext.portlet.plans.model.PlanType fetchPlanType(
-        java.lang.Long planTypeId)
+    public com.ext.portlet.plans.model.PlanType fetchPlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTypeLocalService.fetchPlanType(planTypeId);
     }
@@ -153,8 +151,7 @@ public class PlanTypeLocalServiceWrapper implements PlanTypeLocalService,
     * @throws PortalException if a plan type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanType getPlanType(
-        java.lang.Long planTypeId)
+    public com.ext.portlet.plans.model.PlanType getPlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planTypeLocalService.getPlanType(planTypeId);
@@ -262,6 +259,35 @@ public class PlanTypeLocalServiceWrapper implements PlanTypeLocalService,
     public boolean isRegionalType(long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTypeLocalService.isRegionalType(planTypeId);
+    }
+
+    public java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planTypeLocalService.getAvailableModels(planType);
+    }
+
+    public edu.mit.cci.simulation.client.Simulation getDefaultModel(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planTypeLocalService.getDefaultModel(planType);
+    }
+
+    public java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getColumns(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planTypeLocalService.getColumns(planType);
+    }
+
+    public java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getAttributes(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planTypeLocalService.getAttributes(planType);
+    }
+
+    public boolean isRegional(com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planTypeLocalService.isRegional(planType);
     }
 
     /**

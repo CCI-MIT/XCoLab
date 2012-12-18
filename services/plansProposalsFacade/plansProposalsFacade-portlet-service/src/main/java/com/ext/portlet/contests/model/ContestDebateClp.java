@@ -14,9 +14,9 @@ import java.lang.reflect.Proxy;
 
 public class ContestDebateClp extends BaseModelImpl<ContestDebate>
     implements ContestDebate {
-    private Long _id;
-    private Long _debateId;
-    private Long _ContestPK;
+    private long _id;
+    private long _debateId;
+    private long _ContestPK;
 
     public ContestDebateClp() {
     }
@@ -29,11 +29,11 @@ public class ContestDebateClp extends BaseModelImpl<ContestDebate>
         return ContestDebate.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -45,36 +45,28 @@ public class ContestDebateClp extends BaseModelImpl<ContestDebate>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getDebateId() {
+    public long getDebateId() {
         return _debateId;
     }
 
-    public void setDebateId(Long debateId) {
+    public void setDebateId(long debateId) {
         _debateId = debateId;
     }
 
-    public Long getContestPK() {
+    public long getContestPK() {
         return _ContestPK;
     }
 
-    public void setContestPK(Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _ContestPK = ContestPK;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void delete() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -103,7 +95,7 @@ public class ContestDebateClp extends BaseModelImpl<ContestDebate>
     }
 
     public int compareTo(ContestDebate contestDebate) {
-        Long primaryKey = contestDebate.getPrimaryKey();
+        long primaryKey = contestDebate.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -128,7 +120,7 @@ public class ContestDebateClp extends BaseModelImpl<ContestDebate>
             return false;
         }
 
-        Long primaryKey = contestDebate.getPrimaryKey();
+        long primaryKey = contestDebate.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -139,7 +131,7 @@ public class ContestDebateClp extends BaseModelImpl<ContestDebate>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

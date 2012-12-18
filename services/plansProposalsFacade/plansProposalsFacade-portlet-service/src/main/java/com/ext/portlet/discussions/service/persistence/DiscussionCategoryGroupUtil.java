@@ -129,7 +129,7 @@ public class DiscussionCategoryGroupUtil {
     * @return the new discussion category group
     */
     public static com.ext.portlet.discussions.model.DiscussionCategoryGroup create(
-        java.lang.Long id) {
+        long id) {
         return getPersistence().create(id);
     }
 
@@ -142,7 +142,7 @@ public class DiscussionCategoryGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionCategoryGroup remove(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryGroupException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -164,7 +164,7 @@ public class DiscussionCategoryGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionCategoryGroup findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryGroupException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -178,8 +178,7 @@ public class DiscussionCategoryGroupUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionCategoryGroup fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 

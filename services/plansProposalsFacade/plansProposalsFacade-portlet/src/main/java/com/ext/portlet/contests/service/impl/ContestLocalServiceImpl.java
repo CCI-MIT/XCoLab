@@ -1,26 +1,52 @@
 package com.ext.portlet.contests.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import com.ext.portlet.contests.NoSuchContestException;
+import com.ext.portlet.contests.NoSuchContestPhaseException;
 import com.ext.portlet.contests.model.Contest;
+import com.ext.portlet.contests.model.ContestDebate;
+import com.ext.portlet.contests.model.ContestPhase;
+import com.ext.portlet.contests.model.ContestTeamMember;
+import com.ext.portlet.contests.model.impl.ContestImpl;
+import com.ext.portlet.contests.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.contests.service.ContestLocalServiceUtil;
+import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.contests.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.contests.service.base.ContestLocalServiceBaseImpl;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
 import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.ontology.model.FocusArea;
+import com.ext.portlet.ontology.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.model.PlanTemplate;
+import com.ext.portlet.plans.model.PlanType;
+import com.ext.portlet.plans.service.ClpSerializer;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTemplateLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
+import com.liferay.portal.model.Image;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -48,6 +74,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on contest %s";
     private Random rand = new Random();
+
+    private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
     
     public Contest getContestByActiveFlag(boolean contestActive) throws NoSuchContestException, SystemException {
         return contestPersistence.findBycontestActive(contestActive);
@@ -63,14 +91,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         
         setGroupAndDiscussionForContest(c);
         
-        c.store();
+        store(c);
         
         return c;
     }
     
     public void updateContestGroupsAndDiscussions() throws SystemException, PortalException {
         for (Contest c: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
-            if (c.getGroupId() == null || c.getGroupId() == 0) {
+            if (c.getGroupId() <= 0) {
                 setGroupAndDiscussionForContest(c);
             }
         }
@@ -97,7 +125,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
         categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + c.getContestPK() + "/page/discussion");
         
-        categoryGroup.store();
+        DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
         
         // set up permissions
 
@@ -147,7 +175,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
         c.setGroupId(group.getGroupId());
         c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
-        c.store();
+        store(c);
     }
     
     public List<Contest> findByActiveFeatured(boolean active, boolean featured) throws SystemException {
@@ -160,4 +188,150 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public List<Contest> findByActiveFlagText(boolean active, String flagText) throws SystemException {
         return contestPersistence.findByActiveFlagText(active, flagText);
     }
+    
+
+    /** Methods from ContestImpl **/
+    public List<ContestPhase> getPhases(Contest contest) {
+        try {
+            return ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+        }
+        catch (SystemException e) {
+            _log.error(e);
+            return new ArrayList<ContestPhase>();
+            
+        }
+    }
+
+    public PlanType getPlanType(Contest contest) throws SystemException, PortalException {
+        try {
+            return (PlanType) ClpSerializer.translateOutput(PlanTypeLocalServiceUtil.getPlanType(contest.getPlanTypeId()));
+        }
+        catch (PortalException | SystemException e) {
+            _log.error(e);
+            return null;
+        }
+    }
+
+    public List<ContestPhase> getActivePhases(Contest contest) throws SystemException {
+        List<ContestPhase> result = getPhases(contest);
+        for (Iterator<ContestPhase> i=result.iterator();i.hasNext();) {
+           if (! ContestPhaseLocalServiceUtil.getContestStatus(i.next()).isCanEdit()) {
+               i.remove();
+           }
+        }
+        return result;
+    }
+    
+    public ContestPhase getActivePhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
+        return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+    }
+    
+    public boolean isActive(Contest contest) throws SystemException {
+        try {
+            ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            return true;
+        }
+        catch (NoSuchContestPhaseException e) {
+            // ignore
+        }
+        return false;
+    }
+    
+    public List<Long> getDebatesIds(Contest contest) throws SystemException  {
+        List<Long> ret = new ArrayList<Long>();
+        for (ContestDebate pos: ContestDebateLocalServiceUtil.getContestDebates(contest.getContestPK())) {
+            ret.add(pos.getDebateId());
+        }
+        return ret;
+    }
+    
+    public Integer getTotalVotes(Contest contest) throws SystemException {
+        return PlanVoteLocalServiceUtil.countPlanVotes(contest);
+    }
+    
+    public void updateDefaultPlanDescription(Contest contest, String description) throws SystemException {
+        contest.setDefaultPlanDescription(description);
+        ContestLocalServiceUtil.updateContest(contest);
+    }
+    
+    public void store(Contest contest) throws SystemException {
+        if (contest.isNew()) {
+            if (contest.getContestPK() <= 0L) {
+                contest.setContestPK(CounterLocalServiceUtil.increment(Contest.class.getName()));
+            }
+            ContestLocalServiceUtil.addContest(contest);
+        }
+        else {
+            ContestLocalServiceUtil.updateContest(contest);
+        }
+    }
+    
+    public PlanTemplate getPlanTemplate(Contest contest) throws PortalException, SystemException {
+        if (contest.getPlanTemplateId() > 0) {
+            return PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
+        }
+        return null;
+    }
+    
+    public FocusArea getFocusArea(Contest contest) throws PortalException, SystemException {
+        if (contest.getFocusAreaId() > 0) {
+            return FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
+        }
+        return null;
+    }
+    
+    public Image getLogo(Contest contest) throws PortalException, SystemException {
+        return contest.getContestLogoId() > 0 ? 
+                ImageLocalServiceUtil.getImage(contest.getContestLogoId()) : 
+                null;
+    }
+    
+    public void setLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
+        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
+        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
+        
+        ImageLocalServiceUtil.addImage(i);
+        contest.setContestLogoId(i.getImageId());
+        
+    }
+    
+    public String getLogoPath(Contest contest) throws PortalException, SystemException {
+        Image i = getLogo(contest);
+        if (i != null) {
+            return "?img_id=" + i.getImageId();// + "&t=" + ImageServletTokenUtil.getToken(i.getImageId());
+        }
+        return "";
+    }
+    
+    
+    public long getProposalsCount(Contest contest) throws PortalException, SystemException {
+        return PlanItemLocalServiceUtil.countPlansByContest(contest.getContestPK());
+    }
+    
+    public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest) throws PortalException, SystemException {
+        DiscussionCategoryGroup dcg = 
+            DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
+        return dcg;
+    }
+    
+    public long getCommentsCount(Contest contest) throws PortalException, SystemException {
+        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest));
+    }
+    
+    public long getProposalsCommentsCount(Contest contest) throws SystemException, PortalException {
+        long proposalsCommentsCount = 0;
+        for (PlanItem pi: PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
+            proposalsCommentsCount += PlanItemLocalServiceUtil.getCommentsCount(pi);
+        }
+        return proposalsCommentsCount;
+    }
+    
+    public long getTotalComments(Contest contest) throws PortalException, SystemException {
+        return getCommentsCount(contest) + getProposalsCommentsCount(contest);
+    }
+    
+    public List<ContestTeamMember> getTeamMembers(Contest contest) throws SystemException {
+        return ContestTeamMemberLocalServiceUtil.findForContest(contest.getContestPK());
+    }
+
 }

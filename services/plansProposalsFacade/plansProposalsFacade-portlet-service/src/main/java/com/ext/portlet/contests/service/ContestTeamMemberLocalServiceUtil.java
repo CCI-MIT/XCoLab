@@ -47,7 +47,7 @@ public class ContestTeamMemberLocalServiceUtil {
     * @return the new contest team member
     */
     public static com.ext.portlet.contests.model.ContestTeamMember createContestTeamMember(
-        java.lang.Long id) {
+        long id) {
         return getService().createContestTeamMember(id);
     }
 
@@ -58,7 +58,7 @@ public class ContestTeamMemberLocalServiceUtil {
     * @throws PortalException if a contest team member with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteContestTeamMember(java.lang.Long id)
+    public static void deleteContestTeamMember(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteContestTeamMember(id);
@@ -148,8 +148,7 @@ public class ContestTeamMemberLocalServiceUtil {
     }
 
     public static com.ext.portlet.contests.model.ContestTeamMember fetchContestTeamMember(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchContestTeamMember(id);
     }
 
@@ -162,7 +161,7 @@ public class ContestTeamMemberLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestTeamMember getContestTeamMember(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestTeamMember(id);
@@ -260,6 +259,32 @@ public class ContestTeamMemberLocalServiceUtil {
         java.lang.Long contestPk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().findForContest(contestPk);
+    }
+
+    public static void store(
+        com.ext.portlet.contests.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(contestTeamMember);
+    }
+
+    public static void delete(
+        com.ext.portlet.contests.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().delete(contestTeamMember);
+    }
+
+    public static com.liferay.portal.model.User getUser(
+        com.ext.portlet.contests.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUser(contestTeamMember);
+    }
+
+    public static com.ext.portlet.contests.model.Contest getContest(
+        com.ext.portlet.contests.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContest(contestTeamMember);
     }
 
     public static void clearService() {

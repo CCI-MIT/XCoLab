@@ -23,28 +23,4 @@ public class ActivitySubscriptionImpl extends ActivitySubscriptionBaseImpl {
     public ActivitySubscriptionImpl() {
     }
 
-    public void store() throws SystemException {
-        if (isNew()) {
-            ActivitySubscriptionLocalServiceUtil.addActivitySubscription(this);
-        }
-        else {
-            ActivitySubscriptionLocalServiceUtil.updateActivitySubscription(this);
-        }
-    }
-    
-    public ICollabActivityInterpreter getInterpreter() {
-        return ActivitySubscriptionLocalServiceUtil.getInterpreterForClass(getClassNameId());   
-    }
-    
-    public String getName() {
-        return getInterpreter().getName(getClassNameId(), getClassPK(), getType(), getExtraData());
-    }
-    
-    public SubscriptionType getSubscriptionType() {
-        return SubscriptionType.getSubscriptionType(getInterpreter());
-    }
-    
-    public void delete() throws SystemException {
-        ActivitySubscriptionLocalServiceUtil.deleteActivitySubscription(this);
-    }
 }

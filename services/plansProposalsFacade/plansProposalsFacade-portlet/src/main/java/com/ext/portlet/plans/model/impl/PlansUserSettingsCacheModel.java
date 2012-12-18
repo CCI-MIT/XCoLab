@@ -17,13 +17,13 @@ import java.io.Serializable;
  */
 public class PlansUserSettingsCacheModel implements CacheModel<PlansUserSettings>,
     Serializable {
-    public Long planUserSettingsId;
-    public Long userId;
-    public Long planTypeId;
+    public long planUserSettingsId;
+    public long userId;
+    public long planTypeId;
     public String sortColumn;
     public String sortDirection;
-    public Boolean filterEnabled;
-    public Boolean filterPositionsAll;
+    public boolean filterEnabled;
+    public boolean filterPositionsAll;
 
     @Override
     public String toString() {

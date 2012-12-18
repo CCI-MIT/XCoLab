@@ -342,7 +342,7 @@ public abstract class PlanColumnSettingsLocalServiceBaseImpl
      * @return the new plan column settings
      */
     public PlanColumnSettings createPlanColumnSettings(
-        Long planColumnSettingsId) {
+        long planColumnSettingsId) {
         return planColumnSettingsPersistence.create(planColumnSettingsId);
     }
 
@@ -353,7 +353,7 @@ public abstract class PlanColumnSettingsLocalServiceBaseImpl
      * @throws PortalException if a plan column settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanColumnSettings(Long planColumnSettingsId)
+    public void deletePlanColumnSettings(long planColumnSettingsId)
         throws PortalException, SystemException {
         PlanColumnSettings planColumnSettings = planColumnSettingsPersistence.remove(planColumnSettingsId);
 
@@ -459,7 +459,7 @@ public abstract class PlanColumnSettingsLocalServiceBaseImpl
         return planColumnSettingsPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanColumnSettings fetchPlanColumnSettings(Long planColumnSettingsId)
+    public PlanColumnSettings fetchPlanColumnSettings(long planColumnSettingsId)
         throws SystemException {
         return planColumnSettingsPersistence.fetchByPrimaryKey(planColumnSettingsId);
     }
@@ -472,7 +472,7 @@ public abstract class PlanColumnSettingsLocalServiceBaseImpl
      * @throws PortalException if a plan column settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanColumnSettings getPlanColumnSettings(Long planColumnSettingsId)
+    public PlanColumnSettings getPlanColumnSettings(long planColumnSettingsId)
         throws PortalException, SystemException {
         return planColumnSettingsPersistence.findByPrimaryKey(planColumnSettingsId);
     }

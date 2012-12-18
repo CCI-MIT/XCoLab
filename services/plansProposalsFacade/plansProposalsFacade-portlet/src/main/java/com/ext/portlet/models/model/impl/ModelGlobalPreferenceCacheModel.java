@@ -16,12 +16,12 @@ import java.io.Serializable;
  */
 public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPreference>,
     Serializable {
-    public Long modelGlobalPreferencePK;
-    public Long modelId;
-    public Boolean visible;
-    public Integer weight;
-    public Long expertEvaluationPageId;
-    public Long modelCategoryId;
+    public long modelGlobalPreferencePK;
+    public long modelId;
+    public boolean visible;
+    public int weight;
+    public long expertEvaluationPageId;
+    public long modelCategoryId;
 
     @Override
     public String toString() {

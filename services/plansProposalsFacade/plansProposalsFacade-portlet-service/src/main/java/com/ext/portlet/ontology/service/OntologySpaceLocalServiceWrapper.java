@@ -41,7 +41,7 @@ public class OntologySpaceLocalServiceWrapper
     * @return the new ontology space
     */
     public com.ext.portlet.ontology.model.OntologySpace createOntologySpace(
-        java.lang.Long id) {
+        long id) {
         return _ontologySpaceLocalService.createOntologySpace(id);
     }
 
@@ -52,7 +52,7 @@ public class OntologySpaceLocalServiceWrapper
     * @throws PortalException if a ontology space with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteOntologySpace(java.lang.Long id)
+    public void deleteOntologySpace(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _ontologySpaceLocalService.deleteOntologySpace(id);
@@ -142,8 +142,7 @@ public class OntologySpaceLocalServiceWrapper
     }
 
     public com.ext.portlet.ontology.model.OntologySpace fetchOntologySpace(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return _ontologySpaceLocalService.fetchOntologySpace(id);
     }
 
@@ -156,7 +155,7 @@ public class OntologySpaceLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.ontology.model.OntologySpace getOntologySpace(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _ontologySpaceLocalService.getOntologySpace(id);
@@ -249,6 +248,17 @@ public class OntologySpaceLocalServiceWrapper
         java.lang.String name, java.lang.String description)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _ontologySpaceLocalService.createSpace(name, description);
+    }
+
+    public void store(com.ext.portlet.ontology.model.OntologySpace space)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _ontologySpaceLocalService.store(space);
+    }
+
+    public com.ext.portlet.ontology.model.OntologyTerm getTopTerm(
+        com.ext.portlet.ontology.model.OntologySpace space)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _ontologySpaceLocalService.getTopTerm(space);
     }
 
     /**

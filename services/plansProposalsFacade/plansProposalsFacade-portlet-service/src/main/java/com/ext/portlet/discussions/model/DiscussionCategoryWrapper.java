@@ -32,7 +32,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @return the primary key of this discussion category
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _discussionCategory.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @param primaryKey the primary key of this discussion category
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _discussionCategory.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @return the pk of this discussion category
     */
-    public java.lang.Long getPk() {
+    public long getPk() {
         return _discussionCategory.getPk();
     }
 
@@ -59,7 +59,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @param pk the pk of this discussion category
     */
-    public void setPk(java.lang.Long pk) {
+    public void setPk(long pk) {
         _discussionCategory.setPk(pk);
     }
 
@@ -68,7 +68,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @return the category ID of this discussion category
     */
-    public java.lang.Long getCategoryId() {
+    public long getCategoryId() {
         return _discussionCategory.getCategoryId();
     }
 
@@ -77,7 +77,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @param categoryId the category ID of this discussion category
     */
-    public void setCategoryId(java.lang.Long categoryId) {
+    public void setCategoryId(long categoryId) {
         _discussionCategory.setCategoryId(categoryId);
     }
 
@@ -86,7 +86,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @return the category group ID of this discussion category
     */
-    public java.lang.Long getCategoryGroupId() {
+    public long getCategoryGroupId() {
         return _discussionCategory.getCategoryGroupId();
     }
 
@@ -95,7 +95,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @param categoryGroupId the category group ID of this discussion category
     */
-    public void setCategoryGroupId(java.lang.Long categoryGroupId) {
+    public void setCategoryGroupId(long categoryGroupId) {
         _discussionCategory.setCategoryGroupId(categoryGroupId);
     }
 
@@ -104,7 +104,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @return the author ID of this discussion category
     */
-    public java.lang.Long getAuthorId() {
+    public long getAuthorId() {
         return _discussionCategory.getAuthorId();
     }
 
@@ -113,7 +113,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @param authorId the author ID of this discussion category
     */
-    public void setAuthorId(java.lang.Long authorId) {
+    public void setAuthorId(long authorId) {
         _discussionCategory.setAuthorId(authorId);
     }
 
@@ -194,7 +194,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @return the threads count of this discussion category
     */
-    public java.lang.Integer getThreadsCount() {
+    public int getThreadsCount() {
         return _discussionCategory.getThreadsCount();
     }
 
@@ -203,7 +203,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @param threadsCount the threads count of this discussion category
     */
-    public void setThreadsCount(java.lang.Integer threadsCount) {
+    public void setThreadsCount(int threadsCount) {
         _discussionCategory.setThreadsCount(threadsCount);
     }
 
@@ -230,7 +230,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @return the last activity author ID of this discussion category
     */
-    public java.lang.Long getLastActivityAuthorId() {
+    public long getLastActivityAuthorId() {
         return _discussionCategory.getLastActivityAuthorId();
     }
 
@@ -239,7 +239,7 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     *
     * @param lastActivityAuthorId the last activity author ID of this discussion category
     */
-    public void setLastActivityAuthorId(java.lang.Long lastActivityAuthorId) {
+    public void setLastActivityAuthorId(long lastActivityAuthorId) {
         _discussionCategory.setLastActivityAuthorId(lastActivityAuthorId);
     }
 
@@ -314,51 +314,6 @@ public class DiscussionCategoryWrapper implements DiscussionCategory,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _discussionCategory.persist();
-    }
-
-    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> getThreads()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategory.getThreads();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage addThread(
-        java.lang.String subject, java.lang.String body,
-        com.liferay.portal.model.User author)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategory.addThread(subject, body, author);
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _discussionCategory.store();
-    }
-
-    public com.liferay.portal.model.User getAuthor()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategory.getAuthor();
-    }
-
-    public com.liferay.portal.model.User getLastActivityAuthor()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategory.getLastActivityAuthor();
-    }
-
-    public void delete()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _discussionCategory.delete();
-    }
-
-    public void update(java.lang.String name, java.lang.String description)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _discussionCategory.update(name, description);
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getCategoryGroup()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategory.getCategoryGroup();
     }
 
     /**

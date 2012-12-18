@@ -47,7 +47,7 @@ public class MessagingUserPreferencesLocalServiceUtil {
     * @return the new messaging user preferences
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences createMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId) {
+        long messagingPreferencesId) {
         return getService()
                    .createMessagingUserPreferences(messagingPreferencesId);
     }
@@ -60,7 +60,7 @@ public class MessagingUserPreferencesLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static void deleteMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteMessagingUserPreferences(messagingPreferencesId);
@@ -150,7 +150,7 @@ public class MessagingUserPreferencesLocalServiceUtil {
     }
 
     public static com.ext.portlet.messaging.model.MessagingUserPreferences fetchMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchMessagingUserPreferences(messagingPreferencesId);
     }
@@ -164,7 +164,7 @@ public class MessagingUserPreferencesLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences getMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getMessagingUserPreferences(messagingPreferencesId);

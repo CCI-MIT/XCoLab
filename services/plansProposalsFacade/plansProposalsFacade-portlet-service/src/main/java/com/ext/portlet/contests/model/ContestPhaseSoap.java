@@ -14,8 +14,8 @@ import java.util.List;
  * @generated
  */
 public class ContestPhaseSoap implements Serializable {
-    private Long _ContestPhasePK;
-    private Long _ContestPK;
+    private long _ContestPhasePK;
+    private long _ContestPK;
     private String _ContestPhaseName;
     private String _ContestPhaseDescription;
     private String _ContestPhaseStatus;
@@ -24,7 +24,7 @@ public class ContestPhaseSoap implements Serializable {
     private String _nextStatus;
     private Date _created;
     private Date _updated;
-    private Long _authorId;
+    private long _authorId;
 
     public ContestPhaseSoap() {
     }
@@ -83,27 +83,27 @@ public class ContestPhaseSoap implements Serializable {
         return soapModels.toArray(new ContestPhaseSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _ContestPhasePK;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setContestPhasePK(pk);
     }
 
-    public Long getContestPhasePK() {
+    public long getContestPhasePK() {
         return _ContestPhasePK;
     }
 
-    public void setContestPhasePK(Long ContestPhasePK) {
+    public void setContestPhasePK(long ContestPhasePK) {
         _ContestPhasePK = ContestPhasePK;
     }
 
-    public Long getContestPK() {
+    public long getContestPK() {
         return _ContestPK;
     }
 
-    public void setContestPK(Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _ContestPK = ContestPK;
     }
 
@@ -171,11 +171,11 @@ public class ContestPhaseSoap implements Serializable {
         _updated = updated;
     }
 
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return _authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 }

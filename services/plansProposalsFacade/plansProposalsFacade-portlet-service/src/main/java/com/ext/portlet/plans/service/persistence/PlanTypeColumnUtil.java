@@ -125,7 +125,7 @@ public class PlanTypeColumnUtil {
     * @return the new plan type column
     */
     public static com.ext.portlet.plans.model.PlanTypeColumn create(
-        java.lang.Long planTypeColumnId) {
+        long planTypeColumnId) {
         return getPersistence().create(planTypeColumnId);
     }
 
@@ -138,7 +138,7 @@ public class PlanTypeColumnUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTypeColumn remove(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.ext.portlet.plans.NoSuchPlanTypeColumnException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planTypeColumnId);
@@ -159,7 +159,7 @@ public class PlanTypeColumnUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTypeColumn findByPrimaryKey(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.ext.portlet.plans.NoSuchPlanTypeColumnException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planTypeColumnId);
@@ -173,7 +173,7 @@ public class PlanTypeColumnUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTypeColumn fetchByPrimaryKey(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planTypeColumnId);
     }

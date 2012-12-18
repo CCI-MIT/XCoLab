@@ -49,7 +49,7 @@ public interface DiscussionMessageFlagLocalService
     * @return the new discussion message flag
     */
     public com.ext.portlet.discussions.model.DiscussionMessageFlag createDiscussionMessageFlag(
-        java.lang.Long pk);
+        long pk);
 
     /**
     * Deletes the discussion message flag with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface DiscussionMessageFlagLocalService
     * @throws PortalException if a discussion message flag with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteDiscussionMessageFlag(java.lang.Long pk)
+    public void deleteDiscussionMessageFlag(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,8 +136,7 @@ public interface DiscussionMessageFlagLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.discussions.model.DiscussionMessageFlag fetchDiscussionMessageFlag(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long pk) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the discussion message flag with the primary key.
@@ -149,7 +148,7 @@ public interface DiscussionMessageFlagLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.discussions.model.DiscussionMessageFlag getDiscussionMessageFlag(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

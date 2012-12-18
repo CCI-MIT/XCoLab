@@ -340,7 +340,7 @@ public abstract class PlanPositionsLocalServiceBaseImpl
      * @param id the primary key for the new plan positions
      * @return the new plan positions
      */
-    public PlanPositions createPlanPositions(Long id) {
+    public PlanPositions createPlanPositions(long id) {
         return planPositionsPersistence.create(id);
     }
 
@@ -351,7 +351,7 @@ public abstract class PlanPositionsLocalServiceBaseImpl
      * @throws PortalException if a plan positions with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanPositions(Long id)
+    public void deletePlanPositions(long id)
         throws PortalException, SystemException {
         PlanPositions planPositions = planPositionsPersistence.remove(id);
 
@@ -457,7 +457,7 @@ public abstract class PlanPositionsLocalServiceBaseImpl
         return planPositionsPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanPositions fetchPlanPositions(Long id) throws SystemException {
+    public PlanPositions fetchPlanPositions(long id) throws SystemException {
         return planPositionsPersistence.fetchByPrimaryKey(id);
     }
 
@@ -469,7 +469,7 @@ public abstract class PlanPositionsLocalServiceBaseImpl
      * @throws PortalException if a plan positions with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions getPlanPositions(Long id)
+    public PlanPositions getPlanPositions(long id)
         throws PortalException, SystemException {
         return planPositionsPersistence.findByPrimaryKey(id);
     }

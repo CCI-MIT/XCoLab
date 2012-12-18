@@ -32,7 +32,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the primary key of this contest phase
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _contestPhase.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param primaryKey the primary key of this contest phase
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _contestPhase.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the contest phase p k of this contest phase
     */
-    public java.lang.Long getContestPhasePK() {
+    public long getContestPhasePK() {
         return _contestPhase.getContestPhasePK();
     }
 
@@ -59,7 +59,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param ContestPhasePK the contest phase p k of this contest phase
     */
-    public void setContestPhasePK(java.lang.Long ContestPhasePK) {
+    public void setContestPhasePK(long ContestPhasePK) {
         _contestPhase.setContestPhasePK(ContestPhasePK);
     }
 
@@ -68,7 +68,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the contest p k of this contest phase
     */
-    public java.lang.Long getContestPK() {
+    public long getContestPK() {
         return _contestPhase.getContestPK();
     }
 
@@ -77,7 +77,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param ContestPK the contest p k of this contest phase
     */
-    public void setContestPK(java.lang.Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _contestPhase.setContestPK(ContestPK);
     }
 
@@ -231,7 +231,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the author ID of this contest phase
     */
-    public java.lang.Long getAuthorId() {
+    public long getAuthorId() {
         return _contestPhase.getAuthorId();
     }
 
@@ -240,7 +240,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param authorId the author ID of this contest phase
     */
-    public void setAuthorId(java.lang.Long authorId) {
+    public void setAuthorId(long authorId) {
         _contestPhase.setAuthorId(authorId);
     }
 
@@ -315,48 +315,6 @@ public class ContestPhaseWrapper implements ContestPhase,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestPhase.persist();
-    }
-
-    public com.ext.portlet.contests.model.Contest getContest()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhase.getContest();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanItem> getPlans()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhase.getPlans();
-    }
-
-    public com.ext.portlet.contests.model.ContestStatus getContestStatus() {
-        return _contestPhase.getContestStatus();
-    }
-
-    public java.util.List<java.lang.String> getPhaseColumns()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhase.getPhaseColumns();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestPhaseColumn> getPhaseColumnsRaw()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhase.getPhaseColumnsRaw();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getPreviousPhases()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhase.getPreviousPhases();
-    }
-
-    public com.ext.portlet.contests.model.ContestPhase getNextContestPhase()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhase.getNextContestPhase();
-    }
-
-    public boolean getPhaseActive() {
-        return _contestPhase.getPhaseActive();
     }
 
     /**

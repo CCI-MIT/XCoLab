@@ -226,7 +226,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @param id the primary key for the new focus area
      * @return the new focus area
      */
-    public FocusArea create(Long id) {
+    public FocusArea create(long id) {
         FocusArea focusArea = new FocusAreaImpl();
 
         focusArea.setNew(true);
@@ -243,9 +243,9 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @throws com.ext.portlet.ontology.NoSuchFocusAreaException if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public FocusArea remove(Long id)
+    public FocusArea remove(long id)
         throws NoSuchFocusAreaException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -389,7 +389,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
     @Override
     public FocusArea findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -400,7 +400,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @throws com.ext.portlet.ontology.NoSuchFocusAreaException if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public FocusArea findByPrimaryKey(Long id)
+    public FocusArea findByPrimaryKey(long id)
         throws NoSuchFocusAreaException, SystemException {
         FocusArea focusArea = fetchByPrimaryKey(id);
 
@@ -426,7 +426,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
     @Override
     public FocusArea fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -436,7 +436,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @return the focus area, or <code>null</code> if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public FocusArea fetchByPrimaryKey(Long id) throws SystemException {
+    public FocusArea fetchByPrimaryKey(long id) throws SystemException {
         FocusArea focusArea = (FocusArea) EntityCacheUtil.getResult(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
                 FocusAreaImpl.class, id);
 

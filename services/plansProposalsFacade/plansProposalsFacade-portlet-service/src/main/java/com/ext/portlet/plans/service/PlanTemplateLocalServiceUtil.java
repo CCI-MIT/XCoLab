@@ -47,7 +47,7 @@ public class PlanTemplateLocalServiceUtil {
     * @return the new plan template
     */
     public static com.ext.portlet.plans.model.PlanTemplate createPlanTemplate(
-        java.lang.Long id) {
+        long id) {
         return getService().createPlanTemplate(id);
     }
 
@@ -58,7 +58,7 @@ public class PlanTemplateLocalServiceUtil {
     * @throws PortalException if a plan template with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanTemplate(java.lang.Long id)
+    public static void deletePlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanTemplate(id);
@@ -148,8 +148,7 @@ public class PlanTemplateLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanTemplate fetchPlanTemplate(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanTemplate(id);
     }
 
@@ -162,7 +161,7 @@ public class PlanTemplateLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanTemplate(id);
@@ -247,6 +246,42 @@ public class PlanTemplateLocalServiceUtil {
     */
     public static void setBeanIdentifier(java.lang.String beanIdentifier) {
         getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static void store(com.ext.portlet.plans.model.PlanTemplate template)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(template);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanSectionDefinition> getSections(
+        com.ext.portlet.plans.model.PlanTemplate template)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getSections(template);
+    }
+
+    public static void addSection(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().addSection(template, section);
+    }
+
+    public static void removeSection(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().removeSection(template, section);
+    }
+
+    public static void updateSectionWeight(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section, int weight)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().updateSectionWeight(template, section, weight);
     }
 
     public static void clearService() {

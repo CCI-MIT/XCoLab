@@ -97,7 +97,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanPosition> findByPositionId(
-        java.lang.Long positionId)
+        long positionId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -114,7 +114,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanPosition> findByPositionId(
-        java.lang.Long positionId, int start, int end)
+        long positionId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -132,7 +132,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanPosition> findByPositionId(
-        java.lang.Long positionId, int start, int end,
+        long positionId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -150,7 +150,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanPosition findByPositionId_First(
-        java.lang.Long positionId,
+        long positionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanPositionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -169,7 +169,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanPosition findByPositionId_Last(
-        java.lang.Long positionId,
+        long positionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanPositionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -189,7 +189,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanPosition[] findByPositionId_PrevAndNext(
-        PlanPositionPK planPositionPK, java.lang.Long positionId,
+        PlanPositionPK planPositionPK, long positionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanPositionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -243,7 +243,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @param positionId the position ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPositionId(java.lang.Long positionId)
+    public void removeByPositionId(long positionId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -261,7 +261,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @return the number of matching plan positions
     * @throws SystemException if a system exception occurred
     */
-    public int countByPositionId(java.lang.Long positionId)
+    public int countByPositionId(long positionId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

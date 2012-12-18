@@ -341,7 +341,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @param id the primary key for the new plan description
      * @return the new plan description
      */
-    public PlanDescription create(Long id) {
+    public PlanDescription create(long id) {
         PlanDescription planDescription = new PlanDescriptionImpl();
 
         planDescription.setNew(true);
@@ -358,9 +358,9 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @throws com.ext.portlet.plans.NoSuchPlanDescriptionException if a plan description with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription remove(Long id)
+    public PlanDescription remove(long id)
         throws NoSuchPlanDescriptionException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -564,7 +564,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
     @Override
     public PlanDescription findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -575,7 +575,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @throws com.ext.portlet.plans.NoSuchPlanDescriptionException if a plan description with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription findByPrimaryKey(Long id)
+    public PlanDescription findByPrimaryKey(long id)
         throws NoSuchPlanDescriptionException, SystemException {
         PlanDescription planDescription = fetchByPrimaryKey(id);
 
@@ -601,7 +601,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
     @Override
     public PlanDescription fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -611,7 +611,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the plan description, or <code>null</code> if a plan description with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanDescription fetchByPrimaryKey(long id) throws SystemException {
         PlanDescription planDescription = (PlanDescription) EntityCacheUtil.getResult(PlanDescriptionModelImpl.ENTITY_CACHE_ENABLED,
                 PlanDescriptionImpl.class, id);
 
@@ -656,7 +656,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @throws com.ext.portlet.plans.NoSuchPlanDescriptionException if a matching plan description could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription findByCurrentByPlanId(Long planId)
+    public PlanDescription findByCurrentByPlanId(long planId)
         throws NoSuchPlanDescriptionException, SystemException {
         PlanDescription planDescription = fetchByCurrentByPlanId(planId);
 
@@ -687,7 +687,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription fetchByCurrentByPlanId(Long planId)
+    public PlanDescription fetchByCurrentByPlanId(long planId)
         throws SystemException {
         return fetchByCurrentByPlanId(planId, true);
     }
@@ -700,7 +700,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription fetchByCurrentByPlanId(Long planId,
+    public PlanDescription fetchByCurrentByPlanId(long planId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
@@ -731,7 +731,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 List<PlanDescription> list = q.list();
 
@@ -782,7 +782,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @throws com.ext.portlet.plans.NoSuchPlanDescriptionException if a matching plan description could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription findByPlanIdPlanVersion(Long planId, Long planVersion)
+    public PlanDescription findByPlanIdPlanVersion(long planId, long planVersion)
         throws NoSuchPlanDescriptionException, SystemException {
         PlanDescription planDescription = fetchByPlanIdPlanVersion(planId,
                 planVersion);
@@ -818,8 +818,8 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription fetchByPlanIdPlanVersion(Long planId,
-        Long planVersion) throws SystemException {
+    public PlanDescription fetchByPlanIdPlanVersion(long planId,
+        long planVersion) throws SystemException {
         return fetchByPlanIdPlanVersion(planId, planVersion, true);
     }
 
@@ -832,8 +832,8 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription fetchByPlanIdPlanVersion(Long planId,
-        Long planVersion, boolean retrieveFromCache) throws SystemException {
+    public PlanDescription fetchByPlanIdPlanVersion(long planId,
+        long planVersion, boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId, planVersion };
 
         Object result = null;
@@ -865,9 +865,9 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planVersion.longValue());
+                qPos.add(planVersion);
 
                 List<PlanDescription> list = q.list();
 
@@ -917,7 +917,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the matching plan descriptions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanDescription> findByAllByPlanId(Long planId)
+    public List<PlanDescription> findByAllByPlanId(long planId)
         throws SystemException {
         return findByAllByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -936,7 +936,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the range of matching plan descriptions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanDescription> findByAllByPlanId(Long planId, int start,
+    public List<PlanDescription> findByAllByPlanId(long planId, int start,
         int end) throws SystemException {
         return findByAllByPlanId(planId, start, end, null);
     }
@@ -955,7 +955,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the ordered range of matching plan descriptions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanDescription> findByAllByPlanId(Long planId, int start,
+    public List<PlanDescription> findByAllByPlanId(long planId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1005,7 +1005,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanDescription>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -1040,7 +1040,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @throws com.ext.portlet.plans.NoSuchPlanDescriptionException if a matching plan description could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription findByAllByPlanId_First(Long planId,
+    public PlanDescription findByAllByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanDescriptionException, SystemException {
         List<PlanDescription> list = findByAllByPlanId(planId, 0, 1,
@@ -1075,7 +1075,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @throws com.ext.portlet.plans.NoSuchPlanDescriptionException if a matching plan description could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription findByAllByPlanId_Last(Long planId,
+    public PlanDescription findByAllByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanDescriptionException, SystemException {
         int count = countByAllByPlanId(planId);
@@ -1113,8 +1113,8 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @throws com.ext.portlet.plans.NoSuchPlanDescriptionException if a plan description with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription[] findByAllByPlanId_PrevAndNext(Long id,
-        Long planId, OrderByComparator orderByComparator)
+    public PlanDescription[] findByAllByPlanId_PrevAndNext(long id,
+        long planId, OrderByComparator orderByComparator)
         throws NoSuchPlanDescriptionException, SystemException {
         PlanDescription planDescription = findByPrimaryKey(id);
 
@@ -1142,7 +1142,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
     }
 
     protected PlanDescription getByAllByPlanId_PrevAndNext(Session session,
-        PlanDescription planDescription, Long planId,
+        PlanDescription planDescription, long planId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1219,7 +1219,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planDescription);
@@ -1353,7 +1353,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByCurrentByPlanId(Long planId)
+    public void removeByCurrentByPlanId(long planId)
         throws NoSuchPlanDescriptionException, SystemException {
         PlanDescription planDescription = findByCurrentByPlanId(planId);
 
@@ -1367,7 +1367,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @param planVersion the plan version
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanIdPlanVersion(Long planId, Long planVersion)
+    public void removeByPlanIdPlanVersion(long planId, long planVersion)
         throws NoSuchPlanDescriptionException, SystemException {
         PlanDescription planDescription = findByPlanIdPlanVersion(planId,
                 planVersion);
@@ -1381,7 +1381,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByAllByPlanId(Long planId) throws SystemException {
+    public void removeByAllByPlanId(long planId) throws SystemException {
         for (PlanDescription planDescription : findByAllByPlanId(planId)) {
             remove(planDescription);
         }
@@ -1405,7 +1405,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the number of matching plan descriptions
      * @throws SystemException if a system exception occurred
      */
-    public int countByCurrentByPlanId(Long planId) throws SystemException {
+    public int countByCurrentByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
@@ -1429,7 +1429,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1457,7 +1457,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the number of matching plan descriptions
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanIdPlanVersion(Long planId, Long planVersion)
+    public int countByPlanIdPlanVersion(long planId, long planVersion)
         throws SystemException {
         Object[] finderArgs = new Object[] { planId, planVersion };
 
@@ -1484,9 +1484,9 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planVersion.longValue());
+                qPos.add(planVersion);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1513,7 +1513,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
      * @return the number of matching plan descriptions
      * @throws SystemException if a system exception occurred
      */
-    public int countByAllByPlanId(Long planId) throws SystemException {
+    public int countByAllByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
@@ -1537,7 +1537,7 @@ public class PlanDescriptionPersistenceImpl extends BasePersistenceImpl<PlanDesc
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

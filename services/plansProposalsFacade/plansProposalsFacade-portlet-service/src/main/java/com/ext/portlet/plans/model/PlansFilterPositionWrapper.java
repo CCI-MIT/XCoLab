@@ -51,7 +51,7 @@ public class PlansFilterPositionWrapper implements PlansFilterPosition,
     *
     * @return the user ID of this plans filter position
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _plansFilterPosition.getUserId();
     }
 
@@ -60,8 +60,28 @@ public class PlansFilterPositionWrapper implements PlansFilterPosition,
     *
     * @param userId the user ID of this plans filter position
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _plansFilterPosition.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this plans filter position.
+    *
+    * @return the user uuid of this plans filter position
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _plansFilterPosition.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this plans filter position.
+    *
+    * @param userUuid the user uuid of this plans filter position
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _plansFilterPosition.setUserUuid(userUuid);
     }
 
     /**
@@ -69,7 +89,7 @@ public class PlansFilterPositionWrapper implements PlansFilterPosition,
     *
     * @return the plan type ID of this plans filter position
     */
-    public java.lang.Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _plansFilterPosition.getPlanTypeId();
     }
 
@@ -78,7 +98,7 @@ public class PlansFilterPositionWrapper implements PlansFilterPosition,
     *
     * @param planTypeId the plan type ID of this plans filter position
     */
-    public void setPlanTypeId(java.lang.Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _plansFilterPosition.setPlanTypeId(planTypeId);
     }
 
@@ -87,7 +107,7 @@ public class PlansFilterPositionWrapper implements PlansFilterPosition,
     *
     * @return the position ID of this plans filter position
     */
-    public java.lang.Long getPositionId() {
+    public long getPositionId() {
         return _plansFilterPosition.getPositionId();
     }
 
@@ -96,7 +116,7 @@ public class PlansFilterPositionWrapper implements PlansFilterPosition,
     *
     * @param positionId the position ID of this plans filter position
     */
-    public void setPositionId(java.lang.Long positionId) {
+    public void setPositionId(long positionId) {
         _plansFilterPosition.setPositionId(positionId);
     }
 

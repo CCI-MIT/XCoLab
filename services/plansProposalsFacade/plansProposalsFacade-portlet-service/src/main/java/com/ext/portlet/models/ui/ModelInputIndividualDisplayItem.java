@@ -30,7 +30,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem {
 
 
     public ModelInputIndividualDisplayItem(ModelInputItem item) throws SystemException, IOException {
-        super(item.getModel(),item.getMetaData());
+        super(ModelInputItemLocalServiceUtil.getModel(item),ModelInputItemLocalServiceUtil.getMetaData(item));
         this.item = item;
     }
 
@@ -76,7 +76,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem {
      * @return
      */
     public int getOrder() {
-        return item.getDisplayItemOrder()==null?-1:item.getDisplayItemOrder();
+        return item.getDisplayItemOrder();
     }
 
     /**
@@ -141,7 +141,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem {
     }
 
     public String getProperty(ModelWidgetProperty prop) {
-        return item.getPropertyMap().get(prop.toString());
+        return ModelInputItemLocalServiceUtil.getPropertyMap(item).get(prop.toString());
     }
 
 }

@@ -32,7 +32,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @return the primary key of this plan attribute
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planAttribute.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @param primaryKey the primary key of this plan attribute
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planAttribute.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @return the attribute ID of this plan attribute
     */
-    public java.lang.Long getAttributeId() {
+    public long getAttributeId() {
         return _planAttribute.getAttributeId();
     }
 
@@ -59,7 +59,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @param attributeId the attribute ID of this plan attribute
     */
-    public void setAttributeId(java.lang.Long attributeId) {
+    public void setAttributeId(long attributeId) {
         _planAttribute.setAttributeId(attributeId);
     }
 
@@ -68,7 +68,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @return the plan ID of this plan attribute
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planAttribute.getPlanId();
     }
 
@@ -77,7 +77,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @param planId the plan ID of this plan attribute
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planAttribute.setPlanId(planId);
     }
 
@@ -188,10 +188,6 @@ public class PlanAttributeWrapper implements PlanAttribute,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planAttribute.persist();
-    }
-
-    public java.lang.Object getTypedValue() {
-        return _planAttribute.getTypedValue();
     }
 
     /**

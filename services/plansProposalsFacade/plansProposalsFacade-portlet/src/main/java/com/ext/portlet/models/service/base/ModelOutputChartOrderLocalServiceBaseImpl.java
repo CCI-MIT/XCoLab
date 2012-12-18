@@ -177,7 +177,7 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
      * @return the new model output chart order
      */
     public ModelOutputChartOrder createModelOutputChartOrder(
-        Long modelOutputChartOrderPK) {
+        long modelOutputChartOrderPK) {
         return modelOutputChartOrderPersistence.create(modelOutputChartOrderPK);
     }
 
@@ -188,7 +188,7 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
      * @throws PortalException if a model output chart order with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteModelOutputChartOrder(Long modelOutputChartOrderPK)
+    public void deleteModelOutputChartOrder(long modelOutputChartOrderPK)
         throws PortalException, SystemException {
         ModelOutputChartOrder modelOutputChartOrder = modelOutputChartOrderPersistence.remove(modelOutputChartOrderPK);
 
@@ -295,7 +295,7 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
     }
 
     public ModelOutputChartOrder fetchModelOutputChartOrder(
-        Long modelOutputChartOrderPK) throws SystemException {
+        long modelOutputChartOrderPK) throws SystemException {
         return modelOutputChartOrderPersistence.fetchByPrimaryKey(modelOutputChartOrderPK);
     }
 
@@ -308,7 +308,7 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
      * @throws SystemException if a system exception occurred
      */
     public ModelOutputChartOrder getModelOutputChartOrder(
-        Long modelOutputChartOrderPK) throws PortalException, SystemException {
+        long modelOutputChartOrderPK) throws PortalException, SystemException {
         return modelOutputChartOrderPersistence.findByPrimaryKey(modelOutputChartOrderPK);
     }
 

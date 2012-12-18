@@ -137,12 +137,12 @@ public class PlansFilterPositionUtil {
     *
     * @param plansFilterPositionPK the primary key of the plans filter position
     * @return the plans filter position that was removed
-    * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a plans filter position with the primary key could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansFilterPosition remove(
         PlansFilterPositionPK plansFilterPositionPK)
-        throws com.ext.portlet.plans.NoSuchFilterPositionException,
+        throws com.ext.portlet.plans.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(plansFilterPositionPK);
     }
@@ -155,16 +155,16 @@ public class PlansFilterPositionUtil {
     }
 
     /**
-    * Returns the plans filter position with the primary key or throws a {@link com.ext.portlet.plans.NoSuchFilterPositionException} if it could not be found.
+    * Returns the plans filter position with the primary key or throws a {@link com.ext.portlet.plans.NoSuchPlansFilterPositionException} if it could not be found.
     *
     * @param plansFilterPositionPK the primary key of the plans filter position
     * @return the plans filter position
-    * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a plans filter position with the primary key could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansFilterPosition findByPrimaryKey(
         PlansFilterPositionPK plansFilterPositionPK)
-        throws com.ext.portlet.plans.NoSuchFilterPositionException,
+        throws com.ext.portlet.plans.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(plansFilterPositionPK);
     }
@@ -191,7 +191,7 @@ public class PlansFilterPositionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlansFilterPosition> findByUserIdPlanTypeId(
-        java.lang.Long userId, java.lang.Long planTypeId)
+        long userId, long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByUserIdPlanTypeId(userId, planTypeId);
     }
@@ -211,7 +211,7 @@ public class PlansFilterPositionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlansFilterPosition> findByUserIdPlanTypeId(
-        java.lang.Long userId, java.lang.Long planTypeId, int start, int end)
+        long userId, long planTypeId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByUserIdPlanTypeId(userId, planTypeId, start, end);
@@ -233,7 +233,7 @@ public class PlansFilterPositionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlansFilterPosition> findByUserIdPlanTypeId(
-        java.lang.Long userId, java.lang.Long planTypeId, int start, int end,
+        long userId, long planTypeId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -252,13 +252,13 @@ public class PlansFilterPositionUtil {
     * @param planTypeId the plan type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching plans filter position
-    * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a matching plans filter position could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a matching plans filter position could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansFilterPosition findByUserIdPlanTypeId_First(
-        java.lang.Long userId, java.lang.Long planTypeId,
+        long userId, long planTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.plans.NoSuchFilterPositionException,
+        throws com.ext.portlet.plans.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByUserIdPlanTypeId_First(userId, planTypeId,
@@ -276,13 +276,13 @@ public class PlansFilterPositionUtil {
     * @param planTypeId the plan type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching plans filter position
-    * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a matching plans filter position could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a matching plans filter position could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansFilterPosition findByUserIdPlanTypeId_Last(
-        java.lang.Long userId, java.lang.Long planTypeId,
+        long userId, long planTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.plans.NoSuchFilterPositionException,
+        throws com.ext.portlet.plans.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByUserIdPlanTypeId_Last(userId, planTypeId,
@@ -301,14 +301,14 @@ public class PlansFilterPositionUtil {
     * @param planTypeId the plan type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next plans filter position
-    * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a plans filter position with the primary key could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansFilterPosition[] findByUserIdPlanTypeId_PrevAndNext(
-        PlansFilterPositionPK plansFilterPositionPK, java.lang.Long userId,
-        java.lang.Long planTypeId,
+        PlansFilterPositionPK plansFilterPositionPK, long userId,
+        long planTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.plans.NoSuchFilterPositionException,
+        throws com.ext.portlet.plans.NoSuchPlansFilterPositionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByUserIdPlanTypeId_PrevAndNext(plansFilterPositionPK,
@@ -371,8 +371,7 @@ public class PlansFilterPositionUtil {
     * @param planTypeId the plan type ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByUserIdPlanTypeId(java.lang.Long userId,
-        java.lang.Long planTypeId)
+    public static void removeByUserIdPlanTypeId(long userId, long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByUserIdPlanTypeId(userId, planTypeId);
     }
@@ -395,8 +394,7 @@ public class PlansFilterPositionUtil {
     * @return the number of matching plans filter positions
     * @throws SystemException if a system exception occurred
     */
-    public static int countByUserIdPlanTypeId(java.lang.Long userId,
-        java.lang.Long planTypeId)
+    public static int countByUserIdPlanTypeId(long userId, long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByUserIdPlanTypeId(userId, planTypeId);
     }

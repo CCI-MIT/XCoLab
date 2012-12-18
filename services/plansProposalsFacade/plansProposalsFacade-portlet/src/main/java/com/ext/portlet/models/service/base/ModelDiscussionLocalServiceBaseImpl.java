@@ -176,7 +176,7 @@ public abstract class ModelDiscussionLocalServiceBaseImpl
      * @param modelDiscussionId the primary key for the new model discussion
      * @return the new model discussion
      */
-    public ModelDiscussion createModelDiscussion(Long modelDiscussionId) {
+    public ModelDiscussion createModelDiscussion(long modelDiscussionId) {
         return modelDiscussionPersistence.create(modelDiscussionId);
     }
 
@@ -187,7 +187,7 @@ public abstract class ModelDiscussionLocalServiceBaseImpl
      * @throws PortalException if a model discussion with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteModelDiscussion(Long modelDiscussionId)
+    public void deleteModelDiscussion(long modelDiscussionId)
         throws PortalException, SystemException {
         ModelDiscussion modelDiscussion = modelDiscussionPersistence.remove(modelDiscussionId);
 
@@ -293,7 +293,7 @@ public abstract class ModelDiscussionLocalServiceBaseImpl
         return modelDiscussionPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ModelDiscussion fetchModelDiscussion(Long modelDiscussionId)
+    public ModelDiscussion fetchModelDiscussion(long modelDiscussionId)
         throws SystemException {
         return modelDiscussionPersistence.fetchByPrimaryKey(modelDiscussionId);
     }
@@ -306,7 +306,7 @@ public abstract class ModelDiscussionLocalServiceBaseImpl
      * @throws PortalException if a model discussion with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion getModelDiscussion(Long modelDiscussionId)
+    public ModelDiscussion getModelDiscussion(long modelDiscussionId)
         throws PortalException, SystemException {
         return modelDiscussionPersistence.findByPrimaryKey(modelDiscussionId);
     }

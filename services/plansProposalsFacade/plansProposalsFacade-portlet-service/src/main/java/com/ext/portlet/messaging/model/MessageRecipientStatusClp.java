@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -14,11 +15,12 @@ import java.lang.reflect.Proxy;
 
 public class MessageRecipientStatusClp extends BaseModelImpl<MessageRecipientStatus>
     implements MessageRecipientStatus {
-    private Long _messageRecipientId;
-    private Long _messageId;
-    private Long _userId;
-    private Boolean _opened;
-    private Boolean _archived;
+    private long _messageRecipientId;
+    private long _messageId;
+    private long _userId;
+    private String _userUuid;
+    private boolean _opened;
+    private boolean _archived;
 
     public MessageRecipientStatusClp() {
     }
@@ -31,11 +33,11 @@ public class MessageRecipientStatusClp extends BaseModelImpl<MessageRecipientSta
         return MessageRecipientStatus.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _messageRecipientId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setMessageRecipientId(primaryKey);
     }
 
@@ -47,43 +49,59 @@ public class MessageRecipientStatusClp extends BaseModelImpl<MessageRecipientSta
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getMessageRecipientId() {
+    public long getMessageRecipientId() {
         return _messageRecipientId;
     }
 
-    public void setMessageRecipientId(Long messageRecipientId) {
+    public void setMessageRecipientId(long messageRecipientId) {
         _messageRecipientId = messageRecipientId;
     }
 
-    public Long getMessageId() {
+    public long getMessageId() {
         return _messageId;
     }
 
-    public void setMessageId(Long messageId) {
+    public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Boolean getOpened() {
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public boolean getOpened() {
         return _opened;
     }
 
-    public void setOpened(Boolean opened) {
+    public boolean isOpened() {
+        return _opened;
+    }
+
+    public void setOpened(boolean opened) {
         _opened = opened;
     }
 
-    public Boolean getArchived() {
+    public boolean getArchived() {
         return _archived;
     }
 
-    public void setArchived(Boolean archived) {
+    public boolean isArchived() {
+        return _archived;
+    }
+
+    public void setArchived(boolean archived) {
         _archived = archived;
     }
 
@@ -149,7 +167,7 @@ public class MessageRecipientStatusClp extends BaseModelImpl<MessageRecipientSta
             return false;
         }
 
-        Long primaryKey = messageRecipientStatus.getPrimaryKey();
+        long primaryKey = messageRecipientStatus.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -160,7 +178,7 @@ public class MessageRecipientStatusClp extends BaseModelImpl<MessageRecipientSta
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

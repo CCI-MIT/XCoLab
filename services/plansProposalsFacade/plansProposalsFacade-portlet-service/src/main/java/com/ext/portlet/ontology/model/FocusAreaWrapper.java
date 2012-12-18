@@ -31,7 +31,7 @@ public class FocusAreaWrapper implements FocusArea, ModelWrapper<FocusArea> {
     *
     * @return the primary key of this focus area
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _focusArea.getPrimaryKey();
     }
 
@@ -40,7 +40,7 @@ public class FocusAreaWrapper implements FocusArea, ModelWrapper<FocusArea> {
     *
     * @param primaryKey the primary key of this focus area
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _focusArea.setPrimaryKey(primaryKey);
     }
 
@@ -49,7 +49,7 @@ public class FocusAreaWrapper implements FocusArea, ModelWrapper<FocusArea> {
     *
     * @return the ID of this focus area
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _focusArea.getId();
     }
 
@@ -58,7 +58,7 @@ public class FocusAreaWrapper implements FocusArea, ModelWrapper<FocusArea> {
     *
     * @param id the ID of this focus area
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _focusArea.setId(id);
     }
 
@@ -151,35 +151,6 @@ public class FocusAreaWrapper implements FocusArea, ModelWrapper<FocusArea> {
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _focusArea.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _focusArea.store();
-    }
-
-    public java.util.List<com.ext.portlet.ontology.model.OntologyTerm> getTerms()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _focusArea.getTerms();
-    }
-
-    public void removeTerm(java.lang.Long termId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _focusArea.removeTerm(termId);
-    }
-
-    public void addTerm(java.lang.Long termId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _focusArea.addTerm(termId);
-    }
-
-    public void tagClass(java.lang.Class clasz, java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _focusArea.tagClass(clasz, pk);
     }
 
     /**

@@ -258,7 +258,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @param modelOutputChartOrderPK the primary key for the new model output chart order
      * @return the new model output chart order
      */
-    public ModelOutputChartOrder create(Long modelOutputChartOrderPK) {
+    public ModelOutputChartOrder create(long modelOutputChartOrderPK) {
         ModelOutputChartOrder modelOutputChartOrder = new ModelOutputChartOrderImpl();
 
         modelOutputChartOrder.setNew(true);
@@ -275,9 +275,9 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @throws com.ext.portlet.models.NoSuchModelOutputChartOrderException if a model output chart order with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputChartOrder remove(Long modelOutputChartOrderPK)
+    public ModelOutputChartOrder remove(long modelOutputChartOrderPK)
         throws NoSuchModelOutputChartOrderException, SystemException {
-        return remove((Serializable) modelOutputChartOrderPK);
+        return remove(Long.valueOf(modelOutputChartOrderPK));
     }
 
     /**
@@ -426,7 +426,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
         modelOutputChartOrderImpl.setModelIndexRangeMessage(modelOutputChartOrder.getModelIndexRangeMessage());
         modelOutputChartOrderImpl.setModelIndexErrorPolicy(modelOutputChartOrder.getModelIndexErrorPolicy());
         modelOutputChartOrderImpl.setModelIndexErrorMessage(modelOutputChartOrder.getModelIndexErrorMessage());
-        modelOutputChartOrderImpl.setModelChartIsVisible(modelOutputChartOrder.getModelChartIsVisible());
+        modelOutputChartOrderImpl.setModelChartIsVisible(modelOutputChartOrder.isModelChartIsVisible());
 
         return modelOutputChartOrderImpl;
     }
@@ -442,7 +442,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
     @Override
     public ModelOutputChartOrder findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -453,7 +453,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @throws com.ext.portlet.models.NoSuchModelOutputChartOrderException if a model output chart order with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputChartOrder findByPrimaryKey(Long modelOutputChartOrderPK)
+    public ModelOutputChartOrder findByPrimaryKey(long modelOutputChartOrderPK)
         throws NoSuchModelOutputChartOrderException, SystemException {
         ModelOutputChartOrder modelOutputChartOrder = fetchByPrimaryKey(modelOutputChartOrderPK);
 
@@ -480,7 +480,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
     @Override
     public ModelOutputChartOrder fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -490,7 +490,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @return the model output chart order, or <code>null</code> if a model output chart order with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputChartOrder fetchByPrimaryKey(Long modelOutputChartOrderPK)
+    public ModelOutputChartOrder fetchByPrimaryKey(long modelOutputChartOrderPK)
         throws SystemException {
         ModelOutputChartOrder modelOutputChartOrder = (ModelOutputChartOrder) EntityCacheUtil.getResult(ModelOutputChartOrderModelImpl.ENTITY_CACHE_ENABLED,
                 ModelOutputChartOrderImpl.class, modelOutputChartOrderPK);
@@ -538,7 +538,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @throws com.ext.portlet.models.NoSuchModelOutputChartOrderException if a matching model output chart order could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputChartOrder findByModelIdAndLabel(Long modelId,
+    public ModelOutputChartOrder findByModelIdAndLabel(long modelId,
         String modelOutputLabel)
         throws NoSuchModelOutputChartOrderException, SystemException {
         ModelOutputChartOrder modelOutputChartOrder = fetchByModelIdAndLabel(modelId,
@@ -575,7 +575,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @return the matching model output chart order, or <code>null</code> if a matching model output chart order could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputChartOrder fetchByModelIdAndLabel(Long modelId,
+    public ModelOutputChartOrder fetchByModelIdAndLabel(long modelId,
         String modelOutputLabel) throws SystemException {
         return fetchByModelIdAndLabel(modelId, modelOutputLabel, true);
     }
@@ -589,7 +589,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @return the matching model output chart order, or <code>null</code> if a matching model output chart order could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputChartOrder fetchByModelIdAndLabel(Long modelId,
+    public ModelOutputChartOrder fetchByModelIdAndLabel(long modelId,
         String modelOutputLabel, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { modelId, modelOutputLabel };
@@ -629,7 +629,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 if (modelOutputLabel != null) {
                     qPos.add(modelOutputLabel);
@@ -794,7 +794,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @param modelOutputLabel the model output label
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelIdAndLabel(Long modelId, String modelOutputLabel)
+    public void removeByModelIdAndLabel(long modelId, String modelOutputLabel)
         throws NoSuchModelOutputChartOrderException, SystemException {
         ModelOutputChartOrder modelOutputChartOrder = findByModelIdAndLabel(modelId,
                 modelOutputLabel);
@@ -821,7 +821,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
      * @return the number of matching model output chart orders
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelIdAndLabel(Long modelId, String modelOutputLabel)
+    public int countByModelIdAndLabel(long modelId, String modelOutputLabel)
         throws SystemException {
         Object[] finderArgs = new Object[] { modelId, modelOutputLabel };
 
@@ -856,7 +856,7 @@ public class ModelOutputChartOrderPersistenceImpl extends BasePersistenceImpl<Mo
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 if (modelOutputLabel != null) {
                     qPos.add(modelOutputLabel);

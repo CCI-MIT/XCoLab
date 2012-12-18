@@ -27,6 +27,11 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
     private MethodKey _getItemsForModelMethodKey17;
     private MethodKey _getItemForMetaDataMethodKey18;
     private MethodKey _getItemForGroupIdMethodKey19;
+    private MethodKey _getMetaDataMethodKey20;
+    private MethodKey _getModelMethodKey21;
+    private MethodKey _getPropertyMapMethodKey22;
+    private MethodKey _savePropertiesMethodKey23;
+    private MethodKey _storeMethodKey24;
 
     public ModelInputItemLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -36,10 +41,10 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
                 com.ext.portlet.models.model.ModelInputItem.class);
 
         _createModelInputItemMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createModelInputItem", java.lang.Long.class);
+                "createModelInputItem", long.class);
 
         _deleteModelInputItemMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteModelInputItem", java.lang.Long.class);
+                "deleteModelInputItem", long.class);
 
         _deleteModelInputItemMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteModelInputItem",
@@ -65,10 +70,10 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchModelInputItemMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchModelInputItem", java.lang.Long.class);
+                "fetchModelInputItem", long.class);
 
         _getModelInputItemMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getModelInputItem", java.lang.Long.class);
+                "getModelInputItem", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -103,6 +108,24 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
 
         _getItemForGroupIdMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getItemForGroupId", java.lang.Long.class);
+
+        _getMetaDataMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getMetaData", com.ext.portlet.models.model.ModelInputItem.class);
+
+        _getModelMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getModel", com.ext.portlet.models.model.ModelInputItem.class);
+
+        _getPropertyMapMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getPropertyMap",
+                com.ext.portlet.models.model.ModelInputItem.class);
+
+        _savePropertiesMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
+                "saveProperties",
+                com.ext.portlet.models.model.ModelInputItem.class,
+                java.util.Map.class);
+
+        _storeMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.models.model.ModelInputItem.class);
     }
 
     public com.ext.portlet.models.model.ModelInputItem addModelInputItem(
@@ -132,11 +155,11 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
     }
 
     public com.ext.portlet.models.model.ModelInputItem createModelInputItem(
-        java.lang.Long modelInputItemPK) {
+        long modelInputItemPK) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createModelInputItemMethodKey1,
-                ClpSerializer.translateInput(modelInputItemPK));
+                modelInputItemPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -152,11 +175,11 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
         return (com.ext.portlet.models.model.ModelInputItem) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteModelInputItem(java.lang.Long modelInputItemPK)
+    public void deleteModelInputItem(long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteModelInputItemMethodKey2,
-                ClpSerializer.translateInput(modelInputItemPK));
+                modelInputItemPK);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -311,12 +334,12 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
     }
 
     public com.ext.portlet.models.model.ModelInputItem fetchModelInputItem(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchModelInputItemMethodKey8,
-                ClpSerializer.translateInput(modelInputItemPK));
+                modelInputItemPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -337,13 +360,13 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
     }
 
     public com.ext.portlet.models.model.ModelInputItem getModelInputItem(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getModelInputItemMethodKey9,
-                ClpSerializer.translateInput(modelInputItemPK));
+                modelInputItemPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -598,6 +621,134 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
         }
 
         return (java.util.List<com.ext.portlet.models.model.ModelInputItem>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public edu.mit.cci.simulation.client.MetaData getMetaData(
+        com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getMetaDataMethodKey20,
+                ClpSerializer.translateInput(item));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof java.io.IOException) {
+                throw (java.io.IOException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (edu.mit.cci.simulation.client.MetaData) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public edu.mit.cci.simulation.client.Simulation getModel(
+        com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getModelMethodKey21,
+                ClpSerializer.translateInput(item));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof java.io.IOException) {
+                throw (java.io.IOException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (edu.mit.cci.simulation.client.Simulation) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.Map<java.lang.String, java.lang.String> getPropertyMap(
+        com.ext.portlet.models.model.ModelInputItem item) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getPropertyMapMethodKey22,
+                ClpSerializer.translateInput(item));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.Map<java.lang.String, java.lang.String>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void saveProperties(
+        com.ext.portlet.models.model.ModelInputItem item,
+        java.util.Map<java.lang.String, java.lang.String> props)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_savePropertiesMethodKey23,
+                ClpSerializer.translateInput(item),
+                ClpSerializer.translateInput(props));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void store(com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey24,
+                ClpSerializer.translateInput(item));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

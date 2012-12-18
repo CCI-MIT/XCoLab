@@ -14,14 +14,14 @@ import java.lang.reflect.Proxy;
 
 public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinition>
     implements PlanSectionDefinition {
-    private Long _id;
+    private long _id;
     private String _adminTitle;
     private String _title;
     private String _defaultText;
     private String _helpText;
-    private Integer _characterLimit;
-    private Long _focusAreaId;
-    private Boolean _locked;
+    private int _characterLimit;
+    private long _focusAreaId;
+    private boolean _locked;
 
     public PlanSectionDefinitionClp() {
     }
@@ -34,11 +34,11 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         return PlanSectionDefinition.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -50,11 +50,11 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
@@ -90,36 +90,32 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         _helpText = helpText;
     }
 
-    public Integer getCharacterLimit() {
+    public int getCharacterLimit() {
         return _characterLimit;
     }
 
-    public void setCharacterLimit(Integer characterLimit) {
+    public void setCharacterLimit(int characterLimit) {
         _characterLimit = characterLimit;
     }
 
-    public Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return _focusAreaId;
     }
 
-    public void setFocusAreaId(Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
     }
 
-    public Boolean getLocked() {
+    public boolean getLocked() {
         return _locked;
     }
 
-    public void setLocked(Boolean locked) {
+    public boolean isLocked() {
+        return _locked;
+    }
+
+    public void setLocked(boolean locked) {
         _locked = locked;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.ontology.model.FocusArea getFocusArea() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -154,7 +150,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     }
 
     public int compareTo(PlanSectionDefinition planSectionDefinition) {
-        Long primaryKey = planSectionDefinition.getPrimaryKey();
+        long primaryKey = planSectionDefinition.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -179,7 +175,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
             return false;
         }
 
-        Long primaryKey = planSectionDefinition.getPrimaryKey();
+        long primaryKey = planSectionDefinition.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -190,7 +186,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

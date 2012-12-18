@@ -272,7 +272,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @param ContestPhasePK the primary key for the new contest phase
      * @return the new contest phase
      */
-    public ContestPhase create(Long ContestPhasePK) {
+    public ContestPhase create(long ContestPhasePK) {
         ContestPhase contestPhase = new ContestPhaseImpl();
 
         contestPhase.setNew(true);
@@ -289,9 +289,9 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @throws com.ext.portlet.contests.NoSuchContestPhaseException if a contest phase with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase remove(Long ContestPhasePK)
+    public ContestPhase remove(long ContestPhasePK)
         throws NoSuchContestPhaseException, SystemException {
-        return remove((Serializable) ContestPhasePK);
+        return remove(Long.valueOf(ContestPhasePK));
     }
 
     /**
@@ -484,7 +484,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
     @Override
     public ContestPhase findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -495,7 +495,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @throws com.ext.portlet.contests.NoSuchContestPhaseException if a contest phase with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase findByPrimaryKey(Long ContestPhasePK)
+    public ContestPhase findByPrimaryKey(long ContestPhasePK)
         throws NoSuchContestPhaseException, SystemException {
         ContestPhase contestPhase = fetchByPrimaryKey(ContestPhasePK);
 
@@ -521,7 +521,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
     @Override
     public ContestPhase fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -531,7 +531,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @return the contest phase, or <code>null</code> if a contest phase with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase fetchByPrimaryKey(Long ContestPhasePK)
+    public ContestPhase fetchByPrimaryKey(long ContestPhasePK)
         throws SystemException {
         ContestPhase contestPhase = (ContestPhase) EntityCacheUtil.getResult(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
                 ContestPhaseImpl.class, ContestPhasePK);
@@ -580,7 +580,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @throws com.ext.portlet.contests.NoSuchContestPhaseException if a matching contest phase could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase findByContestIdStartEnd(Long ContestPK,
+    public ContestPhase findByContestIdStartEnd(long ContestPK,
         Date PhaseStartDate, Date PhaseEndDate)
         throws NoSuchContestPhaseException, SystemException {
         ContestPhase contestPhase = fetchByContestIdStartEnd(ContestPK,
@@ -621,7 +621,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @return the matching contest phase, or <code>null</code> if a matching contest phase could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase fetchByContestIdStartEnd(Long ContestPK,
+    public ContestPhase fetchByContestIdStartEnd(long ContestPK,
         Date PhaseStartDate, Date PhaseEndDate) throws SystemException {
         return fetchByContestIdStartEnd(ContestPK, PhaseStartDate,
             PhaseEndDate, true);
@@ -637,7 +637,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @return the matching contest phase, or <code>null</code> if a matching contest phase could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase fetchByContestIdStartEnd(Long ContestPK,
+    public ContestPhase fetchByContestIdStartEnd(long ContestPK,
         Date PhaseStartDate, Date PhaseEndDate, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] {
@@ -683,7 +683,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(ContestPK.longValue());
+                qPos.add(ContestPK);
 
                 if (PhaseStartDate != null) {
                     qPos.add(CalendarUtil.getTimestamp(PhaseStartDate));
@@ -745,7 +745,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @return the matching contest phases
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestPhase> findByContestId(Long ContestPK)
+    public List<ContestPhase> findByContestId(long ContestPK)
         throws SystemException {
         return findByContestId(ContestPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -764,7 +764,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @return the range of matching contest phases
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestPhase> findByContestId(Long ContestPK, int start, int end)
+    public List<ContestPhase> findByContestId(long ContestPK, int start, int end)
         throws SystemException {
         return findByContestId(ContestPK, start, end, null);
     }
@@ -783,7 +783,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @return the ordered range of matching contest phases
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestPhase> findByContestId(Long ContestPK, int start,
+    public List<ContestPhase> findByContestId(long ContestPK, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -833,7 +833,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(ContestPK.longValue());
+                qPos.add(ContestPK);
 
                 list = (List<ContestPhase>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -868,7 +868,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @throws com.ext.portlet.contests.NoSuchContestPhaseException if a matching contest phase could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase findByContestId_First(Long ContestPK,
+    public ContestPhase findByContestId_First(long ContestPK,
         OrderByComparator orderByComparator)
         throws NoSuchContestPhaseException, SystemException {
         List<ContestPhase> list = findByContestId(ContestPK, 0, 1,
@@ -903,7 +903,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @throws com.ext.portlet.contests.NoSuchContestPhaseException if a matching contest phase could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase findByContestId_Last(Long ContestPK,
+    public ContestPhase findByContestId_Last(long ContestPK,
         OrderByComparator orderByComparator)
         throws NoSuchContestPhaseException, SystemException {
         int count = countByContestId(ContestPK);
@@ -941,8 +941,8 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @throws com.ext.portlet.contests.NoSuchContestPhaseException if a contest phase with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase[] findByContestId_PrevAndNext(Long ContestPhasePK,
-        Long ContestPK, OrderByComparator orderByComparator)
+    public ContestPhase[] findByContestId_PrevAndNext(long ContestPhasePK,
+        long ContestPK, OrderByComparator orderByComparator)
         throws NoSuchContestPhaseException, SystemException {
         ContestPhase contestPhase = findByPrimaryKey(ContestPhasePK);
 
@@ -970,7 +970,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
     }
 
     protected ContestPhase getByContestId_PrevAndNext(Session session,
-        ContestPhase contestPhase, Long ContestPK,
+        ContestPhase contestPhase, long ContestPK,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1047,7 +1047,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(ContestPK.longValue());
+        qPos.add(ContestPK);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(contestPhase);
@@ -1183,7 +1183,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @param PhaseEndDate the phase end date
      * @throws SystemException if a system exception occurred
      */
-    public void removeByContestIdStartEnd(Long ContestPK, Date PhaseStartDate,
+    public void removeByContestIdStartEnd(long ContestPK, Date PhaseStartDate,
         Date PhaseEndDate) throws NoSuchContestPhaseException, SystemException {
         ContestPhase contestPhase = findByContestIdStartEnd(ContestPK,
                 PhaseStartDate, PhaseEndDate);
@@ -1197,7 +1197,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @param ContestPK the contest p k
      * @throws SystemException if a system exception occurred
      */
-    public void removeByContestId(Long ContestPK) throws SystemException {
+    public void removeByContestId(long ContestPK) throws SystemException {
         for (ContestPhase contestPhase : findByContestId(ContestPK)) {
             remove(contestPhase);
         }
@@ -1223,7 +1223,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @return the number of matching contest phases
      * @throws SystemException if a system exception occurred
      */
-    public int countByContestIdStartEnd(Long ContestPK, Date PhaseStartDate,
+    public int countByContestIdStartEnd(long ContestPK, Date PhaseStartDate,
         Date PhaseEndDate) throws SystemException {
         Object[] finderArgs = new Object[] {
                 ContestPK, PhaseStartDate, PhaseEndDate
@@ -1262,7 +1262,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(ContestPK.longValue());
+                qPos.add(ContestPK);
 
                 if (PhaseStartDate != null) {
                     qPos.add(CalendarUtil.getTimestamp(PhaseStartDate));
@@ -1297,7 +1297,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
      * @return the number of matching contest phases
      * @throws SystemException if a system exception occurred
      */
-    public int countByContestId(Long ContestPK) throws SystemException {
+    public int countByContestId(long ContestPK) throws SystemException {
         Object[] finderArgs = new Object[] { ContestPK };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONTESTID,
@@ -1321,7 +1321,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(ContestPK.longValue());
+                qPos.add(ContestPK);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

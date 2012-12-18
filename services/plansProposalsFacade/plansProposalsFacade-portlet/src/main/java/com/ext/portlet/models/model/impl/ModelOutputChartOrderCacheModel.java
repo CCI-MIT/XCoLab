@@ -17,15 +17,15 @@ import java.io.Serializable;
  */
 public class ModelOutputChartOrderCacheModel implements CacheModel<ModelOutputChartOrder>,
     Serializable {
-    public Long modelOutputChartOrderPK;
-    public Long modelId;
+    public long modelOutputChartOrderPK;
+    public long modelId;
     public String modelOutputLabel;
-    public Integer modelOutputChartOrder;
+    public int modelOutputChartOrder;
     public String modelIndexRangePolicy;
     public String modelIndexRangeMessage;
     public String modelIndexErrorPolicy;
     public String modelIndexErrorMessage;
-    public Boolean modelChartIsVisible;
+    public boolean modelChartIsVisible;
 
     @Override
     public String toString() {

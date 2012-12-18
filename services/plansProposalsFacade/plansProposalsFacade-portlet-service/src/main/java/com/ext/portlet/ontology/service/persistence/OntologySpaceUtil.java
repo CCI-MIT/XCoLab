@@ -124,8 +124,7 @@ public class OntologySpaceUtil {
     * @param id the primary key for the new ontology space
     * @return the new ontology space
     */
-    public static com.ext.portlet.ontology.model.OntologySpace create(
-        java.lang.Long id) {
+    public static com.ext.portlet.ontology.model.OntologySpace create(long id) {
         return getPersistence().create(id);
     }
 
@@ -137,8 +136,7 @@ public class OntologySpaceUtil {
     * @throws com.ext.portlet.ontology.NoSuchOntologySpaceException if a ontology space with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.ontology.model.OntologySpace remove(
-        java.lang.Long id)
+    public static com.ext.portlet.ontology.model.OntologySpace remove(long id)
         throws com.ext.portlet.ontology.NoSuchOntologySpaceException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -160,7 +158,7 @@ public class OntologySpaceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologySpace findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.ontology.NoSuchOntologySpaceException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -174,8 +172,7 @@ public class OntologySpaceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologySpace fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 

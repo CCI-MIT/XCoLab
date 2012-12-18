@@ -17,9 +17,9 @@ import java.io.Serializable;
  */
 public class PlanPropertyFilterCacheModel implements CacheModel<PlanPropertyFilter>,
     Serializable {
-    public Long planPropertyFilterId;
+    public long planPropertyFilterId;
     public String propertyName;
-    public Long planUserSettingsId;
+    public long planUserSettingsId;
     public String value;
 
     @Override

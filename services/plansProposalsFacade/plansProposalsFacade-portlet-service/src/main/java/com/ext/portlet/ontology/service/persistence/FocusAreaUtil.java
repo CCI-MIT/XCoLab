@@ -124,8 +124,7 @@ public class FocusAreaUtil {
     * @param id the primary key for the new focus area
     * @return the new focus area
     */
-    public static com.ext.portlet.ontology.model.FocusArea create(
-        java.lang.Long id) {
+    public static com.ext.portlet.ontology.model.FocusArea create(long id) {
         return getPersistence().create(id);
     }
 
@@ -137,8 +136,7 @@ public class FocusAreaUtil {
     * @throws com.ext.portlet.ontology.NoSuchFocusAreaException if a focus area with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.ontology.model.FocusArea remove(
-        java.lang.Long id)
+    public static com.ext.portlet.ontology.model.FocusArea remove(long id)
         throws com.ext.portlet.ontology.NoSuchFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -159,7 +157,7 @@ public class FocusAreaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.FocusArea findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.ontology.NoSuchFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -173,8 +171,7 @@ public class FocusAreaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.FocusArea fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 

@@ -40,7 +40,7 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     * @return the new contest phase
     */
     public com.ext.portlet.contests.model.ContestPhase createContestPhase(
-        java.lang.Long ContestPhasePK) {
+        long ContestPhasePK) {
         return _contestPhaseLocalService.createContestPhase(ContestPhasePK);
     }
 
@@ -51,7 +51,7 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     * @throws PortalException if a contest phase with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteContestPhase(java.lang.Long ContestPhasePK)
+    public void deleteContestPhase(long ContestPhasePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _contestPhaseLocalService.deleteContestPhase(ContestPhasePK);
@@ -141,7 +141,7 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     public com.ext.portlet.contests.model.ContestPhase fetchContestPhase(
-        java.lang.Long ContestPhasePK)
+        long ContestPhasePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseLocalService.fetchContestPhase(ContestPhasePK);
     }
@@ -155,7 +155,7 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase getContestPhase(
-        java.lang.Long ContestPhasePK)
+        long ContestPhasePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseLocalService.getContestPhase(ContestPhasePK);
@@ -253,6 +253,59 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         throws com.ext.portlet.contests.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseLocalService.getActivePhaseForContest(contest);
+    }
+
+    /**
+    * from ContestPhaseImpl
+    */
+    public com.ext.portlet.contests.model.Contest getContest(
+        com.ext.portlet.contests.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getContest(contestPhase);
+    }
+
+    public java.util.List<com.ext.portlet.plans.model.PlanItem> getPlans(
+        com.ext.portlet.contests.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPlans(contestPhase);
+    }
+
+    public com.ext.portlet.contests.model.ContestStatus getContestStatus(
+        com.ext.portlet.contests.model.ContestPhase contestPhase) {
+        return _contestPhaseLocalService.getContestStatus(contestPhase);
+    }
+
+    public java.util.List<java.lang.String> getPhaseColumns(
+        com.ext.portlet.contests.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPhaseColumns(contestPhase);
+    }
+
+    public java.util.List<com.ext.portlet.contests.model.ContestPhaseColumn> getPhaseColumnsRaw(
+        com.ext.portlet.contests.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPhaseColumnsRaw(contestPhase);
+    }
+
+    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getPreviousPhases(
+        com.ext.portlet.contests.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPreviousPhases(contestPhase);
+    }
+
+    public com.ext.portlet.contests.model.ContestPhase getNextContestPhase(
+        com.ext.portlet.contests.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getNextContestPhase(contestPhase);
+    }
+
+    public boolean getPhaseActive(
+        com.ext.portlet.contests.model.ContestPhase contestPhase) {
+        return _contestPhaseLocalService.getPhaseActive(contestPhase);
     }
 
     /**

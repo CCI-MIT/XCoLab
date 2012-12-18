@@ -46,7 +46,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @return the new model discussion
     */
     public com.ext.portlet.models.model.ModelDiscussion create(
-        java.lang.Long modelDiscussionId);
+        long modelDiscussionId);
 
     /**
     * Removes the model discussion with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion remove(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.ext.portlet.models.NoSuchModelDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +75,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion findByPrimaryKey(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.ext.portlet.models.NoSuchModelDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,7 +87,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion fetchByPrimaryKey(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -98,7 +98,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelDiscussion> findByModelId(
-        java.lang.Long modelId)
+        long modelId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -115,7 +115,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelDiscussion> findByModelId(
-        java.lang.Long modelId, int start, int end)
+        long modelId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -133,7 +133,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelDiscussion> findByModelId(
-        java.lang.Long modelId, int start, int end,
+        long modelId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -151,7 +151,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion findByModelId_First(
-        java.lang.Long modelId,
+        long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -170,7 +170,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion findByModelId_Last(
-        java.lang.Long modelId,
+        long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -190,7 +190,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion[] findByModelId_PrevAndNext(
-        java.lang.Long modelDiscussionId, java.lang.Long modelId,
+        long modelDiscussionId, long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -203,7 +203,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelDiscussion> findByDiscussionId(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -220,7 +220,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelDiscussion> findByDiscussionId(
-        java.lang.Long categoryId, int start, int end)
+        long categoryId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -238,7 +238,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelDiscussion> findByDiscussionId(
-        java.lang.Long categoryId, int start, int end,
+        long categoryId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -256,7 +256,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion findByDiscussionId_First(
-        java.lang.Long categoryId,
+        long categoryId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -275,7 +275,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion findByDiscussionId_Last(
-        java.lang.Long categoryId,
+        long categoryId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -295,7 +295,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion[] findByDiscussionId_PrevAndNext(
-        java.lang.Long modelDiscussionId, java.lang.Long categoryId,
+        long modelDiscussionId, long categoryId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -349,7 +349,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @param modelId the model ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByModelId(java.lang.Long modelId)
+    public void removeByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -358,7 +358,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @param categoryId the category ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByDiscussionId(java.lang.Long categoryId)
+    public void removeByDiscussionId(long categoryId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -376,7 +376,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @return the number of matching model discussions
     * @throws SystemException if a system exception occurred
     */
-    public int countByModelId(java.lang.Long modelId)
+    public int countByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -386,7 +386,7 @@ public interface ModelDiscussionPersistence extends BasePersistence<ModelDiscuss
     * @return the number of matching model discussions
     * @throws SystemException if a system exception occurred
     */
-    public int countByDiscussionId(java.lang.Long categoryId)
+    public int countByDiscussionId(long categoryId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

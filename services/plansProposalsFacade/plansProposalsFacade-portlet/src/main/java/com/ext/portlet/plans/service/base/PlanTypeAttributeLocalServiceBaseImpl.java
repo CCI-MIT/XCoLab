@@ -341,7 +341,7 @@ public abstract class PlanTypeAttributeLocalServiceBaseImpl
      * @param planTypeAttributeId the primary key for the new plan type attribute
      * @return the new plan type attribute
      */
-    public PlanTypeAttribute createPlanTypeAttribute(Long planTypeAttributeId) {
+    public PlanTypeAttribute createPlanTypeAttribute(long planTypeAttributeId) {
         return planTypeAttributePersistence.create(planTypeAttributeId);
     }
 
@@ -352,7 +352,7 @@ public abstract class PlanTypeAttributeLocalServiceBaseImpl
      * @throws PortalException if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanTypeAttribute(Long planTypeAttributeId)
+    public void deletePlanTypeAttribute(long planTypeAttributeId)
         throws PortalException, SystemException {
         PlanTypeAttribute planTypeAttribute = planTypeAttributePersistence.remove(planTypeAttributeId);
 
@@ -458,7 +458,7 @@ public abstract class PlanTypeAttributeLocalServiceBaseImpl
         return planTypeAttributePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanTypeAttribute fetchPlanTypeAttribute(Long planTypeAttributeId)
+    public PlanTypeAttribute fetchPlanTypeAttribute(long planTypeAttributeId)
         throws SystemException {
         return planTypeAttributePersistence.fetchByPrimaryKey(planTypeAttributeId);
     }
@@ -471,7 +471,7 @@ public abstract class PlanTypeAttributeLocalServiceBaseImpl
      * @throws PortalException if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTypeAttribute getPlanTypeAttribute(Long planTypeAttributeId)
+    public PlanTypeAttribute getPlanTypeAttribute(long planTypeAttributeId)
         throws PortalException, SystemException {
         return planTypeAttributePersistence.findByPrimaryKey(planTypeAttributeId);
     }

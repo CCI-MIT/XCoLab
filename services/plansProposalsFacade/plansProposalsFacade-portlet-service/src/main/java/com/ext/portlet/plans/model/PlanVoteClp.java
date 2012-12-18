@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -16,9 +17,10 @@ import java.util.Date;
 
 
 public class PlanVoteClp extends BaseModelImpl<PlanVote> implements PlanVote {
-    private Long _userId;
-    private Long _contestId;
-    private Long _planId;
+    private long _userId;
+    private String _userUuid;
+    private long _contestId;
+    private long _planId;
     private Date _createDate;
 
     public PlanVoteClp() {
@@ -49,27 +51,35 @@ public class PlanVoteClp extends BaseModelImpl<PlanVote> implements PlanVote {
         setPrimaryKey((PlanVotePK) primaryKeyObj);
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getContestId() {
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public long getContestId() {
         return _contestId;
     }
 
-    public void setContestId(Long contestId) {
+    public void setContestId(long contestId) {
         _contestId = contestId;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
@@ -79,10 +89,6 @@ public class PlanVoteClp extends BaseModelImpl<PlanVote> implements PlanVote {
 
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {

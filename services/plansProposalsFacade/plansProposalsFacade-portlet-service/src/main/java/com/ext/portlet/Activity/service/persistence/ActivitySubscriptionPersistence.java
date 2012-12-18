@@ -45,20 +45,18 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param pk the primary key for the new activity subscription
     * @return the new activity subscription
     */
-    public com.ext.portlet.Activity.model.ActivitySubscription create(
-        java.lang.Long pk);
+    public com.ext.portlet.Activity.model.ActivitySubscription create(long pk);
 
     /**
     * Removes the activity subscription with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param pk the primary key of the activity subscription
     * @return the activity subscription that was removed
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.Activity.model.ActivitySubscription remove(
-        java.lang.Long pk)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+    public com.ext.portlet.Activity.model.ActivitySubscription remove(long pk)
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.Activity.model.ActivitySubscription updateImpl(
@@ -67,16 +65,16 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the activity subscription with the primary key or throws a {@link com.ext.portlet.Activity.NoSuchSubscriptionException} if it could not be found.
+    * Returns the activity subscription with the primary key or throws a {@link com.ext.portlet.Activity.NoSuchActivitySubscriptionException} if it could not be found.
     *
     * @param pk the primary key of the activity subscription
     * @return the activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByPrimaryKey(
-        java.lang.Long pk)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        long pk)
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -87,8 +85,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription fetchByPrimaryKey(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long pk) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the activity subscriptions where receiverId = &#63;.
@@ -98,7 +95,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByreceiverId(
-        java.lang.Long receiverId)
+        long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -115,7 +112,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByreceiverId(
-        java.lang.Long receiverId, int start, int end)
+        long receiverId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -133,7 +130,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByreceiverId(
-        java.lang.Long receiverId, int start, int end,
+        long receiverId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -147,13 +144,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByreceiverId_First(
-        java.lang.Long receiverId,
+        long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -166,13 +163,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByreceiverId_Last(
-        java.lang.Long receiverId,
+        long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -186,13 +183,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription[] findByreceiverId_PrevAndNext(
-        java.lang.Long pk, java.lang.Long receiverId,
+        long pk, long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -205,8 +202,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Long receiverId)
+        long classNameId, long classPK, long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -225,8 +221,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Long receiverId, int start, int end)
+        long classNameId, long classPK, long receiverId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -246,8 +241,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Long receiverId, int start, int end,
+        long classNameId, long classPK, long receiverId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -263,14 +257,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByClassNameIdClassPKReceiverId_First(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Long receiverId,
+        long classNameId, long classPK, long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -285,14 +278,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByClassNameIdClassPKReceiverId_Last(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Long receiverId,
+        long classNameId, long classPK, long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -308,14 +300,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription[] findByClassNameIdClassPKReceiverId_PrevAndNext(
-        java.lang.Long pk, java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Long receiverId,
+        long pk, long classNameId, long classPK, long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -329,8 +320,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.Long receiverId)
+        long classNameId, long classPK, int type, long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -350,9 +340,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.Long receiverId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long classNameId, long classPK, int type, long receiverId, int start,
+        int end) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns an ordered range of all the activity subscriptions where classNameId = &#63; and classPK = &#63; and type = &#63; and receiverId = &#63;.
@@ -372,8 +361,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.Long receiverId, int start, int end,
+        long classNameId, long classPK, int type, long receiverId, int start,
+        int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -390,14 +379,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByClassNameIdClassPKTypeReceiverId_First(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.Long receiverId,
+        long classNameId, long classPK, int type, long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -413,14 +401,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByClassNameIdClassPKTypeReceiverId_Last(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.Long receiverId,
+        long classNameId, long classPK, int type, long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -437,14 +424,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription[] findByClassNameIdClassPKTypeReceiverId_PrevAndNext(
-        java.lang.Long pk, java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.Long receiverId,
+        long pk, long classNameId, long classPK, int type, long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -459,9 +445,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeExtraDataReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
-        java.lang.Long receiverId)
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -482,9 +467,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeExtraDataReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
-        java.lang.Long receiverId, int start, int end)
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        long receiverId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -506,9 +490,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeExtraDataReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
-        java.lang.Long receiverId, int start, int end,
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        long receiverId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -526,15 +509,14 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByClassNameIdClassPKTypeExtraDataReceiverId_First(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
-        java.lang.Long receiverId,
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -551,15 +533,14 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByClassNameIdClassPKTypeExtraDataReceiverId_Last(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
-        java.lang.Long receiverId,
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -577,15 +558,14 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription[] findByClassNameIdClassPKTypeExtraDataReceiverId_PrevAndNext(
-        java.lang.Long pk, java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
-        java.lang.Long receiverId,
+        long pk, long classNameId, long classPK, int type,
+        java.lang.String extraData, long receiverId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -599,8 +579,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeExtraData(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData)
+        long classNameId, long classPK, int type, java.lang.String extraData)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -620,8 +599,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeExtraData(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData, int start, int end)
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -642,8 +621,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.Activity.model.ActivitySubscription> findByClassNameIdClassPKTypeExtraData(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData, int start, int end,
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -660,14 +639,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param extraData the extra data
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByClassNameIdClassPKTypeExtraData_First(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
+        long classNameId, long classPK, int type, java.lang.String extraData,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -683,14 +661,13 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param extraData the extra data
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a matching activity subscription could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription findByClassNameIdClassPKTypeExtraData_Last(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
+        long classNameId, long classPK, int type, java.lang.String extraData,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -707,14 +684,14 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param extraData the extra data
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next activity subscription
-    * @throws com.ext.portlet.Activity.NoSuchSubscriptionException if a activity subscription with the primary key could not be found
+    * @throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.Activity.model.ActivitySubscription[] findByClassNameIdClassPKTypeExtraData_PrevAndNext(
-        java.lang.Long pk, java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
+        long pk, long classNameId, long classPK, int type,
+        java.lang.String extraData,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.Activity.NoSuchSubscriptionException,
+        throws com.ext.portlet.Activity.NoSuchActivitySubscriptionException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -766,7 +743,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByreceiverId(java.lang.Long receiverId)
+    public void removeByreceiverId(long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -777,9 +754,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByClassNameIdClassPKReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Long receiverId)
+    public void removeByClassNameIdClassPKReceiverId(long classNameId,
+        long classPK, long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -791,9 +767,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param receiverId the receiver ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByClassNameIdClassPKTypeReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.Long receiverId)
+    public void removeByClassNameIdClassPKTypeReceiverId(long classNameId,
+        long classPK, int type, long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -807,9 +782,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public void removeByClassNameIdClassPKTypeExtraDataReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
-        java.lang.Long receiverId)
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -821,9 +795,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @param extraData the extra data
     * @throws SystemException if a system exception occurred
     */
-    public void removeByClassNameIdClassPKTypeExtraData(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData)
+    public void removeByClassNameIdClassPKTypeExtraData(long classNameId,
+        long classPK, int type, java.lang.String extraData)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -841,7 +814,7 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @return the number of matching activity subscriptions
     * @throws SystemException if a system exception occurred
     */
-    public int countByreceiverId(java.lang.Long receiverId)
+    public int countByreceiverId(long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -853,8 +826,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @return the number of matching activity subscriptions
     * @throws SystemException if a system exception occurred
     */
-    public int countByClassNameIdClassPKReceiverId(java.lang.Long classNameId,
-        java.lang.Long classPK, java.lang.Long receiverId)
+    public int countByClassNameIdClassPKReceiverId(long classNameId,
+        long classPK, long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -867,9 +840,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @return the number of matching activity subscriptions
     * @throws SystemException if a system exception occurred
     */
-    public int countByClassNameIdClassPKTypeReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.Long receiverId)
+    public int countByClassNameIdClassPKTypeReceiverId(long classNameId,
+        long classPK, int type, long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -884,9 +856,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @throws SystemException if a system exception occurred
     */
     public int countByClassNameIdClassPKTypeExtraDataReceiverId(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData,
-        java.lang.Long receiverId)
+        long classNameId, long classPK, int type, java.lang.String extraData,
+        long receiverId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -899,9 +870,8 @@ public interface ActivitySubscriptionPersistence extends BasePersistence<Activit
     * @return the number of matching activity subscriptions
     * @throws SystemException if a system exception occurred
     */
-    public int countByClassNameIdClassPKTypeExtraData(
-        java.lang.Long classNameId, java.lang.Long classPK,
-        java.lang.Integer type, java.lang.String extraData)
+    public int countByClassNameIdClassPKTypeExtraData(long classNameId,
+        long classPK, int type, java.lang.String extraData)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

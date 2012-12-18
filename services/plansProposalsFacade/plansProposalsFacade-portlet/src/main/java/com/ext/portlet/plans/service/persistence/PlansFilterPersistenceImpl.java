@@ -1,6 +1,6 @@
 package com.ext.portlet.plans.service.persistence;
 
-import com.ext.portlet.plans.NoSuchFilterException;
+import com.ext.portlet.plans.NoSuchPlansFilterException;
 import com.ext.portlet.plans.model.PlansFilter;
 import com.ext.portlet.plans.model.impl.PlansFilterImpl;
 import com.ext.portlet.plans.model.impl.PlansFilterModelImpl;
@@ -274,11 +274,11 @@ public class PlansFilterPersistenceImpl extends BasePersistenceImpl<PlansFilter>
      *
      * @param plansFilterPK the primary key of the plans filter
      * @return the plans filter that was removed
-     * @throws com.ext.portlet.plans.NoSuchFilterException if a plans filter with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterException if a plans filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public PlansFilter remove(PlansFilterPK plansFilterPK)
-        throws NoSuchFilterException, SystemException {
+        throws NoSuchPlansFilterException, SystemException {
         return remove((Serializable) plansFilterPK);
     }
 
@@ -287,12 +287,12 @@ public class PlansFilterPersistenceImpl extends BasePersistenceImpl<PlansFilter>
      *
      * @param primaryKey the primary key of the plans filter
      * @return the plans filter that was removed
-     * @throws com.ext.portlet.plans.NoSuchFilterException if a plans filter with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterException if a plans filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public PlansFilter remove(Serializable primaryKey)
-        throws NoSuchFilterException, SystemException {
+        throws NoSuchPlansFilterException, SystemException {
         Session session = null;
 
         try {
@@ -306,12 +306,12 @@ public class PlansFilterPersistenceImpl extends BasePersistenceImpl<PlansFilter>
                     _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
                 }
 
-                throw new NoSuchFilterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                throw new NoSuchPlansFilterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                     primaryKey);
             }
 
             return remove(plansFilter);
-        } catch (NoSuchFilterException nsee) {
+        } catch (NoSuchPlansFilterException nsee) {
             throw nsee;
         } catch (Exception e) {
             throw processException(e);
@@ -395,8 +395,8 @@ public class PlansFilterPersistenceImpl extends BasePersistenceImpl<PlansFilter>
         plansFilterImpl.setMitigationTo(plansFilter.getMitigationTo());
         plansFilterImpl.setDateFrom(plansFilter.getDateFrom());
         plansFilterImpl.setDateTo(plansFilter.getDateTo());
-        plansFilterImpl.setFilterPositionsAll(plansFilter.getFilterPositionsAll());
-        plansFilterImpl.setEnabled(plansFilter.getEnabled());
+        plansFilterImpl.setFilterPositionsAll(plansFilter.isFilterPositionsAll());
+        plansFilterImpl.setEnabled(plansFilter.isEnabled());
 
         return plansFilterImpl;
     }
@@ -416,15 +416,15 @@ public class PlansFilterPersistenceImpl extends BasePersistenceImpl<PlansFilter>
     }
 
     /**
-     * Returns the plans filter with the primary key or throws a {@link com.ext.portlet.plans.NoSuchFilterException} if it could not be found.
+     * Returns the plans filter with the primary key or throws a {@link com.ext.portlet.plans.NoSuchPlansFilterException} if it could not be found.
      *
      * @param plansFilterPK the primary key of the plans filter
      * @return the plans filter
-     * @throws com.ext.portlet.plans.NoSuchFilterException if a plans filter with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterException if a plans filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public PlansFilter findByPrimaryKey(PlansFilterPK plansFilterPK)
-        throws NoSuchFilterException, SystemException {
+        throws NoSuchPlansFilterException, SystemException {
         PlansFilter plansFilter = fetchByPrimaryKey(plansFilterPK);
 
         if (plansFilter == null) {
@@ -432,7 +432,7 @@ public class PlansFilterPersistenceImpl extends BasePersistenceImpl<PlansFilter>
                 _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + plansFilterPK);
             }
 
-            throw new NoSuchFilterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+            throw new NoSuchPlansFilterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                 plansFilterPK);
         }
 

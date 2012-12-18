@@ -47,8 +47,7 @@ public interface PlanModelRunLocalService extends PersistedModelLocalService {
     * @param id the primary key for the new plan model run
     * @return the new plan model run
     */
-    public com.ext.portlet.plans.model.PlanModelRun createPlanModelRun(
-        java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanModelRun createPlanModelRun(long id);
 
     /**
     * Deletes the plan model run with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +56,7 @@ public interface PlanModelRunLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan model run with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanModelRun(java.lang.Long id)
+    public void deletePlanModelRun(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -134,8 +133,7 @@ public interface PlanModelRunLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanModelRun fetchPlanModelRun(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanModelRun fetchPlanModelRun(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -147,8 +145,7 @@ public interface PlanModelRunLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanModelRun getPlanModelRun(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanModelRun getPlanModelRun(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -253,4 +250,13 @@ public interface PlanModelRunLocalService extends PersistedModelLocalService {
         com.ext.portlet.plans.model.PlanItem plan,
         com.ext.portlet.plans.model.PlanModelRun from, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanModelRun pmr)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanModelRun pmr)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

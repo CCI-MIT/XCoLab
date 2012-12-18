@@ -3,7 +3,7 @@ package com.ext.portlet.models.model;
 import com.liferay.portal.model.PersistedModel;
 
 /**
- * The extended model interface for the ModelOutputChartOrder service. Represents a row in the &quot;Models_ModelOutputChartOrder&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the ModelOutputChartOrder service. Represents a row in the &quot;xcolab_ModelOutputChartOrder&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
  * @see ModelOutputChartOrderModel

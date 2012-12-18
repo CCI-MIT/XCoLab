@@ -49,7 +49,7 @@ public interface ModelOutputChartOrderLocalService
     * @return the new model output chart order
     */
     public com.ext.portlet.models.model.ModelOutputChartOrder createModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK);
+        long modelOutputChartOrderPK);
 
     /**
     * Deletes the model output chart order with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,8 +58,7 @@ public interface ModelOutputChartOrderLocalService
     * @throws PortalException if a model output chart order with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+    public void deleteModelOutputChartOrder(long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -137,7 +136,7 @@ public interface ModelOutputChartOrderLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelOutputChartOrder fetchModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -150,7 +149,7 @@ public interface ModelOutputChartOrderLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelOutputChartOrder getModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

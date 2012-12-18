@@ -19,14 +19,14 @@ import java.util.Date;
  */
 public class PlanSectionCacheModel implements CacheModel<PlanSection>,
     Serializable {
-    public Long id;
-    public Long planSectionDefinitionId;
-    public Long planId;
+    public long id;
+    public long planSectionDefinitionId;
+    public long planId;
     public String content;
     public long created;
-    public Long version;
-    public Long planVersion;
-    public Long updateAuthorId;
+    public long version;
+    public long planVersion;
+    public long updateAuthorId;
 
     @Override
     public String toString() {

@@ -41,7 +41,7 @@ public class OntologyTermEntityLocalServiceWrapper
     * @return the new ontology term entity
     */
     public com.ext.portlet.ontology.model.OntologyTermEntity createOntologyTermEntity(
-        java.lang.Long id) {
+        long id) {
         return _ontologyTermEntityLocalService.createOntologyTermEntity(id);
     }
 
@@ -52,7 +52,7 @@ public class OntologyTermEntityLocalServiceWrapper
     * @throws PortalException if a ontology term entity with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteOntologyTermEntity(java.lang.Long id)
+    public void deleteOntologyTermEntity(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _ontologyTermEntityLocalService.deleteOntologyTermEntity(id);
@@ -143,8 +143,7 @@ public class OntologyTermEntityLocalServiceWrapper
     }
 
     public com.ext.portlet.ontology.model.OntologyTermEntity fetchOntologyTermEntity(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return _ontologyTermEntityLocalService.fetchOntologyTermEntity(id);
     }
 
@@ -157,7 +156,7 @@ public class OntologyTermEntityLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.ontology.model.OntologyTermEntity getOntologyTermEntity(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _ontologyTermEntityLocalService.getOntologyTermEntity(id);
@@ -252,6 +251,16 @@ public class OntologyTermEntityLocalServiceWrapper
         throws com.liferay.portal.kernel.exception.SystemException {
         return _ontologyTermEntityLocalService.findTagedIdsForClass(termId,
             clasz);
+    }
+
+    public void store(com.ext.portlet.ontology.model.OntologyTermEntity ote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _ontologyTermEntityLocalService.store(ote);
+    }
+
+    public void remove(com.ext.portlet.ontology.model.OntologyTermEntity ote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _ontologyTermEntityLocalService.remove(ote);
     }
 
     /**

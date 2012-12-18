@@ -47,7 +47,7 @@ public class PlanPropertyFilterLocalServiceUtil {
     * @return the new plan property filter
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter createPlanPropertyFilter(
-        java.lang.Long planPropertyFilterId) {
+        long planPropertyFilterId) {
         return getService().createPlanPropertyFilter(planPropertyFilterId);
     }
 
@@ -58,8 +58,7 @@ public class PlanPropertyFilterLocalServiceUtil {
     * @throws PortalException if a plan property filter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanPropertyFilter(
-        java.lang.Long planPropertyFilterId)
+    public static void deletePlanPropertyFilter(long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanPropertyFilter(planPropertyFilterId);
@@ -149,7 +148,7 @@ public class PlanPropertyFilterLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanPropertyFilter fetchPlanPropertyFilter(
-        java.lang.Long planPropertyFilterId)
+        long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanPropertyFilter(planPropertyFilterId);
     }
@@ -163,7 +162,7 @@ public class PlanPropertyFilterLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter getPlanPropertyFilter(
-        java.lang.Long planPropertyFilterId)
+        long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanPropertyFilter(planPropertyFilterId);

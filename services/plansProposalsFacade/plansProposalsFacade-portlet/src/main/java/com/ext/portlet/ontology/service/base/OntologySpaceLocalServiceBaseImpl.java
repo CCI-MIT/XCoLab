@@ -148,7 +148,7 @@ public abstract class OntologySpaceLocalServiceBaseImpl
      * @param id the primary key for the new ontology space
      * @return the new ontology space
      */
-    public OntologySpace createOntologySpace(Long id) {
+    public OntologySpace createOntologySpace(long id) {
         return ontologySpacePersistence.create(id);
     }
 
@@ -159,7 +159,7 @@ public abstract class OntologySpaceLocalServiceBaseImpl
      * @throws PortalException if a ontology space with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteOntologySpace(Long id)
+    public void deleteOntologySpace(long id)
         throws PortalException, SystemException {
         OntologySpace ontologySpace = ontologySpacePersistence.remove(id);
 
@@ -265,7 +265,7 @@ public abstract class OntologySpaceLocalServiceBaseImpl
         return ontologySpacePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public OntologySpace fetchOntologySpace(Long id) throws SystemException {
+    public OntologySpace fetchOntologySpace(long id) throws SystemException {
         return ontologySpacePersistence.fetchByPrimaryKey(id);
     }
 
@@ -277,7 +277,7 @@ public abstract class OntologySpaceLocalServiceBaseImpl
      * @throws PortalException if a ontology space with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologySpace getOntologySpace(Long id)
+    public OntologySpace getOntologySpace(long id)
         throws PortalException, SystemException {
         return ontologySpacePersistence.findByPrimaryKey(id);
     }

@@ -271,6 +271,18 @@ public class PlanTemplateSectionLocalServiceUtil {
         getService().removePlanTemplateSection(planTemplateId, sectionId);
     }
 
+    public static void store(
+        com.ext.portlet.plans.model.PlanTemplateSection section)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(section);
+    }
+
+    public static void remove(
+        com.ext.portlet.plans.model.PlanTemplateSection section)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().remove(section);
+    }
+
     public static void clearService() {
         _service = null;
     }

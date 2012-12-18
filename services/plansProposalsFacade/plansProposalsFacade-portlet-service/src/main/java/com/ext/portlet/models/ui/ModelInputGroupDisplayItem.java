@@ -58,7 +58,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem {
      * @throws IOException 
      */
     public ModelInputGroupDisplayItem(ModelInputGroup group) throws SystemException, IOException {
-        super(group.getModel(), group.getMetaData());
+        super(ModelInputGroupLocalServiceUtil.getModel(group), ModelInputGroupLocalServiceUtil.getMetaData(group));
         this.group = group;
         populateChildren();
     }
@@ -77,13 +77,13 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem {
     private void populateChildren() throws SystemException, IOException {
         knownmd = new HashSet<MetaData>();
         items = new ArrayList<ModelInputDisplayItem>();
-        for (ModelInputItem item : group.getInputItems()) {
-            knownmd.add(item.getMetaData());
+        for (ModelInputItem item : ModelInputGroupLocalServiceUtil.getInputItems(group)) {
+            knownmd.add(ModelInputItemLocalServiceUtil.getMetaData(item));
             items.add(ModelUIFactory.getInstance().getInputItem(item));
         }
 
         groups = new ArrayList<ModelInputGroupDisplayItem>();
-        for (ModelInputGroup child:group.getChildGroups()) {
+        for (ModelInputGroup child: ModelInputGroupLocalServiceUtil.getChildGroups(group)) {
             groups.add(ModelUIFactory.getInstance().getGroupItem(child));
         }
         //why is this here?
@@ -99,7 +99,9 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem {
      */
     public String getName() {
         try {
-            return group.getName() == null || group.getName().trim().equals("") ? group.getMetaData() == null ? null : group.getMetaData().getName() : group.getName();
+            return group.getName() == null || group.getName().trim().equals("") ? 
+                    ModelInputGroupLocalServiceUtil.getMetaData(group) == null ? 
+                            null : ModelInputGroupLocalServiceUtil.getMetaData(group).getName() : group.getName();
         } catch (SystemException e) {
             _log.error("Could not retrive group name", e);
         } catch (IOException e) {
@@ -128,7 +130,9 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem {
      */
     public String getDescription() {
         try {
-            return group.getDescription() == null || group.getDescription().trim().equals("") ? group.getMetaData() == null ? null : group.getMetaData().getDescription() : group.getDescription();
+            return group.getDescription() == null || group.getDescription().trim().equals("") ? 
+                    ModelInputGroupLocalServiceUtil.getMetaData(group) == null ? 
+                            null : ModelInputGroupLocalServiceUtil.getMetaData(group).getDescription() : group.getDescription();
         } catch (SystemException e) {
             _log.error("Could not retrive group description", e);
         } catch (IOException e) {
@@ -162,7 +166,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem {
 
     @Override
     public int getOrder() {
-        return group.getDisplayItemOrder() != null ? group.getDisplayItemOrder() : 0;
+        return group.getDisplayItemOrder();
     }
 
     /**

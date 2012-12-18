@@ -48,7 +48,7 @@ public interface OntologySpaceLocalService extends PersistedModelLocalService {
     * @return the new ontology space
     */
     public com.ext.portlet.ontology.model.OntologySpace createOntologySpace(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the ontology space with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface OntologySpaceLocalService extends PersistedModelLocalService {
     * @throws PortalException if a ontology space with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteOntologySpace(java.lang.Long id)
+    public void deleteOntologySpace(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,8 +135,7 @@ public interface OntologySpaceLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.ontology.model.OntologySpace fetchOntologySpace(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the ontology space with the primary key.
@@ -148,7 +147,7 @@ public interface OntologySpaceLocalService extends PersistedModelLocalService {
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.ontology.model.OntologySpace getOntologySpace(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -225,5 +224,13 @@ public interface OntologySpaceLocalService extends PersistedModelLocalService {
 
     public com.ext.portlet.ontology.model.OntologySpace createSpace(
         java.lang.String name, java.lang.String description)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.ontology.model.OntologySpace space)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.ontology.model.OntologyTerm getTopTerm(
+        com.ext.portlet.ontology.model.OntologySpace space)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

@@ -32,7 +32,7 @@ public class PlanTypeAttributeWrapper implements PlanTypeAttribute,
     *
     * @return the primary key of this plan type attribute
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTypeAttribute.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanTypeAttributeWrapper implements PlanTypeAttribute,
     *
     * @param primaryKey the primary key of this plan type attribute
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planTypeAttribute.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanTypeAttributeWrapper implements PlanTypeAttribute,
     *
     * @return the plan type attribute ID of this plan type attribute
     */
-    public java.lang.Long getPlanTypeAttributeId() {
+    public long getPlanTypeAttributeId() {
         return _planTypeAttribute.getPlanTypeAttributeId();
     }
 
@@ -59,7 +59,7 @@ public class PlanTypeAttributeWrapper implements PlanTypeAttribute,
     *
     * @param planTypeAttributeId the plan type attribute ID of this plan type attribute
     */
-    public void setPlanTypeAttributeId(java.lang.Long planTypeAttributeId) {
+    public void setPlanTypeAttributeId(long planTypeAttributeId) {
         _planTypeAttribute.setPlanTypeAttributeId(planTypeAttributeId);
     }
 
@@ -68,7 +68,7 @@ public class PlanTypeAttributeWrapper implements PlanTypeAttribute,
     *
     * @return the plan type ID of this plan type attribute
     */
-    public java.lang.Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeAttribute.getPlanTypeId();
     }
 
@@ -77,7 +77,7 @@ public class PlanTypeAttributeWrapper implements PlanTypeAttribute,
     *
     * @param planTypeId the plan type ID of this plan type attribute
     */
-    public void setPlanTypeId(java.lang.Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeAttribute.setPlanTypeId(planTypeId);
     }
 

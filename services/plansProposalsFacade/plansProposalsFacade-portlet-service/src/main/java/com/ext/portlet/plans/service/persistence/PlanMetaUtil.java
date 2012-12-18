@@ -124,7 +124,7 @@ public class PlanMetaUtil {
     * @param id the primary key for the new plan meta
     * @return the new plan meta
     */
-    public static com.ext.portlet.plans.model.PlanMeta create(java.lang.Long id) {
+    public static com.ext.portlet.plans.model.PlanMeta create(long id) {
         return getPersistence().create(id);
     }
 
@@ -136,7 +136,7 @@ public class PlanMetaUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanMetaException if a plan meta with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanMeta remove(java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanMeta remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanMetaException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -156,8 +156,7 @@ public class PlanMetaUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanMetaException if a plan meta with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanMeta findByPrimaryKey(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanMeta findByPrimaryKey(long id)
         throws com.ext.portlet.plans.NoSuchPlanMetaException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -171,8 +170,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanMeta fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 
@@ -185,7 +183,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanMeta findByCurrentByPlanId(
-        java.lang.Long planId)
+        long planId)
         throws com.ext.portlet.plans.NoSuchPlanMetaException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByCurrentByPlanId(planId);
@@ -199,8 +197,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanMeta fetchByCurrentByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByCurrentByPlanId(planId);
     }
 
@@ -213,7 +210,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanMeta fetchByCurrentByPlanId(
-        java.lang.Long planId, boolean retrieveFromCache)
+        long planId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByCurrentByPlanId(planId, retrieveFromCache);
     }
@@ -226,8 +223,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanMeta> findByAllByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByAllByPlanId(planId);
     }
 
@@ -245,7 +241,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanMeta> findByAllByPlanId(
-        java.lang.Long planId, int start, int end)
+        long planId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByAllByPlanId(planId, start, end);
     }
@@ -265,7 +261,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanMeta> findByAllByPlanId(
-        java.lang.Long planId, int start, int end,
+        long planId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -286,7 +282,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanMeta findByAllByPlanId_First(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanMetaException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -308,7 +304,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanMeta findByAllByPlanId_Last(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanMetaException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -330,7 +326,7 @@ public class PlanMetaUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanMeta[] findByAllByPlanId_PrevAndNext(
-        java.lang.Long id, java.lang.Long planId,
+        long id, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanMetaException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -393,7 +389,7 @@ public class PlanMetaUtil {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByCurrentByPlanId(java.lang.Long planId)
+    public static void removeByCurrentByPlanId(long planId)
         throws com.ext.portlet.plans.NoSuchPlanMetaException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByCurrentByPlanId(planId);
@@ -405,7 +401,7 @@ public class PlanMetaUtil {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByAllByPlanId(java.lang.Long planId)
+    public static void removeByAllByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByAllByPlanId(planId);
     }
@@ -427,7 +423,7 @@ public class PlanMetaUtil {
     * @return the number of matching plan metas
     * @throws SystemException if a system exception occurred
     */
-    public static int countByCurrentByPlanId(java.lang.Long planId)
+    public static int countByCurrentByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByCurrentByPlanId(planId);
     }
@@ -439,7 +435,7 @@ public class PlanMetaUtil {
     * @return the number of matching plan metas
     * @throws SystemException if a system exception occurred
     */
-    public static int countByAllByPlanId(java.lang.Long planId)
+    public static int countByAllByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByAllByPlanId(planId);
     }

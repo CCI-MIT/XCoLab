@@ -41,7 +41,7 @@ public class ModelOutputChartOrderLocalServiceWrapper
     * @return the new model output chart order
     */
     public com.ext.portlet.models.model.ModelOutputChartOrder createModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK) {
+        long modelOutputChartOrderPK) {
         return _modelOutputChartOrderLocalService.createModelOutputChartOrder(modelOutputChartOrderPK);
     }
 
@@ -52,8 +52,7 @@ public class ModelOutputChartOrderLocalServiceWrapper
     * @throws PortalException if a model output chart order with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+    public void deleteModelOutputChartOrder(long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _modelOutputChartOrderLocalService.deleteModelOutputChartOrder(modelOutputChartOrderPK);
@@ -144,7 +143,7 @@ public class ModelOutputChartOrderLocalServiceWrapper
     }
 
     public com.ext.portlet.models.model.ModelOutputChartOrder fetchModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelOutputChartOrderLocalService.fetchModelOutputChartOrder(modelOutputChartOrderPK);
     }
@@ -158,7 +157,7 @@ public class ModelOutputChartOrderLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelOutputChartOrder getModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _modelOutputChartOrderLocalService.getModelOutputChartOrder(modelOutputChartOrderPK);

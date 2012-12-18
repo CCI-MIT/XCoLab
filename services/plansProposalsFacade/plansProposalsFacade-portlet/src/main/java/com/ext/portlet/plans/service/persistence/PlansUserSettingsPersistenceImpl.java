@@ -1,6 +1,6 @@
 package com.ext.portlet.plans.service.persistence;
 
-import com.ext.portlet.plans.NoSuchUserSettingsException;
+import com.ext.portlet.plans.NoSuchPlansUserSettingsException;
 import com.ext.portlet.plans.model.PlansUserSettings;
 import com.ext.portlet.plans.model.impl.PlansUserSettingsImpl;
 import com.ext.portlet.plans.model.impl.PlansUserSettingsModelImpl;
@@ -160,12 +160,12 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
     private static final String _SQL_SELECT_PLANSUSERSETTINGS_WHERE = "SELECT plansUserSettings FROM PlansUserSettings plansUserSettings WHERE ";
     private static final String _SQL_COUNT_PLANSUSERSETTINGS = "SELECT COUNT(plansUserSettings) FROM PlansUserSettings plansUserSettings";
     private static final String _SQL_COUNT_PLANSUSERSETTINGS_WHERE = "SELECT COUNT(plansUserSettings) FROM PlansUserSettings plansUserSettings WHERE ";
-    private static final String _SQL_GETPLANATTRIBUTEFILTERS = "SELECT {Plans_PlanAttributeFilter.*} FROM Plans_PlanAttributeFilter INNER JOIN Plans_PlansUserSettings ON (Plans_PlansUserSettings.planUserSettingsId = Plans_PlanAttributeFilter.planUserSettingsId) WHERE (Plans_PlansUserSettings.planUserSettingsId = ?)";
-    private static final String _SQL_GETPLANATTRIBUTEFILTERSSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM Plans_PlanAttributeFilter WHERE planUserSettingsId = ?";
-    private static final String _SQL_CONTAINSPLANATTRIBUTEFILTER = "SELECT COUNT(*) AS COUNT_VALUE FROM Plans_PlanAttributeFilter WHERE planUserSettingsId = ? AND planAttributeFilterId = ?";
-    private static final String _SQL_GETPLANCOLUMNSETTINGSES = "SELECT {Plans_PlanColumnSettings.*} FROM Plans_PlanColumnSettings INNER JOIN Plans_PlansUserSettings ON (Plans_PlansUserSettings.planUserSettingsId = Plans_PlanColumnSettings.planUserSettingsId) WHERE (Plans_PlansUserSettings.planUserSettingsId = ?)";
-    private static final String _SQL_GETPLANCOLUMNSETTINGSESSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM Plans_PlanColumnSettings WHERE planUserSettingsId = ?";
-    private static final String _SQL_CONTAINSPLANCOLUMNSETTINGS = "SELECT COUNT(*) AS COUNT_VALUE FROM Plans_PlanColumnSettings WHERE planUserSettingsId = ? AND planColumnSettingsId = ?";
+    private static final String _SQL_GETPLANATTRIBUTEFILTERS = "SELECT {xcolab_PlanAttributeFilter.*} FROM xcolab_PlanAttributeFilter INNER JOIN xcolab_PlansUserSettings ON (xcolab_PlansUserSettings.planUserSettingsId = xcolab_PlanAttributeFilter.planUserSettingsId) WHERE (xcolab_PlansUserSettings.planUserSettingsId = ?)";
+    private static final String _SQL_GETPLANATTRIBUTEFILTERSSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanAttributeFilter WHERE planUserSettingsId = ?";
+    private static final String _SQL_CONTAINSPLANATTRIBUTEFILTER = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanAttributeFilter WHERE planUserSettingsId = ? AND planAttributeFilterId = ?";
+    private static final String _SQL_GETPLANCOLUMNSETTINGSES = "SELECT {xcolab_PlanColumnSettings.*} FROM xcolab_PlanColumnSettings INNER JOIN xcolab_PlansUserSettings ON (xcolab_PlansUserSettings.planUserSettingsId = xcolab_PlanColumnSettings.planUserSettingsId) WHERE (xcolab_PlansUserSettings.planUserSettingsId = ?)";
+    private static final String _SQL_GETPLANCOLUMNSETTINGSESSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanColumnSettings WHERE planUserSettingsId = ?";
+    private static final String _SQL_CONTAINSPLANCOLUMNSETTINGS = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanColumnSettings WHERE planUserSettingsId = ? AND planColumnSettingsId = ?";
     private static final String _FINDER_COLUMN_USERIDPLANTYPEID_USERID_2 = "plansUserSettings.userId = ? AND ";
     private static final String _FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2 = "plansUserSettings.planTypeId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "plansUserSettings.";
@@ -354,7 +354,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @param planUserSettingsId the primary key for the new plans user settings
      * @return the new plans user settings
      */
-    public PlansUserSettings create(Long planUserSettingsId) {
+    public PlansUserSettings create(long planUserSettingsId) {
         PlansUserSettings plansUserSettings = new PlansUserSettingsImpl();
 
         plansUserSettings.setNew(true);
@@ -368,12 +368,12 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      *
      * @param planUserSettingsId the primary key of the plans user settings
      * @return the plans user settings that was removed
-     * @throws com.ext.portlet.plans.NoSuchUserSettingsException if a plans user settings with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansUserSettings remove(Long planUserSettingsId)
-        throws NoSuchUserSettingsException, SystemException {
-        return remove((Serializable) planUserSettingsId);
+    public PlansUserSettings remove(long planUserSettingsId)
+        throws NoSuchPlansUserSettingsException, SystemException {
+        return remove(Long.valueOf(planUserSettingsId));
     }
 
     /**
@@ -381,12 +381,12 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      *
      * @param primaryKey the primary key of the plans user settings
      * @return the plans user settings that was removed
-     * @throws com.ext.portlet.plans.NoSuchUserSettingsException if a plans user settings with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public PlansUserSettings remove(Serializable primaryKey)
-        throws NoSuchUserSettingsException, SystemException {
+        throws NoSuchPlansUserSettingsException, SystemException {
         Session session = null;
 
         try {
@@ -400,12 +400,12 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
                     _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
                 }
 
-                throw new NoSuchUserSettingsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                throw new NoSuchPlansUserSettingsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                     primaryKey);
             }
 
             return remove(plansUserSettings);
-        } catch (NoSuchUserSettingsException nsee) {
+        } catch (NoSuchPlansUserSettingsException nsee) {
             throw nsee;
         } catch (Exception e) {
             throw processException(e);
@@ -516,8 +516,8 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
         plansUserSettingsImpl.setPlanTypeId(plansUserSettings.getPlanTypeId());
         plansUserSettingsImpl.setSortColumn(plansUserSettings.getSortColumn());
         plansUserSettingsImpl.setSortDirection(plansUserSettings.getSortDirection());
-        plansUserSettingsImpl.setFilterEnabled(plansUserSettings.getFilterEnabled());
-        plansUserSettingsImpl.setFilterPositionsAll(plansUserSettings.getFilterPositionsAll());
+        plansUserSettingsImpl.setFilterEnabled(plansUserSettings.isFilterEnabled());
+        plansUserSettingsImpl.setFilterPositionsAll(plansUserSettings.isFilterPositionsAll());
 
         return plansUserSettingsImpl;
     }
@@ -533,19 +533,19 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
     @Override
     public PlansUserSettings findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
-     * Returns the plans user settings with the primary key or throws a {@link com.ext.portlet.plans.NoSuchUserSettingsException} if it could not be found.
+     * Returns the plans user settings with the primary key or throws a {@link com.ext.portlet.plans.NoSuchPlansUserSettingsException} if it could not be found.
      *
      * @param planUserSettingsId the primary key of the plans user settings
      * @return the plans user settings
-     * @throws com.ext.portlet.plans.NoSuchUserSettingsException if a plans user settings with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansUserSettings findByPrimaryKey(Long planUserSettingsId)
-        throws NoSuchUserSettingsException, SystemException {
+    public PlansUserSettings findByPrimaryKey(long planUserSettingsId)
+        throws NoSuchPlansUserSettingsException, SystemException {
         PlansUserSettings plansUserSettings = fetchByPrimaryKey(planUserSettingsId);
 
         if (plansUserSettings == null) {
@@ -554,7 +554,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
                     planUserSettingsId);
             }
 
-            throw new NoSuchUserSettingsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+            throw new NoSuchPlansUserSettingsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                 planUserSettingsId);
         }
 
@@ -571,7 +571,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
     @Override
     public PlansUserSettings fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -581,7 +581,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the plans user settings, or <code>null</code> if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansUserSettings fetchByPrimaryKey(Long planUserSettingsId)
+    public PlansUserSettings fetchByPrimaryKey(long planUserSettingsId)
         throws SystemException {
         PlansUserSettings plansUserSettings = (PlansUserSettings) EntityCacheUtil.getResult(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
                 PlansUserSettingsImpl.class, planUserSettingsId);
@@ -621,16 +621,16 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
     }
 
     /**
-     * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or throws a {@link com.ext.portlet.plans.NoSuchUserSettingsException} if it could not be found.
+     * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or throws a {@link com.ext.portlet.plans.NoSuchPlansUserSettingsException} if it could not be found.
      *
      * @param userId the user ID
      * @param planTypeId the plan type ID
      * @return the matching plans user settings
-     * @throws com.ext.portlet.plans.NoSuchUserSettingsException if a matching plans user settings could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansUserSettingsException if a matching plans user settings could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansUserSettings findByuserIdPlanTypeId(Long userId, Long planTypeId)
-        throws NoSuchUserSettingsException, SystemException {
+    public PlansUserSettings findByuserIdPlanTypeId(long userId, long planTypeId)
+        throws NoSuchPlansUserSettingsException, SystemException {
         PlansUserSettings plansUserSettings = fetchByuserIdPlanTypeId(userId,
                 planTypeId);
 
@@ -651,7 +651,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
                 _log.warn(msg.toString());
             }
 
-            throw new NoSuchUserSettingsException(msg.toString());
+            throw new NoSuchPlansUserSettingsException(msg.toString());
         }
 
         return plansUserSettings;
@@ -665,8 +665,8 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the matching plans user settings, or <code>null</code> if a matching plans user settings could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansUserSettings fetchByuserIdPlanTypeId(Long userId,
-        Long planTypeId) throws SystemException {
+    public PlansUserSettings fetchByuserIdPlanTypeId(long userId,
+        long planTypeId) throws SystemException {
         return fetchByuserIdPlanTypeId(userId, planTypeId, true);
     }
 
@@ -679,8 +679,8 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the matching plans user settings, or <code>null</code> if a matching plans user settings could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansUserSettings fetchByuserIdPlanTypeId(Long userId,
-        Long planTypeId, boolean retrieveFromCache) throws SystemException {
+    public PlansUserSettings fetchByuserIdPlanTypeId(long userId,
+        long planTypeId, boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { userId, planTypeId };
 
         Object result = null;
@@ -710,9 +710,9 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
-                qPos.add(planTypeId.longValue());
+                qPos.add(planTypeId);
 
                 List<PlansUserSettings> list = q.list();
 
@@ -871,8 +871,8 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @param planTypeId the plan type ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByuserIdPlanTypeId(Long userId, Long planTypeId)
-        throws NoSuchUserSettingsException, SystemException {
+    public void removeByuserIdPlanTypeId(long userId, long planTypeId)
+        throws NoSuchPlansUserSettingsException, SystemException {
         PlansUserSettings plansUserSettings = findByuserIdPlanTypeId(userId,
                 planTypeId);
 
@@ -898,7 +898,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the number of matching plans user settingses
      * @throws SystemException if a system exception occurred
      */
-    public int countByuserIdPlanTypeId(Long userId, Long planTypeId)
+    public int countByuserIdPlanTypeId(long userId, long planTypeId)
         throws SystemException {
         Object[] finderArgs = new Object[] { userId, planTypeId };
 
@@ -925,9 +925,9 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
-                qPos.add(planTypeId.longValue());
+                qPos.add(planTypeId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -991,7 +991,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanAttributeFilter> getPlanAttributeFilters(
-        Long pk) throws SystemException {
+        long pk) throws SystemException {
         return getPlanAttributeFilters(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
     }
 
@@ -1009,7 +1009,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanAttributeFilter> getPlanAttributeFilters(
-        Long pk, int start, int end) throws SystemException {
+        long pk, int start, int end) throws SystemException {
         return getPlanAttributeFilters(pk, start, end, null);
     }
 
@@ -1028,7 +1028,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanAttributeFilter> getPlanAttributeFilters(
-        Long pk, int start, int end, OrderByComparator orderByComparator)
+        long pk, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         Object[] finderArgs = new Object[] { pk, start, end, orderByComparator };
 
@@ -1052,7 +1052,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
 
                 SQLQuery q = session.createSQLQuery(sql);
 
-                q.addEntity("Plans_PlanAttributeFilter",
+                q.addEntity("xcolab_PlanAttributeFilter",
                     com.ext.portlet.plans.model.impl.PlanAttributeFilterImpl.class);
 
                 QueryPos qPos = QueryPos.getInstance(q);
@@ -1088,7 +1088,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the number of plan attribute filters associated with the plans user settings
      * @throws SystemException if a system exception occurred
      */
-    public int getPlanAttributeFiltersSize(Long pk) throws SystemException {
+    public int getPlanAttributeFiltersSize(long pk) throws SystemException {
         Object[] finderArgs = new Object[] { pk };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_GET_PLANATTRIBUTEFILTERS_SIZE,
@@ -1135,8 +1135,8 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return <code>true</code> if the plan attribute filter is associated with the plans user settings; <code>false</code> otherwise
      * @throws SystemException if a system exception occurred
      */
-    public boolean containsPlanAttributeFilter(Long pk,
-        Long planAttributeFilterPK) throws SystemException {
+    public boolean containsPlanAttributeFilter(long pk,
+        long planAttributeFilterPK) throws SystemException {
         Object[] finderArgs = new Object[] { pk, planAttributeFilterPK };
 
         Boolean value = (Boolean) FinderCacheUtil.getResult(FINDER_PATH_CONTAINS_PLANATTRIBUTEFILTER,
@@ -1168,7 +1168,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return <code>true</code> if the plans user settings has any plan attribute filters associated with it; <code>false</code> otherwise
      * @throws SystemException if a system exception occurred
      */
-    public boolean containsPlanAttributeFilters(Long pk)
+    public boolean containsPlanAttributeFilters(long pk)
         throws SystemException {
         if (getPlanAttributeFiltersSize(pk) > 0) {
             return true;
@@ -1185,7 +1185,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanColumnSettings> getPlanColumnSettingses(
-        Long pk) throws SystemException {
+        long pk) throws SystemException {
         return getPlanColumnSettingses(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
     }
 
@@ -1203,7 +1203,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanColumnSettings> getPlanColumnSettingses(
-        Long pk, int start, int end) throws SystemException {
+        long pk, int start, int end) throws SystemException {
         return getPlanColumnSettingses(pk, start, end, null);
     }
 
@@ -1222,7 +1222,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanColumnSettings> getPlanColumnSettingses(
-        Long pk, int start, int end, OrderByComparator orderByComparator)
+        long pk, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         Object[] finderArgs = new Object[] { pk, start, end, orderByComparator };
 
@@ -1246,7 +1246,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
 
                 SQLQuery q = session.createSQLQuery(sql);
 
-                q.addEntity("Plans_PlanColumnSettings",
+                q.addEntity("xcolab_PlanColumnSettings",
                     com.ext.portlet.plans.model.impl.PlanColumnSettingsImpl.class);
 
                 QueryPos qPos = QueryPos.getInstance(q);
@@ -1282,7 +1282,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the number of plan column settingses associated with the plans user settings
      * @throws SystemException if a system exception occurred
      */
-    public int getPlanColumnSettingsesSize(Long pk) throws SystemException {
+    public int getPlanColumnSettingsesSize(long pk) throws SystemException {
         Object[] finderArgs = new Object[] { pk };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_GET_PLANCOLUMNSETTINGSES_SIZE,
@@ -1329,7 +1329,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return <code>true</code> if the plan column settings is associated with the plans user settings; <code>false</code> otherwise
      * @throws SystemException if a system exception occurred
      */
-    public boolean containsPlanColumnSettings(Long pk, Long planColumnSettingsPK)
+    public boolean containsPlanColumnSettings(long pk, long planColumnSettingsPK)
         throws SystemException {
         Object[] finderArgs = new Object[] { pk, planColumnSettingsPK };
 
@@ -1362,7 +1362,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return <code>true</code> if the plans user settings has any plan column settingses associated with it; <code>false</code> otherwise
      * @throws SystemException if a system exception occurred
      */
-    public boolean containsPlanColumnSettingses(Long pk)
+    public boolean containsPlanColumnSettingses(long pk)
         throws SystemException {
         if (getPlanColumnSettingsesSize(pk) > 0) {
             return true;
@@ -1415,8 +1415,8 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
                     RowMapper.COUNT);
         }
 
-        protected boolean contains(Long planUserSettingsId,
-            Long planAttributeFilterId) {
+        protected boolean contains(long planUserSettingsId,
+            long planAttributeFilterId) {
             List<Integer> results = _mappingSqlQuery.execute(new Object[] {
                         new Long(planUserSettingsId),
                         new Long(planAttributeFilterId)
@@ -1444,8 +1444,8 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
                     RowMapper.COUNT);
         }
 
-        protected boolean contains(Long planUserSettingsId,
-            Long planColumnSettingsId) {
+        protected boolean contains(long planUserSettingsId,
+            long planColumnSettingsId) {
             List<Integer> results = _mappingSqlQuery.execute(new Object[] {
                         new Long(planUserSettingsId),
                         new Long(planColumnSettingsId)

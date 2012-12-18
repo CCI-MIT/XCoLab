@@ -28,6 +28,8 @@ public class PlanTemplateSectionLocalServiceClp
     private MethodKey _findByPlanTemplateIdMethodKey17;
     private MethodKey _addPlanTemplateSectionMethodKey18;
     private MethodKey _removePlanTemplateSectionMethodKey19;
+    private MethodKey _storeMethodKey20;
+    private MethodKey _removeMethodKey21;
 
     public PlanTemplateSectionLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -109,6 +111,12 @@ public class PlanTemplateSectionLocalServiceClp
         _removePlanTemplateSectionMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
                 "removePlanTemplateSection", java.lang.Long.class,
                 java.lang.Long.class);
+
+        _storeMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.plans.model.PlanTemplateSection.class);
+
+        _removeMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "remove", com.ext.portlet.plans.model.PlanTemplateSection.class);
     }
 
     public com.ext.portlet.plans.model.PlanTemplateSection addPlanTemplateSection(
@@ -611,6 +619,48 @@ public class PlanTemplateSectionLocalServiceClp
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
 
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanTemplateSection section)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey20,
+                ClpSerializer.translateInput(section));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void remove(com.ext.portlet.plans.model.PlanTemplateSection section)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_removeMethodKey21,
+                ClpSerializer.translateInput(section));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }

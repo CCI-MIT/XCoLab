@@ -140,7 +140,7 @@ public abstract class DiscussionCategoryLocalServiceBaseImpl
      * @param pk the primary key for the new discussion category
      * @return the new discussion category
      */
-    public DiscussionCategory createDiscussionCategory(Long pk) {
+    public DiscussionCategory createDiscussionCategory(long pk) {
         return discussionCategoryPersistence.create(pk);
     }
 
@@ -151,7 +151,7 @@ public abstract class DiscussionCategoryLocalServiceBaseImpl
      * @throws PortalException if a discussion category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteDiscussionCategory(Long pk)
+    public void deleteDiscussionCategory(long pk)
         throws PortalException, SystemException {
         DiscussionCategory discussionCategory = discussionCategoryPersistence.remove(pk);
 
@@ -257,7 +257,7 @@ public abstract class DiscussionCategoryLocalServiceBaseImpl
         return discussionCategoryPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public DiscussionCategory fetchDiscussionCategory(Long pk)
+    public DiscussionCategory fetchDiscussionCategory(long pk)
         throws SystemException {
         return discussionCategoryPersistence.fetchByPrimaryKey(pk);
     }
@@ -270,7 +270,7 @@ public abstract class DiscussionCategoryLocalServiceBaseImpl
      * @throws PortalException if a discussion category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory getDiscussionCategory(Long pk)
+    public DiscussionCategory getDiscussionCategory(long pk)
         throws PortalException, SystemException {
         return discussionCategoryPersistence.findByPrimaryKey(pk);
     }

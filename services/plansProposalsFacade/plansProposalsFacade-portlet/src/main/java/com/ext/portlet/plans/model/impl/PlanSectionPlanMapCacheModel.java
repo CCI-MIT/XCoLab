@@ -16,8 +16,8 @@ import java.io.Serializable;
  */
 public class PlanSectionPlanMapCacheModel implements CacheModel<PlanSectionPlanMap>,
     Serializable {
-    public Long sectionId;
-    public Long relatedPlanId;
+    public long sectionId;
+    public long relatedPlanId;
 
     @Override
     public String toString() {

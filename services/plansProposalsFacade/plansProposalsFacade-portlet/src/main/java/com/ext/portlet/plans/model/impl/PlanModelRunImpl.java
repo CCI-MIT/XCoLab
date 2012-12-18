@@ -23,17 +23,5 @@ public class PlanModelRunImpl extends PlanModelRunBaseImpl {
      */
     public PlanModelRunImpl() {
     }
-    
-    public void store() throws SystemException {
-        if (this.isNew()) {
-            PlanModelRunLocalServiceUtil.addPlanModelRun(this);
-        }
-        else {
-            PlanModelRunLocalServiceUtil.updatePlanModelRun(this);
-        }
-    }
-    
-    public User getUpdateAuthor() throws PortalException, SystemException {
-        return UserLocalServiceUtil.getUser(getUpdateAuthorId());
-    }
+
 }

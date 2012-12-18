@@ -35,10 +35,10 @@ public class PlanColumnSettingsLocalServiceClp
                 com.ext.portlet.plans.model.PlanColumnSettings.class);
 
         _createPlanColumnSettingsMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanColumnSettings", java.lang.Long.class);
+                "createPlanColumnSettings", long.class);
 
         _deletePlanColumnSettingsMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanColumnSettings", java.lang.Long.class);
+                "deletePlanColumnSettings", long.class);
 
         _deletePlanColumnSettingsMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanColumnSettings",
@@ -64,10 +64,10 @@ public class PlanColumnSettingsLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanColumnSettingsMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanColumnSettings", java.lang.Long.class);
+                "fetchPlanColumnSettings", long.class);
 
         _getPlanColumnSettingsMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanColumnSettings", java.lang.Long.class);
+                "getPlanColumnSettings", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -125,11 +125,11 @@ public class PlanColumnSettingsLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanColumnSettings createPlanColumnSettings(
-        java.lang.Long planColumnSettingsId) {
+        long planColumnSettingsId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanColumnSettingsMethodKey1,
-                ClpSerializer.translateInput(planColumnSettingsId));
+                planColumnSettingsId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -145,11 +145,11 @@ public class PlanColumnSettingsLocalServiceClp
         return (com.ext.portlet.plans.model.PlanColumnSettings) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanColumnSettings(java.lang.Long planColumnSettingsId)
+    public void deletePlanColumnSettings(long planColumnSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanColumnSettingsMethodKey2,
-                ClpSerializer.translateInput(planColumnSettingsId));
+                planColumnSettingsId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -304,12 +304,12 @@ public class PlanColumnSettingsLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanColumnSettings fetchPlanColumnSettings(
-        java.lang.Long planColumnSettingsId)
+        long planColumnSettingsId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanColumnSettingsMethodKey8,
-                ClpSerializer.translateInput(planColumnSettingsId));
+                planColumnSettingsId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -330,13 +330,13 @@ public class PlanColumnSettingsLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanColumnSettings getPlanColumnSettings(
-        java.lang.Long planColumnSettingsId)
+        long planColumnSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanColumnSettingsMethodKey9,
-                ClpSerializer.translateInput(planColumnSettingsId));
+                planColumnSettingsId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

@@ -14,7 +14,7 @@ import java.lang.reflect.Proxy;
 
 public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
     implements OntologySpace {
-    private Long _id;
+    private long _id;
     private String _name;
     private String _description;
 
@@ -29,11 +29,11 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
         return OntologySpace.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -45,11 +45,11 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
@@ -67,14 +67,6 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
 
     public void setDescription(String description) {
         _description = description;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.ontology.model.OntologyTerm getTopTerm() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -103,7 +95,7 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
     }
 
     public int compareTo(OntologySpace ontologySpace) {
-        Long primaryKey = ontologySpace.getPrimaryKey();
+        long primaryKey = ontologySpace.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -128,7 +120,7 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
             return false;
         }
 
-        Long primaryKey = ontologySpace.getPrimaryKey();
+        long primaryKey = ontologySpace.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -139,7 +131,7 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

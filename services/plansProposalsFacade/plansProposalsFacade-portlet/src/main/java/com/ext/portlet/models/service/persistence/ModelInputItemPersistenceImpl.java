@@ -309,7 +309,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @param modelInputItemPK the primary key for the new model input item
      * @return the new model input item
      */
-    public ModelInputItem create(Long modelInputItemPK) {
+    public ModelInputItem create(long modelInputItemPK) {
         ModelInputItem modelInputItem = new ModelInputItemImpl();
 
         modelInputItem.setNew(true);
@@ -326,9 +326,9 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a model input item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem remove(Long modelInputItemPK)
+    public ModelInputItem remove(long modelInputItemPK)
         throws NoSuchModelInputItemException, SystemException {
-        return remove((Serializable) modelInputItemPK);
+        return remove(Long.valueOf(modelInputItemPK));
     }
 
     /**
@@ -549,7 +549,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
     @Override
     public ModelInputItem findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -560,7 +560,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a model input item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem findByPrimaryKey(Long modelInputItemPK)
+    public ModelInputItem findByPrimaryKey(long modelInputItemPK)
         throws NoSuchModelInputItemException, SystemException {
         ModelInputItem modelInputItem = fetchByPrimaryKey(modelInputItemPK);
 
@@ -586,7 +586,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
     @Override
     public ModelInputItem fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -596,7 +596,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the model input item, or <code>null</code> if a model input item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem fetchByPrimaryKey(Long modelInputItemPK)
+    public ModelInputItem fetchByPrimaryKey(long modelInputItemPK)
         throws SystemException {
         ModelInputItem modelInputItem = (ModelInputItem) EntityCacheUtil.getResult(ModelInputItemModelImpl.ENTITY_CACHE_ENABLED,
                 ModelInputItemImpl.class, modelInputItemPK);
@@ -642,7 +642,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputItem> findByModelGroupId(Long modelGroupId)
+    public List<ModelInputItem> findByModelGroupId(long modelGroupId)
         throws SystemException {
         return findByModelGroupId(modelGroupId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -661,7 +661,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the range of matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputItem> findByModelGroupId(Long modelGroupId,
+    public List<ModelInputItem> findByModelGroupId(long modelGroupId,
         int start, int end) throws SystemException {
         return findByModelGroupId(modelGroupId, start, end, null);
     }
@@ -680,7 +680,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the ordered range of matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputItem> findByModelGroupId(Long modelGroupId,
+    public List<ModelInputItem> findByModelGroupId(long modelGroupId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -732,7 +732,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelGroupId.longValue());
+                qPos.add(modelGroupId);
 
                 list = (List<ModelInputItem>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -767,7 +767,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem findByModelGroupId_First(Long modelGroupId,
+    public ModelInputItem findByModelGroupId_First(long modelGroupId,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputItemException, SystemException {
         List<ModelInputItem> list = findByModelGroupId(modelGroupId, 0, 1,
@@ -802,7 +802,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem findByModelGroupId_Last(Long modelGroupId,
+    public ModelInputItem findByModelGroupId_Last(long modelGroupId,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputItemException, SystemException {
         int count = countByModelGroupId(modelGroupId);
@@ -841,7 +841,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws SystemException if a system exception occurred
      */
     public ModelInputItem[] findByModelGroupId_PrevAndNext(
-        Long modelInputItemPK, Long modelGroupId,
+        long modelInputItemPK, long modelGroupId,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputItemException, SystemException {
         ModelInputItem modelInputItem = findByPrimaryKey(modelInputItemPK);
@@ -870,7 +870,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
     }
 
     protected ModelInputItem getByModelGroupId_PrevAndNext(Session session,
-        ModelInputItem modelInputItem, Long modelGroupId,
+        ModelInputItem modelInputItem, long modelGroupId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -944,7 +944,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(modelGroupId.longValue());
+        qPos.add(modelGroupId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(modelInputItem);
@@ -971,7 +971,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem findByModelInputId(Long modelInputItemID)
+    public ModelInputItem findByModelInputId(long modelInputItemID)
         throws NoSuchModelInputItemException, SystemException {
         ModelInputItem modelInputItem = fetchByModelInputId(modelInputItemID);
 
@@ -1002,7 +1002,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the matching model input item, or <code>null</code> if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem fetchByModelInputId(Long modelInputItemID)
+    public ModelInputItem fetchByModelInputId(long modelInputItemID)
         throws SystemException {
         return fetchByModelInputId(modelInputItemID, true);
     }
@@ -1015,7 +1015,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the matching model input item, or <code>null</code> if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem fetchByModelInputId(Long modelInputItemID,
+    public ModelInputItem fetchByModelInputId(long modelInputItemID,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { modelInputItemID };
 
@@ -1044,7 +1044,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelInputItemID.longValue());
+                qPos.add(modelInputItemID);
 
                 List<ModelInputItem> list = q.list();
 
@@ -1093,7 +1093,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputItem> findByModelId(Long modelId)
+    public List<ModelInputItem> findByModelId(long modelId)
         throws SystemException {
         return findByModelId(modelId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -1111,7 +1111,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the range of matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputItem> findByModelId(Long modelId, int start, int end)
+    public List<ModelInputItem> findByModelId(long modelId, int start, int end)
         throws SystemException {
         return findByModelId(modelId, start, end, null);
     }
@@ -1130,7 +1130,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the ordered range of matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelInputItem> findByModelId(Long modelId, int start, int end,
+    public List<ModelInputItem> findByModelId(long modelId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1177,7 +1177,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 list = (List<ModelInputItem>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -1212,7 +1212,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem findByModelId_First(Long modelId,
+    public ModelInputItem findByModelId_First(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputItemException, SystemException {
         List<ModelInputItem> list = findByModelId(modelId, 0, 1,
@@ -1247,7 +1247,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem findByModelId_Last(Long modelId,
+    public ModelInputItem findByModelId_Last(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelInputItemException, SystemException {
         int count = countByModelId(modelId);
@@ -1285,8 +1285,8 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a model input item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem[] findByModelId_PrevAndNext(Long modelInputItemPK,
-        Long modelId, OrderByComparator orderByComparator)
+    public ModelInputItem[] findByModelId_PrevAndNext(long modelInputItemPK,
+        long modelId, OrderByComparator orderByComparator)
         throws NoSuchModelInputItemException, SystemException {
         ModelInputItem modelInputItem = findByPrimaryKey(modelInputItemPK);
 
@@ -1314,7 +1314,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
     }
 
     protected ModelInputItem getByModelId_PrevAndNext(Session session,
-        ModelInputItem modelInputItem, Long modelId,
+        ModelInputItem modelInputItem, long modelId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1388,7 +1388,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(modelId.longValue());
+        qPos.add(modelId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(modelInputItem);
@@ -1416,8 +1416,8 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @throws com.ext.portlet.models.NoSuchModelInputItemException if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem findByModelIdModelInputId(Long modelId,
-        Long modelInputItemID)
+    public ModelInputItem findByModelIdModelInputId(long modelId,
+        long modelInputItemID)
         throws NoSuchModelInputItemException, SystemException {
         ModelInputItem modelInputItem = fetchByModelIdModelInputId(modelId,
                 modelInputItemID);
@@ -1453,8 +1453,8 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the matching model input item, or <code>null</code> if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem fetchByModelIdModelInputId(Long modelId,
-        Long modelInputItemID) throws SystemException {
+    public ModelInputItem fetchByModelIdModelInputId(long modelId,
+        long modelInputItemID) throws SystemException {
         return fetchByModelIdModelInputId(modelId, modelInputItemID, true);
     }
 
@@ -1467,8 +1467,8 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the matching model input item, or <code>null</code> if a matching model input item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem fetchByModelIdModelInputId(Long modelId,
-        Long modelInputItemID, boolean retrieveFromCache)
+    public ModelInputItem fetchByModelIdModelInputId(long modelId,
+        long modelInputItemID, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { modelId, modelInputItemID };
 
@@ -1499,9 +1499,9 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
-                qPos.add(modelInputItemID.longValue());
+                qPos.add(modelInputItemID);
 
                 List<ModelInputItem> list = q.list();
 
@@ -1659,7 +1659,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @param modelGroupId the model group ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelGroupId(Long modelGroupId)
+    public void removeByModelGroupId(long modelGroupId)
         throws SystemException {
         for (ModelInputItem modelInputItem : findByModelGroupId(modelGroupId)) {
             remove(modelInputItem);
@@ -1672,7 +1672,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @param modelInputItemID the model input item i d
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelInputId(Long modelInputItemID)
+    public void removeByModelInputId(long modelInputItemID)
         throws NoSuchModelInputItemException, SystemException {
         ModelInputItem modelInputItem = findByModelInputId(modelInputItemID);
 
@@ -1685,7 +1685,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @param modelId the model ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelId(Long modelId) throws SystemException {
+    public void removeByModelId(long modelId) throws SystemException {
         for (ModelInputItem modelInputItem : findByModelId(modelId)) {
             remove(modelInputItem);
         }
@@ -1698,7 +1698,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @param modelInputItemID the model input item i d
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelIdModelInputId(Long modelId, Long modelInputItemID)
+    public void removeByModelIdModelInputId(long modelId, long modelInputItemID)
         throws NoSuchModelInputItemException, SystemException {
         ModelInputItem modelInputItem = findByModelIdModelInputId(modelId,
                 modelInputItemID);
@@ -1724,7 +1724,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the number of matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelGroupId(Long modelGroupId) throws SystemException {
+    public int countByModelGroupId(long modelGroupId) throws SystemException {
         Object[] finderArgs = new Object[] { modelGroupId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MODELGROUPID,
@@ -1748,7 +1748,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelGroupId.longValue());
+                qPos.add(modelGroupId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1775,7 +1775,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the number of matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelInputId(Long modelInputItemID)
+    public int countByModelInputId(long modelInputItemID)
         throws SystemException {
         Object[] finderArgs = new Object[] { modelInputItemID };
 
@@ -1800,7 +1800,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelInputItemID.longValue());
+                qPos.add(modelInputItemID);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1827,7 +1827,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the number of matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelId(Long modelId) throws SystemException {
+    public int countByModelId(long modelId) throws SystemException {
         Object[] finderArgs = new Object[] { modelId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MODELID,
@@ -1851,7 +1851,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1879,7 +1879,7 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
      * @return the number of matching model input items
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelIdModelInputId(Long modelId, Long modelInputItemID)
+    public int countByModelIdModelInputId(long modelId, long modelInputItemID)
         throws SystemException {
         Object[] finderArgs = new Object[] { modelId, modelInputItemID };
 
@@ -1906,9 +1906,9 @@ public class ModelInputItemPersistenceImpl extends BasePersistenceImpl<ModelInpu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
-                qPos.add(modelInputItemID.longValue());
+                qPos.add(modelInputItemID);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

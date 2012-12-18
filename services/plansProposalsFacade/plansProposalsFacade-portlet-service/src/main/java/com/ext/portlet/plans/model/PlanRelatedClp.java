@@ -15,8 +15,8 @@ import java.lang.reflect.Proxy;
 
 public class PlanRelatedClp extends BaseModelImpl<PlanRelated>
     implements PlanRelated {
-    private Long _sectionId;
-    private Long _relatedPlanId;
+    private long _sectionId;
+    private long _relatedPlanId;
 
     public PlanRelatedClp() {
     }
@@ -46,19 +46,19 @@ public class PlanRelatedClp extends BaseModelImpl<PlanRelated>
         setPrimaryKey((PlanRelatedPK) primaryKeyObj);
     }
 
-    public Long getSectionId() {
+    public long getSectionId() {
         return _sectionId;
     }
 
-    public void setSectionId(Long sectionId) {
+    public void setSectionId(long sectionId) {
         _sectionId = sectionId;
     }
 
-    public Long getRelatedPlanId() {
+    public long getRelatedPlanId() {
         return _relatedPlanId;
     }
 
-    public void setRelatedPlanId(Long relatedPlanId) {
+    public void setRelatedPlanId(long relatedPlanId) {
         _relatedPlanId = relatedPlanId;
     }
 

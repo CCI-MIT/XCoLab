@@ -227,7 +227,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @param id the primary key for the new contest debate
      * @return the new contest debate
      */
-    public ContestDebate create(Long id) {
+    public ContestDebate create(long id) {
         ContestDebate contestDebate = new ContestDebateImpl();
 
         contestDebate.setNew(true);
@@ -244,9 +244,9 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @throws com.ext.portlet.contests.NoSuchContestDebateException if a contest debate with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestDebate remove(Long id)
+    public ContestDebate remove(long id)
         throws NoSuchContestDebateException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -396,7 +396,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
     @Override
     public ContestDebate findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -407,7 +407,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @throws com.ext.portlet.contests.NoSuchContestDebateException if a contest debate with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestDebate findByPrimaryKey(Long id)
+    public ContestDebate findByPrimaryKey(long id)
         throws NoSuchContestDebateException, SystemException {
         ContestDebate contestDebate = fetchByPrimaryKey(id);
 
@@ -433,7 +433,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
     @Override
     public ContestDebate fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -443,7 +443,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @return the contest debate, or <code>null</code> if a contest debate with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestDebate fetchByPrimaryKey(Long id) throws SystemException {
+    public ContestDebate fetchByPrimaryKey(long id) throws SystemException {
         ContestDebate contestDebate = (ContestDebate) EntityCacheUtil.getResult(ContestDebateModelImpl.ENTITY_CACHE_ENABLED,
                 ContestDebateImpl.class, id);
 
@@ -487,7 +487,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @return the matching contest debates
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestDebate> findByContestPK(Long ContestPK)
+    public List<ContestDebate> findByContestPK(long ContestPK)
         throws SystemException {
         return findByContestPK(ContestPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -506,7 +506,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @return the range of matching contest debates
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestDebate> findByContestPK(Long ContestPK, int start,
+    public List<ContestDebate> findByContestPK(long ContestPK, int start,
         int end) throws SystemException {
         return findByContestPK(ContestPK, start, end, null);
     }
@@ -525,7 +525,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @return the ordered range of matching contest debates
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestDebate> findByContestPK(Long ContestPK, int start,
+    public List<ContestDebate> findByContestPK(long ContestPK, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -572,7 +572,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(ContestPK.longValue());
+                qPos.add(ContestPK);
 
                 list = (List<ContestDebate>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -607,7 +607,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @throws com.ext.portlet.contests.NoSuchContestDebateException if a matching contest debate could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestDebate findByContestPK_First(Long ContestPK,
+    public ContestDebate findByContestPK_First(long ContestPK,
         OrderByComparator orderByComparator)
         throws NoSuchContestDebateException, SystemException {
         List<ContestDebate> list = findByContestPK(ContestPK, 0, 1,
@@ -642,7 +642,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @throws com.ext.portlet.contests.NoSuchContestDebateException if a matching contest debate could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestDebate findByContestPK_Last(Long ContestPK,
+    public ContestDebate findByContestPK_Last(long ContestPK,
         OrderByComparator orderByComparator)
         throws NoSuchContestDebateException, SystemException {
         int count = countByContestPK(ContestPK);
@@ -680,7 +680,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @throws com.ext.portlet.contests.NoSuchContestDebateException if a contest debate with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestDebate[] findByContestPK_PrevAndNext(Long id, Long ContestPK,
+    public ContestDebate[] findByContestPK_PrevAndNext(long id, long ContestPK,
         OrderByComparator orderByComparator)
         throws NoSuchContestDebateException, SystemException {
         ContestDebate contestDebate = findByPrimaryKey(id);
@@ -709,7 +709,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
     }
 
     protected ContestDebate getByContestPK_PrevAndNext(Session session,
-        ContestDebate contestDebate, Long ContestPK,
+        ContestDebate contestDebate, long ContestPK,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -783,7 +783,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(ContestPK.longValue());
+        qPos.add(ContestPK);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(contestDebate);
@@ -917,7 +917,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @param ContestPK the contest p k
      * @throws SystemException if a system exception occurred
      */
-    public void removeByContestPK(Long ContestPK) throws SystemException {
+    public void removeByContestPK(long ContestPK) throws SystemException {
         for (ContestDebate contestDebate : findByContestPK(ContestPK)) {
             remove(contestDebate);
         }
@@ -941,7 +941,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
      * @return the number of matching contest debates
      * @throws SystemException if a system exception occurred
      */
-    public int countByContestPK(Long ContestPK) throws SystemException {
+    public int countByContestPK(long ContestPK) throws SystemException {
         Object[] finderArgs = new Object[] { ContestPK };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONTESTPK,
@@ -965,7 +965,7 @@ public class ContestDebatePersistenceImpl extends BasePersistenceImpl<ContestDeb
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(ContestPK.longValue());
+                qPos.add(ContestPK);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

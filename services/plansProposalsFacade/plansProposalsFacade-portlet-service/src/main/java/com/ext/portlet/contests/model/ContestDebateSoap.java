@@ -13,9 +13,9 @@ import java.util.List;
  * @generated
  */
 public class ContestDebateSoap implements Serializable {
-    private Long _id;
-    private Long _debateId;
-    private Long _ContestPK;
+    private long _id;
+    private long _debateId;
+    private long _ContestPK;
 
     public ContestDebateSoap() {
     }
@@ -66,35 +66,35 @@ public class ContestDebateSoap implements Serializable {
         return soapModels.toArray(new ContestDebateSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getDebateId() {
+    public long getDebateId() {
         return _debateId;
     }
 
-    public void setDebateId(Long debateId) {
+    public void setDebateId(long debateId) {
         _debateId = debateId;
     }
 
-    public Long getContestPK() {
+    public long getContestPK() {
         return _ContestPK;
     }
 
-    public void setContestPK(Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _ContestPK = ContestPK;
     }
 }

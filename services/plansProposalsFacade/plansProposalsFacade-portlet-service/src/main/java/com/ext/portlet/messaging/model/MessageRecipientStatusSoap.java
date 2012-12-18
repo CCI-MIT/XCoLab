@@ -13,11 +13,11 @@ import java.util.List;
  * @generated
  */
 public class MessageRecipientStatusSoap implements Serializable {
-    private Long _messageRecipientId;
-    private Long _messageId;
-    private Long _userId;
-    private Boolean _opened;
-    private Boolean _archived;
+    private long _messageRecipientId;
+    private long _messageId;
+    private long _userId;
+    private boolean _opened;
+    private boolean _archived;
 
     public MessageRecipientStatusSoap() {
     }
@@ -74,51 +74,59 @@ public class MessageRecipientStatusSoap implements Serializable {
         return soapModels.toArray(new MessageRecipientStatusSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _messageRecipientId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setMessageRecipientId(pk);
     }
 
-    public Long getMessageRecipientId() {
+    public long getMessageRecipientId() {
         return _messageRecipientId;
     }
 
-    public void setMessageRecipientId(Long messageRecipientId) {
+    public void setMessageRecipientId(long messageRecipientId) {
         _messageRecipientId = messageRecipientId;
     }
 
-    public Long getMessageId() {
+    public long getMessageId() {
         return _messageId;
     }
 
-    public void setMessageId(Long messageId) {
+    public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Boolean getOpened() {
+    public boolean getOpened() {
         return _opened;
     }
 
-    public void setOpened(Boolean opened) {
+    public boolean isOpened() {
+        return _opened;
+    }
+
+    public void setOpened(boolean opened) {
         _opened = opened;
     }
 
-    public Boolean getArchived() {
+    public boolean getArchived() {
         return _archived;
     }
 
-    public void setArchived(Boolean archived) {
+    public boolean isArchived() {
+        return _archived;
+    }
+
+    public void setArchived(boolean archived) {
         _archived = archived;
     }
 }

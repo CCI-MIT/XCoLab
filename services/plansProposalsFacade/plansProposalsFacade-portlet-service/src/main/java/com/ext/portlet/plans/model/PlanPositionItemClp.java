@@ -15,8 +15,8 @@ import java.lang.reflect.Proxy;
 
 public class PlanPositionItemClp extends BaseModelImpl<PlanPositionItem>
     implements PlanPositionItem {
-    private Long _planPositionsId;
-    private Long _positionId;
+    private long _planPositionsId;
+    private long _positionId;
 
     public PlanPositionItemClp() {
     }
@@ -46,19 +46,19 @@ public class PlanPositionItemClp extends BaseModelImpl<PlanPositionItem>
         setPrimaryKey((PlanPositionItemPK) primaryKeyObj);
     }
 
-    public Long getPlanPositionsId() {
+    public long getPlanPositionsId() {
         return _planPositionsId;
     }
 
-    public void setPlanPositionsId(Long planPositionsId) {
+    public void setPlanPositionsId(long planPositionsId) {
         _planPositionsId = planPositionsId;
     }
 
-    public Long getPositionId() {
+    public long getPositionId() {
         return _positionId;
     }
 
-    public void setPositionId(Long positionId) {
+    public void setPositionId(long positionId) {
         _positionId = positionId;
     }
 

@@ -18,13 +18,13 @@ import java.util.Date;
  * @generated
  */
 public class PlanItemCacheModel implements CacheModel<PlanItem>, Serializable {
-    public Long id;
-    public Long planId;
+    public long id;
+    public long planId;
     public String state;
     public long updated;
-    public Long updateAuthorId;
+    public long updateAuthorId;
     public String updateType;
-    public Long version;
+    public long version;
 
     @Override
     public String toString() {

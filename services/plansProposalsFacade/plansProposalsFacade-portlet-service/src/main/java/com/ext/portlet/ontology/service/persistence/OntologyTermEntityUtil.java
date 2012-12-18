@@ -127,7 +127,7 @@ public class OntologyTermEntityUtil {
     * @return the new ontology term entity
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity create(
-        java.lang.Long id) {
+        long id) {
         return getPersistence().create(id);
     }
 
@@ -140,7 +140,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity remove(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -162,7 +162,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -176,8 +176,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 
@@ -189,7 +188,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByClassNameId(
-        java.lang.Long classNameId)
+        long classNameId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByClassNameId(classNameId);
     }
@@ -208,7 +207,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByClassNameId(
-        java.lang.Long classNameId, int start, int end)
+        long classNameId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByClassNameId(classNameId, start, end);
     }
@@ -228,7 +227,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByClassNameId(
-        java.lang.Long classNameId, int start, int end,
+        long classNameId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -249,7 +248,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByClassNameId_First(
-        java.lang.Long classNameId,
+        long classNameId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -271,7 +270,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByClassNameId_Last(
-        java.lang.Long classNameId,
+        long classNameId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -294,7 +293,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity[] findByClassNameId_PrevAndNext(
-        java.lang.Long id, java.lang.Long classNameId,
+        long id, long classNameId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -312,7 +311,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByClassNameIdClassPk(
-        java.lang.Long classNameId, java.lang.Long classPK)
+        long classNameId, long classPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByClassNameIdClassPk(classNameId, classPK);
     }
@@ -332,7 +331,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByClassNameIdClassPk(
-        java.lang.Long classNameId, java.lang.Long classPK, int start, int end)
+        long classNameId, long classPK, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByClassNameIdClassPk(classNameId, classPK, start, end);
@@ -354,7 +353,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByClassNameIdClassPk(
-        java.lang.Long classNameId, java.lang.Long classPK, int start, int end,
+        long classNameId, long classPK, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -377,7 +376,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByClassNameIdClassPk_First(
-        java.lang.Long classNameId, java.lang.Long classPK,
+        long classNameId, long classPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -401,7 +400,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByClassNameIdClassPk_Last(
-        java.lang.Long classNameId, java.lang.Long classPK,
+        long classNameId, long classPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -426,7 +425,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity[] findByClassNameIdClassPk_PrevAndNext(
-        java.lang.Long id, java.lang.Long classNameId, java.lang.Long classPK,
+        long id, long classNameId, long classPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -443,8 +442,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByTermId(
-        java.lang.Long termId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long termId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByTermId(termId);
     }
 
@@ -462,7 +460,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByTermId(
-        java.lang.Long termId, int start, int end)
+        long termId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByTermId(termId, start, end);
     }
@@ -482,7 +480,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByTermId(
-        java.lang.Long termId, int start, int end,
+        long termId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -503,7 +501,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByTermId_First(
-        java.lang.Long termId,
+        long termId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -524,7 +522,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByTermId_Last(
-        java.lang.Long termId,
+        long termId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -546,7 +544,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity[] findByTermId_PrevAndNext(
-        java.lang.Long id, java.lang.Long termId,
+        long id, long termId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -563,7 +561,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByTermIdClassNameId(
-        java.lang.Long termId, java.lang.Long classNameId)
+        long termId, long classNameId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByTermIdClassNameId(termId, classNameId);
     }
@@ -583,7 +581,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByTermIdClassNameId(
-        java.lang.Long termId, java.lang.Long classNameId, int start, int end)
+        long termId, long classNameId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByTermIdClassNameId(termId, classNameId, start, end);
@@ -605,7 +603,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.OntologyTermEntity> findByTermIdClassNameId(
-        java.lang.Long termId, java.lang.Long classNameId, int start, int end,
+        long termId, long classNameId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -628,7 +626,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByTermIdClassNameId_First(
-        java.lang.Long termId, java.lang.Long classNameId,
+        long termId, long classNameId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -652,7 +650,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity findByTermIdClassNameId_Last(
-        java.lang.Long termId, java.lang.Long classNameId,
+        long termId, long classNameId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -677,7 +675,7 @@ public class OntologyTermEntityUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.OntologyTermEntity[] findByTermIdClassNameId_PrevAndNext(
-        java.lang.Long id, java.lang.Long termId, java.lang.Long classNameId,
+        long id, long termId, long classNameId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -741,7 +739,7 @@ public class OntologyTermEntityUtil {
     * @param classNameId the class name ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByClassNameId(java.lang.Long classNameId)
+    public static void removeByClassNameId(long classNameId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByClassNameId(classNameId);
     }
@@ -753,8 +751,7 @@ public class OntologyTermEntityUtil {
     * @param classPK the class p k
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByClassNameIdClassPk(java.lang.Long classNameId,
-        java.lang.Long classPK)
+    public static void removeByClassNameIdClassPk(long classNameId, long classPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByClassNameIdClassPk(classNameId, classPK);
     }
@@ -765,7 +762,7 @@ public class OntologyTermEntityUtil {
     * @param termId the term ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByTermId(java.lang.Long termId)
+    public static void removeByTermId(long termId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByTermId(termId);
     }
@@ -777,8 +774,7 @@ public class OntologyTermEntityUtil {
     * @param classNameId the class name ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByTermIdClassNameId(java.lang.Long termId,
-        java.lang.Long classNameId)
+    public static void removeByTermIdClassNameId(long termId, long classNameId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByTermIdClassNameId(termId, classNameId);
     }
@@ -800,7 +796,7 @@ public class OntologyTermEntityUtil {
     * @return the number of matching ontology term entities
     * @throws SystemException if a system exception occurred
     */
-    public static int countByClassNameId(java.lang.Long classNameId)
+    public static int countByClassNameId(long classNameId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByClassNameId(classNameId);
     }
@@ -813,8 +809,7 @@ public class OntologyTermEntityUtil {
     * @return the number of matching ontology term entities
     * @throws SystemException if a system exception occurred
     */
-    public static int countByClassNameIdClassPk(java.lang.Long classNameId,
-        java.lang.Long classPK)
+    public static int countByClassNameIdClassPk(long classNameId, long classPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByClassNameIdClassPk(classNameId, classPK);
     }
@@ -826,7 +821,7 @@ public class OntologyTermEntityUtil {
     * @return the number of matching ontology term entities
     * @throws SystemException if a system exception occurred
     */
-    public static int countByTermId(java.lang.Long termId)
+    public static int countByTermId(long termId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByTermId(termId);
     }
@@ -839,8 +834,7 @@ public class OntologyTermEntityUtil {
     * @return the number of matching ontology term entities
     * @throws SystemException if a system exception occurred
     */
-    public static int countByTermIdClassNameId(java.lang.Long termId,
-        java.lang.Long classNameId)
+    public static int countByTermIdClassNameId(long termId, long classNameId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByTermIdClassNameId(termId, classNameId);
     }

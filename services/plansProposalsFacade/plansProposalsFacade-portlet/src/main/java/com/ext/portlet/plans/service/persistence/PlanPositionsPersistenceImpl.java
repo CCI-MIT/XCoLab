@@ -313,7 +313,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @param id the primary key for the new plan positions
      * @return the new plan positions
      */
-    public PlanPositions create(Long id) {
+    public PlanPositions create(long id) {
         PlanPositions planPositions = new PlanPositionsImpl();
 
         planPositions.setNew(true);
@@ -330,9 +330,9 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.plans.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions remove(Long id)
+    public PlanPositions remove(long id)
         throws NoSuchPlanPositionsException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -507,7 +507,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     @Override
     public PlanPositions findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -518,7 +518,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.plans.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions findByPrimaryKey(Long id)
+    public PlanPositions findByPrimaryKey(long id)
         throws NoSuchPlanPositionsException, SystemException {
         PlanPositions planPositions = fetchByPrimaryKey(id);
 
@@ -544,7 +544,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     @Override
     public PlanPositions fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -554,7 +554,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the plan positions, or <code>null</code> if a plan positions with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanPositions fetchByPrimaryKey(long id) throws SystemException {
         PlanPositions planPositions = (PlanPositions) EntityCacheUtil.getResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
                 PlanPositionsImpl.class, id);
 
@@ -599,7 +599,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.plans.NoSuchPlanPositionsException if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions findByCurrentByPlanId(Long planId)
+    public PlanPositions findByCurrentByPlanId(long planId)
         throws NoSuchPlanPositionsException, SystemException {
         PlanPositions planPositions = fetchByCurrentByPlanId(planId);
 
@@ -630,7 +630,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the matching plan positions, or <code>null</code> if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions fetchByCurrentByPlanId(Long planId)
+    public PlanPositions fetchByCurrentByPlanId(long planId)
         throws SystemException {
         return fetchByCurrentByPlanId(planId, true);
     }
@@ -643,7 +643,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the matching plan positions, or <code>null</code> if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions fetchByCurrentByPlanId(Long planId,
+    public PlanPositions fetchByCurrentByPlanId(long planId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
@@ -674,7 +674,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 List<PlanPositions> list = q.list();
 
@@ -723,7 +723,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the matching plan positionses
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanPositions> findByAllByPlanId(Long planId)
+    public List<PlanPositions> findByAllByPlanId(long planId)
         throws SystemException {
         return findByAllByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -742,7 +742,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the range of matching plan positionses
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanPositions> findByAllByPlanId(Long planId, int start, int end)
+    public List<PlanPositions> findByAllByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByAllByPlanId(planId, start, end, null);
     }
@@ -761,7 +761,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the ordered range of matching plan positionses
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanPositions> findByAllByPlanId(Long planId, int start,
+    public List<PlanPositions> findByAllByPlanId(long planId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -811,7 +811,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanPositions>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -846,7 +846,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.plans.NoSuchPlanPositionsException if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions findByAllByPlanId_First(Long planId,
+    public PlanPositions findByAllByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionsException, SystemException {
         List<PlanPositions> list = findByAllByPlanId(planId, 0, 1,
@@ -881,7 +881,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.plans.NoSuchPlanPositionsException if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions findByAllByPlanId_Last(Long planId,
+    public PlanPositions findByAllByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionsException, SystemException {
         int count = countByAllByPlanId(planId);
@@ -919,7 +919,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.plans.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPositions[] findByAllByPlanId_PrevAndNext(Long id, Long planId,
+    public PlanPositions[] findByAllByPlanId_PrevAndNext(long id, long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionsException, SystemException {
         PlanPositions planPositions = findByPrimaryKey(id);
@@ -948,7 +948,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     }
 
     protected PlanPositions getByAllByPlanId_PrevAndNext(Session session,
-        PlanPositions planPositions, Long planId,
+        PlanPositions planPositions, long planId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1025,7 +1025,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planPositions);
@@ -1159,7 +1159,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByCurrentByPlanId(Long planId)
+    public void removeByCurrentByPlanId(long planId)
         throws NoSuchPlanPositionsException, SystemException {
         PlanPositions planPositions = findByCurrentByPlanId(planId);
 
@@ -1172,7 +1172,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByAllByPlanId(Long planId) throws SystemException {
+    public void removeByAllByPlanId(long planId) throws SystemException {
         for (PlanPositions planPositions : findByAllByPlanId(planId)) {
             remove(planPositions);
         }
@@ -1196,7 +1196,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the number of matching plan positionses
      * @throws SystemException if a system exception occurred
      */
-    public int countByCurrentByPlanId(Long planId) throws SystemException {
+    public int countByCurrentByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
@@ -1220,7 +1220,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1247,7 +1247,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the number of matching plan positionses
      * @throws SystemException if a system exception occurred
      */
-    public int countByAllByPlanId(Long planId) throws SystemException {
+    public int countByAllByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
@@ -1271,7 +1271,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

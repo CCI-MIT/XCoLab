@@ -16,16 +16,16 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanTypeCacheModel implements CacheModel<PlanType>, Serializable {
-    public Long planTypeId;
+    public long planTypeId;
     public String name;
     public String description;
-    public Long modelId;
+    public long modelId;
     public String modelTypeName;
-    public Boolean published;
-    public Long publishedCounterpartId;
-    public Boolean isDefault;
-    public Long defaultModelId;
-    public Long defaultScenarioId;
+    public boolean published;
+    public long publishedCounterpartId;
+    public boolean isDefault;
+    public long defaultModelId;
+    public long defaultScenarioId;
 
     @Override
     public String toString() {

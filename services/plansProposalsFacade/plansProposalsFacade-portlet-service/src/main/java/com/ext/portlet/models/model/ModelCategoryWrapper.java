@@ -32,7 +32,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @return the primary key of this model category
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelCategory.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @param primaryKey the primary key of this model category
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _modelCategory.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @return the model category p k of this model category
     */
-    public java.lang.Long getModelCategoryPK() {
+    public long getModelCategoryPK() {
         return _modelCategory.getModelCategoryPK();
     }
 
@@ -59,7 +59,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @param modelCategoryPK the model category p k of this model category
     */
-    public void setModelCategoryPK(java.lang.Long modelCategoryPK) {
+    public void setModelCategoryPK(long modelCategoryPK) {
         _modelCategory.setModelCategoryPK(modelCategoryPK);
     }
 
@@ -105,7 +105,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @return the model category display weight of this model category
     */
-    public java.lang.Integer getModelCategoryDisplayWeight() {
+    public int getModelCategoryDisplayWeight() {
         return _modelCategory.getModelCategoryDisplayWeight();
     }
 
@@ -114,8 +114,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @param modelCategoryDisplayWeight the model category display weight of this model category
     */
-    public void setModelCategoryDisplayWeight(
-        java.lang.Integer modelCategoryDisplayWeight) {
+    public void setModelCategoryDisplayWeight(int modelCategoryDisplayWeight) {
         _modelCategory.setModelCategoryDisplayWeight(modelCategoryDisplayWeight);
     }
 

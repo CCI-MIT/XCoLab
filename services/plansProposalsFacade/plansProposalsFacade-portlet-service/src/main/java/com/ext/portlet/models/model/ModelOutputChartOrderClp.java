@@ -14,15 +14,15 @@ import java.lang.reflect.Proxy;
 
 public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrder>
     implements ModelOutputChartOrder {
-    private Long _modelOutputChartOrderPK;
-    private Long _modelId;
+    private long _modelOutputChartOrderPK;
+    private long _modelId;
     private String _modelOutputLabel;
-    private Integer _modelOutputChartOrder;
+    private int _modelOutputChartOrder;
     private String _modelIndexRangePolicy;
     private String _modelIndexRangeMessage;
     private String _modelIndexErrorPolicy;
     private String _modelIndexErrorMessage;
-    private Boolean _modelChartIsVisible;
+    private boolean _modelChartIsVisible;
 
     public ModelOutputChartOrderClp() {
     }
@@ -35,11 +35,11 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
         return ModelOutputChartOrder.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelOutputChartOrderPK;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setModelOutputChartOrderPK(primaryKey);
     }
 
@@ -51,19 +51,19 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getModelOutputChartOrderPK() {
+    public long getModelOutputChartOrderPK() {
         return _modelOutputChartOrderPK;
     }
 
-    public void setModelOutputChartOrderPK(Long modelOutputChartOrderPK) {
+    public void setModelOutputChartOrderPK(long modelOutputChartOrderPK) {
         _modelOutputChartOrderPK = modelOutputChartOrderPK;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
@@ -75,11 +75,11 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
         _modelOutputLabel = modelOutputLabel;
     }
 
-    public Integer getModelOutputChartOrder() {
+    public int getModelOutputChartOrder() {
         return _modelOutputChartOrder;
     }
 
-    public void setModelOutputChartOrder(Integer modelOutputChartOrder) {
+    public void setModelOutputChartOrder(int modelOutputChartOrder) {
         _modelOutputChartOrder = modelOutputChartOrder;
     }
 
@@ -115,11 +115,15 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
         _modelIndexErrorMessage = modelIndexErrorMessage;
     }
 
-    public Boolean getModelChartIsVisible() {
+    public boolean getModelChartIsVisible() {
         return _modelChartIsVisible;
     }
 
-    public void setModelChartIsVisible(Boolean modelChartIsVisible) {
+    public boolean isModelChartIsVisible() {
+        return _modelChartIsVisible;
+    }
+
+    public void setModelChartIsVisible(boolean modelChartIsVisible) {
         _modelChartIsVisible = modelChartIsVisible;
     }
 
@@ -156,7 +160,7 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
     }
 
     public int compareTo(ModelOutputChartOrder modelOutputChartOrder) {
-        Long primaryKey = modelOutputChartOrder.getPrimaryKey();
+        long primaryKey = modelOutputChartOrder.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -181,7 +185,7 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
             return false;
         }
 
-        Long primaryKey = modelOutputChartOrder.getPrimaryKey();
+        long primaryKey = modelOutputChartOrder.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -192,7 +196,7 @@ public class ModelOutputChartOrderClp extends BaseModelImpl<ModelOutputChartOrde
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

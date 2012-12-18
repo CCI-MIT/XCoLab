@@ -42,7 +42,7 @@ public class PlanVoteLocalServiceImpl extends PlanVoteLocalServiceBaseImpl {
      */
     public boolean voteForPlan(Long planId, Long userId) throws SystemException, PortalException {
         PlanItem plan = PlanItemLocalServiceUtil.getPlan(planId);
-        PlanVotePK votePk = new PlanVotePK(userId, plan.getContest().getContestPK());
+        PlanVotePK votePk = new PlanVotePK(userId, PlanItemLocalServiceUtil.getContest(plan).getContestPK());
         try {
             PlanVote vote = PlanVoteLocalServiceUtil.getPlanVote(votePk);
             PlanVotePK oldVotePk = new PlanVotePK();
@@ -52,8 +52,8 @@ public class PlanVoteLocalServiceImpl extends PlanVoteLocalServiceBaseImpl {
             }
             try {
                 PlanItem planOldVote = PlanItemLocalServiceUtil.getPlan(vote.getPlanId());
-                oldVotePk.setContestId(planOldVote.getContest().getContestPK());
-                planOldVote.unvote(userId);
+                oldVotePk.setContestId(PlanItemLocalServiceUtil.getContest(planOldVote).getContestPK());
+                PlanItemLocalServiceUtil.unvote(planOldVote, userId);
             }
             catch (NoSuchPlanItemException e) {
                 // ignore
@@ -106,6 +106,16 @@ public class PlanVoteLocalServiceImpl extends PlanVoteLocalServiceBaseImpl {
     
     public int countPlanVotesByPlanId(Long planId) throws SystemException {
         return planVotePersistence.countByPlanId(planId);
+    }
+    
+
+    public void store(PlanVote planVote) throws SystemException {
+        if (planVote.isNew()) {
+            PlanVoteLocalServiceUtil.addPlanVote(planVote);
+        }
+        else {
+            PlanVoteLocalServiceUtil.updatePlanVote(planVote);
+        }
     }
 
 }

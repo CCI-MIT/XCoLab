@@ -47,7 +47,7 @@ public class PlanSectionDefinitionLocalServiceUtil {
     * @return the new plan section definition
     */
     public static com.ext.portlet.plans.model.PlanSectionDefinition createPlanSectionDefinition(
-        java.lang.Long id) {
+        long id) {
         return getService().createPlanSectionDefinition(id);
     }
 
@@ -58,7 +58,7 @@ public class PlanSectionDefinitionLocalServiceUtil {
     * @throws PortalException if a plan section definition with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanSectionDefinition(java.lang.Long id)
+    public static void deletePlanSectionDefinition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanSectionDefinition(id);
@@ -148,8 +148,7 @@ public class PlanSectionDefinitionLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanSectionDefinition fetchPlanSectionDefinition(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanSectionDefinition(id);
     }
 
@@ -162,7 +161,7 @@ public class PlanSectionDefinitionLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSectionDefinition getPlanSectionDefinition(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanSectionDefinition(id);
@@ -249,6 +248,19 @@ public class PlanSectionDefinitionLocalServiceUtil {
     */
     public static void setBeanIdentifier(java.lang.String beanIdentifier) {
         getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static void store(
+        com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(psd);
+    }
+
+    public static com.ext.portlet.ontology.model.FocusArea getFocusArea(
+        com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFocusArea(psd);
     }
 
     public static void clearService() {

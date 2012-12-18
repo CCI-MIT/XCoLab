@@ -38,10 +38,10 @@ public class PlansUserSettingsLocalServiceClp
                 com.ext.portlet.plans.model.PlansUserSettings.class);
 
         _createPlansUserSettingsMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlansUserSettings", java.lang.Long.class);
+                "createPlansUserSettings", long.class);
 
         _deletePlansUserSettingsMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlansUserSettings", java.lang.Long.class);
+                "deletePlansUserSettings", long.class);
 
         _deletePlansUserSettingsMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlansUserSettings",
@@ -67,10 +67,10 @@ public class PlansUserSettingsLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlansUserSettingsMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlansUserSettings", java.lang.Long.class);
+                "fetchPlansUserSettings", long.class);
 
         _getPlansUserSettingsMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlansUserSettings", java.lang.Long.class);
+                "getPlansUserSettings", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -140,11 +140,11 @@ public class PlansUserSettingsLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlansUserSettings createPlansUserSettings(
-        java.lang.Long planUserSettingsId) {
+        long planUserSettingsId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlansUserSettingsMethodKey1,
-                ClpSerializer.translateInput(planUserSettingsId));
+                planUserSettingsId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -160,11 +160,11 @@ public class PlansUserSettingsLocalServiceClp
         return (com.ext.portlet.plans.model.PlansUserSettings) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlansUserSettings(java.lang.Long planUserSettingsId)
+    public void deletePlansUserSettings(long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlansUserSettingsMethodKey2,
-                ClpSerializer.translateInput(planUserSettingsId));
+                planUserSettingsId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -319,12 +319,12 @@ public class PlansUserSettingsLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlansUserSettings fetchPlansUserSettings(
-        java.lang.Long planUserSettingsId)
+        long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlansUserSettingsMethodKey8,
-                ClpSerializer.translateInput(planUserSettingsId));
+                planUserSettingsId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -345,13 +345,13 @@ public class PlansUserSettingsLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlansUserSettings getPlansUserSettings(
-        java.lang.Long planUserSettingsId)
+        long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlansUserSettingsMethodKey9,
-                ClpSerializer.translateInput(planUserSettingsId));
+                planUserSettingsId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -546,7 +546,7 @@ public class PlansUserSettingsLocalServiceClp
 
     public com.ext.portlet.plans.model.PlansUserSettings getByUserIdPlanTypeId(
         java.lang.Long userId, java.lang.Long planTypeId)
-        throws com.ext.portlet.plans.NoSuchUserSettingsException,
+        throws com.ext.portlet.plans.NoSuchPlansUserSettingsException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -557,8 +557,8 @@ public class PlansUserSettingsLocalServiceClp
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
-            if (t instanceof com.ext.portlet.plans.NoSuchUserSettingsException) {
-                throw (com.ext.portlet.plans.NoSuchUserSettingsException) t;
+            if (t instanceof com.ext.portlet.plans.NoSuchPlansUserSettingsException) {
+                throw (com.ext.portlet.plans.NoSuchPlansUserSettingsException) t;
             }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {

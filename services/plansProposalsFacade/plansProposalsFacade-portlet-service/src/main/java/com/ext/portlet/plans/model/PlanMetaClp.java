@@ -15,25 +15,25 @@ import java.util.Date;
 
 
 public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
-    private Long _id;
-    private Long _planId;
-    private Long _planTypeId;
-    private Long _planCreated;
-    private Long _authorId;
-    private Integer _votes;
-    private Long _planGroupId;
-    private Boolean _open;
+    private long _id;
+    private long _planId;
+    private long _planTypeId;
+    private long _planCreated;
+    private long _authorId;
+    private int _votes;
+    private long _planGroupId;
+    private boolean _open;
     private String _status;
-    private Long _mbCategoryId;
-    private Long _categoryGroupId;
-    private Long _version;
-    private Long _planVersion;
+    private long _mbCategoryId;
+    private long _categoryGroupId;
+    private long _version;
+    private long _planVersion;
     private Date _created;
-    private Long _updateAuthorId;
-    private Long _modelId;
-    private Boolean _promoted;
-    private Long _previousContestPhase;
-    private Long _contestPhase;
+    private long _updateAuthorId;
+    private long _modelId;
+    private boolean _promoted;
+    private long _previousContestPhase;
+    private long _contestPhase;
 
     public PlanMetaClp() {
     }
@@ -46,11 +46,11 @@ public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
         return PlanMeta.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -62,67 +62,71 @@ public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
-    public Long getPlanCreated() {
+    public long getPlanCreated() {
         return _planCreated;
     }
 
-    public void setPlanCreated(Long planCreated) {
+    public void setPlanCreated(long planCreated) {
         _planCreated = planCreated;
     }
 
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return _authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
-    public Integer getVotes() {
+    public int getVotes() {
         return _votes;
     }
 
-    public void setVotes(Integer votes) {
+    public void setVotes(int votes) {
         _votes = votes;
     }
 
-    public Long getPlanGroupId() {
+    public long getPlanGroupId() {
         return _planGroupId;
     }
 
-    public void setPlanGroupId(Long planGroupId) {
+    public void setPlanGroupId(long planGroupId) {
         _planGroupId = planGroupId;
     }
 
-    public Boolean getOpen() {
+    public boolean getOpen() {
         return _open;
     }
 
-    public void setOpen(Boolean open) {
+    public boolean isOpen() {
+        return _open;
+    }
+
+    public void setOpen(boolean open) {
         _open = open;
     }
 
@@ -134,35 +138,35 @@ public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
         _status = status;
     }
 
-    public Long getMbCategoryId() {
+    public long getMbCategoryId() {
         return _mbCategoryId;
     }
 
-    public void setMbCategoryId(Long mbCategoryId) {
+    public void setMbCategoryId(long mbCategoryId) {
         _mbCategoryId = mbCategoryId;
     }
 
-    public Long getCategoryGroupId() {
+    public long getCategoryGroupId() {
         return _categoryGroupId;
     }
 
-    public void setCategoryGroupId(Long categoryGroupId) {
+    public void setCategoryGroupId(long categoryGroupId) {
         _categoryGroupId = categoryGroupId;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return _version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(long version) {
         _version = version;
     }
 
-    public Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planVersion;
     }
 
-    public void setPlanVersion(Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planVersion = planVersion;
     }
 
@@ -174,56 +178,48 @@ public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
         _created = created;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Boolean getPromoted() {
+    public boolean getPromoted() {
         return _promoted;
     }
 
-    public void setPromoted(Boolean promoted) {
+    public boolean isPromoted() {
+        return _promoted;
+    }
+
+    public void setPromoted(boolean promoted) {
         _promoted = promoted;
     }
 
-    public Long getPreviousContestPhase() {
+    public long getPreviousContestPhase() {
         return _previousContestPhase;
     }
 
-    public void setPreviousContestPhase(Long previousContestPhase) {
+    public void setPreviousContestPhase(long previousContestPhase) {
         _previousContestPhase = previousContestPhase;
     }
 
-    public Long getContestPhase() {
+    public long getContestPhase() {
         return _contestPhase;
     }
 
-    public void setContestPhase(Long contestPhase) {
+    public void setContestPhase(long contestPhase) {
         _contestPhase = contestPhase;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void vote() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void unvote() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -301,7 +297,7 @@ public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
             return false;
         }
 
-        Long primaryKey = planMeta.getPrimaryKey();
+        long primaryKey = planMeta.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -312,7 +308,7 @@ public class PlanMetaClp extends BaseModelImpl<PlanMeta> implements PlanMeta {
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

@@ -32,7 +32,7 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @return the primary key of this plans user settings
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _plansUserSettings.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @param primaryKey the primary key of this plans user settings
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _plansUserSettings.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @return the plan user settings ID of this plans user settings
     */
-    public java.lang.Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _plansUserSettings.getPlanUserSettingsId();
     }
 
@@ -59,7 +59,7 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @param planUserSettingsId the plan user settings ID of this plans user settings
     */
-    public void setPlanUserSettingsId(java.lang.Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _plansUserSettings.setPlanUserSettingsId(planUserSettingsId);
     }
 
@@ -68,7 +68,7 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @return the user ID of this plans user settings
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _plansUserSettings.getUserId();
     }
 
@@ -77,8 +77,28 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @param userId the user ID of this plans user settings
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _plansUserSettings.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this plans user settings.
+    *
+    * @return the user uuid of this plans user settings
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _plansUserSettings.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this plans user settings.
+    *
+    * @param userUuid the user uuid of this plans user settings
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _plansUserSettings.setUserUuid(userUuid);
     }
 
     /**
@@ -86,7 +106,7 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @return the plan type ID of this plans user settings
     */
-    public java.lang.Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _plansUserSettings.getPlanTypeId();
     }
 
@@ -95,7 +115,7 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @param planTypeId the plan type ID of this plans user settings
     */
-    public void setPlanTypeId(java.lang.Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _plansUserSettings.setPlanTypeId(planTypeId);
     }
 
@@ -140,16 +160,25 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @return the filter enabled of this plans user settings
     */
-    public java.lang.Boolean getFilterEnabled() {
+    public boolean getFilterEnabled() {
         return _plansUserSettings.getFilterEnabled();
     }
 
     /**
-    * Sets the filter enabled of this plans user settings.
+    * Returns <code>true</code> if this plans user settings is filter enabled.
+    *
+    * @return <code>true</code> if this plans user settings is filter enabled; <code>false</code> otherwise
+    */
+    public boolean isFilterEnabled() {
+        return _plansUserSettings.isFilterEnabled();
+    }
+
+    /**
+    * Sets whether this plans user settings is filter enabled.
     *
     * @param filterEnabled the filter enabled of this plans user settings
     */
-    public void setFilterEnabled(java.lang.Boolean filterEnabled) {
+    public void setFilterEnabled(boolean filterEnabled) {
         _plansUserSettings.setFilterEnabled(filterEnabled);
     }
 
@@ -158,16 +187,25 @@ public class PlansUserSettingsWrapper implements PlansUserSettings,
     *
     * @return the filter positions all of this plans user settings
     */
-    public java.lang.Boolean getFilterPositionsAll() {
+    public boolean getFilterPositionsAll() {
         return _plansUserSettings.getFilterPositionsAll();
     }
 
     /**
-    * Sets the filter positions all of this plans user settings.
+    * Returns <code>true</code> if this plans user settings is filter positions all.
+    *
+    * @return <code>true</code> if this plans user settings is filter positions all; <code>false</code> otherwise
+    */
+    public boolean isFilterPositionsAll() {
+        return _plansUserSettings.isFilterPositionsAll();
+    }
+
+    /**
+    * Sets whether this plans user settings is filter positions all.
     *
     * @param filterPositionsAll the filter positions all of this plans user settings
     */
-    public void setFilterPositionsAll(java.lang.Boolean filterPositionsAll) {
+    public void setFilterPositionsAll(boolean filterPositionsAll) {
         _plansUserSettings.setFilterPositionsAll(filterPositionsAll);
     }
 

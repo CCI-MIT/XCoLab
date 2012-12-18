@@ -26,6 +26,8 @@ public class OntologyTermEntityLocalServiceClp
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _findTagedIdsForClassMethodKey17;
+    private MethodKey _storeMethodKey18;
+    private MethodKey _removeMethodKey19;
 
     public OntologyTermEntityLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -35,10 +37,10 @@ public class OntologyTermEntityLocalServiceClp
                 com.ext.portlet.ontology.model.OntologyTermEntity.class);
 
         _createOntologyTermEntityMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createOntologyTermEntity", java.lang.Long.class);
+                "createOntologyTermEntity", long.class);
 
         _deleteOntologyTermEntityMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteOntologyTermEntity", java.lang.Long.class);
+                "deleteOntologyTermEntity", long.class);
 
         _deleteOntologyTermEntityMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteOntologyTermEntity",
@@ -64,10 +66,10 @@ public class OntologyTermEntityLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchOntologyTermEntityMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchOntologyTermEntity", java.lang.Long.class);
+                "fetchOntologyTermEntity", long.class);
 
         _getOntologyTermEntityMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getOntologyTermEntity", java.lang.Long.class);
+                "getOntologyTermEntity", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -96,6 +98,13 @@ public class OntologyTermEntityLocalServiceClp
         _findTagedIdsForClassMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "findTagedIdsForClass", java.lang.Long.class,
                 java.lang.Class.class);
+
+        _storeMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.ontology.model.OntologyTermEntity.class);
+
+        _removeMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "remove",
+                com.ext.portlet.ontology.model.OntologyTermEntity.class);
     }
 
     public com.ext.portlet.ontology.model.OntologyTermEntity addOntologyTermEntity(
@@ -125,11 +134,11 @@ public class OntologyTermEntityLocalServiceClp
     }
 
     public com.ext.portlet.ontology.model.OntologyTermEntity createOntologyTermEntity(
-        java.lang.Long id) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createOntologyTermEntityMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -145,11 +154,11 @@ public class OntologyTermEntityLocalServiceClp
         return (com.ext.portlet.ontology.model.OntologyTermEntity) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteOntologyTermEntity(java.lang.Long id)
+    public void deleteOntologyTermEntity(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteOntologyTermEntityMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -304,12 +313,11 @@ public class OntologyTermEntityLocalServiceClp
     }
 
     public com.ext.portlet.ontology.model.OntologyTermEntity fetchOntologyTermEntity(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchOntologyTermEntityMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -330,13 +338,13 @@ public class OntologyTermEntityLocalServiceClp
     }
 
     public com.ext.portlet.ontology.model.OntologyTermEntity getOntologyTermEntity(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getOntologyTermEntityMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -554,6 +562,48 @@ public class OntologyTermEntityLocalServiceClp
         }
 
         return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(com.ext.portlet.ontology.model.OntologyTermEntity ote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey18,
+                ClpSerializer.translateInput(ote));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void remove(com.ext.portlet.ontology.model.OntologyTermEntity ote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_removeMethodKey19,
+                ClpSerializer.translateInput(ote));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

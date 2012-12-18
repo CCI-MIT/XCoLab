@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -15,9 +16,10 @@ import java.util.Date;
 
 
 public class PlanFanClp extends BaseModelImpl<PlanFan> implements PlanFan {
-    private Long _id;
-    private Long _userId;
-    private Long _planId;
+    private long _id;
+    private long _userId;
+    private String _userUuid;
+    private long _planId;
     private Date _created;
     private Date _deleted;
 
@@ -32,11 +34,11 @@ public class PlanFanClp extends BaseModelImpl<PlanFan> implements PlanFan {
         return PlanFan.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -48,27 +50,35 @@ public class PlanFanClp extends BaseModelImpl<PlanFan> implements PlanFan {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getPlanId() {
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
@@ -86,18 +96,6 @@ public class PlanFanClp extends BaseModelImpl<PlanFan> implements PlanFan {
 
     public void setDeleted(Date deleted) {
         _deleted = deleted;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getUser() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.plans.model.PlanItem getPlan() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -159,7 +157,7 @@ public class PlanFanClp extends BaseModelImpl<PlanFan> implements PlanFan {
             return false;
         }
 
-        Long primaryKey = planFan.getPrimaryKey();
+        long primaryKey = planFan.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -170,7 +168,7 @@ public class PlanFanClp extends BaseModelImpl<PlanFan> implements PlanFan {
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

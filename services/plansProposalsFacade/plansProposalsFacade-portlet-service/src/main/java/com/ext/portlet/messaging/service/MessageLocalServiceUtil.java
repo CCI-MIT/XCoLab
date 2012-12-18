@@ -47,7 +47,7 @@ public class MessageLocalServiceUtil {
     * @return the new message
     */
     public static com.ext.portlet.messaging.model.Message createMessage(
-        java.lang.Long messageId) {
+        long messageId) {
         return getService().createMessage(messageId);
     }
 
@@ -58,7 +58,7 @@ public class MessageLocalServiceUtil {
     * @throws PortalException if a message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteMessage(java.lang.Long messageId)
+    public static void deleteMessage(long messageId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteMessage(messageId);
@@ -148,7 +148,7 @@ public class MessageLocalServiceUtil {
     }
 
     public static com.ext.portlet.messaging.model.Message fetchMessage(
-        java.lang.Long messageId)
+        long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchMessage(messageId);
     }
@@ -162,7 +162,7 @@ public class MessageLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.Message getMessage(
-        java.lang.Long messageId)
+        long messageId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getMessage(messageId);
@@ -258,6 +258,46 @@ public class MessageLocalServiceUtil {
         long userid, int pagerstart, int pagerend)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().findSentMessages(userid, pagerstart, pagerend);
+    }
+
+    public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> getRecipients(
+        com.ext.portlet.messaging.model.Message msg)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getRecipients(msg);
+    }
+
+    public static boolean hasReciever(
+        com.ext.portlet.messaging.model.Message msg, long userid)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasReciever(msg, userid);
+    }
+
+    public static boolean isOpened(
+        com.ext.portlet.messaging.model.Message msg, long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().isOpened(msg, userid);
+    }
+
+    public static void setOpened(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setOpened(msg, userid);
+    }
+
+    public static boolean isArchived(
+        com.ext.portlet.messaging.model.Message msg, long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().isArchived(msg, userid);
+    }
+
+    public static void setArchived(
+        com.ext.portlet.messaging.model.Message msg, long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setArchived(msg, userid);
     }
 
     public static void clearService() {

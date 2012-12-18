@@ -33,7 +33,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @return the primary key of this model output chart order
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelOutputChartOrder.getPrimaryKey();
     }
 
@@ -42,7 +42,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @param primaryKey the primary key of this model output chart order
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _modelOutputChartOrder.setPrimaryKey(primaryKey);
     }
 
@@ -51,7 +51,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @return the model output chart order p k of this model output chart order
     */
-    public java.lang.Long getModelOutputChartOrderPK() {
+    public long getModelOutputChartOrderPK() {
         return _modelOutputChartOrder.getModelOutputChartOrderPK();
     }
 
@@ -60,8 +60,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @param modelOutputChartOrderPK the model output chart order p k of this model output chart order
     */
-    public void setModelOutputChartOrderPK(
-        java.lang.Long modelOutputChartOrderPK) {
+    public void setModelOutputChartOrderPK(long modelOutputChartOrderPK) {
         _modelOutputChartOrder.setModelOutputChartOrderPK(modelOutputChartOrderPK);
     }
 
@@ -70,7 +69,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @return the model ID of this model output chart order
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _modelOutputChartOrder.getModelId();
     }
 
@@ -79,7 +78,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @param modelId the model ID of this model output chart order
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _modelOutputChartOrder.setModelId(modelId);
     }
 
@@ -106,7 +105,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @return the model output chart order of this model output chart order
     */
-    public java.lang.Integer getModelOutputChartOrder() {
+    public int getModelOutputChartOrder() {
         return _modelOutputChartOrder.getModelOutputChartOrder();
     }
 
@@ -115,8 +114,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @param modelOutputChartOrder the model output chart order of this model output chart order
     */
-    public void setModelOutputChartOrder(
-        java.lang.Integer modelOutputChartOrder) {
+    public void setModelOutputChartOrder(int modelOutputChartOrder) {
         _modelOutputChartOrder.setModelOutputChartOrder(modelOutputChartOrder);
     }
 
@@ -199,16 +197,25 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     *
     * @return the model chart is visible of this model output chart order
     */
-    public java.lang.Boolean getModelChartIsVisible() {
+    public boolean getModelChartIsVisible() {
         return _modelOutputChartOrder.getModelChartIsVisible();
     }
 
     /**
-    * Sets the model chart is visible of this model output chart order.
+    * Returns <code>true</code> if this model output chart order is model chart is visible.
+    *
+    * @return <code>true</code> if this model output chart order is model chart is visible; <code>false</code> otherwise
+    */
+    public boolean isModelChartIsVisible() {
+        return _modelOutputChartOrder.isModelChartIsVisible();
+    }
+
+    /**
+    * Sets whether this model output chart order is model chart is visible.
     *
     * @param modelChartIsVisible the model chart is visible of this model output chart order
     */
-    public void setModelChartIsVisible(java.lang.Boolean modelChartIsVisible) {
+    public void setModelChartIsVisible(boolean modelChartIsVisible) {
         _modelOutputChartOrder.setModelChartIsVisible(modelChartIsVisible);
     }
 

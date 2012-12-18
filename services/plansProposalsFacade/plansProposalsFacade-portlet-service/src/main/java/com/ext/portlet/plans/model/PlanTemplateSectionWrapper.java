@@ -51,7 +51,7 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     *
     * @return the plan template ID of this plan template section
     */
-    public java.lang.Long getPlanTemplateId() {
+    public long getPlanTemplateId() {
         return _planTemplateSection.getPlanTemplateId();
     }
 
@@ -60,7 +60,7 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     *
     * @param planTemplateId the plan template ID of this plan template section
     */
-    public void setPlanTemplateId(java.lang.Long planTemplateId) {
+    public void setPlanTemplateId(long planTemplateId) {
         _planTemplateSection.setPlanTemplateId(planTemplateId);
     }
 
@@ -69,7 +69,7 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     *
     * @return the plan section ID of this plan template section
     */
-    public java.lang.Long getPlanSectionId() {
+    public long getPlanSectionId() {
         return _planTemplateSection.getPlanSectionId();
     }
 
@@ -78,7 +78,7 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     *
     * @param planSectionId the plan section ID of this plan template section
     */
-    public void setPlanSectionId(java.lang.Long planSectionId) {
+    public void setPlanSectionId(long planSectionId) {
         _planTemplateSection.setPlanSectionId(planSectionId);
     }
 
@@ -87,7 +87,7 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     *
     * @return the weight of this plan template section
     */
-    public java.lang.Integer getWeight() {
+    public int getWeight() {
         return _planTemplateSection.getWeight();
     }
 
@@ -96,7 +96,7 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     *
     * @param weight the weight of this plan template section
     */
-    public void setWeight(java.lang.Integer weight) {
+    public void setWeight(int weight) {
         _planTemplateSection.setWeight(weight);
     }
 
@@ -171,16 +171,6 @@ public class PlanTemplateSectionWrapper implements PlanTemplateSection,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planTemplateSection.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateSection.store();
-    }
-
-    public void remove()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateSection.remove();
     }
 
     /**

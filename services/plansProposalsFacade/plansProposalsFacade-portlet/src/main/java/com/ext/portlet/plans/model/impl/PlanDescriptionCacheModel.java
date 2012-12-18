@@ -19,15 +19,15 @@ import java.util.Date;
  */
 public class PlanDescriptionCacheModel implements CacheModel<PlanDescription>,
     Serializable {
-    public Long id;
-    public Long planId;
+    public long id;
+    public long planId;
     public String name;
     public String description;
-    public Long version;
-    public Long planVersion;
+    public long version;
+    public long planVersion;
     public long created;
-    public Long updateAuthorId;
-    public Long image;
+    public long updateAuthorId;
+    public long image;
     public String pitch;
 
     @Override

@@ -51,7 +51,7 @@ public class PlanPositionItemWrapper implements PlanPositionItem,
     *
     * @return the plan positions ID of this plan position item
     */
-    public java.lang.Long getPlanPositionsId() {
+    public long getPlanPositionsId() {
         return _planPositionItem.getPlanPositionsId();
     }
 
@@ -60,7 +60,7 @@ public class PlanPositionItemWrapper implements PlanPositionItem,
     *
     * @param planPositionsId the plan positions ID of this plan position item
     */
-    public void setPlanPositionsId(java.lang.Long planPositionsId) {
+    public void setPlanPositionsId(long planPositionsId) {
         _planPositionItem.setPlanPositionsId(planPositionsId);
     }
 
@@ -69,7 +69,7 @@ public class PlanPositionItemWrapper implements PlanPositionItem,
     *
     * @return the position ID of this plan position item
     */
-    public java.lang.Long getPositionId() {
+    public long getPositionId() {
         return _planPositionItem.getPositionId();
     }
 
@@ -78,7 +78,7 @@ public class PlanPositionItemWrapper implements PlanPositionItem,
     *
     * @param positionId the position ID of this plan position item
     */
-    public void setPositionId(java.lang.Long positionId) {
+    public void setPositionId(long positionId) {
         _planPositionItem.setPositionId(positionId);
     }
 

@@ -266,7 +266,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @param modelGlobalPreferencePK the primary key for the new model global preference
      * @return the new model global preference
      */
-    public ModelGlobalPreference create(Long modelGlobalPreferencePK) {
+    public ModelGlobalPreference create(long modelGlobalPreferencePK) {
         ModelGlobalPreference modelGlobalPreference = new ModelGlobalPreferenceImpl();
 
         modelGlobalPreference.setNew(true);
@@ -283,9 +283,9 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException if a model global preference with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelGlobalPreference remove(Long modelGlobalPreferencePK)
+    public ModelGlobalPreference remove(long modelGlobalPreferencePK)
         throws NoSuchModelGlobalPreferenceException, SystemException {
-        return remove((Serializable) modelGlobalPreferencePK);
+        return remove(Long.valueOf(modelGlobalPreferencePK));
     }
 
     /**
@@ -441,7 +441,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
 
         modelGlobalPreferenceImpl.setModelGlobalPreferencePK(modelGlobalPreference.getModelGlobalPreferencePK());
         modelGlobalPreferenceImpl.setModelId(modelGlobalPreference.getModelId());
-        modelGlobalPreferenceImpl.setVisible(modelGlobalPreference.getVisible());
+        modelGlobalPreferenceImpl.setVisible(modelGlobalPreference.isVisible());
         modelGlobalPreferenceImpl.setWeight(modelGlobalPreference.getWeight());
         modelGlobalPreferenceImpl.setExpertEvaluationPageId(modelGlobalPreference.getExpertEvaluationPageId());
         modelGlobalPreferenceImpl.setModelCategoryId(modelGlobalPreference.getModelCategoryId());
@@ -460,7 +460,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
     @Override
     public ModelGlobalPreference findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -471,7 +471,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException if a model global preference with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelGlobalPreference findByPrimaryKey(Long modelGlobalPreferencePK)
+    public ModelGlobalPreference findByPrimaryKey(long modelGlobalPreferencePK)
         throws NoSuchModelGlobalPreferenceException, SystemException {
         ModelGlobalPreference modelGlobalPreference = fetchByPrimaryKey(modelGlobalPreferencePK);
 
@@ -498,7 +498,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
     @Override
     public ModelGlobalPreference fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -508,7 +508,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @return the model global preference, or <code>null</code> if a model global preference with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelGlobalPreference fetchByPrimaryKey(Long modelGlobalPreferencePK)
+    public ModelGlobalPreference fetchByPrimaryKey(long modelGlobalPreferencePK)
         throws SystemException {
         ModelGlobalPreference modelGlobalPreference = (ModelGlobalPreference) EntityCacheUtil.getResult(ModelGlobalPreferenceModelImpl.ENTITY_CACHE_ENABLED,
                 ModelGlobalPreferenceImpl.class, modelGlobalPreferencePK);
@@ -555,7 +555,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException if a matching model global preference could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelGlobalPreference findByModelId(Long modelId)
+    public ModelGlobalPreference findByModelId(long modelId)
         throws NoSuchModelGlobalPreferenceException, SystemException {
         ModelGlobalPreference modelGlobalPreference = fetchByModelId(modelId);
 
@@ -586,7 +586,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @return the matching model global preference, or <code>null</code> if a matching model global preference could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelGlobalPreference fetchByModelId(Long modelId)
+    public ModelGlobalPreference fetchByModelId(long modelId)
         throws SystemException {
         return fetchByModelId(modelId, true);
     }
@@ -599,7 +599,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @return the matching model global preference, or <code>null</code> if a matching model global preference could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelGlobalPreference fetchByModelId(Long modelId,
+    public ModelGlobalPreference fetchByModelId(long modelId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { modelId };
 
@@ -628,7 +628,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 List<ModelGlobalPreference> list = q.list();
 
@@ -678,7 +678,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws SystemException if a system exception occurred
      */
     public List<ModelGlobalPreference> findByModelCategoryId(
-        Long modelCategoryId) throws SystemException {
+        long modelCategoryId) throws SystemException {
         return findByModelCategoryId(modelCategoryId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
@@ -697,7 +697,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws SystemException if a system exception occurred
      */
     public List<ModelGlobalPreference> findByModelCategoryId(
-        Long modelCategoryId, int start, int end) throws SystemException {
+        long modelCategoryId, int start, int end) throws SystemException {
         return findByModelCategoryId(modelCategoryId, start, end, null);
     }
 
@@ -716,7 +716,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws SystemException if a system exception occurred
      */
     public List<ModelGlobalPreference> findByModelCategoryId(
-        Long modelCategoryId, int start, int end,
+        long modelCategoryId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -767,7 +767,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelCategoryId.longValue());
+                qPos.add(modelCategoryId);
 
                 list = (List<ModelGlobalPreference>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -803,7 +803,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws SystemException if a system exception occurred
      */
     public ModelGlobalPreference findByModelCategoryId_First(
-        Long modelCategoryId, OrderByComparator orderByComparator)
+        long modelCategoryId, OrderByComparator orderByComparator)
         throws NoSuchModelGlobalPreferenceException, SystemException {
         List<ModelGlobalPreference> list = findByModelCategoryId(modelCategoryId,
                 0, 1, orderByComparator);
@@ -838,7 +838,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws SystemException if a system exception occurred
      */
     public ModelGlobalPreference findByModelCategoryId_Last(
-        Long modelCategoryId, OrderByComparator orderByComparator)
+        long modelCategoryId, OrderByComparator orderByComparator)
         throws NoSuchModelGlobalPreferenceException, SystemException {
         int count = countByModelCategoryId(modelCategoryId);
 
@@ -876,7 +876,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @throws SystemException if a system exception occurred
      */
     public ModelGlobalPreference[] findByModelCategoryId_PrevAndNext(
-        Long modelGlobalPreferencePK, Long modelCategoryId,
+        long modelGlobalPreferencePK, long modelCategoryId,
         OrderByComparator orderByComparator)
         throws NoSuchModelGlobalPreferenceException, SystemException {
         ModelGlobalPreference modelGlobalPreference = findByPrimaryKey(modelGlobalPreferencePK);
@@ -908,7 +908,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
 
     protected ModelGlobalPreference getByModelCategoryId_PrevAndNext(
         Session session, ModelGlobalPreference modelGlobalPreference,
-        Long modelCategoryId, OrderByComparator orderByComparator,
+        long modelCategoryId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -982,7 +982,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(modelCategoryId.longValue());
+        qPos.add(modelCategoryId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(modelGlobalPreference);
@@ -1116,7 +1116,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @param modelId the model ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelId(Long modelId)
+    public void removeByModelId(long modelId)
         throws NoSuchModelGlobalPreferenceException, SystemException {
         ModelGlobalPreference modelGlobalPreference = findByModelId(modelId);
 
@@ -1129,7 +1129,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @param modelCategoryId the model category ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelCategoryId(Long modelCategoryId)
+    public void removeByModelCategoryId(long modelCategoryId)
         throws SystemException {
         for (ModelGlobalPreference modelGlobalPreference : findByModelCategoryId(
                 modelCategoryId)) {
@@ -1155,7 +1155,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @return the number of matching model global preferences
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelId(Long modelId) throws SystemException {
+    public int countByModelId(long modelId) throws SystemException {
         Object[] finderArgs = new Object[] { modelId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MODELID,
@@ -1179,7 +1179,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1206,7 +1206,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
      * @return the number of matching model global preferences
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelCategoryId(Long modelCategoryId)
+    public int countByModelCategoryId(long modelCategoryId)
         throws SystemException {
         Object[] finderArgs = new Object[] { modelCategoryId };
 
@@ -1231,7 +1231,7 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelCategoryId.longValue());
+                qPos.add(modelCategoryId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

@@ -25,6 +25,8 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _createSpaceMethodKey17;
+    private MethodKey _storeMethodKey18;
+    private MethodKey _getTopTermMethodKey19;
 
     public OntologySpaceLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -34,10 +36,10 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
                 com.ext.portlet.ontology.model.OntologySpace.class);
 
         _createOntologySpaceMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createOntologySpace", java.lang.Long.class);
+                "createOntologySpace", long.class);
 
         _deleteOntologySpaceMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteOntologySpace", java.lang.Long.class);
+                "deleteOntologySpace", long.class);
 
         _deleteOntologySpaceMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteOntologySpace",
@@ -63,10 +65,10 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchOntologySpaceMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchOntologySpace", java.lang.Long.class);
+                "fetchOntologySpace", long.class);
 
         _getOntologySpaceMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getOntologySpace", java.lang.Long.class);
+                "getOntologySpace", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -94,6 +96,12 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
 
         _createSpaceMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "createSpace", java.lang.String.class, java.lang.String.class);
+
+        _storeMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.ontology.model.OntologySpace.class);
+
+        _getTopTermMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getTopTerm", com.ext.portlet.ontology.model.OntologySpace.class);
     }
 
     public com.ext.portlet.ontology.model.OntologySpace addOntologySpace(
@@ -123,11 +131,11 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
     }
 
     public com.ext.portlet.ontology.model.OntologySpace createOntologySpace(
-        java.lang.Long id) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createOntologySpaceMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -143,11 +151,11 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
         return (com.ext.portlet.ontology.model.OntologySpace) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteOntologySpace(java.lang.Long id)
+    public void deleteOntologySpace(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteOntologySpaceMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -302,12 +310,11 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
     }
 
     public com.ext.portlet.ontology.model.OntologySpace fetchOntologySpace(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchOntologySpaceMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -328,13 +335,13 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
     }
 
     public com.ext.portlet.ontology.model.OntologySpace getOntologySpace(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getOntologySpaceMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -552,6 +559,53 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
         }
 
         return (com.ext.portlet.ontology.model.OntologySpace) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(com.ext.portlet.ontology.model.OntologySpace space)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey18,
+                ClpSerializer.translateInput(space));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.ext.portlet.ontology.model.OntologyTerm getTopTerm(
+        com.ext.portlet.ontology.model.OntologySpace space)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getTopTermMethodKey19,
+                ClpSerializer.translateInput(space));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.ontology.model.OntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

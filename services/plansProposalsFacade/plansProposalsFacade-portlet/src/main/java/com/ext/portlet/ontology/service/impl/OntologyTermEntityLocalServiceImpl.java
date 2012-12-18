@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ext.portlet.ontology.model.OntologyTermEntity;
+import com.ext.portlet.ontology.service.OntologyTermEntityLocalServiceUtil;
 import com.ext.portlet.ontology.service.base.OntologyTermEntityLocalServiceBaseImpl;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 
@@ -38,5 +40,22 @@ public class OntologyTermEntityLocalServiceImpl
         }
         
         return ret;
+    }
+    
+    
+    public void store(OntologyTermEntity ote) throws SystemException {
+        if (ote.isNew()) {
+            if (ote.getId() <= 0) {
+                ote.setId(CounterLocalServiceUtil.increment(OntologyTermEntity.class.getName()));
+            }
+            OntologyTermEntityLocalServiceUtil.addOntologyTermEntity(ote);
+        }
+        else {
+            OntologyTermEntityLocalServiceUtil.updateOntologyTermEntity(ote);
+        }
+    }
+    
+    public void remove(OntologyTermEntity ote) throws SystemException {
+        OntologyTermEntityLocalServiceUtil.deleteOntologyTermEntity(ote);
     }
 }

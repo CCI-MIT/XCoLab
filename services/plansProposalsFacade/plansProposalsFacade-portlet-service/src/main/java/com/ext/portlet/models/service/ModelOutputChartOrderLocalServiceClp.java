@@ -36,10 +36,10 @@ public class ModelOutputChartOrderLocalServiceClp
                 com.ext.portlet.models.model.ModelOutputChartOrder.class);
 
         _createModelOutputChartOrderMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createModelOutputChartOrder", java.lang.Long.class);
+                "createModelOutputChartOrder", long.class);
 
         _deleteModelOutputChartOrderMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteModelOutputChartOrder", java.lang.Long.class);
+                "deleteModelOutputChartOrder", long.class);
 
         _deleteModelOutputChartOrderMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteModelOutputChartOrder",
@@ -65,10 +65,10 @@ public class ModelOutputChartOrderLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchModelOutputChartOrderMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchModelOutputChartOrder", java.lang.Long.class);
+                "fetchModelOutputChartOrder", long.class);
 
         _getModelOutputChartOrderMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getModelOutputChartOrder", java.lang.Long.class);
+                "getModelOutputChartOrder", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -127,11 +127,11 @@ public class ModelOutputChartOrderLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelOutputChartOrder createModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK) {
+        long modelOutputChartOrderPK) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createModelOutputChartOrderMethodKey1,
-                ClpSerializer.translateInput(modelOutputChartOrderPK));
+                modelOutputChartOrderPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -147,12 +147,11 @@ public class ModelOutputChartOrderLocalServiceClp
         return (com.ext.portlet.models.model.ModelOutputChartOrder) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+    public void deleteModelOutputChartOrder(long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteModelOutputChartOrderMethodKey2,
-                ClpSerializer.translateInput(modelOutputChartOrderPK));
+                modelOutputChartOrderPK);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -307,12 +306,12 @@ public class ModelOutputChartOrderLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelOutputChartOrder fetchModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchModelOutputChartOrderMethodKey8,
-                ClpSerializer.translateInput(modelOutputChartOrderPK));
+                modelOutputChartOrderPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -333,13 +332,13 @@ public class ModelOutputChartOrderLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelOutputChartOrder getModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getModelOutputChartOrderMethodKey9,
-                ClpSerializer.translateInput(modelOutputChartOrderPK));
+                modelOutputChartOrderPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

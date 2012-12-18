@@ -217,7 +217,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @param messageId the primary key for the new message
      * @return the new message
      */
-    public Message create(Long messageId) {
+    public Message create(long messageId) {
         Message message = new MessageImpl();
 
         message.setNew(true);
@@ -234,9 +234,9 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @throws com.ext.portlet.messaging.NoSuchMessageException if a message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Message remove(Long messageId)
+    public Message remove(long messageId)
         throws NoSuchMessageException, SystemException {
-        return remove((Serializable) messageId);
+        return remove(Long.valueOf(messageId));
     }
 
     /**
@@ -384,7 +384,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
     @Override
     public Message findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -395,7 +395,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @throws com.ext.portlet.messaging.NoSuchMessageException if a message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Message findByPrimaryKey(Long messageId)
+    public Message findByPrimaryKey(long messageId)
         throws NoSuchMessageException, SystemException {
         Message message = fetchByPrimaryKey(messageId);
 
@@ -421,7 +421,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
     @Override
     public Message fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -431,7 +431,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @return the message, or <code>null</code> if a message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Message fetchByPrimaryKey(Long messageId) throws SystemException {
+    public Message fetchByPrimaryKey(long messageId) throws SystemException {
         Message message = (Message) EntityCacheUtil.getResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
                 MessageImpl.class, messageId);
 
@@ -475,7 +475,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @return the matching messages
      * @throws SystemException if a system exception occurred
      */
-    public List<Message> findBySendingUser(Long fromId)
+    public List<Message> findBySendingUser(long fromId)
         throws SystemException {
         return findBySendingUser(fromId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -494,7 +494,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @return the range of matching messages
      * @throws SystemException if a system exception occurred
      */
-    public List<Message> findBySendingUser(Long fromId, int start, int end)
+    public List<Message> findBySendingUser(long fromId, int start, int end)
         throws SystemException {
         return findBySendingUser(fromId, start, end, null);
     }
@@ -513,7 +513,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @return the ordered range of matching messages
      * @throws SystemException if a system exception occurred
      */
-    public List<Message> findBySendingUser(Long fromId, int start, int end,
+    public List<Message> findBySendingUser(long fromId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -563,7 +563,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(fromId.longValue());
+                qPos.add(fromId);
 
                 list = (List<Message>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -598,7 +598,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @throws com.ext.portlet.messaging.NoSuchMessageException if a matching message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Message findBySendingUser_First(Long fromId,
+    public Message findBySendingUser_First(long fromId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageException, SystemException {
         List<Message> list = findBySendingUser(fromId, 0, 1, orderByComparator);
@@ -632,7 +632,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @throws com.ext.portlet.messaging.NoSuchMessageException if a matching message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Message findBySendingUser_Last(Long fromId,
+    public Message findBySendingUser_Last(long fromId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageException, SystemException {
         int count = countBySendingUser(fromId);
@@ -670,7 +670,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @throws com.ext.portlet.messaging.NoSuchMessageException if a message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Message[] findBySendingUser_PrevAndNext(Long messageId, Long fromId,
+    public Message[] findBySendingUser_PrevAndNext(long messageId, long fromId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageException, SystemException {
         Message message = findByPrimaryKey(messageId);
@@ -699,7 +699,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
     }
 
     protected Message getBySendingUser_PrevAndNext(Session session,
-        Message message, Long fromId, OrderByComparator orderByComparator,
+        Message message, long fromId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -776,7 +776,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(fromId.longValue());
+        qPos.add(fromId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(message);
@@ -909,7 +909,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @param fromId the from ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeBySendingUser(Long fromId) throws SystemException {
+    public void removeBySendingUser(long fromId) throws SystemException {
         for (Message message : findBySendingUser(fromId)) {
             remove(message);
         }
@@ -933,7 +933,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
      * @return the number of matching messages
      * @throws SystemException if a system exception occurred
      */
-    public int countBySendingUser(Long fromId) throws SystemException {
+    public int countBySendingUser(long fromId) throws SystemException {
         Object[] finderArgs = new Object[] { fromId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_SENDINGUSER,
@@ -957,7 +957,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(fromId.longValue());
+                qPos.add(fromId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

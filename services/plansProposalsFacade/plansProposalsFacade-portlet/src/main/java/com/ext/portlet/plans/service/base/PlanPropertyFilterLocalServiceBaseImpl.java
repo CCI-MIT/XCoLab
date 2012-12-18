@@ -342,7 +342,7 @@ public abstract class PlanPropertyFilterLocalServiceBaseImpl
      * @return the new plan property filter
      */
     public PlanPropertyFilter createPlanPropertyFilter(
-        Long planPropertyFilterId) {
+        long planPropertyFilterId) {
         return planPropertyFilterPersistence.create(planPropertyFilterId);
     }
 
@@ -353,7 +353,7 @@ public abstract class PlanPropertyFilterLocalServiceBaseImpl
      * @throws PortalException if a plan property filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanPropertyFilter(Long planPropertyFilterId)
+    public void deletePlanPropertyFilter(long planPropertyFilterId)
         throws PortalException, SystemException {
         PlanPropertyFilter planPropertyFilter = planPropertyFilterPersistence.remove(planPropertyFilterId);
 
@@ -459,7 +459,7 @@ public abstract class PlanPropertyFilterLocalServiceBaseImpl
         return planPropertyFilterPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanPropertyFilter fetchPlanPropertyFilter(Long planPropertyFilterId)
+    public PlanPropertyFilter fetchPlanPropertyFilter(long planPropertyFilterId)
         throws SystemException {
         return planPropertyFilterPersistence.fetchByPrimaryKey(planPropertyFilterId);
     }
@@ -472,7 +472,7 @@ public abstract class PlanPropertyFilterLocalServiceBaseImpl
      * @throws PortalException if a plan property filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanPropertyFilter getPlanPropertyFilter(Long planPropertyFilterId)
+    public PlanPropertyFilter getPlanPropertyFilter(long planPropertyFilterId)
         throws PortalException, SystemException {
         return planPropertyFilterPersistence.findByPrimaryKey(planPropertyFilterId);
     }

@@ -16,10 +16,10 @@ import java.lang.reflect.Proxy;
 
 public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
     implements OntologyTermEntity {
-    private Long _id;
-    private Long _termId;
-    private Long _classNameId;
-    private Long _classPK;
+    private long _id;
+    private long _termId;
+    private long _classNameId;
+    private long _classPK;
 
     public OntologyTermEntityClp() {
     }
@@ -32,11 +32,11 @@ public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
         return OntologyTermEntity.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -48,19 +48,19 @@ public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getTermId() {
+    public long getTermId() {
         return _termId;
     }
 
-    public void setTermId(Long termId) {
+    public void setTermId(long termId) {
         _termId = termId;
     }
 
@@ -72,28 +72,20 @@ public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
         return PortalUtil.getClassName(getClassNameId());
     }
 
-    public Long getClassNameId() {
+    public long getClassNameId() {
         return _classNameId;
     }
 
-    public void setClassNameId(Long classNameId) {
+    public void setClassNameId(long classNameId) {
         _classNameId = classNameId;
     }
 
-    public Long getClassPK() {
+    public long getClassPK() {
         return _classPK;
     }
 
-    public void setClassPK(Long classPK) {
+    public void setClassPK(long classPK) {
         _classPK = classPK;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void remove() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -124,7 +116,7 @@ public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
     }
 
     public int compareTo(OntologyTermEntity ontologyTermEntity) {
-        Long primaryKey = ontologyTermEntity.getPrimaryKey();
+        long primaryKey = ontologyTermEntity.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -149,7 +141,7 @@ public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
             return false;
         }
 
-        Long primaryKey = ontologyTermEntity.getPrimaryKey();
+        long primaryKey = ontologyTermEntity.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -160,7 +152,7 @@ public class OntologyTermEntityClp extends BaseModelImpl<OntologyTermEntity>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

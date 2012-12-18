@@ -49,7 +49,7 @@ public interface ActivitySubscriptionLocalService
     * @return the new activity subscription
     */
     public com.ext.portlet.Activity.model.ActivitySubscription createActivitySubscription(
-        java.lang.Long pk);
+        long pk);
 
     /**
     * Deletes the activity subscription with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface ActivitySubscriptionLocalService
     * @throws PortalException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteActivitySubscription(java.lang.Long pk)
+    public void deleteActivitySubscription(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,8 +136,7 @@ public interface ActivitySubscriptionLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.Activity.model.ActivitySubscription fetchActivitySubscription(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long pk) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the activity subscription with the primary key.
@@ -149,7 +148,7 @@ public interface ActivitySubscriptionLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.Activity.model.ActivitySubscription getActivitySubscription(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -285,5 +284,25 @@ public interface ActivitySubscriptionLocalService
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.liferay.portlet.social.model.SocialActivity> getActivities(
         java.lang.Long userId, int start, int count)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.Activity.ICollabActivityInterpreter getInterpreter(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getName(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.Activity.SubscriptionType getSubscriptionType(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription);
+
+    public void delete(
+        com.ext.portlet.Activity.model.ActivitySubscription activitySubscription)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

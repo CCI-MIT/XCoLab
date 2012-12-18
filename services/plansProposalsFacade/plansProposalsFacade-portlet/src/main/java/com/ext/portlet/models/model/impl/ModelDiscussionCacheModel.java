@@ -16,9 +16,9 @@ import java.io.Serializable;
  */
 public class ModelDiscussionCacheModel implements CacheModel<ModelDiscussion>,
     Serializable {
-    public Long modelDiscussionId;
-    public Long modelId;
-    public Long categoryId;
+    public long modelDiscussionId;
+    public long modelId;
+    public long categoryId;
 
     @Override
     public String toString() {

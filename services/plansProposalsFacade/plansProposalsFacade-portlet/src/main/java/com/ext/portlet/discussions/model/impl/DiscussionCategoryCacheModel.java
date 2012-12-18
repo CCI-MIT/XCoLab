@@ -19,17 +19,17 @@ import java.util.Date;
  */
 public class DiscussionCategoryCacheModel implements CacheModel<DiscussionCategory>,
     Serializable {
-    public Long pk;
-    public Long categoryId;
-    public Long categoryGroupId;
-    public Long authorId;
+    public long pk;
+    public long categoryId;
+    public long categoryGroupId;
+    public long authorId;
     public String name;
     public String description;
     public long createDate;
     public long deleted;
-    public Integer threadsCount;
+    public int threadsCount;
     public long lastActivityDate;
-    public Long lastActivityAuthorId;
+    public long lastActivityAuthorId;
 
     @Override
     public String toString() {

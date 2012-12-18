@@ -306,7 +306,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @param id the primary key for the new ontology term entity
      * @return the new ontology term entity
      */
-    public OntologyTermEntity create(Long id) {
+    public OntologyTermEntity create(long id) {
         OntologyTermEntity ontologyTermEntity = new OntologyTermEntityImpl();
 
         ontologyTermEntity.setNew(true);
@@ -323,9 +323,9 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a ontology term entity with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity remove(Long id)
+    public OntologyTermEntity remove(long id)
         throws NoSuchOntologyTermEntityException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -542,7 +542,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
     @Override
     public OntologyTermEntity findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -553,7 +553,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a ontology term entity with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByPrimaryKey(Long id)
+    public OntologyTermEntity findByPrimaryKey(long id)
         throws NoSuchOntologyTermEntityException, SystemException {
         OntologyTermEntity ontologyTermEntity = fetchByPrimaryKey(id);
 
@@ -579,7 +579,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
     @Override
     public OntologyTermEntity fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -589,7 +589,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the ontology term entity, or <code>null</code> if a ontology term entity with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity fetchByPrimaryKey(Long id)
+    public OntologyTermEntity fetchByPrimaryKey(long id)
         throws SystemException {
         OntologyTermEntity ontologyTermEntity = (OntologyTermEntity) EntityCacheUtil.getResult(OntologyTermEntityModelImpl.ENTITY_CACHE_ENABLED,
                 OntologyTermEntityImpl.class, id);
@@ -635,7 +635,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByClassNameId(Long classNameId)
+    public List<OntologyTermEntity> findByClassNameId(long classNameId)
         throws SystemException {
         return findByClassNameId(classNameId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -654,7 +654,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the range of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByClassNameId(Long classNameId,
+    public List<OntologyTermEntity> findByClassNameId(long classNameId,
         int start, int end) throws SystemException {
         return findByClassNameId(classNameId, start, end, null);
     }
@@ -673,7 +673,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the ordered range of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByClassNameId(Long classNameId,
+    public List<OntologyTermEntity> findByClassNameId(long classNameId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -721,7 +721,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
                 list = (List<OntologyTermEntity>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -756,7 +756,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a matching ontology term entity could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByClassNameId_First(Long classNameId,
+    public OntologyTermEntity findByClassNameId_First(long classNameId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         List<OntologyTermEntity> list = findByClassNameId(classNameId, 0, 1,
@@ -791,7 +791,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a matching ontology term entity could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByClassNameId_Last(Long classNameId,
+    public OntologyTermEntity findByClassNameId_Last(long classNameId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         int count = countByClassNameId(classNameId);
@@ -829,8 +829,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a ontology term entity with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity[] findByClassNameId_PrevAndNext(Long id,
-        Long classNameId, OrderByComparator orderByComparator)
+    public OntologyTermEntity[] findByClassNameId_PrevAndNext(long id,
+        long classNameId, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         OntologyTermEntity ontologyTermEntity = findByPrimaryKey(id);
 
@@ -858,7 +858,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
     }
 
     protected OntologyTermEntity getByClassNameId_PrevAndNext(Session session,
-        OntologyTermEntity ontologyTermEntity, Long classNameId,
+        OntologyTermEntity ontologyTermEntity, long classNameId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -932,7 +932,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(classNameId.longValue());
+        qPos.add(classNameId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(ontologyTermEntity);
@@ -959,8 +959,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByClassNameIdClassPk(Long classNameId,
-        Long classPK) throws SystemException {
+    public List<OntologyTermEntity> findByClassNameIdClassPk(long classNameId,
+        long classPK) throws SystemException {
         return findByClassNameIdClassPk(classNameId, classPK,
             QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -979,8 +979,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the range of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByClassNameIdClassPk(Long classNameId,
-        Long classPK, int start, int end) throws SystemException {
+    public List<OntologyTermEntity> findByClassNameIdClassPk(long classNameId,
+        long classPK, int start, int end) throws SystemException {
         return findByClassNameIdClassPk(classNameId, classPK, start, end, null);
     }
 
@@ -999,8 +999,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the ordered range of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByClassNameIdClassPk(Long classNameId,
-        Long classPK, int start, int end, OrderByComparator orderByComparator)
+    public List<OntologyTermEntity> findByClassNameIdClassPk(long classNameId,
+        long classPK, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1053,9 +1053,9 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
                 list = (List<OntologyTermEntity>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1091,8 +1091,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a matching ontology term entity could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByClassNameIdClassPk_First(Long classNameId,
-        Long classPK, OrderByComparator orderByComparator)
+    public OntologyTermEntity findByClassNameIdClassPk_First(long classNameId,
+        long classPK, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         List<OntologyTermEntity> list = findByClassNameIdClassPk(classNameId,
                 classPK, 0, 1, orderByComparator);
@@ -1130,8 +1130,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a matching ontology term entity could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByClassNameIdClassPk_Last(Long classNameId,
-        Long classPK, OrderByComparator orderByComparator)
+    public OntologyTermEntity findByClassNameIdClassPk_Last(long classNameId,
+        long classPK, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         int count = countByClassNameIdClassPk(classNameId, classPK);
 
@@ -1172,8 +1172,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a ontology term entity with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity[] findByClassNameIdClassPk_PrevAndNext(Long id,
-        Long classNameId, Long classPK, OrderByComparator orderByComparator)
+    public OntologyTermEntity[] findByClassNameIdClassPk_PrevAndNext(long id,
+        long classNameId, long classPK, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         OntologyTermEntity ontologyTermEntity = findByPrimaryKey(id);
 
@@ -1204,7 +1204,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
     protected OntologyTermEntity getByClassNameIdClassPk_PrevAndNext(
         Session session, OntologyTermEntity ontologyTermEntity,
-        Long classNameId, Long classPK, OrderByComparator orderByComparator,
+        long classNameId, long classPK, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -1280,9 +1280,9 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(classNameId.longValue());
+        qPos.add(classNameId);
 
-        qPos.add(classPK.longValue());
+        qPos.add(classPK);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(ontologyTermEntity);
@@ -1308,7 +1308,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByTermId(Long termId)
+    public List<OntologyTermEntity> findByTermId(long termId)
         throws SystemException {
         return findByTermId(termId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -1326,7 +1326,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the range of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByTermId(Long termId, int start, int end)
+    public List<OntologyTermEntity> findByTermId(long termId, int start, int end)
         throws SystemException {
         return findByTermId(termId, start, end, null);
     }
@@ -1345,7 +1345,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the ordered range of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByTermId(Long termId, int start,
+    public List<OntologyTermEntity> findByTermId(long termId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1392,7 +1392,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(termId.longValue());
+                qPos.add(termId);
 
                 list = (List<OntologyTermEntity>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1427,7 +1427,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a matching ontology term entity could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByTermId_First(Long termId,
+    public OntologyTermEntity findByTermId_First(long termId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         List<OntologyTermEntity> list = findByTermId(termId, 0, 1,
@@ -1462,7 +1462,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a matching ontology term entity could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByTermId_Last(Long termId,
+    public OntologyTermEntity findByTermId_Last(long termId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         int count = countByTermId(termId);
@@ -1500,7 +1500,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a ontology term entity with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity[] findByTermId_PrevAndNext(Long id, Long termId,
+    public OntologyTermEntity[] findByTermId_PrevAndNext(long id, long termId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         OntologyTermEntity ontologyTermEntity = findByPrimaryKey(id);
@@ -1529,7 +1529,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
     }
 
     protected OntologyTermEntity getByTermId_PrevAndNext(Session session,
-        OntologyTermEntity ontologyTermEntity, Long termId,
+        OntologyTermEntity ontologyTermEntity, long termId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1603,7 +1603,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(termId.longValue());
+        qPos.add(termId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(ontologyTermEntity);
@@ -1630,8 +1630,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByTermIdClassNameId(Long termId,
-        Long classNameId) throws SystemException {
+    public List<OntologyTermEntity> findByTermIdClassNameId(long termId,
+        long classNameId) throws SystemException {
         return findByTermIdClassNameId(termId, classNameId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
@@ -1650,8 +1650,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the range of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByTermIdClassNameId(Long termId,
-        Long classNameId, int start, int end) throws SystemException {
+    public List<OntologyTermEntity> findByTermIdClassNameId(long termId,
+        long classNameId, int start, int end) throws SystemException {
         return findByTermIdClassNameId(termId, classNameId, start, end, null);
     }
 
@@ -1670,8 +1670,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the ordered range of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public List<OntologyTermEntity> findByTermIdClassNameId(Long termId,
-        Long classNameId, int start, int end,
+    public List<OntologyTermEntity> findByTermIdClassNameId(long termId,
+        long classNameId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1724,9 +1724,9 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(termId.longValue());
+                qPos.add(termId);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
                 list = (List<OntologyTermEntity>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1762,8 +1762,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a matching ontology term entity could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByTermIdClassNameId_First(Long termId,
-        Long classNameId, OrderByComparator orderByComparator)
+    public OntologyTermEntity findByTermIdClassNameId_First(long termId,
+        long classNameId, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         List<OntologyTermEntity> list = findByTermIdClassNameId(termId,
                 classNameId, 0, 1, orderByComparator);
@@ -1801,8 +1801,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a matching ontology term entity could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity findByTermIdClassNameId_Last(Long termId,
-        Long classNameId, OrderByComparator orderByComparator)
+    public OntologyTermEntity findByTermIdClassNameId_Last(long termId,
+        long classNameId, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         int count = countByTermIdClassNameId(termId, classNameId);
 
@@ -1843,8 +1843,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @throws com.ext.portlet.ontology.NoSuchOntologyTermEntityException if a ontology term entity with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTermEntity[] findByTermIdClassNameId_PrevAndNext(Long id,
-        Long termId, Long classNameId, OrderByComparator orderByComparator)
+    public OntologyTermEntity[] findByTermIdClassNameId_PrevAndNext(long id,
+        long termId, long classNameId, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermEntityException, SystemException {
         OntologyTermEntity ontologyTermEntity = findByPrimaryKey(id);
 
@@ -1874,8 +1874,8 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
     }
 
     protected OntologyTermEntity getByTermIdClassNameId_PrevAndNext(
-        Session session, OntologyTermEntity ontologyTermEntity, Long termId,
-        Long classNameId, OrderByComparator orderByComparator, boolean previous) {
+        Session session, OntologyTermEntity ontologyTermEntity, long termId,
+        long classNameId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -1950,9 +1950,9 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(termId.longValue());
+        qPos.add(termId);
 
-        qPos.add(classNameId.longValue());
+        qPos.add(classNameId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(ontologyTermEntity);
@@ -2086,7 +2086,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @param classNameId the class name ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByClassNameId(Long classNameId) throws SystemException {
+    public void removeByClassNameId(long classNameId) throws SystemException {
         for (OntologyTermEntity ontologyTermEntity : findByClassNameId(
                 classNameId)) {
             remove(ontologyTermEntity);
@@ -2100,7 +2100,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @param classPK the class p k
      * @throws SystemException if a system exception occurred
      */
-    public void removeByClassNameIdClassPk(Long classNameId, Long classPK)
+    public void removeByClassNameIdClassPk(long classNameId, long classPK)
         throws SystemException {
         for (OntologyTermEntity ontologyTermEntity : findByClassNameIdClassPk(
                 classNameId, classPK)) {
@@ -2114,7 +2114,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @param termId the term ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByTermId(Long termId) throws SystemException {
+    public void removeByTermId(long termId) throws SystemException {
         for (OntologyTermEntity ontologyTermEntity : findByTermId(termId)) {
             remove(ontologyTermEntity);
         }
@@ -2127,7 +2127,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @param classNameId the class name ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByTermIdClassNameId(Long termId, Long classNameId)
+    public void removeByTermIdClassNameId(long termId, long classNameId)
         throws SystemException {
         for (OntologyTermEntity ontologyTermEntity : findByTermIdClassNameId(
                 termId, classNameId)) {
@@ -2153,7 +2153,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the number of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public int countByClassNameId(Long classNameId) throws SystemException {
+    public int countByClassNameId(long classNameId) throws SystemException {
         Object[] finderArgs = new Object[] { classNameId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CLASSNAMEID,
@@ -2177,7 +2177,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2205,7 +2205,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the number of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public int countByClassNameIdClassPk(Long classNameId, Long classPK)
+    public int countByClassNameIdClassPk(long classNameId, long classPK)
         throws SystemException {
         Object[] finderArgs = new Object[] { classNameId, classPK };
 
@@ -2232,9 +2232,9 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
-                qPos.add(classPK.longValue());
+                qPos.add(classPK);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2261,7 +2261,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the number of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public int countByTermId(Long termId) throws SystemException {
+    public int countByTermId(long termId) throws SystemException {
         Object[] finderArgs = new Object[] { termId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_TERMID,
@@ -2285,7 +2285,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(termId.longValue());
+                qPos.add(termId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2313,7 +2313,7 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
      * @return the number of matching ontology term entities
      * @throws SystemException if a system exception occurred
      */
-    public int countByTermIdClassNameId(Long termId, Long classNameId)
+    public int countByTermIdClassNameId(long termId, long classNameId)
         throws SystemException {
         Object[] finderArgs = new Object[] { termId, classNameId };
 
@@ -2340,9 +2340,9 @@ public class OntologyTermEntityPersistenceImpl extends BasePersistenceImpl<Ontol
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(termId.longValue());
+                qPos.add(termId);
 
-                qPos.add(classNameId.longValue());
+                qPos.add(classNameId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

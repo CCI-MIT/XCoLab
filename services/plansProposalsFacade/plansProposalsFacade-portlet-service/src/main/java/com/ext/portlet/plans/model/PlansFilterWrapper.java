@@ -51,7 +51,7 @@ public class PlansFilterWrapper implements PlansFilter,
     *
     * @return the user ID of this plans filter
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _plansFilter.getUserId();
     }
 
@@ -60,8 +60,28 @@ public class PlansFilterWrapper implements PlansFilter,
     *
     * @param userId the user ID of this plans filter
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _plansFilter.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this plans filter.
+    *
+    * @return the user uuid of this plans filter
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _plansFilter.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this plans filter.
+    *
+    * @param userUuid the user uuid of this plans filter
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _plansFilter.setUserUuid(userUuid);
     }
 
     /**
@@ -69,7 +89,7 @@ public class PlansFilterWrapper implements PlansFilter,
     *
     * @return the plan type ID of this plans filter
     */
-    public java.lang.Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _plansFilter.getPlanTypeId();
     }
 
@@ -78,7 +98,7 @@ public class PlansFilterWrapper implements PlansFilter,
     *
     * @param planTypeId the plan type ID of this plans filter
     */
-    public void setPlanTypeId(java.lang.Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _plansFilter.setPlanTypeId(planTypeId);
     }
 
@@ -321,16 +341,25 @@ public class PlansFilterWrapper implements PlansFilter,
     *
     * @return the filter positions all of this plans filter
     */
-    public java.lang.Boolean getFilterPositionsAll() {
+    public boolean getFilterPositionsAll() {
         return _plansFilter.getFilterPositionsAll();
     }
 
     /**
-    * Sets the filter positions all of this plans filter.
+    * Returns <code>true</code> if this plans filter is filter positions all.
+    *
+    * @return <code>true</code> if this plans filter is filter positions all; <code>false</code> otherwise
+    */
+    public boolean isFilterPositionsAll() {
+        return _plansFilter.isFilterPositionsAll();
+    }
+
+    /**
+    * Sets whether this plans filter is filter positions all.
     *
     * @param filterPositionsAll the filter positions all of this plans filter
     */
-    public void setFilterPositionsAll(java.lang.Boolean filterPositionsAll) {
+    public void setFilterPositionsAll(boolean filterPositionsAll) {
         _plansFilter.setFilterPositionsAll(filterPositionsAll);
     }
 
@@ -339,16 +368,25 @@ public class PlansFilterWrapper implements PlansFilter,
     *
     * @return the enabled of this plans filter
     */
-    public java.lang.Boolean getEnabled() {
+    public boolean getEnabled() {
         return _plansFilter.getEnabled();
     }
 
     /**
-    * Sets the enabled of this plans filter.
+    * Returns <code>true</code> if this plans filter is enabled.
+    *
+    * @return <code>true</code> if this plans filter is enabled; <code>false</code> otherwise
+    */
+    public boolean isEnabled() {
+        return _plansFilter.isEnabled();
+    }
+
+    /**
+    * Sets whether this plans filter is enabled.
     *
     * @param enabled the enabled of this plans filter
     */
-    public void setEnabled(java.lang.Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         _plansFilter.setEnabled(enabled);
     }
 

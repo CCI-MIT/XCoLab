@@ -41,7 +41,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the new model discussion
     */
     public com.ext.portlet.models.model.ModelDiscussion createModelDiscussion(
-        java.lang.Long modelDiscussionId) {
+        long modelDiscussionId) {
         return _modelDiscussionLocalService.createModelDiscussion(modelDiscussionId);
     }
 
@@ -52,7 +52,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @throws PortalException if a model discussion with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelDiscussion(java.lang.Long modelDiscussionId)
+    public void deleteModelDiscussion(long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _modelDiscussionLocalService.deleteModelDiscussion(modelDiscussionId);
@@ -143,7 +143,7 @@ public class ModelDiscussionLocalServiceWrapper
     }
 
     public com.ext.portlet.models.model.ModelDiscussion fetchModelDiscussion(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelDiscussionLocalService.fetchModelDiscussion(modelDiscussionId);
     }
@@ -157,7 +157,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelDiscussion getModelDiscussion(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _modelDiscussionLocalService.getModelDiscussion(modelDiscussionId);

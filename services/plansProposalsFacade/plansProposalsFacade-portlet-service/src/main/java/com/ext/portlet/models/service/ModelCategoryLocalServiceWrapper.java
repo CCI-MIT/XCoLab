@@ -41,7 +41,7 @@ public class ModelCategoryLocalServiceWrapper
     * @return the new model category
     */
     public com.ext.portlet.models.model.ModelCategory createModelCategory(
-        java.lang.Long modelCategoryPK) {
+        long modelCategoryPK) {
         return _modelCategoryLocalService.createModelCategory(modelCategoryPK);
     }
 
@@ -52,7 +52,7 @@ public class ModelCategoryLocalServiceWrapper
     * @throws PortalException if a model category with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelCategory(java.lang.Long modelCategoryPK)
+    public void deleteModelCategory(long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _modelCategoryLocalService.deleteModelCategory(modelCategoryPK);
@@ -142,7 +142,7 @@ public class ModelCategoryLocalServiceWrapper
     }
 
     public com.ext.portlet.models.model.ModelCategory fetchModelCategory(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelCategoryLocalService.fetchModelCategory(modelCategoryPK);
     }
@@ -156,7 +156,7 @@ public class ModelCategoryLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelCategory getModelCategory(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _modelCategoryLocalService.getModelCategory(modelCategoryPK);

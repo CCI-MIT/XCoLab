@@ -13,18 +13,18 @@ import java.util.List;
  * @generated
  */
 public class ModelOutputItemSoap implements Serializable {
-    private Long _modelOutputItemModifierPK;
-    private Long _modelId;
-    private Long _modelOutputItemId;
-    private Integer _modelOutputItemOrder;
+    private long _modelOutputItemModifierPK;
+    private long _modelId;
+    private long _modelOutputItemId;
+    private int _modelOutputItemOrder;
     private String _modelItemRangePolicy;
     private String _modelItemRangeMessage;
     private String _modelItemErrorPolicy;
     private String _modelItemErrorMessage;
     private String _modelItemLabelFormat;
-    private Boolean _modelItemIsVisible;
+    private boolean _modelItemIsVisible;
     private String _itemType;
-    private Long _relatedOutputItem;
+    private long _relatedOutputItem;
 
     public ModelOutputItemSoap() {
     }
@@ -86,43 +86,43 @@ public class ModelOutputItemSoap implements Serializable {
         return soapModels.toArray(new ModelOutputItemSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelOutputItemModifierPK;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setModelOutputItemModifierPK(pk);
     }
 
-    public Long getModelOutputItemModifierPK() {
+    public long getModelOutputItemModifierPK() {
         return _modelOutputItemModifierPK;
     }
 
-    public void setModelOutputItemModifierPK(Long modelOutputItemModifierPK) {
+    public void setModelOutputItemModifierPK(long modelOutputItemModifierPK) {
         _modelOutputItemModifierPK = modelOutputItemModifierPK;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Long getModelOutputItemId() {
+    public long getModelOutputItemId() {
         return _modelOutputItemId;
     }
 
-    public void setModelOutputItemId(Long modelOutputItemId) {
+    public void setModelOutputItemId(long modelOutputItemId) {
         _modelOutputItemId = modelOutputItemId;
     }
 
-    public Integer getModelOutputItemOrder() {
+    public int getModelOutputItemOrder() {
         return _modelOutputItemOrder;
     }
 
-    public void setModelOutputItemOrder(Integer modelOutputItemOrder) {
+    public void setModelOutputItemOrder(int modelOutputItemOrder) {
         _modelOutputItemOrder = modelOutputItemOrder;
     }
 
@@ -166,11 +166,15 @@ public class ModelOutputItemSoap implements Serializable {
         _modelItemLabelFormat = modelItemLabelFormat;
     }
 
-    public Boolean getModelItemIsVisible() {
+    public boolean getModelItemIsVisible() {
         return _modelItemIsVisible;
     }
 
-    public void setModelItemIsVisible(Boolean modelItemIsVisible) {
+    public boolean isModelItemIsVisible() {
+        return _modelItemIsVisible;
+    }
+
+    public void setModelItemIsVisible(boolean modelItemIsVisible) {
         _modelItemIsVisible = modelItemIsVisible;
     }
 
@@ -182,11 +186,11 @@ public class ModelOutputItemSoap implements Serializable {
         _itemType = itemType;
     }
 
-    public Long getRelatedOutputItem() {
+    public long getRelatedOutputItem() {
         return _relatedOutputItem;
     }
 
-    public void setRelatedOutputItem(Long relatedOutputItem) {
+    public void setRelatedOutputItem(long relatedOutputItem) {
         _relatedOutputItem = relatedOutputItem;
     }
 }

@@ -300,6 +300,11 @@ public class PlanVoteLocalServiceUtil {
         return getService().countPlanVotesByPlanId(planId);
     }
 
+    public static void store(com.ext.portlet.plans.model.PlanVote planVote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(planVote);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -32,7 +32,7 @@ public class PlanPropertyFilterWrapper implements PlanPropertyFilter,
     *
     * @return the primary key of this plan property filter
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planPropertyFilter.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanPropertyFilterWrapper implements PlanPropertyFilter,
     *
     * @param primaryKey the primary key of this plan property filter
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planPropertyFilter.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanPropertyFilterWrapper implements PlanPropertyFilter,
     *
     * @return the plan property filter ID of this plan property filter
     */
-    public java.lang.Long getPlanPropertyFilterId() {
+    public long getPlanPropertyFilterId() {
         return _planPropertyFilter.getPlanPropertyFilterId();
     }
 
@@ -59,7 +59,7 @@ public class PlanPropertyFilterWrapper implements PlanPropertyFilter,
     *
     * @param planPropertyFilterId the plan property filter ID of this plan property filter
     */
-    public void setPlanPropertyFilterId(java.lang.Long planPropertyFilterId) {
+    public void setPlanPropertyFilterId(long planPropertyFilterId) {
         _planPropertyFilter.setPlanPropertyFilterId(planPropertyFilterId);
     }
 
@@ -86,7 +86,7 @@ public class PlanPropertyFilterWrapper implements PlanPropertyFilter,
     *
     * @return the plan user settings ID of this plan property filter
     */
-    public java.lang.Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planPropertyFilter.getPlanUserSettingsId();
     }
 
@@ -95,7 +95,7 @@ public class PlanPropertyFilterWrapper implements PlanPropertyFilter,
     *
     * @param planUserSettingsId the plan user settings ID of this plan property filter
     */
-    public void setPlanUserSettingsId(java.lang.Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planPropertyFilter.setPlanUserSettingsId(planUserSettingsId);
     }
 

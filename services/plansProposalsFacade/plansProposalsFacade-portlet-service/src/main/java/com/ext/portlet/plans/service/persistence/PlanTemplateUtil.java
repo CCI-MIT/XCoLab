@@ -124,8 +124,7 @@ public class PlanTemplateUtil {
     * @param id the primary key for the new plan template
     * @return the new plan template
     */
-    public static com.ext.portlet.plans.model.PlanTemplate create(
-        java.lang.Long id) {
+    public static com.ext.portlet.plans.model.PlanTemplate create(long id) {
         return getPersistence().create(id);
     }
 
@@ -137,8 +136,7 @@ public class PlanTemplateUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanTemplateException if a plan template with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanTemplate remove(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanTemplate remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanTemplateException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -159,7 +157,7 @@ public class PlanTemplateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTemplate findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.plans.NoSuchPlanTemplateException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -173,8 +171,7 @@ public class PlanTemplateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTemplate fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 

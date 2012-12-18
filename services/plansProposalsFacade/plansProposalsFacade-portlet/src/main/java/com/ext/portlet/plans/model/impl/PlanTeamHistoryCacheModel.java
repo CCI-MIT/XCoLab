@@ -19,13 +19,13 @@ import java.util.Date;
  */
 public class PlanTeamHistoryCacheModel implements CacheModel<PlanTeamHistory>,
     Serializable {
-    public Long id;
-    public Long planId;
-    public Long userId;
+    public long id;
+    public long planId;
+    public long userId;
     public String action;
     public String payload;
     public long created;
-    public Long updateAuthorId;
+    public long updateAuthorId;
 
     @Override
     public String toString() {

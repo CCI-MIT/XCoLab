@@ -32,7 +32,7 @@ public class PlanTemplateWrapper implements PlanTemplate,
     *
     * @return the primary key of this plan template
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTemplate.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanTemplateWrapper implements PlanTemplate,
     *
     * @param primaryKey the primary key of this plan template
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planTemplate.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanTemplateWrapper implements PlanTemplate,
     *
     * @return the ID of this plan template
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _planTemplate.getId();
     }
 
@@ -59,7 +59,7 @@ public class PlanTemplateWrapper implements PlanTemplate,
     *
     * @param id the ID of this plan template
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _planTemplate.setId(id);
     }
 
@@ -152,38 +152,6 @@ public class PlanTemplateWrapper implements PlanTemplate,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planTemplate.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planTemplate.store();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanSectionDefinition> getSections()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planTemplate.getSections();
-    }
-
-    public void addSection(
-        com.ext.portlet.plans.model.PlanSectionDefinition section)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _planTemplate.addSection(section);
-    }
-
-    public void removeSection(
-        com.ext.portlet.plans.model.PlanSectionDefinition section)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _planTemplate.removeSection(section);
-    }
-
-    public void updateSectionWeight(
-        com.ext.portlet.plans.model.PlanSectionDefinition section, int weight)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _planTemplate.updateSectionWeight(section, weight);
     }
 
     /**

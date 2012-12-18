@@ -155,12 +155,12 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
     private static final String _SQL_SELECT_PLANTYPE_WHERE = "SELECT planType FROM PlanType planType WHERE ";
     private static final String _SQL_COUNT_PLANTYPE = "SELECT COUNT(planType) FROM PlanType planType";
     private static final String _SQL_COUNT_PLANTYPE_WHERE = "SELECT COUNT(planType) FROM PlanType planType WHERE ";
-    private static final String _SQL_GETPLANTYPEATTRIBUTES = "SELECT {Plans_PlanTypeAttribute.*} FROM Plans_PlanTypeAttribute INNER JOIN Plans_PlanType ON (Plans_PlanType.planTypeId = Plans_PlanTypeAttribute.planTypeId) WHERE (Plans_PlanType.planTypeId = ?)";
-    private static final String _SQL_GETPLANTYPEATTRIBUTESSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM Plans_PlanTypeAttribute WHERE planTypeId = ?";
-    private static final String _SQL_CONTAINSPLANTYPEATTRIBUTE = "SELECT COUNT(*) AS COUNT_VALUE FROM Plans_PlanTypeAttribute WHERE planTypeId = ? AND planTypeAttributeId = ?";
-    private static final String _SQL_GETPLANTYPECOLUMNS = "SELECT {Plans_PlanTypeColumn.*} FROM Plans_PlanTypeColumn INNER JOIN Plans_PlanType ON (Plans_PlanType.planTypeId = Plans_PlanTypeColumn.planTypeId) WHERE (Plans_PlanType.planTypeId = ?)";
-    private static final String _SQL_GETPLANTYPECOLUMNSSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM Plans_PlanTypeColumn WHERE planTypeId = ?";
-    private static final String _SQL_CONTAINSPLANTYPECOLUMN = "SELECT COUNT(*) AS COUNT_VALUE FROM Plans_PlanTypeColumn WHERE planTypeId = ? AND planTypeColumnId = ?";
+    private static final String _SQL_GETPLANTYPEATTRIBUTES = "SELECT {xcolab_PlanTypeAttribute.*} FROM xcolab_PlanTypeAttribute INNER JOIN xcolab_PlanType ON (xcolab_PlanType.planTypeId = xcolab_PlanTypeAttribute.planTypeId) WHERE (xcolab_PlanType.planTypeId = ?)";
+    private static final String _SQL_GETPLANTYPEATTRIBUTESSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanTypeAttribute WHERE planTypeId = ?";
+    private static final String _SQL_CONTAINSPLANTYPEATTRIBUTE = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanTypeAttribute WHERE planTypeId = ? AND planTypeAttributeId = ?";
+    private static final String _SQL_GETPLANTYPECOLUMNS = "SELECT {xcolab_PlanTypeColumn.*} FROM xcolab_PlanTypeColumn INNER JOIN xcolab_PlanType ON (xcolab_PlanType.planTypeId = xcolab_PlanTypeColumn.planTypeId) WHERE (xcolab_PlanType.planTypeId = ?)";
+    private static final String _SQL_GETPLANTYPECOLUMNSSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanTypeColumn WHERE planTypeId = ?";
+    private static final String _SQL_CONTAINSPLANTYPECOLUMN = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanTypeColumn WHERE planTypeId = ? AND planTypeColumnId = ?";
     private static final String _FINDER_COLUMN_DEFAULT_ISDEFAULT_2 = "planType.isDefault = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "planType.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlanType exists with the primary key ";
@@ -339,7 +339,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @param planTypeId the primary key for the new plan type
      * @return the new plan type
      */
-    public PlanType create(Long planTypeId) {
+    public PlanType create(long planTypeId) {
         PlanType planType = new PlanTypeImpl();
 
         planType.setNew(true);
@@ -356,9 +356,9 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws com.ext.portlet.plans.NoSuchPlanTypeException if a plan type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanType remove(Long planTypeId)
+    public PlanType remove(long planTypeId)
         throws NoSuchPlanTypeException, SystemException {
-        return remove((Serializable) planTypeId);
+        return remove(Long.valueOf(planTypeId));
     }
 
     /**
@@ -490,9 +490,9 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
         planTypeImpl.setDescription(planType.getDescription());
         planTypeImpl.setModelId(planType.getModelId());
         planTypeImpl.setModelTypeName(planType.getModelTypeName());
-        planTypeImpl.setPublished(planType.getPublished());
+        planTypeImpl.setPublished(planType.isPublished());
         planTypeImpl.setPublishedCounterpartId(planType.getPublishedCounterpartId());
-        planTypeImpl.setIsDefault(planType.getIsDefault());
+        planTypeImpl.setIsDefault(planType.isIsDefault());
         planTypeImpl.setDefaultModelId(planType.getDefaultModelId());
         planTypeImpl.setDefaultScenarioId(planType.getDefaultScenarioId());
 
@@ -510,7 +510,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
     @Override
     public PlanType findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -521,7 +521,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws com.ext.portlet.plans.NoSuchPlanTypeException if a plan type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanType findByPrimaryKey(Long planTypeId)
+    public PlanType findByPrimaryKey(long planTypeId)
         throws NoSuchPlanTypeException, SystemException {
         PlanType planType = fetchByPrimaryKey(planTypeId);
 
@@ -547,7 +547,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
     @Override
     public PlanType fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -557,7 +557,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return the plan type, or <code>null</code> if a plan type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanType fetchByPrimaryKey(Long planTypeId)
+    public PlanType fetchByPrimaryKey(long planTypeId)
         throws SystemException {
         PlanType planType = (PlanType) EntityCacheUtil.getResult(PlanTypeModelImpl.ENTITY_CACHE_ENABLED,
                 PlanTypeImpl.class, planTypeId);
@@ -603,7 +603,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws com.ext.portlet.plans.NoSuchPlanTypeException if a matching plan type could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanType findBydefault(Boolean isDefault)
+    public PlanType findBydefault(boolean isDefault)
         throws NoSuchPlanTypeException, SystemException {
         PlanType planType = fetchBydefault(isDefault);
 
@@ -634,7 +634,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return the matching plan type, or <code>null</code> if a matching plan type could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanType fetchBydefault(Boolean isDefault) throws SystemException {
+    public PlanType fetchBydefault(boolean isDefault) throws SystemException {
         return fetchBydefault(isDefault, true);
     }
 
@@ -646,7 +646,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return the matching plan type, or <code>null</code> if a matching plan type could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanType fetchBydefault(Boolean isDefault, boolean retrieveFromCache)
+    public PlanType fetchBydefault(boolean isDefault, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { isDefault };
 
@@ -675,7 +675,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(isDefault.booleanValue());
+                qPos.add(isDefault);
 
                 List<PlanType> list = q.list();
 
@@ -831,7 +831,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @param isDefault the is default
      * @throws SystemException if a system exception occurred
      */
-    public void removeBydefault(Boolean isDefault)
+    public void removeBydefault(boolean isDefault)
         throws NoSuchPlanTypeException, SystemException {
         PlanType planType = findBydefault(isDefault);
 
@@ -856,7 +856,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return the number of matching plan types
      * @throws SystemException if a system exception occurred
      */
-    public int countBydefault(Boolean isDefault) throws SystemException {
+    public int countBydefault(boolean isDefault) throws SystemException {
         Object[] finderArgs = new Object[] { isDefault };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_DEFAULT,
@@ -880,7 +880,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(isDefault.booleanValue());
+                qPos.add(isDefault);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -944,7 +944,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanTypeAttribute> getPlanTypeAttributes(
-        Long pk) throws SystemException {
+        long pk) throws SystemException {
         return getPlanTypeAttributes(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
     }
 
@@ -962,7 +962,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanTypeAttribute> getPlanTypeAttributes(
-        Long pk, int start, int end) throws SystemException {
+        long pk, int start, int end) throws SystemException {
         return getPlanTypeAttributes(pk, start, end, null);
     }
 
@@ -981,7 +981,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanTypeAttribute> getPlanTypeAttributes(
-        Long pk, int start, int end, OrderByComparator orderByComparator)
+        long pk, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         Object[] finderArgs = new Object[] { pk, start, end, orderByComparator };
 
@@ -1005,7 +1005,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
 
                 SQLQuery q = session.createSQLQuery(sql);
 
-                q.addEntity("Plans_PlanTypeAttribute",
+                q.addEntity("xcolab_PlanTypeAttribute",
                     com.ext.portlet.plans.model.impl.PlanTypeAttributeImpl.class);
 
                 QueryPos qPos = QueryPos.getInstance(q);
@@ -1041,7 +1041,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return the number of plan type attributes associated with the plan type
      * @throws SystemException if a system exception occurred
      */
-    public int getPlanTypeAttributesSize(Long pk) throws SystemException {
+    public int getPlanTypeAttributesSize(long pk) throws SystemException {
         Object[] finderArgs = new Object[] { pk };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_GET_PLANTYPEATTRIBUTES_SIZE,
@@ -1088,7 +1088,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return <code>true</code> if the plan type attribute is associated with the plan type; <code>false</code> otherwise
      * @throws SystemException if a system exception occurred
      */
-    public boolean containsPlanTypeAttribute(Long pk, Long planTypeAttributePK)
+    public boolean containsPlanTypeAttribute(long pk, long planTypeAttributePK)
         throws SystemException {
         Object[] finderArgs = new Object[] { pk, planTypeAttributePK };
 
@@ -1121,7 +1121,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return <code>true</code> if the plan type has any plan type attributes associated with it; <code>false</code> otherwise
      * @throws SystemException if a system exception occurred
      */
-    public boolean containsPlanTypeAttributes(Long pk)
+    public boolean containsPlanTypeAttributes(long pk)
         throws SystemException {
         if (getPlanTypeAttributesSize(pk) > 0) {
             return true;
@@ -1138,7 +1138,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanTypeColumn> getPlanTypeColumns(
-        Long pk) throws SystemException {
+        long pk) throws SystemException {
         return getPlanTypeColumns(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
     }
 
@@ -1156,7 +1156,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanTypeColumn> getPlanTypeColumns(
-        Long pk, int start, int end) throws SystemException {
+        long pk, int start, int end) throws SystemException {
         return getPlanTypeColumns(pk, start, end, null);
     }
 
@@ -1175,7 +1175,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @throws SystemException if a system exception occurred
      */
     public List<com.ext.portlet.plans.model.PlanTypeColumn> getPlanTypeColumns(
-        Long pk, int start, int end, OrderByComparator orderByComparator)
+        long pk, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         Object[] finderArgs = new Object[] { pk, start, end, orderByComparator };
 
@@ -1199,7 +1199,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
 
                 SQLQuery q = session.createSQLQuery(sql);
 
-                q.addEntity("Plans_PlanTypeColumn",
+                q.addEntity("xcolab_PlanTypeColumn",
                     com.ext.portlet.plans.model.impl.PlanTypeColumnImpl.class);
 
                 QueryPos qPos = QueryPos.getInstance(q);
@@ -1235,7 +1235,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return the number of plan type columns associated with the plan type
      * @throws SystemException if a system exception occurred
      */
-    public int getPlanTypeColumnsSize(Long pk) throws SystemException {
+    public int getPlanTypeColumnsSize(long pk) throws SystemException {
         Object[] finderArgs = new Object[] { pk };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_GET_PLANTYPECOLUMNS_SIZE,
@@ -1282,7 +1282,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return <code>true</code> if the plan type column is associated with the plan type; <code>false</code> otherwise
      * @throws SystemException if a system exception occurred
      */
-    public boolean containsPlanTypeColumn(Long pk, Long planTypeColumnPK)
+    public boolean containsPlanTypeColumn(long pk, long planTypeColumnPK)
         throws SystemException {
         Object[] finderArgs = new Object[] { pk, planTypeColumnPK };
 
@@ -1315,7 +1315,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
      * @return <code>true</code> if the plan type has any plan type columns associated with it; <code>false</code> otherwise
      * @throws SystemException if a system exception occurred
      */
-    public boolean containsPlanTypeColumns(Long pk) throws SystemException {
+    public boolean containsPlanTypeColumns(long pk) throws SystemException {
         if (getPlanTypeColumnsSize(pk) > 0) {
             return true;
         } else {
@@ -1367,7 +1367,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
                     RowMapper.COUNT);
         }
 
-        protected boolean contains(Long planTypeId, Long planTypeAttributeId) {
+        protected boolean contains(long planTypeId, long planTypeAttributeId) {
             List<Integer> results = _mappingSqlQuery.execute(new Object[] {
                         new Long(planTypeId), new Long(planTypeAttributeId)
                     });
@@ -1394,7 +1394,7 @@ public class PlanTypePersistenceImpl extends BasePersistenceImpl<PlanType>
                     RowMapper.COUNT);
         }
 
-        protected boolean contains(Long planTypeId, Long planTypeColumnId) {
+        protected boolean contains(long planTypeId, long planTypeColumnId) {
             List<Integer> results = _mappingSqlQuery.execute(new Object[] {
                         new Long(planTypeId), new Long(planTypeColumnId)
                     });

@@ -33,7 +33,7 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     *
     * @return the primary key of this discussion category group
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _discussionCategoryGroup.getPrimaryKey();
     }
 
@@ -42,7 +42,7 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     *
     * @param primaryKey the primary key of this discussion category group
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _discussionCategoryGroup.setPrimaryKey(primaryKey);
     }
 
@@ -51,7 +51,7 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     *
     * @return the ID of this discussion category group
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _discussionCategoryGroup.getId();
     }
 
@@ -60,7 +60,7 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     *
     * @param id the ID of this discussion category group
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _discussionCategoryGroup.setId(id);
     }
 
@@ -105,7 +105,7 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     *
     * @return the comments thread of this discussion category group
     */
-    public java.lang.Long getCommentsThread() {
+    public long getCommentsThread() {
         return _discussionCategoryGroup.getCommentsThread();
     }
 
@@ -114,7 +114,7 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     *
     * @param commentsThread the comments thread of this discussion category group
     */
-    public void setCommentsThread(java.lang.Long commentsThread) {
+    public void setCommentsThread(long commentsThread) {
         _discussionCategoryGroup.setCommentsThread(commentsThread);
     }
 
@@ -189,64 +189,6 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _discussionCategoryGroup.persist();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategory getCategoryById(
-        java.lang.Long categoryId)
-        throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategoryGroup.getCategoryById(categoryId);
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage getThreadById(
-        java.lang.Long threadId)
-        throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategoryGroup.getThreadById(threadId);
-    }
-
-    public java.util.List<com.ext.portlet.discussions.model.DiscussionCategory> getCategories()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategoryGroup.getCategories();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategory addCategory(
-        java.lang.String name, java.lang.String description,
-        com.liferay.portal.model.User creator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategoryGroup.addCategory(name, description, creator);
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _discussionCategoryGroup.store();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage getCommentThread()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategoryGroup.getCommentThread();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage addComment(
-        java.lang.String title, java.lang.String description,
-        com.liferay.portal.model.User author)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategoryGroup.addComment(title, description, author);
-    }
-
-    public int getCommentsCount()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionCategoryGroup.getCommentsCount();
-    }
-
-    public void copyEverything(
-        com.ext.portlet.discussions.model.DiscussionCategoryGroup source)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _discussionCategoryGroup.copyEverything(source);
     }
 
     /**

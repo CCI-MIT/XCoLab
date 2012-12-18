@@ -46,7 +46,7 @@ public interface PlanTypeColumnPersistence extends BasePersistence<PlanTypeColum
     * @return the new plan type column
     */
     public com.ext.portlet.plans.model.PlanTypeColumn create(
-        java.lang.Long planTypeColumnId);
+        long planTypeColumnId);
 
     /**
     * Removes the plan type column with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface PlanTypeColumnPersistence extends BasePersistence<PlanTypeColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTypeColumn remove(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.ext.portlet.plans.NoSuchPlanTypeColumnException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -74,7 +74,7 @@ public interface PlanTypeColumnPersistence extends BasePersistence<PlanTypeColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTypeColumn findByPrimaryKey(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.ext.portlet.plans.NoSuchPlanTypeColumnException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -86,7 +86,7 @@ public interface PlanTypeColumnPersistence extends BasePersistence<PlanTypeColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTypeColumn fetchByPrimaryKey(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

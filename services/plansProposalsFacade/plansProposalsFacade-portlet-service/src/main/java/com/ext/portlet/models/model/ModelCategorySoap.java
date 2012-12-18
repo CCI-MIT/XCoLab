@@ -13,10 +13,10 @@ import java.util.List;
  * @generated
  */
 public class ModelCategorySoap implements Serializable {
-    private Long _modelCategoryPK;
+    private long _modelCategoryPK;
     private String _modelCategoryName;
     private String _modelCategoryDescription;
-    private Integer _modelCategoryDisplayWeight;
+    private int _modelCategoryDisplayWeight;
 
     public ModelCategorySoap() {
     }
@@ -68,19 +68,19 @@ public class ModelCategorySoap implements Serializable {
         return soapModels.toArray(new ModelCategorySoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelCategoryPK;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setModelCategoryPK(pk);
     }
 
-    public Long getModelCategoryPK() {
+    public long getModelCategoryPK() {
         return _modelCategoryPK;
     }
 
-    public void setModelCategoryPK(Long modelCategoryPK) {
+    public void setModelCategoryPK(long modelCategoryPK) {
         _modelCategoryPK = modelCategoryPK;
     }
 
@@ -100,12 +100,11 @@ public class ModelCategorySoap implements Serializable {
         _modelCategoryDescription = modelCategoryDescription;
     }
 
-    public Integer getModelCategoryDisplayWeight() {
+    public int getModelCategoryDisplayWeight() {
         return _modelCategoryDisplayWeight;
     }
 
-    public void setModelCategoryDisplayWeight(
-        Integer modelCategoryDisplayWeight) {
+    public void setModelCategoryDisplayWeight(int modelCategoryDisplayWeight) {
         _modelCategoryDisplayWeight = modelCategoryDisplayWeight;
     }
 }

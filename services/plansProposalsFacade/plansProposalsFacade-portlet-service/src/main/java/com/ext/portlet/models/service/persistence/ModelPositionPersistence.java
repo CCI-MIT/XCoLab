@@ -45,7 +45,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @param id the primary key for the new model position
     * @return the new model position
     */
-    public com.ext.portlet.models.model.ModelPosition create(java.lang.Long id);
+    public com.ext.portlet.models.model.ModelPosition create(long id);
 
     /**
     * Removes the model position with the primary key from the database. Also notifies the appropriate model listeners.
@@ -55,7 +55,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @throws com.ext.portlet.models.NoSuchModelPositionException if a model position with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.models.model.ModelPosition remove(java.lang.Long id)
+    public com.ext.portlet.models.model.ModelPosition remove(long id)
         throws com.ext.portlet.models.NoSuchModelPositionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -71,8 +71,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @throws com.ext.portlet.models.NoSuchModelPositionException if a model position with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.models.model.ModelPosition findByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.models.model.ModelPosition findByPrimaryKey(long id)
         throws com.ext.portlet.models.NoSuchModelPositionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -83,8 +82,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @return the model position, or <code>null</code> if a model position with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.models.model.ModelPosition fetchByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.models.model.ModelPosition fetchByPrimaryKey(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -95,7 +93,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelPosition> findByModelId(
-        java.lang.Long modelId)
+        long modelId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -112,7 +110,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelPosition> findByModelId(
-        java.lang.Long modelId, int start, int end)
+        long modelId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -130,7 +128,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.models.model.ModelPosition> findByModelId(
-        java.lang.Long modelId, int start, int end,
+        long modelId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -148,7 +146,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelPosition findByModelId_First(
-        java.lang.Long modelId,
+        long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelPositionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -167,7 +165,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelPosition findByModelId_Last(
-        java.lang.Long modelId,
+        long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelPositionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -187,7 +185,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelPosition[] findByModelId_PrevAndNext(
-        java.lang.Long id, java.lang.Long modelId,
+        long id, long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelPositionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -241,7 +239,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @param modelId the model ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByModelId(java.lang.Long modelId)
+    public void removeByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -259,7 +257,7 @@ public interface ModelPositionPersistence extends BasePersistence<ModelPosition>
     * @return the number of matching model positions
     * @throws SystemException if a system exception occurred
     */
-    public int countByModelId(java.lang.Long modelId)
+    public int countByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

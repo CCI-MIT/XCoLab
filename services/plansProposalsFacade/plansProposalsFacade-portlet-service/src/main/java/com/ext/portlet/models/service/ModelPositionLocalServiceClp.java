@@ -35,10 +35,10 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
                 com.ext.portlet.models.model.ModelPosition.class);
 
         _createModelPositionMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createModelPosition", java.lang.Long.class);
+                "createModelPosition", long.class);
 
         _deleteModelPositionMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteModelPosition", java.lang.Long.class);
+                "deleteModelPosition", long.class);
 
         _deleteModelPositionMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteModelPosition",
@@ -64,10 +64,10 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchModelPositionMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchModelPosition", java.lang.Long.class);
+                "fetchModelPosition", long.class);
 
         _getModelPositionMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getModelPosition", java.lang.Long.class);
+                "getModelPosition", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -126,11 +126,11 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
     }
 
     public com.ext.portlet.models.model.ModelPosition createModelPosition(
-        java.lang.Long id) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createModelPositionMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -146,11 +146,11 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
         return (com.ext.portlet.models.model.ModelPosition) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteModelPosition(java.lang.Long id)
+    public void deleteModelPosition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteModelPositionMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -305,12 +305,11 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
     }
 
     public com.ext.portlet.models.model.ModelPosition fetchModelPosition(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchModelPositionMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -330,14 +329,13 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
         return (com.ext.portlet.models.model.ModelPosition) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.models.model.ModelPosition getModelPosition(
-        java.lang.Long id)
+    public com.ext.portlet.models.model.ModelPosition getModelPosition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getModelPositionMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

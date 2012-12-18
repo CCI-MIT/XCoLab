@@ -1,13 +1,21 @@
 package com.ext.portlet.plans.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.ext.portlet.plans.NoSuchPlanItemException;
 import com.ext.portlet.plans.NoSuchPlanSectionException;
 import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanSection;
 import com.ext.portlet.plans.model.PlanSectionDefinition;
+import com.ext.portlet.plans.model.PlanSectionPlanMap;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanSectionLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanSectionPlanMapLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanSectionLocalServiceBaseImpl;
+import com.ext.portlet.plans.service.persistence.PlanSectionPlanMapPK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -62,7 +70,7 @@ public class PlanSectionLocalServiceImpl extends PlanSectionLocalServiceBaseImpl
             // ignore
         }
         if (ps == null && createOnEmpty) {
-            ps = createPlanSection(null);
+            ps = createPlanSection(0L);
             ps.setPlanId(plan.getPlanId());
             ps.setPlanSectionDefinitionId(def.getId());
             
@@ -77,8 +85,8 @@ public class PlanSectionLocalServiceImpl extends PlanSectionLocalServiceBaseImpl
     }
     
     public PlanSection createForPlanFrom(PlanItem plan, PlanSection from, boolean store) throws SystemException, PortalException {
-        PlanSection current = getCurrentForPlanSectionDef(plan, from.getDefinition(), false);
-        PlanSection ps = createPlanSection(null);
+        PlanSection current = getCurrentForPlanSectionDef(plan, getDefinition(from), false);
+        PlanSection ps = createPlanSection(0L);
         
         ps.setPlanId(plan.getPlanId());
         ps.setPlanSectionDefinitionId(from.getPlanSectionDefinitionId());
@@ -91,7 +99,7 @@ public class PlanSectionLocalServiceImpl extends PlanSectionLocalServiceBaseImpl
         ps.setUpdateAuthorId(0L);
         
         if (store) {
-            ps.store();
+            store(ps);
         }
         return ps;
     }
@@ -114,7 +122,7 @@ public class PlanSectionLocalServiceImpl extends PlanSectionLocalServiceBaseImpl
         newSection.setNew(true);
 
         if (store) {
-            newSection.store();
+            store(newSection);
         }
         
         return newSection;
@@ -122,5 +130,39 @@ public class PlanSectionLocalServiceImpl extends PlanSectionLocalServiceBaseImpl
     
     public List<PlanSection> getAllForPlanDefinition(PlanItem plan, PlanSectionDefinition def) throws SystemException {
         return this.planSectionPersistence.findByPlanIdSectionDefinitionId(plan.getPlanId(), def.getId());
+    }
+    
+    
+
+    public void store(PlanSection ps) throws SystemException {
+        if (ps.isNew()) {
+            if (ps.getId() <= 0L) {
+                ps.setId(CounterLocalServiceUtil.increment(PlanSection.class.getName()));
+            }
+            
+            PlanSectionLocalServiceUtil.addPlanSection(ps);
+        }
+        else {
+            PlanSectionLocalServiceUtil.updatePlanSection(ps);
+        }
+    }
+    
+    public PlanSectionDefinition getDefinition(PlanSection ps) throws PortalException, SystemException {
+        return PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(ps.getPlanSectionDefinitionId());
+    }
+    
+    public void addPlanReference(PlanSection ps, Long planId) throws SystemException {
+        PlanSectionPlanMap pspm = 
+            PlanSectionPlanMapLocalServiceUtil.createPlanSectionPlanMap(new PlanSectionPlanMapPK(ps.getId(), planId));
+        PlanSectionPlanMapLocalServiceUtil.store(pspm);
+    }
+    
+    public List<PlanItem> getReferencedPlans(PlanSection ps) throws SystemException, NoSuchPlanItemException  {
+        List<PlanItem> ret = new ArrayList<PlanItem>();
+        
+        for (Long planId: PlanSectionPlanMapLocalServiceUtil.findPlanIdsForSection(ps.getId())) {
+            ret.add(PlanItemLocalServiceUtil.getPlan(planId));
+        }
+        return ret;
     }
 }

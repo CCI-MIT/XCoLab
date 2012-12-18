@@ -88,4 +88,26 @@ public class PlanMetaLocalServiceImpl extends PlanMetaLocalServiceBaseImpl {
         
         return newMeta;
     }
+    
+
+    public void store(PlanMeta pm) throws SystemException {
+        if (pm.isNew()) {
+            PlanMetaLocalServiceUtil.addPlanMeta(pm);
+        }
+        else {
+            PlanMetaLocalServiceUtil.updatePlanMeta(pm);
+        }
+    }
+    
+    public void vote(PlanMeta pm) throws SystemException {
+        int votes = pm.getVotes();
+        pm.setVotes(votes + 1);
+        store(pm);
+    }
+    
+    public void unvote(PlanMeta pm) throws SystemException {
+        int votes = pm.getVotes();
+        pm.setVotes(Math.max(votes - 1, 0));
+        store(pm);
+    }
 }

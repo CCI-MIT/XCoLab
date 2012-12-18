@@ -74,6 +74,7 @@
 			</basic>
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.plans.model.impl.PlanItemModelImpl">
@@ -154,6 +155,7 @@
 			</basic>
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.plans.model.impl.PlanPositionItemModelImpl">
@@ -269,6 +271,7 @@
 			<basic name="enabled" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.plans.model.impl.PlansFilterPositionModelImpl">
@@ -279,6 +282,7 @@
 			<id name="positionId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.plans.model.impl.PlansUserSettingsModelImpl">
@@ -292,6 +296,7 @@
 			<basic name="filterPositionsAll" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.plans.model.impl.PlanTeamHistoryModelImpl">
@@ -309,6 +314,7 @@
 			<basic name="updateAuthorId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.plans.model.impl.PlanTemplateModelImpl">
@@ -378,582 +384,7 @@
 			</basic>
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanModelImpl">
-		<attributes>
-			<id name="planId" />
-			<basic name="name" />
-			<basic name="content" />
-			<basic name="shortcontent" />
-			<basic name="planTypeId" />
-			<basic name="companyId" />
-			<basic name="groupId" />
-			<basic name="childGroupId" />
-			<basic name="MBCategoryId" />
-			<basic name="scenarioId" />
-			<basic name="topicId" />
-			<basic name="votes" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="publishDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="userId" />
-			<basic name="userName" />
-			<basic name="userScreenName" />
-			<basic name="modifiedDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanAttributeModelImpl">
-		<attributes>
-			<id name="attributeId" />
-			<basic name="planId" />
-			<basic name="attributeName" />
-			<basic name="attributeValue" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanAttributeFilterModelImpl">
-		<attributes>
-			<id name="planAttributeFilterId" />
-			<basic name="attributeName" />
-			<basic name="planUserSettingsId" />
-			<basic name="max" />
-			<basic name="min" />
-			<basic name="stringVal" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanColumnSettingsModelImpl">
-		<attributes>
-			<id name="planColumnSettingsId" />
-			<basic name="columnName" />
-			<basic name="planUserSettingsId" />
-			<basic name="visible" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanDescriptionModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="planId" />
-			<basic name="name" />
-			<basic name="description" />
-			<basic name="version" />
-			<basic name="planVersion" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="updateAuthorId" />
-			<basic name="image" />
-			<basic name="pitch" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanFanModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="userId" />
-			<basic name="planId" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="deleted">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanItemModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="planId" />
-			<basic name="state" />
-			<basic name="updated">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="updateAuthorId" />
-			<basic name="updateType" />
-			<basic name="version" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanMetaModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="planId" />
-			<basic name="planTypeId" />
-			<basic name="planCreated" />
-			<basic name="authorId" />
-			<basic name="votes" />
-			<basic name="planGroupId" />
-			<basic name="open" />
-			<basic name="status" />
-			<basic name="mbCategoryId" />
-			<basic name="categoryGroupId" />
-			<basic name="version" />
-			<basic name="planVersion" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="updateAuthorId" />
-			<basic name="modelId" />
-			<basic name="promoted" />
-			<basic name="previousContestPhase" />
-			<basic name="contestPhase" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanModelRunModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="planId" />
-			<basic name="scenarioId" />
-			<basic name="planVersion" />
-			<basic name="version" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="updateAuthorId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanPositionModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.PlanPositionPK" />
-		<attributes>
-			<id name="planId" />
-			<id name="positionId" />
-			<basic name="userId" />
-			<basic name="userName" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="modifiedDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanPositionItemModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.PlanPositionItemPK" />
-		<attributes>
-			<id name="planPositionsId" />
-			<id name="positionId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanPositionsModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="planId" />
-			<basic name="planVersion" />
-			<basic name="version" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="updateAuthorId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanPropertyFilterModelImpl">
-		<attributes>
-			<id name="planPropertyFilterId" />
-			<basic name="propertyName" />
-			<basic name="planUserSettingsId" />
-			<basic name="value" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanRelatedModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.PlanRelatedPK" />
-		<attributes>
-			<id name="sectionId" />
-			<id name="relatedPlanId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanSectionModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="planSectionDefinitionId" />
-			<basic name="planId" />
-			<basic name="content" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="version" />
-			<basic name="planVersion" />
-			<basic name="updateAuthorId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanSectionDefinitionModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="adminTitle" />
-			<basic name="title" />
-			<basic name="defaultText" />
-			<basic name="helpText" />
-			<basic name="characterLimit" />
-			<basic name="focusAreaId" />
-			<basic name="locked" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanSectionPlanMapModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.PlanSectionPlanMapPK" />
-		<attributes>
-			<id name="sectionId" />
-			<id name="relatedPlanId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlansFilterModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.PlansFilterPK" />
-		<attributes>
-			<id name="userId" />
-			<id name="planTypeId" />
-			<basic name="name" />
-			<basic name="creator" />
-			<basic name="description" />
-			<basic name="CO2From" />
-			<basic name="CO2To" />
-			<basic name="votesFrom" />
-			<basic name="votesTo" />
-			<basic name="damageFrom" />
-			<basic name="damageTo" />
-			<basic name="mitigationFrom" />
-			<basic name="mitigationTo" />
-			<basic name="dateFrom">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="dateTo">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="filterPositionsAll" />
-			<basic name="enabled" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlansFilterPositionModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.PlansFilterPositionPK" />
-		<attributes>
-			<id name="userId" />
-			<id name="planTypeId" />
-			<id name="positionId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlansUserSettingsModelImpl">
-		<attributes>
-			<id name="planUserSettingsId" />
-			<basic name="userId" />
-			<basic name="planTypeId" />
-			<basic name="sortColumn" />
-			<basic name="sortDirection" />
-			<basic name="filterEnabled" />
-			<basic name="filterPositionsAll" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanTeamHistoryModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="planId" />
-			<basic name="userId" />
-			<basic name="action" />
-			<basic name="payload" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="updateAuthorId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanTemplateModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="name" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanTemplateSectionModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.PlanTemplateSectionPK" />
-		<attributes>
-			<id name="planTemplateId" />
-			<id name="planSectionId" />
-			<basic name="weight" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanTypeModelImpl">
-		<attributes>
-			<id name="planTypeId" />
-			<basic name="name" />
-			<basic name="description" />
-			<basic name="modelId" />
-			<basic name="modelTypeName" />
-			<basic name="published" />
-			<basic name="publishedCounterpartId" />
-			<basic name="isDefault" />
-			<basic name="defaultModelId" />
-			<basic name="defaultScenarioId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanTypeAttributeModelImpl">
-		<attributes>
-			<id name="planTypeAttributeId" />
-			<basic name="planTypeId" />
-			<basic name="attributeName" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanTypeColumnModelImpl">
-		<attributes>
-			<id name="planTypeColumnId" />
-			<basic name="planTypeId" />
-			<basic name="weight" />
-			<basic name="columnName" />
-			<basic name="visibleByDefault" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.PlanVoteModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.PlanVotePK" />
-		<attributes>
-			<id name="userId" />
-			<id name="contestId" />
-			<basic name="planId" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestModelImpl">
-		<attributes>
-			<id name="ContestPK" />
-			<basic name="ContestName" />
-			<basic name="ContestShortName" />
-			<basic name="ContestDescription" />
-			<basic name="ContestModelDescription" />
-			<basic name="ContestPositionsDescription" />
-			<basic name="defaultPlanDescription" />
-			<basic name="PlanTypeId" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="updated">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="authorId" />
-			<basic name="contestActive" />
-			<basic name="planTemplateId" />
-			<basic name="focusAreaId" />
-			<basic name="contestLogoId" />
-			<basic name="featured">
-				<column name="FEATURED_" />
-			</basic>
-			<basic name="plansOpenByDefault" />
-			<basic name="flag" />
-			<basic name="flagText" />
-			<basic name="groupId" />
-			<basic name="discussionGroupId" />
-			<basic name="weight" />
-			<basic name="resourcesUrl" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestDebateModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="debateId" />
-			<basic name="ContestPK" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestPhaseModelImpl">
-		<attributes>
-			<id name="ContestPhasePK" />
-			<basic name="ContestPK" />
-			<basic name="ContestPhaseName" />
-			<basic name="ContestPhaseDescription" />
-			<basic name="ContestPhaseStatus" />
-			<basic name="PhaseStartDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="PhaseEndDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="nextStatus" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="updated">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="authorId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestPhaseColumnModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="ContestPhasePK" />
-			<basic name="columnName" />
-			<basic name="columnWeight" />
-			<basic name="defaultSort" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestTeamMemberModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="contestId" />
-			<basic name="userId" />
-			<basic name="role" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.discussions.model.impl.DiscussionCategoryModelImpl">
-		<attributes>
-			<id name="pk" />
-			<basic name="categoryId" />
-			<basic name="categoryGroupId" />
-			<basic name="authorId" />
-			<basic name="name" />
-			<basic name="description" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="deleted">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="threadsCount" />
-			<basic name="lastActivityDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="lastActivityAuthorId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.discussions.model.impl.DiscussionCategoryGroupModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="description" />
-			<basic name="url" />
-			<basic name="commentsThread" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.discussions.model.impl.DiscussionMessageModelImpl">
-		<attributes>
-			<id name="pk" />
-			<basic name="messageId" />
-			<basic name="subject" />
-			<basic name="body" />
-			<basic name="threadId" />
-			<basic name="categoryId" />
-			<basic name="categoryGroupId" />
-			<basic name="authorId" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="version" />
-			<basic name="deleted">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="responsesCount" />
-			<basic name="lastActivityDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="lastActivityAuthorId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.discussions.model.impl.DiscussionMessageFlagModelImpl">
-		<attributes>
-			<id name="pk" />
-			<basic name="messageId" />
-			<basic name="flagType" />
-			<basic name="data">
-				<column name="DATA_" />
-			</basic>
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="userId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.ontology.model.impl.FocusAreaModelImpl">
@@ -1115,330 +546,447 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.messaging.model.impl.MessageModelImpl">
+		<attributes>
+			<id name="messageId" />
+			<basic name="fromId" />
+			<basic name="repliesTo" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="subject" />
+			<basic name="content" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.messaging.model.impl.MessageRecipientStatusModelImpl">
+		<attributes>
+			<id name="messageRecipientId" />
+			<basic name="messageId" />
+			<basic name="userId" />
+			<basic name="opened" />
+			<basic name="archived" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.messaging.model.impl.MessagingUserPreferencesModelImpl">
+		<attributes>
+			<id name="messagingPreferencesId" />
+			<basic name="userId" />
+			<basic name="emailOnSend" />
+			<basic name="emailOnReceipt" />
+			<basic name="emailOnActivity" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestModelImpl">
+		<attributes>
+			<id name="ContestPK" />
+			<basic name="ContestName" />
+			<basic name="ContestShortName" />
+			<basic name="ContestDescription" />
+			<basic name="ContestModelDescription" />
+			<basic name="ContestPositionsDescription" />
+			<basic name="defaultPlanDescription" />
+			<basic name="PlanTypeId" />
+			<basic name="created">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="updated">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="authorId" />
+			<basic name="contestActive" />
+			<basic name="planTemplateId" />
+			<basic name="focusAreaId" />
+			<basic name="contestLogoId" />
+			<basic name="featured">
+				<column name="FEATURED_" />
+			</basic>
+			<basic name="plansOpenByDefault" />
+			<basic name="flag" />
+			<basic name="flagText" />
+			<basic name="groupId" />
+			<basic name="discussionGroupId" />
+			<basic name="weight" />
+			<basic name="resourcesUrl" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestDebateModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="debateId" />
+			<basic name="ContestPK" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestPhaseModelImpl">
+		<attributes>
+			<id name="ContestPhasePK" />
+			<basic name="ContestPK" />
+			<basic name="ContestPhaseName" />
+			<basic name="ContestPhaseDescription" />
+			<basic name="ContestPhaseStatus" />
+			<basic name="PhaseStartDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="PhaseEndDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="nextStatus" />
+			<basic name="created">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="updated">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="authorId" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestPhaseColumnModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="ContestPhasePK" />
+			<basic name="columnName" />
+			<basic name="columnWeight" />
+			<basic name="defaultSort" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.contests.model.impl.ContestTeamMemberModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="contestId" />
+			<basic name="userId" />
+			<basic name="role" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.Activity.model.impl.ActivitySubscriptionModelImpl">
+		<attributes>
+			<id name="pk" />
+			<basic name="classNameId" />
+			<basic name="classPK" />
+			<basic name="type">
+				<column name="TYPE_" />
+			</basic>
+			<basic name="extraData" />
+			<basic name="receiverId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="modifiedDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.discussions.model.impl.DiscussionCategoryModelImpl">
+		<attributes>
+			<id name="pk" />
+			<basic name="categoryId" />
+			<basic name="categoryGroupId" />
+			<basic name="authorId" />
+			<basic name="name" />
+			<basic name="description" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="deleted">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="threadsCount" />
+			<basic name="lastActivityDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="lastActivityAuthorId" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.discussions.model.impl.DiscussionCategoryGroupModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="description" />
+			<basic name="url" />
+			<basic name="commentsThread" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.discussions.model.impl.DiscussionMessageModelImpl">
+		<attributes>
+			<id name="pk" />
+			<basic name="messageId" />
+			<basic name="subject" />
+			<basic name="body" />
+			<basic name="threadId" />
+			<basic name="categoryId" />
+			<basic name="categoryGroupId" />
+			<basic name="authorId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="version" />
+			<basic name="deleted">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="responsesCount" />
+			<basic name="lastActivityDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="lastActivityAuthorId" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.discussions.model.impl.DiscussionMessageFlagModelImpl">
+		<attributes>
+			<id name="pk" />
+			<basic name="messageId" />
+			<basic name="flagType" />
+			<basic name="data">
+				<column name="DATA_" />
+			</basic>
+			<basic name="created">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="userId" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<entity class="com.ext.portlet.plans.model.impl.PlanAttributeImpl" name="PlanAttribute">
-		<table name="Plans_PlanAttribute" />
+		<table name="xcolab_PlanAttribute" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanAttributeFilterImpl" name="PlanAttributeFilter">
-		<table name="Plans_PlanAttributeFilter" />
+		<table name="xcolab_PlanAttributeFilter" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanColumnSettingsImpl" name="PlanColumnSettings">
-		<table name="Plans_PlanColumnSettings" />
+		<table name="xcolab_PlanColumnSettings" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanDescriptionImpl" name="PlanDescription">
-		<table name="Plans_PlanDescription" />
+		<table name="xcolab_PlanDescription" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanFanImpl" name="PlanFan">
-		<table name="Plans_PlanFan" />
+		<table name="xcolab_PlanFan" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanItemImpl" name="PlanItem">
-		<table name="Plans_PlanItem" />
-		<attributes>
-			<transient name="MBCategoryId" />
-			<transient name="authorId" />
-			<transient name="categoryGroupId" />
-			<transient name="contestPhase" />
-			<transient name="description" />
-			<transient name="image" />
-			<transient name="name" />
-			<transient name="open" />
-			<transient name="pitch" />
-			<transient name="planGroupId" />
-			<transient name="planTypeId" />
-			<transient name="ribbon" />
-			<transient name="scenarioId" />
-			<transient name="seekingAssistance" />
-			<transient name="status" />
-			<transient name="tags" />
-			<transient name="tagsHover" />
-			<transient name="tagsOrder" />
-			<transient name="team" />
-		</attributes>
+		<table name="xcolab_PlanItem" />
+		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanMetaImpl" name="PlanMeta">
-		<table name="Plans_PlanMeta" />
+		<table name="xcolab_PlanMeta" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanModelRunImpl" name="PlanModelRun">
-		<table name="Plans_PlanModelRun" />
+		<table name="xcolab_PlanModelRun" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanPositionImpl" name="PlanPosition">
-		<table name="Plans_PlanPosition" />
+		<table name="xcolab_PlanPosition" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanPositionItemImpl" name="PlanPositionItem">
-		<table name="Plans_PlanPositionItem" />
+		<table name="xcolab_PlanPositionItem" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanPositionsImpl" name="PlanPositions">
-		<table name="Plans_PlanPositions" />
-		<attributes>
-			<transient name="positionsIds" />
-		</attributes>
+		<table name="xcolab_PlanPositions" />
+		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanPropertyFilterImpl" name="PlanPropertyFilter">
-		<table name="Plans_PlanPropertyFilter" />
+		<table name="xcolab_PlanPropertyFilter" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanRelatedImpl" name="PlanRelated">
-		<table name="Plans_PlanRelated" />
+		<table name="xcolab_PlanRelated" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanSectionImpl" name="PlanSection">
-		<table name="Plans_PlanSection" />
+		<table name="xcolab_PlanSection" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanSectionDefinitionImpl" name="PlanSectionDefinition">
-		<table name="Plans_PlanSectionDefinition" />
+		<table name="xcolab_PlanSectionDefinition" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanSectionPlanMapImpl" name="PlanSectionPlanMap">
-		<table name="Plans_PlanSectionPlanMap" />
+		<table name="xcolab_PlanSectionPlanMap" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlansFilterImpl" name="PlansFilter">
-		<table name="Plans_PlansFilter" />
+		<table name="xcolab_PlansFilter" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlansFilterPositionImpl" name="PlansFilterPosition">
-		<table name="Plans_PlansFilterPosition" />
+		<table name="xcolab_PlansFilterPosition" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlansUserSettingsImpl" name="PlansUserSettings">
-		<table name="Plans_PlansUserSettings" />
+		<table name="xcolab_PlansUserSettings" />
 		<attributes>
 			<transient name="positionsIds" />
 		</attributes>
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanTeamHistoryImpl" name="PlanTeamHistory">
-		<table name="Plans_PlanTeamHistory" />
+		<table name="xcolab_PlanTeamHistory" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanTemplateImpl" name="PlanTemplate">
-		<table name="Plans_PlanTemplate" />
+		<table name="xcolab_PlanTemplate" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanTemplateSectionImpl" name="PlanTemplateSection">
-		<table name="Plans_PlanTemplateSection" />
+		<table name="xcolab_PlanTemplateSection" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanTypeImpl" name="PlanType">
-		<table name="Plans_PlanType" />
+		<table name="xcolab_PlanType" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanTypeAttributeImpl" name="PlanTypeAttribute">
-		<table name="Plans_PlanTypeAttribute" />
+		<table name="xcolab_PlanTypeAttribute" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanTypeColumnImpl" name="PlanTypeColumn">
-		<table name="Plans_PlanTypeColumn" />
+		<table name="xcolab_PlanTypeColumn" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.plans.model.impl.PlanVoteImpl" name="PlanVote">
-		<table name="Plans_PlanVote" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanImpl" name="Plan">
-		<table name="Plans_Plan" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanAttributeImpl" name="PlanAttribute">
-		<table name="Plans_PlanAttribute" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanAttributeFilterImpl" name="PlanAttributeFilter">
-		<table name="Plans_PlanAttributeFilter" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanColumnSettingsImpl" name="PlanColumnSettings">
-		<table name="Plans_PlanColumnSettings" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanDescriptionImpl" name="PlanDescription">
-		<table name="Plans_PlanDescription" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanFanImpl" name="PlanFan">
-		<table name="Plans_PlanFan" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanItemImpl" name="PlanItem">
-		<table name="Plans_PlanItem" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanMetaImpl" name="PlanMeta">
-		<table name="Plans_PlanMeta" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanModelRunImpl" name="PlanModelRun">
-		<table name="Plans_PlanModelRun" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanPositionImpl" name="PlanPosition">
-		<table name="Plans_PlanPosition" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanPositionItemImpl" name="PlanPositionItem">
-		<table name="Plans_PlanPositionItem" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanPositionsImpl" name="PlanPositions">
-		<table name="Plans_PlanPositions" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanPropertyFilterImpl" name="PlanPropertyFilter">
-		<table name="Plans_PlanPropertyFilter" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanRelatedImpl" name="PlanRelated">
-		<table name="Plans_PlanRelated" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanSectionImpl" name="PlanSection">
-		<table name="Plans_PlanSection" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanSectionDefinitionImpl" name="PlanSectionDefinition">
-		<table name="Plans_PlanSectionDefinition" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanSectionPlanMapImpl" name="PlanSectionPlanMap">
-		<table name="Plans_PlanSectionPlanMap" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlansFilterImpl" name="PlansFilter">
-		<table name="Plans_PlansFilter" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlansFilterPositionImpl" name="PlansFilterPosition">
-		<table name="Plans_PlansFilterPosition" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlansUserSettingsImpl" name="PlansUserSettings">
-		<table name="Plans_PlansUserSettings" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanTeamHistoryImpl" name="PlanTeamHistory">
-		<table name="Plans_PlanTeamHistory" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanTemplateImpl" name="PlanTemplate">
-		<table name="Plans_PlanTemplate" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanTemplateSectionImpl" name="PlanTemplateSection">
-		<table name="Plans_PlanTemplateSection" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanTypeImpl" name="PlanType">
-		<table name="Plans_PlanType" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanTypeAttributeImpl" name="PlanTypeAttribute">
-		<table name="Plans_PlanTypeAttribute" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanTypeColumnImpl" name="PlanTypeColumn">
-		<table name="Plans_PlanTypeColumn" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.PlanVoteImpl" name="PlanVote">
-		<table name="Plans_PlanVote" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.contests.model.impl.ContestImpl" name="Contest">
-		<table name="Contests_Contest" />
-		<attributes>
-			<transient name="logo" />
-		</attributes>
-	</entity>
-	<entity class="com.ext.portlet.contests.model.impl.ContestDebateImpl" name="ContestDebate">
-		<table name="Contests_ContestDebate" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.contests.model.impl.ContestPhaseImpl" name="ContestPhase">
-		<table name="Contests_ContestPhase" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.contests.model.impl.ContestPhaseColumnImpl" name="ContestPhaseColumn">
-		<table name="Contests_ContestPhaseColumn" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.contests.model.impl.ContestTeamMemberImpl" name="ContestTeamMember">
-		<table name="Contests_ContestTeamMember" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.discussions.model.impl.DiscussionCategoryImpl" name="DiscussionCategory">
-		<table name="Discussions_DiscussionCategory" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.discussions.model.impl.DiscussionCategoryGroupImpl" name="DiscussionCategoryGroup">
-		<table name="Discussions_DiscussionCategoryGroup" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.discussions.model.impl.DiscussionMessageImpl" name="DiscussionMessage">
-		<table name="Discussions_DiscussionMessage" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.discussions.model.impl.DiscussionMessageFlagImpl" name="DiscussionMessageFlag">
-		<table name="Discussions_DiscussionMessageFlag" />
+		<table name="xcolab_PlanVote" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.ontology.model.impl.FocusAreaImpl" name="FocusArea">
-		<table name="ontology_FocusArea" />
+		<table name="xcolab_FocusArea" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.ontology.model.impl.FocusAreaOntologyTermImpl" name="FocusAreaOntologyTerm">
-		<table name="ontology_FocusAreaOntologyTerm" />
+		<table name="xcolab_FocusAreaOntologyTerm" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.ontology.model.impl.OntologySpaceImpl" name="OntologySpace">
-		<table name="ontology_OntologySpace" />
+		<table name="xcolab_OntologySpace" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.ontology.model.impl.OntologyTermImpl" name="OntologyTerm">
-		<table name="ontology_OntologyTerm" />
+		<table name="xcolab_OntologyTerm" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.ontology.model.impl.OntologyTermEntityImpl" name="OntologyTermEntity">
-		<table name="ontology_OntologyTermEntity" />
+		<table name="xcolab_OntologyTermEntity" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.models.model.impl.ModelCategoryImpl" name="ModelCategory">
-		<table name="Models_ModelCategory" />
+		<table name="xcolab_ModelCategory" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.models.model.impl.ModelDiscussionImpl" name="ModelDiscussion">
-		<table name="Models_ModelDiscussion" />
+		<table name="xcolab_ModelDiscussion" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.models.model.impl.ModelGlobalPreferenceImpl" name="ModelGlobalPreference">
-		<table name="Models_ModelGlobalPreference" />
+		<table name="xcolab_ModelGlobalPreference" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.models.model.impl.ModelInputGroupImpl" name="ModelInputGroup">
-		<table name="Models_ModelInputGroup" />
+		<table name="xcolab_ModelInputGroup" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.models.model.impl.ModelInputItemImpl" name="ModelInputItem">
-		<table name="Models_ModelInputItem" />
+		<table name="xcolab_ModelInputItem" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.models.model.impl.ModelOutputChartOrderImpl" name="ModelOutputChartOrder">
-		<table name="Models_ModelOutputChartOrder" />
+		<table name="xcolab_ModelOutputChartOrder" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.models.model.impl.ModelOutputItemImpl" name="ModelOutputItem">
-		<table name="Models_ModelOutputItem" />
+		<table name="xcolab_ModelOutputItem" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.models.model.impl.ModelPositionImpl" name="ModelPosition">
-		<table name="Models_ModelPosition" />
+		<table name="xcolab_ModelPosition" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.messaging.model.impl.MessageImpl" name="Message">
+		<table name="xcolab_Message" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.messaging.model.impl.MessageRecipientStatusImpl" name="MessageRecipientStatus">
+		<table name="xcolab_MessageRecipientStatus" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.messaging.model.impl.MessagingUserPreferencesImpl" name="MessagingUserPreferences">
+		<table name="xcolab_MessagingUserPreferences" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.contests.model.impl.ContestImpl" name="Contest">
+		<table name="xcolab_Contest" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.contests.model.impl.ContestDebateImpl" name="ContestDebate">
+		<table name="xcolab_ContestDebate" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.contests.model.impl.ContestPhaseImpl" name="ContestPhase">
+		<table name="xcolab_ContestPhase" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.contests.model.impl.ContestPhaseColumnImpl" name="ContestPhaseColumn">
+		<table name="xcolab_ContestPhaseColumn" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.contests.model.impl.ContestTeamMemberImpl" name="ContestTeamMember">
+		<table name="xcolab_ContestTeamMember" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.Activity.model.impl.ActivitySubscriptionImpl" name="ActivitySubscription">
+		<table name="xcolab_ActivitySubscription" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.discussions.model.impl.DiscussionCategoryImpl" name="DiscussionCategory">
+		<table name="xcolab_DiscussionCategory" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.discussions.model.impl.DiscussionCategoryGroupImpl" name="DiscussionCategoryGroup">
+		<table name="xcolab_DiscussionCategoryGroup" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.discussions.model.impl.DiscussionMessageImpl" name="DiscussionMessage">
+		<table name="xcolab_DiscussionMessage" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.discussions.model.impl.DiscussionMessageFlagImpl" name="DiscussionMessageFlag">
+		<table name="xcolab_DiscussionMessageFlag" />
 		<attributes />
 	</entity>
 </entity-mappings>

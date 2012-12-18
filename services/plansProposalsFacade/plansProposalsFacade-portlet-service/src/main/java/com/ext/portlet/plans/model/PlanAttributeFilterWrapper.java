@@ -32,7 +32,7 @@ public class PlanAttributeFilterWrapper implements PlanAttributeFilter,
     *
     * @return the primary key of this plan attribute filter
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planAttributeFilter.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanAttributeFilterWrapper implements PlanAttributeFilter,
     *
     * @param primaryKey the primary key of this plan attribute filter
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planAttributeFilter.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanAttributeFilterWrapper implements PlanAttributeFilter,
     *
     * @return the plan attribute filter ID of this plan attribute filter
     */
-    public java.lang.Long getPlanAttributeFilterId() {
+    public long getPlanAttributeFilterId() {
         return _planAttributeFilter.getPlanAttributeFilterId();
     }
 
@@ -59,7 +59,7 @@ public class PlanAttributeFilterWrapper implements PlanAttributeFilter,
     *
     * @param planAttributeFilterId the plan attribute filter ID of this plan attribute filter
     */
-    public void setPlanAttributeFilterId(java.lang.Long planAttributeFilterId) {
+    public void setPlanAttributeFilterId(long planAttributeFilterId) {
         _planAttributeFilter.setPlanAttributeFilterId(planAttributeFilterId);
     }
 
@@ -86,7 +86,7 @@ public class PlanAttributeFilterWrapper implements PlanAttributeFilter,
     *
     * @return the plan user settings ID of this plan attribute filter
     */
-    public java.lang.Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planAttributeFilter.getPlanUserSettingsId();
     }
 
@@ -95,7 +95,7 @@ public class PlanAttributeFilterWrapper implements PlanAttributeFilter,
     *
     * @param planUserSettingsId the plan user settings ID of this plan attribute filter
     */
-    public void setPlanUserSettingsId(java.lang.Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planAttributeFilter.setPlanUserSettingsId(planUserSettingsId);
     }
 

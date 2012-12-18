@@ -17,20 +17,20 @@ import java.util.Date;
 
 public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
     implements DiscussionMessage {
-    private Long _pk;
-    private Long _messageId;
+    private long _pk;
+    private long _messageId;
     private String _subject;
     private String _body;
-    private Long _threadId;
-    private Long _categoryId;
-    private Long _categoryGroupId;
-    private Long _authorId;
+    private long _threadId;
+    private long _categoryId;
+    private long _categoryGroupId;
+    private long _authorId;
     private Date _createDate;
-    private Long _version;
+    private long _version;
     private Date _deleted;
-    private Integer _responsesCount;
+    private int _responsesCount;
     private Date _lastActivityDate;
-    private Long _lastActivityAuthorId;
+    private long _lastActivityAuthorId;
 
     public DiscussionMessageClp() {
     }
@@ -43,11 +43,11 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
         return DiscussionMessage.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _pk;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPk(primaryKey);
     }
 
@@ -59,19 +59,19 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPk() {
+    public long getPk() {
         return _pk;
     }
 
-    public void setPk(Long pk) {
+    public void setPk(long pk) {
         _pk = pk;
     }
 
-    public Long getMessageId() {
+    public long getMessageId() {
         return _messageId;
     }
 
-    public void setMessageId(Long messageId) {
+    public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
@@ -91,35 +91,35 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
         _body = body;
     }
 
-    public Long getThreadId() {
+    public long getThreadId() {
         return _threadId;
     }
 
-    public void setThreadId(Long threadId) {
+    public void setThreadId(long threadId) {
         _threadId = threadId;
     }
 
-    public Long getCategoryId() {
+    public long getCategoryId() {
         return _categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(long categoryId) {
         _categoryId = categoryId;
     }
 
-    public Long getCategoryGroupId() {
+    public long getCategoryGroupId() {
         return _categoryGroupId;
     }
 
-    public void setCategoryGroupId(Long categoryGroupId) {
+    public void setCategoryGroupId(long categoryGroupId) {
         _categoryGroupId = categoryGroupId;
     }
 
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return _authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
@@ -131,11 +131,11 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
         _createDate = createDate;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return _version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(long version) {
         _version = version;
     }
 
@@ -147,11 +147,11 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
         _deleted = deleted;
     }
 
-    public Integer getResponsesCount() {
+    public int getResponsesCount() {
         return _responsesCount;
     }
 
-    public void setResponsesCount(Integer responsesCount) {
+    public void setResponsesCount(int responsesCount) {
         _responsesCount = responsesCount;
     }
 
@@ -163,71 +163,12 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
         _lastActivityDate = lastActivityDate;
     }
 
-    public Long getLastActivityAuthorId() {
+    public long getLastActivityAuthorId() {
         return _lastActivityAuthorId;
     }
 
-    public void setLastActivityAuthorId(Long lastActivityAuthorId) {
+    public void setLastActivityAuthorId(long lastActivityAuthorId) {
         _lastActivityAuthorId = lastActivityAuthorId;
-    }
-
-    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> getThreadMessages() {
-        throw new UnsupportedOperationException();
-    }
-
-    public int getThreadMessagesCount() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage addThreadMessage(
-        java.lang.String subject, java.lang.String body,
-        com.liferay.portal.model.User author) {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getAuthor() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getLastActivityAuthor() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void delete() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void update(java.lang.String subject, java.lang.String body) {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategory getCategory() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getCategoryGroup() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage getThread() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessageFlag> getFlags() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void addFlag(java.lang.String flagType, java.lang.String data,
-        com.liferay.portal.model.User user) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void removeFlag(java.lang.String flagType) {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -296,7 +237,7 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
             return false;
         }
 
-        Long primaryKey = discussionMessage.getPrimaryKey();
+        long primaryKey = discussionMessage.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -307,7 +248,7 @@ public class DiscussionMessageClp extends BaseModelImpl<DiscussionMessage>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

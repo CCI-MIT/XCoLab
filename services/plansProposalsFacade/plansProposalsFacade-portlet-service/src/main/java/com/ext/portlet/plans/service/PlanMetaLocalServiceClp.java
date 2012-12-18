@@ -29,6 +29,9 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
     private MethodKey _getAllForPlanMethodKey19;
     private MethodKey _createNewVersionForPlanMethodKey20;
     private MethodKey _createNewVersionForPlanMethodKey21;
+    private MethodKey _storeMethodKey22;
+    private MethodKey _voteMethodKey23;
+    private MethodKey _unvoteMethodKey24;
 
     public PlanMetaLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -37,10 +40,10 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
                 "addPlanMeta", com.ext.portlet.plans.model.PlanMeta.class);
 
         _createPlanMetaMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanMeta", java.lang.Long.class);
+                "createPlanMeta", long.class);
 
         _deletePlanMetaMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanMeta", java.lang.Long.class);
+                "deletePlanMeta", long.class);
 
         _deletePlanMetaMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanMeta", com.ext.portlet.plans.model.PlanMeta.class);
@@ -65,10 +68,10 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanMetaMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanMeta", java.lang.Long.class);
+                "fetchPlanMeta", long.class);
 
         _getPlanMetaMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanMeta", java.lang.Long.class);
+                "getPlanMeta", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -109,6 +112,15 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
         _createNewVersionForPlanMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
                 "createNewVersionForPlan",
                 com.ext.portlet.plans.model.PlanItem.class, boolean.class);
+
+        _storeMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.plans.model.PlanMeta.class);
+
+        _voteMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
+                "vote", com.ext.portlet.plans.model.PlanMeta.class);
+
+        _unvoteMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
+                "unvote", com.ext.portlet.plans.model.PlanMeta.class);
     }
 
     public com.ext.portlet.plans.model.PlanMeta addPlanMeta(
@@ -137,12 +149,11 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
         return (com.ext.portlet.plans.model.PlanMeta) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.plans.model.PlanMeta createPlanMeta(
-        java.lang.Long id) {
+    public com.ext.portlet.plans.model.PlanMeta createPlanMeta(long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanMetaMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -158,11 +169,11 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
         return (com.ext.portlet.plans.model.PlanMeta) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanMeta(java.lang.Long id)
+    public void deletePlanMeta(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanMetaMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -315,12 +326,12 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
         return ((Long) returnObj).longValue();
     }
 
-    public com.ext.portlet.plans.model.PlanMeta fetchPlanMeta(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanMeta fetchPlanMeta(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanMetaMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -340,13 +351,13 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
         return (com.ext.portlet.plans.model.PlanMeta) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.plans.model.PlanMeta getPlanMeta(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanMeta getPlanMeta(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanMetaMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -672,6 +683,69 @@ public class PlanMetaLocalServiceClp implements PlanMetaLocalService {
         }
 
         return (com.ext.portlet.plans.model.PlanMeta) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey22,
+                ClpSerializer.translateInput(pm));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void vote(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_voteMethodKey23,
+                ClpSerializer.translateInput(pm));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void unvote(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_unvoteMethodKey24,
+                ClpSerializer.translateInput(pm));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

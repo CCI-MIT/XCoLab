@@ -229,7 +229,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @param pk the primary key for the new discussion message flag
      * @return the new discussion message flag
      */
-    public DiscussionMessageFlag create(Long pk) {
+    public DiscussionMessageFlag create(long pk) {
         DiscussionMessageFlag discussionMessageFlag = new DiscussionMessageFlagImpl();
 
         discussionMessageFlag.setNew(true);
@@ -246,9 +246,9 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessageFlag remove(Long pk)
+    public DiscussionMessageFlag remove(long pk)
         throws NoSuchDiscussionMessageFlagException, SystemException {
-        return remove((Serializable) pk);
+        return remove(Long.valueOf(pk));
     }
 
     /**
@@ -402,7 +402,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     @Override
     public DiscussionMessageFlag findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -413,7 +413,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessageFlag findByPrimaryKey(Long pk)
+    public DiscussionMessageFlag findByPrimaryKey(long pk)
         throws NoSuchDiscussionMessageFlagException, SystemException {
         DiscussionMessageFlag discussionMessageFlag = fetchByPrimaryKey(pk);
 
@@ -439,7 +439,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     @Override
     public DiscussionMessageFlag fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -449,7 +449,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the discussion message flag, or <code>null</code> if a discussion message flag with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessageFlag fetchByPrimaryKey(Long pk)
+    public DiscussionMessageFlag fetchByPrimaryKey(long pk)
         throws SystemException {
         DiscussionMessageFlag discussionMessageFlag = (DiscussionMessageFlag) EntityCacheUtil.getResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
                 DiscussionMessageFlagImpl.class, pk);
@@ -495,7 +495,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the matching discussion message flags
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessageFlag> findByMessageId(Long messageId)
+    public List<DiscussionMessageFlag> findByMessageId(long messageId)
         throws SystemException {
         return findByMessageId(messageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -514,7 +514,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the range of matching discussion message flags
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessageFlag> findByMessageId(Long messageId,
+    public List<DiscussionMessageFlag> findByMessageId(long messageId,
         int start, int end) throws SystemException {
         return findByMessageId(messageId, start, end, null);
     }
@@ -533,7 +533,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the ordered range of matching discussion message flags
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessageFlag> findByMessageId(Long messageId,
+    public List<DiscussionMessageFlag> findByMessageId(long messageId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -581,7 +581,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
                 list = (List<DiscussionMessageFlag>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -616,7 +616,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException if a matching discussion message flag could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessageFlag findByMessageId_First(Long messageId,
+    public DiscussionMessageFlag findByMessageId_First(long messageId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageFlagException, SystemException {
         List<DiscussionMessageFlag> list = findByMessageId(messageId, 0, 1,
@@ -651,7 +651,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException if a matching discussion message flag could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessageFlag findByMessageId_Last(Long messageId,
+    public DiscussionMessageFlag findByMessageId_Last(long messageId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageFlagException, SystemException {
         int count = countByMessageId(messageId);
@@ -689,8 +689,8 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessageFlag[] findByMessageId_PrevAndNext(Long pk,
-        Long messageId, OrderByComparator orderByComparator)
+    public DiscussionMessageFlag[] findByMessageId_PrevAndNext(long pk,
+        long messageId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageFlagException, SystemException {
         DiscussionMessageFlag discussionMessageFlag = findByPrimaryKey(pk);
 
@@ -719,7 +719,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
     protected DiscussionMessageFlag getByMessageId_PrevAndNext(
         Session session, DiscussionMessageFlag discussionMessageFlag,
-        Long messageId, OrderByComparator orderByComparator, boolean previous) {
+        long messageId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -792,7 +792,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(messageId.longValue());
+        qPos.add(messageId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(discussionMessageFlag);
@@ -926,7 +926,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @param messageId the message ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByMessageId(Long messageId) throws SystemException {
+    public void removeByMessageId(long messageId) throws SystemException {
         for (DiscussionMessageFlag discussionMessageFlag : findByMessageId(
                 messageId)) {
             remove(discussionMessageFlag);
@@ -951,7 +951,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the number of matching discussion message flags
      * @throws SystemException if a system exception occurred
      */
-    public int countByMessageId(Long messageId) throws SystemException {
+    public int countByMessageId(long messageId) throws SystemException {
         Object[] finderArgs = new Object[] { messageId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MESSAGEID,
@@ -975,7 +975,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

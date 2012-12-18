@@ -47,7 +47,7 @@ public class PlanPositionsLocalServiceUtil {
     * @return the new plan positions
     */
     public static com.ext.portlet.plans.model.PlanPositions createPlanPositions(
-        java.lang.Long id) {
+        long id) {
         return getService().createPlanPositions(id);
     }
 
@@ -58,7 +58,7 @@ public class PlanPositionsLocalServiceUtil {
     * @throws PortalException if a plan positions with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanPositions(java.lang.Long id)
+    public static void deletePlanPositions(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanPositions(id);
@@ -148,8 +148,7 @@ public class PlanPositionsLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanPositions fetchPlanPositions(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanPositions(id);
     }
 
@@ -162,7 +161,7 @@ public class PlanPositionsLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPositions getPlanPositions(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanPositions(id);
@@ -278,6 +277,32 @@ public class PlanPositionsLocalServiceUtil {
         com.ext.portlet.plans.model.PlanItem plan, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().createNewVersionForPlan(plan, store);
+    }
+
+    public static java.util.List<java.lang.Long> getPositionsIds(
+        com.ext.portlet.plans.model.PlanPositions pp)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPositionsIds(pp);
+    }
+
+    public static void store(com.ext.portlet.plans.model.PlanPositions pp)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(pp);
+    }
+
+    public static void setPositionsIds(
+        com.ext.portlet.plans.model.PlanPositions pp,
+        java.util.List<java.lang.Long> positionsIds)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setPositionsIds(pp, positionsIds);
+    }
+
+    public static com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanPositions pp)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUpdateAuthor(pp);
     }
 
     public static void clearService() {

@@ -26,21 +26,5 @@ public class PlanTeamHistoryImpl extends PlanTeamHistoryBaseImpl {
      */
     public PlanTeamHistoryImpl() {
     }
-    
-    public void store() throws SystemException {
-        if (isNew()) {
-            PlanTeamHistoryLocalServiceUtil.addPlanTeamHistory(this);
-        }
-        else {
-            PlanTeamHistoryLocalServiceUtil.updatePlanTeamHistory(this);
-        }
-    }
-    
-    public User getUser() throws PortalException, SystemException {
-        return UserLocalServiceUtil.getUser(getUserId());
-    }
-    
-    public PlanItem getPlan() throws NoSuchPlanItemException, SystemException {
-        return PlanItemLocalServiceUtil.getPlan(getPlanId());
-    }
+
 }

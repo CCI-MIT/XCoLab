@@ -312,7 +312,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @param messageRecipientId the primary key for the new message recipient status
      * @return the new message recipient status
      */
-    public MessageRecipientStatus create(Long messageRecipientId) {
+    public MessageRecipientStatus create(long messageRecipientId) {
         MessageRecipientStatus messageRecipientStatus = new MessageRecipientStatusImpl();
 
         messageRecipientStatus.setNew(true);
@@ -329,9 +329,9 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException if a message recipient status with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus remove(Long messageRecipientId)
+    public MessageRecipientStatus remove(long messageRecipientId)
         throws NoSuchMessageRecipientStatusException, SystemException {
-        return remove((Serializable) messageRecipientId);
+        return remove(Long.valueOf(messageRecipientId));
     }
 
     /**
@@ -539,8 +539,8 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
         messageRecipientStatusImpl.setMessageRecipientId(messageRecipientStatus.getMessageRecipientId());
         messageRecipientStatusImpl.setMessageId(messageRecipientStatus.getMessageId());
         messageRecipientStatusImpl.setUserId(messageRecipientStatus.getUserId());
-        messageRecipientStatusImpl.setOpened(messageRecipientStatus.getOpened());
-        messageRecipientStatusImpl.setArchived(messageRecipientStatus.getArchived());
+        messageRecipientStatusImpl.setOpened(messageRecipientStatus.isOpened());
+        messageRecipientStatusImpl.setArchived(messageRecipientStatus.isArchived());
 
         return messageRecipientStatusImpl;
     }
@@ -556,7 +556,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
     @Override
     public MessageRecipientStatus findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -567,7 +567,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException if a message recipient status with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus findByPrimaryKey(Long messageRecipientId)
+    public MessageRecipientStatus findByPrimaryKey(long messageRecipientId)
         throws NoSuchMessageRecipientStatusException, SystemException {
         MessageRecipientStatus messageRecipientStatus = fetchByPrimaryKey(messageRecipientId);
 
@@ -594,7 +594,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
     @Override
     public MessageRecipientStatus fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -604,7 +604,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the message recipient status, or <code>null</code> if a message recipient status with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus fetchByPrimaryKey(Long messageRecipientId)
+    public MessageRecipientStatus fetchByPrimaryKey(long messageRecipientId)
         throws SystemException {
         MessageRecipientStatus messageRecipientStatus = (MessageRecipientStatus) EntityCacheUtil.getResult(MessageRecipientStatusModelImpl.ENTITY_CACHE_ENABLED,
                 MessageRecipientStatusImpl.class, messageRecipientId);
@@ -650,7 +650,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public List<MessageRecipientStatus> findByReceivingUser(Long userId)
+    public List<MessageRecipientStatus> findByReceivingUser(long userId)
         throws SystemException {
         return findByReceivingUser(userId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -669,7 +669,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the range of matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public List<MessageRecipientStatus> findByReceivingUser(Long userId,
+    public List<MessageRecipientStatus> findByReceivingUser(long userId,
         int start, int end) throws SystemException {
         return findByReceivingUser(userId, start, end, null);
     }
@@ -688,7 +688,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the ordered range of matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public List<MessageRecipientStatus> findByReceivingUser(Long userId,
+    public List<MessageRecipientStatus> findByReceivingUser(long userId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -739,7 +739,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 list = (List<MessageRecipientStatus>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -774,7 +774,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException if a matching message recipient status could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus findByReceivingUser_First(Long userId,
+    public MessageRecipientStatus findByReceivingUser_First(long userId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         List<MessageRecipientStatus> list = findByReceivingUser(userId, 0, 1,
@@ -809,7 +809,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException if a matching message recipient status could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus findByReceivingUser_Last(Long userId,
+    public MessageRecipientStatus findByReceivingUser_Last(long userId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         int count = countByReceivingUser(userId);
@@ -848,7 +848,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws SystemException if a system exception occurred
      */
     public MessageRecipientStatus[] findByReceivingUser_PrevAndNext(
-        Long messageRecipientId, Long userId,
+        long messageRecipientId, long userId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         MessageRecipientStatus messageRecipientStatus = findByPrimaryKey(messageRecipientId);
@@ -878,7 +878,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
     protected MessageRecipientStatus getByReceivingUser_PrevAndNext(
         Session session, MessageRecipientStatus messageRecipientStatus,
-        Long userId, OrderByComparator orderByComparator, boolean previous) {
+        long userId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -954,7 +954,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(userId.longValue());
+        qPos.add(userId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(messageRecipientStatus);
@@ -982,7 +982,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws SystemException if a system exception occurred
      */
     public List<MessageRecipientStatus> findByReceivingUserArchived(
-        Long userId, Boolean archived) throws SystemException {
+        long userId, boolean archived) throws SystemException {
         return findByReceivingUserArchived(userId, archived, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
@@ -1002,7 +1002,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws SystemException if a system exception occurred
      */
     public List<MessageRecipientStatus> findByReceivingUserArchived(
-        Long userId, Boolean archived, int start, int end)
+        long userId, boolean archived, int start, int end)
         throws SystemException {
         return findByReceivingUserArchived(userId, archived, start, end, null);
     }
@@ -1023,7 +1023,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws SystemException if a system exception occurred
      */
     public List<MessageRecipientStatus> findByReceivingUserArchived(
-        Long userId, Boolean archived, int start, int end,
+        long userId, boolean archived, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1079,9 +1079,9 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
-                qPos.add(archived.booleanValue());
+                qPos.add(archived);
 
                 list = (List<MessageRecipientStatus>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1118,7 +1118,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws SystemException if a system exception occurred
      */
     public MessageRecipientStatus findByReceivingUserArchived_First(
-        Long userId, Boolean archived, OrderByComparator orderByComparator)
+        long userId, boolean archived, OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         List<MessageRecipientStatus> list = findByReceivingUserArchived(userId,
                 archived, 0, 1, orderByComparator);
@@ -1157,7 +1157,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws SystemException if a system exception occurred
      */
     public MessageRecipientStatus findByReceivingUserArchived_Last(
-        Long userId, Boolean archived, OrderByComparator orderByComparator)
+        long userId, boolean archived, OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         int count = countByReceivingUserArchived(userId, archived);
 
@@ -1199,7 +1199,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws SystemException if a system exception occurred
      */
     public MessageRecipientStatus[] findByReceivingUserArchived_PrevAndNext(
-        Long messageRecipientId, Long userId, Boolean archived,
+        long messageRecipientId, long userId, boolean archived,
         OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         MessageRecipientStatus messageRecipientStatus = findByPrimaryKey(messageRecipientId);
@@ -1231,7 +1231,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
     protected MessageRecipientStatus getByReceivingUserArchived_PrevAndNext(
         Session session, MessageRecipientStatus messageRecipientStatus,
-        Long userId, Boolean archived, OrderByComparator orderByComparator,
+        long userId, boolean archived, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -1310,9 +1310,9 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(userId.longValue());
+        qPos.add(userId);
 
-        qPos.add(archived.booleanValue());
+        qPos.add(archived);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(messageRecipientStatus);
@@ -1338,7 +1338,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public List<MessageRecipientStatus> findByMessageId(Long messageId)
+    public List<MessageRecipientStatus> findByMessageId(long messageId)
         throws SystemException {
         return findByMessageId(messageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -1357,7 +1357,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the range of matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public List<MessageRecipientStatus> findByMessageId(Long messageId,
+    public List<MessageRecipientStatus> findByMessageId(long messageId,
         int start, int end) throws SystemException {
         return findByMessageId(messageId, start, end, null);
     }
@@ -1376,7 +1376,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the ordered range of matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public List<MessageRecipientStatus> findByMessageId(Long messageId,
+    public List<MessageRecipientStatus> findByMessageId(long messageId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -1427,7 +1427,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
                 list = (List<MessageRecipientStatus>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1462,7 +1462,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException if a matching message recipient status could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus findByMessageId_First(Long messageId,
+    public MessageRecipientStatus findByMessageId_First(long messageId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         List<MessageRecipientStatus> list = findByMessageId(messageId, 0, 1,
@@ -1497,7 +1497,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException if a matching message recipient status could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus findByMessageId_Last(Long messageId,
+    public MessageRecipientStatus findByMessageId_Last(long messageId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         int count = countByMessageId(messageId);
@@ -1536,7 +1536,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws SystemException if a system exception occurred
      */
     public MessageRecipientStatus[] findByMessageId_PrevAndNext(
-        Long messageRecipientId, Long messageId,
+        long messageRecipientId, long messageId,
         OrderByComparator orderByComparator)
         throws NoSuchMessageRecipientStatusException, SystemException {
         MessageRecipientStatus messageRecipientStatus = findByPrimaryKey(messageRecipientId);
@@ -1566,7 +1566,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
     protected MessageRecipientStatus getByMessageId_PrevAndNext(
         Session session, MessageRecipientStatus messageRecipientStatus,
-        Long messageId, OrderByComparator orderByComparator, boolean previous) {
+        long messageId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -1642,7 +1642,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(messageId.longValue());
+        qPos.add(messageId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(messageRecipientStatus);
@@ -1670,8 +1670,8 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException if a matching message recipient status could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus findByMessageReciever(Long messageId,
-        Long userId)
+    public MessageRecipientStatus findByMessageReciever(long messageId,
+        long userId)
         throws NoSuchMessageRecipientStatusException, SystemException {
         MessageRecipientStatus messageRecipientStatus = fetchByMessageReciever(messageId,
                 userId);
@@ -1707,8 +1707,8 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the matching message recipient status, or <code>null</code> if a matching message recipient status could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus fetchByMessageReciever(Long messageId,
-        Long userId) throws SystemException {
+    public MessageRecipientStatus fetchByMessageReciever(long messageId,
+        long userId) throws SystemException {
         return fetchByMessageReciever(messageId, userId, true);
     }
 
@@ -1721,8 +1721,8 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the matching message recipient status, or <code>null</code> if a matching message recipient status could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessageRecipientStatus fetchByMessageReciever(Long messageId,
-        Long userId, boolean retrieveFromCache) throws SystemException {
+    public MessageRecipientStatus fetchByMessageReciever(long messageId,
+        long userId, boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { messageId, userId };
 
         Object result = null;
@@ -1754,9 +1754,9 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 List<MessageRecipientStatus> list = q.list();
 
@@ -1914,7 +1914,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByReceivingUser(Long userId) throws SystemException {
+    public void removeByReceivingUser(long userId) throws SystemException {
         for (MessageRecipientStatus messageRecipientStatus : findByReceivingUser(
                 userId)) {
             remove(messageRecipientStatus);
@@ -1928,7 +1928,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @param archived the archived
      * @throws SystemException if a system exception occurred
      */
-    public void removeByReceivingUserArchived(Long userId, Boolean archived)
+    public void removeByReceivingUserArchived(long userId, boolean archived)
         throws SystemException {
         for (MessageRecipientStatus messageRecipientStatus : findByReceivingUserArchived(
                 userId, archived)) {
@@ -1942,7 +1942,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @param messageId the message ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByMessageId(Long messageId) throws SystemException {
+    public void removeByMessageId(long messageId) throws SystemException {
         for (MessageRecipientStatus messageRecipientStatus : findByMessageId(
                 messageId)) {
             remove(messageRecipientStatus);
@@ -1956,7 +1956,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByMessageReciever(Long messageId, Long userId)
+    public void removeByMessageReciever(long messageId, long userId)
         throws NoSuchMessageRecipientStatusException, SystemException {
         MessageRecipientStatus messageRecipientStatus = findByMessageReciever(messageId,
                 userId);
@@ -1982,7 +1982,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the number of matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public int countByReceivingUser(Long userId) throws SystemException {
+    public int countByReceivingUser(long userId) throws SystemException {
         Object[] finderArgs = new Object[] { userId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_RECEIVINGUSER,
@@ -2006,7 +2006,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2034,7 +2034,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the number of matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public int countByReceivingUserArchived(Long userId, Boolean archived)
+    public int countByReceivingUserArchived(long userId, boolean archived)
         throws SystemException {
         Object[] finderArgs = new Object[] { userId, archived };
 
@@ -2061,9 +2061,9 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
-                qPos.add(archived.booleanValue());
+                qPos.add(archived);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2090,7 +2090,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the number of matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public int countByMessageId(Long messageId) throws SystemException {
+    public int countByMessageId(long messageId) throws SystemException {
         Object[] finderArgs = new Object[] { messageId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MESSAGEID,
@@ -2114,7 +2114,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2142,7 +2142,7 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
      * @return the number of matching message recipient statuses
      * @throws SystemException if a system exception occurred
      */
-    public int countByMessageReciever(Long messageId, Long userId)
+    public int countByMessageReciever(long messageId, long userId)
         throws SystemException {
         Object[] finderArgs = new Object[] { messageId, userId };
 
@@ -2169,9 +2169,9 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

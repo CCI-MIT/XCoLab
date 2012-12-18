@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -16,12 +17,13 @@ import java.util.Date;
 
 public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFlag>
     implements DiscussionMessageFlag {
-    private Long _pk;
-    private Long _messageId;
+    private long _pk;
+    private long _messageId;
     private String _flagType;
     private String _data;
     private Date _created;
-    private Long _userId;
+    private long _userId;
+    private String _userUuid;
 
     public DiscussionMessageFlagClp() {
     }
@@ -34,11 +36,11 @@ public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFla
         return DiscussionMessageFlag.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _pk;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPk(primaryKey);
     }
 
@@ -50,19 +52,19 @@ public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFla
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPk() {
+    public long getPk() {
         return _pk;
     }
 
-    public void setPk(Long pk) {
+    public void setPk(long pk) {
         _pk = pk;
     }
 
-    public Long getMessageId() {
+    public long getMessageId() {
         return _messageId;
     }
 
-    public void setMessageId(Long messageId) {
+    public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
@@ -90,12 +92,20 @@ public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFla
         _created = created;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
+    }
+
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
     }
 
     public void persist() throws SystemException {
@@ -128,7 +138,7 @@ public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFla
     }
 
     public int compareTo(DiscussionMessageFlag discussionMessageFlag) {
-        Long primaryKey = discussionMessageFlag.getPrimaryKey();
+        long primaryKey = discussionMessageFlag.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -153,7 +163,7 @@ public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFla
             return false;
         }
 
-        Long primaryKey = discussionMessageFlag.getPrimaryKey();
+        long primaryKey = discussionMessageFlag.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -164,7 +174,7 @@ public class DiscussionMessageFlagClp extends BaseModelImpl<DiscussionMessageFla
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

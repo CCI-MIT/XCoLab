@@ -13,14 +13,14 @@ import java.util.List;
  * @generated
  */
 public class PlanSectionDefinitionSoap implements Serializable {
-    private Long _id;
+    private long _id;
     private String _adminTitle;
     private String _title;
     private String _defaultText;
     private String _helpText;
-    private Integer _characterLimit;
-    private Long _focusAreaId;
-    private Boolean _locked;
+    private int _characterLimit;
+    private long _focusAreaId;
+    private boolean _locked;
 
     public PlanSectionDefinitionSoap() {
     }
@@ -80,19 +80,19 @@ public class PlanSectionDefinitionSoap implements Serializable {
         return soapModels.toArray(new PlanSectionDefinitionSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
@@ -128,27 +128,31 @@ public class PlanSectionDefinitionSoap implements Serializable {
         _helpText = helpText;
     }
 
-    public Integer getCharacterLimit() {
+    public int getCharacterLimit() {
         return _characterLimit;
     }
 
-    public void setCharacterLimit(Integer characterLimit) {
+    public void setCharacterLimit(int characterLimit) {
         _characterLimit = characterLimit;
     }
 
-    public Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return _focusAreaId;
     }
 
-    public void setFocusAreaId(Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
     }
 
-    public Boolean getLocked() {
+    public boolean getLocked() {
         return _locked;
     }
 
-    public void setLocked(Boolean locked) {
+    public boolean isLocked() {
+        return _locked;
+    }
+
+    public void setLocked(boolean locked) {
         _locked = locked;
     }
 }

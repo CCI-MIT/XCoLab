@@ -45,8 +45,7 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
     * @param id the primary key for the new ontology space
     * @return the new ontology space
     */
-    public com.ext.portlet.ontology.model.OntologySpace create(
-        java.lang.Long id);
+    public com.ext.portlet.ontology.model.OntologySpace create(long id);
 
     /**
     * Removes the ontology space with the primary key from the database. Also notifies the appropriate model listeners.
@@ -56,8 +55,7 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
     * @throws com.ext.portlet.ontology.NoSuchOntologySpaceException if a ontology space with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.ontology.model.OntologySpace remove(
-        java.lang.Long id)
+    public com.ext.portlet.ontology.model.OntologySpace remove(long id)
         throws com.ext.portlet.ontology.NoSuchOntologySpaceException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +73,7 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.ontology.model.OntologySpace findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.ontology.NoSuchOntologySpaceException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,8 +85,7 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.ontology.model.OntologySpace fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the ontology space where name = &#63; or throws a {@link com.ext.portlet.ontology.NoSuchOntologySpaceException} if it could not be found.

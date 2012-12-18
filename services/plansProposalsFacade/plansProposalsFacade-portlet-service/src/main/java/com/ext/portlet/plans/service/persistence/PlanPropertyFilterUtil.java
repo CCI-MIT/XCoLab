@@ -127,7 +127,7 @@ public class PlanPropertyFilterUtil {
     * @return the new plan property filter
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter create(
-        java.lang.Long planPropertyFilterId) {
+        long planPropertyFilterId) {
         return getPersistence().create(planPropertyFilterId);
     }
 
@@ -140,7 +140,7 @@ public class PlanPropertyFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter remove(
-        java.lang.Long planPropertyFilterId)
+        long planPropertyFilterId)
         throws com.ext.portlet.plans.NoSuchPlanPropertyFilterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planPropertyFilterId);
@@ -162,7 +162,7 @@ public class PlanPropertyFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter findByPrimaryKey(
-        java.lang.Long planPropertyFilterId)
+        long planPropertyFilterId)
         throws com.ext.portlet.plans.NoSuchPlanPropertyFilterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planPropertyFilterId);
@@ -176,7 +176,7 @@ public class PlanPropertyFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter fetchByPrimaryKey(
-        java.lang.Long planPropertyFilterId)
+        long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planPropertyFilterId);
     }
@@ -191,7 +191,7 @@ public class PlanPropertyFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter findByPlanUserSettingsIdPropertyName(
-        java.lang.Long planUserSettingsId, java.lang.String propertyName)
+        long planUserSettingsId, java.lang.String propertyName)
         throws com.ext.portlet.plans.NoSuchPlanPropertyFilterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -208,7 +208,7 @@ public class PlanPropertyFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter fetchByPlanUserSettingsIdPropertyName(
-        java.lang.Long planUserSettingsId, java.lang.String propertyName)
+        long planUserSettingsId, java.lang.String propertyName)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByPlanUserSettingsIdPropertyName(planUserSettingsId,
@@ -225,7 +225,7 @@ public class PlanPropertyFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPropertyFilter fetchByPlanUserSettingsIdPropertyName(
-        java.lang.Long planUserSettingsId, java.lang.String propertyName,
+        long planUserSettingsId, java.lang.String propertyName,
         boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -290,7 +290,7 @@ public class PlanPropertyFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static void removeByPlanUserSettingsIdPropertyName(
-        java.lang.Long planUserSettingsId, java.lang.String propertyName)
+        long planUserSettingsId, java.lang.String propertyName)
         throws com.ext.portlet.plans.NoSuchPlanPropertyFilterException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence()
@@ -317,7 +317,7 @@ public class PlanPropertyFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static int countByPlanUserSettingsIdPropertyName(
-        java.lang.Long planUserSettingsId, java.lang.String propertyName)
+        long planUserSettingsId, java.lang.String propertyName)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .countByPlanUserSettingsIdPropertyName(planUserSettingsId,

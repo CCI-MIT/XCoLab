@@ -19,8 +19,8 @@ import java.util.Date;
  */
 public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
     Serializable {
-    public Long ContestPhasePK;
-    public Long ContestPK;
+    public long ContestPhasePK;
+    public long ContestPK;
     public String ContestPhaseName;
     public String ContestPhaseDescription;
     public String ContestPhaseStatus;
@@ -29,7 +29,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
     public String nextStatus;
     public long created;
     public long updated;
-    public Long authorId;
+    public long authorId;
 
     @Override
     public String toString() {

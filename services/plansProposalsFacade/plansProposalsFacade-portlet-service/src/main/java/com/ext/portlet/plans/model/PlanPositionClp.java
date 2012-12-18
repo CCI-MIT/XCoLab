@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -17,9 +18,10 @@ import java.util.Date;
 
 public class PlanPositionClp extends BaseModelImpl<PlanPosition>
     implements PlanPosition {
-    private Long _planId;
-    private Long _positionId;
-    private Long _userId;
+    private long _planId;
+    private long _positionId;
+    private long _userId;
+    private String _userUuid;
     private String _userName;
     private Date _createDate;
     private Date _modifiedDate;
@@ -52,28 +54,36 @@ public class PlanPositionClp extends BaseModelImpl<PlanPosition>
         setPrimaryKey((PlanPositionPK) primaryKeyObj);
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
-    public Long getPositionId() {
+    public long getPositionId() {
         return _positionId;
     }
 
-    public void setPositionId(Long positionId) {
+    public void setPositionId(long positionId) {
         _positionId = positionId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
+    }
+
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
     }
 
     public String getUserName() {

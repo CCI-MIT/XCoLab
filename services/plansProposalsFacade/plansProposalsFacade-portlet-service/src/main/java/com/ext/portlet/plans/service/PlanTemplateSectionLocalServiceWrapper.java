@@ -269,6 +269,16 @@ public class PlanTemplateSectionLocalServiceWrapper
             sectionId);
     }
 
+    public void store(com.ext.portlet.plans.model.PlanTemplateSection section)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planTemplateSectionLocalService.store(section);
+    }
+
+    public void remove(com.ext.portlet.plans.model.PlanTemplateSection section)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planTemplateSectionLocalService.remove(section);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

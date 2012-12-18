@@ -32,7 +32,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     *
     * @return the primary key of this contest team member
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _contestTeamMember.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     *
     * @param primaryKey the primary key of this contest team member
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _contestTeamMember.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     *
     * @return the ID of this contest team member
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _contestTeamMember.getId();
     }
 
@@ -59,7 +59,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     *
     * @param id the ID of this contest team member
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _contestTeamMember.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     *
     * @return the contest ID of this contest team member
     */
-    public java.lang.Long getContestId() {
+    public long getContestId() {
         return _contestTeamMember.getContestId();
     }
 
@@ -77,7 +77,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     *
     * @param contestId the contest ID of this contest team member
     */
-    public void setContestId(java.lang.Long contestId) {
+    public void setContestId(long contestId) {
         _contestTeamMember.setContestId(contestId);
     }
 
@@ -86,7 +86,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     *
     * @return the user ID of this contest team member
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _contestTeamMember.getUserId();
     }
 
@@ -95,8 +95,28 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     *
     * @param userId the user ID of this contest team member
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _contestTeamMember.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this contest team member.
+    *
+    * @return the user uuid of this contest team member
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestTeamMember.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this contest team member.
+    *
+    * @param userUuid the user uuid of this contest team member
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _contestTeamMember.setUserUuid(userUuid);
     }
 
     /**
@@ -188,28 +208,6 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestTeamMember.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestTeamMember.store();
-    }
-
-    public void delete()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestTeamMember.delete();
-    }
-
-    public com.liferay.portal.model.User getUser()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestTeamMember.getUser();
-    }
-
-    public com.ext.portlet.contests.model.Contest getContest()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestTeamMember.getContest();
     }
 
     /**

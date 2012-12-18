@@ -49,7 +49,7 @@ public interface ContestPhaseColumnLocalService
     * @return the new contest phase column
     */
     public com.ext.portlet.contests.model.ContestPhaseColumn createContestPhaseColumn(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the contest phase column with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface ContestPhaseColumnLocalService
     * @throws PortalException if a contest phase column with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteContestPhaseColumn(java.lang.Long id)
+    public void deleteContestPhaseColumn(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,8 +136,7 @@ public interface ContestPhaseColumnLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.contests.model.ContestPhaseColumn fetchContestPhaseColumn(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the contest phase column with the primary key.
@@ -149,7 +148,7 @@ public interface ContestPhaseColumnLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.contests.model.ContestPhaseColumn getContestPhaseColumn(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

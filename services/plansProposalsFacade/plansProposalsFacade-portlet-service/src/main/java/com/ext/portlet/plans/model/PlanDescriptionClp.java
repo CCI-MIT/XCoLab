@@ -16,15 +16,15 @@ import java.util.Date;
 
 public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
     implements PlanDescription {
-    private Long _id;
-    private Long _planId;
+    private long _id;
+    private long _planId;
     private String _name;
     private String _description;
-    private Long _version;
-    private Long _planVersion;
+    private long _version;
+    private long _planVersion;
     private Date _created;
-    private Long _updateAuthorId;
-    private Long _image;
+    private long _updateAuthorId;
+    private long _image;
     private String _pitch;
 
     public PlanDescriptionClp() {
@@ -38,11 +38,11 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
         return PlanDescription.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -54,19 +54,19 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
@@ -86,19 +86,19 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
         _description = description;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return _version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(long version) {
         _version = version;
     }
 
-    public Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planVersion;
     }
 
-    public void setPlanVersion(Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planVersion = planVersion;
     }
 
@@ -110,19 +110,19 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
         _created = created;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
 
-    public Long getImage() {
+    public long getImage() {
         return _image;
     }
 
-    public void setImage(Long image) {
+    public void setImage(long image) {
         _image = image;
     }
 
@@ -132,14 +132,6 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
 
     public void setPitch(String pitch) {
         _pitch = pitch;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getUpdateAuthor() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -209,7 +201,7 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
             return false;
         }
 
-        Long primaryKey = planDescription.getPrimaryKey();
+        long primaryKey = planDescription.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -220,7 +212,7 @@ public class PlanDescriptionClp extends BaseModelImpl<PlanDescription>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

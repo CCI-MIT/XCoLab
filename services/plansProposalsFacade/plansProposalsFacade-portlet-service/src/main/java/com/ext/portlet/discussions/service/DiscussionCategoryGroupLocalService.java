@@ -49,7 +49,7 @@ public interface DiscussionCategoryGroupLocalService
     * @return the new discussion category group
     */
     public com.ext.portlet.discussions.model.DiscussionCategoryGroup createDiscussionCategoryGroup(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the discussion category group with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface DiscussionCategoryGroupLocalService
     * @throws PortalException if a discussion category group with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteDiscussionCategoryGroup(java.lang.Long id)
+    public void deleteDiscussionCategoryGroup(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,8 +136,7 @@ public interface DiscussionCategoryGroupLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.discussions.model.DiscussionCategoryGroup fetchDiscussionCategoryGroup(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the discussion category group with the primary key.
@@ -149,7 +148,7 @@ public interface DiscussionCategoryGroupLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.discussions.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -227,4 +226,56 @@ public interface DiscussionCategoryGroupLocalService
     public com.ext.portlet.discussions.model.DiscussionCategoryGroup createDiscussionCategoryGroup(
         java.lang.String description)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.discussions.model.DiscussionCategory getCategoryById(
+        java.lang.Long categoryId)
+        throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.discussions.model.DiscussionMessage getThreadById(
+        java.lang.Long threadId)
+        throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.discussions.model.DiscussionCategory> getCategories(
+        com.ext.portlet.discussions.model.DiscussionCategoryGroup dcg)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.discussions.model.DiscussionCategory addCategory(
+        com.ext.portlet.discussions.model.DiscussionCategoryGroup dcg,
+        java.lang.String name, java.lang.String description,
+        com.liferay.portal.model.User creator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(
+        com.ext.portlet.discussions.model.DiscussionCategoryGroup dcg)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.discussions.model.DiscussionMessage getCommentThread(
+        com.ext.portlet.discussions.model.DiscussionCategoryGroup dcg)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.discussions.model.DiscussionMessage addComment(
+        com.ext.portlet.discussions.model.DiscussionCategoryGroup dcg,
+        java.lang.String title, java.lang.String description,
+        com.liferay.portal.model.User author)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getCommentsCount(
+        com.ext.portlet.discussions.model.DiscussionCategoryGroup dcg)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void copyEverything(
+        com.ext.portlet.discussions.model.DiscussionCategoryGroup dcg,
+        com.ext.portlet.discussions.model.DiscussionCategoryGroup source)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

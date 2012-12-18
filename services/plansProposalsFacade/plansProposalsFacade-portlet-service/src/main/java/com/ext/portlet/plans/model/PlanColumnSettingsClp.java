@@ -14,10 +14,10 @@ import java.lang.reflect.Proxy;
 
 public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
     implements PlanColumnSettings {
-    private Long _planColumnSettingsId;
+    private long _planColumnSettingsId;
     private String _columnName;
-    private Long _planUserSettingsId;
-    private Boolean _visible;
+    private long _planUserSettingsId;
+    private boolean _visible;
 
     public PlanColumnSettingsClp() {
     }
@@ -30,11 +30,11 @@ public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
         return PlanColumnSettings.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planColumnSettingsId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPlanColumnSettingsId(primaryKey);
     }
 
@@ -46,11 +46,11 @@ public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPlanColumnSettingsId() {
+    public long getPlanColumnSettingsId() {
         return _planColumnSettingsId;
     }
 
-    public void setPlanColumnSettingsId(Long planColumnSettingsId) {
+    public void setPlanColumnSettingsId(long planColumnSettingsId) {
         _planColumnSettingsId = planColumnSettingsId;
     }
 
@@ -62,19 +62,23 @@ public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
         _columnName = columnName;
     }
 
-    public Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
-    public void setPlanUserSettingsId(Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planUserSettingsId = planUserSettingsId;
     }
 
-    public Boolean getVisible() {
+    public boolean getVisible() {
         return _visible;
     }
 
-    public void setVisible(Boolean visible) {
+    public boolean isVisible() {
+        return _visible;
+    }
+
+    public void setVisible(boolean visible) {
         _visible = visible;
     }
 
@@ -106,7 +110,7 @@ public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
     }
 
     public int compareTo(PlanColumnSettings planColumnSettings) {
-        Long primaryKey = planColumnSettings.getPrimaryKey();
+        long primaryKey = planColumnSettings.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -131,7 +135,7 @@ public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
             return false;
         }
 
-        Long primaryKey = planColumnSettings.getPrimaryKey();
+        long primaryKey = planColumnSettings.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -142,7 +146,7 @@ public class PlanColumnSettingsClp extends BaseModelImpl<PlanColumnSettings>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

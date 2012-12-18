@@ -33,7 +33,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @return the primary key of this activity subscription
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _activitySubscription.getPrimaryKey();
     }
 
@@ -42,7 +42,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @param primaryKey the primary key of this activity subscription
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _activitySubscription.setPrimaryKey(primaryKey);
     }
 
@@ -51,7 +51,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @return the pk of this activity subscription
     */
-    public java.lang.Long getPk() {
+    public long getPk() {
         return _activitySubscription.getPk();
     }
 
@@ -60,7 +60,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @param pk the pk of this activity subscription
     */
-    public void setPk(java.lang.Long pk) {
+    public void setPk(long pk) {
         _activitySubscription.setPk(pk);
     }
 
@@ -78,7 +78,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @return the class name ID of this activity subscription
     */
-    public java.lang.Long getClassNameId() {
+    public long getClassNameId() {
         return _activitySubscription.getClassNameId();
     }
 
@@ -87,7 +87,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @param classNameId the class name ID of this activity subscription
     */
-    public void setClassNameId(java.lang.Long classNameId) {
+    public void setClassNameId(long classNameId) {
         _activitySubscription.setClassNameId(classNameId);
     }
 
@@ -96,7 +96,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @return the class p k of this activity subscription
     */
-    public java.lang.Long getClassPK() {
+    public long getClassPK() {
         return _activitySubscription.getClassPK();
     }
 
@@ -105,7 +105,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @param classPK the class p k of this activity subscription
     */
-    public void setClassPK(java.lang.Long classPK) {
+    public void setClassPK(long classPK) {
         _activitySubscription.setClassPK(classPK);
     }
 
@@ -114,7 +114,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @return the type of this activity subscription
     */
-    public java.lang.Integer getType() {
+    public int getType() {
         return _activitySubscription.getType();
     }
 
@@ -123,7 +123,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @param type the type of this activity subscription
     */
-    public void setType(java.lang.Integer type) {
+    public void setType(int type) {
         _activitySubscription.setType(type);
     }
 
@@ -150,7 +150,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @return the receiver ID of this activity subscription
     */
-    public java.lang.Long getReceiverId() {
+    public long getReceiverId() {
         return _activitySubscription.getReceiverId();
     }
 
@@ -159,7 +159,7 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     *
     * @param receiverId the receiver ID of this activity subscription
     */
-    public void setReceiverId(java.lang.Long receiverId) {
+    public void setReceiverId(long receiverId) {
         _activitySubscription.setReceiverId(receiverId);
     }
 
@@ -270,28 +270,6 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _activitySubscription.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _activitySubscription.store();
-    }
-
-    public com.ext.portlet.Activity.ICollabActivityInterpreter getInterpreter() {
-        return _activitySubscription.getInterpreter();
-    }
-
-    public java.lang.String getName() {
-        return _activitySubscription.getName();
-    }
-
-    public com.ext.portlet.Activity.SubscriptionType getSubscriptionType() {
-        return _activitySubscription.getSubscriptionType();
-    }
-
-    public void delete()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _activitySubscription.delete();
     }
 
     /**

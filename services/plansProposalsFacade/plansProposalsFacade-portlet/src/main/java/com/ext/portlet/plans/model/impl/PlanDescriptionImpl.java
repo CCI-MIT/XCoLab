@@ -24,16 +24,4 @@ public class PlanDescriptionImpl extends PlanDescriptionBaseImpl {
     public PlanDescriptionImpl() {
     }
     
-    public void store() throws SystemException {
-        if (this.isNew()) {
-            PlanDescriptionLocalServiceUtil.addPlanDescription(this);
-        }
-        else {
-            PlanDescriptionLocalServiceUtil.updatePlanDescription(this);
-        }
-    }
-    
-    public User getUpdateAuthor() throws PortalException, SystemException {
-        return UserLocalServiceUtil.getUser(getUpdateAuthorId());
-    }
 }

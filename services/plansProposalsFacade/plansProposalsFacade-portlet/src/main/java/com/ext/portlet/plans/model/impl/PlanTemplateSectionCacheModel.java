@@ -16,9 +16,9 @@ import java.io.Serializable;
  */
 public class PlanTemplateSectionCacheModel implements CacheModel<PlanTemplateSection>,
     Serializable {
-    public Long planTemplateId;
-    public Long planSectionId;
-    public Integer weight;
+    public long planTemplateId;
+    public long planSectionId;
+    public int weight;
 
     @Override
     public String toString() {

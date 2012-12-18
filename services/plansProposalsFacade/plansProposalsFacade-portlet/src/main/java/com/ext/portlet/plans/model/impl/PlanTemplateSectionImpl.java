@@ -21,13 +21,4 @@ public class PlanTemplateSectionImpl extends PlanTemplateSectionBaseImpl {
     public PlanTemplateSectionImpl() {
     }
     
-    public void store() throws SystemException {
-        if (isNew()) PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(this);
-        else  PlanTemplateSectionLocalServiceUtil.updatePlanTemplateSection(this);
-    }
-    
-    public void remove() throws SystemException {
-        PlanTemplateSectionLocalServiceUtil.deletePlanTemplateSection(this);
-    }
-    
 }

@@ -260,7 +260,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @param modelDiscussionId the primary key for the new model discussion
      * @return the new model discussion
      */
-    public ModelDiscussion create(Long modelDiscussionId) {
+    public ModelDiscussion create(long modelDiscussionId) {
         ModelDiscussion modelDiscussion = new ModelDiscussionImpl();
 
         modelDiscussion.setNew(true);
@@ -277,9 +277,9 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.models.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion remove(Long modelDiscussionId)
+    public ModelDiscussion remove(long modelDiscussionId)
         throws NoSuchModelDiscussionException, SystemException {
-        return remove((Serializable) modelDiscussionId);
+        return remove(Long.valueOf(modelDiscussionId));
     }
 
     /**
@@ -448,7 +448,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     @Override
     public ModelDiscussion findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -459,7 +459,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.models.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion findByPrimaryKey(Long modelDiscussionId)
+    public ModelDiscussion findByPrimaryKey(long modelDiscussionId)
         throws NoSuchModelDiscussionException, SystemException {
         ModelDiscussion modelDiscussion = fetchByPrimaryKey(modelDiscussionId);
 
@@ -485,7 +485,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     @Override
     public ModelDiscussion fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -495,7 +495,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the model discussion, or <code>null</code> if a model discussion with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion fetchByPrimaryKey(Long modelDiscussionId)
+    public ModelDiscussion fetchByPrimaryKey(long modelDiscussionId)
         throws SystemException {
         ModelDiscussion modelDiscussion = (ModelDiscussion) EntityCacheUtil.getResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
                 ModelDiscussionImpl.class, modelDiscussionId);
@@ -541,7 +541,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the matching model discussions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelDiscussion> findByModelId(Long modelId)
+    public List<ModelDiscussion> findByModelId(long modelId)
         throws SystemException {
         return findByModelId(modelId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -559,7 +559,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the range of matching model discussions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelDiscussion> findByModelId(Long modelId, int start, int end)
+    public List<ModelDiscussion> findByModelId(long modelId, int start, int end)
         throws SystemException {
         return findByModelId(modelId, start, end, null);
     }
@@ -578,7 +578,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the ordered range of matching model discussions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelDiscussion> findByModelId(Long modelId, int start,
+    public List<ModelDiscussion> findByModelId(long modelId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -625,7 +625,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 list = (List<ModelDiscussion>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -660,7 +660,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.models.NoSuchModelDiscussionException if a matching model discussion could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion findByModelId_First(Long modelId,
+    public ModelDiscussion findByModelId_First(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
         List<ModelDiscussion> list = findByModelId(modelId, 0, 1,
@@ -695,7 +695,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.models.NoSuchModelDiscussionException if a matching model discussion could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion findByModelId_Last(Long modelId,
+    public ModelDiscussion findByModelId_Last(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
         int count = countByModelId(modelId);
@@ -733,8 +733,8 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.models.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion[] findByModelId_PrevAndNext(Long modelDiscussionId,
-        Long modelId, OrderByComparator orderByComparator)
+    public ModelDiscussion[] findByModelId_PrevAndNext(long modelDiscussionId,
+        long modelId, OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
         ModelDiscussion modelDiscussion = findByPrimaryKey(modelDiscussionId);
 
@@ -762,7 +762,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     }
 
     protected ModelDiscussion getByModelId_PrevAndNext(Session session,
-        ModelDiscussion modelDiscussion, Long modelId,
+        ModelDiscussion modelDiscussion, long modelId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -836,7 +836,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(modelId.longValue());
+        qPos.add(modelId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(modelDiscussion);
@@ -862,7 +862,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the matching model discussions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelDiscussion> findByDiscussionId(Long categoryId)
+    public List<ModelDiscussion> findByDiscussionId(long categoryId)
         throws SystemException {
         return findByDiscussionId(categoryId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -881,7 +881,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the range of matching model discussions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelDiscussion> findByDiscussionId(Long categoryId, int start,
+    public List<ModelDiscussion> findByDiscussionId(long categoryId, int start,
         int end) throws SystemException {
         return findByDiscussionId(categoryId, start, end, null);
     }
@@ -900,7 +900,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the ordered range of matching model discussions
      * @throws SystemException if a system exception occurred
      */
-    public List<ModelDiscussion> findByDiscussionId(Long categoryId, int start,
+    public List<ModelDiscussion> findByDiscussionId(long categoryId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -947,7 +947,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(categoryId.longValue());
+                qPos.add(categoryId);
 
                 list = (List<ModelDiscussion>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -982,7 +982,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.models.NoSuchModelDiscussionException if a matching model discussion could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion findByDiscussionId_First(Long categoryId,
+    public ModelDiscussion findByDiscussionId_First(long categoryId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
         List<ModelDiscussion> list = findByDiscussionId(categoryId, 0, 1,
@@ -1017,7 +1017,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.models.NoSuchModelDiscussionException if a matching model discussion could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelDiscussion findByDiscussionId_Last(Long categoryId,
+    public ModelDiscussion findByDiscussionId_Last(long categoryId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
         int count = countByDiscussionId(categoryId);
@@ -1056,7 +1056,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws SystemException if a system exception occurred
      */
     public ModelDiscussion[] findByDiscussionId_PrevAndNext(
-        Long modelDiscussionId, Long categoryId,
+        long modelDiscussionId, long categoryId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
         ModelDiscussion modelDiscussion = findByPrimaryKey(modelDiscussionId);
@@ -1085,7 +1085,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     }
 
     protected ModelDiscussion getByDiscussionId_PrevAndNext(Session session,
-        ModelDiscussion modelDiscussion, Long categoryId,
+        ModelDiscussion modelDiscussion, long categoryId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1159,7 +1159,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(categoryId.longValue());
+        qPos.add(categoryId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(modelDiscussion);
@@ -1293,7 +1293,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @param modelId the model ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelId(Long modelId) throws SystemException {
+    public void removeByModelId(long modelId) throws SystemException {
         for (ModelDiscussion modelDiscussion : findByModelId(modelId)) {
             remove(modelDiscussion);
         }
@@ -1305,7 +1305,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @param categoryId the category ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByDiscussionId(Long categoryId) throws SystemException {
+    public void removeByDiscussionId(long categoryId) throws SystemException {
         for (ModelDiscussion modelDiscussion : findByDiscussionId(categoryId)) {
             remove(modelDiscussion);
         }
@@ -1329,7 +1329,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the number of matching model discussions
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelId(Long modelId) throws SystemException {
+    public int countByModelId(long modelId) throws SystemException {
         Object[] finderArgs = new Object[] { modelId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MODELID,
@@ -1353,7 +1353,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelId.longValue());
+                qPos.add(modelId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1380,7 +1380,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the number of matching model discussions
      * @throws SystemException if a system exception occurred
      */
-    public int countByDiscussionId(Long categoryId) throws SystemException {
+    public int countByDiscussionId(long categoryId) throws SystemException {
         Object[] finderArgs = new Object[] { categoryId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_DISCUSSIONID,
@@ -1404,7 +1404,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(categoryId.longValue());
+                qPos.add(categoryId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

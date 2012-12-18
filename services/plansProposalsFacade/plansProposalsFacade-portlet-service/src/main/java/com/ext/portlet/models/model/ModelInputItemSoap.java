@@ -13,11 +13,11 @@ import java.util.List;
  * @generated
  */
 public class ModelInputItemSoap implements Serializable {
-    private Long _modelInputItemPK;
-    private Long _modelId;
-    private Long _modelInputItemID;
-    private Long _modelGroupId;
-    private Integer _displayItemOrder;
+    private long _modelInputItemPK;
+    private long _modelId;
+    private long _modelInputItemID;
+    private long _modelGroupId;
+    private int _displayItemOrder;
     private String _type;
     private String _properties;
 
@@ -74,51 +74,51 @@ public class ModelInputItemSoap implements Serializable {
         return soapModels.toArray(new ModelInputItemSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelInputItemPK;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setModelInputItemPK(pk);
     }
 
-    public Long getModelInputItemPK() {
+    public long getModelInputItemPK() {
         return _modelInputItemPK;
     }
 
-    public void setModelInputItemPK(Long modelInputItemPK) {
+    public void setModelInputItemPK(long modelInputItemPK) {
         _modelInputItemPK = modelInputItemPK;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Long getModelInputItemID() {
+    public long getModelInputItemID() {
         return _modelInputItemID;
     }
 
-    public void setModelInputItemID(Long modelInputItemID) {
+    public void setModelInputItemID(long modelInputItemID) {
         _modelInputItemID = modelInputItemID;
     }
 
-    public Long getModelGroupId() {
+    public long getModelGroupId() {
         return _modelGroupId;
     }
 
-    public void setModelGroupId(Long modelGroupId) {
+    public void setModelGroupId(long modelGroupId) {
         _modelGroupId = modelGroupId;
     }
 
-    public Integer getDisplayItemOrder() {
+    public int getDisplayItemOrder() {
         return _displayItemOrder;
     }
 
-    public void setDisplayItemOrder(Integer displayItemOrder) {
+    public void setDisplayItemOrder(int displayItemOrder) {
         _displayItemOrder = displayItemOrder;
     }
 

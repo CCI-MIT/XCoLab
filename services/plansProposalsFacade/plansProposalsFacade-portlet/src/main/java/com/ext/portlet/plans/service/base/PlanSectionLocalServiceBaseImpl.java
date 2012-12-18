@@ -340,7 +340,7 @@ public abstract class PlanSectionLocalServiceBaseImpl
      * @param id the primary key for the new plan section
      * @return the new plan section
      */
-    public PlanSection createPlanSection(Long id) {
+    public PlanSection createPlanSection(long id) {
         return planSectionPersistence.create(id);
     }
 
@@ -351,7 +351,7 @@ public abstract class PlanSectionLocalServiceBaseImpl
      * @throws PortalException if a plan section with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanSection(Long id)
+    public void deletePlanSection(long id)
         throws PortalException, SystemException {
         PlanSection planSection = planSectionPersistence.remove(id);
 
@@ -457,7 +457,7 @@ public abstract class PlanSectionLocalServiceBaseImpl
         return planSectionPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanSection fetchPlanSection(Long id) throws SystemException {
+    public PlanSection fetchPlanSection(long id) throws SystemException {
         return planSectionPersistence.fetchByPrimaryKey(id);
     }
 
@@ -469,7 +469,7 @@ public abstract class PlanSectionLocalServiceBaseImpl
      * @throws PortalException if a plan section with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection getPlanSection(Long id)
+    public PlanSection getPlanSection(long id)
         throws PortalException, SystemException {
         return planSectionPersistence.findByPrimaryKey(id);
     }

@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -14,9 +15,10 @@ import java.lang.reflect.Proxy;
 
 public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
     implements ContestTeamMember {
-    private Long _id;
-    private Long _contestId;
-    private Long _userId;
+    private long _id;
+    private long _contestId;
+    private long _userId;
+    private String _userUuid;
     private String _role;
 
     public ContestTeamMemberClp() {
@@ -30,11 +32,11 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
         return ContestTeamMember.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -46,28 +48,36 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getContestId() {
+    public long getContestId() {
         return _contestId;
     }
 
-    public void setContestId(Long contestId) {
+    public void setContestId(long contestId) {
         _contestId = contestId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
+    }
+
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
     }
 
     public String getRole() {
@@ -76,22 +86,6 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
 
     public void setRole(String role) {
         _role = role;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void delete() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getUser() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.contests.model.Contest getContest() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -153,7 +147,7 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
             return false;
         }
 
-        Long primaryKey = contestTeamMember.getPrimaryKey();
+        long primaryKey = contestTeamMember.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -164,7 +158,7 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

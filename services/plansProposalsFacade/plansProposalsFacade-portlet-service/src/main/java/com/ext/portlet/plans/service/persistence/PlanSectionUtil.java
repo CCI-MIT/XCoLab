@@ -124,8 +124,7 @@ public class PlanSectionUtil {
     * @param id the primary key for the new plan section
     * @return the new plan section
     */
-    public static com.ext.portlet.plans.model.PlanSection create(
-        java.lang.Long id) {
+    public static com.ext.portlet.plans.model.PlanSection create(long id) {
         return getPersistence().create(id);
     }
 
@@ -137,8 +136,7 @@ public class PlanSectionUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanSectionException if a plan section with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanSection remove(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanSection remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -159,7 +157,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -173,8 +171,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 
@@ -187,7 +184,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanSection> findByPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId)
+        long planId, long planSectionDefinitionId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByPlanIdSectionDefinitionId(planId,
@@ -209,8 +206,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanSection> findByPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId,
-        int start, int end)
+        long planId, long planSectionDefinitionId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByPlanIdSectionDefinitionId(planId,
@@ -233,8 +229,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanSection> findByPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId,
-        int start, int end,
+        long planId, long planSectionDefinitionId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -257,7 +252,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection findByPlanIdSectionDefinitionId_First(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId,
+        long planId, long planSectionDefinitionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -281,7 +276,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection findByPlanIdSectionDefinitionId_Last(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId,
+        long planId, long planSectionDefinitionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -306,8 +301,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection[] findByPlanIdSectionDefinitionId_PrevAndNext(
-        java.lang.Long id, java.lang.Long planId,
-        java.lang.Long planSectionDefinitionId,
+        long id, long planId, long planSectionDefinitionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -326,7 +320,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection findByCurrentPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId)
+        long planId, long planSectionDefinitionId)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -343,7 +337,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection fetchByCurrentPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId)
+        long planId, long planSectionDefinitionId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByCurrentPlanIdSectionDefinitionId(planId,
@@ -360,8 +354,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection fetchByCurrentPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId,
-        boolean retrieveFromCache)
+        long planId, long planSectionDefinitionId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByCurrentPlanIdSectionDefinitionId(planId,
@@ -379,8 +372,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection findByPlanIdPlanVersion(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId,
-        java.lang.Long planVersion)
+        long planId, long planSectionDefinitionId, long planVersion)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -398,8 +390,7 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection fetchByPlanIdPlanVersion(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId,
-        java.lang.Long planVersion)
+        long planId, long planSectionDefinitionId, long planVersion)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByPlanIdPlanVersion(planId, planSectionDefinitionId,
@@ -417,8 +408,8 @@ public class PlanSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection fetchByPlanIdPlanVersion(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId,
-        java.lang.Long planVersion, boolean retrieveFromCache)
+        long planId, long planSectionDefinitionId, long planVersion,
+        boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByPlanIdPlanVersion(planId, planSectionDefinitionId,
@@ -481,8 +472,8 @@ public class PlanSectionUtil {
     * @param planSectionDefinitionId the plan section definition ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId)
+    public static void removeByPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence()
             .removeByPlanIdSectionDefinitionId(planId, planSectionDefinitionId);
@@ -495,8 +486,8 @@ public class PlanSectionUtil {
     * @param planSectionDefinitionId the plan section definition ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByCurrentPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId)
+    public static void removeByCurrentPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence()
@@ -512,8 +503,8 @@ public class PlanSectionUtil {
     * @param planVersion the plan version
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByPlanIdPlanVersion(java.lang.Long planId,
-        java.lang.Long planSectionDefinitionId, java.lang.Long planVersion)
+    public static void removeByPlanIdPlanVersion(long planId,
+        long planSectionDefinitionId, long planVersion)
         throws com.ext.portlet.plans.NoSuchPlanSectionException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence()
@@ -539,8 +530,8 @@ public class PlanSectionUtil {
     * @return the number of matching plan sections
     * @throws SystemException if a system exception occurred
     */
-    public static int countByPlanIdSectionDefinitionId(java.lang.Long planId,
-        java.lang.Long planSectionDefinitionId)
+    public static int countByPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .countByPlanIdSectionDefinitionId(planId,
@@ -555,8 +546,8 @@ public class PlanSectionUtil {
     * @return the number of matching plan sections
     * @throws SystemException if a system exception occurred
     */
-    public static int countByCurrentPlanIdSectionDefinitionId(
-        java.lang.Long planId, java.lang.Long planSectionDefinitionId)
+    public static int countByCurrentPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .countByCurrentPlanIdSectionDefinitionId(planId,
@@ -572,8 +563,8 @@ public class PlanSectionUtil {
     * @return the number of matching plan sections
     * @throws SystemException if a system exception occurred
     */
-    public static int countByPlanIdPlanVersion(java.lang.Long planId,
-        java.lang.Long planSectionDefinitionId, java.lang.Long planVersion)
+    public static int countByPlanIdPlanVersion(long planId,
+        long planSectionDefinitionId, long planVersion)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .countByPlanIdPlanVersion(planId, planSectionDefinitionId,

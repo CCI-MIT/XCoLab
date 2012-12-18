@@ -15,8 +15,8 @@ import java.lang.reflect.Proxy;
 
 public class FocusAreaOntologyTermClp extends BaseModelImpl<FocusAreaOntologyTerm>
     implements FocusAreaOntologyTerm {
-    private Long _focusAreaId;
-    private Long _ontologyTermId;
+    private long _focusAreaId;
+    private long _ontologyTermId;
 
     public FocusAreaOntologyTermClp() {
     }
@@ -46,32 +46,20 @@ public class FocusAreaOntologyTermClp extends BaseModelImpl<FocusAreaOntologyTer
         setPrimaryKey((FocusAreaOntologyTermPK) primaryKeyObj);
     }
 
-    public Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return _focusAreaId;
     }
 
-    public void setFocusAreaId(Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
     }
 
-    public Long getOntologyTermId() {
+    public long getOntologyTermId() {
         return _ontologyTermId;
     }
 
-    public void setOntologyTermId(Long ontologyTermId) {
+    public void setOntologyTermId(long ontologyTermId) {
         _ontologyTermId = ontologyTermId;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.ontology.model.OntologyTerm getTerm() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.ontology.model.FocusArea getArea() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {

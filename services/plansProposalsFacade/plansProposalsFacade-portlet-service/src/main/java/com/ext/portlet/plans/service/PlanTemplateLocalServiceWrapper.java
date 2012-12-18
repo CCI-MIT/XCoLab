@@ -39,8 +39,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @param id the primary key for the new plan template
     * @return the new plan template
     */
-    public com.ext.portlet.plans.model.PlanTemplate createPlanTemplate(
-        java.lang.Long id) {
+    public com.ext.portlet.plans.model.PlanTemplate createPlanTemplate(long id) {
         return _planTemplateLocalService.createPlanTemplate(id);
     }
 
@@ -51,7 +50,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @throws PortalException if a plan template with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanTemplate(java.lang.Long id)
+    public void deletePlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planTemplateLocalService.deletePlanTemplate(id);
@@ -140,8 +139,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
         return _planTemplateLocalService.dynamicQueryCount(dynamicQuery);
     }
 
-    public com.ext.portlet.plans.model.PlanTemplate fetchPlanTemplate(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanTemplate fetchPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTemplateLocalService.fetchPlanTemplate(id);
     }
@@ -154,8 +152,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @throws PortalException if a plan template with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planTemplateLocalService.getPlanTemplate(id);
@@ -240,6 +237,41 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _planTemplateLocalService.setBeanIdentifier(beanIdentifier);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanTemplate template)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planTemplateLocalService.store(template);
+    }
+
+    public java.util.List<com.ext.portlet.plans.model.PlanSectionDefinition> getSections(
+        com.ext.portlet.plans.model.PlanTemplate template)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planTemplateLocalService.getSections(template);
+    }
+
+    public void addSection(com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _planTemplateLocalService.addSection(template, section);
+    }
+
+    public void removeSection(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _planTemplateLocalService.removeSection(template, section);
+    }
+
+    public void updateSectionWeight(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section, int weight)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _planTemplateLocalService.updateSectionWeight(template, section, weight);
     }
 
     /**

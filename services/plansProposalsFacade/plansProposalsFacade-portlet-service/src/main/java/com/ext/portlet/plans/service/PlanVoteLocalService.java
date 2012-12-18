@@ -255,4 +255,7 @@ public interface PlanVoteLocalService extends PersistedModelLocalService {
 
     public int countPlanVotesByPlanId(java.lang.Long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanVote planVote)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

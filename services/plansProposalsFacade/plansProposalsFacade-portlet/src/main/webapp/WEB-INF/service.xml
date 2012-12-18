@@ -7,14 +7,14 @@
 
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet.plans">
-    <namespace>Plans</namespace>
+    <namespace>xcolab</namespace>
     
     
     <entity name="PlanAttribute" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanAttributePersistenceImpl">
         <!-- PK field -->
-        <column name="attributeId" type="Long" primary="true"/>
+        <column name="attributeId" type="long" primary="true"/>
         
-        <column name="planId" type="Long" />
+        <column name="planId" type="long" />
         <column name="attributeName" type="String"/>
         <column name="attributeValue" type="String"/>
         
@@ -36,14 +36,14 @@
     <entity name="PlanPosition" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanPositionPersistenceImpl">
 
         <!-- PK field -->
-        <column name="planId" type="Long" primary="true" />
-        <column name="positionId" type="Long" primary="true" />
+        <column name="planId" type="long" primary="true" />
+        <column name="positionId" type="long" primary="true" />
         
         
 
         <!-- Audit fields -->
 
-        <column name="userId" type="Long" />
+        <column name="userId" type="long" />
         <column name="userName" type="String" />
         <column name="createDate" type="Date" />
         <column name="modifiedDate" type="Date" />
@@ -66,14 +66,14 @@
     
     
     <entity name="PlansUserSettings" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansUserSettingsPersistenceImpl">
-       <column name="planUserSettingsId" type="Long" primary="true" />
-        <column name="userId" type="Long"/>
-        <column name="planTypeId" type="Long" />
+       <column name="planUserSettingsId" type="long" primary="true" />
+        <column name="userId" type="long"/>
+        <column name="planTypeId" type="long" />
         
         <column name="sortColumn" type="String" />
         <column name="sortDirection" type="String" />
-        <column name="filterEnabled" type="Boolean" />
-        <column name="filterPositionsAll" type="Boolean" />
+        <column name="filterEnabled" type="boolean" />
+        <column name="filterPositionsAll" type="boolean" />
         <column name="attributeFilters" type="Collection" entity="PlanAttributeFilter" mapping-key="planUserSettingsId"/>
         <column name="columnSettings" type="Collection" entity="PlanColumnSettings" mapping-key="planUserSettingsId"/>
         
@@ -85,9 +85,9 @@
     </entity>
     
     <entity name="PlanVote" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanVotePersistenceImpl">
-        <column name="userId" type="Long" primary="true" />
-        <column name="contestId" type="Long" primary="true" />
-        <column name="planId" type="Long" />
+        <column name="userId" type="long" primary="true" />
+        <column name="contestId" type="long" primary="true" />
+        <column name="planId" type="long" />
         
         <column name="createDate" type="Date" />
         
@@ -107,8 +107,8 @@
     </entity>
     
     <entity name="PlansFilter" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansFilterPersistenceImpl">
-        <column name="userId" type="Long" primary="true" />
-        <column name="planTypeId" type="Long" primary="true" />
+        <column name="userId" type="long" primary="true" />
+        <column name="planTypeId" type="long" primary="true" />
         <column name="name" type="String" />
         <column name="creator" type="String" />
         <column name="description" type="String" />
@@ -122,14 +122,14 @@
         <column name="mitigationTo" type="Double" />
         <column name="dateFrom" type="Date" />
         <column name="dateTo" type="Date" />
-        <column name="filterPositionsAll" type="Boolean" />
-        <column name="enabled" type="Boolean" />
+        <column name="filterPositionsAll" type="boolean" />
+        <column name="enabled" type="boolean" />
     </entity>
     
     <entity name="PlanAttributeFilter" local-service="true">
-       <column name="planAttributeFilterId" type="Long" primary="true" />
+       <column name="planAttributeFilterId" type="long" primary="true" />
        <column name="attributeName" type="String"/>
-       <column name="planUserSettingsId" type="Long" />
+       <column name="planUserSettingsId" type="long" />
        <column name="max" type="Double" />
        <column name="min" type="Double" />
        <column name="stringVal" type="String" />
@@ -141,9 +141,9 @@
     </entity>
     
     <entity name="PlanPropertyFilter" local-service="true">
-       <column name="planPropertyFilterId" type="Long" primary="true" />
+       <column name="planPropertyFilterId" type="long" primary="true" />
        <column name="propertyName" type="String" />
-       <column name="planUserSettingsId" type="Long" />
+       <column name="planUserSettingsId" type="long" />
        <column name="value" type="String" />
        
        <finder name="PlanUserSettingsIdPropertyName" return-type="PlanPropertyFilter">
@@ -153,10 +153,10 @@
     </entity>
     
     <entity name="PlanColumnSettings" local-service="true">
-       <column name="planColumnSettingsId" type="Long" primary="true" />
+       <column name="planColumnSettingsId" type="long" primary="true" />
        <column name="columnName" type="String" />
-       <column name="planUserSettingsId" type="Long" />
-       <column name="visible" type="Boolean" />
+       <column name="planUserSettingsId" type="long" />
+       <column name="visible" type="boolean" />
        
        <finder name="PlanUserSettingsIdColumnName" return-type="PlanColumnSettings">
            <finder-column name="planUserSettingsId" />
@@ -165,9 +165,9 @@
     </entity>
 
     <entity name="PlansFilterPosition" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansFilterPositionPersistenceImpl">
-        <column name="userId" type="Long" primary="true" />
-        <column name="planTypeId" type="Long" primary="true" />
-        <column name="positionId" type="Long" primary="true" />
+        <column name="userId" type="long" primary="true" />
+        <column name="planTypeId" type="long" primary="true" />
+        <column name="positionId" type="long" primary="true" />
                 
         <finder name="UserIdPlanTypeId" return-type="Collection">
             <finder-column name="userId" />
@@ -176,16 +176,16 @@
     </entity>
     
     <entity name="PlanType" local-service="true">
-       <column name="planTypeId" type="Long" primary="true" />
+       <column name="planTypeId" type="long" primary="true" />
        <column name="name" type="String" />
        <column name="description" type="String" />
-       <column name="modelId" type="Long" />
+       <column name="modelId" type="long" />
        <column name="modelTypeName" type="String"/>
-       <column name="published" type="Boolean" />
-       <column name="publishedCounterpartId" type="Long" />
-       <column name="isDefault" type="Boolean" />
-       <column name="defaultModelId" type="Long" />
-       <column name="defaultScenarioId" type="Long" />
+       <column name="published" type="boolean" />
+       <column name="publishedCounterpartId" type="long" />
+       <column name="isDefault" type="boolean" />
+       <column name="defaultModelId" type="long" />
+       <column name="defaultScenarioId" type="long" />
        <column name="planTypeAttributes" type="Collection" entity="PlanTypeAttribute" mapping-key="planTypeId"/>
        <column name="planTypeColumns" type="Collection" entity="PlanTypeColumn" mapping-key="planTypeId"/>
        
@@ -198,8 +198,8 @@
 
     
     <entity name="PlanTypeAttribute" local-service="true">
-       <column name="planTypeAttributeId" type="Long" primary="true" />
-       <column name="planTypeId" type="Long" />
+       <column name="planTypeAttributeId" type="long" primary="true" />
+       <column name="planTypeId" type="long" />
        <column name="attributeName" type="String" />
        
        <finder name="PlanTypeIdAttributeName" return-type="PlanTypeAttribute" >
@@ -209,11 +209,11 @@
     </entity>
     
     <entity name="PlanTypeColumn" local-service="true">
-        <column name="planTypeColumnId" type="Long" primary="true" />
-        <column name="planTypeId" type="Long" />
-        <column name="weight" type="Integer" />
+        <column name="planTypeColumnId" type="long" primary="true" />
+        <column name="planTypeId" type="long" />
+        <column name="weight" type="int" />
         <column name="columnName" type="String" />
-        <column name="visibleByDefault" type="Boolean" />
+        <column name="visibleByDefault" type="boolean" />
         
         <order by="asc">
             <order-column name="weight" />
@@ -223,13 +223,13 @@
     </entity>
     
     <entity name="PlanItem" local-service="true" remote-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="planId" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="planId" type="long" />
         <column name="state" type="String" />
         <column name="updated" type="Date" />
-        <column name="updateAuthorId" type="Long" />
+        <column name="updateAuthorId" type="long" />
         <column name="updateType" type="String" />
-        <column name="version" type="Long" />
+        <column name="version" type="long" />
 
         
         <order by="desc">
@@ -247,15 +247,15 @@
     </entity>
     
     <entity name="PlanDescription" local-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="planId" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="planId" type="long" />
         <column name="name" type="String" />
         <column name="description" type="String" />
-        <column name="version" type="Long" />
-        <column name="planVersion" type="Long" />
+        <column name="version" type="long" />
+        <column name="planVersion" type="long" />
         <column name="created" type="Date" />
-        <column name="updateAuthorId" type="Long" />
-        <column name="image" type="Long" />
+        <column name="updateAuthorId" type="long" />
+        <column name="image" type="long" />
         <column name="pitch" type="String" />
         
         <order by="desc">
@@ -277,32 +277,32 @@
     </entity>
     
     <entity name="PlanMeta" local-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="planId" type="Long" />
-        <column name="planTypeId" type="Long" />
-        <column name="planCreated" type="Long" />
-        <column name="authorId" type="Long" />
-        <column name="votes" type="Integer" />
+        <column name="id" type="long" primary="true" />
+        <column name="planId" type="long" />
+        <column name="planTypeId" type="long" />
+        <column name="planCreated" type="long" />
+        <column name="authorId" type="long" />
+        <column name="votes" type="int" />
         <!-- ID of community related to a plan -->
-        <column name="planGroupId" type="Long" />
-        <column name="open" type="Boolean" />
+        <column name="planGroupId" type="long" />
+        <column name="open" type="boolean" />
         <column name="status" type="String" />
         <!-- message boards category -->
-        <column name="mbCategoryId" type="Long" />
-        <column name="categoryGroupId" type="Long" />
-        <column name="version" type="Long" />
-        <column name="planVersion" type="Long" />
+        <column name="mbCategoryId" type="long" />
+        <column name="categoryGroupId" type="long" />
+        <column name="version" type="long" />
+        <column name="planVersion" type="long" />
         <column name="created" type="Date" />
-        <column name="updateAuthorId" type="Long" />
+        <column name="updateAuthorId" type="long" />
         <!-- selected model -->
-        <column name="modelId" type="Long"/>
+        <column name="modelId" type="long"/>
         <!-- true if plan has been promoted to next phase -->
-        <column name="promoted" type="Boolean" />
+        <column name="promoted" type="boolean" />
         
         <!-- Id of a contest phase from which this plan has been promoted -->
-        <column name="previousContestPhase" type="Long" />
+        <column name="previousContestPhase" type="long" />
 
-         <column name="contestPhase" type="Long"/>
+         <column name="contestPhase" type="long"/>
         
         <order by="desc">
             <order-column name="id" />
@@ -317,13 +317,13 @@
     </entity>
     
     <entity name="PlanModelRun" local-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="planId" type="Long" />
-        <column name="scenarioId" type="Long" />
-        <column name="planVersion" type="Long" />
-        <column name="version" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="planId" type="long" />
+        <column name="scenarioId" type="long" />
+        <column name="planVersion" type="long" />
+        <column name="version" type="long" />
         <column name="created" type="Date" /> 
-        <column name="updateAuthorId" type="Long" />
+        <column name="updateAuthorId" type="long" />
         
         <order by="desc">
             <order-column name="id" />
@@ -344,12 +344,12 @@
     </entity>
     
     <entity name="PlanPositions" local-service="true">
-        <column name="id" primary="true" type="Long" />
-        <column name="planId" type="Long" />
-        <column name="planVersion" type="Long" />
-        <column name="version" type="Long" />
+        <column name="id" primary="true" type="long" />
+        <column name="planId" type="long" />
+        <column name="planVersion" type="long" />
+        <column name="version" type="long" />
         <column name="created" type="Date" /> 
-        <column name="updateAuthorId" type="Long" />
+        <column name="updateAuthorId" type="long" />
         
         <order by="desc">
             <order-column name="id" />
@@ -365,8 +365,8 @@
     
     <entity name="PlanPositionItem" local-service="true">
         <!-- PK field -->
-        <column name="planPositionsId" type="Long" primary="true" />
-        <column name="positionId" type="Long" primary="true" />
+        <column name="planPositionsId" type="long" primary="true" />
+        <column name="positionId" type="long" primary="true" />
 
         <finder name="AllByPlanPositionsId" return-type="Collection">
             <finder-column name="planPositionsId" />
@@ -375,9 +375,9 @@
     
     <entity name="PlanFan" local-service="true">
         <!-- PK field -->
-        <column name="id" type="Long" primary="true" />
-        <column name="userId" type="Long" />
-        <column name="planId" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="userId" type="long" />
+        <column name="planId" type="long" />
         <column name="created" type="Date" />
         <column name="deleted" type="Date" />
         
@@ -401,13 +401,13 @@
     </entity>
     
     <entity name="PlanTeamHistory" local-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="planId" type="Long" />
-        <column name="userId" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="planId" type="long" />
+        <column name="userId" type="long" />
         <column name="action" type="String" />
         <column name="payload" type="String" />
         <column name="created" type="Date" />
-        <column name="updateAuthorId" type="Long" />
+        <column name="updateAuthorId" type="long" />
                 
         <order by="asc">
             <order-column name="id" />
@@ -424,26 +424,26 @@
     </entity>
     
     <entity name="PlanSectionDefinition" local-service="true">
-        <column name="id" type="Long" primary="true" />
+        <column name="id" type="long" primary="true" />
         <column name="adminTitle" type="String" />
         <column name="title" type="String" />
         <column name="defaultText" type="String" />
         <column name="helpText" type="String" />
-        <column name="characterLimit" type="Integer" />
-        <column name="focusAreaId" type="Long" />
-        <column name="locked" type="Boolean" />
+        <column name="characterLimit" type="int" />
+        <column name="focusAreaId" type="long" />
+        <column name="locked" type="boolean" />
     </entity>
     
     <entity name="PlanSection" local-service="true">
-        <column name="id" type="Long" primary="true" />
-        <column name="planSectionDefinitionId" type="Long"  />
-        <column name="planId" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="planSectionDefinitionId" type="long"  />
+        <column name="planId" type="long" />
         <column name="content" type="String" />
         <column name="created" type="Date" />
         
-        <column name="version" type="Long" />
-        <column name="planVersion" type="Long" />
-        <column name="updateAuthorId" type="Long" />
+        <column name="version" type="long" />
+        <column name="planVersion" type="long" />
+        <column name="updateAuthorId" type="long" />
                 
         <order by="desc">
             <order-column name="id" />
@@ -470,8 +470,8 @@
     
     
     <entity name="PlanSectionPlanMap" local-service="true">
-        <column name="sectionId" type="Long" primary="true" />
-        <column name="relatedPlanId" type="Long" primary="true" />
+        <column name="sectionId" type="long" primary="true" />
+        <column name="relatedPlanId" type="long" primary="true" />
         
         <finder name="PlanId" return-type="Collection">
             <finder-column name="relatedPlanId" />
@@ -483,8 +483,8 @@
     </entity>
     
     <entity name="PlanRelated" local-service="true">
-        <column name="sectionId" type="Long" primary="true" />
-        <column name="relatedPlanId" type="Long" primary="true" />
+        <column name="sectionId" type="long" primary="true" />
+        <column name="relatedPlanId" type="long" primary="true" />
         
         <finder name="PlanId" return-type="Collection">
             <finder-column name="relatedPlanId" />
@@ -492,14 +492,14 @@
     </entity>
     
     <entity name="PlanTemplate" local-service="true">
-        <column name="id" type="Long" primary="true" />
+        <column name="id" type="long" primary="true" />
         <column name="name" type="String" />
     </entity>
     
     <entity name="PlanTemplateSection" local-service="true">
-        <column name="planTemplateId" type="Long" primary="true" />
-        <column name="planSectionId" type="Long" primary="true" />
-        <column name="weight" type="Integer" />
+        <column name="planTemplateId" type="long" primary="true" />
+        <column name="planSectionId" type="long" primary="true" />
+        <column name="weight" type="int" />
         
         <order by="asc">
             <order-column name="weight" />

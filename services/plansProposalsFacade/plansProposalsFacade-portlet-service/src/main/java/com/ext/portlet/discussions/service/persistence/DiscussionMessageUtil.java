@@ -127,7 +127,7 @@ public class DiscussionMessageUtil {
     * @return the new discussion message
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage create(
-        java.lang.Long pk) {
+        long pk) {
         return getPersistence().create(pk);
     }
 
@@ -140,7 +140,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage remove(
-        java.lang.Long pk)
+        long pk)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(pk);
@@ -162,7 +162,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findByPrimaryKey(
-        java.lang.Long pk)
+        long pk)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(pk);
@@ -176,8 +176,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage fetchByPrimaryKey(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(pk);
     }
 
@@ -190,7 +189,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByCategoryIdThreadId(
-        java.lang.Long categoryId, java.lang.Long threadId)
+        long categoryId, long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByCategoryIdThreadId(categoryId, threadId);
     }
@@ -210,7 +209,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByCategoryIdThreadId(
-        java.lang.Long categoryId, java.lang.Long threadId, int start, int end)
+        long categoryId, long threadId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByCategoryIdThreadId(categoryId, threadId, start, end);
@@ -232,7 +231,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByCategoryIdThreadId(
-        java.lang.Long categoryId, java.lang.Long threadId, int start, int end,
+        long categoryId, long threadId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -255,7 +254,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findByCategoryIdThreadId_First(
-        java.lang.Long categoryId, java.lang.Long threadId,
+        long categoryId, long threadId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -279,7 +278,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findByCategoryIdThreadId_Last(
-        java.lang.Long categoryId, java.lang.Long threadId,
+        long categoryId, long threadId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -304,7 +303,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage[] findByCategoryIdThreadId_PrevAndNext(
-        java.lang.Long pk, java.lang.Long categoryId, java.lang.Long threadId,
+        long pk, long categoryId, long threadId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -321,7 +320,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByThreadId(
-        java.lang.Long threadId)
+        long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByThreadId(threadId);
     }
@@ -340,7 +339,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByThreadId(
-        java.lang.Long threadId, int start, int end)
+        long threadId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByThreadId(threadId, start, end);
     }
@@ -360,7 +359,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByThreadId(
-        java.lang.Long threadId, int start, int end,
+        long threadId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -381,7 +380,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findByThreadId_First(
-        java.lang.Long threadId,
+        long threadId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -402,7 +401,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findByThreadId_Last(
-        java.lang.Long threadId,
+        long threadId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -424,7 +423,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage[] findByThreadId_PrevAndNext(
-        java.lang.Long pk, java.lang.Long threadId,
+        long pk, long threadId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -441,7 +440,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findBySingleThreadId(
-        java.lang.Long messageId)
+        long messageId)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findBySingleThreadId(messageId);
@@ -455,7 +454,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage fetchBySingleThreadId(
-        java.lang.Long messageId)
+        long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchBySingleThreadId(messageId);
     }
@@ -469,7 +468,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage fetchBySingleThreadId(
-        java.lang.Long messageId, boolean retrieveFromCache)
+        long messageId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchBySingleThreadId(messageId, retrieveFromCache);
@@ -484,7 +483,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findBySubjectLike(
-        java.lang.String subject, java.lang.Long categoryGroupId)
+        java.lang.String subject, long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findBySubjectLike(subject, categoryGroupId);
     }
@@ -504,8 +503,8 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findBySubjectLike(
-        java.lang.String subject, java.lang.Long categoryGroupId, int start,
-        int end) throws com.liferay.portal.kernel.exception.SystemException {
+        java.lang.String subject, long categoryGroupId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findBySubjectLike(subject, categoryGroupId, start, end);
     }
@@ -526,8 +525,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findBySubjectLike(
-        java.lang.String subject, java.lang.Long categoryGroupId, int start,
-        int end,
+        java.lang.String subject, long categoryGroupId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -550,7 +548,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findBySubjectLike_First(
-        java.lang.String subject, java.lang.Long categoryGroupId,
+        java.lang.String subject, long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -574,7 +572,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findBySubjectLike_Last(
-        java.lang.String subject, java.lang.Long categoryGroupId,
+        java.lang.String subject, long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -599,8 +597,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage[] findBySubjectLike_PrevAndNext(
-        java.lang.Long pk, java.lang.String subject,
-        java.lang.Long categoryGroupId,
+        long pk, java.lang.String subject, long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -618,7 +615,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByBodyLike(
-        java.lang.String body, java.lang.Long categoryGroupId)
+        java.lang.String body, long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByBodyLike(body, categoryGroupId);
     }
@@ -638,8 +635,8 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByBodyLike(
-        java.lang.String body, java.lang.Long categoryGroupId, int start,
-        int end) throws com.liferay.portal.kernel.exception.SystemException {
+        java.lang.String body, long categoryGroupId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByBodyLike(body, categoryGroupId, start, end);
     }
 
@@ -659,8 +656,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> findByBodyLike(
-        java.lang.String body, java.lang.Long categoryGroupId, int start,
-        int end,
+        java.lang.String body, long categoryGroupId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -683,7 +679,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findByBodyLike_First(
-        java.lang.String body, java.lang.Long categoryGroupId,
+        java.lang.String body, long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -707,7 +703,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findByBodyLike_Last(
-        java.lang.String body, java.lang.Long categoryGroupId,
+        java.lang.String body, long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -731,8 +727,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage[] findByBodyLike_PrevAndNext(
-        java.lang.Long pk, java.lang.String body,
-        java.lang.Long categoryGroupId,
+        long pk, java.lang.String body, long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -750,7 +745,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage findByMessageId(
-        java.lang.Long messageId)
+        long messageId)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByMessageId(messageId);
@@ -764,7 +759,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage fetchByMessageId(
-        java.lang.Long messageId)
+        long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByMessageId(messageId);
     }
@@ -778,7 +773,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage fetchByMessageId(
-        java.lang.Long messageId, boolean retrieveFromCache)
+        long messageId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByMessageId(messageId, retrieveFromCache);
     }
@@ -839,8 +834,7 @@ public class DiscussionMessageUtil {
     * @param threadId the thread ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByCategoryIdThreadId(java.lang.Long categoryId,
-        java.lang.Long threadId)
+    public static void removeByCategoryIdThreadId(long categoryId, long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByCategoryIdThreadId(categoryId, threadId);
     }
@@ -851,7 +845,7 @@ public class DiscussionMessageUtil {
     * @param threadId the thread ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByThreadId(java.lang.Long threadId)
+    public static void removeByThreadId(long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByThreadId(threadId);
     }
@@ -862,7 +856,7 @@ public class DiscussionMessageUtil {
     * @param messageId the message ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeBySingleThreadId(java.lang.Long messageId)
+    public static void removeBySingleThreadId(long messageId)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeBySingleThreadId(messageId);
@@ -876,7 +870,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static void removeBySubjectLike(java.lang.String subject,
-        java.lang.Long categoryGroupId)
+        long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeBySubjectLike(subject, categoryGroupId);
     }
@@ -889,7 +883,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static void removeByBodyLike(java.lang.String body,
-        java.lang.Long categoryGroupId)
+        long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByBodyLike(body, categoryGroupId);
     }
@@ -900,7 +894,7 @@ public class DiscussionMessageUtil {
     * @param messageId the message ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByMessageId(java.lang.Long messageId)
+    public static void removeByMessageId(long messageId)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByMessageId(messageId);
@@ -924,8 +918,7 @@ public class DiscussionMessageUtil {
     * @return the number of matching discussion messages
     * @throws SystemException if a system exception occurred
     */
-    public static int countByCategoryIdThreadId(java.lang.Long categoryId,
-        java.lang.Long threadId)
+    public static int countByCategoryIdThreadId(long categoryId, long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByCategoryIdThreadId(categoryId, threadId);
     }
@@ -937,7 +930,7 @@ public class DiscussionMessageUtil {
     * @return the number of matching discussion messages
     * @throws SystemException if a system exception occurred
     */
-    public static int countByThreadId(java.lang.Long threadId)
+    public static int countByThreadId(long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByThreadId(threadId);
     }
@@ -949,7 +942,7 @@ public class DiscussionMessageUtil {
     * @return the number of matching discussion messages
     * @throws SystemException if a system exception occurred
     */
-    public static int countBySingleThreadId(java.lang.Long messageId)
+    public static int countBySingleThreadId(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countBySingleThreadId(messageId);
     }
@@ -963,7 +956,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static int countBySubjectLike(java.lang.String subject,
-        java.lang.Long categoryGroupId)
+        long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countBySubjectLike(subject, categoryGroupId);
     }
@@ -977,7 +970,7 @@ public class DiscussionMessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static int countByBodyLike(java.lang.String body,
-        java.lang.Long categoryGroupId)
+        long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByBodyLike(body, categoryGroupId);
     }
@@ -989,7 +982,7 @@ public class DiscussionMessageUtil {
     * @return the number of matching discussion messages
     * @throws SystemException if a system exception occurred
     */
-    public static int countByMessageId(java.lang.Long messageId)
+    public static int countByMessageId(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByMessageId(messageId);
     }

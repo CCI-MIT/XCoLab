@@ -19,23 +19,13 @@ public class PlanAttributeFilterImpl extends PlanAttributeFilterBaseImpl {
      * Never reference this class directly. All methods that expect a plan attribute filter model instance should use the {@link com.ext.portlet.plans.model.PlanAttributeFilter} interface instead.
      */
 
-    private Object typedValue;
     
     public PlanAttributeFilterImpl() {
     }
     
     public Object getTypedValue() {
-        if (typedValue != null) {
-            return typedValue;
-        }
         Attribute attribute = Attribute.valueOf(getAttributeName());
-        typedValue = TypedValueConverter.getValue(attribute.getAttributeClass(), getStringVal());
-        return typedValue;
+        return TypedValueConverter.getValue(attribute.getAttributeClass(), getStringVal());
     }
     
-    @Override
-    public void setStringVal(String stringVal) {
-        typedValue = null;
-        super.setStringVal(stringVal);
-    }
 }

@@ -31,7 +31,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the primary key of this plan meta
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planMeta.getPrimaryKey();
     }
 
@@ -40,7 +40,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param primaryKey the primary key of this plan meta
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planMeta.setPrimaryKey(primaryKey);
     }
 
@@ -49,7 +49,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the ID of this plan meta
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _planMeta.getId();
     }
 
@@ -58,7 +58,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param id the ID of this plan meta
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _planMeta.setId(id);
     }
 
@@ -67,7 +67,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the plan ID of this plan meta
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planMeta.getPlanId();
     }
 
@@ -76,7 +76,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param planId the plan ID of this plan meta
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planMeta.setPlanId(planId);
     }
 
@@ -85,7 +85,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the plan type ID of this plan meta
     */
-    public java.lang.Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planMeta.getPlanTypeId();
     }
 
@@ -94,7 +94,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param planTypeId the plan type ID of this plan meta
     */
-    public void setPlanTypeId(java.lang.Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planMeta.setPlanTypeId(planTypeId);
     }
 
@@ -103,7 +103,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the plan created of this plan meta
     */
-    public java.lang.Long getPlanCreated() {
+    public long getPlanCreated() {
         return _planMeta.getPlanCreated();
     }
 
@@ -112,7 +112,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param planCreated the plan created of this plan meta
     */
-    public void setPlanCreated(java.lang.Long planCreated) {
+    public void setPlanCreated(long planCreated) {
         _planMeta.setPlanCreated(planCreated);
     }
 
@@ -121,7 +121,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the author ID of this plan meta
     */
-    public java.lang.Long getAuthorId() {
+    public long getAuthorId() {
         return _planMeta.getAuthorId();
     }
 
@@ -130,7 +130,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param authorId the author ID of this plan meta
     */
-    public void setAuthorId(java.lang.Long authorId) {
+    public void setAuthorId(long authorId) {
         _planMeta.setAuthorId(authorId);
     }
 
@@ -139,7 +139,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the votes of this plan meta
     */
-    public java.lang.Integer getVotes() {
+    public int getVotes() {
         return _planMeta.getVotes();
     }
 
@@ -148,7 +148,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param votes the votes of this plan meta
     */
-    public void setVotes(java.lang.Integer votes) {
+    public void setVotes(int votes) {
         _planMeta.setVotes(votes);
     }
 
@@ -157,7 +157,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the plan group ID of this plan meta
     */
-    public java.lang.Long getPlanGroupId() {
+    public long getPlanGroupId() {
         return _planMeta.getPlanGroupId();
     }
 
@@ -166,7 +166,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param planGroupId the plan group ID of this plan meta
     */
-    public void setPlanGroupId(java.lang.Long planGroupId) {
+    public void setPlanGroupId(long planGroupId) {
         _planMeta.setPlanGroupId(planGroupId);
     }
 
@@ -175,16 +175,25 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the open of this plan meta
     */
-    public java.lang.Boolean getOpen() {
+    public boolean getOpen() {
         return _planMeta.getOpen();
     }
 
     /**
-    * Sets the open of this plan meta.
+    * Returns <code>true</code> if this plan meta is open.
+    *
+    * @return <code>true</code> if this plan meta is open; <code>false</code> otherwise
+    */
+    public boolean isOpen() {
+        return _planMeta.isOpen();
+    }
+
+    /**
+    * Sets whether this plan meta is open.
     *
     * @param open the open of this plan meta
     */
-    public void setOpen(java.lang.Boolean open) {
+    public void setOpen(boolean open) {
         _planMeta.setOpen(open);
     }
 
@@ -211,7 +220,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the mb category ID of this plan meta
     */
-    public java.lang.Long getMbCategoryId() {
+    public long getMbCategoryId() {
         return _planMeta.getMbCategoryId();
     }
 
@@ -220,7 +229,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param mbCategoryId the mb category ID of this plan meta
     */
-    public void setMbCategoryId(java.lang.Long mbCategoryId) {
+    public void setMbCategoryId(long mbCategoryId) {
         _planMeta.setMbCategoryId(mbCategoryId);
     }
 
@@ -229,7 +238,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the category group ID of this plan meta
     */
-    public java.lang.Long getCategoryGroupId() {
+    public long getCategoryGroupId() {
         return _planMeta.getCategoryGroupId();
     }
 
@@ -238,7 +247,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param categoryGroupId the category group ID of this plan meta
     */
-    public void setCategoryGroupId(java.lang.Long categoryGroupId) {
+    public void setCategoryGroupId(long categoryGroupId) {
         _planMeta.setCategoryGroupId(categoryGroupId);
     }
 
@@ -247,7 +256,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the version of this plan meta
     */
-    public java.lang.Long getVersion() {
+    public long getVersion() {
         return _planMeta.getVersion();
     }
 
@@ -256,7 +265,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param version the version of this plan meta
     */
-    public void setVersion(java.lang.Long version) {
+    public void setVersion(long version) {
         _planMeta.setVersion(version);
     }
 
@@ -265,7 +274,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the plan version of this plan meta
     */
-    public java.lang.Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planMeta.getPlanVersion();
     }
 
@@ -274,7 +283,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param planVersion the plan version of this plan meta
     */
-    public void setPlanVersion(java.lang.Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planMeta.setPlanVersion(planVersion);
     }
 
@@ -301,7 +310,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the update author ID of this plan meta
     */
-    public java.lang.Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _planMeta.getUpdateAuthorId();
     }
 
@@ -310,7 +319,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param updateAuthorId the update author ID of this plan meta
     */
-    public void setUpdateAuthorId(java.lang.Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _planMeta.setUpdateAuthorId(updateAuthorId);
     }
 
@@ -319,7 +328,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the model ID of this plan meta
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _planMeta.getModelId();
     }
 
@@ -328,7 +337,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param modelId the model ID of this plan meta
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _planMeta.setModelId(modelId);
     }
 
@@ -337,16 +346,25 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the promoted of this plan meta
     */
-    public java.lang.Boolean getPromoted() {
+    public boolean getPromoted() {
         return _planMeta.getPromoted();
     }
 
     /**
-    * Sets the promoted of this plan meta.
+    * Returns <code>true</code> if this plan meta is promoted.
+    *
+    * @return <code>true</code> if this plan meta is promoted; <code>false</code> otherwise
+    */
+    public boolean isPromoted() {
+        return _planMeta.isPromoted();
+    }
+
+    /**
+    * Sets whether this plan meta is promoted.
     *
     * @param promoted the promoted of this plan meta
     */
-    public void setPromoted(java.lang.Boolean promoted) {
+    public void setPromoted(boolean promoted) {
         _planMeta.setPromoted(promoted);
     }
 
@@ -355,7 +373,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the previous contest phase of this plan meta
     */
-    public java.lang.Long getPreviousContestPhase() {
+    public long getPreviousContestPhase() {
         return _planMeta.getPreviousContestPhase();
     }
 
@@ -364,7 +382,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param previousContestPhase the previous contest phase of this plan meta
     */
-    public void setPreviousContestPhase(java.lang.Long previousContestPhase) {
+    public void setPreviousContestPhase(long previousContestPhase) {
         _planMeta.setPreviousContestPhase(previousContestPhase);
     }
 
@@ -373,7 +391,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @return the contest phase of this plan meta
     */
-    public java.lang.Long getContestPhase() {
+    public long getContestPhase() {
         return _planMeta.getContestPhase();
     }
 
@@ -382,7 +400,7 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     *
     * @param contestPhase the contest phase of this plan meta
     */
-    public void setContestPhase(java.lang.Long contestPhase) {
+    public void setContestPhase(long contestPhase) {
         _planMeta.setContestPhase(contestPhase);
     }
 
@@ -457,21 +475,6 @@ public class PlanMetaWrapper implements PlanMeta, ModelWrapper<PlanMeta> {
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planMeta.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planMeta.store();
-    }
-
-    public void vote()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planMeta.vote();
-    }
-
-    public void unvote()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planMeta.unvote();
     }
 
     /**

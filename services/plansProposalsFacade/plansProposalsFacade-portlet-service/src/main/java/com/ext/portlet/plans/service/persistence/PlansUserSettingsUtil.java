@@ -127,7 +127,7 @@ public class PlansUserSettingsUtil {
     * @return the new plans user settings
     */
     public static com.ext.portlet.plans.model.PlansUserSettings create(
-        java.lang.Long planUserSettingsId) {
+        long planUserSettingsId) {
         return getPersistence().create(planUserSettingsId);
     }
 
@@ -136,12 +136,12 @@ public class PlansUserSettingsUtil {
     *
     * @param planUserSettingsId the primary key of the plans user settings
     * @return the plans user settings that was removed
-    * @throws com.ext.portlet.plans.NoSuchUserSettingsException if a plans user settings with the primary key could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansUserSettings remove(
-        java.lang.Long planUserSettingsId)
-        throws com.ext.portlet.plans.NoSuchUserSettingsException,
+        long planUserSettingsId)
+        throws com.ext.portlet.plans.NoSuchPlansUserSettingsException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planUserSettingsId);
     }
@@ -154,16 +154,16 @@ public class PlansUserSettingsUtil {
     }
 
     /**
-    * Returns the plans user settings with the primary key or throws a {@link com.ext.portlet.plans.NoSuchUserSettingsException} if it could not be found.
+    * Returns the plans user settings with the primary key or throws a {@link com.ext.portlet.plans.NoSuchPlansUserSettingsException} if it could not be found.
     *
     * @param planUserSettingsId the primary key of the plans user settings
     * @return the plans user settings
-    * @throws com.ext.portlet.plans.NoSuchUserSettingsException if a plans user settings with the primary key could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansUserSettings findByPrimaryKey(
-        java.lang.Long planUserSettingsId)
-        throws com.ext.portlet.plans.NoSuchUserSettingsException,
+        long planUserSettingsId)
+        throws com.ext.portlet.plans.NoSuchPlansUserSettingsException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planUserSettingsId);
     }
@@ -176,23 +176,23 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansUserSettings fetchByPrimaryKey(
-        java.lang.Long planUserSettingsId)
+        long planUserSettingsId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planUserSettingsId);
     }
 
     /**
-    * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or throws a {@link com.ext.portlet.plans.NoSuchUserSettingsException} if it could not be found.
+    * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or throws a {@link com.ext.portlet.plans.NoSuchPlansUserSettingsException} if it could not be found.
     *
     * @param userId the user ID
     * @param planTypeId the plan type ID
     * @return the matching plans user settings
-    * @throws com.ext.portlet.plans.NoSuchUserSettingsException if a matching plans user settings could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansUserSettingsException if a matching plans user settings could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansUserSettings findByuserIdPlanTypeId(
-        java.lang.Long userId, java.lang.Long planTypeId)
-        throws com.ext.portlet.plans.NoSuchUserSettingsException,
+        long userId, long planTypeId)
+        throws com.ext.portlet.plans.NoSuchPlansUserSettingsException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByuserIdPlanTypeId(userId, planTypeId);
     }
@@ -206,7 +206,7 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansUserSettings fetchByuserIdPlanTypeId(
-        java.lang.Long userId, java.lang.Long planTypeId)
+        long userId, long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByuserIdPlanTypeId(userId, planTypeId);
     }
@@ -221,8 +221,7 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansUserSettings fetchByuserIdPlanTypeId(
-        java.lang.Long userId, java.lang.Long planTypeId,
-        boolean retrieveFromCache)
+        long userId, long planTypeId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByuserIdPlanTypeId(userId, planTypeId,
@@ -285,9 +284,8 @@ public class PlansUserSettingsUtil {
     * @param planTypeId the plan type ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByuserIdPlanTypeId(java.lang.Long userId,
-        java.lang.Long planTypeId)
-        throws com.ext.portlet.plans.NoSuchUserSettingsException,
+    public static void removeByuserIdPlanTypeId(long userId, long planTypeId)
+        throws com.ext.portlet.plans.NoSuchPlansUserSettingsException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByuserIdPlanTypeId(userId, planTypeId);
     }
@@ -310,8 +308,7 @@ public class PlansUserSettingsUtil {
     * @return the number of matching plans user settingses
     * @throws SystemException if a system exception occurred
     */
-    public static int countByuserIdPlanTypeId(java.lang.Long userId,
-        java.lang.Long planTypeId)
+    public static int countByuserIdPlanTypeId(long userId, long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByuserIdPlanTypeId(userId, planTypeId);
     }
@@ -335,8 +332,7 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanAttributeFilter> getPlanAttributeFilters(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanAttributeFilters(pk);
     }
 
@@ -354,7 +350,7 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanAttributeFilter> getPlanAttributeFilters(
-        java.lang.Long pk, int start, int end)
+        long pk, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanAttributeFilters(pk, start, end);
     }
@@ -374,7 +370,7 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanAttributeFilter> getPlanAttributeFilters(
-        java.lang.Long pk, int start, int end,
+        long pk, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -388,7 +384,7 @@ public class PlansUserSettingsUtil {
     * @return the number of plan attribute filters associated with the plans user settings
     * @throws SystemException if a system exception occurred
     */
-    public static int getPlanAttributeFiltersSize(java.lang.Long pk)
+    public static int getPlanAttributeFiltersSize(long pk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanAttributeFiltersSize(pk);
     }
@@ -401,8 +397,8 @@ public class PlansUserSettingsUtil {
     * @return <code>true</code> if the plan attribute filter is associated with the plans user settings; <code>false</code> otherwise
     * @throws SystemException if a system exception occurred
     */
-    public static boolean containsPlanAttributeFilter(java.lang.Long pk,
-        java.lang.Long planAttributeFilterPK)
+    public static boolean containsPlanAttributeFilter(long pk,
+        long planAttributeFilterPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .containsPlanAttributeFilter(pk, planAttributeFilterPK);
@@ -415,7 +411,7 @@ public class PlansUserSettingsUtil {
     * @return <code>true</code> if the plans user settings has any plan attribute filters associated with it; <code>false</code> otherwise
     * @throws SystemException if a system exception occurred
     */
-    public static boolean containsPlanAttributeFilters(java.lang.Long pk)
+    public static boolean containsPlanAttributeFilters(long pk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().containsPlanAttributeFilters(pk);
     }
@@ -428,8 +424,7 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanColumnSettings> getPlanColumnSettingses(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanColumnSettingses(pk);
     }
 
@@ -447,7 +442,7 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanColumnSettings> getPlanColumnSettingses(
-        java.lang.Long pk, int start, int end)
+        long pk, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanColumnSettingses(pk, start, end);
     }
@@ -467,7 +462,7 @@ public class PlansUserSettingsUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanColumnSettings> getPlanColumnSettingses(
-        java.lang.Long pk, int start, int end,
+        long pk, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -481,7 +476,7 @@ public class PlansUserSettingsUtil {
     * @return the number of plan column settingses associated with the plans user settings
     * @throws SystemException if a system exception occurred
     */
-    public static int getPlanColumnSettingsesSize(java.lang.Long pk)
+    public static int getPlanColumnSettingsesSize(long pk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanColumnSettingsesSize(pk);
     }
@@ -494,8 +489,8 @@ public class PlansUserSettingsUtil {
     * @return <code>true</code> if the plan column settings is associated with the plans user settings; <code>false</code> otherwise
     * @throws SystemException if a system exception occurred
     */
-    public static boolean containsPlanColumnSettings(java.lang.Long pk,
-        java.lang.Long planColumnSettingsPK)
+    public static boolean containsPlanColumnSettings(long pk,
+        long planColumnSettingsPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .containsPlanColumnSettings(pk, planColumnSettingsPK);
@@ -508,7 +503,7 @@ public class PlansUserSettingsUtil {
     * @return <code>true</code> if the plans user settings has any plan column settingses associated with it; <code>false</code> otherwise
     * @throws SystemException if a system exception occurred
     */
-    public static boolean containsPlanColumnSettingses(java.lang.Long pk)
+    public static boolean containsPlanColumnSettingses(long pk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().containsPlanColumnSettingses(pk);
     }

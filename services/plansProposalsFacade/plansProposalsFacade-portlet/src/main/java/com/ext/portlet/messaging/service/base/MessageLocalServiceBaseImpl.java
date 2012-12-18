@@ -129,7 +129,7 @@ public abstract class MessageLocalServiceBaseImpl implements MessageLocalService
      * @param messageId the primary key for the new message
      * @return the new message
      */
-    public Message createMessage(Long messageId) {
+    public Message createMessage(long messageId) {
         return messagePersistence.create(messageId);
     }
 
@@ -140,7 +140,7 @@ public abstract class MessageLocalServiceBaseImpl implements MessageLocalService
      * @throws PortalException if a message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteMessage(Long messageId)
+    public void deleteMessage(long messageId)
         throws PortalException, SystemException {
         Message message = messagePersistence.remove(messageId);
 
@@ -244,7 +244,7 @@ public abstract class MessageLocalServiceBaseImpl implements MessageLocalService
         return messagePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public Message fetchMessage(Long messageId) throws SystemException {
+    public Message fetchMessage(long messageId) throws SystemException {
         return messagePersistence.fetchByPrimaryKey(messageId);
     }
 
@@ -256,7 +256,7 @@ public abstract class MessageLocalServiceBaseImpl implements MessageLocalService
      * @throws PortalException if a message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Message getMessage(Long messageId)
+    public Message getMessage(long messageId)
         throws PortalException, SystemException {
         return messagePersistence.findByPrimaryKey(messageId);
     }

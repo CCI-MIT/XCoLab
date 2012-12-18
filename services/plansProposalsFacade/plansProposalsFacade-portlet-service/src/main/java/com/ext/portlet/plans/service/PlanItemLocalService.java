@@ -47,8 +47,7 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
     * @param id the primary key for the new plan item
     * @return the new plan item
     */
-    public com.ext.portlet.plans.model.PlanItem createPlanItem(
-        java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanItem createPlanItem(long id);
 
     /**
     * Deletes the plan item with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +56,7 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanItem(java.lang.Long id)
+    public void deletePlanItem(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -133,7 +132,7 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanItem fetchPlanItem(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanItem fetchPlanItem(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -145,7 +144,7 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanItem getPlanItem(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanItem getPlanItem(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -246,7 +245,7 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.plans.model.PlanItem> getPlansInContestPhase(
-        com.ext.portlet.contests.model.ContestPhase contestPhase)
+        long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -257,20 +256,17 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.plans.model.PlanItem> getPlans(
-        java.util.Map sessionMap, java.util.Map requestMap,
-        com.ext.portlet.plans.model.PlanType planType,
-        com.ext.portlet.contests.model.ContestPhase phase, int start, int end,
-        java.lang.String sortColumn, java.lang.String sortDirection)
+        java.util.Map sessionMap, java.util.Map requestMap, long planTypeId,
+        long contestPhaseId, int start, int end, java.lang.String sortColumn,
+        java.lang.String sortDirection)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.plans.model.PlanItem> getPlans(
-        java.util.Map sessionMap, java.util.Map requestMap,
-        com.ext.portlet.plans.model.PlanType planType,
-        com.ext.portlet.contests.model.ContestPhase phase, int start, int end,
-        java.lang.String sortColumn, java.lang.String sortDirection,
-        boolean applyFilters)
+        java.util.Map sessionMap, java.util.Map requestMap, long planTypeId,
+        long contestPhaseId, int start, int end, java.lang.String sortColumn,
+        java.lang.String sortDirection, boolean applyFilters)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -358,4 +354,502 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
     public void planDeleted(com.ext.portlet.plans.model.PlanItem plan)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * methods from PlanItemImpl.java *
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getDescription(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getName(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getImageId(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getPitch(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.Image getImage(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setDescription(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String description, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setName(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String name, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setImage(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long imageId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setPitch(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String pitch, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.portal.kernel.search.SearchException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanDescription> getAllDescriptionVersions(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * List of all versions of PlanDescription objects related to given plan
+    *
+    * @see com.ext.portlet.plans.model.PlanItem#getPlanDescriptions()
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanDescription> getPlanDescriptions(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getScenarioId(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setScenarioId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long scenarioId, java.lang.Long authorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setModelId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long simulationId, java.lang.Long authorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanModelRun> getAllPlanModelRuns(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.plans.model.PlanMeta getPlanMeta(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanMeta> getAllPlanMetas(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getPlanTypeId(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.plans.model.PlanType getPlanType(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.contests.model.Contest getContest(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.contests.model.ContestPhase getContestPhase(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setContestPhase(com.ext.portlet.plans.model.PlanItem pi,
+        com.ext.portlet.contests.model.ContestPhase phase,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setPlanTypeId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long planTypeId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getMBCategoryId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setMBCategoryId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long mbCategoryId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getCategoryGroupId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setCategoryGroupId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long categoryGroupId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getPlanGroupId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setPlanGroupId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long groupId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getAuthorId(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.User getAuthor(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setAuthorId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long authorId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.Date getCreateDate(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.Date getPublishDate(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getCreator(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Integer getVotes(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean getOpen(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setOpen(com.ext.portlet.plans.model.PlanItem pi, boolean open,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setOpen(com.ext.portlet.plans.model.PlanItem pi, boolean open)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getStatus(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setStatus(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String status, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.plans.model.PlanPositions getPlanPositions(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.ext.portlet.plans.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<java.lang.Long> getPositionsIds(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.ext.portlet.plans.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long[] getPositionsIdsArray(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.ext.portlet.plans.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setPositions(com.ext.portlet.plans.model.PlanItem pi,
+        java.util.List<java.lang.Long> positionsIds,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanPositions> getAllPositionsVersions(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasUserVoted(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void vote(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void unvote(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Updates values of all available attributes.
+    *
+    * @throws SystemException
+    */
+    public void updateAllAttributes(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Updates value of a given attribute, should be used only for property
+    * attributes.
+    *
+    * @param attributeName
+    attribute which value should be updated
+    * @throws SystemException
+    in case of any error
+    */
+    public void updateAttribute(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String attributeName)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns list of plan members.
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.User> getMembers(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.MembershipRequest> getMembershipRequests(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void addMembershipRequest(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId, java.lang.String comments)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void dennyMembershipRequest(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId,
+        com.liferay.portal.model.MembershipRequest request,
+        java.lang.String reply, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void approveMembershipRequest(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId,
+        com.liferay.portal.model.MembershipRequest request,
+        java.lang.String reply, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void publish(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void delete(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanFan> getFans(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.plans.model.PlanFan addFan(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void removeFan(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isUserAFan(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isUserAMember(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasUserRequestedMembership(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isAdmin(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isOwner(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setUserPermission(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId, java.lang.String userPermission,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void removeMember(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void joinIfNotAMember(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setSeekingAssistance(com.ext.portlet.plans.model.PlanItem pi,
+        boolean seekingAssistance)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isSeekingAssistance(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.plans.model.PlanItem promote(
+        com.ext.portlet.plans.model.PlanItem pi,
+        com.liferay.portal.model.User user)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean getPromoted(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getCommentsCount(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setPlace(com.ext.portlet.plans.model.PlanItem pi, int place)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void removePlace(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanVote> getPlanVotes(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setRibbon(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Integer ribbon)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setRibbonText(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String ribbonText)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setAttribute(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String attributeName, java.lang.String value)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void removeAttribute(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String attributeName)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanSection> getPlanSections(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void setSectionContent(com.ext.portlet.plans.model.PlanItem pi,
+        com.ext.portlet.plans.model.PlanSectionDefinition psd,
+        java.lang.String content,
+        java.util.List<java.lang.Long> referencedPlans,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanSection> getAllPlanSections(
+        com.ext.portlet.plans.model.PlanItem pi,
+        com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Integer getRibbon(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setTeam(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String team)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getTeam(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void revertTo(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getTags(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setTags(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String tags)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getTagsHover(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setTagsHover(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String tagsHover)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Integer getTagsOrder(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setTagsOrder(com.ext.portlet.plans.model.PlanItem pi,
+        int tagsOrder)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

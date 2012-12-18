@@ -32,7 +32,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     *
     * @return the primary key of this ontology term
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _ontologyTerm.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     *
     * @param primaryKey the primary key of this ontology term
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _ontologyTerm.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     *
     * @return the ID of this ontology term
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _ontologyTerm.getId();
     }
 
@@ -59,7 +59,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     *
     * @param id the ID of this ontology term
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _ontologyTerm.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     *
     * @return the parent ID of this ontology term
     */
-    public java.lang.Long getParentId() {
+    public long getParentId() {
         return _ontologyTerm.getParentId();
     }
 
@@ -77,7 +77,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     *
     * @param parentId the parent ID of this ontology term
     */
-    public void setParentId(java.lang.Long parentId) {
+    public void setParentId(long parentId) {
         _ontologyTerm.setParentId(parentId);
     }
 
@@ -86,7 +86,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     *
     * @return the ontology space ID of this ontology term
     */
-    public java.lang.Long getOntologySpaceId() {
+    public long getOntologySpaceId() {
         return _ontologyTerm.getOntologySpaceId();
     }
 
@@ -95,7 +95,7 @@ public class OntologyTermWrapper implements OntologyTerm,
     *
     * @param ontologySpaceId the ontology space ID of this ontology term
     */
-    public void setOntologySpaceId(java.lang.Long ontologySpaceId) {
+    public void setOntologySpaceId(long ontologySpaceId) {
         _ontologyTerm.setOntologySpaceId(ontologySpaceId);
     }
 
@@ -206,44 +206,6 @@ public class OntologyTermWrapper implements OntologyTerm,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _ontologyTerm.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _ontologyTerm.store();
-    }
-
-    public com.ext.portlet.ontology.model.OntologyTerm getParent()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _ontologyTerm.getParent();
-    }
-
-    public int getChildTermsCount()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _ontologyTerm.getChildTermsCount();
-    }
-
-    public java.util.List<com.ext.portlet.ontology.model.OntologyTerm> getChildTerms()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _ontologyTerm.getChildTerms();
-    }
-
-    public com.ext.portlet.ontology.model.OntologySpace getSpace()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _ontologyTerm.getSpace();
-    }
-
-    public void tagClass(java.lang.Class clasz, java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _ontologyTerm.tagClass(clasz, id);
-    }
-
-    public java.util.List<java.lang.Long> findTagedIdsForClass(
-        java.lang.Class clasz)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _ontologyTerm.findTagedIdsForClass(clasz);
     }
 
     /**

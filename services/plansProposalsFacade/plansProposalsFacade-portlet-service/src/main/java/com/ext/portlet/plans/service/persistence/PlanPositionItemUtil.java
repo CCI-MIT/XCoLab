@@ -187,7 +187,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanPositionItem> findByAllByPlanPositionsId(
-        java.lang.Long planPositionsId)
+        long planPositionsId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByAllByPlanPositionsId(planPositionsId);
     }
@@ -206,7 +206,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanPositionItem> findByAllByPlanPositionsId(
-        java.lang.Long planPositionsId, int start, int end)
+        long planPositionsId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByAllByPlanPositionsId(planPositionsId, start, end);
@@ -227,7 +227,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanPositionItem> findByAllByPlanPositionsId(
-        java.lang.Long planPositionsId, int start, int end,
+        long planPositionsId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -249,7 +249,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPositionItem findByAllByPlanPositionsId_First(
-        java.lang.Long planPositionsId,
+        long planPositionsId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -272,7 +272,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPositionItem findByAllByPlanPositionsId_Last(
-        java.lang.Long planPositionsId,
+        long planPositionsId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -296,7 +296,7 @@ public class PlanPositionItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanPositionItem[] findByAllByPlanPositionsId_PrevAndNext(
-        PlanPositionItemPK planPositionItemPK, java.lang.Long planPositionsId,
+        PlanPositionItemPK planPositionItemPK, long planPositionsId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanPositionItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -360,8 +360,7 @@ public class PlanPositionItemUtil {
     * @param planPositionsId the plan positions ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByAllByPlanPositionsId(
-        java.lang.Long planPositionsId)
+    public static void removeByAllByPlanPositionsId(long planPositionsId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByAllByPlanPositionsId(planPositionsId);
     }
@@ -383,8 +382,7 @@ public class PlanPositionItemUtil {
     * @return the number of matching plan position items
     * @throws SystemException if a system exception occurred
     */
-    public static int countByAllByPlanPositionsId(
-        java.lang.Long planPositionsId)
+    public static int countByAllByPlanPositionsId(long planPositionsId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByAllByPlanPositionsId(planPositionsId);
     }

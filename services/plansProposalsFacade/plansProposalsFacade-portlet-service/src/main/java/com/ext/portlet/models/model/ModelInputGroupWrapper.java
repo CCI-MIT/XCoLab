@@ -32,7 +32,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @return the primary key of this model input group
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelInputGroup.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @param primaryKey the primary key of this model input group
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _modelInputGroup.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @return the model input group p k of this model input group
     */
-    public java.lang.Long getModelInputGroupPK() {
+    public long getModelInputGroupPK() {
         return _modelInputGroup.getModelInputGroupPK();
     }
 
@@ -59,7 +59,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @param modelInputGroupPK the model input group p k of this model input group
     */
-    public void setModelInputGroupPK(java.lang.Long modelInputGroupPK) {
+    public void setModelInputGroupPK(long modelInputGroupPK) {
         _modelInputGroup.setModelInputGroupPK(modelInputGroupPK);
     }
 
@@ -68,7 +68,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @return the model ID of this model input group
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _modelInputGroup.getModelId();
     }
 
@@ -77,7 +77,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @param modelId the model ID of this model input group
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _modelInputGroup.setModelId(modelId);
     }
 
@@ -86,7 +86,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @return the name and description meta data ID of this model input group
     */
-    public java.lang.Long getNameAndDescriptionMetaDataId() {
+    public long getNameAndDescriptionMetaDataId() {
         return _modelInputGroup.getNameAndDescriptionMetaDataId();
     }
 
@@ -96,7 +96,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     * @param nameAndDescriptionMetaDataId the name and description meta data ID of this model input group
     */
     public void setNameAndDescriptionMetaDataId(
-        java.lang.Long nameAndDescriptionMetaDataId) {
+        long nameAndDescriptionMetaDataId) {
         _modelInputGroup.setNameAndDescriptionMetaDataId(nameAndDescriptionMetaDataId);
     }
 
@@ -141,7 +141,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @return the display item order of this model input group
     */
-    public java.lang.Integer getDisplayItemOrder() {
+    public int getDisplayItemOrder() {
         return _modelInputGroup.getDisplayItemOrder();
     }
 
@@ -150,7 +150,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @param displayItemOrder the display item order of this model input group
     */
-    public void setDisplayItemOrder(java.lang.Integer displayItemOrder) {
+    public void setDisplayItemOrder(int displayItemOrder) {
         _modelInputGroup.setDisplayItemOrder(displayItemOrder);
     }
 
@@ -177,7 +177,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @return the parent group p k of this model input group
     */
-    public java.lang.Long getParentGroupPK() {
+    public long getParentGroupPK() {
         return _modelInputGroup.getParentGroupPK();
     }
 
@@ -186,7 +186,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     *
     * @param parentGroupPK the parent group p k of this model input group
     */
-    public void setParentGroupPK(java.lang.Long parentGroupPK) {
+    public void setParentGroupPK(long parentGroupPK) {
         _modelInputGroup.setParentGroupPK(parentGroupPK);
     }
 
@@ -261,30 +261,6 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _modelInputGroup.persist();
-    }
-
-    public java.util.List<com.ext.portlet.models.model.ModelInputItem> getInputItems() {
-        return _modelInputGroup.getInputItems();
-    }
-
-    public java.util.List<com.ext.portlet.models.model.ModelInputGroup> getChildGroups() {
-        return _modelInputGroup.getChildGroups();
-    }
-
-    public com.ext.portlet.models.model.ModelInputGroup getParent() {
-        return _modelInputGroup.getParent();
-    }
-
-    public edu.mit.cci.simulation.client.Simulation getModel()
-        throws com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        return _modelInputGroup.getModel();
-    }
-
-    public edu.mit.cci.simulation.client.MetaData getMetaData()
-        throws com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        return _modelInputGroup.getMetaData();
     }
 
     /**

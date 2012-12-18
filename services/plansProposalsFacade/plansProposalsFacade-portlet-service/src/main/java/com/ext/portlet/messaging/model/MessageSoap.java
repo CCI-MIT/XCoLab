@@ -14,9 +14,9 @@ import java.util.List;
  * @generated
  */
 public class MessageSoap implements Serializable {
-    private Long _messageId;
-    private Long _fromId;
-    private Long _repliesTo;
+    private long _messageId;
+    private long _fromId;
+    private long _repliesTo;
     private Date _createDate;
     private String _subject;
     private String _content;
@@ -73,35 +73,35 @@ public class MessageSoap implements Serializable {
         return soapModels.toArray(new MessageSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _messageId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setMessageId(pk);
     }
 
-    public Long getMessageId() {
+    public long getMessageId() {
         return _messageId;
     }
 
-    public void setMessageId(Long messageId) {
+    public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
-    public Long getFromId() {
+    public long getFromId() {
         return _fromId;
     }
 
-    public void setFromId(Long fromId) {
+    public void setFromId(long fromId) {
         _fromId = fromId;
     }
 
-    public Long getRepliesTo() {
+    public long getRepliesTo() {
         return _repliesTo;
     }
 
-    public void setRepliesTo(Long repliesTo) {
+    public void setRepliesTo(long repliesTo) {
         _repliesTo = repliesTo;
     }
 

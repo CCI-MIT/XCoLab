@@ -315,7 +315,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @param ContestPK the primary key for the new contest
      * @return the new contest
      */
-    public Contest create(Long ContestPK) {
+    public Contest create(long ContestPK) {
         Contest contest = new ContestImpl();
 
         contest.setNew(true);
@@ -332,9 +332,9 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest remove(Long ContestPK)
+    public Contest remove(long ContestPK)
         throws NoSuchContestException, SystemException {
-        return remove((Serializable) ContestPK);
+        return remove(Long.valueOf(ContestPK));
     }
 
     /**
@@ -565,12 +565,12 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setCreated(contest.getCreated());
         contestImpl.setUpdated(contest.getUpdated());
         contestImpl.setAuthorId(contest.getAuthorId());
-        contestImpl.setContestActive(contest.getContestActive());
+        contestImpl.setContestActive(contest.isContestActive());
         contestImpl.setPlanTemplateId(contest.getPlanTemplateId());
         contestImpl.setFocusAreaId(contest.getFocusAreaId());
         contestImpl.setContestLogoId(contest.getContestLogoId());
-        contestImpl.setFeatured(contest.getFeatured());
-        contestImpl.setPlansOpenByDefault(contest.getPlansOpenByDefault());
+        contestImpl.setFeatured(contest.isFeatured());
+        contestImpl.setPlansOpenByDefault(contest.isPlansOpenByDefault());
         contestImpl.setFlag(contest.getFlag());
         contestImpl.setFlagText(contest.getFlagText());
         contestImpl.setGroupId(contest.getGroupId());
@@ -592,7 +592,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
     @Override
     public Contest findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -603,7 +603,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByPrimaryKey(Long ContestPK)
+    public Contest findByPrimaryKey(long ContestPK)
         throws NoSuchContestException, SystemException {
         Contest contest = fetchByPrimaryKey(ContestPK);
 
@@ -629,7 +629,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
     @Override
     public Contest fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -639,7 +639,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the contest, or <code>null</code> if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest fetchByPrimaryKey(Long ContestPK) throws SystemException {
+    public Contest fetchByPrimaryKey(long ContestPK) throws SystemException {
         Contest contest = (Contest) EntityCacheUtil.getResult(ContestModelImpl.ENTITY_CACHE_ENABLED,
                 ContestImpl.class, ContestPK);
 
@@ -683,7 +683,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByType(Long PlanTypeId) throws SystemException {
+    public List<Contest> findByType(long PlanTypeId) throws SystemException {
         return findByType(PlanTypeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
 
@@ -700,7 +700,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the range of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByType(Long PlanTypeId, int start, int end)
+    public List<Contest> findByType(long PlanTypeId, int start, int end)
         throws SystemException {
         return findByType(PlanTypeId, start, end, null);
     }
@@ -719,7 +719,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the ordered range of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByType(Long PlanTypeId, int start, int end,
+    public List<Contest> findByType(long PlanTypeId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -769,7 +769,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(PlanTypeId.longValue());
+                qPos.add(PlanTypeId);
 
                 list = (List<Contest>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -804,7 +804,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByType_First(Long PlanTypeId,
+    public Contest findByType_First(long PlanTypeId,
         OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         List<Contest> list = findByType(PlanTypeId, 0, 1, orderByComparator);
@@ -838,7 +838,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByType_Last(Long PlanTypeId,
+    public Contest findByType_Last(long PlanTypeId,
         OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         int count = countByType(PlanTypeId);
@@ -876,7 +876,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest[] findByType_PrevAndNext(Long ContestPK, Long PlanTypeId,
+    public Contest[] findByType_PrevAndNext(long ContestPK, long PlanTypeId,
         OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         Contest contest = findByPrimaryKey(ContestPK);
@@ -905,7 +905,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
     }
 
     protected Contest getByType_PrevAndNext(Session session, Contest contest,
-        Long PlanTypeId, OrderByComparator orderByComparator, boolean previous) {
+        long PlanTypeId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -981,7 +981,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(PlanTypeId.longValue());
+        qPos.add(PlanTypeId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(contest);
@@ -1008,7 +1008,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findBycontestActive(Boolean contestActive)
+    public Contest findBycontestActive(boolean contestActive)
         throws NoSuchContestException, SystemException {
         Contest contest = fetchBycontestActive(contestActive);
 
@@ -1039,7 +1039,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the matching contest, or <code>null</code> if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest fetchBycontestActive(Boolean contestActive)
+    public Contest fetchBycontestActive(boolean contestActive)
         throws SystemException {
         return fetchBycontestActive(contestActive, true);
     }
@@ -1052,7 +1052,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the matching contest, or <code>null</code> if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest fetchBycontestActive(Boolean contestActive,
+    public Contest fetchBycontestActive(boolean contestActive,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { contestActive };
 
@@ -1083,7 +1083,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestActive.booleanValue());
+                qPos.add(contestActive);
 
                 List<Contest> list = q.list();
 
@@ -1133,8 +1133,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFeatured(Boolean contestActive,
-        Boolean featured) throws SystemException {
+    public List<Contest> findByActiveFeatured(boolean contestActive,
+        boolean featured) throws SystemException {
         return findByActiveFeatured(contestActive, featured, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
@@ -1153,8 +1153,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the range of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFeatured(Boolean contestActive,
-        Boolean featured, int start, int end) throws SystemException {
+    public List<Contest> findByActiveFeatured(boolean contestActive,
+        boolean featured, int start, int end) throws SystemException {
         return findByActiveFeatured(contestActive, featured, start, end, null);
     }
 
@@ -1173,8 +1173,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the ordered range of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFeatured(Boolean contestActive,
-        Boolean featured, int start, int end,
+    public List<Contest> findByActiveFeatured(boolean contestActive,
+        boolean featured, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1230,9 +1230,9 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestActive.booleanValue());
+                qPos.add(contestActive);
 
-                qPos.add(featured.booleanValue());
+                qPos.add(featured);
 
                 list = (List<Contest>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -1268,8 +1268,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByActiveFeatured_First(Boolean contestActive,
-        Boolean featured, OrderByComparator orderByComparator)
+    public Contest findByActiveFeatured_First(boolean contestActive,
+        boolean featured, OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         List<Contest> list = findByActiveFeatured(contestActive, featured, 0,
                 1, orderByComparator);
@@ -1307,8 +1307,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByActiveFeatured_Last(Boolean contestActive,
-        Boolean featured, OrderByComparator orderByComparator)
+    public Contest findByActiveFeatured_Last(boolean contestActive,
+        boolean featured, OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         int count = countByActiveFeatured(contestActive, featured);
 
@@ -1349,8 +1349,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest[] findByActiveFeatured_PrevAndNext(Long ContestPK,
-        Boolean contestActive, Boolean featured,
+    public Contest[] findByActiveFeatured_PrevAndNext(long ContestPK,
+        boolean contestActive, boolean featured,
         OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         Contest contest = findByPrimaryKey(ContestPK);
@@ -1379,7 +1379,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
     }
 
     protected Contest getByActiveFeatured_PrevAndNext(Session session,
-        Contest contest, Boolean contestActive, Boolean featured,
+        Contest contest, boolean contestActive, boolean featured,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1458,9 +1458,9 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(contestActive.booleanValue());
+        qPos.add(contestActive);
 
-        qPos.add(featured.booleanValue());
+        qPos.add(featured);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(contest);
@@ -1487,7 +1487,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFlag(Boolean contestActive, Integer flag)
+    public List<Contest> findByActiveFlag(boolean contestActive, int flag)
         throws SystemException {
         return findByActiveFlag(contestActive, flag, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -1507,7 +1507,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the range of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFlag(Boolean contestActive, Integer flag,
+    public List<Contest> findByActiveFlag(boolean contestActive, int flag,
         int start, int end) throws SystemException {
         return findByActiveFlag(contestActive, flag, start, end, null);
     }
@@ -1527,7 +1527,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the ordered range of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFlag(Boolean contestActive, Integer flag,
+    public List<Contest> findByActiveFlag(boolean contestActive, int flag,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -1584,9 +1584,9 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestActive.booleanValue());
+                qPos.add(contestActive);
 
-                qPos.add(flag.intValue());
+                qPos.add(flag);
 
                 list = (List<Contest>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -1622,7 +1622,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByActiveFlag_First(Boolean contestActive, Integer flag,
+    public Contest findByActiveFlag_First(boolean contestActive, int flag,
         OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         List<Contest> list = findByActiveFlag(contestActive, flag, 0, 1,
@@ -1661,7 +1661,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByActiveFlag_Last(Boolean contestActive, Integer flag,
+    public Contest findByActiveFlag_Last(boolean contestActive, int flag,
         OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         int count = countByActiveFlag(contestActive, flag);
@@ -1703,8 +1703,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest[] findByActiveFlag_PrevAndNext(Long ContestPK,
-        Boolean contestActive, Integer flag, OrderByComparator orderByComparator)
+    public Contest[] findByActiveFlag_PrevAndNext(long ContestPK,
+        boolean contestActive, int flag, OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         Contest contest = findByPrimaryKey(ContestPK);
 
@@ -1732,7 +1732,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
     }
 
     protected Contest getByActiveFlag_PrevAndNext(Session session,
-        Contest contest, Boolean contestActive, Integer flag,
+        Contest contest, boolean contestActive, int flag,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1811,9 +1811,9 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(contestActive.booleanValue());
+        qPos.add(contestActive);
 
-        qPos.add(flag.intValue());
+        qPos.add(flag);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(contest);
@@ -1840,7 +1840,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFlagText(Boolean contestActive,
+    public List<Contest> findByActiveFlagText(boolean contestActive,
         String flagText) throws SystemException {
         return findByActiveFlagText(contestActive, flagText, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -1860,7 +1860,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the range of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFlagText(Boolean contestActive,
+    public List<Contest> findByActiveFlagText(boolean contestActive,
         String flagText, int start, int end) throws SystemException {
         return findByActiveFlagText(contestActive, flagText, start, end, null);
     }
@@ -1880,7 +1880,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the ordered range of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public List<Contest> findByActiveFlagText(Boolean contestActive,
+    public List<Contest> findByActiveFlagText(boolean contestActive,
         String flagText, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
@@ -1945,7 +1945,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestActive.booleanValue());
+                qPos.add(contestActive);
 
                 if (flagText != null) {
                     qPos.add(flagText);
@@ -1985,7 +1985,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByActiveFlagText_First(Boolean contestActive,
+    public Contest findByActiveFlagText_First(boolean contestActive,
         String flagText, OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         List<Contest> list = findByActiveFlagText(contestActive, flagText, 0,
@@ -2024,7 +2024,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a matching contest could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest findByActiveFlagText_Last(Boolean contestActive,
+    public Contest findByActiveFlagText_Last(boolean contestActive,
         String flagText, OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         int count = countByActiveFlagText(contestActive, flagText);
@@ -2066,8 +2066,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws com.ext.portlet.contests.NoSuchContestException if a contest with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Contest[] findByActiveFlagText_PrevAndNext(Long ContestPK,
-        Boolean contestActive, String flagText,
+    public Contest[] findByActiveFlagText_PrevAndNext(long ContestPK,
+        boolean contestActive, String flagText,
         OrderByComparator orderByComparator)
         throws NoSuchContestException, SystemException {
         Contest contest = findByPrimaryKey(ContestPK);
@@ -2096,7 +2096,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
     }
 
     protected Contest getByActiveFlagText_PrevAndNext(Session session,
-        Contest contest, Boolean contestActive, String flagText,
+        Contest contest, boolean contestActive, String flagText,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -2183,7 +2183,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(contestActive.booleanValue());
+        qPos.add(contestActive);
 
         if (flagText != null) {
             qPos.add(flagText);
@@ -2320,7 +2320,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @param PlanTypeId the plan type ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByType(Long PlanTypeId) throws SystemException {
+    public void removeByType(long PlanTypeId) throws SystemException {
         for (Contest contest : findByType(PlanTypeId)) {
             remove(contest);
         }
@@ -2332,7 +2332,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @param contestActive the contest active
      * @throws SystemException if a system exception occurred
      */
-    public void removeBycontestActive(Boolean contestActive)
+    public void removeBycontestActive(boolean contestActive)
         throws NoSuchContestException, SystemException {
         Contest contest = findBycontestActive(contestActive);
 
@@ -2346,7 +2346,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @param featured the featured
      * @throws SystemException if a system exception occurred
      */
-    public void removeByActiveFeatured(Boolean contestActive, Boolean featured)
+    public void removeByActiveFeatured(boolean contestActive, boolean featured)
         throws SystemException {
         for (Contest contest : findByActiveFeatured(contestActive, featured)) {
             remove(contest);
@@ -2360,7 +2360,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @param flag the flag
      * @throws SystemException if a system exception occurred
      */
-    public void removeByActiveFlag(Boolean contestActive, Integer flag)
+    public void removeByActiveFlag(boolean contestActive, int flag)
         throws SystemException {
         for (Contest contest : findByActiveFlag(contestActive, flag)) {
             remove(contest);
@@ -2374,7 +2374,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @param flagText the flag text
      * @throws SystemException if a system exception occurred
      */
-    public void removeByActiveFlagText(Boolean contestActive, String flagText)
+    public void removeByActiveFlagText(boolean contestActive, String flagText)
         throws SystemException {
         for (Contest contest : findByActiveFlagText(contestActive, flagText)) {
             remove(contest);
@@ -2399,7 +2399,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the number of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public int countByType(Long PlanTypeId) throws SystemException {
+    public int countByType(long PlanTypeId) throws SystemException {
         Object[] finderArgs = new Object[] { PlanTypeId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_TYPE,
@@ -2423,7 +2423,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(PlanTypeId.longValue());
+                qPos.add(PlanTypeId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2450,7 +2450,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the number of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public int countBycontestActive(Boolean contestActive)
+    public int countBycontestActive(boolean contestActive)
         throws SystemException {
         Object[] finderArgs = new Object[] { contestActive };
 
@@ -2475,7 +2475,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestActive.booleanValue());
+                qPos.add(contestActive);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2503,7 +2503,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the number of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public int countByActiveFeatured(Boolean contestActive, Boolean featured)
+    public int countByActiveFeatured(boolean contestActive, boolean featured)
         throws SystemException {
         Object[] finderArgs = new Object[] { contestActive, featured };
 
@@ -2530,9 +2530,9 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestActive.booleanValue());
+                qPos.add(contestActive);
 
-                qPos.add(featured.booleanValue());
+                qPos.add(featured);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2560,7 +2560,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the number of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public int countByActiveFlag(Boolean contestActive, Integer flag)
+    public int countByActiveFlag(boolean contestActive, int flag)
         throws SystemException {
         Object[] finderArgs = new Object[] { contestActive, flag };
 
@@ -2587,9 +2587,9 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestActive.booleanValue());
+                qPos.add(contestActive);
 
-                qPos.add(flag.intValue());
+                qPos.add(flag);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2617,7 +2617,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @return the number of matching contests
      * @throws SystemException if a system exception occurred
      */
-    public int countByActiveFlagText(Boolean contestActive, String flagText)
+    public int countByActiveFlagText(boolean contestActive, String flagText)
         throws SystemException {
         Object[] finderArgs = new Object[] { contestActive, flagText };
 
@@ -2652,7 +2652,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestActive.booleanValue());
+                qPos.add(contestActive);
 
                 if (flagText != null) {
                     qPos.add(flagText);

@@ -34,10 +34,10 @@ public class ModelDiscussionLocalServiceClp
                 com.ext.portlet.models.model.ModelDiscussion.class);
 
         _createModelDiscussionMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createModelDiscussion", java.lang.Long.class);
+                "createModelDiscussion", long.class);
 
         _deleteModelDiscussionMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteModelDiscussion", java.lang.Long.class);
+                "deleteModelDiscussion", long.class);
 
         _deleteModelDiscussionMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteModelDiscussion",
@@ -63,10 +63,10 @@ public class ModelDiscussionLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchModelDiscussionMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchModelDiscussion", java.lang.Long.class);
+                "fetchModelDiscussion", long.class);
 
         _getModelDiscussionMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getModelDiscussion", java.lang.Long.class);
+                "getModelDiscussion", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -120,11 +120,11 @@ public class ModelDiscussionLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelDiscussion createModelDiscussion(
-        java.lang.Long modelDiscussionId) {
+        long modelDiscussionId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createModelDiscussionMethodKey1,
-                ClpSerializer.translateInput(modelDiscussionId));
+                modelDiscussionId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -140,11 +140,11 @@ public class ModelDiscussionLocalServiceClp
         return (com.ext.portlet.models.model.ModelDiscussion) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteModelDiscussion(java.lang.Long modelDiscussionId)
+    public void deleteModelDiscussion(long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteModelDiscussionMethodKey2,
-                ClpSerializer.translateInput(modelDiscussionId));
+                modelDiscussionId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -299,12 +299,12 @@ public class ModelDiscussionLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelDiscussion fetchModelDiscussion(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchModelDiscussionMethodKey8,
-                ClpSerializer.translateInput(modelDiscussionId));
+                modelDiscussionId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -325,13 +325,13 @@ public class ModelDiscussionLocalServiceClp
     }
 
     public com.ext.portlet.models.model.ModelDiscussion getModelDiscussion(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getModelDiscussionMethodKey9,
-                ClpSerializer.translateInput(modelDiscussionId));
+                modelDiscussionId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

@@ -47,7 +47,7 @@ public class DiscussionMessageLocalServiceUtil {
     * @return the new discussion message
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage createDiscussionMessage(
-        java.lang.Long pk) {
+        long pk) {
         return getService().createDiscussionMessage(pk);
     }
 
@@ -58,7 +58,7 @@ public class DiscussionMessageLocalServiceUtil {
     * @throws PortalException if a discussion message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteDiscussionMessage(java.lang.Long pk)
+    public static void deleteDiscussionMessage(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteDiscussionMessage(pk);
@@ -148,8 +148,7 @@ public class DiscussionMessageLocalServiceUtil {
     }
 
     public static com.ext.portlet.discussions.model.DiscussionMessage fetchDiscussionMessage(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchDiscussionMessage(pk);
     }
 
@@ -162,7 +161,7 @@ public class DiscussionMessageLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessage getDiscussionMessage(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getDiscussionMessage(pk);
@@ -314,6 +313,103 @@ public class DiscussionMessageLocalServiceUtil {
     public static void reIndex(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getService().reIndex(messageId);
+    }
+
+    public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> getThreadMessages(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getThreadMessages(dMessage);
+    }
+
+    public static int getThreadMessagesCount(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getThreadMessagesCount(dMessage);
+    }
+
+    public static void store(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(dMessage);
+    }
+
+    public static com.ext.portlet.discussions.model.DiscussionMessage addThreadMessage(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage,
+        java.lang.String subject, java.lang.String body,
+        com.liferay.portal.model.User author)
+        throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().addThreadMessage(dMessage, subject, body, author);
+    }
+
+    public static com.liferay.portal.model.User getAuthor(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAuthor(dMessage);
+    }
+
+    public static com.liferay.portal.model.User getLastActivityAuthor(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getLastActivityAuthor(dMessage);
+    }
+
+    public static void delete(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().delete(dMessage);
+    }
+
+    public static void update(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage,
+        java.lang.String subject, java.lang.String body)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().update(dMessage, subject, body);
+    }
+
+    public static com.ext.portlet.discussions.model.DiscussionCategory getCategory(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCategory(dMessage);
+    }
+
+    public static com.ext.portlet.discussions.model.DiscussionCategoryGroup getCategoryGroup(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCategoryGroup(dMessage);
+    }
+
+    public static com.ext.portlet.discussions.model.DiscussionMessage getThread(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getThread(dMessage);
+    }
+
+    public static java.util.List<com.ext.portlet.discussions.model.DiscussionMessageFlag> getFlags(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFlags(dMessage);
+    }
+
+    public static void addFlag(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage,
+        java.lang.String flagType, java.lang.String data,
+        com.liferay.portal.model.User user)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().addFlag(dMessage, flagType, data, user);
+    }
+
+    public static void removeFlag(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage,
+        java.lang.String flagType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().removeFlag(dMessage, flagType);
     }
 
     public static void clearService() {

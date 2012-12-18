@@ -41,7 +41,7 @@ public class PlanColumnSettingsLocalServiceWrapper
     * @return the new plan column settings
     */
     public com.ext.portlet.plans.model.PlanColumnSettings createPlanColumnSettings(
-        java.lang.Long planColumnSettingsId) {
+        long planColumnSettingsId) {
         return _planColumnSettingsLocalService.createPlanColumnSettings(planColumnSettingsId);
     }
 
@@ -52,7 +52,7 @@ public class PlanColumnSettingsLocalServiceWrapper
     * @throws PortalException if a plan column settings with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanColumnSettings(java.lang.Long planColumnSettingsId)
+    public void deletePlanColumnSettings(long planColumnSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planColumnSettingsLocalService.deletePlanColumnSettings(planColumnSettingsId);
@@ -143,7 +143,7 @@ public class PlanColumnSettingsLocalServiceWrapper
     }
 
     public com.ext.portlet.plans.model.PlanColumnSettings fetchPlanColumnSettings(
-        java.lang.Long planColumnSettingsId)
+        long planColumnSettingsId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planColumnSettingsLocalService.fetchPlanColumnSettings(planColumnSettingsId);
     }
@@ -157,7 +157,7 @@ public class PlanColumnSettingsLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanColumnSettings getPlanColumnSettings(
-        java.lang.Long planColumnSettingsId)
+        long planColumnSettingsId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planColumnSettingsLocalService.getPlanColumnSettings(planColumnSettingsId);

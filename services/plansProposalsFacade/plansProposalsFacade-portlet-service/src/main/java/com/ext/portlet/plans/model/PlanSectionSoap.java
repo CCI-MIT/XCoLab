@@ -14,14 +14,14 @@ import java.util.List;
  * @generated
  */
 public class PlanSectionSoap implements Serializable {
-    private Long _id;
-    private Long _planSectionDefinitionId;
-    private Long _planId;
+    private long _id;
+    private long _planSectionDefinitionId;
+    private long _planId;
     private String _content;
     private Date _created;
-    private Long _version;
-    private Long _planVersion;
-    private Long _updateAuthorId;
+    private long _version;
+    private long _planVersion;
+    private long _updateAuthorId;
 
     public PlanSectionSoap() {
     }
@@ -77,35 +77,35 @@ public class PlanSectionSoap implements Serializable {
         return soapModels.toArray(new PlanSectionSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanSectionDefinitionId() {
+    public long getPlanSectionDefinitionId() {
         return _planSectionDefinitionId;
     }
 
-    public void setPlanSectionDefinitionId(Long planSectionDefinitionId) {
+    public void setPlanSectionDefinitionId(long planSectionDefinitionId) {
         _planSectionDefinitionId = planSectionDefinitionId;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
@@ -125,27 +125,27 @@ public class PlanSectionSoap implements Serializable {
         _created = created;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return _version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(long version) {
         _version = version;
     }
 
-    public Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planVersion;
     }
 
-    public void setPlanVersion(Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planVersion = planVersion;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
 }

@@ -209,7 +209,7 @@ public class ModelCategoryPersistenceImpl extends BasePersistenceImpl<ModelCateg
      * @param modelCategoryPK the primary key for the new model category
      * @return the new model category
      */
-    public ModelCategory create(Long modelCategoryPK) {
+    public ModelCategory create(long modelCategoryPK) {
         ModelCategory modelCategory = new ModelCategoryImpl();
 
         modelCategory.setNew(true);
@@ -226,9 +226,9 @@ public class ModelCategoryPersistenceImpl extends BasePersistenceImpl<ModelCateg
      * @throws com.ext.portlet.models.NoSuchModelCategoryException if a model category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelCategory remove(Long modelCategoryPK)
+    public ModelCategory remove(long modelCategoryPK)
         throws NoSuchModelCategoryException, SystemException {
-        return remove((Serializable) modelCategoryPK);
+        return remove(Long.valueOf(modelCategoryPK));
     }
 
     /**
@@ -349,7 +349,7 @@ public class ModelCategoryPersistenceImpl extends BasePersistenceImpl<ModelCateg
     @Override
     public ModelCategory findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -360,7 +360,7 @@ public class ModelCategoryPersistenceImpl extends BasePersistenceImpl<ModelCateg
      * @throws com.ext.portlet.models.NoSuchModelCategoryException if a model category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelCategory findByPrimaryKey(Long modelCategoryPK)
+    public ModelCategory findByPrimaryKey(long modelCategoryPK)
         throws NoSuchModelCategoryException, SystemException {
         ModelCategory modelCategory = fetchByPrimaryKey(modelCategoryPK);
 
@@ -386,7 +386,7 @@ public class ModelCategoryPersistenceImpl extends BasePersistenceImpl<ModelCateg
     @Override
     public ModelCategory fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -396,7 +396,7 @@ public class ModelCategoryPersistenceImpl extends BasePersistenceImpl<ModelCateg
      * @return the model category, or <code>null</code> if a model category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelCategory fetchByPrimaryKey(Long modelCategoryPK)
+    public ModelCategory fetchByPrimaryKey(long modelCategoryPK)
         throws SystemException {
         ModelCategory modelCategory = (ModelCategory) EntityCacheUtil.getResult(ModelCategoryModelImpl.ENTITY_CACHE_ENABLED,
                 ModelCategoryImpl.class, modelCategoryPK);

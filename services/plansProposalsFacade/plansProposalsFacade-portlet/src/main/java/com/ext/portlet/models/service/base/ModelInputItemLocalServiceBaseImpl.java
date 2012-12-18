@@ -175,7 +175,7 @@ public abstract class ModelInputItemLocalServiceBaseImpl
      * @param modelInputItemPK the primary key for the new model input item
      * @return the new model input item
      */
-    public ModelInputItem createModelInputItem(Long modelInputItemPK) {
+    public ModelInputItem createModelInputItem(long modelInputItemPK) {
         return modelInputItemPersistence.create(modelInputItemPK);
     }
 
@@ -186,7 +186,7 @@ public abstract class ModelInputItemLocalServiceBaseImpl
      * @throws PortalException if a model input item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteModelInputItem(Long modelInputItemPK)
+    public void deleteModelInputItem(long modelInputItemPK)
         throws PortalException, SystemException {
         ModelInputItem modelInputItem = modelInputItemPersistence.remove(modelInputItemPK);
 
@@ -292,7 +292,7 @@ public abstract class ModelInputItemLocalServiceBaseImpl
         return modelInputItemPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ModelInputItem fetchModelInputItem(Long modelInputItemPK)
+    public ModelInputItem fetchModelInputItem(long modelInputItemPK)
         throws SystemException {
         return modelInputItemPersistence.fetchByPrimaryKey(modelInputItemPK);
     }
@@ -305,7 +305,7 @@ public abstract class ModelInputItemLocalServiceBaseImpl
      * @throws PortalException if a model input item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelInputItem getModelInputItem(Long modelInputItemPK)
+    public ModelInputItem getModelInputItem(long modelInputItemPK)
         throws PortalException, SystemException {
         return modelInputItemPersistence.findByPrimaryKey(modelInputItemPK);
     }

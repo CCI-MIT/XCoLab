@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @generated
  */
 public class FocusAreaCacheModel implements CacheModel<FocusArea>, Serializable {
-    public Long id;
+    public long id;
     public String name;
 
     @Override

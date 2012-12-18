@@ -14,7 +14,7 @@ import java.lang.reflect.Proxy;
 
 public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
     implements PlanTemplate {
-    private Long _id;
+    private long _id;
     private String _name;
 
     public PlanTemplateClp() {
@@ -28,11 +28,11 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
         return PlanTemplate.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -44,11 +44,11 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
@@ -58,29 +58,6 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
     public void setName(String name) {
         _name = name;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanSectionDefinition> getSections() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void addSection(
-        com.ext.portlet.plans.model.PlanSectionDefinition section) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void removeSection(
-        com.ext.portlet.plans.model.PlanSectionDefinition section) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void updateSectionWeight(
-        com.ext.portlet.plans.model.PlanSectionDefinition section, int weight) {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -108,7 +85,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
     }
 
     public int compareTo(PlanTemplate planTemplate) {
-        Long primaryKey = planTemplate.getPrimaryKey();
+        long primaryKey = planTemplate.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -133,7 +110,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
             return false;
         }
 
-        Long primaryKey = planTemplate.getPrimaryKey();
+        long primaryKey = planTemplate.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -144,7 +121,7 @@ public class PlanTemplateClp extends BaseModelImpl<PlanTemplate>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

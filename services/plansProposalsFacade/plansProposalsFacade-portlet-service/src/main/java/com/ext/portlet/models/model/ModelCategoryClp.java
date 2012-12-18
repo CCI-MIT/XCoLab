@@ -14,10 +14,10 @@ import java.lang.reflect.Proxy;
 
 public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
     implements ModelCategory {
-    private Long _modelCategoryPK;
+    private long _modelCategoryPK;
     private String _modelCategoryName;
     private String _modelCategoryDescription;
-    private Integer _modelCategoryDisplayWeight;
+    private int _modelCategoryDisplayWeight;
 
     public ModelCategoryClp() {
     }
@@ -30,11 +30,11 @@ public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
         return ModelCategory.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelCategoryPK;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setModelCategoryPK(primaryKey);
     }
 
@@ -46,11 +46,11 @@ public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getModelCategoryPK() {
+    public long getModelCategoryPK() {
         return _modelCategoryPK;
     }
 
-    public void setModelCategoryPK(Long modelCategoryPK) {
+    public void setModelCategoryPK(long modelCategoryPK) {
         _modelCategoryPK = modelCategoryPK;
     }
 
@@ -70,12 +70,11 @@ public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
         _modelCategoryDescription = modelCategoryDescription;
     }
 
-    public Integer getModelCategoryDisplayWeight() {
+    public int getModelCategoryDisplayWeight() {
         return _modelCategoryDisplayWeight;
     }
 
-    public void setModelCategoryDisplayWeight(
-        Integer modelCategoryDisplayWeight) {
+    public void setModelCategoryDisplayWeight(int modelCategoryDisplayWeight) {
         _modelCategoryDisplayWeight = modelCategoryDisplayWeight;
     }
 
@@ -106,7 +105,7 @@ public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
     }
 
     public int compareTo(ModelCategory modelCategory) {
-        Long primaryKey = modelCategory.getPrimaryKey();
+        long primaryKey = modelCategory.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -131,7 +130,7 @@ public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
             return false;
         }
 
-        Long primaryKey = modelCategory.getPrimaryKey();
+        long primaryKey = modelCategory.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -142,7 +141,7 @@ public class ModelCategoryClp extends BaseModelImpl<ModelCategory>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

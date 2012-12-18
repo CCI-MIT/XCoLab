@@ -48,7 +48,7 @@ public interface PlanDescriptionLocalService extends PersistedModelLocalService 
     * @return the new plan description
     */
     public com.ext.portlet.plans.model.PlanDescription createPlanDescription(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the plan description with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface PlanDescriptionLocalService extends PersistedModelLocalService 
     * @throws PortalException if a plan description with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanDescription(java.lang.Long id)
+    public void deletePlanDescription(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,8 +135,7 @@ public interface PlanDescriptionLocalService extends PersistedModelLocalService 
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanDescription fetchPlanDescription(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the plan description with the primary key.
@@ -148,7 +147,7 @@ public interface PlanDescriptionLocalService extends PersistedModelLocalService 
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanDescription getPlanDescription(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -259,4 +258,13 @@ public interface PlanDescriptionLocalService extends PersistedModelLocalService 
         com.ext.portlet.plans.model.PlanItem plan,
         com.ext.portlet.plans.model.PlanDescription from, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanDescription pd)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanDescription pd)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

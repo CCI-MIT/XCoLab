@@ -28,42 +28,6 @@
 	<import class="com.ext.portlet.plans.model.PlanTypeAttribute" />
 	<import class="com.ext.portlet.plans.model.PlanTypeColumn" />
 	<import class="com.ext.portlet.plans.model.PlanVote" />
-	<import class="com.ext.portlet.model.Plan" />
-	<import class="com.ext.portlet.model.PlanAttribute" />
-	<import class="com.ext.portlet.model.PlanAttributeFilter" />
-	<import class="com.ext.portlet.model.PlanColumnSettings" />
-	<import class="com.ext.portlet.model.PlanDescription" />
-	<import class="com.ext.portlet.model.PlanFan" />
-	<import class="com.ext.portlet.model.PlanItem" />
-	<import class="com.ext.portlet.model.PlanMeta" />
-	<import class="com.ext.portlet.model.PlanModelRun" />
-	<import class="com.ext.portlet.model.PlanPosition" />
-	<import class="com.ext.portlet.model.PlanPositionItem" />
-	<import class="com.ext.portlet.model.PlanPositions" />
-	<import class="com.ext.portlet.model.PlanPropertyFilter" />
-	<import class="com.ext.portlet.model.PlanRelated" />
-	<import class="com.ext.portlet.model.PlanSection" />
-	<import class="com.ext.portlet.model.PlanSectionDefinition" />
-	<import class="com.ext.portlet.model.PlanSectionPlanMap" />
-	<import class="com.ext.portlet.model.PlansFilter" />
-	<import class="com.ext.portlet.model.PlansFilterPosition" />
-	<import class="com.ext.portlet.model.PlansUserSettings" />
-	<import class="com.ext.portlet.model.PlanTeamHistory" />
-	<import class="com.ext.portlet.model.PlanTemplate" />
-	<import class="com.ext.portlet.model.PlanTemplateSection" />
-	<import class="com.ext.portlet.model.PlanType" />
-	<import class="com.ext.portlet.model.PlanTypeAttribute" />
-	<import class="com.ext.portlet.model.PlanTypeColumn" />
-	<import class="com.ext.portlet.model.PlanVote" />
-	<import class="com.ext.portlet.contests.model.Contest" />
-	<import class="com.ext.portlet.contests.model.ContestDebate" />
-	<import class="com.ext.portlet.contests.model.ContestPhase" />
-	<import class="com.ext.portlet.contests.model.ContestPhaseColumn" />
-	<import class="com.ext.portlet.contests.model.ContestTeamMember" />
-	<import class="com.ext.portlet.discussions.model.DiscussionCategory" />
-	<import class="com.ext.portlet.discussions.model.DiscussionCategoryGroup" />
-	<import class="com.ext.portlet.discussions.model.DiscussionMessage" />
-	<import class="com.ext.portlet.discussions.model.DiscussionMessageFlag" />
 	<import class="com.ext.portlet.ontology.model.FocusArea" />
 	<import class="com.ext.portlet.ontology.model.FocusAreaOntologyTerm" />
 	<import class="com.ext.portlet.ontology.model.OntologySpace" />
@@ -77,18 +41,31 @@
 	<import class="com.ext.portlet.models.model.ModelOutputChartOrder" />
 	<import class="com.ext.portlet.models.model.ModelOutputItem" />
 	<import class="com.ext.portlet.models.model.ModelPosition" />
-	<class name="com.ext.portlet.plans.model.impl.PlanAttributeImpl" table="Plans_PlanAttribute">
+	<import class="com.ext.portlet.messaging.model.Message" />
+	<import class="com.ext.portlet.messaging.model.MessageRecipientStatus" />
+	<import class="com.ext.portlet.messaging.model.MessagingUserPreferences" />
+	<import class="com.ext.portlet.contests.model.Contest" />
+	<import class="com.ext.portlet.contests.model.ContestDebate" />
+	<import class="com.ext.portlet.contests.model.ContestPhase" />
+	<import class="com.ext.portlet.contests.model.ContestPhaseColumn" />
+	<import class="com.ext.portlet.contests.model.ContestTeamMember" />
+	<import class="com.ext.portlet.Activity.model.ActivitySubscription" />
+	<import class="com.ext.portlet.discussions.model.DiscussionCategory" />
+	<import class="com.ext.portlet.discussions.model.DiscussionCategoryGroup" />
+	<import class="com.ext.portlet.discussions.model.DiscussionMessage" />
+	<import class="com.ext.portlet.discussions.model.DiscussionMessageFlag" />
+	<class name="com.ext.portlet.plans.model.impl.PlanAttributeImpl" table="xcolab_PlanAttribute">
 		<cache usage="read-write" />
-		<id name="attributeId" type="Long">
+		<id name="attributeId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="attributeName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="attributeValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanAttributeFilterImpl" table="Plans_PlanAttributeFilter">
+	<class name="com.ext.portlet.plans.model.impl.PlanAttributeFilterImpl" table="xcolab_PlanAttributeFilter">
 		<cache usage="read-write" />
-		<id name="planAttributeFilterId" type="Long">
+		<id name="planAttributeFilterId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="attributeName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -97,18 +74,18 @@
 		<property name="min" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="stringVal" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanColumnSettingsImpl" table="Plans_PlanColumnSettings">
+	<class name="com.ext.portlet.plans.model.impl.PlanColumnSettingsImpl" table="xcolab_PlanColumnSettings">
 		<cache usage="read-write" />
-		<id name="planColumnSettingsId" type="Long">
+		<id name="planColumnSettingsId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="columnName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="planUserSettingsId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanDescriptionImpl" table="Plans_PlanDescription">
+	<class name="com.ext.portlet.plans.model.impl.PlanDescriptionImpl" table="xcolab_PlanDescription">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -121,9 +98,9 @@
 		<property name="image" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="pitch" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanFanImpl" table="Plans_PlanFan">
+	<class name="com.ext.portlet.plans.model.impl.PlanFanImpl" table="xcolab_PlanFan">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -131,9 +108,9 @@
 		<property name="created" type="org.hibernate.type.TimestampType" />
 		<property name="deleted" type="org.hibernate.type.TimestampType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanItemImpl" table="Plans_PlanItem">
+	<class name="com.ext.portlet.plans.model.impl.PlanItemImpl" table="xcolab_PlanItem">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -143,9 +120,9 @@
 		<property name="updateType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanMetaImpl" table="Plans_PlanMeta">
+	<class name="com.ext.portlet.plans.model.impl.PlanMetaImpl" table="xcolab_PlanMeta">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -167,9 +144,9 @@
 		<property name="previousContestPhase" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestPhase" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanModelRunImpl" table="Plans_PlanModelRun">
+	<class name="com.ext.portlet.plans.model.impl.PlanModelRunImpl" table="xcolab_PlanModelRun">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -179,7 +156,7 @@
 		<property name="created" type="org.hibernate.type.TimestampType" />
 		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanPositionImpl" table="Plans_PlanPosition">
+	<class name="com.ext.portlet.plans.model.impl.PlanPositionImpl" table="xcolab_PlanPosition">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.plans.service.persistence.PlanPositionPK">
 			<key-property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -190,16 +167,16 @@
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanPositionItemImpl" table="Plans_PlanPositionItem">
+	<class name="com.ext.portlet.plans.model.impl.PlanPositionItemImpl" table="xcolab_PlanPositionItem">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.plans.service.persistence.PlanPositionItemPK">
 			<key-property name="planPositionsId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="positionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanPositionsImpl" table="Plans_PlanPositions">
+	<class name="com.ext.portlet.plans.model.impl.PlanPositionsImpl" table="xcolab_PlanPositions">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -208,25 +185,25 @@
 		<property name="created" type="org.hibernate.type.TimestampType" />
 		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanPropertyFilterImpl" table="Plans_PlanPropertyFilter">
+	<class name="com.ext.portlet.plans.model.impl.PlanPropertyFilterImpl" table="xcolab_PlanPropertyFilter">
 		<cache usage="read-write" />
-		<id name="planPropertyFilterId" type="Long">
+		<id name="planPropertyFilterId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="propertyName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="planUserSettingsId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="value" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanRelatedImpl" table="Plans_PlanRelated">
+	<class name="com.ext.portlet.plans.model.impl.PlanRelatedImpl" table="xcolab_PlanRelated">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.plans.service.persistence.PlanRelatedPK">
 			<key-property name="sectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="relatedPlanId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanSectionImpl" table="Plans_PlanSection">
+	<class name="com.ext.portlet.plans.model.impl.PlanSectionImpl" table="xcolab_PlanSection">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planSectionDefinitionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -237,9 +214,9 @@
 		<property name="planVersion" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanSectionDefinitionImpl" table="Plans_PlanSectionDefinition">
+	<class name="com.ext.portlet.plans.model.impl.PlanSectionDefinitionImpl" table="xcolab_PlanSectionDefinition">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="adminTitle" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -250,14 +227,14 @@
 		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="locked" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanSectionPlanMapImpl" table="Plans_PlanSectionPlanMap">
+	<class name="com.ext.portlet.plans.model.impl.PlanSectionPlanMapImpl" table="xcolab_PlanSectionPlanMap">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.plans.service.persistence.PlanSectionPlanMapPK">
 			<key-property name="sectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="relatedPlanId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlansFilterImpl" table="Plans_PlansFilter">
+	<class name="com.ext.portlet.plans.model.impl.PlansFilterImpl" table="xcolab_PlansFilter">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.plans.service.persistence.PlansFilterPK">
 			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -279,7 +256,7 @@
 		<property name="filterPositionsAll" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="enabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlansFilterPositionImpl" table="Plans_PlansFilterPosition">
+	<class name="com.ext.portlet.plans.model.impl.PlansFilterPositionImpl" table="xcolab_PlansFilterPosition">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.plans.service.persistence.PlansFilterPositionPK">
 			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -287,9 +264,9 @@
 			<key-property name="positionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlansUserSettingsImpl" table="Plans_PlansUserSettings">
+	<class name="com.ext.portlet.plans.model.impl.PlansUserSettingsImpl" table="xcolab_PlansUserSettings">
 		<cache usage="read-write" />
-		<id name="planUserSettingsId" type="Long">
+		<id name="planUserSettingsId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -299,9 +276,9 @@
 		<property name="filterEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="filterPositionsAll" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanTeamHistoryImpl" table="Plans_PlanTeamHistory">
+	<class name="com.ext.portlet.plans.model.impl.PlanTeamHistoryImpl" table="xcolab_PlanTeamHistory">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -311,14 +288,14 @@
 		<property name="created" type="org.hibernate.type.TimestampType" />
 		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanTemplateImpl" table="Plans_PlanTemplate">
+	<class name="com.ext.portlet.plans.model.impl.PlanTemplateImpl" table="xcolab_PlanTemplate">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanTemplateSectionImpl" table="Plans_PlanTemplateSection">
+	<class name="com.ext.portlet.plans.model.impl.PlanTemplateSectionImpl" table="xcolab_PlanTemplateSection">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.plans.service.persistence.PlanTemplateSectionPK">
 			<key-property name="planTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -326,9 +303,9 @@
 		</composite-id>
 		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanTypeImpl" table="Plans_PlanType">
+	<class name="com.ext.portlet.plans.model.impl.PlanTypeImpl" table="xcolab_PlanType">
 		<cache usage="read-write" />
-		<id name="planTypeId" type="Long">
+		<id name="planTypeId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -341,17 +318,17 @@
 		<property name="defaultModelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="defaultScenarioId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanTypeAttributeImpl" table="Plans_PlanTypeAttribute">
+	<class name="com.ext.portlet.plans.model.impl.PlanTypeAttributeImpl" table="xcolab_PlanTypeAttribute">
 		<cache usage="read-write" />
-		<id name="planTypeAttributeId" type="Long">
+		<id name="planTypeAttributeId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="attributeName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanTypeColumnImpl" table="Plans_PlanTypeColumn">
+	<class name="com.ext.portlet.plans.model.impl.PlanTypeColumnImpl" table="xcolab_PlanTypeColumn">
 		<cache usage="read-write" />
-		<id name="planTypeColumnId" type="Long">
+		<id name="planTypeColumnId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -359,7 +336,7 @@
 		<property name="columnName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="visibleByDefault" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.plans.model.impl.PlanVoteImpl" table="Plans_PlanVote">
+	<class name="com.ext.portlet.plans.model.impl.PlanVoteImpl" table="xcolab_PlanVote">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.plans.service.persistence.PlanVotePK">
 			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -368,323 +345,173 @@
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanImpl" table="Plans_Plan">
+	<class name="com.ext.portlet.ontology.model.impl.FocusAreaImpl" table="xcolab_FocusArea">
 		<cache usage="read-write" />
-		<id name="planId" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="shortcontent" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="childGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="MBCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="scenarioId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="topicId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="votes" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="publishDate" type="org.hibernate.type.TimestampType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="userScreenName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanAttributeImpl" table="Plans_PlanAttribute">
+	<class name="com.ext.portlet.ontology.model.impl.FocusAreaOntologyTermImpl" table="xcolab_FocusAreaOntologyTerm">
 		<cache usage="read-write" />
-		<id name="attributeId" type="Long">
+		<composite-id name="primaryKey" class="com.ext.portlet.ontology.service.persistence.FocusAreaOntologyTermPK">
+			<key-property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="ontologyTermId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+	</class>
+	<class name="com.ext.portlet.ontology.model.impl.OntologySpaceImpl" table="xcolab_OntologySpace">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="attributeName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="attributeValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanAttributeFilterImpl" table="Plans_PlanAttributeFilter">
+	<class name="com.ext.portlet.ontology.model.impl.OntologyTermImpl" table="xcolab_OntologyTerm">
 		<cache usage="read-write" />
-		<id name="planAttributeFilterId" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="attributeName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="planUserSettingsId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="max" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="min" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="stringVal" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="parentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ontologySpaceId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="descriptionUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanColumnSettingsImpl" table="Plans_PlanColumnSettings">
+	<class name="com.ext.portlet.ontology.model.impl.OntologyTermEntityImpl" table="xcolab_OntologyTermEntity">
 		<cache usage="read-write" />
-		<id name="planColumnSettingsId" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="columnName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="planUserSettingsId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="termId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.models.model.impl.ModelCategoryImpl" table="xcolab_ModelCategory">
+		<cache usage="read-write" />
+		<id name="modelCategoryPK" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="modelCategoryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelCategoryDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelCategoryDisplayWeight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.ext.portlet.models.model.impl.ModelDiscussionImpl" table="xcolab_ModelDiscussion">
+		<cache usage="read-write" />
+		<id name="modelDiscussionId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.models.model.impl.ModelGlobalPreferenceImpl" table="xcolab_ModelGlobalPreference">
+		<cache usage="read-write" />
+		<id name="modelGlobalPreferencePK" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="expertEvaluationPageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanDescriptionImpl" table="Plans_PlanDescription">
+	<class name="com.ext.portlet.models.model.impl.ModelInputGroupImpl" table="xcolab_ModelInputGroup">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="modelInputGroupPK" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="nameAndDescriptionMetaDataId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planVersion" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="image" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="pitch" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="displayItemOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="groupType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="parentGroupPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanFanImpl" table="Plans_PlanFan">
+	<class name="com.ext.portlet.models.model.impl.ModelInputItemImpl" table="xcolab_ModelInputItem">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="modelInputItemPK" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-		<property name="deleted" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanItemImpl" table="Plans_PlanItem">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="state" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="updated" type="org.hibernate.type.TimestampType" />
-		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="updateType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanMetaImpl" table="Plans_PlanMeta">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planCreated" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="votes" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="planGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="open" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="mbCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="categoryGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planVersion" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="promoted" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="previousContestPhase" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="contestPhase" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelInputItemID" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="displayItemOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
+		<property name="properties" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanModelRunImpl" table="Plans_PlanModelRun">
+	<class name="com.ext.portlet.models.model.impl.ModelOutputChartOrderImpl" table="xcolab_ModelOutputChartOrder">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="modelOutputChartOrderPK" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="scenarioId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planVersion" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelOutputLabel" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelOutputChartOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="modelIndexRangePolicy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelIndexRangeMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelIndexErrorPolicy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelIndexErrorMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelChartIsVisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanPositionImpl" table="Plans_PlanPosition">
+	<class name="com.ext.portlet.models.model.impl.ModelOutputItemImpl" table="xcolab_ModelOutputItem">
 		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.PlanPositionPK">
-			<key-property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="positionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<id name="modelOutputItemModifierPK" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelOutputItemId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelOutputItemOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="modelItemRangePolicy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelItemRangeMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelItemErrorPolicy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelItemErrorMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelItemLabelFormat" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelItemIsVisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="itemType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="relatedOutputItem" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.models.model.impl.ModelPositionImpl" table="xcolab_ModelPosition">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="positionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.messaging.model.impl.MessageImpl" table="xcolab_Message">
+		<cache usage="read-write" />
+		<id name="messageId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="fromId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="repliesTo" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanPositionItemImpl" table="Plans_PlanPositionItem">
-		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.PlanPositionItemPK">
-			<key-property name="planPositionsId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="positionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanPositionsImpl" table="Plans_PlanPositions">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planVersion" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanPropertyFilterImpl" table="Plans_PlanPropertyFilter">
-		<cache usage="read-write" />
-		<id name="planPropertyFilterId" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="propertyName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="planUserSettingsId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="value" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanRelatedImpl" table="Plans_PlanRelated">
-		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.PlanRelatedPK">
-			<key-property name="sectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="relatedPlanId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanSectionImpl" table="Plans_PlanSection">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="planSectionDefinitionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="subject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planVersion" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanSectionDefinitionImpl" table="Plans_PlanSectionDefinition">
+	<class name="com.ext.portlet.messaging.model.impl.MessageRecipientStatusImpl" table="xcolab_MessageRecipientStatus">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="messageRecipientId" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="adminTitle" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="title" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="defaultText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="helpText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="characterLimit" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="locked" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="opened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="archived" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanSectionPlanMapImpl" table="Plans_PlanSectionPlanMap">
+	<class name="com.ext.portlet.messaging.model.impl.MessagingUserPreferencesImpl" table="xcolab_MessagingUserPreferences">
 		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.PlanSectionPlanMapPK">
-			<key-property name="sectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="relatedPlanId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-	</class>
-	<class name="com.ext.portlet.model.impl.PlansFilterImpl" table="Plans_PlansFilter">
-		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.PlansFilterPK">
-			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="creator" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="CO2From" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="CO2To" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="votesFrom" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="votesTo" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="damageFrom" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="damageTo" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="mitigationFrom" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="mitigationTo" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="dateFrom" type="org.hibernate.type.TimestampType" />
-		<property name="dateTo" type="org.hibernate.type.TimestampType" />
-		<property name="filterPositionsAll" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="enabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlansFilterPositionImpl" table="Plans_PlansFilterPosition">
-		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.PlansFilterPositionPK">
-			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="positionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-	</class>
-	<class name="com.ext.portlet.model.impl.PlansUserSettingsImpl" table="Plans_PlansUserSettings">
-		<cache usage="read-write" />
-		<id name="planUserSettingsId" type="Long">
+		<id name="messagingPreferencesId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="sortColumn" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="sortDirection" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="filterEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="filterPositionsAll" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="emailOnSend" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="emailOnReceipt" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="emailOnActivity" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.PlanTeamHistoryImpl" table="Plans_PlanTeamHistory">
+	<class name="com.ext.portlet.contests.model.impl.ContestImpl" table="xcolab_Contest">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="action" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="payload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanTemplateImpl" table="Plans_PlanTemplate">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanTemplateSectionImpl" table="Plans_PlanTemplateSection">
-		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.PlanTemplateSectionPK">
-			<key-property name="planTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="planSectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanTypeImpl" table="Plans_PlanType">
-		<cache usage="read-write" />
-		<id name="planTypeId" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="modelTypeName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="published" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="publishedCounterpartId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="isDefault" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="defaultModelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="defaultScenarioId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanTypeAttributeImpl" table="Plans_PlanTypeAttribute">
-		<cache usage="read-write" />
-		<id name="planTypeAttributeId" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="attributeName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanTypeColumnImpl" table="Plans_PlanTypeColumn">
-		<cache usage="read-write" />
-		<id name="planTypeColumnId" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="planTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="columnName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="visibleByDefault" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.PlanVoteImpl" table="Plans_PlanVote">
-		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.PlanVotePK">
-			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="contestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class name="com.ext.portlet.contests.model.impl.ContestImpl" table="Contests_Contest">
-		<cache usage="read-write" />
-		<id name="ContestPK" type="Long">
+		<id name="ContestPK" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="ContestName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -710,17 +537,17 @@
 		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="resourcesUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.contests.model.impl.ContestDebateImpl" table="Contests_ContestDebate">
+	<class name="com.ext.portlet.contests.model.impl.ContestDebateImpl" table="xcolab_ContestDebate">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="debateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.contests.model.impl.ContestPhaseImpl" table="Contests_ContestPhase">
+	<class name="com.ext.portlet.contests.model.impl.ContestPhaseImpl" table="xcolab_ContestPhase">
 		<cache usage="read-write" />
-		<id name="ContestPhasePK" type="Long">
+		<id name="ContestPhasePK" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -734,9 +561,9 @@
 		<property name="updated" type="org.hibernate.type.TimestampType" />
 		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.contests.model.impl.ContestPhaseColumnImpl" table="Contests_ContestPhaseColumn">
+	<class name="com.ext.portlet.contests.model.impl.ContestPhaseColumnImpl" table="xcolab_ContestPhaseColumn">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="ContestPhasePK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -744,18 +571,31 @@
 		<property name="columnWeight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="defaultSort" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.ext.portlet.contests.model.impl.ContestTeamMemberImpl" table="Contests_ContestTeamMember">
+	<class name="com.ext.portlet.contests.model.impl.ContestTeamMemberImpl" table="xcolab_ContestTeamMember">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="contestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.discussions.model.impl.DiscussionCategoryImpl" table="Discussions_DiscussionCategory">
+	<class name="com.ext.portlet.Activity.model.impl.ActivitySubscriptionImpl" table="xcolab_ActivitySubscription">
 		<cache usage="read-write" />
-		<id name="pk" type="Long">
+		<id name="pk" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property name="extraData" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="receiverId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.discussions.model.impl.DiscussionCategoryImpl" table="xcolab_DiscussionCategory">
+		<cache usage="read-write" />
+		<id name="pk" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -769,18 +609,18 @@
 		<property name="lastActivityDate" type="org.hibernate.type.TimestampType" />
 		<property name="lastActivityAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.discussions.model.impl.DiscussionCategoryGroupImpl" table="Discussions_DiscussionCategoryGroup">
+	<class name="com.ext.portlet.discussions.model.impl.DiscussionCategoryGroupImpl" table="xcolab_DiscussionCategoryGroup">
 		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="commentsThread" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.discussions.model.impl.DiscussionMessageImpl" table="Discussions_DiscussionMessage">
+	<class name="com.ext.portlet.discussions.model.impl.DiscussionMessageImpl" table="xcolab_DiscussionMessage">
 		<cache usage="read-write" />
-		<id name="pk" type="Long">
+		<id name="pk" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -797,9 +637,9 @@
 		<property name="lastActivityDate" type="org.hibernate.type.TimestampType" />
 		<property name="lastActivityAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.ext.portlet.discussions.model.impl.DiscussionMessageFlagImpl" table="Discussions_DiscussionMessageFlag">
+	<class name="com.ext.portlet.discussions.model.impl.DiscussionMessageFlagImpl" table="xcolab_DiscussionMessageFlag">
 		<cache usage="read-write" />
-		<id name="pk" type="Long">
+		<id name="pk" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -807,138 +647,5 @@
 		<property name="data" type="com.liferay.portal.dao.orm.hibernate.StringType" column="data_" />
 		<property name="created" type="org.hibernate.type.TimestampType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.ontology.model.impl.FocusAreaImpl" table="ontology_FocusArea">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.ontology.model.impl.FocusAreaOntologyTermImpl" table="ontology_FocusAreaOntologyTerm">
-		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.ontology.service.persistence.FocusAreaOntologyTermPK">
-			<key-property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="ontologyTermId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
-	</class>
-	<class name="com.ext.portlet.ontology.model.impl.OntologySpaceImpl" table="ontology_OntologySpace">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.ontology.model.impl.OntologyTermImpl" table="ontology_OntologyTerm">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="parentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ontologySpaceId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="descriptionUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.ontology.model.impl.OntologyTermEntityImpl" table="ontology_OntologyTermEntity">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="termId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.models.model.impl.ModelCategoryImpl" table="Models_ModelCategory">
-		<cache usage="read-write" />
-		<id name="modelCategoryPK" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="modelCategoryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelCategoryDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelCategoryDisplayWeight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.ext.portlet.models.model.impl.ModelDiscussionImpl" table="Models_ModelDiscussion">
-		<cache usage="read-write" />
-		<id name="modelDiscussionId" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.models.model.impl.ModelGlobalPreferenceImpl" table="Models_ModelGlobalPreference">
-		<cache usage="read-write" />
-		<id name="modelGlobalPreferencePK" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="expertEvaluationPageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="modelCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.models.model.impl.ModelInputGroupImpl" table="Models_ModelInputGroup">
-		<cache usage="read-write" />
-		<id name="modelInputGroupPK" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="nameAndDescriptionMetaDataId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="displayItemOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="groupType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="parentGroupPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.models.model.impl.ModelInputItemImpl" table="Models_ModelInputItem">
-		<cache usage="read-write" />
-		<id name="modelInputItemPK" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="modelInputItemID" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="modelGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="displayItemOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
-		<property name="properties" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.models.model.impl.ModelOutputChartOrderImpl" table="Models_ModelOutputChartOrder">
-		<cache usage="read-write" />
-		<id name="modelOutputChartOrderPK" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="modelOutputLabel" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelOutputChartOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="modelIndexRangePolicy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelIndexRangeMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelIndexErrorPolicy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelIndexErrorMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelChartIsVisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
-	<class name="com.ext.portlet.models.model.impl.ModelOutputItemImpl" table="Models_ModelOutputItem">
-		<cache usage="read-write" />
-		<id name="modelOutputItemModifierPK" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="modelOutputItemId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="modelOutputItemOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="modelItemRangePolicy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelItemRangeMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelItemErrorPolicy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelItemErrorMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelItemLabelFormat" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="modelItemIsVisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="itemType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="relatedOutputItem" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.models.model.impl.ModelPositionImpl" table="Models_ModelPosition">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="Long">
-			<generator class="assigned" />
-		</id>
-		<property name="positionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="modelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 </hibernate-mapping>

@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.plans.PlanFilterFactory.LessThanFilter;
 import com.ext.portlet.plans.PlanFilterFactory.LikeFilter;
 import com.ext.portlet.plans.PlanFilterFactory.MinMaxFilter;
@@ -29,8 +30,9 @@ import com.ext.portlet.plans.model.PlanType;
 import com.ext.portlet.plans.model.PlanTypeAttribute;
 import com.ext.portlet.plans.model.PlanTypeColumn;
 import com.ext.portlet.plans.model.PlansUserSettings;
-import com.ext.portlet.plans.service.PlanAttributeFilterLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanAttributeLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -250,7 +252,7 @@ public class PlanConstants {
 			if (isFiltered()) {
 			    PlanAttributeFilter attributeFilter = planUserSettings.getAttributeFilter(this.toString());
 			    if (attributeFilter == null) {
-			        attributeFilter = PlanAttributeFilterLocalServiceUtil.createPlanAttributeFilter(null);
+			        //attributeFilter = PlanAttributeFilterLocalServiceUtil.createPlanAttributeFilter(null);
 			    }
 				return factory.getFilterString(this.name(), attributeFilter, builder);
 			} else {
@@ -261,7 +263,7 @@ public class PlanConstants {
         public PlanAttributeFilter getAttributeFilter(PlansUserSettings planUserSettings) throws NoSuchPlanAttributeFilterException, SystemException {
             PlanAttributeFilter attributeFilter = planUserSettings.getAttributeFilter(this.toString());
             if (attributeFilter == null) {
-                attributeFilter = PlanAttributeFilterLocalServiceUtil.createPlanAttributeFilter(null);
+                // attributeFilter = PlanAttributeFilterLocalServiceUtil.createPlanAttributeFilter(null);
             }
             return attributeFilter;
         }
@@ -306,7 +308,7 @@ public class PlanConstants {
 	    
 		
 		public static List<Attribute> getPlanTypeAttributes(PlanType planType) throws SystemException {
-            List<PlanTypeAttribute> planTypeAttributes = planType.getAttributes();
+            List<PlanTypeAttribute> planTypeAttributes = PlanTypeLocalServiceUtil.getAttributes(planType);
             
             List<Attribute> attributes = new ArrayList<Attribute>();
             for (PlanTypeAttribute planTypeAttribute: planTypeAttributes) {
@@ -325,13 +327,13 @@ public class PlanConstants {
 		}
 		
 		public boolean isInFilteredSet(PlansUserSettings userSettings, PlanItem plan) throws NoSuchPlanAttributeFilterException, SystemException {
-		    _log.debug("Checking attribute "+this.name()+"in plan "+plan.getName());
+		    _log.debug("Checking attribute "+this.name()+"in plan "+PlanItemLocalServiceUtil.getName(plan));
             if (planFilterOperatorType == null) {
 		        return true;
 		    }
 		    try {
 		        PlanAttributeFilter planAttributeFilter = userSettings.getAttributeFilter(this.name());
-		        PlanAttribute planAttribute = plan.getPlanAttribute(this.name());
+		        PlanAttribute planAttribute = PlanItemLocalServiceUtil.getPlanAttribute(plan, this.name());
 		        if (planAttributeFilter == null) {
 		            return true;
 		        }
@@ -360,10 +362,11 @@ public class PlanConstants {
 
             @Override
             public String getValue(PlanItem plan) throws SystemException, PortalException {
-                int votesCount = PlanVoteLocalServiceUtil.countPlanVotes(plan.getContest());
-                int planVotes = plan.getVotes();
+                int votesCount = PlanVoteLocalServiceUtil.countPlanVotes(PlanItemLocalServiceUtil.getContest(plan));
+                int planVotes = PlanItemLocalServiceUtil.getVotes(plan);
                 
-                return String.format("%d %%", votesCount == 0 ? 0 : Math.round(((double) plan.getVotes() * 100) / votesCount));
+                return String.format("%d %%", votesCount == 0 ? 0 : Math.round(((double) 
+                        PlanItemLocalServiceUtil.getVotes(plan) * 100) / votesCount));
             }
 			
 		}),
@@ -495,7 +498,7 @@ public class PlanConstants {
 
             @Override
             public String getValue(PlanItem plan) throws SystemException, PortalException {
-                return String.format("%d", plan.getDiscussionCategoryGroup().getCommentsCount());
+                return String.format("%d", DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(PlanItemLocalServiceUtil.getDiscussionCategoryGroup(plan)));
             }
             
         }),
@@ -558,7 +561,7 @@ public class PlanConstants {
 		}
 		
 		public static List<Columns> getPlanTypeColumns(PlanType planType) throws SystemException {
-		    List<PlanTypeColumn> planTypeColumns = planType.getColumns();
+		    List<PlanTypeColumn> planTypeColumns = PlanTypeLocalServiceUtil.getColumns(planType);
 		    
 		    List<Columns> columns = new ArrayList<Columns>();
 		    for (PlanTypeColumn planTypeColumn: planTypeColumns) {

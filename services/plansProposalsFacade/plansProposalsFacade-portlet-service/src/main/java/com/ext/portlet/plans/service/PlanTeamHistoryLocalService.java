@@ -48,7 +48,7 @@ public interface PlanTeamHistoryLocalService extends PersistedModelLocalService 
     * @return the new plan team history
     */
     public com.ext.portlet.plans.model.PlanTeamHistory createPlanTeamHistory(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the plan team history with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface PlanTeamHistoryLocalService extends PersistedModelLocalService 
     * @throws PortalException if a plan team history with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanTeamHistory(java.lang.Long id)
+    public void deletePlanTeamHistory(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,8 +135,7 @@ public interface PlanTeamHistoryLocalService extends PersistedModelLocalService 
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanTeamHistory fetchPlanTeamHistory(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the plan team history with the primary key.
@@ -148,7 +147,7 @@ public interface PlanTeamHistoryLocalService extends PersistedModelLocalService 
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanTeamHistory getPlanTeamHistory(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -237,5 +236,20 @@ public interface PlanTeamHistoryLocalService extends PersistedModelLocalService 
     public com.ext.portlet.plans.model.PlanTeamHistory getLastUserActionInPlan(
         java.lang.Long planId, java.lang.Long userId)
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.User getUser(
+        com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.plans.model.PlanItem getPlan(
+        com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.ext.portlet.plans.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException;
 }

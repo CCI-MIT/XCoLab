@@ -45,8 +45,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @param pk the primary key for the new discussion category
     * @return the new discussion category
     */
-    public com.ext.portlet.discussions.model.DiscussionCategory create(
-        java.lang.Long pk);
+    public com.ext.portlet.discussions.model.DiscussionCategory create(long pk);
 
     /**
     * Removes the discussion category with the primary key from the database. Also notifies the appropriate model listeners.
@@ -56,8 +55,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException if a discussion category with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.discussions.model.DiscussionCategory remove(
-        java.lang.Long pk)
+    public com.ext.portlet.discussions.model.DiscussionCategory remove(long pk)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +73,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategory findByPrimaryKey(
-        java.lang.Long pk)
+        long pk)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,8 +85,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategory fetchByPrimaryKey(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long pk) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the discussion categories where categoryGroupId = &#63;.
@@ -98,7 +95,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.discussions.model.DiscussionCategory> findByCategoryGroupId(
-        java.lang.Long categoryGroupId)
+        long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -115,7 +112,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.discussions.model.DiscussionCategory> findByCategoryGroupId(
-        java.lang.Long categoryGroupId, int start, int end)
+        long categoryGroupId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -133,7 +130,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.discussions.model.DiscussionCategory> findByCategoryGroupId(
-        java.lang.Long categoryGroupId, int start, int end,
+        long categoryGroupId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -151,7 +148,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategory findByCategoryGroupId_First(
-        java.lang.Long categoryGroupId,
+        long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -170,7 +167,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategory findByCategoryGroupId_Last(
-        java.lang.Long categoryGroupId,
+        long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -190,7 +187,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategory[] findByCategoryGroupId_PrevAndNext(
-        java.lang.Long pk, java.lang.Long categoryGroupId,
+        long pk, long categoryGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -204,7 +201,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategory findByCategoryId(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -216,7 +213,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategory fetchByCategoryId(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -228,7 +225,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategory fetchByCategoryId(
-        java.lang.Long categoryId, boolean retrieveFromCache)
+        long categoryId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -280,7 +277,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @param categoryGroupId the category group ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByCategoryGroupId(java.lang.Long categoryGroupId)
+    public void removeByCategoryGroupId(long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -289,7 +286,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @param categoryId the category ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByCategoryId(java.lang.Long categoryId)
+    public void removeByCategoryId(long categoryId)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -308,7 +305,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @return the number of matching discussion categories
     * @throws SystemException if a system exception occurred
     */
-    public int countByCategoryGroupId(java.lang.Long categoryGroupId)
+    public int countByCategoryGroupId(long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -318,7 +315,7 @@ public interface DiscussionCategoryPersistence extends BasePersistence<Discussio
     * @return the number of matching discussion categories
     * @throws SystemException if a system exception occurred
     */
-    public int countByCategoryId(java.lang.Long categoryId)
+    public int countByCategoryId(long categoryId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

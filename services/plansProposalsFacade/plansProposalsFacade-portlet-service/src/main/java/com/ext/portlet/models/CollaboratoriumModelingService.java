@@ -53,7 +53,7 @@ public class CollaboratoriumModelingService {
                 _log.info("Modeling client initialized");
             } catch (Exception e) {
                 _log.error(e);
-                throw new SystemException("Error initializing modeling service client", e);
+                //throw new SystemException("Error initializing modeling service client", e);
             }
 
         }

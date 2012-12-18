@@ -47,7 +47,7 @@ public class ModelGlobalPreferenceLocalServiceUtil {
     * @return the new model global preference
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference createModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK) {
+        long modelGlobalPreferencePK) {
         return getService().createModelGlobalPreference(modelGlobalPreferencePK);
     }
 
@@ -58,8 +58,7 @@ public class ModelGlobalPreferenceLocalServiceUtil {
     * @throws PortalException if a model global preference with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+    public static void deleteModelGlobalPreference(long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteModelGlobalPreference(modelGlobalPreferencePK);
@@ -149,7 +148,7 @@ public class ModelGlobalPreferenceLocalServiceUtil {
     }
 
     public static com.ext.portlet.models.model.ModelGlobalPreference fetchModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchModelGlobalPreference(modelGlobalPreferencePK);
     }
@@ -163,7 +162,7 @@ public class ModelGlobalPreferenceLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference getModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getModelGlobalPreference(modelGlobalPreferencePK);

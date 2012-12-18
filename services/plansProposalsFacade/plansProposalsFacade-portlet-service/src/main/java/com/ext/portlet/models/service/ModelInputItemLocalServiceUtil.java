@@ -47,7 +47,7 @@ public class ModelInputItemLocalServiceUtil {
     * @return the new model input item
     */
     public static com.ext.portlet.models.model.ModelInputItem createModelInputItem(
-        java.lang.Long modelInputItemPK) {
+        long modelInputItemPK) {
         return getService().createModelInputItem(modelInputItemPK);
     }
 
@@ -58,7 +58,7 @@ public class ModelInputItemLocalServiceUtil {
     * @throws PortalException if a model input item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteModelInputItem(java.lang.Long modelInputItemPK)
+    public static void deleteModelInputItem(long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteModelInputItem(modelInputItemPK);
@@ -148,7 +148,7 @@ public class ModelInputItemLocalServiceUtil {
     }
 
     public static com.ext.portlet.models.model.ModelInputItem fetchModelInputItem(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchModelInputItem(modelInputItemPK);
     }
@@ -162,7 +162,7 @@ public class ModelInputItemLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem getModelInputItem(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getModelInputItem(modelInputItemPK);
@@ -263,6 +263,37 @@ public class ModelInputItemLocalServiceUtil {
     public static java.util.List<com.ext.portlet.models.model.ModelInputItem> getItemForGroupId(
         java.lang.Long groupid) {
         return getService().getItemForGroupId(groupid);
+    }
+
+    public static edu.mit.cci.simulation.client.MetaData getMetaData(
+        com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        return getService().getMetaData(item);
+    }
+
+    public static edu.mit.cci.simulation.client.Simulation getModel(
+        com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        return getService().getModel(item);
+    }
+
+    public static java.util.Map<java.lang.String, java.lang.String> getPropertyMap(
+        com.ext.portlet.models.model.ModelInputItem item) {
+        return getService().getPropertyMap(item);
+    }
+
+    public static void saveProperties(
+        com.ext.portlet.models.model.ModelInputItem item,
+        java.util.Map<java.lang.String, java.lang.String> props)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().saveProperties(item, props);
+    }
+
+    public static void store(com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(item);
     }
 
     public static void clearService() {

@@ -18,24 +18,4 @@ public class ContestDebateImpl extends ContestDebateBaseImpl {
      *
      * Never reference this class directly. All methods that expect a contest debate model instance should use the {@link com.ext.portlet.contests.model.ContestDebate} interface instead.
      */
-    public ContestDebateImpl() {
-    }
-    
-    public void store() throws SystemException {
-        if (isNew()) {
-            ContestDebateLocalServiceUtil.addContestDebate(this);
-        }
-        else {
-            ContestDebateLocalServiceUtil.updateContestDebate(this);
-        }
-    }
-    
-    public void delete() throws SystemException {
-        if (isNew()) {
-            // ignore
-        }
-        else {
-            ContestDebateLocalServiceUtil.deleteContestDebate(this);
-        }
-    }
 }

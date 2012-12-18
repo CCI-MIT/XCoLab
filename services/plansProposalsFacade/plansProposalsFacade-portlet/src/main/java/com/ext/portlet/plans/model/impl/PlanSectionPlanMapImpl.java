@@ -20,13 +20,4 @@ public class PlanSectionPlanMapImpl extends PlanSectionPlanMapBaseImpl {
      */
     public PlanSectionPlanMapImpl() {
     }
-
-    public void store() throws SystemException {
-        if (isNew()) {
-            PlanSectionPlanMapLocalServiceUtil.addPlanSectionPlanMap(this);
-        }
-        else {
-            PlanSectionPlanMapLocalServiceUtil.updatePlanSectionPlanMap(this);
-        }
-    }
 }

@@ -13,16 +13,16 @@ import java.lang.reflect.Proxy;
 
 
 public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
-    private Long _planTypeId;
+    private long _planTypeId;
     private String _name;
     private String _description;
-    private Long _modelId;
+    private long _modelId;
     private String _modelTypeName;
-    private Boolean _published;
-    private Long _publishedCounterpartId;
-    private Boolean _isDefault;
-    private Long _defaultModelId;
-    private Long _defaultScenarioId;
+    private boolean _published;
+    private long _publishedCounterpartId;
+    private boolean _isDefault;
+    private long _defaultModelId;
+    private long _defaultScenarioId;
 
     public PlanTypeClp() {
     }
@@ -35,11 +35,11 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
         return PlanType.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTypeId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPlanTypeId(primaryKey);
     }
 
@@ -51,11 +51,11 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
@@ -75,11 +75,11 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
         _description = description;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
@@ -91,64 +91,52 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
         _modelTypeName = modelTypeName;
     }
 
-    public Boolean getPublished() {
+    public boolean getPublished() {
         return _published;
     }
 
-    public void setPublished(Boolean published) {
+    public boolean isPublished() {
+        return _published;
+    }
+
+    public void setPublished(boolean published) {
         _published = published;
     }
 
-    public Long getPublishedCounterpartId() {
+    public long getPublishedCounterpartId() {
         return _publishedCounterpartId;
     }
 
-    public void setPublishedCounterpartId(Long publishedCounterpartId) {
+    public void setPublishedCounterpartId(long publishedCounterpartId) {
         _publishedCounterpartId = publishedCounterpartId;
     }
 
-    public Boolean getIsDefault() {
+    public boolean getIsDefault() {
         return _isDefault;
     }
 
-    public void setIsDefault(Boolean isDefault) {
+    public boolean isIsDefault() {
+        return _isDefault;
+    }
+
+    public void setIsDefault(boolean isDefault) {
         _isDefault = isDefault;
     }
 
-    public Long getDefaultModelId() {
+    public long getDefaultModelId() {
         return _defaultModelId;
     }
 
-    public void setDefaultModelId(Long defaultModelId) {
+    public void setDefaultModelId(long defaultModelId) {
         _defaultModelId = defaultModelId;
     }
 
-    public Long getDefaultScenarioId() {
+    public long getDefaultScenarioId() {
         return _defaultScenarioId;
     }
 
-    public void setDefaultScenarioId(Long defaultScenarioId) {
+    public void setDefaultScenarioId(long defaultScenarioId) {
         _defaultScenarioId = defaultScenarioId;
-    }
-
-    public java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels() {
-        throw new UnsupportedOperationException();
-    }
-
-    public edu.mit.cci.simulation.client.Simulation getDefaultModel() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getColumns() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getAttributes() {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isRegional() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -184,7 +172,7 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
     }
 
     public int compareTo(PlanType planType) {
-        Long primaryKey = planType.getPrimaryKey();
+        long primaryKey = planType.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -209,7 +197,7 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
             return false;
         }
 
-        Long primaryKey = planType.getPrimaryKey();
+        long primaryKey = planType.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -220,7 +208,7 @@ public class PlanTypeClp extends BaseModelImpl<PlanType> implements PlanType {
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

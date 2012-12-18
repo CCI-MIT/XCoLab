@@ -2,10 +2,15 @@ package com.ext.portlet.ontology.service.impl;
 
 import java.util.List;
 
+import com.ext.portlet.ontology.model.OntologySpace;
 import com.ext.portlet.ontology.model.OntologyTerm;
 import com.ext.portlet.ontology.model.OntologyTermEntity;
+import com.ext.portlet.ontology.service.OntologySpaceLocalServiceUtil;
+import com.ext.portlet.ontology.service.OntologyTermEntityLocalServiceUtil;
+import com.ext.portlet.ontology.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.ontology.service.base.OntologyTermLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 
@@ -50,7 +55,7 @@ public class OntologyTermLocalServiceImpl
         t.setOntologySpaceId(spaceId);
         t.setDescriptionUrl(descriptionUrl);
         
-        t.store();
+        store(t);
         
         return t;
         
@@ -65,7 +70,56 @@ public class OntologyTermLocalServiceImpl
         Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
         
         for (OntologyTermEntity ote: ontologyTermEntityPersistence.findByClassNameIdClassPk(classNameId, id)) {
-            ote.remove();
+            OntologyTermEntityLocalServiceUtil.remove(ote);
         }
+    }
+    
+    
+    public void store(OntologyTerm ontologyTerm) throws SystemException {
+        if (ontologyTerm.isNew()) {
+            OntologyTermLocalServiceUtil.addOntologyTerm(ontologyTerm);
+        }
+        else {
+            OntologyTermLocalServiceUtil.updateOntologyTerm(ontologyTerm);
+        }
+    }
+    
+    public OntologyTerm getParent(OntologyTerm ontologyTerm) throws PortalException, SystemException {
+        if (ontologyTerm.getParentId() <= 0) {
+            return OntologyTermLocalServiceUtil.getOntologyTerm(ontologyTerm.getParentId());
+        }
+        
+        return null;
+    }
+    
+    public int getChildTermsCount(OntologyTerm ontologyTerm) throws SystemException {
+        return OntologyTermLocalServiceUtil.countChildTerms(ontologyTerm.getId());
+        
+    }
+    
+    public List<OntologyTerm> getChildTerms(OntologyTerm ontologyTerm) throws SystemException {
+        return OntologyTermLocalServiceUtil.findByParentId(ontologyTerm.getId());
+        
+    }
+    
+    public OntologySpace getSpace(OntologyTerm ontologyTerm) throws PortalException, SystemException {
+        return OntologySpaceLocalServiceUtil.getOntologySpace(ontologyTerm.getOntologySpaceId());
+    }
+    
+    public void tagClass(OntologyTerm ontologyTerm, Class clasz, Long id) throws SystemException {
+        Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
+        
+        OntologyTermEntity ote = OntologyTermEntityLocalServiceUtil.createOntologyTermEntity(0);
+        ote.setClassNameId(classNameId);
+        ote.setTermId(ontologyTerm.getId());
+        ote.setClassPK(id);
+        
+        OntologyTermEntityLocalServiceUtil.store(ote);
+    }
+    
+    public List<Long> findTagedIdsForClass(OntologyTerm ontologyTerm, Class clasz) throws SystemException  {
+        Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
+        
+        return OntologyTermEntityLocalServiceUtil.findTagedIdsForClass(ontologyTerm.getId(), clasz);
     }
 }

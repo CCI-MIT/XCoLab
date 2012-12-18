@@ -124,7 +124,7 @@ public class PlanItemUtil {
     * @param id the primary key for the new plan item
     * @return the new plan item
     */
-    public static com.ext.portlet.plans.model.PlanItem create(java.lang.Long id) {
+    public static com.ext.portlet.plans.model.PlanItem create(long id) {
         return getPersistence().create(id);
     }
 
@@ -136,7 +136,7 @@ public class PlanItemUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanItemException if a plan item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanItem remove(java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanItem remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -156,8 +156,7 @@ public class PlanItemUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanItemException if a plan item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanItem findByPrimaryKey(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanItem findByPrimaryKey(long id)
         throws com.ext.portlet.plans.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -171,8 +170,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanItem fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 
@@ -184,8 +182,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanItem> findByAllByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByAllByPlanId(planId);
     }
 
@@ -203,7 +200,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanItem> findByAllByPlanId(
-        java.lang.Long planId, int start, int end)
+        long planId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByAllByPlanId(planId, start, end);
     }
@@ -223,7 +220,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanItem> findByAllByPlanId(
-        java.lang.Long planId, int start, int end,
+        long planId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -244,7 +241,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanItem findByAllByPlanId_First(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -266,7 +263,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanItem findByAllByPlanId_Last(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -288,7 +285,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanItem[] findByAllByPlanId_PrevAndNext(
-        java.lang.Long id, java.lang.Long planId,
+        long id, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -304,8 +301,7 @@ public class PlanItemUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanItemException if a matching plan item could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanItem findByPlanId(
-        java.lang.Long planId)
+    public static com.ext.portlet.plans.model.PlanItem findByPlanId(long planId)
         throws com.ext.portlet.plans.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPlanId(planId);
@@ -319,8 +315,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanItem fetchByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPlanId(planId);
     }
 
@@ -333,7 +328,7 @@ public class PlanItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanItem fetchByPlanId(
-        java.lang.Long planId, boolean retrieveFromCache)
+        long planId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPlanId(planId, retrieveFromCache);
     }
@@ -393,7 +388,7 @@ public class PlanItemUtil {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByAllByPlanId(java.lang.Long planId)
+    public static void removeByAllByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByAllByPlanId(planId);
     }
@@ -404,7 +399,7 @@ public class PlanItemUtil {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByPlanId(java.lang.Long planId)
+    public static void removeByPlanId(long planId)
         throws com.ext.portlet.plans.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByPlanId(planId);
@@ -427,7 +422,7 @@ public class PlanItemUtil {
     * @return the number of matching plan items
     * @throws SystemException if a system exception occurred
     */
-    public static int countByAllByPlanId(java.lang.Long planId)
+    public static int countByAllByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByAllByPlanId(planId);
     }
@@ -439,7 +434,7 @@ public class PlanItemUtil {
     * @return the number of matching plan items
     * @throws SystemException if a system exception occurred
     */
-    public static int countByPlanId(java.lang.Long planId)
+    public static int countByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByPlanId(planId);
     }

@@ -148,7 +148,7 @@ public abstract class ContestDebateLocalServiceBaseImpl
      * @param id the primary key for the new contest debate
      * @return the new contest debate
      */
-    public ContestDebate createContestDebate(Long id) {
+    public ContestDebate createContestDebate(long id) {
         return contestDebatePersistence.create(id);
     }
 
@@ -159,7 +159,7 @@ public abstract class ContestDebateLocalServiceBaseImpl
      * @throws PortalException if a contest debate with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteContestDebate(Long id)
+    public void deleteContestDebate(long id)
         throws PortalException, SystemException {
         ContestDebate contestDebate = contestDebatePersistence.remove(id);
 
@@ -265,7 +265,7 @@ public abstract class ContestDebateLocalServiceBaseImpl
         return contestDebatePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ContestDebate fetchContestDebate(Long id) throws SystemException {
+    public ContestDebate fetchContestDebate(long id) throws SystemException {
         return contestDebatePersistence.fetchByPrimaryKey(id);
     }
 
@@ -277,7 +277,7 @@ public abstract class ContestDebateLocalServiceBaseImpl
      * @throws PortalException if a contest debate with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestDebate getContestDebate(Long id)
+    public ContestDebate getContestDebate(long id)
         throws PortalException, SystemException {
         return contestDebatePersistence.findByPrimaryKey(id);
     }

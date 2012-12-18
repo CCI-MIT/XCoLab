@@ -8,30 +8,30 @@ import java.io.Serializable;
 
 public class FocusAreaOntologyTermPK implements Comparable<FocusAreaOntologyTermPK>,
     Serializable {
-    public Long focusAreaId;
-    public Long ontologyTermId;
+    public long focusAreaId;
+    public long ontologyTermId;
 
     public FocusAreaOntologyTermPK() {
     }
 
-    public FocusAreaOntologyTermPK(Long focusAreaId, Long ontologyTermId) {
+    public FocusAreaOntologyTermPK(long focusAreaId, long ontologyTermId) {
         this.focusAreaId = focusAreaId;
         this.ontologyTermId = ontologyTermId;
     }
 
-    public Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return focusAreaId;
     }
 
-    public void setFocusAreaId(Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         this.focusAreaId = focusAreaId;
     }
 
-    public Long getOntologyTermId() {
+    public long getOntologyTermId() {
         return ontologyTermId;
     }
 
-    public void setOntologyTermId(Long ontologyTermId) {
+    public void setOntologyTermId(long ontologyTermId) {
         this.ontologyTermId = ontologyTermId;
     }
 

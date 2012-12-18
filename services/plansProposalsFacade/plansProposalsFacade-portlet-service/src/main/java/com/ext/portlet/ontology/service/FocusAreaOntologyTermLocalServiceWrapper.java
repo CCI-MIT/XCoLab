@@ -266,6 +266,25 @@ public class FocusAreaOntologyTermLocalServiceWrapper
         _focusAreaOntologyTermLocalService.removeAreaTerm(focusAreaId, termId);
     }
 
+    public void store(com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _focusAreaOntologyTermLocalService.store(faot);
+    }
+
+    public com.ext.portlet.ontology.model.OntologyTerm getTerm(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _focusAreaOntologyTermLocalService.getTerm(faot);
+    }
+
+    public com.ext.portlet.ontology.model.FocusArea getArea(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _focusAreaOntologyTermLocalService.getArea(faot);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

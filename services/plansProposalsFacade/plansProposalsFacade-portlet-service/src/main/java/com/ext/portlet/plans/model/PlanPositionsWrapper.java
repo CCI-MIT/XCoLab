@@ -32,7 +32,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @return the primary key of this plan positions
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planPositions.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @param primaryKey the primary key of this plan positions
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planPositions.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @return the ID of this plan positions
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _planPositions.getId();
     }
 
@@ -59,7 +59,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @param id the ID of this plan positions
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _planPositions.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @return the plan ID of this plan positions
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planPositions.getPlanId();
     }
 
@@ -77,7 +77,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @param planId the plan ID of this plan positions
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planPositions.setPlanId(planId);
     }
 
@@ -86,7 +86,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @return the plan version of this plan positions
     */
-    public java.lang.Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planPositions.getPlanVersion();
     }
 
@@ -95,7 +95,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @param planVersion the plan version of this plan positions
     */
-    public void setPlanVersion(java.lang.Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planPositions.setPlanVersion(planVersion);
     }
 
@@ -104,7 +104,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @return the version of this plan positions
     */
-    public java.lang.Long getVersion() {
+    public long getVersion() {
         return _planPositions.getVersion();
     }
 
@@ -113,7 +113,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @param version the version of this plan positions
     */
-    public void setVersion(java.lang.Long version) {
+    public void setVersion(long version) {
         _planPositions.setVersion(version);
     }
 
@@ -140,7 +140,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @return the update author ID of this plan positions
     */
-    public java.lang.Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _planPositions.getUpdateAuthorId();
     }
 
@@ -149,7 +149,7 @@ public class PlanPositionsWrapper implements PlanPositions,
     *
     * @param updateAuthorId the update author ID of this plan positions
     */
-    public void setUpdateAuthorId(java.lang.Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _planPositions.setUpdateAuthorId(updateAuthorId);
     }
 
@@ -224,28 +224,6 @@ public class PlanPositionsWrapper implements PlanPositions,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planPositions.persist();
-    }
-
-    public java.util.List<java.lang.Long> getPositionsIds()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planPositions.getPositionsIds();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planPositions.store();
-    }
-
-    public void setPositionsIds(java.util.List<java.lang.Long> positionsIds)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _planPositions.setPositionsIds(positionsIds);
-    }
-
-    public com.liferay.portal.model.User getUpdateAuthor()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planPositions.getUpdateAuthor();
     }
 
     /**

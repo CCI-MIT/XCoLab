@@ -33,7 +33,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @return the primary key of this plan section definition
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planSectionDefinition.getPrimaryKey();
     }
 
@@ -42,7 +42,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @param primaryKey the primary key of this plan section definition
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planSectionDefinition.setPrimaryKey(primaryKey);
     }
 
@@ -51,7 +51,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @return the ID of this plan section definition
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _planSectionDefinition.getId();
     }
 
@@ -60,7 +60,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @param id the ID of this plan section definition
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _planSectionDefinition.setId(id);
     }
 
@@ -141,7 +141,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @return the character limit of this plan section definition
     */
-    public java.lang.Integer getCharacterLimit() {
+    public int getCharacterLimit() {
         return _planSectionDefinition.getCharacterLimit();
     }
 
@@ -150,7 +150,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @param characterLimit the character limit of this plan section definition
     */
-    public void setCharacterLimit(java.lang.Integer characterLimit) {
+    public void setCharacterLimit(int characterLimit) {
         _planSectionDefinition.setCharacterLimit(characterLimit);
     }
 
@@ -159,7 +159,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @return the focus area ID of this plan section definition
     */
-    public java.lang.Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return _planSectionDefinition.getFocusAreaId();
     }
 
@@ -168,7 +168,7 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @param focusAreaId the focus area ID of this plan section definition
     */
-    public void setFocusAreaId(java.lang.Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         _planSectionDefinition.setFocusAreaId(focusAreaId);
     }
 
@@ -177,16 +177,25 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     *
     * @return the locked of this plan section definition
     */
-    public java.lang.Boolean getLocked() {
+    public boolean getLocked() {
         return _planSectionDefinition.getLocked();
     }
 
     /**
-    * Sets the locked of this plan section definition.
+    * Returns <code>true</code> if this plan section definition is locked.
+    *
+    * @return <code>true</code> if this plan section definition is locked; <code>false</code> otherwise
+    */
+    public boolean isLocked() {
+        return _planSectionDefinition.isLocked();
+    }
+
+    /**
+    * Sets whether this plan section definition is locked.
     *
     * @param locked the locked of this plan section definition
     */
-    public void setLocked(java.lang.Boolean locked) {
+    public void setLocked(boolean locked) {
         _planSectionDefinition.setLocked(locked);
     }
 
@@ -261,17 +270,6 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planSectionDefinition.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planSectionDefinition.store();
-    }
-
-    public com.ext.portlet.ontology.model.FocusArea getFocusArea()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planSectionDefinition.getFocusArea();
     }
 
     /**

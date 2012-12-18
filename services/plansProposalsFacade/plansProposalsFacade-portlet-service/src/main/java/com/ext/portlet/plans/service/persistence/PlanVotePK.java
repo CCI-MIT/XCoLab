@@ -7,30 +7,30 @@ import java.io.Serializable;
 
 
 public class PlanVotePK implements Comparable<PlanVotePK>, Serializable {
-    public Long userId;
-    public Long contestId;
+    public long userId;
+    public long contestId;
 
     public PlanVotePK() {
     }
 
-    public PlanVotePK(Long userId, Long contestId) {
+    public PlanVotePK(long userId, long contestId) {
         this.userId = userId;
         this.contestId = contestId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public Long getContestId() {
+    public long getContestId() {
         return contestId;
     }
 
-    public void setContestId(Long contestId) {
+    public void setContestId(long contestId) {
         this.contestId = contestId;
     }
 

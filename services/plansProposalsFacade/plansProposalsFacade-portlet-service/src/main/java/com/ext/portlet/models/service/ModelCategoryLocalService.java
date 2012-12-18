@@ -48,7 +48,7 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     * @return the new model category
     */
     public com.ext.portlet.models.model.ModelCategory createModelCategory(
-        java.lang.Long modelCategoryPK);
+        long modelCategoryPK);
 
     /**
     * Deletes the model category with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     * @throws PortalException if a model category with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelCategory(java.lang.Long modelCategoryPK)
+    public void deleteModelCategory(long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,7 +135,7 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelCategory fetchModelCategory(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -148,7 +148,7 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelCategory getModelCategory(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

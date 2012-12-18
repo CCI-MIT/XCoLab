@@ -342,7 +342,7 @@ public abstract class PlanAttributeFilterLocalServiceBaseImpl
      * @return the new plan attribute filter
      */
     public PlanAttributeFilter createPlanAttributeFilter(
-        Long planAttributeFilterId) {
+        long planAttributeFilterId) {
         return planAttributeFilterPersistence.create(planAttributeFilterId);
     }
 
@@ -353,7 +353,7 @@ public abstract class PlanAttributeFilterLocalServiceBaseImpl
      * @throws PortalException if a plan attribute filter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanAttributeFilter(Long planAttributeFilterId)
+    public void deletePlanAttributeFilter(long planAttributeFilterId)
         throws PortalException, SystemException {
         PlanAttributeFilter planAttributeFilter = planAttributeFilterPersistence.remove(planAttributeFilterId);
 
@@ -460,7 +460,7 @@ public abstract class PlanAttributeFilterLocalServiceBaseImpl
     }
 
     public PlanAttributeFilter fetchPlanAttributeFilter(
-        Long planAttributeFilterId) throws SystemException {
+        long planAttributeFilterId) throws SystemException {
         return planAttributeFilterPersistence.fetchByPrimaryKey(planAttributeFilterId);
     }
 
@@ -473,7 +473,7 @@ public abstract class PlanAttributeFilterLocalServiceBaseImpl
      * @throws SystemException if a system exception occurred
      */
     public PlanAttributeFilter getPlanAttributeFilter(
-        Long planAttributeFilterId) throws PortalException, SystemException {
+        long planAttributeFilterId) throws PortalException, SystemException {
         return planAttributeFilterPersistence.findByPrimaryKey(planAttributeFilterId);
     }
 

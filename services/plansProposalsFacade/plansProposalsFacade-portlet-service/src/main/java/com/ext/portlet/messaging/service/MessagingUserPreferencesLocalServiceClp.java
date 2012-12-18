@@ -36,10 +36,10 @@ public class MessagingUserPreferencesLocalServiceClp
                 com.ext.portlet.messaging.model.MessagingUserPreferences.class);
 
         _createMessagingUserPreferencesMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createMessagingUserPreferences", java.lang.Long.class);
+                "createMessagingUserPreferences", long.class);
 
         _deleteMessagingUserPreferencesMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteMessagingUserPreferences", java.lang.Long.class);
+                "deleteMessagingUserPreferences", long.class);
 
         _deleteMessagingUserPreferencesMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteMessagingUserPreferences",
@@ -65,10 +65,10 @@ public class MessagingUserPreferencesLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchMessagingUserPreferencesMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchMessagingUserPreferences", java.lang.Long.class);
+                "fetchMessagingUserPreferences", long.class);
 
         _getMessagingUserPreferencesMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getMessagingUserPreferences", java.lang.Long.class);
+                "getMessagingUserPreferences", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -125,11 +125,11 @@ public class MessagingUserPreferencesLocalServiceClp
     }
 
     public com.ext.portlet.messaging.model.MessagingUserPreferences createMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId) {
+        long messagingPreferencesId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createMessagingUserPreferencesMethodKey1,
-                ClpSerializer.translateInput(messagingPreferencesId));
+                messagingPreferencesId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -145,12 +145,11 @@ public class MessagingUserPreferencesLocalServiceClp
         return (com.ext.portlet.messaging.model.MessagingUserPreferences) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+    public void deleteMessagingUserPreferences(long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteMessagingUserPreferencesMethodKey2,
-                ClpSerializer.translateInput(messagingPreferencesId));
+                messagingPreferencesId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -305,12 +304,12 @@ public class MessagingUserPreferencesLocalServiceClp
     }
 
     public com.ext.portlet.messaging.model.MessagingUserPreferences fetchMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchMessagingUserPreferencesMethodKey8,
-                ClpSerializer.translateInput(messagingPreferencesId));
+                messagingPreferencesId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -331,13 +330,13 @@ public class MessagingUserPreferencesLocalServiceClp
     }
 
     public com.ext.portlet.messaging.model.MessagingUserPreferences getMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getMessagingUserPreferencesMethodKey9,
-                ClpSerializer.translateInput(messagingPreferencesId));
+                messagingPreferencesId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

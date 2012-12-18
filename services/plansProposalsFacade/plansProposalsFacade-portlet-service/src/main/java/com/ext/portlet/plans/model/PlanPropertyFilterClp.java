@@ -14,9 +14,9 @@ import java.lang.reflect.Proxy;
 
 public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
     implements PlanPropertyFilter {
-    private Long _planPropertyFilterId;
+    private long _planPropertyFilterId;
     private String _propertyName;
-    private Long _planUserSettingsId;
+    private long _planUserSettingsId;
     private String _value;
 
     public PlanPropertyFilterClp() {
@@ -30,11 +30,11 @@ public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
         return PlanPropertyFilter.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planPropertyFilterId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPlanPropertyFilterId(primaryKey);
     }
 
@@ -46,11 +46,11 @@ public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPlanPropertyFilterId() {
+    public long getPlanPropertyFilterId() {
         return _planPropertyFilterId;
     }
 
-    public void setPlanPropertyFilterId(Long planPropertyFilterId) {
+    public void setPlanPropertyFilterId(long planPropertyFilterId) {
         _planPropertyFilterId = planPropertyFilterId;
     }
 
@@ -62,11 +62,11 @@ public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
         _propertyName = propertyName;
     }
 
-    public Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
-    public void setPlanUserSettingsId(Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planUserSettingsId = planUserSettingsId;
     }
 
@@ -106,7 +106,7 @@ public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
     }
 
     public int compareTo(PlanPropertyFilter planPropertyFilter) {
-        Long primaryKey = planPropertyFilter.getPrimaryKey();
+        long primaryKey = planPropertyFilter.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -131,7 +131,7 @@ public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
             return false;
         }
 
-        Long primaryKey = planPropertyFilter.getPrimaryKey();
+        long primaryKey = planPropertyFilter.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -142,7 +142,7 @@ public class PlanPropertyFilterClp extends BaseModelImpl<PlanPropertyFilter>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

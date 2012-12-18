@@ -41,7 +41,7 @@ public class MessageRecipientStatusLocalServiceWrapper
     * @return the new message recipient status
     */
     public com.ext.portlet.messaging.model.MessageRecipientStatus createMessageRecipientStatus(
-        java.lang.Long messageRecipientId) {
+        long messageRecipientId) {
         return _messageRecipientStatusLocalService.createMessageRecipientStatus(messageRecipientId);
     }
 
@@ -52,7 +52,7 @@ public class MessageRecipientStatusLocalServiceWrapper
     * @throws PortalException if a message recipient status with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessageRecipientStatus(java.lang.Long messageRecipientId)
+    public void deleteMessageRecipientStatus(long messageRecipientId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _messageRecipientStatusLocalService.deleteMessageRecipientStatus(messageRecipientId);
@@ -143,7 +143,7 @@ public class MessageRecipientStatusLocalServiceWrapper
     }
 
     public com.ext.portlet.messaging.model.MessageRecipientStatus fetchMessageRecipientStatus(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageRecipientStatusLocalService.fetchMessageRecipientStatus(messageRecipientId);
     }
@@ -157,7 +157,7 @@ public class MessageRecipientStatusLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.messaging.model.MessageRecipientStatus getMessageRecipientStatus(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _messageRecipientStatusLocalService.getMessageRecipientStatus(messageRecipientId);

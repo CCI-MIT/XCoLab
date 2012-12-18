@@ -32,7 +32,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @return the primary key of this model input item
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelInputItem.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @param primaryKey the primary key of this model input item
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _modelInputItem.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @return the model input item p k of this model input item
     */
-    public java.lang.Long getModelInputItemPK() {
+    public long getModelInputItemPK() {
         return _modelInputItem.getModelInputItemPK();
     }
 
@@ -59,7 +59,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @param modelInputItemPK the model input item p k of this model input item
     */
-    public void setModelInputItemPK(java.lang.Long modelInputItemPK) {
+    public void setModelInputItemPK(long modelInputItemPK) {
         _modelInputItem.setModelInputItemPK(modelInputItemPK);
     }
 
@@ -68,7 +68,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @return the model ID of this model input item
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _modelInputItem.getModelId();
     }
 
@@ -77,7 +77,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @param modelId the model ID of this model input item
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _modelInputItem.setModelId(modelId);
     }
 
@@ -86,7 +86,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @return the model input item i d of this model input item
     */
-    public java.lang.Long getModelInputItemID() {
+    public long getModelInputItemID() {
         return _modelInputItem.getModelInputItemID();
     }
 
@@ -95,7 +95,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @param modelInputItemID the model input item i d of this model input item
     */
-    public void setModelInputItemID(java.lang.Long modelInputItemID) {
+    public void setModelInputItemID(long modelInputItemID) {
         _modelInputItem.setModelInputItemID(modelInputItemID);
     }
 
@@ -104,7 +104,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @return the model group ID of this model input item
     */
-    public java.lang.Long getModelGroupId() {
+    public long getModelGroupId() {
         return _modelInputItem.getModelGroupId();
     }
 
@@ -113,7 +113,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @param modelGroupId the model group ID of this model input item
     */
-    public void setModelGroupId(java.lang.Long modelGroupId) {
+    public void setModelGroupId(long modelGroupId) {
         _modelInputItem.setModelGroupId(modelGroupId);
     }
 
@@ -122,7 +122,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @return the display item order of this model input item
     */
-    public java.lang.Integer getDisplayItemOrder() {
+    public int getDisplayItemOrder() {
         return _modelInputItem.getDisplayItemOrder();
     }
 
@@ -131,7 +131,7 @@ public class ModelInputItemWrapper implements ModelInputItem,
     *
     * @param displayItemOrder the display item order of this model input item
     */
-    public void setDisplayItemOrder(java.lang.Integer displayItemOrder) {
+    public void setDisplayItemOrder(int displayItemOrder) {
         _modelInputItem.setDisplayItemOrder(displayItemOrder);
     }
 
@@ -242,33 +242,6 @@ public class ModelInputItemWrapper implements ModelInputItem,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _modelInputItem.persist();
-    }
-
-    public edu.mit.cci.simulation.client.MetaData getMetaData()
-        throws com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        return _modelInputItem.getMetaData();
-    }
-
-    public edu.mit.cci.simulation.client.Simulation getModel()
-        throws com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        return _modelInputItem.getModel();
-    }
-
-    public java.util.Map<java.lang.String, java.lang.String> getPropertyMap() {
-        return _modelInputItem.getPropertyMap();
-    }
-
-    public void saveProperties(
-        java.util.Map<java.lang.String, java.lang.String> props)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _modelInputItem.saveProperties(props);
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _modelInputItem.store();
     }
 
     /**

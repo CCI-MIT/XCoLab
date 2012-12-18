@@ -33,10 +33,10 @@ public class PlanTypeColumnLocalServiceClp implements PlanTypeColumnLocalService
                 com.ext.portlet.plans.model.PlanTypeColumn.class);
 
         _createPlanTypeColumnMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanTypeColumn", java.lang.Long.class);
+                "createPlanTypeColumn", long.class);
 
         _deletePlanTypeColumnMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanTypeColumn", java.lang.Long.class);
+                "deletePlanTypeColumn", long.class);
 
         _deletePlanTypeColumnMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanTypeColumn",
@@ -62,10 +62,10 @@ public class PlanTypeColumnLocalServiceClp implements PlanTypeColumnLocalService
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanTypeColumnMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanTypeColumn", java.lang.Long.class);
+                "fetchPlanTypeColumn", long.class);
 
         _getPlanTypeColumnMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanTypeColumn", java.lang.Long.class);
+                "getPlanTypeColumn", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -118,11 +118,11 @@ public class PlanTypeColumnLocalServiceClp implements PlanTypeColumnLocalService
     }
 
     public com.ext.portlet.plans.model.PlanTypeColumn createPlanTypeColumn(
-        java.lang.Long planTypeColumnId) {
+        long planTypeColumnId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanTypeColumnMethodKey1,
-                ClpSerializer.translateInput(planTypeColumnId));
+                planTypeColumnId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -138,11 +138,11 @@ public class PlanTypeColumnLocalServiceClp implements PlanTypeColumnLocalService
         return (com.ext.portlet.plans.model.PlanTypeColumn) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanTypeColumn(java.lang.Long planTypeColumnId)
+    public void deletePlanTypeColumn(long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanTypeColumnMethodKey2,
-                ClpSerializer.translateInput(planTypeColumnId));
+                planTypeColumnId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -297,12 +297,12 @@ public class PlanTypeColumnLocalServiceClp implements PlanTypeColumnLocalService
     }
 
     public com.ext.portlet.plans.model.PlanTypeColumn fetchPlanTypeColumn(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanTypeColumnMethodKey8,
-                ClpSerializer.translateInput(planTypeColumnId));
+                planTypeColumnId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -323,13 +323,13 @@ public class PlanTypeColumnLocalServiceClp implements PlanTypeColumnLocalService
     }
 
     public com.ext.portlet.plans.model.PlanTypeColumn getPlanTypeColumn(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanTypeColumnMethodKey9,
-                ClpSerializer.translateInput(planTypeColumnId));
+                planTypeColumnId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

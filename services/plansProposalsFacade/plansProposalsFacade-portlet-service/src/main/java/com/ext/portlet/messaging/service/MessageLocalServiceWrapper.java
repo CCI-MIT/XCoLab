@@ -38,8 +38,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @param messageId the primary key for the new message
     * @return the new message
     */
-    public com.ext.portlet.messaging.model.Message createMessage(
-        java.lang.Long messageId) {
+    public com.ext.portlet.messaging.model.Message createMessage(long messageId) {
         return _messageLocalService.createMessage(messageId);
     }
 
@@ -50,7 +49,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @throws PortalException if a message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessage(java.lang.Long messageId)
+    public void deleteMessage(long messageId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _messageLocalService.deleteMessage(messageId);
@@ -138,8 +137,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
         return _messageLocalService.dynamicQueryCount(dynamicQuery);
     }
 
-    public com.ext.portlet.messaging.model.Message fetchMessage(
-        java.lang.Long messageId)
+    public com.ext.portlet.messaging.model.Message fetchMessage(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.fetchMessage(messageId);
     }
@@ -152,8 +150,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @throws PortalException if a message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.messaging.model.Message getMessage(
-        java.lang.Long messageId)
+    public com.ext.portlet.messaging.model.Message getMessage(long messageId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.getMessage(messageId);
@@ -250,6 +247,45 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.findSentMessages(userid, pagerstart,
             pagerend);
+    }
+
+    public java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> getRecipients(
+        com.ext.portlet.messaging.model.Message msg)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _messageLocalService.getRecipients(msg);
+    }
+
+    public boolean hasReciever(com.ext.portlet.messaging.model.Message msg,
+        long userid) throws com.liferay.portal.kernel.exception.SystemException {
+        return _messageLocalService.hasReciever(msg, userid);
+    }
+
+    public boolean isOpened(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _messageLocalService.isOpened(msg, userid);
+    }
+
+    public void setOpened(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _messageLocalService.setOpened(msg, userid);
+    }
+
+    public boolean isArchived(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _messageLocalService.isArchived(msg, userid);
+    }
+
+    public void setArchived(com.ext.portlet.messaging.model.Message msg,
+        long userid)
+        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _messageLocalService.setArchived(msg, userid);
     }
 
     /**

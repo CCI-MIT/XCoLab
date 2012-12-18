@@ -16,12 +16,12 @@ import java.util.Date;
 
 public class PlanPositionsClp extends BaseModelImpl<PlanPositions>
     implements PlanPositions {
-    private Long _id;
-    private Long _planId;
-    private Long _planVersion;
-    private Long _version;
+    private long _id;
+    private long _planId;
+    private long _planVersion;
+    private long _version;
     private Date _created;
-    private Long _updateAuthorId;
+    private long _updateAuthorId;
 
     public PlanPositionsClp() {
     }
@@ -34,11 +34,11 @@ public class PlanPositionsClp extends BaseModelImpl<PlanPositions>
         return PlanPositions.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -50,35 +50,35 @@ public class PlanPositionsClp extends BaseModelImpl<PlanPositions>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
-    public Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planVersion;
     }
 
-    public void setPlanVersion(Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planVersion = planVersion;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return _version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(long version) {
         _version = version;
     }
 
@@ -90,28 +90,12 @@ public class PlanPositionsClp extends BaseModelImpl<PlanPositions>
         _created = created;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
-    }
-
-    public java.util.List<java.lang.Long> getPositionsIds() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setPositionsIds(java.util.List<java.lang.Long> positionsIds) {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getUpdateAuthor() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -176,7 +160,7 @@ public class PlanPositionsClp extends BaseModelImpl<PlanPositions>
             return false;
         }
 
-        Long primaryKey = planPositions.getPrimaryKey();
+        long primaryKey = planPositions.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -187,7 +171,7 @@ public class PlanPositionsClp extends BaseModelImpl<PlanPositions>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

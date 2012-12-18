@@ -32,7 +32,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the primary key of this contest phase column
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _contestPhaseColumn.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param primaryKey the primary key of this contest phase column
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _contestPhaseColumn.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the ID of this contest phase column
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _contestPhaseColumn.getId();
     }
 
@@ -59,7 +59,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param id the ID of this contest phase column
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _contestPhaseColumn.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the contest phase p k of this contest phase column
     */
-    public java.lang.Long getContestPhasePK() {
+    public long getContestPhasePK() {
         return _contestPhaseColumn.getContestPhasePK();
     }
 
@@ -77,7 +77,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param ContestPhasePK the contest phase p k of this contest phase column
     */
-    public void setContestPhasePK(java.lang.Long ContestPhasePK) {
+    public void setContestPhasePK(long ContestPhasePK) {
         _contestPhaseColumn.setContestPhasePK(ContestPhasePK);
     }
 
@@ -104,7 +104,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the column weight of this contest phase column
     */
-    public java.lang.Integer getColumnWeight() {
+    public int getColumnWeight() {
         return _contestPhaseColumn.getColumnWeight();
     }
 
@@ -113,7 +113,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param columnWeight the column weight of this contest phase column
     */
-    public void setColumnWeight(java.lang.Integer columnWeight) {
+    public void setColumnWeight(int columnWeight) {
         _contestPhaseColumn.setColumnWeight(columnWeight);
     }
 
@@ -122,16 +122,25 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the default sort of this contest phase column
     */
-    public java.lang.Boolean getDefaultSort() {
+    public boolean getDefaultSort() {
         return _contestPhaseColumn.getDefaultSort();
     }
 
     /**
-    * Sets the default sort of this contest phase column.
+    * Returns <code>true</code> if this contest phase column is default sort.
+    *
+    * @return <code>true</code> if this contest phase column is default sort; <code>false</code> otherwise
+    */
+    public boolean isDefaultSort() {
+        return _contestPhaseColumn.isDefaultSort();
+    }
+
+    /**
+    * Sets whether this contest phase column is default sort.
     *
     * @param defaultSort the default sort of this contest phase column
     */
-    public void setDefaultSort(java.lang.Boolean defaultSort) {
+    public void setDefaultSort(boolean defaultSort) {
         _contestPhaseColumn.setDefaultSort(defaultSort);
     }
 

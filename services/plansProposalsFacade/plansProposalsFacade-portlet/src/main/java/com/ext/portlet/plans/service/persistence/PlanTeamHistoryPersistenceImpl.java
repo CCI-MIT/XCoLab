@@ -323,7 +323,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @param id the primary key for the new plan team history
      * @return the new plan team history
      */
-    public PlanTeamHistory create(Long id) {
+    public PlanTeamHistory create(long id) {
         PlanTeamHistory planTeamHistory = new PlanTeamHistoryImpl();
 
         planTeamHistory.setNew(true);
@@ -340,9 +340,9 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory remove(Long id)
+    public PlanTeamHistory remove(long id)
         throws NoSuchPlanTeamHistoryException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -521,7 +521,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
     @Override
     public PlanTeamHistory findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -532,7 +532,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory findByPrimaryKey(Long id)
+    public PlanTeamHistory findByPrimaryKey(long id)
         throws NoSuchPlanTeamHistoryException, SystemException {
         PlanTeamHistory planTeamHistory = fetchByPrimaryKey(id);
 
@@ -558,7 +558,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
     @Override
     public PlanTeamHistory fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -568,7 +568,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the plan team history, or <code>null</code> if a plan team history with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanTeamHistory fetchByPrimaryKey(long id) throws SystemException {
         PlanTeamHistory planTeamHistory = (PlanTeamHistory) EntityCacheUtil.getResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
                 PlanTeamHistoryImpl.class, id);
 
@@ -612,7 +612,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the matching plan team histories
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanTeamHistory> findByPlanId(Long planId)
+    public List<PlanTeamHistory> findByPlanId(long planId)
         throws SystemException {
         return findByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -630,7 +630,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the range of matching plan team histories
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanTeamHistory> findByPlanId(Long planId, int start, int end)
+    public List<PlanTeamHistory> findByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByPlanId(planId, start, end, null);
     }
@@ -649,7 +649,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the ordered range of matching plan team histories
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanTeamHistory> findByPlanId(Long planId, int start, int end,
+    public List<PlanTeamHistory> findByPlanId(long planId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -699,7 +699,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanTeamHistory>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -734,7 +734,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory findByPlanId_First(Long planId,
+    public PlanTeamHistory findByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTeamHistoryException, SystemException {
         List<PlanTeamHistory> list = findByPlanId(planId, 0, 1,
@@ -769,7 +769,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory findByPlanId_Last(Long planId,
+    public PlanTeamHistory findByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTeamHistoryException, SystemException {
         int count = countByPlanId(planId);
@@ -807,7 +807,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory[] findByPlanId_PrevAndNext(Long id, Long planId,
+    public PlanTeamHistory[] findByPlanId_PrevAndNext(long id, long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTeamHistoryException, SystemException {
         PlanTeamHistory planTeamHistory = findByPrimaryKey(id);
@@ -836,7 +836,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
     }
 
     protected PlanTeamHistory getByPlanId_PrevAndNext(Session session,
-        PlanTeamHistory planTeamHistory, Long planId,
+        PlanTeamHistory planTeamHistory, long planId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -913,7 +913,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planTeamHistory);
@@ -941,7 +941,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory findByLastUserActionInPlan(Long planId, Long userId)
+    public PlanTeamHistory findByLastUserActionInPlan(long planId, long userId)
         throws NoSuchPlanTeamHistoryException, SystemException {
         PlanTeamHistory planTeamHistory = fetchByLastUserActionInPlan(planId,
                 userId);
@@ -977,7 +977,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the matching plan team history, or <code>null</code> if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory fetchByLastUserActionInPlan(Long planId, Long userId)
+    public PlanTeamHistory fetchByLastUserActionInPlan(long planId, long userId)
         throws SystemException {
         return fetchByLastUserActionInPlan(planId, userId, true);
     }
@@ -991,8 +991,8 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the matching plan team history, or <code>null</code> if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory fetchByLastUserActionInPlan(Long planId,
-        Long userId, boolean retrieveFromCache) throws SystemException {
+    public PlanTeamHistory fetchByLastUserActionInPlan(long planId,
+        long userId, boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId, userId };
 
         Object result = null;
@@ -1024,9 +1024,9 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 List<PlanTeamHistory> list = q.list();
 
@@ -1184,7 +1184,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanId(Long planId) throws SystemException {
+    public void removeByPlanId(long planId) throws SystemException {
         for (PlanTeamHistory planTeamHistory : findByPlanId(planId)) {
             remove(planTeamHistory);
         }
@@ -1197,7 +1197,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByLastUserActionInPlan(Long planId, Long userId)
+    public void removeByLastUserActionInPlan(long planId, long userId)
         throws NoSuchPlanTeamHistoryException, SystemException {
         PlanTeamHistory planTeamHistory = findByLastUserActionInPlan(planId,
                 userId);
@@ -1223,7 +1223,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the number of matching plan team histories
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanId(Long planId) throws SystemException {
+    public int countByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANID,
@@ -1247,7 +1247,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1275,7 +1275,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the number of matching plan team histories
      * @throws SystemException if a system exception occurred
      */
-    public int countByLastUserActionInPlan(Long planId, Long userId)
+    public int countByLastUserActionInPlan(long planId, long userId)
         throws SystemException {
         Object[] finderArgs = new Object[] { planId, userId };
 
@@ -1302,9 +1302,9 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

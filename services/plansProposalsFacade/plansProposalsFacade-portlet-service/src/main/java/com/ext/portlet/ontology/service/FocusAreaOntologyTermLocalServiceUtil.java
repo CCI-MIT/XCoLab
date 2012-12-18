@@ -272,6 +272,26 @@ public class FocusAreaOntologyTermLocalServiceUtil {
         getService().removeAreaTerm(focusAreaId, termId);
     }
 
+    public static void store(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(faot);
+    }
+
+    public static com.ext.portlet.ontology.model.OntologyTerm getTerm(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getTerm(faot);
+    }
+
+    public static com.ext.portlet.ontology.model.FocusArea getArea(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getArea(faot);
+    }
+
     public static void clearService() {
         _service = null;
     }

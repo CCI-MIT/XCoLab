@@ -35,10 +35,10 @@ public class PlanPropertyFilterLocalServiceClp
                 com.ext.portlet.plans.model.PlanPropertyFilter.class);
 
         _createPlanPropertyFilterMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanPropertyFilter", java.lang.Long.class);
+                "createPlanPropertyFilter", long.class);
 
         _deletePlanPropertyFilterMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanPropertyFilter", java.lang.Long.class);
+                "deletePlanPropertyFilter", long.class);
 
         _deletePlanPropertyFilterMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanPropertyFilter",
@@ -64,10 +64,10 @@ public class PlanPropertyFilterLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanPropertyFilterMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanPropertyFilter", java.lang.Long.class);
+                "fetchPlanPropertyFilter", long.class);
 
         _getPlanPropertyFilterMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanPropertyFilter", java.lang.Long.class);
+                "getPlanPropertyFilter", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -125,11 +125,11 @@ public class PlanPropertyFilterLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanPropertyFilter createPlanPropertyFilter(
-        java.lang.Long planPropertyFilterId) {
+        long planPropertyFilterId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanPropertyFilterMethodKey1,
-                ClpSerializer.translateInput(planPropertyFilterId));
+                planPropertyFilterId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -145,11 +145,11 @@ public class PlanPropertyFilterLocalServiceClp
         return (com.ext.portlet.plans.model.PlanPropertyFilter) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanPropertyFilter(java.lang.Long planPropertyFilterId)
+    public void deletePlanPropertyFilter(long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanPropertyFilterMethodKey2,
-                ClpSerializer.translateInput(planPropertyFilterId));
+                planPropertyFilterId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -304,12 +304,12 @@ public class PlanPropertyFilterLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanPropertyFilter fetchPlanPropertyFilter(
-        java.lang.Long planPropertyFilterId)
+        long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanPropertyFilterMethodKey8,
-                ClpSerializer.translateInput(planPropertyFilterId));
+                planPropertyFilterId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -330,13 +330,13 @@ public class PlanPropertyFilterLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanPropertyFilter getPlanPropertyFilter(
-        java.lang.Long planPropertyFilterId)
+        long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanPropertyFilterMethodKey9,
-                ClpSerializer.translateInput(planPropertyFilterId));
+                planPropertyFilterId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

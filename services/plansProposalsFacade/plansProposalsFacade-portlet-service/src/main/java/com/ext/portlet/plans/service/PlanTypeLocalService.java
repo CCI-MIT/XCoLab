@@ -47,8 +47,7 @@ public interface PlanTypeLocalService extends PersistedModelLocalService {
     * @param planTypeId the primary key for the new plan type
     * @return the new plan type
     */
-    public com.ext.portlet.plans.model.PlanType createPlanType(
-        java.lang.Long planTypeId);
+    public com.ext.portlet.plans.model.PlanType createPlanType(long planTypeId);
 
     /**
     * Deletes the plan type with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +56,7 @@ public interface PlanTypeLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanType(java.lang.Long planTypeId)
+    public void deletePlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -133,8 +132,7 @@ public interface PlanTypeLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanType fetchPlanType(
-        java.lang.Long planTypeId)
+    public com.ext.portlet.plans.model.PlanType fetchPlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -146,8 +144,7 @@ public interface PlanTypeLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanType getPlanType(
-        java.lang.Long planTypeId)
+    public com.ext.portlet.plans.model.PlanType getPlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -238,5 +235,29 @@ public interface PlanTypeLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean isRegionalType(long planTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public edu.mit.cci.simulation.client.Simulation getDefaultModel(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getColumns(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getAttributes(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isRegional(com.ext.portlet.plans.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

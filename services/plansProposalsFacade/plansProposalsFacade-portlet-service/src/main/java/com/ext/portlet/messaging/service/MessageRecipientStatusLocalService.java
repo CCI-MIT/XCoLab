@@ -49,7 +49,7 @@ public interface MessageRecipientStatusLocalService
     * @return the new message recipient status
     */
     public com.ext.portlet.messaging.model.MessageRecipientStatus createMessageRecipientStatus(
-        java.lang.Long messageRecipientId);
+        long messageRecipientId);
 
     /**
     * Deletes the message recipient status with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface MessageRecipientStatusLocalService
     * @throws PortalException if a message recipient status with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessageRecipientStatus(java.lang.Long messageRecipientId)
+    public void deleteMessageRecipientStatus(long messageRecipientId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,7 +136,7 @@ public interface MessageRecipientStatusLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.messaging.model.MessageRecipientStatus fetchMessageRecipientStatus(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -149,7 +149,7 @@ public interface MessageRecipientStatusLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.messaging.model.MessageRecipientStatus getMessageRecipientStatus(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

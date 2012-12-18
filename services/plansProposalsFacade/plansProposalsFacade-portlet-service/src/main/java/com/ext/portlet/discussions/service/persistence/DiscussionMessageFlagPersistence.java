@@ -46,7 +46,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @return the new discussion message flag
     */
     public com.ext.portlet.discussions.model.DiscussionMessageFlag create(
-        java.lang.Long pk);
+        long pk);
 
     /**
     * Removes the discussion message flag with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionMessageFlag remove(
-        java.lang.Long pk)
+        long pk)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +75,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionMessageFlag findByPrimaryKey(
-        java.lang.Long pk)
+        long pk)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,8 +87,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionMessageFlag fetchByPrimaryKey(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long pk) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the discussion message flags where messageId = &#63;.
@@ -98,7 +97,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.discussions.model.DiscussionMessageFlag> findByMessageId(
-        java.lang.Long messageId)
+        long messageId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -115,7 +114,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.discussions.model.DiscussionMessageFlag> findByMessageId(
-        java.lang.Long messageId, int start, int end)
+        long messageId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -133,7 +132,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.discussions.model.DiscussionMessageFlag> findByMessageId(
-        java.lang.Long messageId, int start, int end,
+        long messageId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -151,7 +150,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionMessageFlag findByMessageId_First(
-        java.lang.Long messageId,
+        long messageId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -170,7 +169,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionMessageFlag findByMessageId_Last(
-        java.lang.Long messageId,
+        long messageId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -190,7 +189,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionMessageFlag[] findByMessageId_PrevAndNext(
-        java.lang.Long pk, java.lang.Long messageId,
+        long pk, long messageId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.discussions.NoSuchDiscussionMessageFlagException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -244,7 +243,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @param messageId the message ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByMessageId(java.lang.Long messageId)
+    public void removeByMessageId(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -262,7 +261,7 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @return the number of matching discussion message flags
     * @throws SystemException if a system exception occurred
     */
-    public int countByMessageId(java.lang.Long messageId)
+    public int countByMessageId(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

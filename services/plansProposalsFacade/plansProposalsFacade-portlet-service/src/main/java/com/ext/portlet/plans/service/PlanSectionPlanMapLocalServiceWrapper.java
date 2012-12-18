@@ -253,6 +253,11 @@ public class PlanSectionPlanMapLocalServiceWrapper
         return _planSectionPlanMapLocalService.findPlanIdsForSection(sectionId);
     }
 
+    public void store(com.ext.portlet.plans.model.PlanSectionPlanMap pspm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planSectionPlanMapLocalService.store(pspm);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

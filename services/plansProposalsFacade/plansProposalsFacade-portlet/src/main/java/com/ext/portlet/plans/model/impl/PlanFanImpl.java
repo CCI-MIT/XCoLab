@@ -26,20 +26,5 @@ public class PlanFanImpl extends PlanFanBaseImpl {
      */
     public PlanFanImpl() {
     }
-    public void store() throws SystemException {
-        if (isNew()) {
-            PlanFanLocalServiceUtil.addPlanFan(this);
-        }
-        else {
-            PlanFanLocalServiceUtil.updatePlanFan(this);
-        }
-    }
-    
-    public User getUser() throws PortalException, SystemException {
-        return UserLocalServiceUtil.getUser(getUserId());
-    }
-    
-    public PlanItem getPlan() throws NoSuchPlanItemException, SystemException {
-        return PlanItemLocalServiceUtil.getPlan(getPlanId());
-    }
+
 }

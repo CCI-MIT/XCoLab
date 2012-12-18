@@ -21,12 +21,4 @@ public class PlanVoteImpl extends PlanVoteBaseImpl {
     public PlanVoteImpl() {
     }
 
-    public void store() throws SystemException {
-        if (isNew()) {
-            PlanVoteLocalServiceUtil.addPlanVote(this);
-        }
-        else {
-            PlanVoteLocalServiceUtil.updatePlanVote(this);
-        }
-    }
 }

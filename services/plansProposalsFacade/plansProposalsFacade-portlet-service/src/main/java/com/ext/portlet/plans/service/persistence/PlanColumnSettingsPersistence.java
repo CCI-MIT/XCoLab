@@ -46,7 +46,7 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @return the new plan column settings
     */
     public com.ext.portlet.plans.model.PlanColumnSettings create(
-        java.lang.Long planColumnSettingsId);
+        long planColumnSettingsId);
 
     /**
     * Removes the plan column settings with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanColumnSettings remove(
-        java.lang.Long planColumnSettingsId)
+        long planColumnSettingsId)
         throws com.ext.portlet.plans.NoSuchPlanColumnSettingsException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +75,7 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanColumnSettings findByPrimaryKey(
-        java.lang.Long planColumnSettingsId)
+        long planColumnSettingsId)
         throws com.ext.portlet.plans.NoSuchPlanColumnSettingsException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,7 +87,7 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanColumnSettings fetchByPrimaryKey(
-        java.lang.Long planColumnSettingsId)
+        long planColumnSettingsId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -100,7 +100,7 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanColumnSettings findByPlanUserSettingsIdColumnName(
-        java.lang.Long planUserSettingsId, java.lang.String columnName)
+        long planUserSettingsId, java.lang.String columnName)
         throws com.ext.portlet.plans.NoSuchPlanColumnSettingsException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -113,7 +113,7 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanColumnSettings fetchByPlanUserSettingsIdColumnName(
-        java.lang.Long planUserSettingsId, java.lang.String columnName)
+        long planUserSettingsId, java.lang.String columnName)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -126,7 +126,7 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanColumnSettings fetchByPlanUserSettingsIdColumnName(
-        java.lang.Long planUserSettingsId, java.lang.String columnName,
+        long planUserSettingsId, java.lang.String columnName,
         boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -180,8 +180,8 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @param columnName the column name
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanUserSettingsIdColumnName(
-        java.lang.Long planUserSettingsId, java.lang.String columnName)
+    public void removeByPlanUserSettingsIdColumnName(long planUserSettingsId,
+        java.lang.String columnName)
         throws com.ext.portlet.plans.NoSuchPlanColumnSettingsException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -201,8 +201,8 @@ public interface PlanColumnSettingsPersistence extends BasePersistence<PlanColum
     * @return the number of matching plan column settingses
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanUserSettingsIdColumnName(
-        java.lang.Long planUserSettingsId, java.lang.String columnName)
+    public int countByPlanUserSettingsIdColumnName(long planUserSettingsId,
+        java.lang.String columnName)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

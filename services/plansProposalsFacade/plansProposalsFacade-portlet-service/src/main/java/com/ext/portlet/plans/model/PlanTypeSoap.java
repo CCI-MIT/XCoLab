@@ -13,16 +13,16 @@ import java.util.List;
  * @generated
  */
 public class PlanTypeSoap implements Serializable {
-    private Long _planTypeId;
+    private long _planTypeId;
     private String _name;
     private String _description;
-    private Long _modelId;
+    private long _modelId;
     private String _modelTypeName;
-    private Boolean _published;
-    private Long _publishedCounterpartId;
-    private Boolean _isDefault;
-    private Long _defaultModelId;
-    private Long _defaultScenarioId;
+    private boolean _published;
+    private long _publishedCounterpartId;
+    private boolean _isDefault;
+    private long _defaultModelId;
+    private long _defaultScenarioId;
 
     public PlanTypeSoap() {
     }
@@ -80,19 +80,19 @@ public class PlanTypeSoap implements Serializable {
         return soapModels.toArray(new PlanTypeSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTypeId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setPlanTypeId(pk);
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
@@ -112,11 +112,11 @@ public class PlanTypeSoap implements Serializable {
         _description = description;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
@@ -128,43 +128,51 @@ public class PlanTypeSoap implements Serializable {
         _modelTypeName = modelTypeName;
     }
 
-    public Boolean getPublished() {
+    public boolean getPublished() {
         return _published;
     }
 
-    public void setPublished(Boolean published) {
+    public boolean isPublished() {
+        return _published;
+    }
+
+    public void setPublished(boolean published) {
         _published = published;
     }
 
-    public Long getPublishedCounterpartId() {
+    public long getPublishedCounterpartId() {
         return _publishedCounterpartId;
     }
 
-    public void setPublishedCounterpartId(Long publishedCounterpartId) {
+    public void setPublishedCounterpartId(long publishedCounterpartId) {
         _publishedCounterpartId = publishedCounterpartId;
     }
 
-    public Boolean getIsDefault() {
+    public boolean getIsDefault() {
         return _isDefault;
     }
 
-    public void setIsDefault(Boolean isDefault) {
+    public boolean isIsDefault() {
+        return _isDefault;
+    }
+
+    public void setIsDefault(boolean isDefault) {
         _isDefault = isDefault;
     }
 
-    public Long getDefaultModelId() {
+    public long getDefaultModelId() {
         return _defaultModelId;
     }
 
-    public void setDefaultModelId(Long defaultModelId) {
+    public void setDefaultModelId(long defaultModelId) {
         _defaultModelId = defaultModelId;
     }
 
-    public Long getDefaultScenarioId() {
+    public long getDefaultScenarioId() {
         return _defaultScenarioId;
     }
 
-    public void setDefaultScenarioId(Long defaultScenarioId) {
+    public void setDefaultScenarioId(long defaultScenarioId) {
         _defaultScenarioId = defaultScenarioId;
     }
 }

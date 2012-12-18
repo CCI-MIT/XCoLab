@@ -21,24 +21,4 @@ public class PlanMetaImpl extends PlanMetaBaseImpl {
     public PlanMetaImpl() {
     }
 
-    public void store() throws SystemException {
-        if (this.isNew()) {
-            PlanMetaLocalServiceUtil.addPlanMeta(this);
-        }
-        else {
-            PlanMetaLocalServiceUtil.updatePlanMeta(this);
-        }
-    }
-    
-    public void vote() throws SystemException {
-        int votes = this.getVotes();
-        this.setVotes(votes + 1);
-        store();
-    }
-    
-    public void unvote() throws SystemException {
-        int votes = this.getVotes();
-        this.setVotes(Math.max(votes - 1, 0));
-        store();
-    }
 }

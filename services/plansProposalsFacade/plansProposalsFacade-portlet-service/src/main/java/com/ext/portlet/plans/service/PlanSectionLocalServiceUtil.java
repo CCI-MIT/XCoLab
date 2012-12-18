@@ -47,7 +47,7 @@ public class PlanSectionLocalServiceUtil {
     * @return the new plan section
     */
     public static com.ext.portlet.plans.model.PlanSection createPlanSection(
-        java.lang.Long id) {
+        long id) {
         return getService().createPlanSection(id);
     }
 
@@ -58,7 +58,7 @@ public class PlanSectionLocalServiceUtil {
     * @throws PortalException if a plan section with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanSection(java.lang.Long id)
+    public static void deletePlanSection(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanSection(id);
@@ -148,8 +148,7 @@ public class PlanSectionLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanSection fetchPlanSection(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanSection(id);
     }
 
@@ -162,7 +161,7 @@ public class PlanSectionLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSection getPlanSection(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanSection(id);
@@ -308,6 +307,31 @@ public class PlanSectionLocalServiceUtil {
         com.ext.portlet.plans.model.PlanSectionDefinition def)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getAllForPlanDefinition(plan, def);
+    }
+
+    public static void store(com.ext.portlet.plans.model.PlanSection ps)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(ps);
+    }
+
+    public static com.ext.portlet.plans.model.PlanSectionDefinition getDefinition(
+        com.ext.portlet.plans.model.PlanSection ps)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getDefinition(ps);
+    }
+
+    public static void addPlanReference(
+        com.ext.portlet.plans.model.PlanSection ps, java.lang.Long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().addPlanReference(ps, planId);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanItem> getReferencedPlans(
+        com.ext.portlet.plans.model.PlanSection ps)
+        throws com.ext.portlet.plans.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getReferencedPlans(ps);
     }
 
     public static void clearService() {

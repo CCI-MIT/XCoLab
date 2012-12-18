@@ -13,11 +13,11 @@ import java.util.List;
  * @generated
  */
 public class ContestPhaseColumnSoap implements Serializable {
-    private Long _id;
-    private Long _ContestPhasePK;
+    private long _id;
+    private long _ContestPhasePK;
     private String _columnName;
-    private Integer _columnWeight;
-    private Boolean _defaultSort;
+    private int _columnWeight;
+    private boolean _defaultSort;
 
     public ContestPhaseColumnSoap() {
     }
@@ -73,27 +73,27 @@ public class ContestPhaseColumnSoap implements Serializable {
         return soapModels.toArray(new ContestPhaseColumnSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getContestPhasePK() {
+    public long getContestPhasePK() {
         return _ContestPhasePK;
     }
 
-    public void setContestPhasePK(Long ContestPhasePK) {
+    public void setContestPhasePK(long ContestPhasePK) {
         _ContestPhasePK = ContestPhasePK;
     }
 
@@ -105,19 +105,23 @@ public class ContestPhaseColumnSoap implements Serializable {
         _columnName = columnName;
     }
 
-    public Integer getColumnWeight() {
+    public int getColumnWeight() {
         return _columnWeight;
     }
 
-    public void setColumnWeight(Integer columnWeight) {
+    public void setColumnWeight(int columnWeight) {
         _columnWeight = columnWeight;
     }
 
-    public Boolean getDefaultSort() {
+    public boolean getDefaultSort() {
         return _defaultSort;
     }
 
-    public void setDefaultSort(Boolean defaultSort) {
+    public boolean isDefaultSort() {
+        return _defaultSort;
+    }
+
+    public void setDefaultSort(boolean defaultSort) {
         _defaultSort = defaultSort;
     }
 }

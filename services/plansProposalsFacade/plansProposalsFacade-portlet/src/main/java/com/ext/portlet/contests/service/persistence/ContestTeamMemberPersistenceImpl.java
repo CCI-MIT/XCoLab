@@ -230,7 +230,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @param id the primary key for the new contest team member
      * @return the new contest team member
      */
-    public ContestTeamMember create(Long id) {
+    public ContestTeamMember create(long id) {
         ContestTeamMember contestTeamMember = new ContestTeamMemberImpl();
 
         contestTeamMember.setNew(true);
@@ -247,9 +247,9 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @throws com.ext.portlet.contests.NoSuchContestTeamMemberException if a contest team member with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestTeamMember remove(Long id)
+    public ContestTeamMember remove(long id)
         throws NoSuchContestTeamMemberException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -401,7 +401,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
     @Override
     public ContestTeamMember findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -412,7 +412,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @throws com.ext.portlet.contests.NoSuchContestTeamMemberException if a contest team member with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestTeamMember findByPrimaryKey(Long id)
+    public ContestTeamMember findByPrimaryKey(long id)
         throws NoSuchContestTeamMemberException, SystemException {
         ContestTeamMember contestTeamMember = fetchByPrimaryKey(id);
 
@@ -438,7 +438,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
     @Override
     public ContestTeamMember fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -448,7 +448,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @return the contest team member, or <code>null</code> if a contest team member with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestTeamMember fetchByPrimaryKey(Long id)
+    public ContestTeamMember fetchByPrimaryKey(long id)
         throws SystemException {
         ContestTeamMember contestTeamMember = (ContestTeamMember) EntityCacheUtil.getResult(ContestTeamMemberModelImpl.ENTITY_CACHE_ENABLED,
                 ContestTeamMemberImpl.class, id);
@@ -493,7 +493,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @return the matching contest team members
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestTeamMember> findByContestId(Long contestId)
+    public List<ContestTeamMember> findByContestId(long contestId)
         throws SystemException {
         return findByContestId(contestId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -512,7 +512,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @return the range of matching contest team members
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestTeamMember> findByContestId(Long contestId, int start,
+    public List<ContestTeamMember> findByContestId(long contestId, int start,
         int end) throws SystemException {
         return findByContestId(contestId, start, end, null);
     }
@@ -531,7 +531,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @return the ordered range of matching contest team members
      * @throws SystemException if a system exception occurred
      */
-    public List<ContestTeamMember> findByContestId(Long contestId, int start,
+    public List<ContestTeamMember> findByContestId(long contestId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -581,7 +581,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestId.longValue());
+                qPos.add(contestId);
 
                 list = (List<ContestTeamMember>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -616,7 +616,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @throws com.ext.portlet.contests.NoSuchContestTeamMemberException if a matching contest team member could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestTeamMember findByContestId_First(Long contestId,
+    public ContestTeamMember findByContestId_First(long contestId,
         OrderByComparator orderByComparator)
         throws NoSuchContestTeamMemberException, SystemException {
         List<ContestTeamMember> list = findByContestId(contestId, 0, 1,
@@ -651,7 +651,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @throws com.ext.portlet.contests.NoSuchContestTeamMemberException if a matching contest team member could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestTeamMember findByContestId_Last(Long contestId,
+    public ContestTeamMember findByContestId_Last(long contestId,
         OrderByComparator orderByComparator)
         throws NoSuchContestTeamMemberException, SystemException {
         int count = countByContestId(contestId);
@@ -689,8 +689,8 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @throws com.ext.portlet.contests.NoSuchContestTeamMemberException if a contest team member with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestTeamMember[] findByContestId_PrevAndNext(Long id,
-        Long contestId, OrderByComparator orderByComparator)
+    public ContestTeamMember[] findByContestId_PrevAndNext(long id,
+        long contestId, OrderByComparator orderByComparator)
         throws NoSuchContestTeamMemberException, SystemException {
         ContestTeamMember contestTeamMember = findByPrimaryKey(id);
 
@@ -718,7 +718,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
     }
 
     protected ContestTeamMember getByContestId_PrevAndNext(Session session,
-        ContestTeamMember contestTeamMember, Long contestId,
+        ContestTeamMember contestTeamMember, long contestId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -795,7 +795,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(contestId.longValue());
+        qPos.add(contestId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(contestTeamMember);
@@ -929,7 +929,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @param contestId the contest ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByContestId(Long contestId) throws SystemException {
+    public void removeByContestId(long contestId) throws SystemException {
         for (ContestTeamMember contestTeamMember : findByContestId(contestId)) {
             remove(contestTeamMember);
         }
@@ -953,7 +953,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
      * @return the number of matching contest team members
      * @throws SystemException if a system exception occurred
      */
-    public int countByContestId(Long contestId) throws SystemException {
+    public int countByContestId(long contestId) throws SystemException {
         Object[] finderArgs = new Object[] { contestId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONTESTID,
@@ -977,7 +977,7 @@ public class ContestTeamMemberPersistenceImpl extends BasePersistenceImpl<Contes
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestId.longValue());
+                qPos.add(contestId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

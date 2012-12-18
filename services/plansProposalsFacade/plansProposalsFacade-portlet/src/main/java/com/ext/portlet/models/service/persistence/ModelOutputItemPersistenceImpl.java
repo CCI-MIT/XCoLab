@@ -239,7 +239,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @param modelOutputItemModifierPK the primary key for the new model output item
      * @return the new model output item
      */
-    public ModelOutputItem create(Long modelOutputItemModifierPK) {
+    public ModelOutputItem create(long modelOutputItemModifierPK) {
         ModelOutputItem modelOutputItem = new ModelOutputItemImpl();
 
         modelOutputItem.setNew(true);
@@ -256,9 +256,9 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @throws com.ext.portlet.models.NoSuchModelOutputItemException if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputItem remove(Long modelOutputItemModifierPK)
+    public ModelOutputItem remove(long modelOutputItemModifierPK)
         throws NoSuchModelOutputItemException, SystemException {
-        return remove((Serializable) modelOutputItemModifierPK);
+        return remove(Long.valueOf(modelOutputItemModifierPK));
     }
 
     /**
@@ -401,7 +401,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
         modelOutputItemImpl.setModelItemErrorPolicy(modelOutputItem.getModelItemErrorPolicy());
         modelOutputItemImpl.setModelItemErrorMessage(modelOutputItem.getModelItemErrorMessage());
         modelOutputItemImpl.setModelItemLabelFormat(modelOutputItem.getModelItemLabelFormat());
-        modelOutputItemImpl.setModelItemIsVisible(modelOutputItem.getModelItemIsVisible());
+        modelOutputItemImpl.setModelItemIsVisible(modelOutputItem.isModelItemIsVisible());
         modelOutputItemImpl.setItemType(modelOutputItem.getItemType());
         modelOutputItemImpl.setRelatedOutputItem(modelOutputItem.getRelatedOutputItem());
 
@@ -419,7 +419,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
     @Override
     public ModelOutputItem findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -430,7 +430,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @throws com.ext.portlet.models.NoSuchModelOutputItemException if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputItem findByPrimaryKey(Long modelOutputItemModifierPK)
+    public ModelOutputItem findByPrimaryKey(long modelOutputItemModifierPK)
         throws NoSuchModelOutputItemException, SystemException {
         ModelOutputItem modelOutputItem = fetchByPrimaryKey(modelOutputItemModifierPK);
 
@@ -457,7 +457,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
     @Override
     public ModelOutputItem fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -467,7 +467,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the model output item, or <code>null</code> if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputItem fetchByPrimaryKey(Long modelOutputItemModifierPK)
+    public ModelOutputItem fetchByPrimaryKey(long modelOutputItemModifierPK)
         throws SystemException {
         ModelOutputItem modelOutputItem = (ModelOutputItem) EntityCacheUtil.getResult(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
                 ModelOutputItemImpl.class, modelOutputItemModifierPK);
@@ -514,7 +514,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @throws com.ext.portlet.models.NoSuchModelOutputItemException if a matching model output item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputItem findByModelOutputId(Long modelOutputItemId)
+    public ModelOutputItem findByModelOutputId(long modelOutputItemId)
         throws NoSuchModelOutputItemException, SystemException {
         ModelOutputItem modelOutputItem = fetchByModelOutputId(modelOutputItemId);
 
@@ -545,7 +545,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputItem fetchByModelOutputId(Long modelOutputItemId)
+    public ModelOutputItem fetchByModelOutputId(long modelOutputItemId)
         throws SystemException {
         return fetchByModelOutputId(modelOutputItemId, true);
     }
@@ -558,7 +558,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelOutputItem fetchByModelOutputId(Long modelOutputItemId,
+    public ModelOutputItem fetchByModelOutputId(long modelOutputItemId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { modelOutputItemId };
 
@@ -587,7 +587,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelOutputItemId.longValue());
+                qPos.add(modelOutputItemId);
 
                 List<ModelOutputItem> list = q.list();
 
@@ -744,7 +744,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @param modelOutputItemId the model output item ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByModelOutputId(Long modelOutputItemId)
+    public void removeByModelOutputId(long modelOutputItemId)
         throws NoSuchModelOutputItemException, SystemException {
         ModelOutputItem modelOutputItem = findByModelOutputId(modelOutputItemId);
 
@@ -769,7 +769,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the number of matching model output items
      * @throws SystemException if a system exception occurred
      */
-    public int countByModelOutputId(Long modelOutputItemId)
+    public int countByModelOutputId(long modelOutputItemId)
         throws SystemException {
         Object[] finderArgs = new Object[] { modelOutputItemId };
 
@@ -794,7 +794,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(modelOutputItemId.longValue());
+                qPos.add(modelOutputItemId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

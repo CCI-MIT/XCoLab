@@ -9,3 +9,9 @@ Liferay.Service.register("Liferay.Service.Discussions", "com.ext.portlet.discuss
 Liferay.Service.register("Liferay.Service.ontology", "com.ext.portlet.ontology.service", "plansProposalsFacade-portlet");
 
 Liferay.Service.register("Liferay.Service.Models", "com.ext.portlet.models.service", "plansProposalsFacade-portlet");
+
+Liferay.Service.register("Liferay.Service.Activity", "com.ext.portlet.Activity.service", "plansProposalsFacade-portlet");
+
+Liferay.Service.register("Liferay.Service.Messaging", "com.ext.portlet.messaging.service", "plansProposalsFacade-portlet");
+
+Liferay.Service.register("Liferay.Service.xcolab", "com.ext.portlet.plans.service", "plansProposalsFacade-portlet");

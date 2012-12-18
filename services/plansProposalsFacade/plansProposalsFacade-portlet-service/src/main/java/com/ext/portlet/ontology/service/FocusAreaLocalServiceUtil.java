@@ -47,7 +47,7 @@ public class FocusAreaLocalServiceUtil {
     * @return the new focus area
     */
     public static com.ext.portlet.ontology.model.FocusArea createFocusArea(
-        java.lang.Long id) {
+        long id) {
         return getService().createFocusArea(id);
     }
 
@@ -58,7 +58,7 @@ public class FocusAreaLocalServiceUtil {
     * @throws PortalException if a focus area with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteFocusArea(java.lang.Long id)
+    public static void deleteFocusArea(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteFocusArea(id);
@@ -148,8 +148,7 @@ public class FocusAreaLocalServiceUtil {
     }
 
     public static com.ext.portlet.ontology.model.FocusArea fetchFocusArea(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchFocusArea(id);
     }
 
@@ -161,8 +160,7 @@ public class FocusAreaLocalServiceUtil {
     * @throws PortalException if a focus area with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.ontology.model.FocusArea getFocusArea(
-        java.lang.Long id)
+    public static com.ext.portlet.ontology.model.FocusArea getFocusArea(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getFocusArea(id);
@@ -247,6 +245,42 @@ public class FocusAreaLocalServiceUtil {
     */
     public static void setBeanIdentifier(java.lang.String beanIdentifier) {
         getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static void store(com.ext.portlet.ontology.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(focusArea);
+    }
+
+    public static java.util.List<com.ext.portlet.ontology.model.OntologyTerm> getTerms(
+        com.ext.portlet.ontology.model.FocusArea focusArea)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getTerms(focusArea);
+    }
+
+    public static void removeTerm(
+        com.ext.portlet.ontology.model.FocusArea focusArea,
+        java.lang.Long termId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().removeTerm(focusArea, termId);
+    }
+
+    public static void addTerm(
+        com.ext.portlet.ontology.model.FocusArea focusArea,
+        java.lang.Long termId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().addTerm(focusArea, termId);
+    }
+
+    public static void tagClass(
+        com.ext.portlet.ontology.model.FocusArea focusArea,
+        java.lang.Class clasz, java.lang.Long pk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().tagClass(focusArea, clasz, pk);
     }
 
     public static void clearService() {

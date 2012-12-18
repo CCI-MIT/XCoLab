@@ -17,9 +17,9 @@ import java.io.Serializable;
  */
 public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember>,
     Serializable {
-    public Long id;
-    public Long contestId;
-    public Long userId;
+    public long id;
+    public long contestId;
+    public long userId;
     public String role;
 
     @Override

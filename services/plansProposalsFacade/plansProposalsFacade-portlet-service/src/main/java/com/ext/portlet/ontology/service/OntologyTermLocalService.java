@@ -48,7 +48,7 @@ public interface OntologyTermLocalService extends PersistedModelLocalService {
     * @return the new ontology term
     */
     public com.ext.portlet.ontology.model.OntologyTerm createOntologyTerm(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the ontology term with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface OntologyTermLocalService extends PersistedModelLocalService {
     * @throws PortalException if a ontology term with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteOntologyTerm(java.lang.Long id)
+    public void deleteOntologyTerm(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,8 +135,7 @@ public interface OntologyTermLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.ontology.model.OntologyTerm fetchOntologyTerm(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the ontology term with the primary key.
@@ -147,8 +146,7 @@ public interface OntologyTermLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.ontology.model.OntologyTerm getOntologyTerm(
-        java.lang.Long id)
+    public com.ext.portlet.ontology.model.OntologyTerm getOntologyTerm(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -239,5 +237,40 @@ public interface OntologyTermLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public void clearClassTags(java.lang.Class clasz, java.lang.Long id)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.ontology.model.OntologyTerm getParent(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getChildTermsCount(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.ontology.model.OntologyTerm> getChildTerms(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.ontology.model.OntologySpace getSpace(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void tagClass(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm,
+        java.lang.Class clasz, java.lang.Long id)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public java.util.List<java.lang.Long> findTagedIdsForClass(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm,
+        java.lang.Class clasz)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

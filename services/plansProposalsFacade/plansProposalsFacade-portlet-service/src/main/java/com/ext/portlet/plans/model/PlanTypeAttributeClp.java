@@ -14,8 +14,8 @@ import java.lang.reflect.Proxy;
 
 public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
     implements PlanTypeAttribute {
-    private Long _planTypeAttributeId;
-    private Long _planTypeId;
+    private long _planTypeAttributeId;
+    private long _planTypeId;
     private String _attributeName;
 
     public PlanTypeAttributeClp() {
@@ -29,11 +29,11 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
         return PlanTypeAttribute.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTypeAttributeId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPlanTypeAttributeId(primaryKey);
     }
 
@@ -45,19 +45,19 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPlanTypeAttributeId() {
+    public long getPlanTypeAttributeId() {
         return _planTypeAttributeId;
     }
 
-    public void setPlanTypeAttributeId(Long planTypeAttributeId) {
+    public void setPlanTypeAttributeId(long planTypeAttributeId) {
         _planTypeAttributeId = planTypeAttributeId;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
@@ -96,7 +96,7 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
     }
 
     public int compareTo(PlanTypeAttribute planTypeAttribute) {
-        Long primaryKey = planTypeAttribute.getPrimaryKey();
+        long primaryKey = planTypeAttribute.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -121,7 +121,7 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
             return false;
         }
 
-        Long primaryKey = planTypeAttribute.getPrimaryKey();
+        long primaryKey = planTypeAttribute.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -132,7 +132,7 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -17,8 +18,9 @@ import java.util.Date;
 
 public class PlansFilterClp extends BaseModelImpl<PlansFilter>
     implements PlansFilter {
-    private Long _userId;
-    private Long _planTypeId;
+    private long _userId;
+    private String _userUuid;
+    private long _planTypeId;
     private String _name;
     private String _creator;
     private String _description;
@@ -32,8 +34,8 @@ public class PlansFilterClp extends BaseModelImpl<PlansFilter>
     private Double _mitigationTo;
     private Date _dateFrom;
     private Date _dateTo;
-    private Boolean _filterPositionsAll;
-    private Boolean _enabled;
+    private boolean _filterPositionsAll;
+    private boolean _enabled;
 
     public PlansFilterClp() {
     }
@@ -63,19 +65,27 @@ public class PlansFilterClp extends BaseModelImpl<PlansFilter>
         setPrimaryKey((PlansFilterPK) primaryKeyObj);
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getPlanTypeId() {
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
@@ -183,19 +193,27 @@ public class PlansFilterClp extends BaseModelImpl<PlansFilter>
         _dateTo = dateTo;
     }
 
-    public Boolean getFilterPositionsAll() {
+    public boolean getFilterPositionsAll() {
         return _filterPositionsAll;
     }
 
-    public void setFilterPositionsAll(Boolean filterPositionsAll) {
+    public boolean isFilterPositionsAll() {
+        return _filterPositionsAll;
+    }
+
+    public void setFilterPositionsAll(boolean filterPositionsAll) {
         _filterPositionsAll = filterPositionsAll;
     }
 
-    public Boolean getEnabled() {
+    public boolean getEnabled() {
         return _enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public boolean isEnabled() {
+        return _enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
         _enabled = enabled;
     }
 

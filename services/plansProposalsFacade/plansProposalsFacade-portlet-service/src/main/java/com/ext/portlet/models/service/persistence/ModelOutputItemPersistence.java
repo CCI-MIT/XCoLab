@@ -46,7 +46,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @return the new model output item
     */
     public com.ext.portlet.models.model.ModelOutputItem create(
-        java.lang.Long modelOutputItemModifierPK);
+        long modelOutputItemModifierPK);
 
     /**
     * Removes the model output item with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelOutputItem remove(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.ext.portlet.models.NoSuchModelOutputItemException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +75,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelOutputItem findByPrimaryKey(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.ext.portlet.models.NoSuchModelOutputItemException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,7 +87,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelOutputItem fetchByPrimaryKey(
-        java.lang.Long modelOutputItemModifierPK)
+        long modelOutputItemModifierPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -99,7 +99,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelOutputItem findByModelOutputId(
-        java.lang.Long modelOutputItemId)
+        long modelOutputItemId)
         throws com.ext.portlet.models.NoSuchModelOutputItemException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -111,7 +111,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelOutputItem fetchByModelOutputId(
-        java.lang.Long modelOutputItemId)
+        long modelOutputItemId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -123,7 +123,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelOutputItem fetchByModelOutputId(
-        java.lang.Long modelOutputItemId, boolean retrieveFromCache)
+        long modelOutputItemId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -175,7 +175,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @param modelOutputItemId the model output item ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByModelOutputId(java.lang.Long modelOutputItemId)
+    public void removeByModelOutputId(long modelOutputItemId)
         throws com.ext.portlet.models.NoSuchModelOutputItemException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -194,7 +194,7 @@ public interface ModelOutputItemPersistence extends BasePersistence<ModelOutputI
     * @return the number of matching model output items
     * @throws SystemException if a system exception occurred
     */
-    public int countByModelOutputId(java.lang.Long modelOutputItemId)
+    public int countByModelOutputId(long modelOutputItemId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

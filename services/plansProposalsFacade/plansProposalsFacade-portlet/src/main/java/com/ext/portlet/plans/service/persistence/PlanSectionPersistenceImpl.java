@@ -364,7 +364,7 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @param id the primary key for the new plan section
      * @return the new plan section
      */
-    public PlanSection create(Long id) {
+    public PlanSection create(long id) {
         PlanSection planSection = new PlanSectionImpl();
 
         planSection.setNew(true);
@@ -381,9 +381,9 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @throws com.ext.portlet.plans.NoSuchPlanSectionException if a plan section with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection remove(Long id)
+    public PlanSection remove(long id)
         throws NoSuchPlanSectionException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -594,7 +594,7 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
     @Override
     public PlanSection findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -605,7 +605,7 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @throws com.ext.portlet.plans.NoSuchPlanSectionException if a plan section with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection findByPrimaryKey(Long id)
+    public PlanSection findByPrimaryKey(long id)
         throws NoSuchPlanSectionException, SystemException {
         PlanSection planSection = fetchByPrimaryKey(id);
 
@@ -631,7 +631,7 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
     @Override
     public PlanSection fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -641,7 +641,7 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the plan section, or <code>null</code> if a plan section with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection fetchByPrimaryKey(Long id) throws SystemException {
+    public PlanSection fetchByPrimaryKey(long id) throws SystemException {
         PlanSection planSection = (PlanSection) EntityCacheUtil.getResult(PlanSectionModelImpl.ENTITY_CACHE_ENABLED,
                 PlanSectionImpl.class, id);
 
@@ -686,8 +686,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the matching plan sections
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSection> findByPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId) throws SystemException {
+    public List<PlanSection> findByPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId) throws SystemException {
         return findByPlanIdSectionDefinitionId(planId, planSectionDefinitionId,
             QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -706,8 +706,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the range of matching plan sections
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSection> findByPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId, int start, int end)
+    public List<PlanSection> findByPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId, int start, int end)
         throws SystemException {
         return findByPlanIdSectionDefinitionId(planId, planSectionDefinitionId,
             start, end, null);
@@ -728,8 +728,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the ordered range of matching plan sections
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSection> findByPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId, int start, int end,
+    public List<PlanSection> findByPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -785,9 +785,9 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planSectionDefinitionId.longValue());
+                qPos.add(planSectionDefinitionId);
 
                 list = (List<PlanSection>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -823,8 +823,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @throws com.ext.portlet.plans.NoSuchPlanSectionException if a matching plan section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection findByPlanIdSectionDefinitionId_First(Long planId,
-        Long planSectionDefinitionId, OrderByComparator orderByComparator)
+    public PlanSection findByPlanIdSectionDefinitionId_First(long planId,
+        long planSectionDefinitionId, OrderByComparator orderByComparator)
         throws NoSuchPlanSectionException, SystemException {
         List<PlanSection> list = findByPlanIdSectionDefinitionId(planId,
                 planSectionDefinitionId, 0, 1, orderByComparator);
@@ -862,8 +862,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @throws com.ext.portlet.plans.NoSuchPlanSectionException if a matching plan section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection findByPlanIdSectionDefinitionId_Last(Long planId,
-        Long planSectionDefinitionId, OrderByComparator orderByComparator)
+    public PlanSection findByPlanIdSectionDefinitionId_Last(long planId,
+        long planSectionDefinitionId, OrderByComparator orderByComparator)
         throws NoSuchPlanSectionException, SystemException {
         int count = countByPlanIdSectionDefinitionId(planId,
                 planSectionDefinitionId);
@@ -905,8 +905,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @throws com.ext.portlet.plans.NoSuchPlanSectionException if a plan section with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection[] findByPlanIdSectionDefinitionId_PrevAndNext(Long id,
-        Long planId, Long planSectionDefinitionId,
+    public PlanSection[] findByPlanIdSectionDefinitionId_PrevAndNext(long id,
+        long planId, long planSectionDefinitionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionException, SystemException {
         PlanSection planSection = findByPrimaryKey(id);
@@ -937,8 +937,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
     }
 
     protected PlanSection getByPlanIdSectionDefinitionId_PrevAndNext(
-        Session session, PlanSection planSection, Long planId,
-        Long planSectionDefinitionId, OrderByComparator orderByComparator,
+        Session session, PlanSection planSection, long planId,
+        long planSectionDefinitionId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -1017,9 +1017,9 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
-        qPos.add(planSectionDefinitionId.longValue());
+        qPos.add(planSectionDefinitionId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planSection);
@@ -1047,8 +1047,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @throws com.ext.portlet.plans.NoSuchPlanSectionException if a matching plan section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection findByCurrentPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId)
+    public PlanSection findByCurrentPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId)
         throws NoSuchPlanSectionException, SystemException {
         PlanSection planSection = fetchByCurrentPlanIdSectionDefinitionId(planId,
                 planSectionDefinitionId);
@@ -1084,8 +1084,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the matching plan section, or <code>null</code> if a matching plan section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection fetchByCurrentPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId) throws SystemException {
+    public PlanSection fetchByCurrentPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId) throws SystemException {
         return fetchByCurrentPlanIdSectionDefinitionId(planId,
             planSectionDefinitionId, true);
     }
@@ -1099,8 +1099,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the matching plan section, or <code>null</code> if a matching plan section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection fetchByCurrentPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId, boolean retrieveFromCache)
+    public PlanSection fetchByCurrentPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { planId, planSectionDefinitionId };
 
@@ -1133,9 +1133,9 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planSectionDefinitionId.longValue());
+                qPos.add(planSectionDefinitionId);
 
                 List<PlanSection> list = q.list();
 
@@ -1188,8 +1188,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @throws com.ext.portlet.plans.NoSuchPlanSectionException if a matching plan section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection findByPlanIdPlanVersion(Long planId,
-        Long planSectionDefinitionId, Long planVersion)
+    public PlanSection findByPlanIdPlanVersion(long planId,
+        long planSectionDefinitionId, long planVersion)
         throws NoSuchPlanSectionException, SystemException {
         PlanSection planSection = fetchByPlanIdPlanVersion(planId,
                 planSectionDefinitionId, planVersion);
@@ -1229,8 +1229,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the matching plan section, or <code>null</code> if a matching plan section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection fetchByPlanIdPlanVersion(Long planId,
-        Long planSectionDefinitionId, Long planVersion)
+    public PlanSection fetchByPlanIdPlanVersion(long planId,
+        long planSectionDefinitionId, long planVersion)
         throws SystemException {
         return fetchByPlanIdPlanVersion(planId, planSectionDefinitionId,
             planVersion, true);
@@ -1246,8 +1246,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the matching plan section, or <code>null</code> if a matching plan section could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSection fetchByPlanIdPlanVersion(Long planId,
-        Long planSectionDefinitionId, Long planVersion,
+    public PlanSection fetchByPlanIdPlanVersion(long planId,
+        long planSectionDefinitionId, long planVersion,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] {
                 planId, planSectionDefinitionId, planVersion
@@ -1284,11 +1284,11 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planSectionDefinitionId.longValue());
+                qPos.add(planSectionDefinitionId);
 
-                qPos.add(planVersion.longValue());
+                qPos.add(planVersion);
 
                 List<PlanSection> list = q.list();
 
@@ -1448,8 +1448,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @param planSectionDefinitionId the plan section definition ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId) throws SystemException {
+    public void removeByPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId) throws SystemException {
         for (PlanSection planSection : findByPlanIdSectionDefinitionId(planId,
                 planSectionDefinitionId)) {
             remove(planSection);
@@ -1463,8 +1463,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @param planSectionDefinitionId the plan section definition ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByCurrentPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId)
+    public void removeByCurrentPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId)
         throws NoSuchPlanSectionException, SystemException {
         PlanSection planSection = findByCurrentPlanIdSectionDefinitionId(planId,
                 planSectionDefinitionId);
@@ -1480,8 +1480,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @param planVersion the plan version
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanIdPlanVersion(Long planId,
-        Long planSectionDefinitionId, Long planVersion)
+    public void removeByPlanIdPlanVersion(long planId,
+        long planSectionDefinitionId, long planVersion)
         throws NoSuchPlanSectionException, SystemException {
         PlanSection planSection = findByPlanIdPlanVersion(planId,
                 planSectionDefinitionId, planVersion);
@@ -1508,8 +1508,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the number of matching plan sections
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId) throws SystemException {
+    public int countByPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId) throws SystemException {
         Object[] finderArgs = new Object[] { planId, planSectionDefinitionId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANIDSECTIONDEFINITIONID,
@@ -1535,9 +1535,9 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planSectionDefinitionId.longValue());
+                qPos.add(planSectionDefinitionId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1565,8 +1565,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the number of matching plan sections
      * @throws SystemException if a system exception occurred
      */
-    public int countByCurrentPlanIdSectionDefinitionId(Long planId,
-        Long planSectionDefinitionId) throws SystemException {
+    public int countByCurrentPlanIdSectionDefinitionId(long planId,
+        long planSectionDefinitionId) throws SystemException {
         Object[] finderArgs = new Object[] { planId, planSectionDefinitionId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CURRENTPLANIDSECTIONDEFINITIONID,
@@ -1592,9 +1592,9 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planSectionDefinitionId.longValue());
+                qPos.add(planSectionDefinitionId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1623,8 +1623,8 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
      * @return the number of matching plan sections
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanIdPlanVersion(Long planId,
-        Long planSectionDefinitionId, Long planVersion)
+    public int countByPlanIdPlanVersion(long planId,
+        long planSectionDefinitionId, long planVersion)
         throws SystemException {
         Object[] finderArgs = new Object[] {
                 planId, planSectionDefinitionId, planVersion
@@ -1655,11 +1655,11 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
-                qPos.add(planSectionDefinitionId.longValue());
+                qPos.add(planSectionDefinitionId);
 
-                qPos.add(planVersion.longValue());
+                qPos.add(planVersion);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

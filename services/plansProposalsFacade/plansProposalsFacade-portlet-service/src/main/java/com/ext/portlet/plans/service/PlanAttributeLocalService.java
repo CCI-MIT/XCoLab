@@ -48,7 +48,7 @@ public interface PlanAttributeLocalService extends PersistedModelLocalService {
     * @return the new plan attribute
     */
     public com.ext.portlet.plans.model.PlanAttribute createPlanAttribute(
-        java.lang.Long attributeId);
+        long attributeId);
 
     /**
     * Deletes the plan attribute with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface PlanAttributeLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanAttribute(java.lang.Long attributeId)
+    public void deletePlanAttribute(long attributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,7 +135,7 @@ public interface PlanAttributeLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanAttribute fetchPlanAttribute(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -148,7 +148,7 @@ public interface PlanAttributeLocalService extends PersistedModelLocalService {
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanAttribute getPlanAttribute(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -239,4 +239,8 @@ public interface PlanAttributeLocalService extends PersistedModelLocalService {
     public java.util.List<com.ext.portlet.plans.model.PlanAttribute> getPlanAttributesByNameValue(
         java.lang.String attributeName, java.lang.String attributeValue)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Object getTypedValue(
+        com.ext.portlet.plans.model.PlanAttribute pa);
 }

@@ -41,7 +41,7 @@ public class PlanDescriptionLocalServiceWrapper
     * @return the new plan description
     */
     public com.ext.portlet.plans.model.PlanDescription createPlanDescription(
-        java.lang.Long id) {
+        long id) {
         return _planDescriptionLocalService.createPlanDescription(id);
     }
 
@@ -52,7 +52,7 @@ public class PlanDescriptionLocalServiceWrapper
     * @throws PortalException if a plan description with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanDescription(java.lang.Long id)
+    public void deletePlanDescription(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planDescriptionLocalService.deletePlanDescription(id);
@@ -143,8 +143,7 @@ public class PlanDescriptionLocalServiceWrapper
     }
 
     public com.ext.portlet.plans.model.PlanDescription fetchPlanDescription(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return _planDescriptionLocalService.fetchPlanDescription(id);
     }
 
@@ -157,7 +156,7 @@ public class PlanDescriptionLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanDescription getPlanDescription(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planDescriptionLocalService.getPlanDescription(id);
@@ -296,6 +295,18 @@ public class PlanDescriptionLocalServiceWrapper
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planDescriptionLocalService.createNewVersionForPlanFrom(plan,
             from, store);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanDescription pd)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planDescriptionLocalService.store(pd);
+    }
+
+    public com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanDescription pd)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _planDescriptionLocalService.getUpdateAuthor(pd);
     }
 
     /**

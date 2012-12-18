@@ -339,7 +339,7 @@ public abstract class PlanFanLocalServiceBaseImpl implements PlanFanLocalService
      * @param id the primary key for the new plan fan
      * @return the new plan fan
      */
-    public PlanFan createPlanFan(Long id) {
+    public PlanFan createPlanFan(long id) {
         return planFanPersistence.create(id);
     }
 
@@ -350,7 +350,7 @@ public abstract class PlanFanLocalServiceBaseImpl implements PlanFanLocalService
      * @throws PortalException if a plan fan with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanFan(Long id) throws PortalException, SystemException {
+    public void deletePlanFan(long id) throws PortalException, SystemException {
         PlanFan planFan = planFanPersistence.remove(id);
 
         Indexer indexer = IndexerRegistryUtil.getIndexer(getModelClassName());
@@ -453,7 +453,7 @@ public abstract class PlanFanLocalServiceBaseImpl implements PlanFanLocalService
         return planFanPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanFan fetchPlanFan(Long id) throws SystemException {
+    public PlanFan fetchPlanFan(long id) throws SystemException {
         return planFanPersistence.fetchByPrimaryKey(id);
     }
 
@@ -465,7 +465,7 @@ public abstract class PlanFanLocalServiceBaseImpl implements PlanFanLocalService
      * @throws PortalException if a plan fan with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanFan getPlanFan(Long id) throws PortalException, SystemException {
+    public PlanFan getPlanFan(long id) throws PortalException, SystemException {
         return planFanPersistence.findByPrimaryKey(id);
     }
 

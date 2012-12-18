@@ -17,9 +17,9 @@ import java.io.Serializable;
  */
 public class PlanAttributeFilterCacheModel implements CacheModel<PlanAttributeFilter>,
     Serializable {
-    public Long planAttributeFilterId;
+    public long planAttributeFilterId;
     public String attributeName;
-    public Long planUserSettingsId;
+    public long planUserSettingsId;
     public Double max;
     public Double min;
     public String stringVal;

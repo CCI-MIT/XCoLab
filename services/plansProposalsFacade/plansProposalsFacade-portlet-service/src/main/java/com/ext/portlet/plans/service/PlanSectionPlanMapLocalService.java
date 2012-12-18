@@ -228,4 +228,7 @@ public interface PlanSectionPlanMapLocalService
     public java.util.List<java.lang.Long> findPlanIdsForSection(
         java.lang.Long sectionId)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanSectionPlanMap pspm)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

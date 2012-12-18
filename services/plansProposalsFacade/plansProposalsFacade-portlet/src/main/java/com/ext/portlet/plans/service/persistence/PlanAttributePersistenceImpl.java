@@ -362,7 +362,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @param attributeId the primary key for the new plan attribute
      * @return the new plan attribute
      */
-    public PlanAttribute create(Long attributeId) {
+    public PlanAttribute create(long attributeId) {
         PlanAttribute planAttribute = new PlanAttributeImpl();
 
         planAttribute.setNew(true);
@@ -379,9 +379,9 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @throws com.ext.portlet.plans.NoSuchPlanAttributeException if a plan attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute remove(Long attributeId)
+    public PlanAttribute remove(long attributeId)
         throws NoSuchPlanAttributeException, SystemException {
-        return remove((Serializable) attributeId);
+        return remove(Long.valueOf(attributeId));
     }
 
     /**
@@ -587,7 +587,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
     @Override
     public PlanAttribute findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -598,7 +598,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @throws com.ext.portlet.plans.NoSuchPlanAttributeException if a plan attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute findByPrimaryKey(Long attributeId)
+    public PlanAttribute findByPrimaryKey(long attributeId)
         throws NoSuchPlanAttributeException, SystemException {
         PlanAttribute planAttribute = fetchByPrimaryKey(attributeId);
 
@@ -624,7 +624,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
     @Override
     public PlanAttribute fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -634,7 +634,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @return the plan attribute, or <code>null</code> if a plan attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute fetchByPrimaryKey(Long attributeId)
+    public PlanAttribute fetchByPrimaryKey(long attributeId)
         throws SystemException {
         PlanAttribute planAttribute = (PlanAttribute) EntityCacheUtil.getResult(PlanAttributeModelImpl.ENTITY_CACHE_ENABLED,
                 PlanAttributeImpl.class, attributeId);
@@ -679,7 +679,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @return the matching plan attributes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanAttribute> findByplanAttributes(Long planId)
+    public List<PlanAttribute> findByplanAttributes(long planId)
         throws SystemException {
         return findByplanAttributes(planId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -698,7 +698,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @return the range of matching plan attributes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanAttribute> findByplanAttributes(Long planId, int start,
+    public List<PlanAttribute> findByplanAttributes(long planId, int start,
         int end) throws SystemException {
         return findByplanAttributes(planId, start, end, null);
     }
@@ -717,7 +717,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @return the ordered range of matching plan attributes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanAttribute> findByplanAttributes(Long planId, int start,
+    public List<PlanAttribute> findByplanAttributes(long planId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -764,7 +764,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanAttribute>) QueryUtil.list(q, getDialect(),
                         start, end);
@@ -799,7 +799,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @throws com.ext.portlet.plans.NoSuchPlanAttributeException if a matching plan attribute could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute findByplanAttributes_First(Long planId,
+    public PlanAttribute findByplanAttributes_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanAttributeException, SystemException {
         List<PlanAttribute> list = findByplanAttributes(planId, 0, 1,
@@ -834,7 +834,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @throws com.ext.portlet.plans.NoSuchPlanAttributeException if a matching plan attribute could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute findByplanAttributes_Last(Long planId,
+    public PlanAttribute findByplanAttributes_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanAttributeException, SystemException {
         int count = countByplanAttributes(planId);
@@ -872,8 +872,8 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @throws com.ext.portlet.plans.NoSuchPlanAttributeException if a plan attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute[] findByplanAttributes_PrevAndNext(Long attributeId,
-        Long planId, OrderByComparator orderByComparator)
+    public PlanAttribute[] findByplanAttributes_PrevAndNext(long attributeId,
+        long planId, OrderByComparator orderByComparator)
         throws NoSuchPlanAttributeException, SystemException {
         PlanAttribute planAttribute = findByPrimaryKey(attributeId);
 
@@ -901,7 +901,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
     }
 
     protected PlanAttribute getByplanAttributes_PrevAndNext(Session session,
-        PlanAttribute planAttribute, Long planId,
+        PlanAttribute planAttribute, long planId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -975,7 +975,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planAttribute);
@@ -1003,7 +1003,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @throws com.ext.portlet.plans.NoSuchPlanAttributeException if a matching plan attribute could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute findByattributeForPlan(Long planId,
+    public PlanAttribute findByattributeForPlan(long planId,
         String attributeName)
         throws NoSuchPlanAttributeException, SystemException {
         PlanAttribute planAttribute = fetchByattributeForPlan(planId,
@@ -1040,7 +1040,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @return the matching plan attribute, or <code>null</code> if a matching plan attribute could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute fetchByattributeForPlan(Long planId,
+    public PlanAttribute fetchByattributeForPlan(long planId,
         String attributeName) throws SystemException {
         return fetchByattributeForPlan(planId, attributeName, true);
     }
@@ -1054,7 +1054,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @return the matching plan attribute, or <code>null</code> if a matching plan attribute could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanAttribute fetchByattributeForPlan(Long planId,
+    public PlanAttribute fetchByattributeForPlan(long planId,
         String attributeName, boolean retrieveFromCache)
         throws SystemException {
         Object[] finderArgs = new Object[] { planId, attributeName };
@@ -1094,7 +1094,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 if (attributeName != null) {
                     qPos.add(attributeName);
@@ -1388,7 +1388,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @throws SystemException if a system exception occurred
      */
     public PlanAttribute[] findByattributeByNameValue_PrevAndNext(
-        Long attributeId, String attributeName, String attributeValue,
+        long attributeId, String attributeName, String attributeValue,
         OrderByComparator orderByComparator)
         throws NoSuchPlanAttributeException, SystemException {
         PlanAttribute planAttribute = findByPrimaryKey(attributeId);
@@ -1652,7 +1652,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByplanAttributes(Long planId) throws SystemException {
+    public void removeByplanAttributes(long planId) throws SystemException {
         for (PlanAttribute planAttribute : findByplanAttributes(planId)) {
             remove(planAttribute);
         }
@@ -1665,7 +1665,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @param attributeName the attribute name
      * @throws SystemException if a system exception occurred
      */
-    public void removeByattributeForPlan(Long planId, String attributeName)
+    public void removeByattributeForPlan(long planId, String attributeName)
         throws NoSuchPlanAttributeException, SystemException {
         PlanAttribute planAttribute = findByattributeForPlan(planId,
                 attributeName);
@@ -1706,7 +1706,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @return the number of matching plan attributes
      * @throws SystemException if a system exception occurred
      */
-    public int countByplanAttributes(Long planId) throws SystemException {
+    public int countByplanAttributes(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANATTRIBUTES,
@@ -1730,7 +1730,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1758,7 +1758,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
      * @return the number of matching plan attributes
      * @throws SystemException if a system exception occurred
      */
-    public int countByattributeForPlan(Long planId, String attributeName)
+    public int countByattributeForPlan(long planId, String attributeName)
         throws SystemException {
         Object[] finderArgs = new Object[] { planId, attributeName };
 
@@ -1793,7 +1793,7 @@ public class PlanAttributePersistenceImpl extends BasePersistenceImpl<PlanAttrib
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 if (attributeName != null) {
                     qPos.add(attributeName);

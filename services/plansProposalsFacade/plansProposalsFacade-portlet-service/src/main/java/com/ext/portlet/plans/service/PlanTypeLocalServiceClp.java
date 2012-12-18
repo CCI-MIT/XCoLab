@@ -28,6 +28,11 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
     private MethodKey _getColumnsByPlanTypeIdMethodKey18;
     private MethodKey _getAttributesByPlanTypeIdMethodKey19;
     private MethodKey _isRegionalTypeMethodKey20;
+    private MethodKey _getAvailableModelsMethodKey21;
+    private MethodKey _getDefaultModelMethodKey22;
+    private MethodKey _getColumnsMethodKey23;
+    private MethodKey _getAttributesMethodKey24;
+    private MethodKey _isRegionalMethodKey25;
 
     public PlanTypeLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -36,10 +41,10 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
                 "addPlanType", com.ext.portlet.plans.model.PlanType.class);
 
         _createPlanTypeMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanType", java.lang.Long.class);
+                "createPlanType", long.class);
 
         _deletePlanTypeMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanType", java.lang.Long.class);
+                "deletePlanType", long.class);
 
         _deletePlanTypeMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanType", com.ext.portlet.plans.model.PlanType.class);
@@ -64,10 +69,10 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanTypeMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanType", java.lang.Long.class);
+                "fetchPlanType", long.class);
 
         _getPlanTypeMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanType", java.lang.Long.class);
+                "getPlanType", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -102,6 +107,21 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
 
         _isRegionalTypeMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
                 "isRegionalType", long.class);
+
+        _getAvailableModelsMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAvailableModels", com.ext.portlet.plans.model.PlanType.class);
+
+        _getDefaultModelMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getDefaultModel", com.ext.portlet.plans.model.PlanType.class);
+
+        _getColumnsMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getColumns", com.ext.portlet.plans.model.PlanType.class);
+
+        _getAttributesMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAttributes", com.ext.portlet.plans.model.PlanType.class);
+
+        _isRegionalMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
+                "isRegional", com.ext.portlet.plans.model.PlanType.class);
     }
 
     public com.ext.portlet.plans.model.PlanType addPlanType(
@@ -130,12 +150,11 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
         return (com.ext.portlet.plans.model.PlanType) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.plans.model.PlanType createPlanType(
-        java.lang.Long planTypeId) {
+    public com.ext.portlet.plans.model.PlanType createPlanType(long planTypeId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanTypeMethodKey1,
-                ClpSerializer.translateInput(planTypeId));
+                planTypeId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -151,11 +170,11 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
         return (com.ext.portlet.plans.model.PlanType) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanType(java.lang.Long planTypeId)
+    public void deletePlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanTypeMethodKey2,
-                ClpSerializer.translateInput(planTypeId));
+                planTypeId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -308,13 +327,12 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
         return ((Long) returnObj).longValue();
     }
 
-    public com.ext.portlet.plans.model.PlanType fetchPlanType(
-        java.lang.Long planTypeId)
+    public com.ext.portlet.plans.model.PlanType fetchPlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanTypeMethodKey8,
-                ClpSerializer.translateInput(planTypeId));
+                planTypeId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -334,14 +352,13 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
         return (com.ext.portlet.plans.model.PlanType) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.plans.model.PlanType getPlanType(
-        java.lang.Long planTypeId)
+    public com.ext.portlet.plans.model.PlanType getPlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanTypeMethodKey9,
-                ClpSerializer.translateInput(planTypeId));
+                planTypeId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -620,6 +637,135 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
 
         MethodHandler methodHandler = new MethodHandler(_isRegionalTypeMethodKey20,
                 planTypeId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
+    }
+
+    public java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAvailableModelsMethodKey21,
+                ClpSerializer.translateInput(planType));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<edu.mit.cci.simulation.client.Simulation>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public edu.mit.cci.simulation.client.Simulation getDefaultModel(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getDefaultModelMethodKey22,
+                ClpSerializer.translateInput(planType));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (edu.mit.cci.simulation.client.Simulation) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getColumns(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getColumnsMethodKey23,
+                ClpSerializer.translateInput(planType));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.plans.model.PlanTypeColumn>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getAttributes(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAttributesMethodKey24,
+                ClpSerializer.translateInput(planType));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public boolean isRegional(com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_isRegionalMethodKey25,
+                ClpSerializer.translateInput(planType));
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

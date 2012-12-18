@@ -17,9 +17,9 @@ import java.util.Date;
  * @generated
  */
 public class PlanVoteCacheModel implements CacheModel<PlanVote>, Serializable {
-    public Long userId;
-    public Long contestId;
-    public Long planId;
+    public long userId;
+    public long contestId;
+    public long planId;
     public long createDate;
 
     @Override

@@ -46,8 +46,7 @@ public class PlanItemLocalServiceUtil {
     * @param id the primary key for the new plan item
     * @return the new plan item
     */
-    public static com.ext.portlet.plans.model.PlanItem createPlanItem(
-        java.lang.Long id) {
+    public static com.ext.portlet.plans.model.PlanItem createPlanItem(long id) {
         return getService().createPlanItem(id);
     }
 
@@ -58,7 +57,7 @@ public class PlanItemLocalServiceUtil {
     * @throws PortalException if a plan item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanItem(java.lang.Long id)
+    public static void deletePlanItem(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanItem(id);
@@ -147,8 +146,7 @@ public class PlanItemLocalServiceUtil {
         return getService().dynamicQueryCount(dynamicQuery);
     }
 
-    public static com.ext.portlet.plans.model.PlanItem fetchPlanItem(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanItem fetchPlanItem(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanItem(id);
     }
@@ -161,8 +159,7 @@ public class PlanItemLocalServiceUtil {
     * @throws PortalException if a plan item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanItem getPlanItem(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanItem getPlanItem(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanItem(id);
@@ -282,10 +279,10 @@ public class PlanItemLocalServiceUtil {
     }
 
     public static java.util.List<com.ext.portlet.plans.model.PlanItem> getPlansInContestPhase(
-        com.ext.portlet.contests.model.ContestPhase contestPhase)
+        long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().getPlansInContestPhase(contestPhase);
+        return getService().getPlansInContestPhase(contestPhaseId);
     }
 
     public static com.ext.portlet.plans.model.PlanItem getPlan(
@@ -296,28 +293,25 @@ public class PlanItemLocalServiceUtil {
     }
 
     public static java.util.List<com.ext.portlet.plans.model.PlanItem> getPlans(
-        java.util.Map sessionMap, java.util.Map requestMap,
-        com.ext.portlet.plans.model.PlanType planType,
-        com.ext.portlet.contests.model.ContestPhase phase, int start, int end,
-        java.lang.String sortColumn, java.lang.String sortDirection)
+        java.util.Map sessionMap, java.util.Map requestMap, long planTypeId,
+        long contestPhaseId, int start, int end, java.lang.String sortColumn,
+        java.lang.String sortDirection)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getPlans(sessionMap, requestMap, planType, phase, start,
-            end, sortColumn, sortDirection);
+                   .getPlans(sessionMap, requestMap, planTypeId,
+            contestPhaseId, start, end, sortColumn, sortDirection);
     }
 
     public static java.util.List<com.ext.portlet.plans.model.PlanItem> getPlans(
-        java.util.Map sessionMap, java.util.Map requestMap,
-        com.ext.portlet.plans.model.PlanType planType,
-        com.ext.portlet.contests.model.ContestPhase phase, int start, int end,
-        java.lang.String sortColumn, java.lang.String sortDirection,
-        boolean applyFilters)
+        java.util.Map sessionMap, java.util.Map requestMap, long planTypeId,
+        long contestPhaseId, int start, int end, java.lang.String sortColumn,
+        java.lang.String sortDirection, boolean applyFilters)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getPlans(sessionMap, requestMap, planType, phase, start,
-            end, sortColumn, sortDirection, applyFilters);
+                   .getPlans(sessionMap, requestMap, planTypeId,
+            contestPhaseId, start, end, sortColumn, sortDirection, applyFilters);
     }
 
     public static java.util.List<com.ext.portlet.plans.model.PlanItem> getPlans(
@@ -432,6 +426,672 @@ public class PlanItemLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().planDeleted(plan);
+    }
+
+    /**
+    * methods from PlanItemImpl.java *
+    */
+    public static java.lang.String getDescription(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getDescription(pi);
+    }
+
+    public static java.lang.String getName(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getName(pi);
+    }
+
+    public static java.lang.Long getImageId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getImageId(pi);
+    }
+
+    public static java.lang.String getPitch(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPitch(pi);
+    }
+
+    public static com.liferay.portal.model.Image getImage(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getImage(pi);
+    }
+
+    public static void setDescription(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String description, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setDescription(pi, description, updateAuthorId);
+    }
+
+    public static void setName(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String name, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setName(pi, name, updateAuthorId);
+    }
+
+    public static void setImage(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long imageId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setImage(pi, imageId, updateAuthorId);
+    }
+
+    public static void setPitch(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String pitch, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.portal.kernel.search.SearchException {
+        getService().setPitch(pi, pitch, updateAuthorId);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanDescription> getAllDescriptionVersions(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllDescriptionVersions(pi);
+    }
+
+    /**
+    * List of all versions of PlanDescription objects related to given plan
+    *
+    * @see com.ext.portlet.plans.model.PlanItem#getPlanDescriptions()
+    */
+    public static java.util.List<com.ext.portlet.plans.model.PlanDescription> getPlanDescriptions(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanDescriptions(pi);
+    }
+
+    public static java.lang.Long getScenarioId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getScenarioId(pi);
+    }
+
+    public static void setScenarioId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long scenarioId, java.lang.Long authorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setScenarioId(pi, scenarioId, authorId);
+    }
+
+    public static void setModelId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long simulationId, java.lang.Long authorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setModelId(pi, simulationId, authorId);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanModelRun> getAllPlanModelRuns(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllPlanModelRuns(pi);
+    }
+
+    public static com.ext.portlet.plans.model.PlanMeta getPlanMeta(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanMeta(pi);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanMeta> getAllPlanMetas(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllPlanMetas(pi);
+    }
+
+    public static java.lang.Long getPlanTypeId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanTypeId(pi);
+    }
+
+    public static com.ext.portlet.plans.model.PlanType getPlanType(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanType(pi);
+    }
+
+    public static com.ext.portlet.contests.model.Contest getContest(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContest(pi);
+    }
+
+    public static com.ext.portlet.contests.model.ContestPhase getContestPhase(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestPhase(pi);
+    }
+
+    public static void setContestPhase(
+        com.ext.portlet.plans.model.PlanItem pi,
+        com.ext.portlet.contests.model.ContestPhase phase,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setContestPhase(pi, phase, updateAuthorId);
+    }
+
+    public static void setPlanTypeId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long planTypeId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setPlanTypeId(pi, planTypeId, updateAuthorId);
+    }
+
+    public static java.lang.Long getMBCategoryId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getMBCategoryId(pi);
+    }
+
+    public static void setMBCategoryId(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long mbCategoryId,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setMBCategoryId(pi, mbCategoryId, updateAuthorId);
+    }
+
+    public static java.lang.Long getCategoryGroupId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCategoryGroupId(pi);
+    }
+
+    public static void setCategoryGroupId(
+        com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long categoryGroupId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setCategoryGroupId(pi, categoryGroupId, updateAuthorId);
+    }
+
+    public static java.lang.Long getPlanGroupId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanGroupId(pi);
+    }
+
+    public static void setPlanGroupId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long groupId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setPlanGroupId(pi, groupId, updateAuthorId);
+    }
+
+    public static java.lang.Long getAuthorId(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAuthorId(pi);
+    }
+
+    public static com.liferay.portal.model.User getAuthor(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAuthor(pi);
+    }
+
+    public static void setAuthorId(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long authorId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setAuthorId(pi, authorId, updateAuthorId);
+    }
+
+    public static java.util.Date getCreateDate(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCreateDate(pi);
+    }
+
+    public static java.util.Date getPublishDate(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPublishDate(pi);
+    }
+
+    public static java.lang.String getCreator(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCreator(pi);
+    }
+
+    public static java.lang.Integer getVotes(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getVotes(pi);
+    }
+
+    public static boolean getOpen(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getOpen(pi);
+    }
+
+    public static void setOpen(com.ext.portlet.plans.model.PlanItem pi,
+        boolean open, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setOpen(pi, open, updateAuthorId);
+    }
+
+    public static void setOpen(com.ext.portlet.plans.model.PlanItem pi,
+        boolean open)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setOpen(pi, open);
+    }
+
+    public static java.lang.String getStatus(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getStatus(pi);
+    }
+
+    public static void setStatus(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String status, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setStatus(pi, status, updateAuthorId);
+    }
+
+    public static com.ext.portlet.plans.model.PlanPositions getPlanPositions(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.ext.portlet.plans.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanPositions(pi);
+    }
+
+    public static java.util.List<java.lang.Long> getPositionsIds(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.ext.portlet.plans.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPositionsIds(pi);
+    }
+
+    public static java.lang.Long[] getPositionsIdsArray(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.ext.portlet.plans.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPositionsIdsArray(pi);
+    }
+
+    public static void setPositions(com.ext.portlet.plans.model.PlanItem pi,
+        java.util.List<java.lang.Long> positionsIds,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().setPositions(pi, positionsIds, updateAuthorId);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanPositions> getAllPositionsVersions(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllPositionsVersions(pi);
+    }
+
+    public static boolean hasUserVoted(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasUserVoted(pi, userId);
+    }
+
+    public static void vote(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().vote(pi, userId);
+    }
+
+    public static void unvote(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().unvote(pi, userId);
+    }
+
+    public static void store(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(pi);
+    }
+
+    /**
+    * Updates values of all available attributes.
+    *
+    * @throws SystemException
+    */
+    public static void updateAllAttributes(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().updateAllAttributes(pi);
+    }
+
+    /**
+    * Updates value of a given attribute, should be used only for property
+    * attributes.
+    *
+    * @param attributeName
+    attribute which value should be updated
+    * @throws SystemException
+    in case of any error
+    */
+    public static void updateAttribute(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.String attributeName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().updateAttribute(pi, attributeName);
+    }
+
+    /**
+    * Returns list of plan members.
+    */
+    public static java.util.List<com.liferay.portal.model.User> getMembers(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getMembers(pi);
+    }
+
+    public static java.util.List<com.liferay.portal.model.MembershipRequest> getMembershipRequests(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getMembershipRequests(pi);
+    }
+
+    public static void addMembershipRequest(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId,
+        java.lang.String comments)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().addMembershipRequest(pi, userId, comments);
+    }
+
+    public static void dennyMembershipRequest(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId,
+        com.liferay.portal.model.MembershipRequest request,
+        java.lang.String reply, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .dennyMembershipRequest(pi, userId, request, reply, updateAuthorId);
+    }
+
+    public static void approveMembershipRequest(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId,
+        com.liferay.portal.model.MembershipRequest request,
+        java.lang.String reply, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .approveMembershipRequest(pi, userId, request, reply, updateAuthorId);
+    }
+
+    public static void publish(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().publish(pi, updateAuthorId);
+    }
+
+    public static void delete(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().delete(pi, updateAuthorId);
+    }
+
+    public static com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUpdateAuthor(pi);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanFan> getFans(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFans(pi);
+    }
+
+    public static com.ext.portlet.plans.model.PlanFan addFan(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().addFan(pi, userId);
+    }
+
+    public static void removeFan(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().removeFan(pi, userId);
+    }
+
+    public static boolean isUserAFan(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().isUserAFan(pi, userId);
+    }
+
+    public static boolean isUserAMember(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().isUserAMember(pi, userId);
+    }
+
+    public static boolean hasUserRequestedMembership(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasUserRequestedMembership(pi, userId);
+    }
+
+    public static boolean isAdmin(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().isAdmin(pi, userId);
+    }
+
+    public static boolean isOwner(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().isOwner(pi, userId);
+    }
+
+    public static void setUserPermission(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId,
+        java.lang.String userPermission, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .setUserPermission(pi, userId, userPermission, updateAuthorId);
+    }
+
+    public static void removeMember(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long userId, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().removeMember(pi, userId, updateAuthorId);
+    }
+
+    public static void joinIfNotAMember(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.Long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().joinIfNotAMember(pi, userId);
+    }
+
+    public static void setSeekingAssistance(
+        com.ext.portlet.plans.model.PlanItem pi, boolean seekingAssistance)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setSeekingAssistance(pi, seekingAssistance);
+    }
+
+    public static boolean isSeekingAssistance(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().isSeekingAssistance(pi);
+    }
+
+    public static com.ext.portlet.discussions.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getDiscussionCategoryGroup(pi);
+    }
+
+    public static com.ext.portlet.plans.model.PlanItem promote(
+        com.ext.portlet.plans.model.PlanItem pi,
+        com.liferay.portal.model.User user)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().promote(pi, user);
+    }
+
+    public static boolean getPromoted(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPromoted(pi);
+    }
+
+    public static int getCommentsCount(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCommentsCount(pi);
+    }
+
+    public static void setPlace(com.ext.portlet.plans.model.PlanItem pi,
+        int place) throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setPlace(pi, place);
+    }
+
+    public static void removePlace(com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().removePlace(pi);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanVote> getPlanVotes(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanVotes(pi);
+    }
+
+    public static void setRibbon(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Integer ribbon)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setRibbon(pi, ribbon);
+    }
+
+    public static void setRibbonText(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String ribbonText)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setRibbonText(pi, ribbonText);
+    }
+
+    public static void setAttribute(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String attributeName, java.lang.String value)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setAttribute(pi, attributeName, value);
+    }
+
+    public static void removeAttribute(
+        com.ext.portlet.plans.model.PlanItem pi, java.lang.String attributeName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().removeAttribute(pi, attributeName);
+    }
+
+    public static com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanTemplate(pi);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanSection> getPlanSections(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlanSections(pi);
+    }
+
+    public static void setSectionContent(
+        com.ext.portlet.plans.model.PlanItem pi,
+        com.ext.portlet.plans.model.PlanSectionDefinition psd,
+        java.lang.String content,
+        java.util.List<java.lang.Long> referencedPlans,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .setSectionContent(pi, psd, content, referencedPlans, updateAuthorId);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanSection> getAllPlanSections(
+        com.ext.portlet.plans.model.PlanItem pi,
+        com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllPlanSections(pi, psd);
+    }
+
+    public static java.lang.Integer getRibbon(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getRibbon(pi);
+    }
+
+    public static void setTeam(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String team)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setTeam(pi, team);
+    }
+
+    public static java.lang.String getTeam(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getTeam(pi);
+    }
+
+    public static void revertTo(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().revertTo(pi, updateAuthorId);
+    }
+
+    public static java.lang.String getTags(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getTags(pi);
+    }
+
+    public static void setTags(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String tags)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setTags(pi, tags);
+    }
+
+    public static java.lang.String getTagsHover(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getTagsHover(pi);
+    }
+
+    public static void setTagsHover(com.ext.portlet.plans.model.PlanItem pi,
+        java.lang.String tagsHover)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setTagsHover(pi, tagsHover);
+    }
+
+    public static java.lang.Integer getTagsOrder(
+        com.ext.portlet.plans.model.PlanItem pi)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getTagsOrder(pi);
+    }
+
+    public static void setTagsOrder(com.ext.portlet.plans.model.PlanItem pi,
+        int tagsOrder)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().setTagsOrder(pi, tagsOrder);
     }
 
     public static void clearService() {

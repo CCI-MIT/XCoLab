@@ -16,11 +16,11 @@ import java.io.Serializable;
  */
 public class MessageRecipientStatusCacheModel implements CacheModel<MessageRecipientStatus>,
     Serializable {
-    public Long messageRecipientId;
-    public Long messageId;
-    public Long userId;
-    public Boolean opened;
-    public Boolean archived;
+    public long messageRecipientId;
+    public long messageId;
+    public long userId;
+    public boolean opened;
+    public boolean archived;
 
     @Override
     public String toString() {

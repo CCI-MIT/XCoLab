@@ -14,13 +14,13 @@ import java.util.List;
  * @generated
  */
 public class PlanTeamHistorySoap implements Serializable {
-    private Long _id;
-    private Long _planId;
-    private Long _userId;
+    private long _id;
+    private long _planId;
+    private long _userId;
     private String _action;
     private String _payload;
     private Date _created;
-    private Long _updateAuthorId;
+    private long _updateAuthorId;
 
     public PlanTeamHistorySoap() {
     }
@@ -77,35 +77,35 @@ public class PlanTeamHistorySoap implements Serializable {
         return soapModels.toArray(new PlanTeamHistorySoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
@@ -133,11 +133,11 @@ public class PlanTeamHistorySoap implements Serializable {
         _created = created;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
 }

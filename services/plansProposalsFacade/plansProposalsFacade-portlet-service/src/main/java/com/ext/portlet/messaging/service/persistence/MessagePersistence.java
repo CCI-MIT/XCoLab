@@ -44,8 +44,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @param messageId the primary key for the new message
     * @return the new message
     */
-    public com.ext.portlet.messaging.model.Message create(
-        java.lang.Long messageId);
+    public com.ext.portlet.messaging.model.Message create(long messageId);
 
     /**
     * Removes the message with the primary key from the database. Also notifies the appropriate model listeners.
@@ -55,8 +54,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws com.ext.portlet.messaging.NoSuchMessageException if a message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.messaging.model.Message remove(
-        java.lang.Long messageId)
+    public com.ext.portlet.messaging.model.Message remove(long messageId)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -73,7 +71,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.messaging.model.Message findByPrimaryKey(
-        java.lang.Long messageId)
+        long messageId)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -85,7 +83,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.messaging.model.Message fetchByPrimaryKey(
-        java.lang.Long messageId)
+        long messageId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -96,8 +94,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.messaging.model.Message> findBySendingUser(
-        java.lang.Long fromId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long fromId) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns a range of all the messages where fromId = &#63;.
@@ -113,7 +110,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.messaging.model.Message> findBySendingUser(
-        java.lang.Long fromId, int start, int end)
+        long fromId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -131,7 +128,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.messaging.model.Message> findBySendingUser(
-        java.lang.Long fromId, int start, int end,
+        long fromId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -149,7 +146,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.messaging.model.Message findBySendingUser_First(
-        java.lang.Long fromId,
+        long fromId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -168,7 +165,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.messaging.model.Message findBySendingUser_Last(
-        java.lang.Long fromId,
+        long fromId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -188,7 +185,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.messaging.model.Message[] findBySendingUser_PrevAndNext(
-        java.lang.Long messageId, java.lang.Long fromId,
+        long messageId, long fromId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -242,7 +239,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @param fromId the from ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeBySendingUser(java.lang.Long fromId)
+    public void removeBySendingUser(long fromId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -260,7 +257,7 @@ public interface MessagePersistence extends BasePersistence<Message> {
     * @return the number of matching messages
     * @throws SystemException if a system exception occurred
     */
-    public int countBySendingUser(java.lang.Long fromId)
+    public int countBySendingUser(long fromId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

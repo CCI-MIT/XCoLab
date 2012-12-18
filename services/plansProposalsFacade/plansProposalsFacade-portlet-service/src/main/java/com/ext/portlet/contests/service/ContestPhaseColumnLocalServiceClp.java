@@ -35,10 +35,10 @@ public class ContestPhaseColumnLocalServiceClp
                 com.ext.portlet.contests.model.ContestPhaseColumn.class);
 
         _createContestPhaseColumnMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createContestPhaseColumn", java.lang.Long.class);
+                "createContestPhaseColumn", long.class);
 
         _deleteContestPhaseColumnMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteContestPhaseColumn", java.lang.Long.class);
+                "deleteContestPhaseColumn", long.class);
 
         _deleteContestPhaseColumnMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteContestPhaseColumn",
@@ -64,10 +64,10 @@ public class ContestPhaseColumnLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchContestPhaseColumnMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchContestPhaseColumn", java.lang.Long.class);
+                "fetchContestPhaseColumn", long.class);
 
         _getContestPhaseColumnMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getContestPhaseColumn", java.lang.Long.class);
+                "getContestPhaseColumn", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -124,11 +124,11 @@ public class ContestPhaseColumnLocalServiceClp
     }
 
     public com.ext.portlet.contests.model.ContestPhaseColumn createContestPhaseColumn(
-        java.lang.Long id) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createContestPhaseColumnMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -144,11 +144,11 @@ public class ContestPhaseColumnLocalServiceClp
         return (com.ext.portlet.contests.model.ContestPhaseColumn) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteContestPhaseColumn(java.lang.Long id)
+    public void deleteContestPhaseColumn(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteContestPhaseColumnMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -303,12 +303,11 @@ public class ContestPhaseColumnLocalServiceClp
     }
 
     public com.ext.portlet.contests.model.ContestPhaseColumn fetchContestPhaseColumn(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchContestPhaseColumnMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -329,13 +328,13 @@ public class ContestPhaseColumnLocalServiceClp
     }
 
     public com.ext.portlet.contests.model.ContestPhaseColumn getContestPhaseColumn(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getContestPhaseColumnMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

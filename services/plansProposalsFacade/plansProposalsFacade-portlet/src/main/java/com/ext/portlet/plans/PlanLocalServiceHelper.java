@@ -420,21 +420,21 @@ public class PlanLocalServiceHelper {
                         setPlansFilterPositionsIds(userSettings);
                     }
 
-                } catch (NoSuchUserSettingsException e) {
+                } catch (NoSuchPlansUserSettingsException e) {
                     System.out.print(e);
                 }
             }
 
             if (userSettings == null || user.isDefaultUser()) {
-                userSettings = PlansUserSettingsLocalServiceUtil.createPlansUserSettings(null);
+                userSettings = PlansUserSettingsLocalServiceUtil.createPlansUserSettings(0L);
                 userSettings.setPlanTypeId(planTypeId);
                 userSettings.setUserId(userId);
                 userSettings.setFilterEnabled(false);
                 userSettings.setFilterPositionsAll(false);
 
                 PlanType planType = PlanTypeLocalServiceUtil.getPlanType(planTypeId);
-                for (PlanTypeColumn planTypeColumn : planType.getColumns()) {
-                    PlanColumnSettings settings = PlanColumnSettingsLocalServiceUtil.createPlanColumnSettings(null);
+                for (PlanTypeColumn planTypeColumn : PlanTypeLocalServiceUtil.getColumns(planType)) {
+                    PlanColumnSettings settings = PlanColumnSettingsLocalServiceUtil.createPlanColumnSettings(0L);
                     settings.setColumnName(planTypeColumn.getColumnName());
                     settings.setPlanUserSettingsId(userSettings.getPlanUserSettingsId());
                     settings.setVisible(planTypeColumn.getVisibleByDefault());
@@ -775,14 +775,14 @@ public class PlanLocalServiceHelper {
     }
 
     public static PlanColumnSettings createColumnSettings(PlansUserSettings settings, Columns column) throws PortalException, SystemException {
-        PlanColumnSettings columnSettings = PlanColumnSettingsLocalServiceUtil.createPlanColumnSettings(null);
+        PlanColumnSettings columnSettings = PlanColumnSettingsLocalServiceUtil.createPlanColumnSettings(0L);
         columnSettings.setColumnName(String.valueOf(column));
         columnSettings.setPlanUserSettingsId(settings.getPlanUserSettingsId());
 
         PlanType planType = PlanTypeLocalServiceUtil.getPlanType(settings.getPlanTypeId());
-        List<PlanTypeColumn> xyz = planType.getColumns();
+        List<PlanTypeColumn> xyz = PlanTypeLocalServiceUtil.getColumns(planType);
 
-        for (PlanTypeColumn typeColumn : planType.getColumns()) {
+        for (PlanTypeColumn typeColumn : PlanTypeLocalServiceUtil.getColumns(planType)) {
             if (columnSettings.getColumnName().equals(typeColumn.getColumnName())) {
                 columnSettings.setVisible(typeColumn.getVisibleByDefault());
                 settings.addColumnSettings(columnSettings);

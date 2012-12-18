@@ -52,7 +52,7 @@ public class FocusAreaOntologyTermWrapper implements FocusAreaOntologyTerm,
     *
     * @return the focus area ID of this focus area ontology term
     */
-    public java.lang.Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return _focusAreaOntologyTerm.getFocusAreaId();
     }
 
@@ -61,7 +61,7 @@ public class FocusAreaOntologyTermWrapper implements FocusAreaOntologyTerm,
     *
     * @param focusAreaId the focus area ID of this focus area ontology term
     */
-    public void setFocusAreaId(java.lang.Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         _focusAreaOntologyTerm.setFocusAreaId(focusAreaId);
     }
 
@@ -70,7 +70,7 @@ public class FocusAreaOntologyTermWrapper implements FocusAreaOntologyTerm,
     *
     * @return the ontology term ID of this focus area ontology term
     */
-    public java.lang.Long getOntologyTermId() {
+    public long getOntologyTermId() {
         return _focusAreaOntologyTerm.getOntologyTermId();
     }
 
@@ -79,7 +79,7 @@ public class FocusAreaOntologyTermWrapper implements FocusAreaOntologyTerm,
     *
     * @param ontologyTermId the ontology term ID of this focus area ontology term
     */
-    public void setOntologyTermId(java.lang.Long ontologyTermId) {
+    public void setOntologyTermId(long ontologyTermId) {
         _focusAreaOntologyTerm.setOntologyTermId(ontologyTermId);
     }
 
@@ -154,23 +154,6 @@ public class FocusAreaOntologyTermWrapper implements FocusAreaOntologyTerm,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _focusAreaOntologyTerm.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _focusAreaOntologyTerm.store();
-    }
-
-    public com.ext.portlet.ontology.model.OntologyTerm getTerm()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _focusAreaOntologyTerm.getTerm();
-    }
-
-    public com.ext.portlet.ontology.model.FocusArea getArea()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _focusAreaOntologyTerm.getArea();
     }
 
     /**

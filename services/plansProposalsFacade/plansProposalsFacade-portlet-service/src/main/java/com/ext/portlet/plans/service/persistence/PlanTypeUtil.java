@@ -124,8 +124,7 @@ public class PlanTypeUtil {
     * @param planTypeId the primary key for the new plan type
     * @return the new plan type
     */
-    public static com.ext.portlet.plans.model.PlanType create(
-        java.lang.Long planTypeId) {
+    public static com.ext.portlet.plans.model.PlanType create(long planTypeId) {
         return getPersistence().create(planTypeId);
     }
 
@@ -137,8 +136,7 @@ public class PlanTypeUtil {
     * @throws com.ext.portlet.plans.NoSuchPlanTypeException if a plan type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanType remove(
-        java.lang.Long planTypeId)
+    public static com.ext.portlet.plans.model.PlanType remove(long planTypeId)
         throws com.ext.portlet.plans.NoSuchPlanTypeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planTypeId);
@@ -159,7 +157,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanType findByPrimaryKey(
-        java.lang.Long planTypeId)
+        long planTypeId)
         throws com.ext.portlet.plans.NoSuchPlanTypeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planTypeId);
@@ -173,7 +171,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanType fetchByPrimaryKey(
-        java.lang.Long planTypeId)
+        long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planTypeId);
     }
@@ -187,7 +185,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanType findBydefault(
-        java.lang.Boolean isDefault)
+        boolean isDefault)
         throws com.ext.portlet.plans.NoSuchPlanTypeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findBydefault(isDefault);
@@ -201,7 +199,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanType fetchBydefault(
-        java.lang.Boolean isDefault)
+        boolean isDefault)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchBydefault(isDefault);
     }
@@ -215,7 +213,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanType fetchBydefault(
-        java.lang.Boolean isDefault, boolean retrieveFromCache)
+        boolean isDefault, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchBydefault(isDefault, retrieveFromCache);
     }
@@ -275,7 +273,7 @@ public class PlanTypeUtil {
     * @param isDefault the is default
     * @throws SystemException if a system exception occurred
     */
-    public static void removeBydefault(java.lang.Boolean isDefault)
+    public static void removeBydefault(boolean isDefault)
         throws com.ext.portlet.plans.NoSuchPlanTypeException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeBydefault(isDefault);
@@ -298,7 +296,7 @@ public class PlanTypeUtil {
     * @return the number of matching plan types
     * @throws SystemException if a system exception occurred
     */
-    public static int countBydefault(java.lang.Boolean isDefault)
+    public static int countBydefault(boolean isDefault)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countBydefault(isDefault);
     }
@@ -322,8 +320,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getPlanTypeAttributes(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanTypeAttributes(pk);
     }
 
@@ -341,7 +338,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getPlanTypeAttributes(
-        java.lang.Long pk, int start, int end)
+        long pk, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanTypeAttributes(pk, start, end);
     }
@@ -361,7 +358,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getPlanTypeAttributes(
-        java.lang.Long pk, int start, int end,
+        long pk, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -375,7 +372,7 @@ public class PlanTypeUtil {
     * @return the number of plan type attributes associated with the plan type
     * @throws SystemException if a system exception occurred
     */
-    public static int getPlanTypeAttributesSize(java.lang.Long pk)
+    public static int getPlanTypeAttributesSize(long pk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanTypeAttributesSize(pk);
     }
@@ -388,8 +385,8 @@ public class PlanTypeUtil {
     * @return <code>true</code> if the plan type attribute is associated with the plan type; <code>false</code> otherwise
     * @throws SystemException if a system exception occurred
     */
-    public static boolean containsPlanTypeAttribute(java.lang.Long pk,
-        java.lang.Long planTypeAttributePK)
+    public static boolean containsPlanTypeAttribute(long pk,
+        long planTypeAttributePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .containsPlanTypeAttribute(pk, planTypeAttributePK);
@@ -402,7 +399,7 @@ public class PlanTypeUtil {
     * @return <code>true</code> if the plan type has any plan type attributes associated with it; <code>false</code> otherwise
     * @throws SystemException if a system exception occurred
     */
-    public static boolean containsPlanTypeAttributes(java.lang.Long pk)
+    public static boolean containsPlanTypeAttributes(long pk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().containsPlanTypeAttributes(pk);
     }
@@ -415,8 +412,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getPlanTypeColumns(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanTypeColumns(pk);
     }
 
@@ -434,7 +430,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getPlanTypeColumns(
-        java.lang.Long pk, int start, int end)
+        long pk, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanTypeColumns(pk, start, end);
     }
@@ -454,7 +450,7 @@ public class PlanTypeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getPlanTypeColumns(
-        java.lang.Long pk, int start, int end,
+        long pk, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -468,7 +464,7 @@ public class PlanTypeUtil {
     * @return the number of plan type columns associated with the plan type
     * @throws SystemException if a system exception occurred
     */
-    public static int getPlanTypeColumnsSize(java.lang.Long pk)
+    public static int getPlanTypeColumnsSize(long pk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().getPlanTypeColumnsSize(pk);
     }
@@ -481,8 +477,7 @@ public class PlanTypeUtil {
     * @return <code>true</code> if the plan type column is associated with the plan type; <code>false</code> otherwise
     * @throws SystemException if a system exception occurred
     */
-    public static boolean containsPlanTypeColumn(java.lang.Long pk,
-        java.lang.Long planTypeColumnPK)
+    public static boolean containsPlanTypeColumn(long pk, long planTypeColumnPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().containsPlanTypeColumn(pk, planTypeColumnPK);
     }
@@ -494,7 +489,7 @@ public class PlanTypeUtil {
     * @return <code>true</code> if the plan type has any plan type columns associated with it; <code>false</code> otherwise
     * @throws SystemException if a system exception occurred
     */
-    public static boolean containsPlanTypeColumns(java.lang.Long pk)
+    public static boolean containsPlanTypeColumns(long pk)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().containsPlanTypeColumns(pk);
     }

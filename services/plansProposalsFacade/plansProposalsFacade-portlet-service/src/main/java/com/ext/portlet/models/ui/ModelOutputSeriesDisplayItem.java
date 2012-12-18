@@ -92,7 +92,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
 
     @Override
     public int getOrder() {
-        return item!=null && item.getModelOutputItemOrder()!=null?item.getModelOutputItemOrder():-1;
+        return item != null ? item.getModelOutputItemOrder() : -1;
     }
 
     /**
@@ -207,7 +207,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
 
     @Override
     public boolean isVisible() {
-        if (item.getModelItemIsVisible() == null) {
+        if (item.getModelItemIsVisible()) {
             try {
                 setVisible(true);
             } catch(SystemException e) {
@@ -215,7 +215,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
             }
         }
 
-        return item.getModelItemIsVisible()==null || item.getModelItemIsVisible();
+        return item.getModelItemIsVisible();
     }
     
     public String getLabelFormatString() {

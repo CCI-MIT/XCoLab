@@ -290,6 +290,11 @@ public class PlanVoteLocalServiceWrapper implements PlanVoteLocalService,
         return _planVoteLocalService.countPlanVotesByPlanId(planId);
     }
 
+    public void store(com.ext.portlet.plans.model.PlanVote planVote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _planVoteLocalService.store(planVote);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

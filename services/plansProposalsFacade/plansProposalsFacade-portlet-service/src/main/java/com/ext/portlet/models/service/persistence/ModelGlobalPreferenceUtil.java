@@ -128,7 +128,7 @@ public class ModelGlobalPreferenceUtil {
     * @return the new model global preference
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference create(
-        java.lang.Long modelGlobalPreferencePK) {
+        long modelGlobalPreferencePK) {
         return getPersistence().create(modelGlobalPreferencePK);
     }
 
@@ -141,7 +141,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference remove(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(modelGlobalPreferencePK);
@@ -163,7 +163,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference findByPrimaryKey(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(modelGlobalPreferencePK);
@@ -177,7 +177,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference fetchByPrimaryKey(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(modelGlobalPreferencePK);
     }
@@ -191,7 +191,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference findByModelId(
-        java.lang.Long modelId)
+        long modelId)
         throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelId(modelId);
@@ -205,7 +205,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference fetchByModelId(
-        java.lang.Long modelId)
+        long modelId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByModelId(modelId);
     }
@@ -219,7 +219,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference fetchByModelId(
-        java.lang.Long modelId, boolean retrieveFromCache)
+        long modelId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByModelId(modelId, retrieveFromCache);
     }
@@ -232,7 +232,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelGlobalPreference> findByModelCategoryId(
-        java.lang.Long modelCategoryId)
+        long modelCategoryId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelCategoryId(modelCategoryId);
     }
@@ -251,7 +251,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelGlobalPreference> findByModelCategoryId(
-        java.lang.Long modelCategoryId, int start, int end)
+        long modelCategoryId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByModelCategoryId(modelCategoryId, start, end);
@@ -272,7 +272,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelGlobalPreference> findByModelCategoryId(
-        java.lang.Long modelCategoryId, int start, int end,
+        long modelCategoryId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -294,7 +294,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference findByModelCategoryId_First(
-        java.lang.Long modelCategoryId,
+        long modelCategoryId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -317,7 +317,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference findByModelCategoryId_Last(
-        java.lang.Long modelCategoryId,
+        long modelCategoryId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -341,7 +341,7 @@ public class ModelGlobalPreferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelGlobalPreference[] findByModelCategoryId_PrevAndNext(
-        java.lang.Long modelGlobalPreferencePK, java.lang.Long modelCategoryId,
+        long modelGlobalPreferencePK, long modelCategoryId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -405,7 +405,7 @@ public class ModelGlobalPreferenceUtil {
     * @param modelId the model ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByModelId(java.lang.Long modelId)
+    public static void removeByModelId(long modelId)
         throws com.ext.portlet.models.NoSuchModelGlobalPreferenceException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByModelId(modelId);
@@ -417,7 +417,7 @@ public class ModelGlobalPreferenceUtil {
     * @param modelCategoryId the model category ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByModelCategoryId(java.lang.Long modelCategoryId)
+    public static void removeByModelCategoryId(long modelCategoryId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByModelCategoryId(modelCategoryId);
     }
@@ -439,7 +439,7 @@ public class ModelGlobalPreferenceUtil {
     * @return the number of matching model global preferences
     * @throws SystemException if a system exception occurred
     */
-    public static int countByModelId(java.lang.Long modelId)
+    public static int countByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByModelId(modelId);
     }
@@ -451,7 +451,7 @@ public class ModelGlobalPreferenceUtil {
     * @return the number of matching model global preferences
     * @throws SystemException if a system exception occurred
     */
-    public static int countByModelCategoryId(java.lang.Long modelCategoryId)
+    public static int countByModelCategoryId(long modelCategoryId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByModelCategoryId(modelCategoryId);
     }

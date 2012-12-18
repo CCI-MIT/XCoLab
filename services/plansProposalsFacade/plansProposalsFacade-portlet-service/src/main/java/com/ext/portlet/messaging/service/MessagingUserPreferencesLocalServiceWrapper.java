@@ -41,7 +41,7 @@ public class MessagingUserPreferencesLocalServiceWrapper
     * @return the new messaging user preferences
     */
     public com.ext.portlet.messaging.model.MessagingUserPreferences createMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId) {
+        long messagingPreferencesId) {
         return _messagingUserPreferencesLocalService.createMessagingUserPreferences(messagingPreferencesId);
     }
 
@@ -52,8 +52,7 @@ public class MessagingUserPreferencesLocalServiceWrapper
     * @throws PortalException if a messaging user preferences with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+    public void deleteMessagingUserPreferences(long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _messagingUserPreferencesLocalService.deleteMessagingUserPreferences(messagingPreferencesId);
@@ -144,7 +143,7 @@ public class MessagingUserPreferencesLocalServiceWrapper
     }
 
     public com.ext.portlet.messaging.model.MessagingUserPreferences fetchMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messagingUserPreferencesLocalService.fetchMessagingUserPreferences(messagingPreferencesId);
     }
@@ -158,7 +157,7 @@ public class MessagingUserPreferencesLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.messaging.model.MessagingUserPreferences getMessagingUserPreferences(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _messagingUserPreferencesLocalService.getMessagingUserPreferences(messagingPreferencesId);

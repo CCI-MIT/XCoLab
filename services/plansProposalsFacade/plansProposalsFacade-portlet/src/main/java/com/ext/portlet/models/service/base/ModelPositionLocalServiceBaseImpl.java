@@ -175,7 +175,7 @@ public abstract class ModelPositionLocalServiceBaseImpl
      * @param id the primary key for the new model position
      * @return the new model position
      */
-    public ModelPosition createModelPosition(Long id) {
+    public ModelPosition createModelPosition(long id) {
         return modelPositionPersistence.create(id);
     }
 
@@ -186,7 +186,7 @@ public abstract class ModelPositionLocalServiceBaseImpl
      * @throws PortalException if a model position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteModelPosition(Long id)
+    public void deleteModelPosition(long id)
         throws PortalException, SystemException {
         ModelPosition modelPosition = modelPositionPersistence.remove(id);
 
@@ -292,7 +292,7 @@ public abstract class ModelPositionLocalServiceBaseImpl
         return modelPositionPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ModelPosition fetchModelPosition(Long id) throws SystemException {
+    public ModelPosition fetchModelPosition(long id) throws SystemException {
         return modelPositionPersistence.fetchByPrimaryKey(id);
     }
 
@@ -304,7 +304,7 @@ public abstract class ModelPositionLocalServiceBaseImpl
      * @throws PortalException if a model position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelPosition getModelPosition(Long id)
+    public ModelPosition getModelPosition(long id)
         throws PortalException, SystemException {
         return modelPositionPersistence.findByPrimaryKey(id);
     }

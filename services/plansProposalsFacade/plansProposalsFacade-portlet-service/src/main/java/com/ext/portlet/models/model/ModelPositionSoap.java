@@ -13,9 +13,9 @@ import java.util.List;
  * @generated
  */
 public class ModelPositionSoap implements Serializable {
-    private Long _id;
-    private Long _positionId;
-    private Long _modelId;
+    private long _id;
+    private long _positionId;
+    private long _modelId;
 
     public ModelPositionSoap() {
     }
@@ -66,35 +66,35 @@ public class ModelPositionSoap implements Serializable {
         return soapModels.toArray(new ModelPositionSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPositionId() {
+    public long getPositionId() {
         return _positionId;
     }
 
-    public void setPositionId(Long positionId) {
+    public void setPositionId(long positionId) {
         _positionId = positionId;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 }

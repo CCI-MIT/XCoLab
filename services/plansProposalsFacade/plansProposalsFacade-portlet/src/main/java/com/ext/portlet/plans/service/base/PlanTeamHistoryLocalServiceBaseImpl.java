@@ -341,7 +341,7 @@ public abstract class PlanTeamHistoryLocalServiceBaseImpl
      * @param id the primary key for the new plan team history
      * @return the new plan team history
      */
-    public PlanTeamHistory createPlanTeamHistory(Long id) {
+    public PlanTeamHistory createPlanTeamHistory(long id) {
         return planTeamHistoryPersistence.create(id);
     }
 
@@ -352,7 +352,7 @@ public abstract class PlanTeamHistoryLocalServiceBaseImpl
      * @throws PortalException if a plan team history with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanTeamHistory(Long id)
+    public void deletePlanTeamHistory(long id)
         throws PortalException, SystemException {
         PlanTeamHistory planTeamHistory = planTeamHistoryPersistence.remove(id);
 
@@ -458,7 +458,7 @@ public abstract class PlanTeamHistoryLocalServiceBaseImpl
         return planTeamHistoryPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanTeamHistory fetchPlanTeamHistory(Long id)
+    public PlanTeamHistory fetchPlanTeamHistory(long id)
         throws SystemException {
         return planTeamHistoryPersistence.fetchByPrimaryKey(id);
     }
@@ -471,7 +471,7 @@ public abstract class PlanTeamHistoryLocalServiceBaseImpl
      * @throws PortalException if a plan team history with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTeamHistory getPlanTeamHistory(Long id)
+    public PlanTeamHistory getPlanTeamHistory(long id)
         throws PortalException, SystemException {
         return planTeamHistoryPersistence.findByPrimaryKey(id);
     }

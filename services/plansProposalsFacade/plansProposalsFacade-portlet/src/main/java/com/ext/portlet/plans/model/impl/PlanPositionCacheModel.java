@@ -19,9 +19,9 @@ import java.util.Date;
  */
 public class PlanPositionCacheModel implements CacheModel<PlanPosition>,
     Serializable {
-    public Long planId;
-    public Long positionId;
-    public Long userId;
+    public long planId;
+    public long positionId;
+    public long userId;
     public String userName;
     public long createDate;
     public long modifiedDate;

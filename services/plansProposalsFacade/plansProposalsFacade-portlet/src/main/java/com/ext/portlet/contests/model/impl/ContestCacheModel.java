@@ -18,28 +18,28 @@ import java.util.Date;
  * @generated
  */
 public class ContestCacheModel implements CacheModel<Contest>, Serializable {
-    public Long ContestPK;
+    public long ContestPK;
     public String ContestName;
     public String ContestShortName;
     public String ContestDescription;
     public String ContestModelDescription;
     public String ContestPositionsDescription;
     public String defaultPlanDescription;
-    public Long PlanTypeId;
+    public long PlanTypeId;
     public long created;
     public long updated;
-    public Long authorId;
-    public Boolean contestActive;
-    public Long planTemplateId;
-    public Long focusAreaId;
-    public Long contestLogoId;
-    public Boolean featured;
-    public Boolean plansOpenByDefault;
-    public Integer flag;
+    public long authorId;
+    public boolean contestActive;
+    public long planTemplateId;
+    public long focusAreaId;
+    public long contestLogoId;
+    public boolean featured;
+    public boolean plansOpenByDefault;
+    public int flag;
     public String flagText;
-    public Long groupId;
-    public Long discussionGroupId;
-    public Integer weight;
+    public long groupId;
+    public long discussionGroupId;
+    public int weight;
     public String resourcesUrl;
 
     @Override

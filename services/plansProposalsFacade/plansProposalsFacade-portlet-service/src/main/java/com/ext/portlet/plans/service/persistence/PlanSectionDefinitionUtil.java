@@ -128,7 +128,7 @@ public class PlanSectionDefinitionUtil {
     * @return the new plan section definition
     */
     public static com.ext.portlet.plans.model.PlanSectionDefinition create(
-        java.lang.Long id) {
+        long id) {
         return getPersistence().create(id);
     }
 
@@ -141,7 +141,7 @@ public class PlanSectionDefinitionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSectionDefinition remove(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.plans.NoSuchPlanSectionDefinitionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -163,7 +163,7 @@ public class PlanSectionDefinitionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSectionDefinition findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.plans.NoSuchPlanSectionDefinitionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -177,8 +177,7 @@ public class PlanSectionDefinitionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanSectionDefinition fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 

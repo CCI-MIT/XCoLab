@@ -19,8 +19,8 @@ import java.util.Date;
  */
 public class PlansFilterCacheModel implements CacheModel<PlansFilter>,
     Serializable {
-    public Long userId;
-    public Long planTypeId;
+    public long userId;
+    public long planTypeId;
     public String name;
     public String creator;
     public String description;
@@ -34,8 +34,8 @@ public class PlansFilterCacheModel implements CacheModel<PlansFilter>,
     public Double mitigationTo;
     public long dateFrom;
     public long dateTo;
-    public Boolean filterPositionsAll;
-    public Boolean enabled;
+    public boolean filterPositionsAll;
+    public boolean enabled;
 
     @Override
     public String toString() {

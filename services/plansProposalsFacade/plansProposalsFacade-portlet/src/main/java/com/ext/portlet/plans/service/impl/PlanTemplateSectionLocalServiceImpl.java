@@ -3,6 +3,7 @@ package com.ext.portlet.plans.service.impl;
 import java.util.List;
 
 import com.ext.portlet.plans.model.PlanTemplateSection;
+import com.ext.portlet.plans.service.PlanTemplateSectionLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanTemplateSectionLocalServiceBaseImpl;
 import com.ext.portlet.plans.service.persistence.PlanTemplateSectionPK;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -39,12 +40,23 @@ public class PlanTemplateSectionLocalServiceImpl
         PlanTemplateSection pts = createPlanTemplateSection(new PlanTemplateSectionPK(planTemplateId, sectionId));
         
         pts.setWeight(weight);
-        pts.store();
+        PlanTemplateSectionLocalServiceUtil.store(pts);
         
         return pts;
     }
     
     public void removePlanTemplateSection(Long planTemplateId, Long sectionId) throws SystemException, PortalException {
-        getPlanTemplateSection(new PlanTemplateSectionPK(planTemplateId, sectionId)).remove();
+        PlanTemplateSectionLocalServiceUtil.remove(getPlanTemplateSection(new PlanTemplateSectionPK(planTemplateId, sectionId)));
     }
+    
+
+    public void store(PlanTemplateSection section) throws SystemException {
+        if (section.isNew()) PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(section);
+        else  PlanTemplateSectionLocalServiceUtil.updatePlanTemplateSection(section);
+    }
+    
+    public void remove(PlanTemplateSection section) throws SystemException {
+        PlanTemplateSectionLocalServiceUtil.deletePlanTemplateSection(section);
+    }
+    
 }

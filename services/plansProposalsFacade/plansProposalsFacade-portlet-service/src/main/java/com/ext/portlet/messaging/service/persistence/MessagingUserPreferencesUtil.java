@@ -129,7 +129,7 @@ public class MessagingUserPreferencesUtil {
     * @return the new messaging user preferences
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences create(
-        java.lang.Long messagingPreferencesId) {
+        long messagingPreferencesId) {
         return getPersistence().create(messagingPreferencesId);
     }
 
@@ -138,12 +138,12 @@ public class MessagingUserPreferencesUtil {
     *
     * @param messagingPreferencesId the primary key of the messaging user preferences
     * @return the messaging user preferences that was removed
-    * @throws com.ext.portlet.messaging.NoSuchUserPreferencesException if a messaging user preferences with the primary key could not be found
+    * @throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException if a messaging user preferences with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences remove(
-        java.lang.Long messagingPreferencesId)
-        throws com.ext.portlet.messaging.NoSuchUserPreferencesException,
+        long messagingPreferencesId)
+        throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(messagingPreferencesId);
     }
@@ -156,16 +156,16 @@ public class MessagingUserPreferencesUtil {
     }
 
     /**
-    * Returns the messaging user preferences with the primary key or throws a {@link com.ext.portlet.messaging.NoSuchUserPreferencesException} if it could not be found.
+    * Returns the messaging user preferences with the primary key or throws a {@link com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException} if it could not be found.
     *
     * @param messagingPreferencesId the primary key of the messaging user preferences
     * @return the messaging user preferences
-    * @throws com.ext.portlet.messaging.NoSuchUserPreferencesException if a messaging user preferences with the primary key could not be found
+    * @throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException if a messaging user preferences with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences findByPrimaryKey(
-        java.lang.Long messagingPreferencesId)
-        throws com.ext.portlet.messaging.NoSuchUserPreferencesException,
+        long messagingPreferencesId)
+        throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(messagingPreferencesId);
     }
@@ -178,22 +178,22 @@ public class MessagingUserPreferencesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences fetchByPrimaryKey(
-        java.lang.Long messagingPreferencesId)
+        long messagingPreferencesId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(messagingPreferencesId);
     }
 
     /**
-    * Returns the messaging user preferences where userId = &#63; or throws a {@link com.ext.portlet.messaging.NoSuchUserPreferencesException} if it could not be found.
+    * Returns the messaging user preferences where userId = &#63; or throws a {@link com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException} if it could not be found.
     *
     * @param userId the user ID
     * @return the matching messaging user preferences
-    * @throws com.ext.portlet.messaging.NoSuchUserPreferencesException if a matching messaging user preferences could not be found
+    * @throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException if a matching messaging user preferences could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences findBymessagingPreferences(
-        java.lang.Long userId)
-        throws com.ext.portlet.messaging.NoSuchUserPreferencesException,
+        long userId)
+        throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findBymessagingPreferences(userId);
     }
@@ -206,8 +206,7 @@ public class MessagingUserPreferencesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences fetchBymessagingPreferences(
-        java.lang.Long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchBymessagingPreferences(userId);
     }
 
@@ -220,7 +219,7 @@ public class MessagingUserPreferencesUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessagingUserPreferences fetchBymessagingPreferences(
-        java.lang.Long userId, boolean retrieveFromCache)
+        long userId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchBymessagingPreferences(userId, retrieveFromCache);
@@ -281,8 +280,8 @@ public class MessagingUserPreferencesUtil {
     * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeBymessagingPreferences(java.lang.Long userId)
-        throws com.ext.portlet.messaging.NoSuchUserPreferencesException,
+    public static void removeBymessagingPreferences(long userId)
+        throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeBymessagingPreferences(userId);
     }
@@ -304,7 +303,7 @@ public class MessagingUserPreferencesUtil {
     * @return the number of matching messaging user preferenceses
     * @throws SystemException if a system exception occurred
     */
-    public static int countBymessagingPreferences(java.lang.Long userId)
+    public static int countBymessagingPreferences(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countBymessagingPreferences(userId);
     }

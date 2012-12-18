@@ -33,7 +33,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the primary key of this messaging user preferences
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _messagingUserPreferences.getPrimaryKey();
     }
 
@@ -42,7 +42,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param primaryKey the primary key of this messaging user preferences
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _messagingUserPreferences.setPrimaryKey(primaryKey);
     }
 
@@ -51,7 +51,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the messaging preferences ID of this messaging user preferences
     */
-    public java.lang.Long getMessagingPreferencesId() {
+    public long getMessagingPreferencesId() {
         return _messagingUserPreferences.getMessagingPreferencesId();
     }
 
@@ -60,7 +60,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param messagingPreferencesId the messaging preferences ID of this messaging user preferences
     */
-    public void setMessagingPreferencesId(java.lang.Long messagingPreferencesId) {
+    public void setMessagingPreferencesId(long messagingPreferencesId) {
         _messagingUserPreferences.setMessagingPreferencesId(messagingPreferencesId);
     }
 
@@ -69,7 +69,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the user ID of this messaging user preferences
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _messagingUserPreferences.getUserId();
     }
 
@@ -78,8 +78,28 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param userId the user ID of this messaging user preferences
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _messagingUserPreferences.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this messaging user preferences.
+    *
+    * @return the user uuid of this messaging user preferences
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _messagingUserPreferences.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this messaging user preferences.
+    *
+    * @param userUuid the user uuid of this messaging user preferences
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _messagingUserPreferences.setUserUuid(userUuid);
     }
 
     /**
@@ -87,16 +107,25 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the email on send of this messaging user preferences
     */
-    public java.lang.Boolean getEmailOnSend() {
+    public boolean getEmailOnSend() {
         return _messagingUserPreferences.getEmailOnSend();
     }
 
     /**
-    * Sets the email on send of this messaging user preferences.
+    * Returns <code>true</code> if this messaging user preferences is email on send.
+    *
+    * @return <code>true</code> if this messaging user preferences is email on send; <code>false</code> otherwise
+    */
+    public boolean isEmailOnSend() {
+        return _messagingUserPreferences.isEmailOnSend();
+    }
+
+    /**
+    * Sets whether this messaging user preferences is email on send.
     *
     * @param emailOnSend the email on send of this messaging user preferences
     */
-    public void setEmailOnSend(java.lang.Boolean emailOnSend) {
+    public void setEmailOnSend(boolean emailOnSend) {
         _messagingUserPreferences.setEmailOnSend(emailOnSend);
     }
 
@@ -105,16 +134,25 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the email on receipt of this messaging user preferences
     */
-    public java.lang.Boolean getEmailOnReceipt() {
+    public boolean getEmailOnReceipt() {
         return _messagingUserPreferences.getEmailOnReceipt();
     }
 
     /**
-    * Sets the email on receipt of this messaging user preferences.
+    * Returns <code>true</code> if this messaging user preferences is email on receipt.
+    *
+    * @return <code>true</code> if this messaging user preferences is email on receipt; <code>false</code> otherwise
+    */
+    public boolean isEmailOnReceipt() {
+        return _messagingUserPreferences.isEmailOnReceipt();
+    }
+
+    /**
+    * Sets whether this messaging user preferences is email on receipt.
     *
     * @param emailOnReceipt the email on receipt of this messaging user preferences
     */
-    public void setEmailOnReceipt(java.lang.Boolean emailOnReceipt) {
+    public void setEmailOnReceipt(boolean emailOnReceipt) {
         _messagingUserPreferences.setEmailOnReceipt(emailOnReceipt);
     }
 
@@ -123,16 +161,25 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the email on activity of this messaging user preferences
     */
-    public java.lang.Boolean getEmailOnActivity() {
+    public boolean getEmailOnActivity() {
         return _messagingUserPreferences.getEmailOnActivity();
     }
 
     /**
-    * Sets the email on activity of this messaging user preferences.
+    * Returns <code>true</code> if this messaging user preferences is email on activity.
+    *
+    * @return <code>true</code> if this messaging user preferences is email on activity; <code>false</code> otherwise
+    */
+    public boolean isEmailOnActivity() {
+        return _messagingUserPreferences.isEmailOnActivity();
+    }
+
+    /**
+    * Sets whether this messaging user preferences is email on activity.
     *
     * @param emailOnActivity the email on activity of this messaging user preferences
     */
-    public void setEmailOnActivity(java.lang.Boolean emailOnActivity) {
+    public void setEmailOnActivity(boolean emailOnActivity) {
         _messagingUserPreferences.setEmailOnActivity(emailOnActivity);
     }
 

@@ -33,10 +33,10 @@ public class ModelCategoryLocalServiceClp implements ModelCategoryLocalService {
                 com.ext.portlet.models.model.ModelCategory.class);
 
         _createModelCategoryMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createModelCategory", java.lang.Long.class);
+                "createModelCategory", long.class);
 
         _deleteModelCategoryMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteModelCategory", java.lang.Long.class);
+                "deleteModelCategory", long.class);
 
         _deleteModelCategoryMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteModelCategory",
@@ -62,10 +62,10 @@ public class ModelCategoryLocalServiceClp implements ModelCategoryLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchModelCategoryMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchModelCategory", java.lang.Long.class);
+                "fetchModelCategory", long.class);
 
         _getModelCategoryMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getModelCategory", java.lang.Long.class);
+                "getModelCategory", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -118,11 +118,11 @@ public class ModelCategoryLocalServiceClp implements ModelCategoryLocalService {
     }
 
     public com.ext.portlet.models.model.ModelCategory createModelCategory(
-        java.lang.Long modelCategoryPK) {
+        long modelCategoryPK) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createModelCategoryMethodKey1,
-                ClpSerializer.translateInput(modelCategoryPK));
+                modelCategoryPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -138,11 +138,11 @@ public class ModelCategoryLocalServiceClp implements ModelCategoryLocalService {
         return (com.ext.portlet.models.model.ModelCategory) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteModelCategory(java.lang.Long modelCategoryPK)
+    public void deleteModelCategory(long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteModelCategoryMethodKey2,
-                ClpSerializer.translateInput(modelCategoryPK));
+                modelCategoryPK);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -297,12 +297,12 @@ public class ModelCategoryLocalServiceClp implements ModelCategoryLocalService {
     }
 
     public com.ext.portlet.models.model.ModelCategory fetchModelCategory(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchModelCategoryMethodKey8,
-                ClpSerializer.translateInput(modelCategoryPK));
+                modelCategoryPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -323,13 +323,13 @@ public class ModelCategoryLocalServiceClp implements ModelCategoryLocalService {
     }
 
     public com.ext.portlet.models.model.ModelCategory getModelCategory(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getModelCategoryMethodKey9,
-                ClpSerializer.translateInput(modelCategoryPK));
+                modelCategoryPK);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

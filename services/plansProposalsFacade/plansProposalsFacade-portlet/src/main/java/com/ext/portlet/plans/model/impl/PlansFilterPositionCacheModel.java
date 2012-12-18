@@ -16,9 +16,9 @@ import java.io.Serializable;
  */
 public class PlansFilterPositionCacheModel implements CacheModel<PlansFilterPosition>,
     Serializable {
-    public Long userId;
-    public Long planTypeId;
-    public Long positionId;
+    public long userId;
+    public long planTypeId;
+    public long positionId;
 
     @Override
     public String toString() {

@@ -148,7 +148,7 @@ public abstract class OntologyTermLocalServiceBaseImpl
      * @param id the primary key for the new ontology term
      * @return the new ontology term
      */
-    public OntologyTerm createOntologyTerm(Long id) {
+    public OntologyTerm createOntologyTerm(long id) {
         return ontologyTermPersistence.create(id);
     }
 
@@ -159,7 +159,7 @@ public abstract class OntologyTermLocalServiceBaseImpl
      * @throws PortalException if a ontology term with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteOntologyTerm(Long id)
+    public void deleteOntologyTerm(long id)
         throws PortalException, SystemException {
         OntologyTerm ontologyTerm = ontologyTermPersistence.remove(id);
 
@@ -265,7 +265,7 @@ public abstract class OntologyTermLocalServiceBaseImpl
         return ontologyTermPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public OntologyTerm fetchOntologyTerm(Long id) throws SystemException {
+    public OntologyTerm fetchOntologyTerm(long id) throws SystemException {
         return ontologyTermPersistence.fetchByPrimaryKey(id);
     }
 
@@ -277,7 +277,7 @@ public abstract class OntologyTermLocalServiceBaseImpl
      * @throws PortalException if a ontology term with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public OntologyTerm getOntologyTerm(Long id)
+    public OntologyTerm getOntologyTerm(long id)
         throws PortalException, SystemException {
         return ontologyTermPersistence.findByPrimaryKey(id);
     }

@@ -14,17 +14,17 @@ import java.util.List;
  * @generated
  */
 public class DiscussionCategorySoap implements Serializable {
-    private Long _pk;
-    private Long _categoryId;
-    private Long _categoryGroupId;
-    private Long _authorId;
+    private long _pk;
+    private long _categoryId;
+    private long _categoryGroupId;
+    private long _authorId;
     private String _name;
     private String _description;
     private Date _createDate;
     private Date _deleted;
-    private Integer _threadsCount;
+    private int _threadsCount;
     private Date _lastActivityDate;
-    private Long _lastActivityAuthorId;
+    private long _lastActivityAuthorId;
 
     public DiscussionCategorySoap() {
     }
@@ -86,43 +86,43 @@ public class DiscussionCategorySoap implements Serializable {
         return soapModels.toArray(new DiscussionCategorySoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _pk;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setPk(pk);
     }
 
-    public Long getPk() {
+    public long getPk() {
         return _pk;
     }
 
-    public void setPk(Long pk) {
+    public void setPk(long pk) {
         _pk = pk;
     }
 
-    public Long getCategoryId() {
+    public long getCategoryId() {
         return _categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(long categoryId) {
         _categoryId = categoryId;
     }
 
-    public Long getCategoryGroupId() {
+    public long getCategoryGroupId() {
         return _categoryGroupId;
     }
 
-    public void setCategoryGroupId(Long categoryGroupId) {
+    public void setCategoryGroupId(long categoryGroupId) {
         _categoryGroupId = categoryGroupId;
     }
 
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return _authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
@@ -158,11 +158,11 @@ public class DiscussionCategorySoap implements Serializable {
         _deleted = deleted;
     }
 
-    public Integer getThreadsCount() {
+    public int getThreadsCount() {
         return _threadsCount;
     }
 
-    public void setThreadsCount(Integer threadsCount) {
+    public void setThreadsCount(int threadsCount) {
         _threadsCount = threadsCount;
     }
 
@@ -174,11 +174,11 @@ public class DiscussionCategorySoap implements Serializable {
         _lastActivityDate = lastActivityDate;
     }
 
-    public Long getLastActivityAuthorId() {
+    public long getLastActivityAuthorId() {
         return _lastActivityAuthorId;
     }
 
-    public void setLastActivityAuthorId(Long lastActivityAuthorId) {
+    public void setLastActivityAuthorId(long lastActivityAuthorId) {
         _lastActivityAuthorId = lastActivityAuthorId;
     }
 }

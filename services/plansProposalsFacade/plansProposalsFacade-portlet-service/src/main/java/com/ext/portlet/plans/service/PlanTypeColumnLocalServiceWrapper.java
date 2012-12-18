@@ -41,7 +41,7 @@ public class PlanTypeColumnLocalServiceWrapper
     * @return the new plan type column
     */
     public com.ext.portlet.plans.model.PlanTypeColumn createPlanTypeColumn(
-        java.lang.Long planTypeColumnId) {
+        long planTypeColumnId) {
         return _planTypeColumnLocalService.createPlanTypeColumn(planTypeColumnId);
     }
 
@@ -52,7 +52,7 @@ public class PlanTypeColumnLocalServiceWrapper
     * @throws PortalException if a plan type column with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanTypeColumn(java.lang.Long planTypeColumnId)
+    public void deletePlanTypeColumn(long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planTypeColumnLocalService.deletePlanTypeColumn(planTypeColumnId);
@@ -142,7 +142,7 @@ public class PlanTypeColumnLocalServiceWrapper
     }
 
     public com.ext.portlet.plans.model.PlanTypeColumn fetchPlanTypeColumn(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTypeColumnLocalService.fetchPlanTypeColumn(planTypeColumnId);
     }
@@ -156,7 +156,7 @@ public class PlanTypeColumnLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTypeColumn getPlanTypeColumn(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planTypeColumnLocalService.getPlanTypeColumn(planTypeColumnId);

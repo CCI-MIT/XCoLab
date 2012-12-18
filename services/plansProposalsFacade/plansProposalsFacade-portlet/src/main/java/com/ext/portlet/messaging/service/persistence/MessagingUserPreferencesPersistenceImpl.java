@@ -1,6 +1,6 @@
 package com.ext.portlet.messaging.service.persistence;
 
-import com.ext.portlet.messaging.NoSuchUserPreferencesException;
+import com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException;
 import com.ext.portlet.messaging.model.MessagingUserPreferences;
 import com.ext.portlet.messaging.model.impl.MessagingUserPreferencesImpl;
 import com.ext.portlet.messaging.model.impl.MessagingUserPreferencesModelImpl;
@@ -230,7 +230,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @param messagingPreferencesId the primary key for the new messaging user preferences
      * @return the new messaging user preferences
      */
-    public MessagingUserPreferences create(Long messagingPreferencesId) {
+    public MessagingUserPreferences create(long messagingPreferencesId) {
         MessagingUserPreferences messagingUserPreferences = new MessagingUserPreferencesImpl();
 
         messagingUserPreferences.setNew(true);
@@ -244,12 +244,12 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      *
      * @param messagingPreferencesId the primary key of the messaging user preferences
      * @return the messaging user preferences that was removed
-     * @throws com.ext.portlet.messaging.NoSuchUserPreferencesException if a messaging user preferences with the primary key could not be found
+     * @throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException if a messaging user preferences with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessagingUserPreferences remove(Long messagingPreferencesId)
-        throws NoSuchUserPreferencesException, SystemException {
-        return remove((Serializable) messagingPreferencesId);
+    public MessagingUserPreferences remove(long messagingPreferencesId)
+        throws NoSuchMessagingUserPreferencesException, SystemException {
+        return remove(Long.valueOf(messagingPreferencesId));
     }
 
     /**
@@ -257,12 +257,12 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      *
      * @param primaryKey the primary key of the messaging user preferences
      * @return the messaging user preferences that was removed
-     * @throws com.ext.portlet.messaging.NoSuchUserPreferencesException if a messaging user preferences with the primary key could not be found
+     * @throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException if a messaging user preferences with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public MessagingUserPreferences remove(Serializable primaryKey)
-        throws NoSuchUserPreferencesException, SystemException {
+        throws NoSuchMessagingUserPreferencesException, SystemException {
         Session session = null;
 
         try {
@@ -276,12 +276,12 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
                     _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
                 }
 
-                throw new NoSuchUserPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                throw new NoSuchMessagingUserPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                     primaryKey);
             }
 
             return remove(messagingUserPreferences);
-        } catch (NoSuchUserPreferencesException nsee) {
+        } catch (NoSuchMessagingUserPreferencesException nsee) {
             throw nsee;
         } catch (Exception e) {
             throw processException(e);
@@ -387,9 +387,9 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
 
         messagingUserPreferencesImpl.setMessagingPreferencesId(messagingUserPreferences.getMessagingPreferencesId());
         messagingUserPreferencesImpl.setUserId(messagingUserPreferences.getUserId());
-        messagingUserPreferencesImpl.setEmailOnSend(messagingUserPreferences.getEmailOnSend());
-        messagingUserPreferencesImpl.setEmailOnReceipt(messagingUserPreferences.getEmailOnReceipt());
-        messagingUserPreferencesImpl.setEmailOnActivity(messagingUserPreferences.getEmailOnActivity());
+        messagingUserPreferencesImpl.setEmailOnSend(messagingUserPreferences.isEmailOnSend());
+        messagingUserPreferencesImpl.setEmailOnReceipt(messagingUserPreferences.isEmailOnReceipt());
+        messagingUserPreferencesImpl.setEmailOnActivity(messagingUserPreferences.isEmailOnActivity());
 
         return messagingUserPreferencesImpl;
     }
@@ -405,20 +405,20 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
     @Override
     public MessagingUserPreferences findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
-     * Returns the messaging user preferences with the primary key or throws a {@link com.ext.portlet.messaging.NoSuchUserPreferencesException} if it could not be found.
+     * Returns the messaging user preferences with the primary key or throws a {@link com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException} if it could not be found.
      *
      * @param messagingPreferencesId the primary key of the messaging user preferences
      * @return the messaging user preferences
-     * @throws com.ext.portlet.messaging.NoSuchUserPreferencesException if a messaging user preferences with the primary key could not be found
+     * @throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException if a messaging user preferences with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public MessagingUserPreferences findByPrimaryKey(
-        Long messagingPreferencesId)
-        throws NoSuchUserPreferencesException, SystemException {
+        long messagingPreferencesId)
+        throws NoSuchMessagingUserPreferencesException, SystemException {
         MessagingUserPreferences messagingUserPreferences = fetchByPrimaryKey(messagingPreferencesId);
 
         if (messagingUserPreferences == null) {
@@ -427,7 +427,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
                     messagingPreferencesId);
             }
 
-            throw new NoSuchUserPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+            throw new NoSuchMessagingUserPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                 messagingPreferencesId);
         }
 
@@ -444,7 +444,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
     @Override
     public MessagingUserPreferences fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -455,7 +455,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @throws SystemException if a system exception occurred
      */
     public MessagingUserPreferences fetchByPrimaryKey(
-        Long messagingPreferencesId) throws SystemException {
+        long messagingPreferencesId) throws SystemException {
         MessagingUserPreferences messagingUserPreferences = (MessagingUserPreferences) EntityCacheUtil.getResult(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
                 MessagingUserPreferencesImpl.class, messagingPreferencesId);
 
@@ -494,15 +494,15 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
     }
 
     /**
-     * Returns the messaging user preferences where userId = &#63; or throws a {@link com.ext.portlet.messaging.NoSuchUserPreferencesException} if it could not be found.
+     * Returns the messaging user preferences where userId = &#63; or throws a {@link com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException} if it could not be found.
      *
      * @param userId the user ID
      * @return the matching messaging user preferences
-     * @throws com.ext.portlet.messaging.NoSuchUserPreferencesException if a matching messaging user preferences could not be found
+     * @throws com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException if a matching messaging user preferences could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessagingUserPreferences findBymessagingPreferences(Long userId)
-        throws NoSuchUserPreferencesException, SystemException {
+    public MessagingUserPreferences findBymessagingPreferences(long userId)
+        throws NoSuchMessagingUserPreferencesException, SystemException {
         MessagingUserPreferences messagingUserPreferences = fetchBymessagingPreferences(userId);
 
         if (messagingUserPreferences == null) {
@@ -519,7 +519,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
                 _log.warn(msg.toString());
             }
 
-            throw new NoSuchUserPreferencesException(msg.toString());
+            throw new NoSuchMessagingUserPreferencesException(msg.toString());
         }
 
         return messagingUserPreferences;
@@ -532,7 +532,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @return the matching messaging user preferences, or <code>null</code> if a matching messaging user preferences could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessagingUserPreferences fetchBymessagingPreferences(Long userId)
+    public MessagingUserPreferences fetchBymessagingPreferences(long userId)
         throws SystemException {
         return fetchBymessagingPreferences(userId, true);
     }
@@ -545,7 +545,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @return the matching messaging user preferences, or <code>null</code> if a matching messaging user preferences could not be found
      * @throws SystemException if a system exception occurred
      */
-    public MessagingUserPreferences fetchBymessagingPreferences(Long userId,
+    public MessagingUserPreferences fetchBymessagingPreferences(long userId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { userId };
 
@@ -574,7 +574,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 List<MessagingUserPreferences> list = q.list();
 
@@ -731,8 +731,8 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeBymessagingPreferences(Long userId)
-        throws NoSuchUserPreferencesException, SystemException {
+    public void removeBymessagingPreferences(long userId)
+        throws NoSuchMessagingUserPreferencesException, SystemException {
         MessagingUserPreferences messagingUserPreferences = findBymessagingPreferences(userId);
 
         remove(messagingUserPreferences);
@@ -756,7 +756,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @return the number of matching messaging user preferenceses
      * @throws SystemException if a system exception occurred
      */
-    public int countBymessagingPreferences(Long userId)
+    public int countBymessagingPreferences(long userId)
         throws SystemException {
         Object[] finderArgs = new Object[] { userId };
 
@@ -781,7 +781,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

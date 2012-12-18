@@ -41,7 +41,7 @@ public class PlanAttributeLocalServiceWrapper
     * @return the new plan attribute
     */
     public com.ext.portlet.plans.model.PlanAttribute createPlanAttribute(
-        java.lang.Long attributeId) {
+        long attributeId) {
         return _planAttributeLocalService.createPlanAttribute(attributeId);
     }
 
@@ -52,7 +52,7 @@ public class PlanAttributeLocalServiceWrapper
     * @throws PortalException if a plan attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanAttribute(java.lang.Long attributeId)
+    public void deletePlanAttribute(long attributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _planAttributeLocalService.deletePlanAttribute(attributeId);
@@ -142,7 +142,7 @@ public class PlanAttributeLocalServiceWrapper
     }
 
     public com.ext.portlet.plans.model.PlanAttribute fetchPlanAttribute(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planAttributeLocalService.fetchPlanAttribute(attributeId);
     }
@@ -156,7 +156,7 @@ public class PlanAttributeLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanAttribute getPlanAttribute(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planAttributeLocalService.getPlanAttribute(attributeId);
@@ -269,6 +269,11 @@ public class PlanAttributeLocalServiceWrapper
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planAttributeLocalService.getPlanAttributesByNameValue(attributeName,
             attributeValue);
+    }
+
+    public java.lang.Object getTypedValue(
+        com.ext.portlet.plans.model.PlanAttribute pa) {
+        return _planAttributeLocalService.getTypedValue(pa);
     }
 
     /**

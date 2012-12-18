@@ -151,9 +151,9 @@ public class ModelUIFactory {
      */
     private ModelInputGroupDisplayItem processGroup(ModelInputGroup group, Set<MetaData> bareMetaData) throws SystemException, IllegalUIConfigurationException, IOException {
         ModelInputGroupDisplayItem result=null;
-        for (ModelInputItem item : group.getInputItems()) {
+        for (ModelInputItem item : ModelInputGroupLocalServiceUtil.getInputItems(group)) {
                 try {
-                    bareMetaData.remove(item.getMetaData());
+                    bareMetaData.remove(ModelInputItemLocalServiceUtil.getMetaData(item));
                 } catch (SystemException e) {
                     _log.error(e);
                 }
@@ -168,7 +168,7 @@ public class ModelUIFactory {
             _log.error(e);
             return null;
         }
-        for (ModelInputGroup g:group.getChildGroups()) {
+        for (ModelInputGroup g: ModelInputGroupLocalServiceUtil.getChildGroups(group)) {
            result.addChildGroup(processGroup(g,bareMetaData));
         }
         return result;
@@ -186,7 +186,7 @@ public class ModelUIFactory {
         Set<MetaData> inputs = new HashSet<MetaData>(s.getInputs());
 
         for (ModelInputGroup group : ModelInputGroupLocalServiceUtil.getInputGroups(s)) {
-            if (group.getParentGroupPK()==null) {
+            if (group.getParentGroupPK() <= 0) {
                 result.add(processGroup(group,inputs));
             }
         }

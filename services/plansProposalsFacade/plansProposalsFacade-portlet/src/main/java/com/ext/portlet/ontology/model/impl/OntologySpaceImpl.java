@@ -23,16 +23,5 @@ public class OntologySpaceImpl extends OntologySpaceBaseImpl {
     public OntologySpaceImpl() {
     }
 
-    public void store() throws SystemException {
-        if (isNew()) {
-            OntologySpaceLocalServiceUtil.addOntologySpace(this);
-        }
-        else {
-            OntologySpaceLocalServiceUtil.updateOntologySpace(this);
-        }
-    }
-    
-    public OntologyTerm getTopTerm() throws SystemException {
-        return OntologyTermLocalServiceUtil.findByParentIdSpaceId(null, getId()).get(0);
-    }
+
 }

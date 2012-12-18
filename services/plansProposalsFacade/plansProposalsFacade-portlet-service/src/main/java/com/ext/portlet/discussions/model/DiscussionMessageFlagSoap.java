@@ -14,12 +14,12 @@ import java.util.List;
  * @generated
  */
 public class DiscussionMessageFlagSoap implements Serializable {
-    private Long _pk;
-    private Long _messageId;
+    private long _pk;
+    private long _messageId;
     private String _flagType;
     private String _data;
     private Date _created;
-    private Long _userId;
+    private long _userId;
 
     public DiscussionMessageFlagSoap() {
     }
@@ -77,27 +77,27 @@ public class DiscussionMessageFlagSoap implements Serializable {
         return soapModels.toArray(new DiscussionMessageFlagSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _pk;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setPk(pk);
     }
 
-    public Long getPk() {
+    public long getPk() {
         return _pk;
     }
 
-    public void setPk(Long pk) {
+    public void setPk(long pk) {
         _pk = pk;
     }
 
-    public Long getMessageId() {
+    public long getMessageId() {
         return _messageId;
     }
 
-    public void setMessageId(Long messageId) {
+    public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
@@ -125,11 +125,11 @@ public class DiscussionMessageFlagSoap implements Serializable {
         _created = created;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 }

@@ -31,7 +31,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the primary key of this plan type
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planType.getPrimaryKey();
     }
 
@@ -40,7 +40,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param primaryKey the primary key of this plan type
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planType.setPrimaryKey(primaryKey);
     }
 
@@ -49,7 +49,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the plan type ID of this plan type
     */
-    public java.lang.Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planType.getPlanTypeId();
     }
 
@@ -58,7 +58,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param planTypeId the plan type ID of this plan type
     */
-    public void setPlanTypeId(java.lang.Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planType.setPlanTypeId(planTypeId);
     }
 
@@ -103,7 +103,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the model ID of this plan type
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _planType.getModelId();
     }
 
@@ -112,7 +112,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param modelId the model ID of this plan type
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _planType.setModelId(modelId);
     }
 
@@ -139,16 +139,25 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the published of this plan type
     */
-    public java.lang.Boolean getPublished() {
+    public boolean getPublished() {
         return _planType.getPublished();
     }
 
     /**
-    * Sets the published of this plan type.
+    * Returns <code>true</code> if this plan type is published.
+    *
+    * @return <code>true</code> if this plan type is published; <code>false</code> otherwise
+    */
+    public boolean isPublished() {
+        return _planType.isPublished();
+    }
+
+    /**
+    * Sets whether this plan type is published.
     *
     * @param published the published of this plan type
     */
-    public void setPublished(java.lang.Boolean published) {
+    public void setPublished(boolean published) {
         _planType.setPublished(published);
     }
 
@@ -157,7 +166,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the published counterpart ID of this plan type
     */
-    public java.lang.Long getPublishedCounterpartId() {
+    public long getPublishedCounterpartId() {
         return _planType.getPublishedCounterpartId();
     }
 
@@ -166,7 +175,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param publishedCounterpartId the published counterpart ID of this plan type
     */
-    public void setPublishedCounterpartId(java.lang.Long publishedCounterpartId) {
+    public void setPublishedCounterpartId(long publishedCounterpartId) {
         _planType.setPublishedCounterpartId(publishedCounterpartId);
     }
 
@@ -175,16 +184,25 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the is default of this plan type
     */
-    public java.lang.Boolean getIsDefault() {
+    public boolean getIsDefault() {
         return _planType.getIsDefault();
     }
 
     /**
-    * Sets the is default of this plan type.
+    * Returns <code>true</code> if this plan type is is default.
+    *
+    * @return <code>true</code> if this plan type is is default; <code>false</code> otherwise
+    */
+    public boolean isIsDefault() {
+        return _planType.isIsDefault();
+    }
+
+    /**
+    * Sets whether this plan type is is default.
     *
     * @param isDefault the is default of this plan type
     */
-    public void setIsDefault(java.lang.Boolean isDefault) {
+    public void setIsDefault(boolean isDefault) {
         _planType.setIsDefault(isDefault);
     }
 
@@ -193,7 +211,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the default model ID of this plan type
     */
-    public java.lang.Long getDefaultModelId() {
+    public long getDefaultModelId() {
         return _planType.getDefaultModelId();
     }
 
@@ -202,7 +220,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param defaultModelId the default model ID of this plan type
     */
-    public void setDefaultModelId(java.lang.Long defaultModelId) {
+    public void setDefaultModelId(long defaultModelId) {
         _planType.setDefaultModelId(defaultModelId);
     }
 
@@ -211,7 +229,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the default scenario ID of this plan type
     */
-    public java.lang.Long getDefaultScenarioId() {
+    public long getDefaultScenarioId() {
         return _planType.getDefaultScenarioId();
     }
 
@@ -220,7 +238,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param defaultScenarioId the default scenario ID of this plan type
     */
-    public void setDefaultScenarioId(java.lang.Long defaultScenarioId) {
+    public void setDefaultScenarioId(long defaultScenarioId) {
         _planType.setDefaultScenarioId(defaultScenarioId);
     }
 
@@ -295,31 +313,6 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planType.persist();
-    }
-
-    public java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planType.getAvailableModels();
-    }
-
-    public edu.mit.cci.simulation.client.Simulation getDefaultModel()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planType.getDefaultModel();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getColumns()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planType.getColumns();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getAttributes()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planType.getAttributes();
-    }
-
-    public boolean isRegional()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planType.isRegional();
     }
 
     /**

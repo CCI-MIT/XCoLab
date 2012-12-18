@@ -341,7 +341,7 @@ public abstract class PlansUserSettingsLocalServiceBaseImpl
      * @param planUserSettingsId the primary key for the new plans user settings
      * @return the new plans user settings
      */
-    public PlansUserSettings createPlansUserSettings(Long planUserSettingsId) {
+    public PlansUserSettings createPlansUserSettings(long planUserSettingsId) {
         return plansUserSettingsPersistence.create(planUserSettingsId);
     }
 
@@ -352,7 +352,7 @@ public abstract class PlansUserSettingsLocalServiceBaseImpl
      * @throws PortalException if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlansUserSettings(Long planUserSettingsId)
+    public void deletePlansUserSettings(long planUserSettingsId)
         throws PortalException, SystemException {
         PlansUserSettings plansUserSettings = plansUserSettingsPersistence.remove(planUserSettingsId);
 
@@ -458,7 +458,7 @@ public abstract class PlansUserSettingsLocalServiceBaseImpl
         return plansUserSettingsPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlansUserSettings fetchPlansUserSettings(Long planUserSettingsId)
+    public PlansUserSettings fetchPlansUserSettings(long planUserSettingsId)
         throws SystemException {
         return plansUserSettingsPersistence.fetchByPrimaryKey(planUserSettingsId);
     }
@@ -471,7 +471,7 @@ public abstract class PlansUserSettingsLocalServiceBaseImpl
      * @throws PortalException if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansUserSettings getPlansUserSettings(Long planUserSettingsId)
+    public PlansUserSettings getPlansUserSettings(long planUserSettingsId)
         throws PortalException, SystemException {
         return plansUserSettingsPersistence.findByPrimaryKey(planUserSettingsId);
     }

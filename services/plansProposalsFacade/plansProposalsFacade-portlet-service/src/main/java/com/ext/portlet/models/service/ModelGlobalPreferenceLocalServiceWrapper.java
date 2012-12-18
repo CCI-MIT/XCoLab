@@ -41,7 +41,7 @@ public class ModelGlobalPreferenceLocalServiceWrapper
     * @return the new model global preference
     */
     public com.ext.portlet.models.model.ModelGlobalPreference createModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK) {
+        long modelGlobalPreferencePK) {
         return _modelGlobalPreferenceLocalService.createModelGlobalPreference(modelGlobalPreferencePK);
     }
 
@@ -52,8 +52,7 @@ public class ModelGlobalPreferenceLocalServiceWrapper
     * @throws PortalException if a model global preference with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+    public void deleteModelGlobalPreference(long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _modelGlobalPreferenceLocalService.deleteModelGlobalPreference(modelGlobalPreferencePK);
@@ -144,7 +143,7 @@ public class ModelGlobalPreferenceLocalServiceWrapper
     }
 
     public com.ext.portlet.models.model.ModelGlobalPreference fetchModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelGlobalPreferenceLocalService.fetchModelGlobalPreference(modelGlobalPreferencePK);
     }
@@ -158,7 +157,7 @@ public class ModelGlobalPreferenceLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.models.model.ModelGlobalPreference getModelGlobalPreference(
-        java.lang.Long modelGlobalPreferencePK)
+        long modelGlobalPreferencePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _modelGlobalPreferenceLocalService.getModelGlobalPreference(modelGlobalPreferencePK);

@@ -16,28 +16,28 @@ import java.util.Date;
 
 
 public class ContestClp extends BaseModelImpl<Contest> implements Contest {
-    private Long _ContestPK;
+    private long _ContestPK;
     private String _ContestName;
     private String _ContestShortName;
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
     private String _defaultPlanDescription;
-    private Long _PlanTypeId;
+    private long _PlanTypeId;
     private Date _created;
     private Date _updated;
-    private Long _authorId;
-    private Boolean _contestActive;
-    private Long _planTemplateId;
-    private Long _focusAreaId;
-    private Long _contestLogoId;
-    private Boolean _featured;
-    private Boolean _plansOpenByDefault;
-    private Integer _flag;
+    private long _authorId;
+    private boolean _contestActive;
+    private long _planTemplateId;
+    private long _focusAreaId;
+    private long _contestLogoId;
+    private boolean _featured;
+    private boolean _plansOpenByDefault;
+    private int _flag;
     private String _flagText;
-    private Long _groupId;
-    private Long _discussionGroupId;
-    private Integer _weight;
+    private long _groupId;
+    private long _discussionGroupId;
+    private int _weight;
     private String _resourcesUrl;
 
     public ContestClp() {
@@ -51,11 +51,11 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         return Contest.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _ContestPK;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setContestPK(primaryKey);
     }
 
@@ -67,11 +67,11 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getContestPK() {
+    public long getContestPK() {
         return _ContestPK;
     }
 
-    public void setContestPK(Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _ContestPK = ContestPK;
     }
 
@@ -124,11 +124,11 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         _defaultPlanDescription = defaultPlanDescription;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _PlanTypeId;
     }
 
-    public void setPlanTypeId(Long PlanTypeId) {
+    public void setPlanTypeId(long PlanTypeId) {
         _PlanTypeId = PlanTypeId;
     }
 
@@ -148,67 +148,79 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         _updated = updated;
     }
 
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return _authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
-    public Boolean getContestActive() {
+    public boolean getContestActive() {
         return _contestActive;
     }
 
-    public void setContestActive(Boolean contestActive) {
+    public boolean isContestActive() {
+        return _contestActive;
+    }
+
+    public void setContestActive(boolean contestActive) {
         _contestActive = contestActive;
     }
 
-    public Long getPlanTemplateId() {
+    public long getPlanTemplateId() {
         return _planTemplateId;
     }
 
-    public void setPlanTemplateId(Long planTemplateId) {
+    public void setPlanTemplateId(long planTemplateId) {
         _planTemplateId = planTemplateId;
     }
 
-    public Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return _focusAreaId;
     }
 
-    public void setFocusAreaId(Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
     }
 
-    public Long getContestLogoId() {
+    public long getContestLogoId() {
         return _contestLogoId;
     }
 
-    public void setContestLogoId(Long contestLogoId) {
+    public void setContestLogoId(long contestLogoId) {
         _contestLogoId = contestLogoId;
     }
 
-    public Boolean getFeatured() {
+    public boolean getFeatured() {
         return _featured;
     }
 
-    public void setFeatured(Boolean featured) {
+    public boolean isFeatured() {
+        return _featured;
+    }
+
+    public void setFeatured(boolean featured) {
         _featured = featured;
     }
 
-    public Boolean getPlansOpenByDefault() {
+    public boolean getPlansOpenByDefault() {
         return _plansOpenByDefault;
     }
 
-    public void setPlansOpenByDefault(Boolean plansOpenByDefault) {
+    public boolean isPlansOpenByDefault() {
+        return _plansOpenByDefault;
+    }
+
+    public void setPlansOpenByDefault(boolean plansOpenByDefault) {
         _plansOpenByDefault = plansOpenByDefault;
     }
 
-    public Integer getFlag() {
+    public int getFlag() {
         return _flag;
     }
 
-    public void setFlag(Integer flag) {
+    public void setFlag(int flag) {
         _flag = flag;
     }
 
@@ -220,27 +232,27 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         _flagText = flagText;
     }
 
-    public Long getGroupId() {
+    public long getGroupId() {
         return _groupId;
     }
 
-    public void setGroupId(Long groupId) {
+    public void setGroupId(long groupId) {
         _groupId = groupId;
     }
 
-    public Long getDiscussionGroupId() {
+    public long getDiscussionGroupId() {
         return _discussionGroupId;
     }
 
-    public void setDiscussionGroupId(Long discussionGroupId) {
+    public void setDiscussionGroupId(long discussionGroupId) {
         _discussionGroupId = discussionGroupId;
     }
 
-    public Integer getWeight() {
+    public int getWeight() {
         return _weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(int weight) {
         _weight = weight;
     }
 
@@ -250,86 +262,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     public void setResourcesUrl(String resourcesUrl) {
         _resourcesUrl = resourcesUrl;
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getPhases() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.plans.model.PlanType getPlanType() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getActivePhases() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.contests.model.ContestPhase getActivePhase() {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isActive() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<java.lang.Long> getDebatesIds() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.lang.Integer getTotalVotes() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void updateDefaultPlanDescription(java.lang.String description) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.ontology.model.FocusArea getFocusArea() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.Image getLogo() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setLogo(java.io.File logoFile) {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.lang.String getLogoPath() {
-        throw new UnsupportedOperationException();
-    }
-
-    public long getProposalsCount() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getDiscussionCategoryGroup() {
-        throw new UnsupportedOperationException();
-    }
-
-    public long getCommentsCount() {
-        throw new UnsupportedOperationException();
-    }
-
-    public long getProposalsCommentsCount() {
-        throw new UnsupportedOperationException();
-    }
-
-    public long getTotalComments() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestTeamMember> getTeamMembers() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -415,7 +347,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
             return false;
         }
 
-        Long primaryKey = contest.getPrimaryKey();
+        long primaryKey = contest.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -426,7 +358,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

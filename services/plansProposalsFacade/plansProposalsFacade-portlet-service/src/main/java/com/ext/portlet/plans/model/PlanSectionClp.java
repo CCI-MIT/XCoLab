@@ -16,14 +16,14 @@ import java.util.Date;
 
 public class PlanSectionClp extends BaseModelImpl<PlanSection>
     implements PlanSection {
-    private Long _id;
-    private Long _planSectionDefinitionId;
-    private Long _planId;
+    private long _id;
+    private long _planSectionDefinitionId;
+    private long _planId;
     private String _content;
     private Date _created;
-    private Long _version;
-    private Long _planVersion;
-    private Long _updateAuthorId;
+    private long _version;
+    private long _planVersion;
+    private long _updateAuthorId;
 
     public PlanSectionClp() {
     }
@@ -36,11 +36,11 @@ public class PlanSectionClp extends BaseModelImpl<PlanSection>
         return PlanSection.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -52,27 +52,27 @@ public class PlanSectionClp extends BaseModelImpl<PlanSection>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanSectionDefinitionId() {
+    public long getPlanSectionDefinitionId() {
         return _planSectionDefinitionId;
     }
 
-    public void setPlanSectionDefinitionId(Long planSectionDefinitionId) {
+    public void setPlanSectionDefinitionId(long planSectionDefinitionId) {
         _planSectionDefinitionId = planSectionDefinitionId;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
@@ -92,44 +92,28 @@ public class PlanSectionClp extends BaseModelImpl<PlanSection>
         _created = created;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return _version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(long version) {
         _version = version;
     }
 
-    public Long getPlanVersion() {
+    public long getPlanVersion() {
         return _planVersion;
     }
 
-    public void setPlanVersion(Long planVersion) {
+    public void setPlanVersion(long planVersion) {
         _planVersion = planVersion;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.plans.model.PlanSectionDefinition getDefinition() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void addPlanReference(java.lang.Long planId) {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.plans.model.PlanItem> getReferencedPlans() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -196,7 +180,7 @@ public class PlanSectionClp extends BaseModelImpl<PlanSection>
             return false;
         }
 
-        Long primaryKey = planSection.getPrimaryKey();
+        long primaryKey = planSection.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -207,7 +191,7 @@ public class PlanSectionClp extends BaseModelImpl<PlanSection>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

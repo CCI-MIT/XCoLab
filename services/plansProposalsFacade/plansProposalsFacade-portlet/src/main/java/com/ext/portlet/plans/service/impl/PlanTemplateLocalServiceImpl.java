@@ -1,6 +1,19 @@
 package com.ext.portlet.plans.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ext.portlet.plans.model.PlanSectionDefinition;
+import com.ext.portlet.plans.model.PlanTemplate;
+import com.ext.portlet.plans.model.PlanTemplateSection;
+import com.ext.portlet.plans.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTemplateLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTemplateSectionLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanTemplateLocalServiceBaseImpl;
+import com.ext.portlet.plans.service.persistence.PlanTemplateSectionPK;
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The implementation of the plan template local service.
@@ -23,4 +36,49 @@ public class PlanTemplateLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.plans.service.PlanTemplateLocalServiceUtil} to access the plan template local service.
      */
+    
+
+    public void store(PlanTemplate template) throws SystemException {
+        if (template.isNew()) {
+            if (template.getId() <= 0L) {
+                template.setId(CounterLocalServiceUtil.increment(PlanTemplate.class.getName()));
+            }
+            
+            PlanTemplateLocalServiceUtil.addPlanTemplate(template);
+        }
+        else {
+
+            PlanTemplateLocalServiceUtil.updatePlanTemplate(template);
+        }
+    }
+    
+    public List<PlanSectionDefinition> getSections(PlanTemplate template) throws SystemException, PortalException {
+        List<PlanSectionDefinition> ret = new ArrayList<PlanSectionDefinition>();
+        for (PlanTemplateSection pts: PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(template.getId())) {
+            ret.add(PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(pts.getPlanSectionId()));
+        }
+        
+        return ret;
+    }
+    
+    public void addSection(PlanTemplate template, PlanSectionDefinition section) throws SystemException, PortalException {
+        
+        int maxWeight = 0;
+        for (PlanTemplateSection def: PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(template.getId())) {
+            maxWeight = Math.max(maxWeight, def.getWeight());
+        }
+        
+        PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(template.getId(), section.getId(), maxWeight+1);
+    }
+    
+    public void removeSection(PlanTemplate template, PlanSectionDefinition section) throws SystemException, PortalException {
+        PlanTemplateSectionLocalServiceUtil.removePlanTemplateSection(template.getId(), section.getId());
+    }
+    
+    public void updateSectionWeight(PlanTemplate template, PlanSectionDefinition section, int weight) throws SystemException, PortalException {
+        PlanTemplateSection pts = PlanTemplateSectionLocalServiceUtil.getPlanTemplateSection(
+                new PlanTemplateSectionPK(template.getId(), section.getId()));
+        pts.setWeight(weight);
+        PlanTemplateSectionLocalServiceUtil.store(pts);
+    }
 }

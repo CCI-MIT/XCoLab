@@ -16,8 +16,8 @@ import java.util.List;
  * @generated
  */
 public class PlansFilterSoap implements Serializable {
-    private Long _userId;
-    private Long _planTypeId;
+    private long _userId;
+    private long _planTypeId;
     private String _name;
     private String _creator;
     private String _description;
@@ -31,8 +31,8 @@ public class PlansFilterSoap implements Serializable {
     private Double _mitigationTo;
     private Date _dateFrom;
     private Date _dateTo;
-    private Boolean _filterPositionsAll;
-    private Boolean _enabled;
+    private boolean _filterPositionsAll;
+    private boolean _enabled;
 
     public PlansFilterSoap() {
     }
@@ -106,19 +106,19 @@ public class PlansFilterSoap implements Serializable {
         setPlanTypeId(pk.planTypeId);
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
@@ -226,19 +226,27 @@ public class PlansFilterSoap implements Serializable {
         _dateTo = dateTo;
     }
 
-    public Boolean getFilterPositionsAll() {
+    public boolean getFilterPositionsAll() {
         return _filterPositionsAll;
     }
 
-    public void setFilterPositionsAll(Boolean filterPositionsAll) {
+    public boolean isFilterPositionsAll() {
+        return _filterPositionsAll;
+    }
+
+    public void setFilterPositionsAll(boolean filterPositionsAll) {
         _filterPositionsAll = filterPositionsAll;
     }
 
-    public Boolean getEnabled() {
+    public boolean getEnabled() {
         return _enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public boolean isEnabled() {
+        return _enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
         _enabled = enabled;
     }
 }

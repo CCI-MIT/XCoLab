@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -14,13 +15,14 @@ import java.lang.reflect.Proxy;
 
 public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
     implements PlansUserSettings {
-    private Long _planUserSettingsId;
-    private Long _userId;
-    private Long _planTypeId;
+    private long _planUserSettingsId;
+    private long _userId;
+    private String _userUuid;
+    private long _planTypeId;
     private String _sortColumn;
     private String _sortDirection;
-    private Boolean _filterEnabled;
-    private Boolean _filterPositionsAll;
+    private boolean _filterEnabled;
+    private boolean _filterPositionsAll;
 
     public PlansUserSettingsClp() {
     }
@@ -33,11 +35,11 @@ public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
         return PlansUserSettings.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planUserSettingsId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPlanUserSettingsId(primaryKey);
     }
 
@@ -49,27 +51,35 @@ public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPlanUserSettingsId() {
+    public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
-    public void setPlanUserSettingsId(Long planUserSettingsId) {
+    public void setPlanUserSettingsId(long planUserSettingsId) {
         _planUserSettingsId = planUserSettingsId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getPlanTypeId() {
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
@@ -89,19 +99,27 @@ public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
         _sortDirection = sortDirection;
     }
 
-    public Boolean getFilterEnabled() {
+    public boolean getFilterEnabled() {
         return _filterEnabled;
     }
 
-    public void setFilterEnabled(Boolean filterEnabled) {
+    public boolean isFilterEnabled() {
+        return _filterEnabled;
+    }
+
+    public void setFilterEnabled(boolean filterEnabled) {
         _filterEnabled = filterEnabled;
     }
 
-    public Boolean getFilterPositionsAll() {
+    public boolean getFilterPositionsAll() {
         return _filterPositionsAll;
     }
 
-    public void setFilterPositionsAll(Boolean filterPositionsAll) {
+    public boolean isFilterPositionsAll() {
+        return _filterPositionsAll;
+    }
+
+    public void setFilterPositionsAll(boolean filterPositionsAll) {
         _filterPositionsAll = filterPositionsAll;
     }
 
@@ -190,7 +208,7 @@ public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
     }
 
     public int compareTo(PlansUserSettings plansUserSettings) {
-        Long primaryKey = plansUserSettings.getPrimaryKey();
+        long primaryKey = plansUserSettings.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -215,7 +233,7 @@ public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
             return false;
         }
 
-        Long primaryKey = plansUserSettings.getPrimaryKey();
+        long primaryKey = plansUserSettings.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -226,7 +244,7 @@ public class PlansUserSettingsClp extends BaseModelImpl<PlansUserSettings>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

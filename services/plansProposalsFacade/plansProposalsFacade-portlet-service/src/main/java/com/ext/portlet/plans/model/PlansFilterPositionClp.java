@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -15,9 +16,10 @@ import java.lang.reflect.Proxy;
 
 public class PlansFilterPositionClp extends BaseModelImpl<PlansFilterPosition>
     implements PlansFilterPosition {
-    private Long _userId;
-    private Long _planTypeId;
-    private Long _positionId;
+    private long _userId;
+    private String _userUuid;
+    private long _planTypeId;
+    private long _positionId;
 
     public PlansFilterPositionClp() {
     }
@@ -48,27 +50,35 @@ public class PlansFilterPositionClp extends BaseModelImpl<PlansFilterPosition>
         setPrimaryKey((PlansFilterPositionPK) primaryKeyObj);
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getPlanTypeId() {
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
-    public Long getPositionId() {
+    public long getPositionId() {
         return _positionId;
     }
 
-    public void setPositionId(Long positionId) {
+    public void setPositionId(long positionId) {
         _positionId = positionId;
     }
 

@@ -339,7 +339,7 @@ public abstract class PlanItemLocalServiceBaseImpl
      * @param id the primary key for the new plan item
      * @return the new plan item
      */
-    public PlanItem createPlanItem(Long id) {
+    public PlanItem createPlanItem(long id) {
         return planItemPersistence.create(id);
     }
 
@@ -350,7 +350,7 @@ public abstract class PlanItemLocalServiceBaseImpl
      * @throws PortalException if a plan item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanItem(Long id) throws PortalException, SystemException {
+    public void deletePlanItem(long id) throws PortalException, SystemException {
         PlanItem planItem = planItemPersistence.remove(id);
 
         Indexer indexer = IndexerRegistryUtil.getIndexer(getModelClassName());
@@ -453,7 +453,7 @@ public abstract class PlanItemLocalServiceBaseImpl
         return planItemPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanItem fetchPlanItem(Long id) throws SystemException {
+    public PlanItem fetchPlanItem(long id) throws SystemException {
         return planItemPersistence.fetchByPrimaryKey(id);
     }
 
@@ -465,7 +465,7 @@ public abstract class PlanItemLocalServiceBaseImpl
      * @throws PortalException if a plan item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanItem getPlanItem(Long id)
+    public PlanItem getPlanItem(long id)
         throws PortalException, SystemException {
         return planItemPersistence.findByPrimaryKey(id);
     }

@@ -24,6 +24,11 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
     private MethodKey _updatePlanTemplateMethodKey14;
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
+    private MethodKey _storeMethodKey17;
+    private MethodKey _getSectionsMethodKey18;
+    private MethodKey _addSectionMethodKey19;
+    private MethodKey _removeSectionMethodKey20;
+    private MethodKey _updateSectionWeightMethodKey21;
 
     public PlanTemplateLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -33,10 +38,10 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
                 com.ext.portlet.plans.model.PlanTemplate.class);
 
         _createPlanTemplateMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanTemplate", java.lang.Long.class);
+                "createPlanTemplate", long.class);
 
         _deletePlanTemplateMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanTemplate", java.lang.Long.class);
+                "deletePlanTemplate", long.class);
 
         _deletePlanTemplateMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanTemplate",
@@ -62,10 +67,10 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanTemplateMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanTemplate", java.lang.Long.class);
+                "fetchPlanTemplate", long.class);
 
         _getPlanTemplateMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanTemplate", java.lang.Long.class);
+                "getPlanTemplate", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -89,6 +94,27 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
 
         _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setBeanIdentifier", java.lang.String.class);
+
+        _storeMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.plans.model.PlanTemplate.class);
+
+        _getSectionsMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getSections", com.ext.portlet.plans.model.PlanTemplate.class);
+
+        _addSectionMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "addSection", com.ext.portlet.plans.model.PlanTemplate.class,
+                com.ext.portlet.plans.model.PlanSectionDefinition.class);
+
+        _removeSectionMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "removeSection",
+                com.ext.portlet.plans.model.PlanTemplate.class,
+                com.ext.portlet.plans.model.PlanSectionDefinition.class);
+
+        _updateSectionWeightMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "updateSectionWeight",
+                com.ext.portlet.plans.model.PlanTemplate.class,
+                com.ext.portlet.plans.model.PlanSectionDefinition.class,
+                int.class);
     }
 
     public com.ext.portlet.plans.model.PlanTemplate addPlanTemplate(
@@ -117,12 +143,11 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
         return (com.ext.portlet.plans.model.PlanTemplate) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.plans.model.PlanTemplate createPlanTemplate(
-        java.lang.Long id) {
+    public com.ext.portlet.plans.model.PlanTemplate createPlanTemplate(long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanTemplateMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -138,11 +163,11 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
         return (com.ext.portlet.plans.model.PlanTemplate) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanTemplate(java.lang.Long id)
+    public void deletePlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanTemplateMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -296,13 +321,12 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
         return ((Long) returnObj).longValue();
     }
 
-    public com.ext.portlet.plans.model.PlanTemplate fetchPlanTemplate(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanTemplate fetchPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanTemplateMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -322,14 +346,13 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
         return (com.ext.portlet.plans.model.PlanTemplate) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanTemplateMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -512,6 +535,144 @@ public class PlanTemplateLocalServiceClp implements PlanTemplateLocalService {
         try {
             _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanTemplate template)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey17,
+                ClpSerializer.translateInput(template));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public java.util.List<com.ext.portlet.plans.model.PlanSectionDefinition> getSections(
+        com.ext.portlet.plans.model.PlanTemplate template)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getSectionsMethodKey18,
+                ClpSerializer.translateInput(template));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.plans.model.PlanSectionDefinition>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void addSection(com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_addSectionMethodKey19,
+                ClpSerializer.translateInput(template),
+                ClpSerializer.translateInput(section));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void removeSection(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_removeSectionMethodKey20,
+                ClpSerializer.translateInput(template),
+                ClpSerializer.translateInput(section));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void updateSectionWeight(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section, int weight)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_updateSectionWeightMethodKey21,
+                ClpSerializer.translateInput(template),
+                ClpSerializer.translateInput(section), weight);
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {

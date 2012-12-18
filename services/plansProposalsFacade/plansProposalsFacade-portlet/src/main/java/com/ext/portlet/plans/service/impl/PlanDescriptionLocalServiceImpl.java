@@ -8,7 +8,10 @@ import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.service.PlanDescriptionLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanDescriptionLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the plan description local service.
@@ -86,5 +89,19 @@ public class PlanDescriptionLocalServiceImpl
         }
         
         return newDescription;
+    }
+    
+
+    public void store(PlanDescription pd) throws SystemException {
+        if (pd.isNew()) {
+            PlanDescriptionLocalServiceUtil.addPlanDescription(pd);
+        }
+        else {
+            PlanDescriptionLocalServiceUtil.updatePlanDescription(pd);
+        }
+    }
+    
+    public User getUpdateAuthor(PlanDescription pd) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(pd.getUpdateAuthorId());
     }
 }

@@ -48,7 +48,7 @@ public interface PlanPositionsLocalService extends PersistedModelLocalService {
     * @return the new plan positions
     */
     public com.ext.portlet.plans.model.PlanPositions createPlanPositions(
-        java.lang.Long id);
+        long id);
 
     /**
     * Deletes the plan positions with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface PlanPositionsLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan positions with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanPositions(java.lang.Long id)
+    public void deletePlanPositions(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -134,8 +134,7 @@ public interface PlanPositionsLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanPositions fetchPlanPositions(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanPositions fetchPlanPositions(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -147,8 +146,7 @@ public interface PlanPositionsLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanPositions getPlanPositions(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanPositions getPlanPositions(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -244,4 +242,23 @@ public interface PlanPositionsLocalService extends PersistedModelLocalService {
     public com.ext.portlet.plans.model.PlanPositions createNewVersionForPlan(
         com.ext.portlet.plans.model.PlanItem plan, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<java.lang.Long> getPositionsIds(
+        com.ext.portlet.plans.model.PlanPositions pp)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.plans.model.PlanPositions pp)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void setPositionsIds(com.ext.portlet.plans.model.PlanPositions pp,
+        java.util.List<java.lang.Long> positionsIds)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanPositions pp)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

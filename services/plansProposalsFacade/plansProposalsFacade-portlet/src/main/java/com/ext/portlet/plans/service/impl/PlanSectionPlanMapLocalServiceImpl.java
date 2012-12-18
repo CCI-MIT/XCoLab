@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ext.portlet.plans.model.PlanSectionPlanMap;
+import com.ext.portlet.plans.service.PlanSectionPlanMapLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanSectionPlanMapLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -36,5 +37,15 @@ public class PlanSectionPlanMapLocalServiceImpl
         }
         
         return ret;
+    }
+    
+
+    public void store(PlanSectionPlanMap pspm) throws SystemException {
+        if (pspm.isNew()) {
+            PlanSectionPlanMapLocalServiceUtil.addPlanSectionPlanMap(pspm);
+        }
+        else {
+            PlanSectionPlanMapLocalServiceUtil.updatePlanSectionPlanMap(pspm);
+        }
     }
 }

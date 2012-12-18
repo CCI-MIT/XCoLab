@@ -47,7 +47,7 @@ public class PlansUserSettingsImpl extends PlansUserSettingsBaseImpl {
             }
             if (columnSettings == null) {
                 // get default value
-                columnSettings = PlanColumnSettingsLocalServiceUtil.createPlanColumnSettings(null);
+                columnSettings = PlanColumnSettingsLocalServiceUtil.createPlanColumnSettings(0L);
                 columnSettings.setColumnName(name);
                 columnSettings.setVisible(Columns.valueOf(name).isDefault());
             }
@@ -135,6 +135,6 @@ public class PlansUserSettingsImpl extends PlansUserSettingsBaseImpl {
     }
     
     public boolean isFiltersDefined() {
-        return filtersDefined || this.getPlanUserSettingsId() != null;
+        return filtersDefined || this.getPlanUserSettingsId() != 0L;
     }
 }

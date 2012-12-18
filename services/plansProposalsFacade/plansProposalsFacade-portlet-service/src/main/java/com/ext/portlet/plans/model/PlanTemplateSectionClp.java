@@ -15,9 +15,9 @@ import java.lang.reflect.Proxy;
 
 public class PlanTemplateSectionClp extends BaseModelImpl<PlanTemplateSection>
     implements PlanTemplateSection {
-    private Long _planTemplateId;
-    private Long _planSectionId;
-    private Integer _weight;
+    private long _planTemplateId;
+    private long _planSectionId;
+    private int _weight;
 
     public PlanTemplateSectionClp() {
     }
@@ -47,36 +47,28 @@ public class PlanTemplateSectionClp extends BaseModelImpl<PlanTemplateSection>
         setPrimaryKey((PlanTemplateSectionPK) primaryKeyObj);
     }
 
-    public Long getPlanTemplateId() {
+    public long getPlanTemplateId() {
         return _planTemplateId;
     }
 
-    public void setPlanTemplateId(Long planTemplateId) {
+    public void setPlanTemplateId(long planTemplateId) {
         _planTemplateId = planTemplateId;
     }
 
-    public Long getPlanSectionId() {
+    public long getPlanSectionId() {
         return _planSectionId;
     }
 
-    public void setPlanSectionId(Long planSectionId) {
+    public void setPlanSectionId(long planSectionId) {
         _planSectionId = planSectionId;
     }
 
-    public Integer getWeight() {
+    public int getWeight() {
         return _weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(int weight) {
         _weight = weight;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void remove() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {

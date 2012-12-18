@@ -48,7 +48,7 @@ public interface PlanTypeColumnLocalService extends PersistedModelLocalService {
     * @return the new plan type column
     */
     public com.ext.portlet.plans.model.PlanTypeColumn createPlanTypeColumn(
-        java.lang.Long planTypeColumnId);
+        long planTypeColumnId);
 
     /**
     * Deletes the plan type column with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface PlanTypeColumnLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan type column with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanTypeColumn(java.lang.Long planTypeColumnId)
+    public void deletePlanTypeColumn(long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,7 +135,7 @@ public interface PlanTypeColumnLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanTypeColumn fetchPlanTypeColumn(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -148,7 +148,7 @@ public interface PlanTypeColumnLocalService extends PersistedModelLocalService {
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanTypeColumn getPlanTypeColumn(
-        java.lang.Long planTypeColumnId)
+        long planTypeColumnId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

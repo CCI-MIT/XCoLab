@@ -25,6 +25,8 @@ public class PlanSectionDefinitionLocalServiceClp
     private MethodKey _updatePlanSectionDefinitionMethodKey14;
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
+    private MethodKey _storeMethodKey17;
+    private MethodKey _getFocusAreaMethodKey18;
 
     public PlanSectionDefinitionLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -35,10 +37,10 @@ public class PlanSectionDefinitionLocalServiceClp
                 com.ext.portlet.plans.model.PlanSectionDefinition.class);
 
         _createPlanSectionDefinitionMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanSectionDefinition", java.lang.Long.class);
+                "createPlanSectionDefinition", long.class);
 
         _deletePlanSectionDefinitionMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanSectionDefinition", java.lang.Long.class);
+                "deletePlanSectionDefinition", long.class);
 
         _deletePlanSectionDefinitionMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanSectionDefinition",
@@ -64,10 +66,10 @@ public class PlanSectionDefinitionLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanSectionDefinitionMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanSectionDefinition", java.lang.Long.class);
+                "fetchPlanSectionDefinition", long.class);
 
         _getPlanSectionDefinitionMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanSectionDefinition", java.lang.Long.class);
+                "getPlanSectionDefinition", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -92,6 +94,13 @@ public class PlanSectionDefinitionLocalServiceClp
 
         _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setBeanIdentifier", java.lang.String.class);
+
+        _storeMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.plans.model.PlanSectionDefinition.class);
+
+        _getFocusAreaMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getFocusArea",
+                com.ext.portlet.plans.model.PlanSectionDefinition.class);
     }
 
     public com.ext.portlet.plans.model.PlanSectionDefinition addPlanSectionDefinition(
@@ -121,11 +130,11 @@ public class PlanSectionDefinitionLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanSectionDefinition createPlanSectionDefinition(
-        java.lang.Long id) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanSectionDefinitionMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -141,11 +150,11 @@ public class PlanSectionDefinitionLocalServiceClp
         return (com.ext.portlet.plans.model.PlanSectionDefinition) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanSectionDefinition(java.lang.Long id)
+    public void deletePlanSectionDefinition(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanSectionDefinitionMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -300,12 +309,11 @@ public class PlanSectionDefinitionLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanSectionDefinition fetchPlanSectionDefinition(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanSectionDefinitionMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -326,13 +334,13 @@ public class PlanSectionDefinitionLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanSectionDefinition getPlanSectionDefinition(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanSectionDefinitionMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -523,6 +531,58 @@ public class PlanSectionDefinitionLocalServiceClp
                     " is not a valid exception");
             }
         }
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey17,
+                ClpSerializer.translateInput(psd));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.ext.portlet.ontology.model.FocusArea getFocusArea(
+        com.ext.portlet.plans.model.PlanSectionDefinition psd)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getFocusAreaMethodKey18,
+                ClpSerializer.translateInput(psd));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.ontology.model.FocusArea) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

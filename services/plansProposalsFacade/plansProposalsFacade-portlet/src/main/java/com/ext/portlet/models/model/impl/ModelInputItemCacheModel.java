@@ -17,11 +17,11 @@ import java.io.Serializable;
  */
 public class ModelInputItemCacheModel implements CacheModel<ModelInputItem>,
     Serializable {
-    public Long modelInputItemPK;
-    public Long modelId;
-    public Long modelInputItemID;
-    public Long modelGroupId;
-    public Integer displayItemOrder;
+    public long modelInputItemPK;
+    public long modelId;
+    public long modelInputItemID;
+    public long modelGroupId;
+    public int displayItemOrder;
     public String type;
     public String properties;
 

@@ -47,7 +47,7 @@ public class ModelOutputChartOrderLocalServiceUtil {
     * @return the new model output chart order
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder createModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK) {
+        long modelOutputChartOrderPK) {
         return getService().createModelOutputChartOrder(modelOutputChartOrderPK);
     }
 
@@ -58,8 +58,7 @@ public class ModelOutputChartOrderLocalServiceUtil {
     * @throws PortalException if a model output chart order with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+    public static void deleteModelOutputChartOrder(long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteModelOutputChartOrder(modelOutputChartOrderPK);
@@ -149,7 +148,7 @@ public class ModelOutputChartOrderLocalServiceUtil {
     }
 
     public static com.ext.portlet.models.model.ModelOutputChartOrder fetchModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchModelOutputChartOrder(modelOutputChartOrderPK);
     }
@@ -163,7 +162,7 @@ public class ModelOutputChartOrderLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelOutputChartOrder getModelOutputChartOrder(
-        java.lang.Long modelOutputChartOrderPK)
+        long modelOutputChartOrderPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getModelOutputChartOrder(modelOutputChartOrderPK);

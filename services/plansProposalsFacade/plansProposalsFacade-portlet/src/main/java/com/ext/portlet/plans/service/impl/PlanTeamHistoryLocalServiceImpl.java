@@ -2,11 +2,18 @@ package com.ext.portlet.plans.service.impl;
 
 import java.util.Date;
 
+import com.ext.portlet.plans.NoSuchPlanItemException;
 import com.ext.portlet.plans.NoSuchPlanTeamHistoryException;
+import com.ext.portlet.plans.model.PlanItem;
 import com.ext.portlet.plans.model.PlanTeamHistory;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.plans.service.PlanTeamHistoryLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanTeamHistoryLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the plan team history local service.
@@ -46,12 +53,30 @@ public class PlanTeamHistoryLocalServiceImpl
         planTeamHistory.setUpdateAuthorId(updateAuthorId);
         planTeamHistory.setCreated(new Date());
         
-        planTeamHistory.store();
+        store(planTeamHistory);
         
         return planTeamHistory;
     }
     
     public PlanTeamHistory getLastUserActionInPlan(Long planId, Long userId) throws NoSuchPlanTeamHistoryException, SystemException {
         return planTeamHistoryPersistence.findByLastUserActionInPlan(planId, userId);
+    }
+    
+    
+    public void store(PlanTeamHistory pth) throws SystemException {
+        if (pth.isNew()) {
+            PlanTeamHistoryLocalServiceUtil.addPlanTeamHistory(pth);
+        }
+        else {
+            PlanTeamHistoryLocalServiceUtil.updatePlanTeamHistory(pth);
+        }
+    }
+    
+    public User getUser(PlanTeamHistory pth) throws PortalException, SystemException {
+        return UserLocalServiceUtil.getUser(pth.getUserId());
+    }
+    
+    public PlanItem getPlan(PlanTeamHistory pth) throws NoSuchPlanItemException, SystemException {
+        return PlanItemLocalServiceUtil.getPlan(pth.getPlanId());
     }
 }

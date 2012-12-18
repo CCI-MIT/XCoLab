@@ -49,7 +49,7 @@ public interface PlanAttributeFilterLocalService
     * @return the new plan attribute filter
     */
     public com.ext.portlet.plans.model.PlanAttributeFilter createPlanAttributeFilter(
-        java.lang.Long planAttributeFilterId);
+        long planAttributeFilterId);
 
     /**
     * Deletes the plan attribute filter with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface PlanAttributeFilterLocalService
     * @throws PortalException if a plan attribute filter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanAttributeFilter(java.lang.Long planAttributeFilterId)
+    public void deletePlanAttributeFilter(long planAttributeFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,7 +136,7 @@ public interface PlanAttributeFilterLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanAttributeFilter fetchPlanAttributeFilter(
-        java.lang.Long planAttributeFilterId)
+        long planAttributeFilterId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -149,7 +149,7 @@ public interface PlanAttributeFilterLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanAttributeFilter getPlanAttributeFilter(
-        java.lang.Long planAttributeFilterId)
+        long planAttributeFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

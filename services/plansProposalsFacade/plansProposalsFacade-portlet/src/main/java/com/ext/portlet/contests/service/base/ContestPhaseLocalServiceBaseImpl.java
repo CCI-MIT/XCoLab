@@ -148,7 +148,7 @@ public abstract class ContestPhaseLocalServiceBaseImpl
      * @param ContestPhasePK the primary key for the new contest phase
      * @return the new contest phase
      */
-    public ContestPhase createContestPhase(Long ContestPhasePK) {
+    public ContestPhase createContestPhase(long ContestPhasePK) {
         return contestPhasePersistence.create(ContestPhasePK);
     }
 
@@ -159,7 +159,7 @@ public abstract class ContestPhaseLocalServiceBaseImpl
      * @throws PortalException if a contest phase with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteContestPhase(Long ContestPhasePK)
+    public void deleteContestPhase(long ContestPhasePK)
         throws PortalException, SystemException {
         ContestPhase contestPhase = contestPhasePersistence.remove(ContestPhasePK);
 
@@ -265,7 +265,7 @@ public abstract class ContestPhaseLocalServiceBaseImpl
         return contestPhasePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ContestPhase fetchContestPhase(Long ContestPhasePK)
+    public ContestPhase fetchContestPhase(long ContestPhasePK)
         throws SystemException {
         return contestPhasePersistence.fetchByPrimaryKey(ContestPhasePK);
     }
@@ -278,7 +278,7 @@ public abstract class ContestPhaseLocalServiceBaseImpl
      * @throws PortalException if a contest phase with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ContestPhase getContestPhase(Long ContestPhasePK)
+    public ContestPhase getContestPhase(long ContestPhasePK)
         throws PortalException, SystemException {
         return contestPhasePersistence.findByPrimaryKey(ContestPhasePK);
     }

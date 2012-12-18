@@ -19,12 +19,12 @@ import java.util.Date;
  */
 public class DiscussionMessageFlagCacheModel implements CacheModel<DiscussionMessageFlag>,
     Serializable {
-    public Long pk;
-    public Long messageId;
+    public long pk;
+    public long messageId;
     public String flagType;
     public String data;
     public long created;
-    public Long userId;
+    public long userId;
 
     @Override
     public String toString() {

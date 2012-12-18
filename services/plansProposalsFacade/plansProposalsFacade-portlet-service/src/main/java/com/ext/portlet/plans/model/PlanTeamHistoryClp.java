@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -16,13 +17,14 @@ import java.util.Date;
 
 public class PlanTeamHistoryClp extends BaseModelImpl<PlanTeamHistory>
     implements PlanTeamHistory {
-    private Long _id;
-    private Long _planId;
-    private Long _userId;
+    private long _id;
+    private long _planId;
+    private long _userId;
+    private String _userUuid;
     private String _action;
     private String _payload;
     private Date _created;
-    private Long _updateAuthorId;
+    private long _updateAuthorId;
 
     public PlanTeamHistoryClp() {
     }
@@ -35,11 +37,11 @@ public class PlanTeamHistoryClp extends BaseModelImpl<PlanTeamHistory>
         return PlanTeamHistory.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -51,28 +53,36 @@ public class PlanTeamHistoryClp extends BaseModelImpl<PlanTeamHistory>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
+    }
+
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
     }
 
     public String getAction() {
@@ -99,24 +109,12 @@ public class PlanTeamHistoryClp extends BaseModelImpl<PlanTeamHistory>
         _created = created;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.liferay.portal.model.User getUser() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.plans.model.PlanItem getPlan() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -181,7 +179,7 @@ public class PlanTeamHistoryClp extends BaseModelImpl<PlanTeamHistory>
             return false;
         }
 
-        Long primaryKey = planTeamHistory.getPrimaryKey();
+        long primaryKey = planTeamHistory.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -192,7 +190,7 @@ public class PlanTeamHistoryClp extends BaseModelImpl<PlanTeamHistory>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

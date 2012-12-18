@@ -175,7 +175,7 @@ public abstract class ModelCategoryLocalServiceBaseImpl
      * @param modelCategoryPK the primary key for the new model category
      * @return the new model category
      */
-    public ModelCategory createModelCategory(Long modelCategoryPK) {
+    public ModelCategory createModelCategory(long modelCategoryPK) {
         return modelCategoryPersistence.create(modelCategoryPK);
     }
 
@@ -186,7 +186,7 @@ public abstract class ModelCategoryLocalServiceBaseImpl
      * @throws PortalException if a model category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteModelCategory(Long modelCategoryPK)
+    public void deleteModelCategory(long modelCategoryPK)
         throws PortalException, SystemException {
         ModelCategory modelCategory = modelCategoryPersistence.remove(modelCategoryPK);
 
@@ -292,7 +292,7 @@ public abstract class ModelCategoryLocalServiceBaseImpl
         return modelCategoryPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ModelCategory fetchModelCategory(Long modelCategoryPK)
+    public ModelCategory fetchModelCategory(long modelCategoryPK)
         throws SystemException {
         return modelCategoryPersistence.fetchByPrimaryKey(modelCategoryPK);
     }
@@ -305,7 +305,7 @@ public abstract class ModelCategoryLocalServiceBaseImpl
      * @throws PortalException if a model category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ModelCategory getModelCategory(Long modelCategoryPK)
+    public ModelCategory getModelCategory(long modelCategoryPK)
         throws PortalException, SystemException {
         return modelCategoryPersistence.findByPrimaryKey(modelCategoryPK);
     }

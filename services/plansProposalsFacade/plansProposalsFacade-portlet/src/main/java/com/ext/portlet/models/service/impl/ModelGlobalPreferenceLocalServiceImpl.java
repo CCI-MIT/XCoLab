@@ -44,7 +44,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
         } catch (NoSuchModelGlobalPreferenceException e) {
           //no worries
         }
-        return (pref !=null && pref.getVisible()!=null && pref.getVisible());
+        return (pref !=null && pref.getVisible());
     }
 
     public void setVisible(Simulation s, boolean visible) throws SystemException {
@@ -73,7 +73,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
           //no worries
         }
         int weight = 0;
-        if (pref !=null && pref.getWeight()!=null) {
+        if (pref !=null) {
             weight = pref.getWeight();
         }
         return weight;
@@ -129,7 +129,7 @@ public class ModelGlobalPreferenceLocalServiceImpl
           //no worries
         }
         try {
-            return (pref!=null&&pref.getModelCategoryId()!=null)? ModelCategoryLocalServiceUtil.getModelCategory(pref.getModelCategoryId()):null;
+            return (pref!=null&&pref.getModelCategoryId()> 0)? ModelCategoryLocalServiceUtil.getModelCategory(pref.getModelCategoryId()):null;
         } catch (NoSuchModelCategoryException e) {
             return null;
         }

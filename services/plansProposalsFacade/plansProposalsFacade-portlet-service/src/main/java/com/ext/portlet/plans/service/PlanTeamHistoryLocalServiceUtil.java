@@ -47,7 +47,7 @@ public class PlanTeamHistoryLocalServiceUtil {
     * @return the new plan team history
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory createPlanTeamHistory(
-        java.lang.Long id) {
+        long id) {
         return getService().createPlanTeamHistory(id);
     }
 
@@ -58,7 +58,7 @@ public class PlanTeamHistoryLocalServiceUtil {
     * @throws PortalException if a plan team history with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanTeamHistory(java.lang.Long id)
+    public static void deletePlanTeamHistory(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanTeamHistory(id);
@@ -148,8 +148,7 @@ public class PlanTeamHistoryLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanTeamHistory fetchPlanTeamHistory(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanTeamHistory(id);
     }
 
@@ -162,7 +161,7 @@ public class PlanTeamHistoryLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTeamHistory getPlanTeamHistory(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanTeamHistory(id);
@@ -272,6 +271,25 @@ public class PlanTeamHistoryLocalServiceUtil {
         throws com.ext.portlet.plans.NoSuchPlanTeamHistoryException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getLastUserActionInPlan(planId, userId);
+    }
+
+    public static void store(com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(pth);
+    }
+
+    public static com.liferay.portal.model.User getUser(
+        com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUser(pth);
+    }
+
+    public static com.ext.portlet.plans.model.PlanItem getPlan(
+        com.ext.portlet.plans.model.PlanTeamHistory pth)
+        throws com.ext.portlet.plans.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPlan(pth);
     }
 
     public static void clearService() {

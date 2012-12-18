@@ -33,6 +33,8 @@ public class PlanDescriptionLocalServiceClp
     private MethodKey _createNewVersionForPlanMethodKey22;
     private MethodKey _createNewVersionForPlanMethodKey23;
     private MethodKey _createNewVersionForPlanFromMethodKey24;
+    private MethodKey _storeMethodKey25;
+    private MethodKey _getUpdateAuthorMethodKey26;
 
     public PlanDescriptionLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -42,10 +44,10 @@ public class PlanDescriptionLocalServiceClp
                 com.ext.portlet.plans.model.PlanDescription.class);
 
         _createPlanDescriptionMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanDescription", java.lang.Long.class);
+                "createPlanDescription", long.class);
 
         _deletePlanDescriptionMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanDescription", java.lang.Long.class);
+                "deletePlanDescription", long.class);
 
         _deletePlanDescriptionMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deletePlanDescription",
@@ -71,10 +73,10 @@ public class PlanDescriptionLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchPlanDescriptionMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanDescription", java.lang.Long.class);
+                "fetchPlanDescription", long.class);
 
         _getPlanDescriptionMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanDescription", java.lang.Long.class);
+                "getPlanDescription", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -130,6 +132,13 @@ public class PlanDescriptionLocalServiceClp
                 "createNewVersionForPlanFrom",
                 com.ext.portlet.plans.model.PlanItem.class,
                 com.ext.portlet.plans.model.PlanDescription.class, boolean.class);
+
+        _storeMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.plans.model.PlanDescription.class);
+
+        _getUpdateAuthorMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getUpdateAuthor",
+                com.ext.portlet.plans.model.PlanDescription.class);
     }
 
     public com.ext.portlet.plans.model.PlanDescription addPlanDescription(
@@ -159,11 +168,11 @@ public class PlanDescriptionLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanDescription createPlanDescription(
-        java.lang.Long id) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createPlanDescriptionMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -179,11 +188,11 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.plans.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanDescription(java.lang.Long id)
+    public void deletePlanDescription(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deletePlanDescriptionMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -338,12 +347,11 @@ public class PlanDescriptionLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanDescription fetchPlanDescription(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchPlanDescriptionMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -364,13 +372,13 @@ public class PlanDescriptionLocalServiceClp
     }
 
     public com.ext.portlet.plans.model.PlanDescription getPlanDescription(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getPlanDescriptionMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -774,6 +782,58 @@ public class PlanDescriptionLocalServiceClp
         }
 
         return (com.ext.portlet.plans.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(com.ext.portlet.plans.model.PlanDescription pd)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey25,
+                ClpSerializer.translateInput(pd));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanDescription pd)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getUpdateAuthorMethodKey26,
+                ClpSerializer.translateInput(pd));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.model.User) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

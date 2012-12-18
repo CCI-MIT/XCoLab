@@ -15,9 +15,9 @@ import java.util.List;
  * @generated
  */
 public class PlansFilterPositionSoap implements Serializable {
-    private Long _userId;
-    private Long _planTypeId;
-    private Long _positionId;
+    private long _userId;
+    private long _planTypeId;
+    private long _positionId;
 
     public PlansFilterPositionSoap() {
     }
@@ -81,27 +81,27 @@ public class PlansFilterPositionSoap implements Serializable {
         setPositionId(pk.positionId);
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
-    public Long getPositionId() {
+    public long getPositionId() {
         return _positionId;
     }
 
-    public void setPositionId(Long positionId) {
+    public void setPositionId(long positionId) {
         _positionId = positionId;
     }
 }

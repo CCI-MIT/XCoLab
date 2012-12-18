@@ -44,7 +44,7 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
     * @param id the primary key for the new focus area
     * @return the new focus area
     */
-    public com.ext.portlet.ontology.model.FocusArea create(java.lang.Long id);
+    public com.ext.portlet.ontology.model.FocusArea create(long id);
 
     /**
     * Removes the focus area with the primary key from the database. Also notifies the appropriate model listeners.
@@ -54,7 +54,7 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
     * @throws com.ext.portlet.ontology.NoSuchFocusAreaException if a focus area with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.ontology.model.FocusArea remove(java.lang.Long id)
+    public com.ext.portlet.ontology.model.FocusArea remove(long id)
         throws com.ext.portlet.ontology.NoSuchFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -70,8 +70,7 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
     * @throws com.ext.portlet.ontology.NoSuchFocusAreaException if a focus area with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.ontology.model.FocusArea findByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.ontology.model.FocusArea findByPrimaryKey(long id)
         throws com.ext.portlet.ontology.NoSuchFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -82,8 +81,7 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
     * @return the focus area, or <code>null</code> if a focus area with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.ontology.model.FocusArea fetchByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.ontology.model.FocusArea fetchByPrimaryKey(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

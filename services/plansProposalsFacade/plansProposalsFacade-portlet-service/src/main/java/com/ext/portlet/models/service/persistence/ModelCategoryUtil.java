@@ -125,7 +125,7 @@ public class ModelCategoryUtil {
     * @return the new model category
     */
     public static com.ext.portlet.models.model.ModelCategory create(
-        java.lang.Long modelCategoryPK) {
+        long modelCategoryPK) {
         return getPersistence().create(modelCategoryPK);
     }
 
@@ -138,7 +138,7 @@ public class ModelCategoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelCategory remove(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.ext.portlet.models.NoSuchModelCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(modelCategoryPK);
@@ -159,7 +159,7 @@ public class ModelCategoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelCategory findByPrimaryKey(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.ext.portlet.models.NoSuchModelCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(modelCategoryPK);
@@ -173,7 +173,7 @@ public class ModelCategoryUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelCategory fetchByPrimaryKey(
-        java.lang.Long modelCategoryPK)
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(modelCategoryPK);
     }

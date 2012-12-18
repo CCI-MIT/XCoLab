@@ -13,15 +13,15 @@ import java.util.List;
  * @generated
  */
 public class ModelOutputChartOrderSoap implements Serializable {
-    private Long _modelOutputChartOrderPK;
-    private Long _modelId;
+    private long _modelOutputChartOrderPK;
+    private long _modelId;
     private String _modelOutputLabel;
-    private Integer _modelOutputChartOrder;
+    private int _modelOutputChartOrder;
     private String _modelIndexRangePolicy;
     private String _modelIndexRangeMessage;
     private String _modelIndexErrorPolicy;
     private String _modelIndexErrorMessage;
-    private Boolean _modelChartIsVisible;
+    private boolean _modelChartIsVisible;
 
     public ModelOutputChartOrderSoap() {
     }
@@ -82,27 +82,27 @@ public class ModelOutputChartOrderSoap implements Serializable {
         return soapModels.toArray(new ModelOutputChartOrderSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelOutputChartOrderPK;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setModelOutputChartOrderPK(pk);
     }
 
-    public Long getModelOutputChartOrderPK() {
+    public long getModelOutputChartOrderPK() {
         return _modelOutputChartOrderPK;
     }
 
-    public void setModelOutputChartOrderPK(Long modelOutputChartOrderPK) {
+    public void setModelOutputChartOrderPK(long modelOutputChartOrderPK) {
         _modelOutputChartOrderPK = modelOutputChartOrderPK;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
@@ -114,11 +114,11 @@ public class ModelOutputChartOrderSoap implements Serializable {
         _modelOutputLabel = modelOutputLabel;
     }
 
-    public Integer getModelOutputChartOrder() {
+    public int getModelOutputChartOrder() {
         return _modelOutputChartOrder;
     }
 
-    public void setModelOutputChartOrder(Integer modelOutputChartOrder) {
+    public void setModelOutputChartOrder(int modelOutputChartOrder) {
         _modelOutputChartOrder = modelOutputChartOrder;
     }
 
@@ -154,11 +154,15 @@ public class ModelOutputChartOrderSoap implements Serializable {
         _modelIndexErrorMessage = modelIndexErrorMessage;
     }
 
-    public Boolean getModelChartIsVisible() {
+    public boolean getModelChartIsVisible() {
         return _modelChartIsVisible;
     }
 
-    public void setModelChartIsVisible(Boolean modelChartIsVisible) {
+    public boolean isModelChartIsVisible() {
+        return _modelChartIsVisible;
+    }
+
+    public void setModelChartIsVisible(boolean modelChartIsVisible) {
         _modelChartIsVisible = modelChartIsVisible;
     }
 }

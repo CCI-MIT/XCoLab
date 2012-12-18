@@ -98,7 +98,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanTemplateSection> findByPlanTemplateId(
-        java.lang.Long planTemplateId)
+        long planTemplateId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -115,7 +115,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanTemplateSection> findByPlanTemplateId(
-        java.lang.Long planTemplateId, int start, int end)
+        long planTemplateId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -133,7 +133,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanTemplateSection> findByPlanTemplateId(
-        java.lang.Long planTemplateId, int start, int end,
+        long planTemplateId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -151,7 +151,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTemplateSection findByPlanTemplateId_First(
-        java.lang.Long planTemplateId,
+        long planTemplateId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -170,7 +170,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTemplateSection findByPlanTemplateId_Last(
-        java.lang.Long planTemplateId,
+        long planTemplateId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -190,8 +190,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanTemplateSection[] findByPlanTemplateId_PrevAndNext(
-        PlanTemplateSectionPK planTemplateSectionPK,
-        java.lang.Long planTemplateId,
+        PlanTemplateSectionPK planTemplateSectionPK, long planTemplateId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -245,7 +244,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @param planTemplateId the plan template ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanTemplateId(java.lang.Long planTemplateId)
+    public void removeByPlanTemplateId(long planTemplateId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -263,7 +262,7 @@ public interface PlanTemplateSectionPersistence extends BasePersistence<PlanTemp
     * @return the number of matching plan template sections
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanTemplateId(java.lang.Long planTemplateId)
+    public int countByPlanTemplateId(long planTemplateId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

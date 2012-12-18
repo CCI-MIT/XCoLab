@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
     Serializable {
-    public Long id;
+    public long id;
     public String name;
     public String description;
 

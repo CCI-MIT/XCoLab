@@ -7,18 +7,18 @@
 
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet.messaging">
-	<namespace>Messaging</namespace>
+	<namespace>xcolab</namespace>
 
 
 	<entity name="Message" remote-service="true" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessagePersistenceImpl">
 
 		<!-- PK field -->
-		<column name="messageId" type="Long" primary="true" />
+		<column name="messageId" type="long" primary="true" />
 
 		<!-- Main fields -->
 
-		<column name="fromId" type="Long" />
-        <column name="repliesTo" type="Long"/>
+		<column name="fromId" type="long" />
+        <column name="repliesTo" type="long"/>
         <column name="createDate" type="Date" />
 
 		<column name="subject" type="String"/>
@@ -40,12 +40,12 @@
     	<entity name="MessageRecipientStatus" remote-service="true" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessageRecipientStatusPersistenceImpl">
 
 		<!-- PK field -->
-        <column name="messageRecipientId" type="Long" primary="true"/>
+        <column name="messageRecipientId" type="long" primary="true"/>
 
-		<column name="messageId" type="Long" />
-        <column name="userId" type="Long"  />
-        <column name="opened" type="Boolean"/>
-		<column name="archived" type="Boolean"/>
+		<column name="messageId" type="long" />
+        <column name="userId" type="long"  />
+        <column name="opened" type="boolean"/>
+		<column name="archived" type="boolean"/>
         
         <order by="desc">
             <order-column name="messageId" />
@@ -79,11 +79,11 @@
 
 
 	<entity name="MessagingUserPreferences" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessagingUserPreferencesPersistenceImpl">
-		<column name="messagingPreferencesId" type="Long" primary="true"/>
-        <column name="userId" type="Long"/>
-		<column name="emailOnSend" type="Boolean"/>
-        <column name="emailOnReceipt" type="Boolean"/>
-        <column name="emailOnActivity" type="Boolean"/>
+		<column name="messagingPreferencesId" type="long" primary="true"/>
+        <column name="userId" type="long"/>
+		<column name="emailOnSend" type="boolean"/>
+        <column name="emailOnReceipt" type="boolean"/>
+        <column name="emailOnActivity" type="boolean"/>
 
 
 

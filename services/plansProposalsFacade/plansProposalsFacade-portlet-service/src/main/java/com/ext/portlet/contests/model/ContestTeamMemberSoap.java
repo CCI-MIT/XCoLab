@@ -13,9 +13,9 @@ import java.util.List;
  * @generated
  */
 public class ContestTeamMemberSoap implements Serializable {
-    private Long _id;
-    private Long _contestId;
-    private Long _userId;
+    private long _id;
+    private long _contestId;
+    private long _userId;
     private String _role;
 
     public ContestTeamMemberSoap() {
@@ -71,35 +71,35 @@ public class ContestTeamMemberSoap implements Serializable {
         return soapModels.toArray(new ContestTeamMemberSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getContestId() {
+    public long getContestId() {
         return _contestId;
     }
 
-    public void setContestId(Long contestId) {
+    public void setContestId(long contestId) {
         _contestId = contestId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return _userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         _userId = userId;
     }
 

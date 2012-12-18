@@ -8,30 +8,30 @@ import java.io.Serializable;
 
 public class PlanTemplateSectionPK implements Comparable<PlanTemplateSectionPK>,
     Serializable {
-    public Long planTemplateId;
-    public Long planSectionId;
+    public long planTemplateId;
+    public long planSectionId;
 
     public PlanTemplateSectionPK() {
     }
 
-    public PlanTemplateSectionPK(Long planTemplateId, Long planSectionId) {
+    public PlanTemplateSectionPK(long planTemplateId, long planSectionId) {
         this.planTemplateId = planTemplateId;
         this.planSectionId = planSectionId;
     }
 
-    public Long getPlanTemplateId() {
+    public long getPlanTemplateId() {
         return planTemplateId;
     }
 
-    public void setPlanTemplateId(Long planTemplateId) {
+    public void setPlanTemplateId(long planTemplateId) {
         this.planTemplateId = planTemplateId;
     }
 
-    public Long getPlanSectionId() {
+    public long getPlanSectionId() {
         return planSectionId;
     }
 
-    public void setPlanSectionId(Long planSectionId) {
+    public void setPlanSectionId(long planSectionId) {
         this.planSectionId = planSectionId;
     }
 

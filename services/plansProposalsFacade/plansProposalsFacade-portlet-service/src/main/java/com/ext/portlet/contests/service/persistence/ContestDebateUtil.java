@@ -124,8 +124,7 @@ public class ContestDebateUtil {
     * @param id the primary key for the new contest debate
     * @return the new contest debate
     */
-    public static com.ext.portlet.contests.model.ContestDebate create(
-        java.lang.Long id) {
+    public static com.ext.portlet.contests.model.ContestDebate create(long id) {
         return getPersistence().create(id);
     }
 
@@ -137,8 +136,7 @@ public class ContestDebateUtil {
     * @throws com.ext.portlet.contests.NoSuchContestDebateException if a contest debate with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.contests.model.ContestDebate remove(
-        java.lang.Long id)
+    public static com.ext.portlet.contests.model.ContestDebate remove(long id)
         throws com.ext.portlet.contests.NoSuchContestDebateException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(id);
@@ -160,7 +158,7 @@ public class ContestDebateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestDebate findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.contests.NoSuchContestDebateException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(id);
@@ -174,8 +172,7 @@ public class ContestDebateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestDebate fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(id);
     }
 
@@ -187,7 +184,7 @@ public class ContestDebateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.contests.model.ContestDebate> findByContestPK(
-        java.lang.Long ContestPK)
+        long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByContestPK(ContestPK);
     }
@@ -206,7 +203,7 @@ public class ContestDebateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.contests.model.ContestDebate> findByContestPK(
-        java.lang.Long ContestPK, int start, int end)
+        long ContestPK, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByContestPK(ContestPK, start, end);
     }
@@ -226,7 +223,7 @@ public class ContestDebateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.contests.model.ContestDebate> findByContestPK(
-        java.lang.Long ContestPK, int start, int end,
+        long ContestPK, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -247,7 +244,7 @@ public class ContestDebateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestDebate findByContestPK_First(
-        java.lang.Long ContestPK,
+        long ContestPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestDebateException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -269,7 +266,7 @@ public class ContestDebateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestDebate findByContestPK_Last(
-        java.lang.Long ContestPK,
+        long ContestPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestDebateException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -292,7 +289,7 @@ public class ContestDebateUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestDebate[] findByContestPK_PrevAndNext(
-        java.lang.Long id, java.lang.Long ContestPK,
+        long id, long ContestPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestDebateException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -355,7 +352,7 @@ public class ContestDebateUtil {
     * @param ContestPK the contest p k
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByContestPK(java.lang.Long ContestPK)
+    public static void removeByContestPK(long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByContestPK(ContestPK);
     }
@@ -377,7 +374,7 @@ public class ContestDebateUtil {
     * @return the number of matching contest debates
     * @throws SystemException if a system exception occurred
     */
-    public static int countByContestPK(java.lang.Long ContestPK)
+    public static int countByContestPK(long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByContestPK(ContestPK);
     }

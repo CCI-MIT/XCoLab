@@ -35,35 +35,4 @@ public class PlanSectionImpl extends PlanSectionBaseImpl {
     public PlanSectionImpl() {
     }
 
-    public void store() throws SystemException {
-        if (isNew()) {
-            if (getId() == null) {
-                setId(CounterLocalServiceUtil.increment(PlanSection.class.getName()));
-            }
-            
-            PlanSectionLocalServiceUtil.addPlanSection(this);
-        }
-        else {
-            PlanSectionLocalServiceUtil.updatePlanSection(this);
-        }
-    }
-    
-    public PlanSectionDefinition getDefinition() throws PortalException, SystemException {
-        return PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(getPlanSectionDefinitionId());
-    }
-    
-    public void addPlanReference(Long planId) throws SystemException {
-        PlanSectionPlanMap pspm = 
-            PlanSectionPlanMapLocalServiceUtil.createPlanSectionPlanMap(new PlanSectionPlanMapPK(getId(), planId));
-        pspm.store();
-    }
-    
-    public List<PlanItem> getReferencedPlans() throws SystemException, NoSuchPlanItemException  {
-        List<PlanItem> ret = new ArrayList<PlanItem>();
-        
-        for (Long planId: PlanSectionPlanMapLocalServiceUtil.findPlanIdsForSection(getId())) {
-            ret.add(PlanItemLocalServiceUtil.getPlan(planId));
-        }
-        return ret;
-    }
 }

@@ -47,7 +47,7 @@ public class ContestDebateLocalServiceUtil {
     * @return the new contest debate
     */
     public static com.ext.portlet.contests.model.ContestDebate createContestDebate(
-        java.lang.Long id) {
+        long id) {
         return getService().createContestDebate(id);
     }
 
@@ -58,7 +58,7 @@ public class ContestDebateLocalServiceUtil {
     * @throws PortalException if a contest debate with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteContestDebate(java.lang.Long id)
+    public static void deleteContestDebate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteContestDebate(id);
@@ -148,8 +148,7 @@ public class ContestDebateLocalServiceUtil {
     }
 
     public static com.ext.portlet.contests.model.ContestDebate fetchContestDebate(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchContestDebate(id);
     }
 
@@ -162,7 +161,7 @@ public class ContestDebateLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.contests.model.ContestDebate getContestDebate(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestDebate(id);
@@ -260,6 +259,18 @@ public class ContestDebateLocalServiceUtil {
         java.lang.Long contestId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestDebates(contestId);
+    }
+
+    public static void store(
+        com.ext.portlet.contests.model.ContestDebate contestDebate)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(contestDebate);
+    }
+
+    public static void delete(
+        com.ext.portlet.contests.model.ContestDebate contestDebate)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().delete(contestDebate);
     }
 
     public static void clearService() {

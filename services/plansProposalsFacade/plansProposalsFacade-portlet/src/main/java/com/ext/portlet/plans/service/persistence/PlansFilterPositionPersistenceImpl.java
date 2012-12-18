@@ -1,6 +1,6 @@
 package com.ext.portlet.plans.service.persistence;
 
-import com.ext.portlet.plans.NoSuchFilterPositionException;
+import com.ext.portlet.plans.NoSuchPlansFilterPositionException;
 import com.ext.portlet.plans.model.PlansFilterPosition;
 import com.ext.portlet.plans.model.impl.PlansFilterPositionImpl;
 import com.ext.portlet.plans.model.impl.PlansFilterPositionModelImpl;
@@ -313,12 +313,12 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      *
      * @param plansFilterPositionPK the primary key of the plans filter position
      * @return the plans filter position that was removed
-     * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a plans filter position with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public PlansFilterPosition remove(
         PlansFilterPositionPK plansFilterPositionPK)
-        throws NoSuchFilterPositionException, SystemException {
+        throws NoSuchPlansFilterPositionException, SystemException {
         return remove((Serializable) plansFilterPositionPK);
     }
 
@@ -327,12 +327,12 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      *
      * @param primaryKey the primary key of the plans filter position
      * @return the plans filter position that was removed
-     * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a plans filter position with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public PlansFilterPosition remove(Serializable primaryKey)
-        throws NoSuchFilterPositionException, SystemException {
+        throws NoSuchPlansFilterPositionException, SystemException {
         Session session = null;
 
         try {
@@ -346,12 +346,12 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
                     _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
                 }
 
-                throw new NoSuchFilterPositionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                throw new NoSuchPlansFilterPositionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                     primaryKey);
             }
 
             return remove(plansFilterPosition);
-        } catch (NoSuchFilterPositionException nsee) {
+        } catch (NoSuchPlansFilterPositionException nsee) {
             throw nsee;
         } catch (Exception e) {
             throw processException(e);
@@ -476,16 +476,16 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
     }
 
     /**
-     * Returns the plans filter position with the primary key or throws a {@link com.ext.portlet.plans.NoSuchFilterPositionException} if it could not be found.
+     * Returns the plans filter position with the primary key or throws a {@link com.ext.portlet.plans.NoSuchPlansFilterPositionException} if it could not be found.
      *
      * @param plansFilterPositionPK the primary key of the plans filter position
      * @return the plans filter position
-     * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a plans filter position with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public PlansFilterPosition findByPrimaryKey(
         PlansFilterPositionPK plansFilterPositionPK)
-        throws NoSuchFilterPositionException, SystemException {
+        throws NoSuchPlansFilterPositionException, SystemException {
         PlansFilterPosition plansFilterPosition = fetchByPrimaryKey(plansFilterPositionPK);
 
         if (plansFilterPosition == null) {
@@ -494,7 +494,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
                     plansFilterPositionPK);
             }
 
-            throw new NoSuchFilterPositionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+            throw new NoSuchPlansFilterPositionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
                 plansFilterPositionPK);
         }
 
@@ -568,8 +568,8 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the matching plans filter positions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlansFilterPosition> findByUserIdPlanTypeId(Long userId,
-        Long planTypeId) throws SystemException {
+    public List<PlansFilterPosition> findByUserIdPlanTypeId(long userId,
+        long planTypeId) throws SystemException {
         return findByUserIdPlanTypeId(userId, planTypeId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
@@ -588,8 +588,8 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the range of matching plans filter positions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlansFilterPosition> findByUserIdPlanTypeId(Long userId,
-        Long planTypeId, int start, int end) throws SystemException {
+    public List<PlansFilterPosition> findByUserIdPlanTypeId(long userId,
+        long planTypeId, int start, int end) throws SystemException {
         return findByUserIdPlanTypeId(userId, planTypeId, start, end, null);
     }
 
@@ -608,8 +608,8 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the ordered range of matching plans filter positions
      * @throws SystemException if a system exception occurred
      */
-    public List<PlansFilterPosition> findByUserIdPlanTypeId(Long userId,
-        Long planTypeId, int start, int end, OrderByComparator orderByComparator)
+    public List<PlansFilterPosition> findByUserIdPlanTypeId(long userId,
+        long planTypeId, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -662,9 +662,9 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
-                qPos.add(planTypeId.longValue());
+                qPos.add(planTypeId);
 
                 list = (List<PlansFilterPosition>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -697,12 +697,12 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @param planTypeId the plan type ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plans filter position
-     * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a matching plans filter position could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a matching plans filter position could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansFilterPosition findByUserIdPlanTypeId_First(Long userId,
-        Long planTypeId, OrderByComparator orderByComparator)
-        throws NoSuchFilterPositionException, SystemException {
+    public PlansFilterPosition findByUserIdPlanTypeId_First(long userId,
+        long planTypeId, OrderByComparator orderByComparator)
+        throws NoSuchPlansFilterPositionException, SystemException {
         List<PlansFilterPosition> list = findByUserIdPlanTypeId(userId,
                 planTypeId, 0, 1, orderByComparator);
 
@@ -719,7 +719,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchFilterPositionException(msg.toString());
+            throw new NoSuchPlansFilterPositionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -736,12 +736,12 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @param planTypeId the plan type ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the last matching plans filter position
-     * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a matching plans filter position could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a matching plans filter position could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlansFilterPosition findByUserIdPlanTypeId_Last(Long userId,
-        Long planTypeId, OrderByComparator orderByComparator)
-        throws NoSuchFilterPositionException, SystemException {
+    public PlansFilterPosition findByUserIdPlanTypeId_Last(long userId,
+        long planTypeId, OrderByComparator orderByComparator)
+        throws NoSuchPlansFilterPositionException, SystemException {
         int count = countByUserIdPlanTypeId(userId, planTypeId);
 
         List<PlansFilterPosition> list = findByUserIdPlanTypeId(userId,
@@ -760,7 +760,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
 
             msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-            throw new NoSuchFilterPositionException(msg.toString());
+            throw new NoSuchPlansFilterPositionException(msg.toString());
         } else {
             return list.get(0);
         }
@@ -778,13 +778,13 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @param planTypeId the plan type ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the previous, current, and next plans filter position
-     * @throws com.ext.portlet.plans.NoSuchFilterPositionException if a plans filter position with the primary key could not be found
+     * @throws com.ext.portlet.plans.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     public PlansFilterPosition[] findByUserIdPlanTypeId_PrevAndNext(
-        PlansFilterPositionPK plansFilterPositionPK, Long userId,
-        Long planTypeId, OrderByComparator orderByComparator)
-        throws NoSuchFilterPositionException, SystemException {
+        PlansFilterPositionPK plansFilterPositionPK, long userId,
+        long planTypeId, OrderByComparator orderByComparator)
+        throws NoSuchPlansFilterPositionException, SystemException {
         PlansFilterPosition plansFilterPosition = findByPrimaryKey(plansFilterPositionPK);
 
         Session session = null;
@@ -813,8 +813,8 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
     }
 
     protected PlansFilterPosition getByUserIdPlanTypeId_PrevAndNext(
-        Session session, PlansFilterPosition plansFilterPosition, Long userId,
-        Long planTypeId, OrderByComparator orderByComparator, boolean previous) {
+        Session session, PlansFilterPosition plansFilterPosition, long userId,
+        long planTypeId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -889,9 +889,9 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(userId.longValue());
+        qPos.add(userId);
 
-        qPos.add(planTypeId.longValue());
+        qPos.add(planTypeId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(plansFilterPosition);
@@ -1026,7 +1026,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @param planTypeId the plan type ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByUserIdPlanTypeId(Long userId, Long planTypeId)
+    public void removeByUserIdPlanTypeId(long userId, long planTypeId)
         throws SystemException {
         for (PlansFilterPosition plansFilterPosition : findByUserIdPlanTypeId(
                 userId, planTypeId)) {
@@ -1053,7 +1053,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the number of matching plans filter positions
      * @throws SystemException if a system exception occurred
      */
-    public int countByUserIdPlanTypeId(Long userId, Long planTypeId)
+    public int countByUserIdPlanTypeId(long userId, long planTypeId)
         throws SystemException {
         Object[] finderArgs = new Object[] { userId, planTypeId };
 
@@ -1080,9 +1080,9 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
-                qPos.add(planTypeId.longValue());
+                qPos.add(planTypeId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

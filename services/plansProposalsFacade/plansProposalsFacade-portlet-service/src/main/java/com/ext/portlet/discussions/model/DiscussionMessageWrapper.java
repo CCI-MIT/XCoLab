@@ -32,7 +32,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the primary key of this discussion message
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _discussionMessage.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param primaryKey the primary key of this discussion message
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _discussionMessage.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the pk of this discussion message
     */
-    public java.lang.Long getPk() {
+    public long getPk() {
         return _discussionMessage.getPk();
     }
 
@@ -59,7 +59,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param pk the pk of this discussion message
     */
-    public void setPk(java.lang.Long pk) {
+    public void setPk(long pk) {
         _discussionMessage.setPk(pk);
     }
 
@@ -68,7 +68,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the message ID of this discussion message
     */
-    public java.lang.Long getMessageId() {
+    public long getMessageId() {
         return _discussionMessage.getMessageId();
     }
 
@@ -77,7 +77,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param messageId the message ID of this discussion message
     */
-    public void setMessageId(java.lang.Long messageId) {
+    public void setMessageId(long messageId) {
         _discussionMessage.setMessageId(messageId);
     }
 
@@ -122,7 +122,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the thread ID of this discussion message
     */
-    public java.lang.Long getThreadId() {
+    public long getThreadId() {
         return _discussionMessage.getThreadId();
     }
 
@@ -131,7 +131,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param threadId the thread ID of this discussion message
     */
-    public void setThreadId(java.lang.Long threadId) {
+    public void setThreadId(long threadId) {
         _discussionMessage.setThreadId(threadId);
     }
 
@@ -140,7 +140,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the category ID of this discussion message
     */
-    public java.lang.Long getCategoryId() {
+    public long getCategoryId() {
         return _discussionMessage.getCategoryId();
     }
 
@@ -149,7 +149,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param categoryId the category ID of this discussion message
     */
-    public void setCategoryId(java.lang.Long categoryId) {
+    public void setCategoryId(long categoryId) {
         _discussionMessage.setCategoryId(categoryId);
     }
 
@@ -158,7 +158,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the category group ID of this discussion message
     */
-    public java.lang.Long getCategoryGroupId() {
+    public long getCategoryGroupId() {
         return _discussionMessage.getCategoryGroupId();
     }
 
@@ -167,7 +167,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param categoryGroupId the category group ID of this discussion message
     */
-    public void setCategoryGroupId(java.lang.Long categoryGroupId) {
+    public void setCategoryGroupId(long categoryGroupId) {
         _discussionMessage.setCategoryGroupId(categoryGroupId);
     }
 
@@ -176,7 +176,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the author ID of this discussion message
     */
-    public java.lang.Long getAuthorId() {
+    public long getAuthorId() {
         return _discussionMessage.getAuthorId();
     }
 
@@ -185,7 +185,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param authorId the author ID of this discussion message
     */
-    public void setAuthorId(java.lang.Long authorId) {
+    public void setAuthorId(long authorId) {
         _discussionMessage.setAuthorId(authorId);
     }
 
@@ -212,7 +212,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the version of this discussion message
     */
-    public java.lang.Long getVersion() {
+    public long getVersion() {
         return _discussionMessage.getVersion();
     }
 
@@ -221,7 +221,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param version the version of this discussion message
     */
-    public void setVersion(java.lang.Long version) {
+    public void setVersion(long version) {
         _discussionMessage.setVersion(version);
     }
 
@@ -248,7 +248,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the responses count of this discussion message
     */
-    public java.lang.Integer getResponsesCount() {
+    public int getResponsesCount() {
         return _discussionMessage.getResponsesCount();
     }
 
@@ -257,7 +257,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param responsesCount the responses count of this discussion message
     */
-    public void setResponsesCount(java.lang.Integer responsesCount) {
+    public void setResponsesCount(int responsesCount) {
         _discussionMessage.setResponsesCount(responsesCount);
     }
 
@@ -284,7 +284,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @return the last activity author ID of this discussion message
     */
-    public java.lang.Long getLastActivityAuthorId() {
+    public long getLastActivityAuthorId() {
         return _discussionMessage.getLastActivityAuthorId();
     }
 
@@ -293,7 +293,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     *
     * @param lastActivityAuthorId the last activity author ID of this discussion message
     */
-    public void setLastActivityAuthorId(java.lang.Long lastActivityAuthorId) {
+    public void setLastActivityAuthorId(long lastActivityAuthorId) {
         _discussionMessage.setLastActivityAuthorId(lastActivityAuthorId);
     }
 
@@ -368,86 +368,6 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _discussionMessage.persist();
-    }
-
-    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> getThreadMessages()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.getThreadMessages();
-    }
-
-    public int getThreadMessagesCount()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.getThreadMessagesCount();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _discussionMessage.store();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage addThreadMessage(
-        java.lang.String subject, java.lang.String body,
-        com.liferay.portal.model.User author)
-        throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.addThreadMessage(subject, body, author);
-    }
-
-    public com.liferay.portal.model.User getAuthor()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.getAuthor();
-    }
-
-    public com.liferay.portal.model.User getLastActivityAuthor()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.getLastActivityAuthor();
-    }
-
-    public void delete()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _discussionMessage.delete();
-    }
-
-    public void update(java.lang.String subject, java.lang.String body)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _discussionMessage.update(subject, body);
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategory getCategory()
-        throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.getCategory();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getCategoryGroup()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.getCategoryGroup();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionMessage getThread()
-        throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.getThread();
-    }
-
-    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessageFlag> getFlags()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessage.getFlags();
-    }
-
-    public void addFlag(java.lang.String flagType, java.lang.String data,
-        com.liferay.portal.model.User user)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _discussionMessage.addFlag(flagType, data, user);
-    }
-
-    public void removeFlag(java.lang.String flagType)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _discussionMessage.removeFlag(flagType);
     }
 
     /**

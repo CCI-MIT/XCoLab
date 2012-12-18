@@ -47,7 +47,7 @@ public class PlanDescriptionLocalServiceUtil {
     * @return the new plan description
     */
     public static com.ext.portlet.plans.model.PlanDescription createPlanDescription(
-        java.lang.Long id) {
+        long id) {
         return getService().createPlanDescription(id);
     }
 
@@ -58,7 +58,7 @@ public class PlanDescriptionLocalServiceUtil {
     * @throws PortalException if a plan description with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanDescription(java.lang.Long id)
+    public static void deletePlanDescription(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanDescription(id);
@@ -148,8 +148,7 @@ public class PlanDescriptionLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanDescription fetchPlanDescription(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanDescription(id);
     }
 
@@ -162,7 +161,7 @@ public class PlanDescriptionLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanDescription getPlanDescription(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanDescription(id);
@@ -298,6 +297,18 @@ public class PlanDescriptionLocalServiceUtil {
         com.ext.portlet.plans.model.PlanDescription from, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().createNewVersionForPlanFrom(plan, from, store);
+    }
+
+    public static void store(com.ext.portlet.plans.model.PlanDescription pd)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(pd);
+    }
+
+    public static com.liferay.portal.model.User getUpdateAuthor(
+        com.ext.portlet.plans.model.PlanDescription pd)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUpdateAuthor(pd);
     }
 
     public static void clearService() {

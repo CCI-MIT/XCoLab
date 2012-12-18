@@ -190,7 +190,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.FocusAreaOntologyTerm> findByFocusAreaId(
-        java.lang.Long focusAreaId)
+        long focusAreaId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByFocusAreaId(focusAreaId);
     }
@@ -209,7 +209,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.FocusAreaOntologyTerm> findByFocusAreaId(
-        java.lang.Long focusAreaId, int start, int end)
+        long focusAreaId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByFocusAreaId(focusAreaId, start, end);
     }
@@ -229,7 +229,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.ontology.model.FocusAreaOntologyTerm> findByFocusAreaId(
-        java.lang.Long focusAreaId, int start, int end,
+        long focusAreaId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -250,7 +250,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.FocusAreaOntologyTerm findByFocusAreaId_First(
-        java.lang.Long focusAreaId,
+        long focusAreaId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchFocusAreaOntologyTermException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -272,7 +272,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.FocusAreaOntologyTerm findByFocusAreaId_Last(
-        java.lang.Long focusAreaId,
+        long focusAreaId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchFocusAreaOntologyTermException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -295,8 +295,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.ontology.model.FocusAreaOntologyTerm[] findByFocusAreaId_PrevAndNext(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK,
-        java.lang.Long focusAreaId,
+        FocusAreaOntologyTermPK focusAreaOntologyTermPK, long focusAreaId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.ontology.NoSuchFocusAreaOntologyTermException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -360,7 +359,7 @@ public class FocusAreaOntologyTermUtil {
     * @param focusAreaId the focus area ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByFocusAreaId(java.lang.Long focusAreaId)
+    public static void removeByFocusAreaId(long focusAreaId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByFocusAreaId(focusAreaId);
     }
@@ -382,7 +381,7 @@ public class FocusAreaOntologyTermUtil {
     * @return the number of matching focus area ontology terms
     * @throws SystemException if a system exception occurred
     */
-    public static int countByFocusAreaId(java.lang.Long focusAreaId)
+    public static int countByFocusAreaId(long focusAreaId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByFocusAreaId(focusAreaId);
     }

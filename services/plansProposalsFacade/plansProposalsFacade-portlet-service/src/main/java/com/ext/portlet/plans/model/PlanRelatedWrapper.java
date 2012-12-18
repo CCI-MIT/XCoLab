@@ -51,7 +51,7 @@ public class PlanRelatedWrapper implements PlanRelated,
     *
     * @return the section ID of this plan related
     */
-    public java.lang.Long getSectionId() {
+    public long getSectionId() {
         return _planRelated.getSectionId();
     }
 
@@ -60,7 +60,7 @@ public class PlanRelatedWrapper implements PlanRelated,
     *
     * @param sectionId the section ID of this plan related
     */
-    public void setSectionId(java.lang.Long sectionId) {
+    public void setSectionId(long sectionId) {
         _planRelated.setSectionId(sectionId);
     }
 
@@ -69,7 +69,7 @@ public class PlanRelatedWrapper implements PlanRelated,
     *
     * @return the related plan ID of this plan related
     */
-    public java.lang.Long getRelatedPlanId() {
+    public long getRelatedPlanId() {
         return _planRelated.getRelatedPlanId();
     }
 
@@ -78,7 +78,7 @@ public class PlanRelatedWrapper implements PlanRelated,
     *
     * @param relatedPlanId the related plan ID of this plan related
     */
-    public void setRelatedPlanId(java.lang.Long relatedPlanId) {
+    public void setRelatedPlanId(long relatedPlanId) {
         _planRelated.setRelatedPlanId(relatedPlanId);
     }
 

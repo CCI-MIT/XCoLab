@@ -3,6 +3,7 @@ package com.ext.portlet.contests.service.impl;
 import java.util.List;
 
 import com.ext.portlet.contests.model.ContestDebate;
+import com.ext.portlet.contests.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.contests.service.base.ContestDebateLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -36,12 +37,31 @@ public class ContestDebateLocalServiceImpl
         contestDebate.setDebateId(debateId);
         contestDebate.setContestPK(contestId);
         
-        contestDebate.store();
+        store(contestDebate);
         
         return contestDebate;
     }
     
     public List<ContestDebate> getContestDebates(Long contestId) throws SystemException {
         return contestDebatePersistence.findByContestPK(contestId);
+    }
+    
+    
+    public void store(ContestDebate contestDebate) throws SystemException {
+        if (contestDebate.isNew()) {
+            ContestDebateLocalServiceUtil.addContestDebate(contestDebate);
+        }
+        else {
+            ContestDebateLocalServiceUtil.updateContestDebate(contestDebate);
+        }
+    }
+    
+    public void delete(ContestDebate contestDebate) throws SystemException {
+        if (contestDebate.isNew()) {
+            // ignore
+        }
+        else {
+            ContestDebateLocalServiceUtil.deleteContestDebate(contestDebate);
+        }
     }
 }

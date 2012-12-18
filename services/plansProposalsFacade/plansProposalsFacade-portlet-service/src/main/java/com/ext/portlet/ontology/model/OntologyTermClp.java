@@ -14,9 +14,9 @@ import java.lang.reflect.Proxy;
 
 public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
     implements OntologyTerm {
-    private Long _id;
-    private Long _parentId;
-    private Long _ontologySpaceId;
+    private long _id;
+    private long _parentId;
+    private long _ontologySpaceId;
     private String _name;
     private String _descriptionUrl;
 
@@ -31,11 +31,11 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         return OntologyTerm.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -47,27 +47,27 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getParentId() {
+    public long getParentId() {
         return _parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(long parentId) {
         _parentId = parentId;
     }
 
-    public Long getOntologySpaceId() {
+    public long getOntologySpaceId() {
         return _ontologySpaceId;
     }
 
-    public void setOntologySpaceId(Long ontologySpaceId) {
+    public void setOntologySpaceId(long ontologySpaceId) {
         _ontologySpaceId = ontologySpaceId;
     }
 
@@ -85,35 +85,6 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
 
     public void setDescriptionUrl(String descriptionUrl) {
         _descriptionUrl = descriptionUrl;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.ontology.model.OntologyTerm getParent() {
-        throw new UnsupportedOperationException();
-    }
-
-    public int getChildTermsCount() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<com.ext.portlet.ontology.model.OntologyTerm> getChildTerms() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.ontology.model.OntologySpace getSpace() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void tagClass(java.lang.Class clasz, java.lang.Long id) {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<java.lang.Long> findTagedIdsForClass(
-        java.lang.Class clasz) {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -144,7 +115,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
     }
 
     public int compareTo(OntologyTerm ontologyTerm) {
-        Long primaryKey = ontologyTerm.getPrimaryKey();
+        long primaryKey = ontologyTerm.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -169,7 +140,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
             return false;
         }
 
-        Long primaryKey = ontologyTerm.getPrimaryKey();
+        long primaryKey = ontologyTerm.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -180,7 +151,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

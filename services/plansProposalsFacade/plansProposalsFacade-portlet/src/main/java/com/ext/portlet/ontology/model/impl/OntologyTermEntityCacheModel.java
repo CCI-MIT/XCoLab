@@ -16,10 +16,10 @@ import java.io.Serializable;
  */
 public class OntologyTermEntityCacheModel implements CacheModel<OntologyTermEntity>,
     Serializable {
-    public Long id;
-    public Long termId;
-    public Long classNameId;
-    public Long classPK;
+    public long id;
+    public long termId;
+    public long classNameId;
+    public long classPK;
 
     @Override
     public String toString() {

@@ -8,40 +8,40 @@ import java.io.Serializable;
 
 public class PlansFilterPositionPK implements Comparable<PlansFilterPositionPK>,
     Serializable {
-    public Long userId;
-    public Long planTypeId;
-    public Long positionId;
+    public long userId;
+    public long planTypeId;
+    public long positionId;
 
     public PlansFilterPositionPK() {
     }
 
-    public PlansFilterPositionPK(Long userId, Long planTypeId, Long positionId) {
+    public PlansFilterPositionPK(long userId, long planTypeId, long positionId) {
         this.userId = userId;
         this.planTypeId = planTypeId;
         this.positionId = positionId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         this.planTypeId = planTypeId;
     }
 
-    public Long getPositionId() {
+    public long getPositionId() {
         return positionId;
     }
 
-    public void setPositionId(Long positionId) {
+    public void setPositionId(long positionId) {
         this.positionId = positionId;
     }
 

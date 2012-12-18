@@ -14,13 +14,13 @@ import java.util.List;
  * @generated
  */
 public class PlanItemSoap implements Serializable {
-    private Long _id;
-    private Long _planId;
+    private long _id;
+    private long _planId;
     private String _state;
     private Date _updated;
-    private Long _updateAuthorId;
+    private long _updateAuthorId;
     private String _updateType;
-    private Long _version;
+    private long _version;
 
     public PlanItemSoap() {
     }
@@ -75,27 +75,27 @@ public class PlanItemSoap implements Serializable {
         return soapModels.toArray(new PlanItemSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setId(pk);
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPlanId() {
+    public long getPlanId() {
         return _planId;
     }
 
-    public void setPlanId(Long planId) {
+    public void setPlanId(long planId) {
         _planId = planId;
     }
 
@@ -115,11 +115,11 @@ public class PlanItemSoap implements Serializable {
         _updated = updated;
     }
 
-    public Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
-    public void setUpdateAuthorId(Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
 
@@ -131,11 +131,11 @@ public class PlanItemSoap implements Serializable {
         _updateType = updateType;
     }
 
-    public Long getVersion() {
+    public long getVersion() {
         return _version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(long version) {
         _version = version;
     }
 }

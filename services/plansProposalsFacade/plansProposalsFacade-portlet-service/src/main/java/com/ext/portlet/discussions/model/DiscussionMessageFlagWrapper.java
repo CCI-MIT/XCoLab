@@ -33,7 +33,7 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     *
     * @return the primary key of this discussion message flag
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _discussionMessageFlag.getPrimaryKey();
     }
 
@@ -42,7 +42,7 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     *
     * @param primaryKey the primary key of this discussion message flag
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _discussionMessageFlag.setPrimaryKey(primaryKey);
     }
 
@@ -51,7 +51,7 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     *
     * @return the pk of this discussion message flag
     */
-    public java.lang.Long getPk() {
+    public long getPk() {
         return _discussionMessageFlag.getPk();
     }
 
@@ -60,7 +60,7 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     *
     * @param pk the pk of this discussion message flag
     */
-    public void setPk(java.lang.Long pk) {
+    public void setPk(long pk) {
         _discussionMessageFlag.setPk(pk);
     }
 
@@ -69,7 +69,7 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     *
     * @return the message ID of this discussion message flag
     */
-    public java.lang.Long getMessageId() {
+    public long getMessageId() {
         return _discussionMessageFlag.getMessageId();
     }
 
@@ -78,7 +78,7 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     *
     * @param messageId the message ID of this discussion message flag
     */
-    public void setMessageId(java.lang.Long messageId) {
+    public void setMessageId(long messageId) {
         _discussionMessageFlag.setMessageId(messageId);
     }
 
@@ -141,7 +141,7 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     *
     * @return the user ID of this discussion message flag
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _discussionMessageFlag.getUserId();
     }
 
@@ -150,8 +150,28 @@ public class DiscussionMessageFlagWrapper implements DiscussionMessageFlag,
     *
     * @param userId the user ID of this discussion message flag
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _discussionMessageFlag.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this discussion message flag.
+    *
+    * @return the user uuid of this discussion message flag
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageFlag.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this discussion message flag.
+    *
+    * @param userUuid the user uuid of this discussion message flag
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _discussionMessageFlag.setUserUuid(userUuid);
     }
 
     public boolean isNew() {

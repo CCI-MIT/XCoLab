@@ -32,7 +32,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     *
     * @return the primary key of this model discussion
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelDiscussion.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     *
     * @param primaryKey the primary key of this model discussion
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _modelDiscussion.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     *
     * @return the model discussion ID of this model discussion
     */
-    public java.lang.Long getModelDiscussionId() {
+    public long getModelDiscussionId() {
         return _modelDiscussion.getModelDiscussionId();
     }
 
@@ -59,7 +59,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     *
     * @param modelDiscussionId the model discussion ID of this model discussion
     */
-    public void setModelDiscussionId(java.lang.Long modelDiscussionId) {
+    public void setModelDiscussionId(long modelDiscussionId) {
         _modelDiscussion.setModelDiscussionId(modelDiscussionId);
     }
 
@@ -68,7 +68,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     *
     * @return the model ID of this model discussion
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _modelDiscussion.getModelId();
     }
 
@@ -77,7 +77,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     *
     * @param modelId the model ID of this model discussion
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _modelDiscussion.setModelId(modelId);
     }
 
@@ -86,7 +86,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     *
     * @return the category ID of this model discussion
     */
-    public java.lang.Long getCategoryId() {
+    public long getCategoryId() {
         return _modelDiscussion.getCategoryId();
     }
 
@@ -95,7 +95,7 @@ public class ModelDiscussionWrapper implements ModelDiscussion,
     *
     * @param categoryId the category ID of this model discussion
     */
-    public void setCategoryId(java.lang.Long categoryId) {
+    public void setCategoryId(long categoryId) {
         _modelDiscussion.setCategoryId(categoryId);
     }
 

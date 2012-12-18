@@ -346,7 +346,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @param pk the primary key for the new discussion message
      * @return the new discussion message
      */
-    public DiscussionMessage create(Long pk) {
+    public DiscussionMessage create(long pk) {
         DiscussionMessage discussionMessage = new DiscussionMessageImpl();
 
         discussionMessage.setNew(true);
@@ -363,9 +363,9 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage remove(Long pk)
+    public DiscussionMessage remove(long pk)
         throws NoSuchDiscussionMessageException, SystemException {
-        return remove((Serializable) pk);
+        return remove(Long.valueOf(pk));
     }
 
     /**
@@ -636,7 +636,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     @Override
     public DiscussionMessage findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -647,7 +647,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage findByPrimaryKey(Long pk)
+    public DiscussionMessage findByPrimaryKey(long pk)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = fetchByPrimaryKey(pk);
 
@@ -673,7 +673,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     @Override
     public DiscussionMessage fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -683,7 +683,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the discussion message, or <code>null</code> if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage fetchByPrimaryKey(Long pk)
+    public DiscussionMessage fetchByPrimaryKey(long pk)
         throws SystemException {
         DiscussionMessage discussionMessage = (DiscussionMessage) EntityCacheUtil.getResult(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
                 DiscussionMessageImpl.class, pk);
@@ -729,8 +729,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessage> findByCategoryIdThreadId(Long categoryId,
-        Long threadId) throws SystemException {
+    public List<DiscussionMessage> findByCategoryIdThreadId(long categoryId,
+        long threadId) throws SystemException {
         return findByCategoryIdThreadId(categoryId, threadId,
             QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -749,8 +749,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the range of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessage> findByCategoryIdThreadId(Long categoryId,
-        Long threadId, int start, int end) throws SystemException {
+    public List<DiscussionMessage> findByCategoryIdThreadId(long categoryId,
+        long threadId, int start, int end) throws SystemException {
         return findByCategoryIdThreadId(categoryId, threadId, start, end, null);
     }
 
@@ -769,8 +769,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the ordered range of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessage> findByCategoryIdThreadId(Long categoryId,
-        Long threadId, int start, int end, OrderByComparator orderByComparator)
+    public List<DiscussionMessage> findByCategoryIdThreadId(long categoryId,
+        long threadId, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -826,9 +826,9 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(categoryId.longValue());
+                qPos.add(categoryId);
 
-                qPos.add(threadId.longValue());
+                qPos.add(threadId);
 
                 list = (List<DiscussionMessage>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -864,8 +864,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage findByCategoryIdThreadId_First(Long categoryId,
-        Long threadId, OrderByComparator orderByComparator)
+    public DiscussionMessage findByCategoryIdThreadId_First(long categoryId,
+        long threadId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         List<DiscussionMessage> list = findByCategoryIdThreadId(categoryId,
                 threadId, 0, 1, orderByComparator);
@@ -903,8 +903,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage findByCategoryIdThreadId_Last(Long categoryId,
-        Long threadId, OrderByComparator orderByComparator)
+    public DiscussionMessage findByCategoryIdThreadId_Last(long categoryId,
+        long threadId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         int count = countByCategoryIdThreadId(categoryId, threadId);
 
@@ -945,8 +945,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage[] findByCategoryIdThreadId_PrevAndNext(Long pk,
-        Long categoryId, Long threadId, OrderByComparator orderByComparator)
+    public DiscussionMessage[] findByCategoryIdThreadId_PrevAndNext(long pk,
+        long categoryId, long threadId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = findByPrimaryKey(pk);
 
@@ -976,8 +976,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     }
 
     protected DiscussionMessage getByCategoryIdThreadId_PrevAndNext(
-        Session session, DiscussionMessage discussionMessage, Long categoryId,
-        Long threadId, OrderByComparator orderByComparator, boolean previous) {
+        Session session, DiscussionMessage discussionMessage, long categoryId,
+        long threadId, OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
         if (orderByComparator != null) {
@@ -1055,9 +1055,9 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(categoryId.longValue());
+        qPos.add(categoryId);
 
-        qPos.add(threadId.longValue());
+        qPos.add(threadId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(discussionMessage);
@@ -1083,7 +1083,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessage> findByThreadId(Long threadId)
+    public List<DiscussionMessage> findByThreadId(long threadId)
         throws SystemException {
         return findByThreadId(threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -1102,7 +1102,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the range of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessage> findByThreadId(Long threadId, int start,
+    public List<DiscussionMessage> findByThreadId(long threadId, int start,
         int end) throws SystemException {
         return findByThreadId(threadId, start, end, null);
     }
@@ -1121,7 +1121,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the ordered range of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionMessage> findByThreadId(Long threadId, int start,
+    public List<DiscussionMessage> findByThreadId(long threadId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1171,7 +1171,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(threadId.longValue());
+                qPos.add(threadId);
 
                 list = (List<DiscussionMessage>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1206,7 +1206,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage findByThreadId_First(Long threadId,
+    public DiscussionMessage findByThreadId_First(long threadId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         List<DiscussionMessage> list = findByThreadId(threadId, 0, 1,
@@ -1241,7 +1241,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage findByThreadId_Last(Long threadId,
+    public DiscussionMessage findByThreadId_Last(long threadId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         int count = countByThreadId(threadId);
@@ -1279,8 +1279,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage[] findByThreadId_PrevAndNext(Long pk,
-        Long threadId, OrderByComparator orderByComparator)
+    public DiscussionMessage[] findByThreadId_PrevAndNext(long pk,
+        long threadId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = findByPrimaryKey(pk);
 
@@ -1308,7 +1308,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     }
 
     protected DiscussionMessage getByThreadId_PrevAndNext(Session session,
-        DiscussionMessage discussionMessage, Long threadId,
+        DiscussionMessage discussionMessage, long threadId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1385,7 +1385,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(threadId.longValue());
+        qPos.add(threadId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(discussionMessage);
@@ -1412,7 +1412,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage findBySingleThreadId(Long messageId)
+    public DiscussionMessage findBySingleThreadId(long messageId)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = fetchBySingleThreadId(messageId);
 
@@ -1443,7 +1443,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the matching discussion message, or <code>null</code> if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage fetchBySingleThreadId(Long messageId)
+    public DiscussionMessage fetchBySingleThreadId(long messageId)
         throws SystemException {
         return fetchBySingleThreadId(messageId, true);
     }
@@ -1456,7 +1456,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the matching discussion message, or <code>null</code> if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage fetchBySingleThreadId(Long messageId,
+    public DiscussionMessage fetchBySingleThreadId(long messageId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { messageId };
 
@@ -1487,7 +1487,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
                 List<DiscussionMessage> list = q.list();
 
@@ -1538,7 +1538,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public List<DiscussionMessage> findBySubjectLike(String subject,
-        Long categoryGroupId) throws SystemException {
+        long categoryGroupId) throws SystemException {
         return findBySubjectLike(subject, categoryGroupId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
@@ -1558,7 +1558,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public List<DiscussionMessage> findBySubjectLike(String subject,
-        Long categoryGroupId, int start, int end) throws SystemException {
+        long categoryGroupId, int start, int end) throws SystemException {
         return findBySubjectLike(subject, categoryGroupId, start, end, null);
     }
 
@@ -1578,7 +1578,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public List<DiscussionMessage> findBySubjectLike(String subject,
-        Long categoryGroupId, int start, int end,
+        long categoryGroupId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1646,7 +1646,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
                     qPos.add(subject);
                 }
 
-                qPos.add(categoryGroupId.longValue());
+                qPos.add(categoryGroupId);
 
                 list = (List<DiscussionMessage>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1683,7 +1683,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public DiscussionMessage findBySubjectLike_First(String subject,
-        Long categoryGroupId, OrderByComparator orderByComparator)
+        long categoryGroupId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         List<DiscussionMessage> list = findBySubjectLike(subject,
                 categoryGroupId, 0, 1, orderByComparator);
@@ -1722,7 +1722,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public DiscussionMessage findBySubjectLike_Last(String subject,
-        Long categoryGroupId, OrderByComparator orderByComparator)
+        long categoryGroupId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         int count = countBySubjectLike(subject, categoryGroupId);
 
@@ -1763,8 +1763,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage[] findBySubjectLike_PrevAndNext(Long pk,
-        String subject, Long categoryGroupId,
+    public DiscussionMessage[] findBySubjectLike_PrevAndNext(long pk,
+        String subject, long categoryGroupId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = findByPrimaryKey(pk);
@@ -1794,7 +1794,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
     protected DiscussionMessage getBySubjectLike_PrevAndNext(Session session,
         DiscussionMessage discussionMessage, String subject,
-        Long categoryGroupId, OrderByComparator orderByComparator,
+        long categoryGroupId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -1885,7 +1885,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
             qPos.add(subject);
         }
 
-        qPos.add(categoryGroupId.longValue());
+        qPos.add(categoryGroupId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(discussionMessage);
@@ -1913,7 +1913,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public List<DiscussionMessage> findByBodyLike(String body,
-        Long categoryGroupId) throws SystemException {
+        long categoryGroupId) throws SystemException {
         return findByBodyLike(body, categoryGroupId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
@@ -1933,7 +1933,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public List<DiscussionMessage> findByBodyLike(String body,
-        Long categoryGroupId, int start, int end) throws SystemException {
+        long categoryGroupId, int start, int end) throws SystemException {
         return findByBodyLike(body, categoryGroupId, start, end, null);
     }
 
@@ -1953,7 +1953,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public List<DiscussionMessage> findByBodyLike(String body,
-        Long categoryGroupId, int start, int end,
+        long categoryGroupId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -2021,7 +2021,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
                     qPos.add(body);
                 }
 
-                qPos.add(categoryGroupId.longValue());
+                qPos.add(categoryGroupId);
 
                 list = (List<DiscussionMessage>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -2058,7 +2058,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public DiscussionMessage findByBodyLike_First(String body,
-        Long categoryGroupId, OrderByComparator orderByComparator)
+        long categoryGroupId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         List<DiscussionMessage> list = findByBodyLike(body, categoryGroupId, 0,
                 1, orderByComparator);
@@ -2097,7 +2097,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws SystemException if a system exception occurred
      */
     public DiscussionMessage findByBodyLike_Last(String body,
-        Long categoryGroupId, OrderByComparator orderByComparator)
+        long categoryGroupId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         int count = countByBodyLike(body, categoryGroupId);
 
@@ -2138,8 +2138,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage[] findByBodyLike_PrevAndNext(Long pk, String body,
-        Long categoryGroupId, OrderByComparator orderByComparator)
+    public DiscussionMessage[] findByBodyLike_PrevAndNext(long pk, String body,
+        long categoryGroupId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = findByPrimaryKey(pk);
 
@@ -2167,7 +2167,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     }
 
     protected DiscussionMessage getByBodyLike_PrevAndNext(Session session,
-        DiscussionMessage discussionMessage, String body, Long categoryGroupId,
+        DiscussionMessage discussionMessage, String body, long categoryGroupId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -2258,7 +2258,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
             qPos.add(body);
         }
 
-        qPos.add(categoryGroupId.longValue());
+        qPos.add(categoryGroupId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(discussionMessage);
@@ -2285,7 +2285,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.discussions.NoSuchDiscussionMessageException if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage findByMessageId(Long messageId)
+    public DiscussionMessage findByMessageId(long messageId)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = fetchByMessageId(messageId);
 
@@ -2316,7 +2316,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the matching discussion message, or <code>null</code> if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage fetchByMessageId(Long messageId)
+    public DiscussionMessage fetchByMessageId(long messageId)
         throws SystemException {
         return fetchByMessageId(messageId, true);
     }
@@ -2329,7 +2329,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the matching discussion message, or <code>null</code> if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage fetchByMessageId(Long messageId,
+    public DiscussionMessage fetchByMessageId(long messageId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { messageId };
 
@@ -2360,7 +2360,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
                 List<DiscussionMessage> list = q.list();
 
@@ -2518,7 +2518,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @param threadId the thread ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByCategoryIdThreadId(Long categoryId, Long threadId)
+    public void removeByCategoryIdThreadId(long categoryId, long threadId)
         throws SystemException {
         for (DiscussionMessage discussionMessage : findByCategoryIdThreadId(
                 categoryId, threadId)) {
@@ -2532,7 +2532,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @param threadId the thread ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByThreadId(Long threadId) throws SystemException {
+    public void removeByThreadId(long threadId) throws SystemException {
         for (DiscussionMessage discussionMessage : findByThreadId(threadId)) {
             remove(discussionMessage);
         }
@@ -2544,7 +2544,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @param messageId the message ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeBySingleThreadId(Long messageId)
+    public void removeBySingleThreadId(long messageId)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = findBySingleThreadId(messageId);
 
@@ -2558,7 +2558,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @param categoryGroupId the category group ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeBySubjectLike(String subject, Long categoryGroupId)
+    public void removeBySubjectLike(String subject, long categoryGroupId)
         throws SystemException {
         for (DiscussionMessage discussionMessage : findBySubjectLike(subject,
                 categoryGroupId)) {
@@ -2573,7 +2573,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @param categoryGroupId the category group ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByBodyLike(String body, Long categoryGroupId)
+    public void removeByBodyLike(String body, long categoryGroupId)
         throws SystemException {
         for (DiscussionMessage discussionMessage : findByBodyLike(body,
                 categoryGroupId)) {
@@ -2587,7 +2587,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @param messageId the message ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByMessageId(Long messageId)
+    public void removeByMessageId(long messageId)
         throws NoSuchDiscussionMessageException, SystemException {
         DiscussionMessage discussionMessage = findByMessageId(messageId);
 
@@ -2613,7 +2613,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the number of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public int countByCategoryIdThreadId(Long categoryId, Long threadId)
+    public int countByCategoryIdThreadId(long categoryId, long threadId)
         throws SystemException {
         Object[] finderArgs = new Object[] { categoryId, threadId };
 
@@ -2640,9 +2640,9 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(categoryId.longValue());
+                qPos.add(categoryId);
 
-                qPos.add(threadId.longValue());
+                qPos.add(threadId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2669,7 +2669,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the number of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public int countByThreadId(Long threadId) throws SystemException {
+    public int countByThreadId(long threadId) throws SystemException {
         Object[] finderArgs = new Object[] { threadId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_THREADID,
@@ -2693,7 +2693,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(threadId.longValue());
+                qPos.add(threadId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2720,7 +2720,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the number of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public int countBySingleThreadId(Long messageId) throws SystemException {
+    public int countBySingleThreadId(long messageId) throws SystemException {
         Object[] finderArgs = new Object[] { messageId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_SINGLETHREADID,
@@ -2744,7 +2744,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2772,7 +2772,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the number of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public int countBySubjectLike(String subject, Long categoryGroupId)
+    public int countBySubjectLike(String subject, long categoryGroupId)
         throws SystemException {
         Object[] finderArgs = new Object[] { subject, categoryGroupId };
 
@@ -2811,7 +2811,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
                     qPos.add(subject);
                 }
 
-                qPos.add(categoryGroupId.longValue());
+                qPos.add(categoryGroupId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2839,7 +2839,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the number of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public int countByBodyLike(String body, Long categoryGroupId)
+    public int countByBodyLike(String body, long categoryGroupId)
         throws SystemException {
         Object[] finderArgs = new Object[] { body, categoryGroupId };
 
@@ -2878,7 +2878,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
                     qPos.add(body);
                 }
 
-                qPos.add(categoryGroupId.longValue());
+                qPos.add(categoryGroupId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -2905,7 +2905,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the number of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
-    public int countByMessageId(Long messageId) throws SystemException {
+    public int countByMessageId(long messageId) throws SystemException {
         Object[] finderArgs = new Object[] { messageId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MESSAGEID,
@@ -2929,7 +2929,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId.longValue());
+                qPos.add(messageId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

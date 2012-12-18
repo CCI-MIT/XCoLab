@@ -1,5 +1,6 @@
 package com.ext.portlet.messaging.service.impl;
 
+import com.ext.portlet.messaging.NoSuchMessagingUserPreferencesException;
 import com.ext.portlet.messaging.NoSuchUserPreferencesException;
 import com.ext.portlet.messaging.model.MessagingUserPreferences;
 import com.ext.portlet.messaging.service.base.MessagingUserPreferencesLocalServiceBaseImpl;
@@ -30,7 +31,7 @@ public class MessagingUserPreferencesLocalServiceImpl
     public MessagingUserPreferences findByUser(long userId) throws SystemException {
         try {
             return messagingUserPreferencesPersistence.findBymessagingPreferences(userId);
-        } catch (NoSuchUserPreferencesException e) {
+        } catch (NoSuchMessagingUserPreferencesException e) {
             return null;
         } catch (SystemException e) {
             throw(e);

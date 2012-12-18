@@ -32,7 +32,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @return the primary key of this plan team history
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTeamHistory.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @param primaryKey the primary key of this plan team history
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _planTeamHistory.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @return the ID of this plan team history
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _planTeamHistory.getId();
     }
 
@@ -59,7 +59,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @param id the ID of this plan team history
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _planTeamHistory.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @return the plan ID of this plan team history
     */
-    public java.lang.Long getPlanId() {
+    public long getPlanId() {
         return _planTeamHistory.getPlanId();
     }
 
@@ -77,7 +77,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @param planId the plan ID of this plan team history
     */
-    public void setPlanId(java.lang.Long planId) {
+    public void setPlanId(long planId) {
         _planTeamHistory.setPlanId(planId);
     }
 
@@ -86,7 +86,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @return the user ID of this plan team history
     */
-    public java.lang.Long getUserId() {
+    public long getUserId() {
         return _planTeamHistory.getUserId();
     }
 
@@ -95,8 +95,28 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @param userId the user ID of this plan team history
     */
-    public void setUserId(java.lang.Long userId) {
+    public void setUserId(long userId) {
         _planTeamHistory.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this plan team history.
+    *
+    * @return the user uuid of this plan team history
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planTeamHistory.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this plan team history.
+    *
+    * @param userUuid the user uuid of this plan team history
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _planTeamHistory.setUserUuid(userUuid);
     }
 
     /**
@@ -158,7 +178,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @return the update author ID of this plan team history
     */
-    public java.lang.Long getUpdateAuthorId() {
+    public long getUpdateAuthorId() {
         return _planTeamHistory.getUpdateAuthorId();
     }
 
@@ -167,7 +187,7 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     *
     * @param updateAuthorId the update author ID of this plan team history
     */
-    public void setUpdateAuthorId(java.lang.Long updateAuthorId) {
+    public void setUpdateAuthorId(long updateAuthorId) {
         _planTeamHistory.setUpdateAuthorId(updateAuthorId);
     }
 
@@ -242,23 +262,6 @@ public class PlanTeamHistoryWrapper implements PlanTeamHistory,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planTeamHistory.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planTeamHistory.store();
-    }
-
-    public com.liferay.portal.model.User getUser()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planTeamHistory.getUser();
-    }
-
-    public com.ext.portlet.plans.model.PlanItem getPlan()
-        throws com.ext.portlet.plans.NoSuchPlanItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planTeamHistory.getPlan();
     }
 
     /**

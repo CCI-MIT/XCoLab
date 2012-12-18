@@ -133,7 +133,7 @@ public abstract class MessagingUserPreferencesLocalServiceBaseImpl
      * @return the new messaging user preferences
      */
     public MessagingUserPreferences createMessagingUserPreferences(
-        Long messagingPreferencesId) {
+        long messagingPreferencesId) {
         return messagingUserPreferencesPersistence.create(messagingPreferencesId);
     }
 
@@ -144,7 +144,7 @@ public abstract class MessagingUserPreferencesLocalServiceBaseImpl
      * @throws PortalException if a messaging user preferences with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteMessagingUserPreferences(Long messagingPreferencesId)
+    public void deleteMessagingUserPreferences(long messagingPreferencesId)
         throws PortalException, SystemException {
         MessagingUserPreferences messagingUserPreferences = messagingUserPreferencesPersistence.remove(messagingPreferencesId);
 
@@ -252,7 +252,7 @@ public abstract class MessagingUserPreferencesLocalServiceBaseImpl
     }
 
     public MessagingUserPreferences fetchMessagingUserPreferences(
-        Long messagingPreferencesId) throws SystemException {
+        long messagingPreferencesId) throws SystemException {
         return messagingUserPreferencesPersistence.fetchByPrimaryKey(messagingPreferencesId);
     }
 
@@ -265,7 +265,7 @@ public abstract class MessagingUserPreferencesLocalServiceBaseImpl
      * @throws SystemException if a system exception occurred
      */
     public MessagingUserPreferences getMessagingUserPreferences(
-        Long messagingPreferencesId) throws PortalException, SystemException {
+        long messagingPreferencesId) throws PortalException, SystemException {
         return messagingUserPreferencesPersistence.findByPrimaryKey(messagingPreferencesId);
     }
 

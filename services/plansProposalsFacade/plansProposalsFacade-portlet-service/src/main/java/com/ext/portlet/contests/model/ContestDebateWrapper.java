@@ -32,7 +32,7 @@ public class ContestDebateWrapper implements ContestDebate,
     *
     * @return the primary key of this contest debate
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _contestDebate.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ContestDebateWrapper implements ContestDebate,
     *
     * @param primaryKey the primary key of this contest debate
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _contestDebate.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ContestDebateWrapper implements ContestDebate,
     *
     * @return the ID of this contest debate
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _contestDebate.getId();
     }
 
@@ -59,7 +59,7 @@ public class ContestDebateWrapper implements ContestDebate,
     *
     * @param id the ID of this contest debate
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _contestDebate.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class ContestDebateWrapper implements ContestDebate,
     *
     * @return the debate ID of this contest debate
     */
-    public java.lang.Long getDebateId() {
+    public long getDebateId() {
         return _contestDebate.getDebateId();
     }
 
@@ -77,7 +77,7 @@ public class ContestDebateWrapper implements ContestDebate,
     *
     * @param debateId the debate ID of this contest debate
     */
-    public void setDebateId(java.lang.Long debateId) {
+    public void setDebateId(long debateId) {
         _contestDebate.setDebateId(debateId);
     }
 
@@ -86,7 +86,7 @@ public class ContestDebateWrapper implements ContestDebate,
     *
     * @return the contest p k of this contest debate
     */
-    public java.lang.Long getContestPK() {
+    public long getContestPK() {
         return _contestDebate.getContestPK();
     }
 
@@ -95,7 +95,7 @@ public class ContestDebateWrapper implements ContestDebate,
     *
     * @param ContestPK the contest p k of this contest debate
     */
-    public void setContestPK(java.lang.Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _contestDebate.setContestPK(ContestPK);
     }
 
@@ -170,16 +170,6 @@ public class ContestDebateWrapper implements ContestDebate,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestDebate.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestDebate.store();
-    }
-
-    public void delete()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestDebate.delete();
     }
 
     /**

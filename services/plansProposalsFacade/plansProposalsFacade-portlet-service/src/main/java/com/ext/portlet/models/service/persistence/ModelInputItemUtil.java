@@ -125,7 +125,7 @@ public class ModelInputItemUtil {
     * @return the new model input item
     */
     public static com.ext.portlet.models.model.ModelInputItem create(
-        java.lang.Long modelInputItemPK) {
+        long modelInputItemPK) {
         return getPersistence().create(modelInputItemPK);
     }
 
@@ -138,7 +138,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem remove(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(modelInputItemPK);
@@ -160,7 +160,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem findByPrimaryKey(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(modelInputItemPK);
@@ -174,7 +174,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem fetchByPrimaryKey(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(modelInputItemPK);
     }
@@ -187,7 +187,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputItem> findByModelGroupId(
-        java.lang.Long modelGroupId)
+        long modelGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelGroupId(modelGroupId);
     }
@@ -206,7 +206,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputItem> findByModelGroupId(
-        java.lang.Long modelGroupId, int start, int end)
+        long modelGroupId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelGroupId(modelGroupId, start, end);
     }
@@ -226,7 +226,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputItem> findByModelGroupId(
-        java.lang.Long modelGroupId, int start, int end,
+        long modelGroupId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -248,7 +248,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem findByModelGroupId_First(
-        java.lang.Long modelGroupId,
+        long modelGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -270,7 +270,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem findByModelGroupId_Last(
-        java.lang.Long modelGroupId,
+        long modelGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -293,7 +293,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem[] findByModelGroupId_PrevAndNext(
-        java.lang.Long modelInputItemPK, java.lang.Long modelGroupId,
+        long modelInputItemPK, long modelGroupId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -311,7 +311,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem findByModelInputId(
-        java.lang.Long modelInputItemID)
+        long modelInputItemID)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelInputId(modelInputItemID);
@@ -325,7 +325,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem fetchByModelInputId(
-        java.lang.Long modelInputItemID)
+        long modelInputItemID)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByModelInputId(modelInputItemID);
     }
@@ -339,7 +339,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem fetchByModelInputId(
-        java.lang.Long modelInputItemID, boolean retrieveFromCache)
+        long modelInputItemID, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByModelInputId(modelInputItemID, retrieveFromCache);
@@ -353,7 +353,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputItem> findByModelId(
-        java.lang.Long modelId)
+        long modelId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelId(modelId);
     }
@@ -372,7 +372,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputItem> findByModelId(
-        java.lang.Long modelId, int start, int end)
+        long modelId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByModelId(modelId, start, end);
     }
@@ -392,7 +392,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.models.model.ModelInputItem> findByModelId(
-        java.lang.Long modelId, int start, int end,
+        long modelId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -413,7 +413,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem findByModelId_First(
-        java.lang.Long modelId,
+        long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -434,7 +434,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem findByModelId_Last(
-        java.lang.Long modelId,
+        long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -456,7 +456,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem[] findByModelId_PrevAndNext(
-        java.lang.Long modelInputItemPK, java.lang.Long modelId,
+        long modelInputItemPK, long modelId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -475,7 +475,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem findByModelIdModelInputId(
-        java.lang.Long modelId, java.lang.Long modelInputItemID)
+        long modelId, long modelInputItemID)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -491,7 +491,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem fetchByModelIdModelInputId(
-        java.lang.Long modelId, java.lang.Long modelInputItemID)
+        long modelId, long modelInputItemID)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByModelIdModelInputId(modelId, modelInputItemID);
@@ -507,8 +507,7 @@ public class ModelInputItemUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputItem fetchByModelIdModelInputId(
-        java.lang.Long modelId, java.lang.Long modelInputItemID,
-        boolean retrieveFromCache)
+        long modelId, long modelInputItemID, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByModelIdModelInputId(modelId, modelInputItemID,
@@ -570,7 +569,7 @@ public class ModelInputItemUtil {
     * @param modelGroupId the model group ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByModelGroupId(java.lang.Long modelGroupId)
+    public static void removeByModelGroupId(long modelGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByModelGroupId(modelGroupId);
     }
@@ -581,7 +580,7 @@ public class ModelInputItemUtil {
     * @param modelInputItemID the model input item i d
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByModelInputId(java.lang.Long modelInputItemID)
+    public static void removeByModelInputId(long modelInputItemID)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByModelInputId(modelInputItemID);
@@ -593,7 +592,7 @@ public class ModelInputItemUtil {
     * @param modelId the model ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByModelId(java.lang.Long modelId)
+    public static void removeByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByModelId(modelId);
     }
@@ -605,8 +604,8 @@ public class ModelInputItemUtil {
     * @param modelInputItemID the model input item i d
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByModelIdModelInputId(java.lang.Long modelId,
-        java.lang.Long modelInputItemID)
+    public static void removeByModelIdModelInputId(long modelId,
+        long modelInputItemID)
         throws com.ext.portlet.models.NoSuchModelInputItemException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByModelIdModelInputId(modelId, modelInputItemID);
@@ -629,7 +628,7 @@ public class ModelInputItemUtil {
     * @return the number of matching model input items
     * @throws SystemException if a system exception occurred
     */
-    public static int countByModelGroupId(java.lang.Long modelGroupId)
+    public static int countByModelGroupId(long modelGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByModelGroupId(modelGroupId);
     }
@@ -641,7 +640,7 @@ public class ModelInputItemUtil {
     * @return the number of matching model input items
     * @throws SystemException if a system exception occurred
     */
-    public static int countByModelInputId(java.lang.Long modelInputItemID)
+    public static int countByModelInputId(long modelInputItemID)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByModelInputId(modelInputItemID);
     }
@@ -653,7 +652,7 @@ public class ModelInputItemUtil {
     * @return the number of matching model input items
     * @throws SystemException if a system exception occurred
     */
-    public static int countByModelId(java.lang.Long modelId)
+    public static int countByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByModelId(modelId);
     }
@@ -666,8 +665,8 @@ public class ModelInputItemUtil {
     * @return the number of matching model input items
     * @throws SystemException if a system exception occurred
     */
-    public static int countByModelIdModelInputId(java.lang.Long modelId,
-        java.lang.Long modelInputItemID)
+    public static int countByModelIdModelInputId(long modelId,
+        long modelInputItemID)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .countByModelIdModelInputId(modelId, modelInputItemID);

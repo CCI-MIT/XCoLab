@@ -20,6 +20,7 @@ import com.ext.portlet.models.ui.ModelOutputSeriesDisplayItem;
 import com.ext.portlet.models.ui.ModelUIFactory;
 import com.ext.portlet.plans.PlanConstants.Attribute;
 import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -311,7 +312,7 @@ public class AttributeFunctionFactory {
 
 
             public T process(PlanItem plan) throws SystemException {
-                return process(plan.getScenarioId()==null?null:plan.getScenarioId().toString());
+                return process(PlanItemLocalServiceUtil.getScenarioId(plan)==null?null:PlanItemLocalServiceUtil.getScenarioId(plan).toString());
             }
     }
     

@@ -33,7 +33,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the primary key of this model global preference
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelGlobalPreference.getPrimaryKey();
     }
 
@@ -42,7 +42,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param primaryKey the primary key of this model global preference
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _modelGlobalPreference.setPrimaryKey(primaryKey);
     }
 
@@ -51,7 +51,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the model global preference p k of this model global preference
     */
-    public java.lang.Long getModelGlobalPreferencePK() {
+    public long getModelGlobalPreferencePK() {
         return _modelGlobalPreference.getModelGlobalPreferencePK();
     }
 
@@ -60,8 +60,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param modelGlobalPreferencePK the model global preference p k of this model global preference
     */
-    public void setModelGlobalPreferencePK(
-        java.lang.Long modelGlobalPreferencePK) {
+    public void setModelGlobalPreferencePK(long modelGlobalPreferencePK) {
         _modelGlobalPreference.setModelGlobalPreferencePK(modelGlobalPreferencePK);
     }
 
@@ -70,7 +69,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the model ID of this model global preference
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _modelGlobalPreference.getModelId();
     }
 
@@ -79,7 +78,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param modelId the model ID of this model global preference
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _modelGlobalPreference.setModelId(modelId);
     }
 
@@ -88,16 +87,25 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the visible of this model global preference
     */
-    public java.lang.Boolean getVisible() {
+    public boolean getVisible() {
         return _modelGlobalPreference.getVisible();
     }
 
     /**
-    * Sets the visible of this model global preference.
+    * Returns <code>true</code> if this model global preference is visible.
+    *
+    * @return <code>true</code> if this model global preference is visible; <code>false</code> otherwise
+    */
+    public boolean isVisible() {
+        return _modelGlobalPreference.isVisible();
+    }
+
+    /**
+    * Sets whether this model global preference is visible.
     *
     * @param visible the visible of this model global preference
     */
-    public void setVisible(java.lang.Boolean visible) {
+    public void setVisible(boolean visible) {
         _modelGlobalPreference.setVisible(visible);
     }
 
@@ -106,7 +114,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the weight of this model global preference
     */
-    public java.lang.Integer getWeight() {
+    public int getWeight() {
         return _modelGlobalPreference.getWeight();
     }
 
@@ -115,7 +123,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param weight the weight of this model global preference
     */
-    public void setWeight(java.lang.Integer weight) {
+    public void setWeight(int weight) {
         _modelGlobalPreference.setWeight(weight);
     }
 
@@ -124,7 +132,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the expert evaluation page ID of this model global preference
     */
-    public java.lang.Long getExpertEvaluationPageId() {
+    public long getExpertEvaluationPageId() {
         return _modelGlobalPreference.getExpertEvaluationPageId();
     }
 
@@ -133,7 +141,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param expertEvaluationPageId the expert evaluation page ID of this model global preference
     */
-    public void setExpertEvaluationPageId(java.lang.Long expertEvaluationPageId) {
+    public void setExpertEvaluationPageId(long expertEvaluationPageId) {
         _modelGlobalPreference.setExpertEvaluationPageId(expertEvaluationPageId);
     }
 
@@ -142,7 +150,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the model category ID of this model global preference
     */
-    public java.lang.Long getModelCategoryId() {
+    public long getModelCategoryId() {
         return _modelGlobalPreference.getModelCategoryId();
     }
 
@@ -151,7 +159,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param modelCategoryId the model category ID of this model global preference
     */
-    public void setModelCategoryId(java.lang.Long modelCategoryId) {
+    public void setModelCategoryId(long modelCategoryId) {
         _modelGlobalPreference.setModelCategoryId(modelCategoryId);
     }
 

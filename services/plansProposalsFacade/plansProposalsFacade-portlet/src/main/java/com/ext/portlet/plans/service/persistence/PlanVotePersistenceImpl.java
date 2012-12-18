@@ -639,7 +639,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanVote> findBycontestId(Long contestId)
+    public List<PlanVote> findBycontestId(long contestId)
         throws SystemException {
         return findBycontestId(contestId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -658,7 +658,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the range of matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanVote> findBycontestId(Long contestId, int start, int end)
+    public List<PlanVote> findBycontestId(long contestId, int start, int end)
         throws SystemException {
         return findBycontestId(contestId, start, end, null);
     }
@@ -677,7 +677,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the ordered range of matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanVote> findBycontestId(Long contestId, int start, int end,
+    public List<PlanVote> findBycontestId(long contestId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -724,7 +724,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestId.longValue());
+                qPos.add(contestId);
 
                 list = (List<PlanVote>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -759,7 +759,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.plans.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanVote findBycontestId_First(Long contestId,
+    public PlanVote findBycontestId_First(long contestId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
         List<PlanVote> list = findBycontestId(contestId, 0, 1, orderByComparator);
@@ -793,7 +793,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.plans.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanVote findBycontestId_Last(Long contestId,
+    public PlanVote findBycontestId_Last(long contestId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
         int count = countBycontestId(contestId);
@@ -832,7 +832,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws SystemException if a system exception occurred
      */
     public PlanVote[] findBycontestId_PrevAndNext(PlanVotePK planVotePK,
-        Long contestId, OrderByComparator orderByComparator)
+        long contestId, OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
         PlanVote planVote = findByPrimaryKey(planVotePK);
 
@@ -860,7 +860,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
     }
 
     protected PlanVote getBycontestId_PrevAndNext(Session session,
-        PlanVote planVote, Long contestId, OrderByComparator orderByComparator,
+        PlanVote planVote, long contestId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -934,7 +934,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(contestId.longValue());
+        qPos.add(contestId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planVote);
@@ -960,7 +960,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanVote> findByPlanId(Long planId) throws SystemException {
+    public List<PlanVote> findByPlanId(long planId) throws SystemException {
         return findByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
 
@@ -977,7 +977,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the range of matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanVote> findByPlanId(Long planId, int start, int end)
+    public List<PlanVote> findByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByPlanId(planId, start, end, null);
     }
@@ -996,7 +996,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the ordered range of matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanVote> findByPlanId(Long planId, int start, int end,
+    public List<PlanVote> findByPlanId(long planId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1043,7 +1043,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 list = (List<PlanVote>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -1078,7 +1078,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.plans.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanVote findByPlanId_First(Long planId,
+    public PlanVote findByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
         List<PlanVote> list = findByPlanId(planId, 0, 1, orderByComparator);
@@ -1112,7 +1112,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.plans.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanVote findByPlanId_Last(Long planId,
+    public PlanVote findByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
         int count = countByPlanId(planId);
@@ -1151,7 +1151,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws SystemException if a system exception occurred
      */
     public PlanVote[] findByPlanId_PrevAndNext(PlanVotePK planVotePK,
-        Long planId, OrderByComparator orderByComparator)
+        long planId, OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
         PlanVote planVote = findByPrimaryKey(planVotePK);
 
@@ -1179,7 +1179,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
     }
 
     protected PlanVote getByPlanId_PrevAndNext(Session session,
-        PlanVote planVote, Long planId, OrderByComparator orderByComparator,
+        PlanVote planVote, long planId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -1253,7 +1253,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(planId.longValue());
+        qPos.add(planId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planVote);
@@ -1281,7 +1281,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.plans.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanVote findByContestIdUserId(Long contestId, Long userId)
+    public PlanVote findByContestIdUserId(long contestId, long userId)
         throws NoSuchPlanVoteException, SystemException {
         PlanVote planVote = fetchByContestIdUserId(contestId, userId);
 
@@ -1316,7 +1316,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the matching plan vote, or <code>null</code> if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanVote fetchByContestIdUserId(Long contestId, Long userId)
+    public PlanVote fetchByContestIdUserId(long contestId, long userId)
         throws SystemException {
         return fetchByContestIdUserId(contestId, userId, true);
     }
@@ -1330,7 +1330,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the matching plan vote, or <code>null</code> if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanVote fetchByContestIdUserId(Long contestId, Long userId,
+    public PlanVote fetchByContestIdUserId(long contestId, long userId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { contestId, userId };
 
@@ -1361,9 +1361,9 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestId.longValue());
+                qPos.add(contestId);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 List<PlanVote> list = q.list();
 
@@ -1520,7 +1520,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @param contestId the contest ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeBycontestId(Long contestId) throws SystemException {
+    public void removeBycontestId(long contestId) throws SystemException {
         for (PlanVote planVote : findBycontestId(contestId)) {
             remove(planVote);
         }
@@ -1532,7 +1532,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanId(Long planId) throws SystemException {
+    public void removeByPlanId(long planId) throws SystemException {
         for (PlanVote planVote : findByPlanId(planId)) {
             remove(planVote);
         }
@@ -1545,7 +1545,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByContestIdUserId(Long contestId, Long userId)
+    public void removeByContestIdUserId(long contestId, long userId)
         throws NoSuchPlanVoteException, SystemException {
         PlanVote planVote = findByContestIdUserId(contestId, userId);
 
@@ -1570,7 +1570,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the number of matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public int countBycontestId(Long contestId) throws SystemException {
+    public int countBycontestId(long contestId) throws SystemException {
         Object[] finderArgs = new Object[] { contestId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONTESTID,
@@ -1594,7 +1594,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestId.longValue());
+                qPos.add(contestId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1621,7 +1621,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the number of matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanId(Long planId) throws SystemException {
+    public int countByPlanId(long planId) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANID,
@@ -1645,7 +1645,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(planId.longValue());
+                qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1673,7 +1673,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the number of matching plan votes
      * @throws SystemException if a system exception occurred
      */
-    public int countByContestIdUserId(Long contestId, Long userId)
+    public int countByContestIdUserId(long contestId, long userId)
         throws SystemException {
         Object[] finderArgs = new Object[] { contestId, userId };
 
@@ -1700,9 +1700,9 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(contestId.longValue());
+                qPos.add(contestId);
 
-                qPos.add(userId.longValue());
+                qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

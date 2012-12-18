@@ -341,7 +341,7 @@ public abstract class PlanDescriptionLocalServiceBaseImpl
      * @param id the primary key for the new plan description
      * @return the new plan description
      */
-    public PlanDescription createPlanDescription(Long id) {
+    public PlanDescription createPlanDescription(long id) {
         return planDescriptionPersistence.create(id);
     }
 
@@ -352,7 +352,7 @@ public abstract class PlanDescriptionLocalServiceBaseImpl
      * @throws PortalException if a plan description with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanDescription(Long id)
+    public void deletePlanDescription(long id)
         throws PortalException, SystemException {
         PlanDescription planDescription = planDescriptionPersistence.remove(id);
 
@@ -458,7 +458,7 @@ public abstract class PlanDescriptionLocalServiceBaseImpl
         return planDescriptionPersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanDescription fetchPlanDescription(Long id)
+    public PlanDescription fetchPlanDescription(long id)
         throws SystemException {
         return planDescriptionPersistence.fetchByPrimaryKey(id);
     }
@@ -471,7 +471,7 @@ public abstract class PlanDescriptionLocalServiceBaseImpl
      * @throws PortalException if a plan description with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanDescription getPlanDescription(Long id)
+    public PlanDescription getPlanDescription(long id)
         throws PortalException, SystemException {
         return planDescriptionPersistence.findByPrimaryKey(id);
     }

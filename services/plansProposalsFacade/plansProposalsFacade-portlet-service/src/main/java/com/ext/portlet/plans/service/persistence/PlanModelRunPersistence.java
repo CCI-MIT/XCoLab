@@ -45,7 +45,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @param id the primary key for the new plan model run
     * @return the new plan model run
     */
-    public com.ext.portlet.plans.model.PlanModelRun create(java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanModelRun create(long id);
 
     /**
     * Removes the plan model run with the primary key from the database. Also notifies the appropriate model listeners.
@@ -55,7 +55,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a plan model run with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanModelRun remove(java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanModelRun remove(long id)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -71,8 +71,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws com.ext.portlet.plans.NoSuchPlanModelRunException if a plan model run with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanModelRun findByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanModelRun findByPrimaryKey(long id)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -83,8 +82,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @return the plan model run, or <code>null</code> if a plan model run with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.plans.model.PlanModelRun fetchByPrimaryKey(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanModelRun fetchByPrimaryKey(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -96,7 +94,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun findByCurrentByPlanId(
-        java.lang.Long planId)
+        long planId)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -108,8 +106,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun fetchByCurrentByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long planId) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the plan model run where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
@@ -120,7 +117,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun fetchByCurrentByPlanId(
-        java.lang.Long planId, boolean retrieveFromCache)
+        long planId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -131,8 +128,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanModelRun> findByAllByPlanId(
-        java.lang.Long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long planId) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns a range of all the plan model runs where planId = &#63;.
@@ -148,7 +144,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanModelRun> findByAllByPlanId(
-        java.lang.Long planId, int start, int end)
+        long planId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -166,7 +162,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.plans.model.PlanModelRun> findByAllByPlanId(
-        java.lang.Long planId, int start, int end,
+        long planId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -184,7 +180,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun findByAllByPlanId_First(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -203,7 +199,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun findByAllByPlanId_Last(
-        java.lang.Long planId,
+        long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -223,7 +219,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun[] findByAllByPlanId_PrevAndNext(
-        java.lang.Long id, java.lang.Long planId,
+        long id, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -238,7 +234,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun findByPlanIdPlanVersion(
-        java.lang.Long planId, java.lang.Long planVersion)
+        long planId, long planVersion)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -251,7 +247,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun fetchByPlanIdPlanVersion(
-        java.lang.Long planId, java.lang.Long planVersion)
+        long planId, long planVersion)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -264,8 +260,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.plans.model.PlanModelRun fetchByPlanIdPlanVersion(
-        java.lang.Long planId, java.lang.Long planVersion,
-        boolean retrieveFromCache)
+        long planId, long planVersion, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -317,7 +312,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByCurrentByPlanId(java.lang.Long planId)
+    public void removeByCurrentByPlanId(long planId)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -327,7 +322,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @param planId the plan ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByAllByPlanId(java.lang.Long planId)
+    public void removeByAllByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -337,8 +332,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @param planVersion the plan version
     * @throws SystemException if a system exception occurred
     */
-    public void removeByPlanIdPlanVersion(java.lang.Long planId,
-        java.lang.Long planVersion)
+    public void removeByPlanIdPlanVersion(long planId, long planVersion)
         throws com.ext.portlet.plans.NoSuchPlanModelRunException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -357,7 +351,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @return the number of matching plan model runs
     * @throws SystemException if a system exception occurred
     */
-    public int countByCurrentByPlanId(java.lang.Long planId)
+    public int countByCurrentByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -367,7 +361,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @return the number of matching plan model runs
     * @throws SystemException if a system exception occurred
     */
-    public int countByAllByPlanId(java.lang.Long planId)
+    public int countByAllByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -378,8 +372,7 @@ public interface PlanModelRunPersistence extends BasePersistence<PlanModelRun> {
     * @return the number of matching plan model runs
     * @throws SystemException if a system exception occurred
     */
-    public int countByPlanIdPlanVersion(java.lang.Long planId,
-        java.lang.Long planVersion)
+    public int countByPlanIdPlanVersion(long planId, long planVersion)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

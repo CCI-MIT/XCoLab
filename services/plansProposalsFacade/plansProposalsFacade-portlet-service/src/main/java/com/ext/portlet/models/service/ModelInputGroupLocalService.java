@@ -48,7 +48,7 @@ public interface ModelInputGroupLocalService extends PersistedModelLocalService 
     * @return the new model input group
     */
     public com.ext.portlet.models.model.ModelInputGroup createModelInputGroup(
-        java.lang.Long modelInputGroupPK);
+        long modelInputGroupPK);
 
     /**
     * Deletes the model input group with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelInputGroupLocalService extends PersistedModelLocalService 
     * @throws PortalException if a model input group with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelInputGroup(java.lang.Long modelInputGroupPK)
+    public void deleteModelInputGroup(long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,7 +135,7 @@ public interface ModelInputGroupLocalService extends PersistedModelLocalService 
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelInputGroup fetchModelInputGroup(
-        java.lang.Long modelInputGroupPK)
+        long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -148,7 +148,7 @@ public interface ModelInputGroupLocalService extends PersistedModelLocalService 
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelInputGroup getModelInputGroup(
-        java.lang.Long modelInputGroupPK)
+        long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -230,4 +230,24 @@ public interface ModelInputGroupLocalService extends PersistedModelLocalService 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.models.model.ModelInputGroup> getChildGroups(
         com.ext.portlet.models.model.ModelInputGroup group);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.models.model.ModelInputItem> getInputItems(
+        com.ext.portlet.models.model.ModelInputGroup group);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.models.model.ModelInputGroup getParent(
+        com.ext.portlet.models.model.ModelInputGroup group);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public edu.mit.cci.simulation.client.Simulation getModel(
+        com.ext.portlet.models.model.ModelInputGroup group)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public edu.mit.cci.simulation.client.MetaData getMetaData(
+        com.ext.portlet.models.model.ModelInputGroup group)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException;
 }

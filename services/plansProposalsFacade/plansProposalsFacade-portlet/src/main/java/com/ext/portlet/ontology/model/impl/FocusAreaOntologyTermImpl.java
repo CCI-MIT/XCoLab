@@ -25,21 +25,5 @@ public class FocusAreaOntologyTermImpl extends FocusAreaOntologyTermBaseImpl {
      */
     public FocusAreaOntologyTermImpl() {
     }
-    
-    public void store() throws SystemException {
-        if (isNew()) {
-            FocusAreaOntologyTermLocalServiceUtil.addFocusAreaOntologyTerm(this);
-        }
-        else {
-            FocusAreaOntologyTermLocalServiceUtil.updateFocusAreaOntologyTerm(this);
-        }
-    }
-    
-    public OntologyTerm getTerm() throws PortalException, SystemException {
-        return OntologyTermLocalServiceUtil.getOntologyTerm(getOntologyTermId());
-    }
-    
-    public FocusArea getArea() throws PortalException, SystemException {
-        return FocusAreaLocalServiceUtil.getFocusArea(getFocusAreaId());
-    }
+
 }

@@ -47,7 +47,7 @@ public class PlanAttributeLocalServiceUtil {
     * @return the new plan attribute
     */
     public static com.ext.portlet.plans.model.PlanAttribute createPlanAttribute(
-        java.lang.Long attributeId) {
+        long attributeId) {
         return getService().createPlanAttribute(attributeId);
     }
 
@@ -58,7 +58,7 @@ public class PlanAttributeLocalServiceUtil {
     * @throws PortalException if a plan attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanAttribute(java.lang.Long attributeId)
+    public static void deletePlanAttribute(long attributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanAttribute(attributeId);
@@ -148,7 +148,7 @@ public class PlanAttributeLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanAttribute fetchPlanAttribute(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanAttribute(attributeId);
     }
@@ -162,7 +162,7 @@ public class PlanAttributeLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanAttribute getPlanAttribute(
-        java.lang.Long attributeId)
+        long attributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanAttribute(attributeId);
@@ -272,6 +272,11 @@ public class PlanAttributeLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .getPlanAttributesByNameValue(attributeName, attributeValue);
+    }
+
+    public static java.lang.Object getTypedValue(
+        com.ext.portlet.plans.model.PlanAttribute pa) {
+        return getService().getTypedValue(pa);
     }
 
     public static void clearService() {

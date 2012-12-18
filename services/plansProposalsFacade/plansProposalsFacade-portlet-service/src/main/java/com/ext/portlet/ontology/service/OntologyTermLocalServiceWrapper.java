@@ -40,7 +40,7 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
     * @return the new ontology term
     */
     public com.ext.portlet.ontology.model.OntologyTerm createOntologyTerm(
-        java.lang.Long id) {
+        long id) {
         return _ontologyTermLocalService.createOntologyTerm(id);
     }
 
@@ -51,7 +51,7 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
     * @throws PortalException if a ontology term with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteOntologyTerm(java.lang.Long id)
+    public void deleteOntologyTerm(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _ontologyTermLocalService.deleteOntologyTerm(id);
@@ -141,8 +141,7 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
     }
 
     public com.ext.portlet.ontology.model.OntologyTerm fetchOntologyTerm(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         return _ontologyTermLocalService.fetchOntologyTerm(id);
     }
 
@@ -154,8 +153,7 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
     * @throws PortalException if a ontology term with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.ontology.model.OntologyTerm getOntologyTerm(
-        java.lang.Long id)
+    public com.ext.portlet.ontology.model.OntologyTerm getOntologyTerm(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _ontologyTermLocalService.getOntologyTerm(id);
@@ -270,6 +268,52 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
     public void clearClassTags(java.lang.Class clasz, java.lang.Long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         _ontologyTermLocalService.clearClassTags(clasz, id);
+    }
+
+    public void store(com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _ontologyTermLocalService.store(ontologyTerm);
+    }
+
+    public com.ext.portlet.ontology.model.OntologyTerm getParent(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _ontologyTermLocalService.getParent(ontologyTerm);
+    }
+
+    public int getChildTermsCount(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _ontologyTermLocalService.getChildTermsCount(ontologyTerm);
+    }
+
+    public java.util.List<com.ext.portlet.ontology.model.OntologyTerm> getChildTerms(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _ontologyTermLocalService.getChildTerms(ontologyTerm);
+    }
+
+    public com.ext.portlet.ontology.model.OntologySpace getSpace(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _ontologyTermLocalService.getSpace(ontologyTerm);
+    }
+
+    public void tagClass(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm,
+        java.lang.Class clasz, java.lang.Long id)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _ontologyTermLocalService.tagClass(ontologyTerm, clasz, id);
+    }
+
+    public java.util.List<java.lang.Long> findTagedIdsForClass(
+        com.ext.portlet.ontology.model.OntologyTerm ontologyTerm,
+        java.lang.Class clasz)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _ontologyTermLocalService.findTagedIdsForClass(ontologyTerm,
+            clasz);
     }
 
     /**

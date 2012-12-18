@@ -252,7 +252,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @param pk the primary key for the new discussion category
      * @return the new discussion category
      */
-    public DiscussionCategory create(Long pk) {
+    public DiscussionCategory create(long pk) {
         DiscussionCategory discussionCategory = new DiscussionCategoryImpl();
 
         discussionCategory.setNew(true);
@@ -269,9 +269,9 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException if a discussion category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory remove(Long pk)
+    public DiscussionCategory remove(long pk)
         throws NoSuchDiscussionCategoryException, SystemException {
-        return remove((Serializable) pk);
+        return remove(Long.valueOf(pk));
     }
 
     /**
@@ -453,7 +453,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
     @Override
     public DiscussionCategory findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -464,7 +464,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException if a discussion category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory findByPrimaryKey(Long pk)
+    public DiscussionCategory findByPrimaryKey(long pk)
         throws NoSuchDiscussionCategoryException, SystemException {
         DiscussionCategory discussionCategory = fetchByPrimaryKey(pk);
 
@@ -490,7 +490,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
     @Override
     public DiscussionCategory fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -500,7 +500,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @return the discussion category, or <code>null</code> if a discussion category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory fetchByPrimaryKey(Long pk)
+    public DiscussionCategory fetchByPrimaryKey(long pk)
         throws SystemException {
         DiscussionCategory discussionCategory = (DiscussionCategory) EntityCacheUtil.getResult(DiscussionCategoryModelImpl.ENTITY_CACHE_ENABLED,
                 DiscussionCategoryImpl.class, pk);
@@ -546,7 +546,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @return the matching discussion categories
      * @throws SystemException if a system exception occurred
      */
-    public List<DiscussionCategory> findByCategoryGroupId(Long categoryGroupId)
+    public List<DiscussionCategory> findByCategoryGroupId(long categoryGroupId)
         throws SystemException {
         return findByCategoryGroupId(categoryGroupId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -566,7 +566,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @throws SystemException if a system exception occurred
      */
     public List<DiscussionCategory> findByCategoryGroupId(
-        Long categoryGroupId, int start, int end) throws SystemException {
+        long categoryGroupId, int start, int end) throws SystemException {
         return findByCategoryGroupId(categoryGroupId, start, end, null);
     }
 
@@ -585,7 +585,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @throws SystemException if a system exception occurred
      */
     public List<DiscussionCategory> findByCategoryGroupId(
-        Long categoryGroupId, int start, int end,
+        long categoryGroupId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -639,7 +639,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(categoryGroupId.longValue());
+                qPos.add(categoryGroupId);
 
                 list = (List<DiscussionCategory>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -675,7 +675,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @throws SystemException if a system exception occurred
      */
     public DiscussionCategory findByCategoryGroupId_First(
-        Long categoryGroupId, OrderByComparator orderByComparator)
+        long categoryGroupId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionCategoryException, SystemException {
         List<DiscussionCategory> list = findByCategoryGroupId(categoryGroupId,
                 0, 1, orderByComparator);
@@ -709,7 +709,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException if a matching discussion category could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory findByCategoryGroupId_Last(Long categoryGroupId,
+    public DiscussionCategory findByCategoryGroupId_Last(long categoryGroupId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionCategoryException, SystemException {
         int count = countByCategoryGroupId(categoryGroupId);
@@ -747,8 +747,8 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException if a discussion category with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory[] findByCategoryGroupId_PrevAndNext(Long pk,
-        Long categoryGroupId, OrderByComparator orderByComparator)
+    public DiscussionCategory[] findByCategoryGroupId_PrevAndNext(long pk,
+        long categoryGroupId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionCategoryException, SystemException {
         DiscussionCategory discussionCategory = findByPrimaryKey(pk);
 
@@ -778,7 +778,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
 
     protected DiscussionCategory getByCategoryGroupId_PrevAndNext(
         Session session, DiscussionCategory discussionCategory,
-        Long categoryGroupId, OrderByComparator orderByComparator,
+        long categoryGroupId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -855,7 +855,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(categoryGroupId.longValue());
+        qPos.add(categoryGroupId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(discussionCategory);
@@ -882,7 +882,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException if a matching discussion category could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory findByCategoryId(Long categoryId)
+    public DiscussionCategory findByCategoryId(long categoryId)
         throws NoSuchDiscussionCategoryException, SystemException {
         DiscussionCategory discussionCategory = fetchByCategoryId(categoryId);
 
@@ -913,7 +913,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @return the matching discussion category, or <code>null</code> if a matching discussion category could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory fetchByCategoryId(Long categoryId)
+    public DiscussionCategory fetchByCategoryId(long categoryId)
         throws SystemException {
         return fetchByCategoryId(categoryId, true);
     }
@@ -926,7 +926,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @return the matching discussion category, or <code>null</code> if a matching discussion category could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategory fetchByCategoryId(Long categoryId,
+    public DiscussionCategory fetchByCategoryId(long categoryId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { categoryId };
 
@@ -957,7 +957,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(categoryId.longValue());
+                qPos.add(categoryId);
 
                 List<DiscussionCategory> list = q.list();
 
@@ -1114,7 +1114,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @param categoryGroupId the category group ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByCategoryGroupId(Long categoryGroupId)
+    public void removeByCategoryGroupId(long categoryGroupId)
         throws SystemException {
         for (DiscussionCategory discussionCategory : findByCategoryGroupId(
                 categoryGroupId)) {
@@ -1128,7 +1128,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @param categoryId the category ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByCategoryId(Long categoryId)
+    public void removeByCategoryId(long categoryId)
         throws NoSuchDiscussionCategoryException, SystemException {
         DiscussionCategory discussionCategory = findByCategoryId(categoryId);
 
@@ -1153,7 +1153,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @return the number of matching discussion categories
      * @throws SystemException if a system exception occurred
      */
-    public int countByCategoryGroupId(Long categoryGroupId)
+    public int countByCategoryGroupId(long categoryGroupId)
         throws SystemException {
         Object[] finderArgs = new Object[] { categoryGroupId };
 
@@ -1178,7 +1178,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(categoryGroupId.longValue());
+                qPos.add(categoryGroupId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1205,7 +1205,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
      * @return the number of matching discussion categories
      * @throws SystemException if a system exception occurred
      */
-    public int countByCategoryId(Long categoryId) throws SystemException {
+    public int countByCategoryId(long categoryId) throws SystemException {
         Object[] finderArgs = new Object[] { categoryId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CATEGORYID,
@@ -1229,7 +1229,7 @@ public class DiscussionCategoryPersistenceImpl extends BasePersistenceImpl<Discu
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(categoryId.longValue());
+                qPos.add(categoryId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

@@ -236,4 +236,19 @@ public interface FocusAreaOntologyTermLocalService
     public void removeAreaTerm(java.lang.Long focusAreaId, java.lang.Long termId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.ontology.model.OntologyTerm getTerm(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.ontology.model.FocusArea getArea(
+        com.ext.portlet.ontology.model.FocusAreaOntologyTerm faot)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

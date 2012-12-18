@@ -26,6 +26,8 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _createContestDebateMethodKey17;
     private MethodKey _getContestDebatesMethodKey18;
+    private MethodKey _storeMethodKey19;
+    private MethodKey _deleteMethodKey20;
 
     public ContestDebateLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -35,10 +37,10 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
                 com.ext.portlet.contests.model.ContestDebate.class);
 
         _createContestDebateMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createContestDebate", java.lang.Long.class);
+                "createContestDebate", long.class);
 
         _deleteContestDebateMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteContestDebate", java.lang.Long.class);
+                "deleteContestDebate", long.class);
 
         _deleteContestDebateMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteContestDebate",
@@ -64,10 +66,10 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchContestDebateMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchContestDebate", java.lang.Long.class);
+                "fetchContestDebate", long.class);
 
         _getContestDebateMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getContestDebate", java.lang.Long.class);
+                "getContestDebate", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -99,6 +101,12 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
 
         _getContestDebatesMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getContestDebates", java.lang.Long.class);
+
+        _storeMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "store", com.ext.portlet.contests.model.ContestDebate.class);
+
+        _deleteMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "delete", com.ext.portlet.contests.model.ContestDebate.class);
     }
 
     public com.ext.portlet.contests.model.ContestDebate addContestDebate(
@@ -128,11 +136,11 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
     }
 
     public com.ext.portlet.contests.model.ContestDebate createContestDebate(
-        java.lang.Long id) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createContestDebateMethodKey1,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -148,11 +156,11 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
         return (com.ext.portlet.contests.model.ContestDebate) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteContestDebate(java.lang.Long id)
+    public void deleteContestDebate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteContestDebateMethodKey2,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -307,12 +315,11 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
     }
 
     public com.ext.portlet.contests.model.ContestDebate fetchContestDebate(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchContestDebateMethodKey8,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -333,13 +340,13 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
     }
 
     public com.ext.portlet.contests.model.ContestDebate getContestDebate(
-        java.lang.Long id)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getContestDebateMethodKey9,
-                ClpSerializer.translateInput(id));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -583,6 +590,50 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
         }
 
         return (java.util.List<com.ext.portlet.contests.model.ContestDebate>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void store(
+        com.ext.portlet.contests.model.ContestDebate contestDebate)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_storeMethodKey19,
+                ClpSerializer.translateInput(contestDebate));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void delete(
+        com.ext.portlet.contests.model.ContestDebate contestDebate)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_deleteMethodKey20,
+                ClpSerializer.translateInput(contestDebate));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

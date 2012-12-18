@@ -203,7 +203,7 @@ public class DiscussionCategoryGroupPersistenceImpl extends BasePersistenceImpl<
      * @param id the primary key for the new discussion category group
      * @return the new discussion category group
      */
-    public DiscussionCategoryGroup create(Long id) {
+    public DiscussionCategoryGroup create(long id) {
         DiscussionCategoryGroup discussionCategoryGroup = new DiscussionCategoryGroupImpl();
 
         discussionCategoryGroup.setNew(true);
@@ -220,9 +220,9 @@ public class DiscussionCategoryGroupPersistenceImpl extends BasePersistenceImpl<
      * @throws com.ext.portlet.discussions.NoSuchDiscussionCategoryGroupException if a discussion category group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategoryGroup remove(Long id)
+    public DiscussionCategoryGroup remove(long id)
         throws NoSuchDiscussionCategoryGroupException, SystemException {
-        return remove((Serializable) id);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -345,7 +345,7 @@ public class DiscussionCategoryGroupPersistenceImpl extends BasePersistenceImpl<
     @Override
     public DiscussionCategoryGroup findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((Long) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -356,7 +356,7 @@ public class DiscussionCategoryGroupPersistenceImpl extends BasePersistenceImpl<
      * @throws com.ext.portlet.discussions.NoSuchDiscussionCategoryGroupException if a discussion category group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategoryGroup findByPrimaryKey(Long id)
+    public DiscussionCategoryGroup findByPrimaryKey(long id)
         throws NoSuchDiscussionCategoryGroupException, SystemException {
         DiscussionCategoryGroup discussionCategoryGroup = fetchByPrimaryKey(id);
 
@@ -382,7 +382,7 @@ public class DiscussionCategoryGroupPersistenceImpl extends BasePersistenceImpl<
     @Override
     public DiscussionCategoryGroup fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((Long) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
@@ -392,7 +392,7 @@ public class DiscussionCategoryGroupPersistenceImpl extends BasePersistenceImpl<
      * @return the discussion category group, or <code>null</code> if a discussion category group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionCategoryGroup fetchByPrimaryKey(Long id)
+    public DiscussionCategoryGroup fetchByPrimaryKey(long id)
         throws SystemException {
         DiscussionCategoryGroup discussionCategoryGroup = (DiscussionCategoryGroup) EntityCacheUtil.getResult(DiscussionCategoryGroupModelImpl.ENTITY_CACHE_ENABLED,
                 DiscussionCategoryGroupImpl.class, id);

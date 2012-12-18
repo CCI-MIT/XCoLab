@@ -1,6 +1,13 @@
 package com.ext.portlet.plans.service.impl;
 
+import com.ext.portlet.ontology.model.FocusArea;
+import com.ext.portlet.ontology.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.plans.model.PlanSectionDefinition;
+import com.ext.portlet.plans.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.plans.service.base.PlanSectionDefinitionLocalServiceBaseImpl;
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The implementation of the plan section definition local service.
@@ -23,4 +30,24 @@ public class PlanSectionDefinitionLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.plans.service.PlanSectionDefinitionLocalServiceUtil} to access the plan section definition local service.
      */
+
+    public void store(PlanSectionDefinition psd) throws SystemException {
+        if (psd.isNew()) {
+            if (psd.getId() == 0L || psd.getId() <= 0) {
+                psd.setId(CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName()));
+            }
+            
+            PlanSectionDefinitionLocalServiceUtil.addPlanSectionDefinition(psd);
+        }
+        else {
+            PlanSectionDefinitionLocalServiceUtil.updatePlanSectionDefinition(psd);
+        }
+    }
+    
+    public FocusArea getFocusArea(PlanSectionDefinition psd) throws PortalException, SystemException {
+        if (psd.getFocusAreaId() > 0L) {
+            return FocusAreaLocalServiceUtil.getFocusArea(psd.getFocusAreaId());
+        }
+        return null;
+    }
 }

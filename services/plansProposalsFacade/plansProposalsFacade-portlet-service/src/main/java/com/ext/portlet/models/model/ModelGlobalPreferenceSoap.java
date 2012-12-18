@@ -13,12 +13,12 @@ import java.util.List;
  * @generated
  */
 public class ModelGlobalPreferenceSoap implements Serializable {
-    private Long _modelGlobalPreferencePK;
-    private Long _modelId;
-    private Boolean _visible;
-    private Integer _weight;
-    private Long _expertEvaluationPageId;
-    private Long _modelCategoryId;
+    private long _modelGlobalPreferencePK;
+    private long _modelId;
+    private boolean _visible;
+    private int _weight;
+    private long _expertEvaluationPageId;
+    private long _modelCategoryId;
 
     public ModelGlobalPreferenceSoap() {
     }
@@ -76,59 +76,63 @@ public class ModelGlobalPreferenceSoap implements Serializable {
         return soapModels.toArray(new ModelGlobalPreferenceSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelGlobalPreferencePK;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setModelGlobalPreferencePK(pk);
     }
 
-    public Long getModelGlobalPreferencePK() {
+    public long getModelGlobalPreferencePK() {
         return _modelGlobalPreferencePK;
     }
 
-    public void setModelGlobalPreferencePK(Long modelGlobalPreferencePK) {
+    public void setModelGlobalPreferencePK(long modelGlobalPreferencePK) {
         _modelGlobalPreferencePK = modelGlobalPreferencePK;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Boolean getVisible() {
+    public boolean getVisible() {
         return _visible;
     }
 
-    public void setVisible(Boolean visible) {
+    public boolean isVisible() {
+        return _visible;
+    }
+
+    public void setVisible(boolean visible) {
         _visible = visible;
     }
 
-    public Integer getWeight() {
+    public int getWeight() {
         return _weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(int weight) {
         _weight = weight;
     }
 
-    public Long getExpertEvaluationPageId() {
+    public long getExpertEvaluationPageId() {
         return _expertEvaluationPageId;
     }
 
-    public void setExpertEvaluationPageId(Long expertEvaluationPageId) {
+    public void setExpertEvaluationPageId(long expertEvaluationPageId) {
         _expertEvaluationPageId = expertEvaluationPageId;
     }
 
-    public Long getModelCategoryId() {
+    public long getModelCategoryId() {
         return _modelCategoryId;
     }
 
-    public void setModelCategoryId(Long modelCategoryId) {
+    public void setModelCategoryId(long modelCategoryId) {
         _modelCategoryId = modelCategoryId;
     }
 }

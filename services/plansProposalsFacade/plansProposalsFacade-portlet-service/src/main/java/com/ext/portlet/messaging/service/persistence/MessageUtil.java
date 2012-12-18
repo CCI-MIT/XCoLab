@@ -124,8 +124,7 @@ public class MessageUtil {
     * @param messageId the primary key for the new message
     * @return the new message
     */
-    public static com.ext.portlet.messaging.model.Message create(
-        java.lang.Long messageId) {
+    public static com.ext.portlet.messaging.model.Message create(long messageId) {
         return getPersistence().create(messageId);
     }
 
@@ -137,8 +136,7 @@ public class MessageUtil {
     * @throws com.ext.portlet.messaging.NoSuchMessageException if a message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.messaging.model.Message remove(
-        java.lang.Long messageId)
+    public static com.ext.portlet.messaging.model.Message remove(long messageId)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(messageId);
@@ -159,7 +157,7 @@ public class MessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.Message findByPrimaryKey(
-        java.lang.Long messageId)
+        long messageId)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(messageId);
@@ -173,7 +171,7 @@ public class MessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.Message fetchByPrimaryKey(
-        java.lang.Long messageId)
+        long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(messageId);
     }
@@ -186,8 +184,7 @@ public class MessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.Message> findBySendingUser(
-        java.lang.Long fromId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long fromId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findBySendingUser(fromId);
     }
 
@@ -205,7 +202,7 @@ public class MessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.Message> findBySendingUser(
-        java.lang.Long fromId, int start, int end)
+        long fromId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findBySendingUser(fromId, start, end);
     }
@@ -225,7 +222,7 @@ public class MessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.Message> findBySendingUser(
-        java.lang.Long fromId, int start, int end,
+        long fromId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -246,7 +243,7 @@ public class MessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.Message findBySendingUser_First(
-        java.lang.Long fromId,
+        long fromId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -268,7 +265,7 @@ public class MessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.Message findBySendingUser_Last(
-        java.lang.Long fromId,
+        long fromId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -290,7 +287,7 @@ public class MessageUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.Message[] findBySendingUser_PrevAndNext(
-        java.lang.Long messageId, java.lang.Long fromId,
+        long messageId, long fromId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -354,7 +351,7 @@ public class MessageUtil {
     * @param fromId the from ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeBySendingUser(java.lang.Long fromId)
+    public static void removeBySendingUser(long fromId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeBySendingUser(fromId);
     }
@@ -376,7 +373,7 @@ public class MessageUtil {
     * @return the number of matching messages
     * @throws SystemException if a system exception occurred
     */
-    public static int countBySendingUser(java.lang.Long fromId)
+    public static int countBySendingUser(long fromId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countBySendingUser(fromId);
     }

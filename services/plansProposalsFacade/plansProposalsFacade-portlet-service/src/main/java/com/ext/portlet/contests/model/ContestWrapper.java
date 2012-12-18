@@ -31,7 +31,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the primary key of this contest
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _contest.getPrimaryKey();
     }
 
@@ -40,7 +40,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param primaryKey the primary key of this contest
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _contest.setPrimaryKey(primaryKey);
     }
 
@@ -49,7 +49,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest p k of this contest
     */
-    public java.lang.Long getContestPK() {
+    public long getContestPK() {
         return _contest.getContestPK();
     }
 
@@ -58,7 +58,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param ContestPK the contest p k of this contest
     */
-    public void setContestPK(java.lang.Long ContestPK) {
+    public void setContestPK(long ContestPK) {
         _contest.setContestPK(ContestPK);
     }
 
@@ -178,7 +178,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the plan type ID of this contest
     */
-    public java.lang.Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _contest.getPlanTypeId();
     }
 
@@ -187,7 +187,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param PlanTypeId the plan type ID of this contest
     */
-    public void setPlanTypeId(java.lang.Long PlanTypeId) {
+    public void setPlanTypeId(long PlanTypeId) {
         _contest.setPlanTypeId(PlanTypeId);
     }
 
@@ -232,7 +232,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the author ID of this contest
     */
-    public java.lang.Long getAuthorId() {
+    public long getAuthorId() {
         return _contest.getAuthorId();
     }
 
@@ -241,7 +241,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param authorId the author ID of this contest
     */
-    public void setAuthorId(java.lang.Long authorId) {
+    public void setAuthorId(long authorId) {
         _contest.setAuthorId(authorId);
     }
 
@@ -250,16 +250,25 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest active of this contest
     */
-    public java.lang.Boolean getContestActive() {
+    public boolean getContestActive() {
         return _contest.getContestActive();
     }
 
     /**
-    * Sets the contest active of this contest.
+    * Returns <code>true</code> if this contest is contest active.
+    *
+    * @return <code>true</code> if this contest is contest active; <code>false</code> otherwise
+    */
+    public boolean isContestActive() {
+        return _contest.isContestActive();
+    }
+
+    /**
+    * Sets whether this contest is contest active.
     *
     * @param contestActive the contest active of this contest
     */
-    public void setContestActive(java.lang.Boolean contestActive) {
+    public void setContestActive(boolean contestActive) {
         _contest.setContestActive(contestActive);
     }
 
@@ -268,7 +277,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the plan template ID of this contest
     */
-    public java.lang.Long getPlanTemplateId() {
+    public long getPlanTemplateId() {
         return _contest.getPlanTemplateId();
     }
 
@@ -277,7 +286,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param planTemplateId the plan template ID of this contest
     */
-    public void setPlanTemplateId(java.lang.Long planTemplateId) {
+    public void setPlanTemplateId(long planTemplateId) {
         _contest.setPlanTemplateId(planTemplateId);
     }
 
@@ -286,7 +295,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the focus area ID of this contest
     */
-    public java.lang.Long getFocusAreaId() {
+    public long getFocusAreaId() {
         return _contest.getFocusAreaId();
     }
 
@@ -295,7 +304,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param focusAreaId the focus area ID of this contest
     */
-    public void setFocusAreaId(java.lang.Long focusAreaId) {
+    public void setFocusAreaId(long focusAreaId) {
         _contest.setFocusAreaId(focusAreaId);
     }
 
@@ -304,7 +313,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest logo ID of this contest
     */
-    public java.lang.Long getContestLogoId() {
+    public long getContestLogoId() {
         return _contest.getContestLogoId();
     }
 
@@ -313,7 +322,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param contestLogoId the contest logo ID of this contest
     */
-    public void setContestLogoId(java.lang.Long contestLogoId) {
+    public void setContestLogoId(long contestLogoId) {
         _contest.setContestLogoId(contestLogoId);
     }
 
@@ -322,16 +331,25 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the featured of this contest
     */
-    public java.lang.Boolean getFeatured() {
+    public boolean getFeatured() {
         return _contest.getFeatured();
     }
 
     /**
-    * Sets the featured of this contest.
+    * Returns <code>true</code> if this contest is featured.
+    *
+    * @return <code>true</code> if this contest is featured; <code>false</code> otherwise
+    */
+    public boolean isFeatured() {
+        return _contest.isFeatured();
+    }
+
+    /**
+    * Sets whether this contest is featured.
     *
     * @param featured the featured of this contest
     */
-    public void setFeatured(java.lang.Boolean featured) {
+    public void setFeatured(boolean featured) {
         _contest.setFeatured(featured);
     }
 
@@ -340,16 +358,25 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the plans open by default of this contest
     */
-    public java.lang.Boolean getPlansOpenByDefault() {
+    public boolean getPlansOpenByDefault() {
         return _contest.getPlansOpenByDefault();
     }
 
     /**
-    * Sets the plans open by default of this contest.
+    * Returns <code>true</code> if this contest is plans open by default.
+    *
+    * @return <code>true</code> if this contest is plans open by default; <code>false</code> otherwise
+    */
+    public boolean isPlansOpenByDefault() {
+        return _contest.isPlansOpenByDefault();
+    }
+
+    /**
+    * Sets whether this contest is plans open by default.
     *
     * @param plansOpenByDefault the plans open by default of this contest
     */
-    public void setPlansOpenByDefault(java.lang.Boolean plansOpenByDefault) {
+    public void setPlansOpenByDefault(boolean plansOpenByDefault) {
         _contest.setPlansOpenByDefault(plansOpenByDefault);
     }
 
@@ -358,7 +385,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the flag of this contest
     */
-    public java.lang.Integer getFlag() {
+    public int getFlag() {
         return _contest.getFlag();
     }
 
@@ -367,7 +394,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param flag the flag of this contest
     */
-    public void setFlag(java.lang.Integer flag) {
+    public void setFlag(int flag) {
         _contest.setFlag(flag);
     }
 
@@ -394,7 +421,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the group ID of this contest
     */
-    public java.lang.Long getGroupId() {
+    public long getGroupId() {
         return _contest.getGroupId();
     }
 
@@ -403,7 +430,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param groupId the group ID of this contest
     */
-    public void setGroupId(java.lang.Long groupId) {
+    public void setGroupId(long groupId) {
         _contest.setGroupId(groupId);
     }
 
@@ -412,7 +439,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the discussion group ID of this contest
     */
-    public java.lang.Long getDiscussionGroupId() {
+    public long getDiscussionGroupId() {
         return _contest.getDiscussionGroupId();
     }
 
@@ -421,7 +448,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param discussionGroupId the discussion group ID of this contest
     */
-    public void setDiscussionGroupId(java.lang.Long discussionGroupId) {
+    public void setDiscussionGroupId(long discussionGroupId) {
         _contest.setDiscussionGroupId(discussionGroupId);
     }
 
@@ -430,7 +457,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the weight of this contest
     */
-    public java.lang.Integer getWeight() {
+    public int getWeight() {
         return _contest.getWeight();
     }
 
@@ -439,7 +466,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param weight the weight of this contest
     */
-    public void setWeight(java.lang.Integer weight) {
+    public void setWeight(int weight) {
         _contest.setWeight(weight);
     }
 
@@ -532,119 +559,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _contest.persist();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getPhases()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getPhases();
-    }
-
-    public com.ext.portlet.plans.model.PlanType getPlanType()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getPlanType();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestPhase> getActivePhases()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getActivePhases();
-    }
-
-    public com.ext.portlet.contests.model.ContestPhase getActivePhase()
-        throws com.ext.portlet.contests.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getActivePhase();
-    }
-
-    public boolean isActive()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contest.isActive();
-    }
-
-    public java.util.List<java.lang.Long> getDebatesIds()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getDebatesIds();
-    }
-
-    public java.lang.Integer getTotalVotes()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getTotalVotes();
-    }
-
-    public void updateDefaultPlanDescription(java.lang.String description)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contest.updateDefaultPlanDescription(description);
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contest.store();
-    }
-
-    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getPlanTemplate();
-    }
-
-    public com.ext.portlet.ontology.model.FocusArea getFocusArea()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getFocusArea();
-    }
-
-    public com.liferay.portal.model.Image getLogo()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getLogo();
-    }
-
-    public void setLogo(java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        _contest.setLogo(logoFile);
-    }
-
-    public java.lang.String getLogoPath()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getLogoPath();
-    }
-
-    public long getProposalsCount()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getProposalsCount();
-    }
-
-    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getDiscussionCategoryGroup()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getDiscussionCategoryGroup();
-    }
-
-    public long getCommentsCount()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getCommentsCount();
-    }
-
-    public long getProposalsCommentsCount()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getProposalsCommentsCount();
-    }
-
-    public long getTotalComments()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getTotalComments();
-    }
-
-    public java.util.List<com.ext.portlet.contests.model.ContestTeamMember> getTeamMembers()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contest.getTeamMembers();
     }
 
     /**

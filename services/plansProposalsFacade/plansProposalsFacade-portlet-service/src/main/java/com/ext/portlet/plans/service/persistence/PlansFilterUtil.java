@@ -134,12 +134,12 @@ public class PlansFilterUtil {
     *
     * @param plansFilterPK the primary key of the plans filter
     * @return the plans filter that was removed
-    * @throws com.ext.portlet.plans.NoSuchFilterException if a plans filter with the primary key could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansFilterException if a plans filter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansFilter remove(
         PlansFilterPK plansFilterPK)
-        throws com.ext.portlet.plans.NoSuchFilterException,
+        throws com.ext.portlet.plans.NoSuchPlansFilterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(plansFilterPK);
     }
@@ -151,16 +151,16 @@ public class PlansFilterUtil {
     }
 
     /**
-    * Returns the plans filter with the primary key or throws a {@link com.ext.portlet.plans.NoSuchFilterException} if it could not be found.
+    * Returns the plans filter with the primary key or throws a {@link com.ext.portlet.plans.NoSuchPlansFilterException} if it could not be found.
     *
     * @param plansFilterPK the primary key of the plans filter
     * @return the plans filter
-    * @throws com.ext.portlet.plans.NoSuchFilterException if a plans filter with the primary key could not be found
+    * @throws com.ext.portlet.plans.NoSuchPlansFilterException if a plans filter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlansFilter findByPrimaryKey(
         PlansFilterPK plansFilterPK)
-        throws com.ext.portlet.plans.NoSuchFilterException,
+        throws com.ext.portlet.plans.NoSuchPlansFilterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(plansFilterPK);
     }

@@ -47,7 +47,7 @@ public class PlanTypeAttributeLocalServiceUtil {
     * @return the new plan type attribute
     */
     public static com.ext.portlet.plans.model.PlanTypeAttribute createPlanTypeAttribute(
-        java.lang.Long planTypeAttributeId) {
+        long planTypeAttributeId) {
         return getService().createPlanTypeAttribute(planTypeAttributeId);
     }
 
@@ -58,8 +58,7 @@ public class PlanTypeAttributeLocalServiceUtil {
     * @throws PortalException if a plan type attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanTypeAttribute(
-        java.lang.Long planTypeAttributeId)
+    public static void deletePlanTypeAttribute(long planTypeAttributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanTypeAttribute(planTypeAttributeId);
@@ -149,7 +148,7 @@ public class PlanTypeAttributeLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanTypeAttribute fetchPlanTypeAttribute(
-        java.lang.Long planTypeAttributeId)
+        long planTypeAttributeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanTypeAttribute(planTypeAttributeId);
     }
@@ -163,7 +162,7 @@ public class PlanTypeAttributeLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanTypeAttribute getPlanTypeAttribute(
-        java.lang.Long planTypeAttributeId)
+        long planTypeAttributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanTypeAttribute(planTypeAttributeId);

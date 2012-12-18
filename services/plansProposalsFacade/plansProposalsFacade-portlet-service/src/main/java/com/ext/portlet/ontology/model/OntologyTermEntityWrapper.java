@@ -32,7 +32,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @return the primary key of this ontology term entity
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _ontologyTermEntity.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @param primaryKey the primary key of this ontology term entity
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _ontologyTermEntity.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @return the ID of this ontology term entity
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _ontologyTermEntity.getId();
     }
 
@@ -59,7 +59,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @param id the ID of this ontology term entity
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _ontologyTermEntity.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @return the term ID of this ontology term entity
     */
-    public java.lang.Long getTermId() {
+    public long getTermId() {
         return _ontologyTermEntity.getTermId();
     }
 
@@ -77,7 +77,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @param termId the term ID of this ontology term entity
     */
-    public void setTermId(java.lang.Long termId) {
+    public void setTermId(long termId) {
         _ontologyTermEntity.setTermId(termId);
     }
 
@@ -95,7 +95,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @return the class name ID of this ontology term entity
     */
-    public java.lang.Long getClassNameId() {
+    public long getClassNameId() {
         return _ontologyTermEntity.getClassNameId();
     }
 
@@ -104,7 +104,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @param classNameId the class name ID of this ontology term entity
     */
-    public void setClassNameId(java.lang.Long classNameId) {
+    public void setClassNameId(long classNameId) {
         _ontologyTermEntity.setClassNameId(classNameId);
     }
 
@@ -113,7 +113,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @return the class p k of this ontology term entity
     */
-    public java.lang.Long getClassPK() {
+    public long getClassPK() {
         return _ontologyTermEntity.getClassPK();
     }
 
@@ -122,7 +122,7 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     *
     * @param classPK the class p k of this ontology term entity
     */
-    public void setClassPK(java.lang.Long classPK) {
+    public void setClassPK(long classPK) {
         _ontologyTermEntity.setClassPK(classPK);
     }
 
@@ -197,16 +197,6 @@ public class OntologyTermEntityWrapper implements OntologyTermEntity,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _ontologyTermEntity.persist();
-    }
-
-    public void store()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _ontologyTermEntity.store();
-    }
-
-    public void remove()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _ontologyTermEntity.remove();
     }
 
     /**

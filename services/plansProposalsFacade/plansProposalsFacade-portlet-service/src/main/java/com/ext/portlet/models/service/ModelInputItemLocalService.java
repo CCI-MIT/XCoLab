@@ -48,7 +48,7 @@ public interface ModelInputItemLocalService extends PersistedModelLocalService {
     * @return the new model input item
     */
     public com.ext.portlet.models.model.ModelInputItem createModelInputItem(
-        java.lang.Long modelInputItemPK);
+        long modelInputItemPK);
 
     /**
     * Deletes the model input item with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelInputItemLocalService extends PersistedModelLocalService {
     * @throws PortalException if a model input item with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelInputItem(java.lang.Long modelInputItemPK)
+    public void deleteModelInputItem(long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,7 +135,7 @@ public interface ModelInputItemLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelInputItem fetchModelInputItem(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -148,7 +148,7 @@ public interface ModelInputItemLocalService extends PersistedModelLocalService {
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelInputItem getModelInputItem(
-        java.lang.Long modelInputItemPK)
+        long modelInputItemPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -234,4 +234,28 @@ public interface ModelInputItemLocalService extends PersistedModelLocalService {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.models.model.ModelInputItem> getItemForGroupId(
         java.lang.Long groupid);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public edu.mit.cci.simulation.client.MetaData getMetaData(
+        com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public edu.mit.cci.simulation.client.Simulation getModel(
+        com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.Map<java.lang.String, java.lang.String> getPropertyMap(
+        com.ext.portlet.models.model.ModelInputItem item);
+
+    public void saveProperties(
+        com.ext.portlet.models.model.ModelInputItem item,
+        java.util.Map<java.lang.String, java.lang.String> props)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void store(com.ext.portlet.models.model.ModelInputItem item)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

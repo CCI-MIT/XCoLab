@@ -8,10 +8,10 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 
 <service-builder package-path="com.ext.portlet.ontology">
-    <namespace>ontology</namespace>
+    <namespace>xcolab</namespace>
     <entity name="OntologySpace" local-service="true">
         <!-- PK field -->
-        <column name="id" type="Long" primary="true" />
+        <column name="id" type="long" primary="true" />
         <column name="name" type="String" />
         <column name="description" type="String" />
         
@@ -23,9 +23,9 @@
     
     <entity name="OntologyTerm" local-service="true">
         <!-- PK field -->
-        <column name="id" type="Long" primary="true" />
-        <column name="parentId" type="Long" />
-        <column name="ontologySpaceId" type="Long" />
+        <column name="id" type="long" primary="true" />
+        <column name="parentId" type="long" />
+        <column name="ontologySpaceId" type="long" />
         <column name="name" type="String" />
         <column name="descriptionUrl" type="String" />
         
@@ -51,11 +51,11 @@
     
     <entity name="OntologyTermEntity" local-service="true">
         <!-- PK field -->
-        <column name="id" type="Long" primary="true" />
+        <column name="id" type="long" primary="true" />
         
-        <column name="termId" type="Long" />
-        <column name="classNameId" type="Long" />
-        <column name="classPK" type="Long" />
+        <column name="termId" type="long" />
+        <column name="classNameId" type="long" />
+        <column name="classPK" type="long" />
         
         <finder name="ClassNameId" return-type="Collection">
             <finder-column name="classNameId" />
@@ -81,7 +81,7 @@
     
     <entity name="FocusArea" local-service="true">
         <!-- PK field -->
-        <column name="id" type="Long" primary="true" />
+        <column name="id" type="long" primary="true" />
         <column name="name" type="String" />
         
         <finder name="Name" return-type="OntologyFocusArea">
@@ -92,8 +92,8 @@
     
     <entity name="FocusAreaOntologyTerm" local-service="true">
         <!-- PK field -->
-        <column name="focusAreaId" type="Long" primary="true" />
-        <column name="ontologyTermId" type="Long" primary="true" />
+        <column name="focusAreaId" type="long" primary="true" />
+        <column name="ontologyTermId" type="long" primary="true" />
         
         <finder name="FocusAreaId" return-type="Collection">
             <finder-column name="focusAreaId" />

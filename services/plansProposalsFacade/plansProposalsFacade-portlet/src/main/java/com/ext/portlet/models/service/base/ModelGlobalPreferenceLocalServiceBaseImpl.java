@@ -177,7 +177,7 @@ public abstract class ModelGlobalPreferenceLocalServiceBaseImpl
      * @return the new model global preference
      */
     public ModelGlobalPreference createModelGlobalPreference(
-        Long modelGlobalPreferencePK) {
+        long modelGlobalPreferencePK) {
         return modelGlobalPreferencePersistence.create(modelGlobalPreferencePK);
     }
 
@@ -188,7 +188,7 @@ public abstract class ModelGlobalPreferenceLocalServiceBaseImpl
      * @throws PortalException if a model global preference with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteModelGlobalPreference(Long modelGlobalPreferencePK)
+    public void deleteModelGlobalPreference(long modelGlobalPreferencePK)
         throws PortalException, SystemException {
         ModelGlobalPreference modelGlobalPreference = modelGlobalPreferencePersistence.remove(modelGlobalPreferencePK);
 
@@ -295,7 +295,7 @@ public abstract class ModelGlobalPreferenceLocalServiceBaseImpl
     }
 
     public ModelGlobalPreference fetchModelGlobalPreference(
-        Long modelGlobalPreferencePK) throws SystemException {
+        long modelGlobalPreferencePK) throws SystemException {
         return modelGlobalPreferencePersistence.fetchByPrimaryKey(modelGlobalPreferencePK);
     }
 
@@ -308,7 +308,7 @@ public abstract class ModelGlobalPreferenceLocalServiceBaseImpl
      * @throws SystemException if a system exception occurred
      */
     public ModelGlobalPreference getModelGlobalPreference(
-        Long modelGlobalPreferencePK) throws PortalException, SystemException {
+        long modelGlobalPreferencePK) throws PortalException, SystemException {
         return modelGlobalPreferencePersistence.findByPrimaryKey(modelGlobalPreferencePK);
     }
 

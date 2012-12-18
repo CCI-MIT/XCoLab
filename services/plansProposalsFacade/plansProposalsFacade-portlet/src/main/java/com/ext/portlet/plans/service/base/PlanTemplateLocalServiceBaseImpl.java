@@ -340,7 +340,7 @@ public abstract class PlanTemplateLocalServiceBaseImpl
      * @param id the primary key for the new plan template
      * @return the new plan template
      */
-    public PlanTemplate createPlanTemplate(Long id) {
+    public PlanTemplate createPlanTemplate(long id) {
         return planTemplatePersistence.create(id);
     }
 
@@ -351,7 +351,7 @@ public abstract class PlanTemplateLocalServiceBaseImpl
      * @throws PortalException if a plan template with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deletePlanTemplate(Long id)
+    public void deletePlanTemplate(long id)
         throws PortalException, SystemException {
         PlanTemplate planTemplate = planTemplatePersistence.remove(id);
 
@@ -457,7 +457,7 @@ public abstract class PlanTemplateLocalServiceBaseImpl
         return planTemplatePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public PlanTemplate fetchPlanTemplate(Long id) throws SystemException {
+    public PlanTemplate fetchPlanTemplate(long id) throws SystemException {
         return planTemplatePersistence.fetchByPrimaryKey(id);
     }
 
@@ -469,7 +469,7 @@ public abstract class PlanTemplateLocalServiceBaseImpl
      * @throws PortalException if a plan template with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanTemplate getPlanTemplate(Long id)
+    public PlanTemplate getPlanTemplate(long id)
         throws PortalException, SystemException {
         return planTemplatePersistence.findByPrimaryKey(id);
     }

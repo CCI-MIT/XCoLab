@@ -19,12 +19,12 @@ import java.util.Date;
  */
 public class ActivitySubscriptionCacheModel implements CacheModel<ActivitySubscription>,
     Serializable {
-    public Long pk;
-    public Long classNameId;
-    public Long classPK;
-    public Integer type;
+    public long pk;
+    public long classNameId;
+    public long classPK;
+    public int type;
     public String extraData;
-    public Long receiverId;
+    public long receiverId;
     public long createDate;
     public long modifiedDate;
 

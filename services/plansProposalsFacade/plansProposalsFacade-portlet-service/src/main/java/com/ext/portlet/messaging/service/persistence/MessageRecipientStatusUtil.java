@@ -128,7 +128,7 @@ public class MessageRecipientStatusUtil {
     * @return the new message recipient status
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus create(
-        java.lang.Long messageRecipientId) {
+        long messageRecipientId) {
         return getPersistence().create(messageRecipientId);
     }
 
@@ -141,7 +141,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus remove(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(messageRecipientId);
@@ -163,7 +163,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus findByPrimaryKey(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(messageRecipientId);
@@ -177,7 +177,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus fetchByPrimaryKey(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(messageRecipientId);
     }
@@ -190,8 +190,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByReceivingUser(
-        java.lang.Long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByReceivingUser(userId);
     }
 
@@ -209,7 +208,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByReceivingUser(
-        java.lang.Long userId, int start, int end)
+        long userId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByReceivingUser(userId, start, end);
     }
@@ -229,7 +228,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByReceivingUser(
-        java.lang.Long userId, int start, int end,
+        long userId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -250,7 +249,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus findByReceivingUser_First(
-        java.lang.Long userId,
+        long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -272,7 +271,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus findByReceivingUser_Last(
-        java.lang.Long userId,
+        long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -295,7 +294,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus[] findByReceivingUser_PrevAndNext(
-        java.lang.Long messageRecipientId, java.lang.Long userId,
+        long messageRecipientId, long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -313,7 +312,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByReceivingUserArchived(
-        java.lang.Long userId, java.lang.Boolean archived)
+        long userId, boolean archived)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByReceivingUserArchived(userId, archived);
     }
@@ -333,7 +332,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByReceivingUserArchived(
-        java.lang.Long userId, java.lang.Boolean archived, int start, int end)
+        long userId, boolean archived, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByReceivingUserArchived(userId, archived, start, end);
@@ -355,7 +354,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByReceivingUserArchived(
-        java.lang.Long userId, java.lang.Boolean archived, int start, int end,
+        long userId, boolean archived, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -378,7 +377,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus findByReceivingUserArchived_First(
-        java.lang.Long userId, java.lang.Boolean archived,
+        long userId, boolean archived,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -402,7 +401,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus findByReceivingUserArchived_Last(
-        java.lang.Long userId, java.lang.Boolean archived,
+        long userId, boolean archived,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -427,8 +426,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus[] findByReceivingUserArchived_PrevAndNext(
-        java.lang.Long messageRecipientId, java.lang.Long userId,
-        java.lang.Boolean archived,
+        long messageRecipientId, long userId, boolean archived,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -445,7 +443,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByMessageId(
-        java.lang.Long messageId)
+        long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByMessageId(messageId);
     }
@@ -464,7 +462,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByMessageId(
-        java.lang.Long messageId, int start, int end)
+        long messageId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByMessageId(messageId, start, end);
     }
@@ -484,7 +482,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> findByMessageId(
-        java.lang.Long messageId, int start, int end,
+        long messageId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
@@ -505,7 +503,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus findByMessageId_First(
-        java.lang.Long messageId,
+        long messageId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -527,7 +525,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus findByMessageId_Last(
-        java.lang.Long messageId,
+        long messageId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -550,7 +548,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus[] findByMessageId_PrevAndNext(
-        java.lang.Long messageRecipientId, java.lang.Long messageId,
+        long messageRecipientId, long messageId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -569,7 +567,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus findByMessageReciever(
-        java.lang.Long messageId, java.lang.Long userId)
+        long messageId, long userId)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByMessageReciever(messageId, userId);
@@ -584,7 +582,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus fetchByMessageReciever(
-        java.lang.Long messageId, java.lang.Long userId)
+        long messageId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByMessageReciever(messageId, userId);
     }
@@ -599,8 +597,7 @@ public class MessageRecipientStatusUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.messaging.model.MessageRecipientStatus fetchByMessageReciever(
-        java.lang.Long messageId, java.lang.Long userId,
-        boolean retrieveFromCache)
+        long messageId, long userId, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .fetchByMessageReciever(messageId, userId, retrieveFromCache);
@@ -661,7 +658,7 @@ public class MessageRecipientStatusUtil {
     * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByReceivingUser(java.lang.Long userId)
+    public static void removeByReceivingUser(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByReceivingUser(userId);
     }
@@ -673,8 +670,8 @@ public class MessageRecipientStatusUtil {
     * @param archived the archived
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByReceivingUserArchived(java.lang.Long userId,
-        java.lang.Boolean archived)
+    public static void removeByReceivingUserArchived(long userId,
+        boolean archived)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByReceivingUserArchived(userId, archived);
     }
@@ -685,7 +682,7 @@ public class MessageRecipientStatusUtil {
     * @param messageId the message ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByMessageId(java.lang.Long messageId)
+    public static void removeByMessageId(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByMessageId(messageId);
     }
@@ -697,8 +694,7 @@ public class MessageRecipientStatusUtil {
     * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public static void removeByMessageReciever(java.lang.Long messageId,
-        java.lang.Long userId)
+    public static void removeByMessageReciever(long messageId, long userId)
         throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeByMessageReciever(messageId, userId);
@@ -721,7 +717,7 @@ public class MessageRecipientStatusUtil {
     * @return the number of matching message recipient statuses
     * @throws SystemException if a system exception occurred
     */
-    public static int countByReceivingUser(java.lang.Long userId)
+    public static int countByReceivingUser(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByReceivingUser(userId);
     }
@@ -734,8 +730,7 @@ public class MessageRecipientStatusUtil {
     * @return the number of matching message recipient statuses
     * @throws SystemException if a system exception occurred
     */
-    public static int countByReceivingUserArchived(java.lang.Long userId,
-        java.lang.Boolean archived)
+    public static int countByReceivingUserArchived(long userId, boolean archived)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByReceivingUserArchived(userId, archived);
     }
@@ -747,7 +742,7 @@ public class MessageRecipientStatusUtil {
     * @return the number of matching message recipient statuses
     * @throws SystemException if a system exception occurred
     */
-    public static int countByMessageId(java.lang.Long messageId)
+    public static int countByMessageId(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByMessageId(messageId);
     }
@@ -760,8 +755,7 @@ public class MessageRecipientStatusUtil {
     * @return the number of matching message recipient statuses
     * @throws SystemException if a system exception occurred
     */
-    public static int countByMessageReciever(java.lang.Long messageId,
-        java.lang.Long userId)
+    public static int countByMessageReciever(long messageId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByMessageReciever(messageId, userId);
     }

@@ -31,36 +31,5 @@ public class ModelInputGroupImpl extends ModelInputGroupBaseImpl {
      */
     public ModelInputGroupImpl() {
     }
-    
 
-    public List<ModelInputItem> getInputItems() {
-        return ModelInputItemLocalServiceUtil.getItemForGroupId(getModelInputGroupPK());
-       
-    }
-
-    public List<ModelInputGroup> getChildGroups() {
-        return ModelInputGroupLocalServiceUtil.getChildGroups(this);
-    }
-
-    public ModelInputGroup getParent() {
-        try {
-            return ModelInputGroupLocalServiceUtil.getModelInputGroup(getParentGroupPK());
-        } catch (PortalException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (SystemException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;
-    }
-
-     public Simulation getModel() throws SystemException, IOException {
-        return CollaboratoriumModelingService.repository().getSimulation(getModelId());       
-    }
-
-    public MetaData getMetaData() throws SystemException, IOException {
-        if (getNameAndDescriptionMetaDataId() != null) {
-            return CollaboratoriumModelingService.repository().getMetaData(getNameAndDescriptionMetaDataId());
-        }
-        return null;
-    }
 }

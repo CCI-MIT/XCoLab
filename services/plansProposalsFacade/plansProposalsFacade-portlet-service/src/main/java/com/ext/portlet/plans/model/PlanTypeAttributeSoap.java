@@ -13,8 +13,8 @@ import java.util.List;
  * @generated
  */
 public class PlanTypeAttributeSoap implements Serializable {
-    private Long _planTypeAttributeId;
-    private Long _planTypeId;
+    private long _planTypeAttributeId;
+    private long _planTypeId;
     private String _attributeName;
 
     public PlanTypeAttributeSoap() {
@@ -69,27 +69,27 @@ public class PlanTypeAttributeSoap implements Serializable {
         return soapModels.toArray(new PlanTypeAttributeSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTypeAttributeId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setPlanTypeAttributeId(pk);
     }
 
-    public Long getPlanTypeAttributeId() {
+    public long getPlanTypeAttributeId() {
         return _planTypeAttributeId;
     }
 
-    public void setPlanTypeAttributeId(Long planTypeAttributeId) {
+    public void setPlanTypeAttributeId(long planTypeAttributeId) {
         _planTypeAttributeId = planTypeAttributeId;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 

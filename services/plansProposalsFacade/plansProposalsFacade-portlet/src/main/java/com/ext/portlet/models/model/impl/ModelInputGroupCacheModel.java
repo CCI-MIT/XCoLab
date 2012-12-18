@@ -17,14 +17,14 @@ import java.io.Serializable;
  */
 public class ModelInputGroupCacheModel implements CacheModel<ModelInputGroup>,
     Serializable {
-    public Long modelInputGroupPK;
-    public Long modelId;
-    public Long nameAndDescriptionMetaDataId;
+    public long modelInputGroupPK;
+    public long modelId;
+    public long nameAndDescriptionMetaDataId;
     public String name;
     public String description;
-    public Integer displayItemOrder;
+    public int displayItemOrder;
     public String groupType;
-    public Long parentGroupPK;
+    public long parentGroupPK;
 
     @Override
     public String toString() {

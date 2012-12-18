@@ -598,7 +598,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSectionPlanMap> findByPlanId(Long relatedPlanId)
+    public List<PlanSectionPlanMap> findByPlanId(long relatedPlanId)
         throws SystemException {
         return findByPlanId(relatedPlanId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
@@ -617,7 +617,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the range of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSectionPlanMap> findByPlanId(Long relatedPlanId, int start,
+    public List<PlanSectionPlanMap> findByPlanId(long relatedPlanId, int start,
         int end) throws SystemException {
         return findByPlanId(relatedPlanId, start, end, null);
     }
@@ -636,7 +636,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the ordered range of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSectionPlanMap> findByPlanId(Long relatedPlanId, int start,
+    public List<PlanSectionPlanMap> findByPlanId(long relatedPlanId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -687,7 +687,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(relatedPlanId.longValue());
+                qPos.add(relatedPlanId);
 
                 list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -722,7 +722,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException if a matching plan section plan map could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSectionPlanMap findByPlanId_First(Long relatedPlanId,
+    public PlanSectionPlanMap findByPlanId_First(long relatedPlanId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
         List<PlanSectionPlanMap> list = findByPlanId(relatedPlanId, 0, 1,
@@ -757,7 +757,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException if a matching plan section plan map could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSectionPlanMap findByPlanId_Last(Long relatedPlanId,
+    public PlanSectionPlanMap findByPlanId_Last(long relatedPlanId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
         int count = countByPlanId(relatedPlanId);
@@ -796,7 +796,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws SystemException if a system exception occurred
      */
     public PlanSectionPlanMap[] findByPlanId_PrevAndNext(
-        PlanSectionPlanMapPK planSectionPlanMapPK, Long relatedPlanId,
+        PlanSectionPlanMapPK planSectionPlanMapPK, long relatedPlanId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
         PlanSectionPlanMap planSectionPlanMap = findByPrimaryKey(planSectionPlanMapPK);
@@ -825,7 +825,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     }
 
     protected PlanSectionPlanMap getByPlanId_PrevAndNext(Session session,
-        PlanSectionPlanMap planSectionPlanMap, Long relatedPlanId,
+        PlanSectionPlanMap planSectionPlanMap, long relatedPlanId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -899,7 +899,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(relatedPlanId.longValue());
+        qPos.add(relatedPlanId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planSectionPlanMap);
@@ -925,7 +925,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSectionPlanMap> findBySectionId(Long sectionId)
+    public List<PlanSectionPlanMap> findBySectionId(long sectionId)
         throws SystemException {
         return findBySectionId(sectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
             null);
@@ -944,7 +944,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the range of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSectionPlanMap> findBySectionId(Long sectionId, int start,
+    public List<PlanSectionPlanMap> findBySectionId(long sectionId, int start,
         int end) throws SystemException {
         return findBySectionId(sectionId, start, end, null);
     }
@@ -963,7 +963,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the ordered range of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
-    public List<PlanSectionPlanMap> findBySectionId(Long sectionId, int start,
+    public List<PlanSectionPlanMap> findBySectionId(long sectionId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
@@ -1010,7 +1010,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(sectionId.longValue());
+                qPos.add(sectionId);
 
                 list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
                         getDialect(), start, end);
@@ -1045,7 +1045,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException if a matching plan section plan map could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSectionPlanMap findBySectionId_First(Long sectionId,
+    public PlanSectionPlanMap findBySectionId_First(long sectionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
         List<PlanSectionPlanMap> list = findBySectionId(sectionId, 0, 1,
@@ -1080,7 +1080,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws com.ext.portlet.plans.NoSuchPlanSectionPlanMapException if a matching plan section plan map could not be found
      * @throws SystemException if a system exception occurred
      */
-    public PlanSectionPlanMap findBySectionId_Last(Long sectionId,
+    public PlanSectionPlanMap findBySectionId_Last(long sectionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
         int count = countBySectionId(sectionId);
@@ -1119,7 +1119,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws SystemException if a system exception occurred
      */
     public PlanSectionPlanMap[] findBySectionId_PrevAndNext(
-        PlanSectionPlanMapPK planSectionPlanMapPK, Long sectionId,
+        PlanSectionPlanMapPK planSectionPlanMapPK, long sectionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
         PlanSectionPlanMap planSectionPlanMap = findByPrimaryKey(planSectionPlanMapPK);
@@ -1148,7 +1148,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     }
 
     protected PlanSectionPlanMap getBySectionId_PrevAndNext(Session session,
-        PlanSectionPlanMap planSectionPlanMap, Long sectionId,
+        PlanSectionPlanMap planSectionPlanMap, long sectionId,
         OrderByComparator orderByComparator, boolean previous) {
         StringBundler query = null;
 
@@ -1222,7 +1222,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(sectionId.longValue());
+        qPos.add(sectionId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(planSectionPlanMap);
@@ -1356,7 +1356,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @param relatedPlanId the related plan ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByPlanId(Long relatedPlanId) throws SystemException {
+    public void removeByPlanId(long relatedPlanId) throws SystemException {
         for (PlanSectionPlanMap planSectionPlanMap : findByPlanId(relatedPlanId)) {
             remove(planSectionPlanMap);
         }
@@ -1368,7 +1368,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @param sectionId the section ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeBySectionId(Long sectionId) throws SystemException {
+    public void removeBySectionId(long sectionId) throws SystemException {
         for (PlanSectionPlanMap planSectionPlanMap : findBySectionId(sectionId)) {
             remove(planSectionPlanMap);
         }
@@ -1392,7 +1392,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the number of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
-    public int countByPlanId(Long relatedPlanId) throws SystemException {
+    public int countByPlanId(long relatedPlanId) throws SystemException {
         Object[] finderArgs = new Object[] { relatedPlanId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANID,
@@ -1416,7 +1416,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(relatedPlanId.longValue());
+                qPos.add(relatedPlanId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -1443,7 +1443,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the number of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
-    public int countBySectionId(Long sectionId) throws SystemException {
+    public int countBySectionId(long sectionId) throws SystemException {
         Object[] finderArgs = new Object[] { sectionId };
 
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_SECTIONID,
@@ -1467,7 +1467,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(sectionId.longValue());
+                qPos.add(sectionId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {

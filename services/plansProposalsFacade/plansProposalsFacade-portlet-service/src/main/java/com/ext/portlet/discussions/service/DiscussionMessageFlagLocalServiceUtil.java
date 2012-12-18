@@ -47,7 +47,7 @@ public class DiscussionMessageFlagLocalServiceUtil {
     * @return the new discussion message flag
     */
     public static com.ext.portlet.discussions.model.DiscussionMessageFlag createDiscussionMessageFlag(
-        java.lang.Long pk) {
+        long pk) {
         return getService().createDiscussionMessageFlag(pk);
     }
 
@@ -58,7 +58,7 @@ public class DiscussionMessageFlagLocalServiceUtil {
     * @throws PortalException if a discussion message flag with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteDiscussionMessageFlag(java.lang.Long pk)
+    public static void deleteDiscussionMessageFlag(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteDiscussionMessageFlag(pk);
@@ -148,8 +148,7 @@ public class DiscussionMessageFlagLocalServiceUtil {
     }
 
     public static com.ext.portlet.discussions.model.DiscussionMessageFlag fetchDiscussionMessageFlag(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchDiscussionMessageFlag(pk);
     }
 
@@ -162,7 +161,7 @@ public class DiscussionMessageFlagLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.discussions.model.DiscussionMessageFlag getDiscussionMessageFlag(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getDiscussionMessageFlag(pk);

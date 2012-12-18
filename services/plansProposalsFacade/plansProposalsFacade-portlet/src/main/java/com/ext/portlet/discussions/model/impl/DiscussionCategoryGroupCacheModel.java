@@ -17,10 +17,10 @@ import java.io.Serializable;
  */
 public class DiscussionCategoryGroupCacheModel implements CacheModel<DiscussionCategoryGroup>,
     Serializable {
-    public Long id;
+    public long id;
     public String description;
     public String url;
-    public Long commentsThread;
+    public long commentsThread;
 
     @Override
     public String toString() {

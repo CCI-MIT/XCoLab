@@ -1,10 +1,7 @@
 package com.ext.portlet.Activity.model;
 
-import java.io.Serializable;
-import java.lang.reflect.Proxy;
-import java.util.Date;
-
 import com.ext.portlet.Activity.service.ActivitySubscriptionLocalServiceUtil;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -12,15 +9,21 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.util.PortalUtil;
 
+import java.io.Serializable;
+
+import java.lang.reflect.Proxy;
+
+import java.util.Date;
+
 
 public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
     implements ActivitySubscription {
-    private Long _pk;
-    private Long _classNameId;
-    private Long _classPK;
-    private Integer _type;
+    private long _pk;
+    private long _classNameId;
+    private long _classPK;
+    private int _type;
     private String _extraData;
-    private Long _receiverId;
+    private long _receiverId;
     private Date _createDate;
     private Date _modifiedDate;
 
@@ -35,11 +38,11 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         return ActivitySubscription.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _pk;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPk(primaryKey);
     }
 
@@ -51,11 +54,11 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPk() {
+    public long getPk() {
         return _pk;
     }
 
-    public void setPk(Long pk) {
+    public void setPk(long pk) {
         _pk = pk;
     }
 
@@ -67,27 +70,27 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         return PortalUtil.getClassName(getClassNameId());
     }
 
-    public Long getClassNameId() {
+    public long getClassNameId() {
         return _classNameId;
     }
 
-    public void setClassNameId(Long classNameId) {
+    public void setClassNameId(long classNameId) {
         _classNameId = classNameId;
     }
 
-    public Long getClassPK() {
+    public long getClassPK() {
         return _classPK;
     }
 
-    public void setClassPK(Long classPK) {
+    public void setClassPK(long classPK) {
         _classPK = classPK;
     }
 
-    public Integer getType() {
+    public int getType() {
         return _type;
     }
 
-    public void setType(Integer type) {
+    public void setType(int type) {
         _type = type;
     }
 
@@ -99,11 +102,11 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         _extraData = extraData;
     }
 
-    public Long getReceiverId() {
+    public long getReceiverId() {
         return _receiverId;
     }
 
-    public void setReceiverId(Long receiverId) {
+    public void setReceiverId(long receiverId) {
         _receiverId = receiverId;
     }
 
@@ -121,26 +124,6 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
 
     public void setModifiedDate(Date modifiedDate) {
         _modifiedDate = modifiedDate;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.Activity.ICollabActivityInterpreter getInterpreter() {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.lang.String getName() {
-        throw new UnsupportedOperationException();
-    }
-
-    public com.ext.portlet.Activity.SubscriptionType getSubscriptionType() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void delete() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {
@@ -175,7 +158,7 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
     }
 
     public int compareTo(ActivitySubscription activitySubscription) {
-        Long primaryKey = activitySubscription.getPrimaryKey();
+        long primaryKey = activitySubscription.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -200,7 +183,7 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
             return false;
         }
 
-        Long primaryKey = activitySubscription.getPrimaryKey();
+        long primaryKey = activitySubscription.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -211,7 +194,7 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

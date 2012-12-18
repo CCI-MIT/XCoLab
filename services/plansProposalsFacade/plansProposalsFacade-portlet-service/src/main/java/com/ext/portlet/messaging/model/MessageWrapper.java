@@ -31,7 +31,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     *
     * @return the primary key of this message
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _message.getPrimaryKey();
     }
 
@@ -40,7 +40,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     *
     * @param primaryKey the primary key of this message
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _message.setPrimaryKey(primaryKey);
     }
 
@@ -49,7 +49,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     *
     * @return the message ID of this message
     */
-    public java.lang.Long getMessageId() {
+    public long getMessageId() {
         return _message.getMessageId();
     }
 
@@ -58,7 +58,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     *
     * @param messageId the message ID of this message
     */
-    public void setMessageId(java.lang.Long messageId) {
+    public void setMessageId(long messageId) {
         _message.setMessageId(messageId);
     }
 
@@ -67,7 +67,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     *
     * @return the from ID of this message
     */
-    public java.lang.Long getFromId() {
+    public long getFromId() {
         return _message.getFromId();
     }
 
@@ -76,7 +76,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     *
     * @param fromId the from ID of this message
     */
-    public void setFromId(java.lang.Long fromId) {
+    public void setFromId(long fromId) {
         _message.setFromId(fromId);
     }
 
@@ -85,7 +85,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     *
     * @return the replies to of this message
     */
-    public java.lang.Long getRepliesTo() {
+    public long getRepliesTo() {
         return _message.getRepliesTo();
     }
 
@@ -94,7 +94,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     *
     * @param repliesTo the replies to of this message
     */
-    public void setRepliesTo(java.lang.Long repliesTo) {
+    public void setRepliesTo(long repliesTo) {
         _message.setRepliesTo(repliesTo);
     }
 
@@ -223,40 +223,6 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _message.persist();
-    }
-
-    public java.util.List<com.ext.portlet.messaging.model.MessageRecipientStatus> getRecipients()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _message.getRecipients();
-    }
-
-    public boolean hasReciever(long userid)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _message.hasReciever(userid);
-    }
-
-    public boolean isOpened(long userid)
-        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _message.isOpened(userid);
-    }
-
-    public void setOpened(long userid)
-        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _message.setOpened(userid);
-    }
-
-    public boolean isArchived(long userid)
-        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _message.isArchived(userid);
-    }
-
-    public void setArchived(long userid)
-        throws com.ext.portlet.messaging.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _message.setArchived(userid);
     }
 
     /**

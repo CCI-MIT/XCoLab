@@ -47,7 +47,7 @@ public class ModelInputGroupLocalServiceUtil {
     * @return the new model input group
     */
     public static com.ext.portlet.models.model.ModelInputGroup createModelInputGroup(
-        java.lang.Long modelInputGroupPK) {
+        long modelInputGroupPK) {
         return getService().createModelInputGroup(modelInputGroupPK);
     }
 
@@ -58,7 +58,7 @@ public class ModelInputGroupLocalServiceUtil {
     * @throws PortalException if a model input group with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteModelInputGroup(java.lang.Long modelInputGroupPK)
+    public static void deleteModelInputGroup(long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deleteModelInputGroup(modelInputGroupPK);
@@ -148,7 +148,7 @@ public class ModelInputGroupLocalServiceUtil {
     }
 
     public static com.ext.portlet.models.model.ModelInputGroup fetchModelInputGroup(
-        java.lang.Long modelInputGroupPK)
+        long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchModelInputGroup(modelInputGroupPK);
     }
@@ -162,7 +162,7 @@ public class ModelInputGroupLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.models.model.ModelInputGroup getModelInputGroup(
-        java.lang.Long modelInputGroupPK)
+        long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getModelInputGroup(modelInputGroupPK);
@@ -258,6 +258,30 @@ public class ModelInputGroupLocalServiceUtil {
     public static java.util.List<com.ext.portlet.models.model.ModelInputGroup> getChildGroups(
         com.ext.portlet.models.model.ModelInputGroup group) {
         return getService().getChildGroups(group);
+    }
+
+    public static java.util.List<com.ext.portlet.models.model.ModelInputItem> getInputItems(
+        com.ext.portlet.models.model.ModelInputGroup group) {
+        return getService().getInputItems(group);
+    }
+
+    public static com.ext.portlet.models.model.ModelInputGroup getParent(
+        com.ext.portlet.models.model.ModelInputGroup group) {
+        return getService().getParent(group);
+    }
+
+    public static edu.mit.cci.simulation.client.Simulation getModel(
+        com.ext.portlet.models.model.ModelInputGroup group)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        return getService().getModel(group);
+    }
+
+    public static edu.mit.cci.simulation.client.MetaData getMetaData(
+        com.ext.portlet.models.model.ModelInputGroup group)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        return getService().getMetaData(group);
     }
 
     public static void clearService() {

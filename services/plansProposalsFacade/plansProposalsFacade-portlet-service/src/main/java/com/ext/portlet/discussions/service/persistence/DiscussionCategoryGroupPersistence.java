@@ -46,7 +46,7 @@ public interface DiscussionCategoryGroupPersistence extends BasePersistence<Disc
     * @return the new discussion category group
     */
     public com.ext.portlet.discussions.model.DiscussionCategoryGroup create(
-        java.lang.Long id);
+        long id);
 
     /**
     * Removes the discussion category group with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface DiscussionCategoryGroupPersistence extends BasePersistence<Disc
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategoryGroup remove(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryGroupException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -75,7 +75,7 @@ public interface DiscussionCategoryGroupPersistence extends BasePersistence<Disc
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategoryGroup findByPrimaryKey(
-        java.lang.Long id)
+        long id)
         throws com.ext.portlet.discussions.NoSuchDiscussionCategoryGroupException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -87,8 +87,7 @@ public interface DiscussionCategoryGroupPersistence extends BasePersistence<Disc
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionCategoryGroup fetchByPrimaryKey(
-        java.lang.Long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the discussion category groups.

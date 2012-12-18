@@ -14,11 +14,11 @@ import java.lang.reflect.Proxy;
 
 public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
     implements PlanTypeColumn {
-    private Long _planTypeColumnId;
-    private Long _planTypeId;
-    private Integer _weight;
+    private long _planTypeColumnId;
+    private long _planTypeId;
+    private int _weight;
     private String _columnName;
-    private Boolean _visibleByDefault;
+    private boolean _visibleByDefault;
 
     public PlanTypeColumnClp() {
     }
@@ -31,11 +31,11 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
         return PlanTypeColumn.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _planTypeColumnId;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setPlanTypeColumnId(primaryKey);
     }
 
@@ -47,27 +47,27 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getPlanTypeColumnId() {
+    public long getPlanTypeColumnId() {
         return _planTypeColumnId;
     }
 
-    public void setPlanTypeColumnId(Long planTypeColumnId) {
+    public void setPlanTypeColumnId(long planTypeColumnId) {
         _planTypeColumnId = planTypeColumnId;
     }
 
-    public Long getPlanTypeId() {
+    public long getPlanTypeId() {
         return _planTypeId;
     }
 
-    public void setPlanTypeId(Long planTypeId) {
+    public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
-    public Integer getWeight() {
+    public int getWeight() {
         return _weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(int weight) {
         _weight = weight;
     }
 
@@ -79,11 +79,15 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
         _columnName = columnName;
     }
 
-    public Boolean getVisibleByDefault() {
+    public boolean getVisibleByDefault() {
         return _visibleByDefault;
     }
 
-    public void setVisibleByDefault(Boolean visibleByDefault) {
+    public boolean isVisibleByDefault() {
+        return _visibleByDefault;
+    }
+
+    public void setVisibleByDefault(boolean visibleByDefault) {
         _visibleByDefault = visibleByDefault;
     }
 
@@ -154,7 +158,7 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
             return false;
         }
 
-        Long primaryKey = planTypeColumn.getPrimaryKey();
+        long primaryKey = planTypeColumn.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -165,7 +169,7 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override

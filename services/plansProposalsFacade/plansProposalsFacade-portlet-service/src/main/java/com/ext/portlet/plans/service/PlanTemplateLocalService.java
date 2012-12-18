@@ -47,8 +47,7 @@ public interface PlanTemplateLocalService extends PersistedModelLocalService {
     * @param id the primary key for the new plan template
     * @return the new plan template
     */
-    public com.ext.portlet.plans.model.PlanTemplate createPlanTemplate(
-        java.lang.Long id);
+    public com.ext.portlet.plans.model.PlanTemplate createPlanTemplate(long id);
 
     /**
     * Deletes the plan template with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +56,7 @@ public interface PlanTemplateLocalService extends PersistedModelLocalService {
     * @throws PortalException if a plan template with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanTemplate(java.lang.Long id)
+    public void deletePlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -134,8 +133,7 @@ public interface PlanTemplateLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanTemplate fetchPlanTemplate(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanTemplate fetchPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -147,8 +145,7 @@ public interface PlanTemplateLocalService extends PersistedModelLocalService {
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(
-        java.lang.Long id)
+    public com.ext.portlet.plans.model.PlanTemplate getPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -221,4 +218,30 @@ public interface PlanTemplateLocalService extends PersistedModelLocalService {
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    public void store(com.ext.portlet.plans.model.PlanTemplate template)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.plans.model.PlanSectionDefinition> getSections(
+        com.ext.portlet.plans.model.PlanTemplate template)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void addSection(com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void removeSection(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void updateSectionWeight(
+        com.ext.portlet.plans.model.PlanTemplate template,
+        com.ext.portlet.plans.model.PlanSectionDefinition section, int weight)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

@@ -13,9 +13,9 @@ import java.util.List;
  * @generated
  */
 public class ModelDiscussionSoap implements Serializable {
-    private Long _modelDiscussionId;
-    private Long _modelId;
-    private Long _categoryId;
+    private long _modelDiscussionId;
+    private long _modelId;
+    private long _categoryId;
 
     public ModelDiscussionSoap() {
     }
@@ -68,35 +68,35 @@ public class ModelDiscussionSoap implements Serializable {
         return soapModels.toArray(new ModelDiscussionSoap[soapModels.size()]);
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelDiscussionId;
     }
 
-    public void setPrimaryKey(Long pk) {
+    public void setPrimaryKey(long pk) {
         setModelDiscussionId(pk);
     }
 
-    public Long getModelDiscussionId() {
+    public long getModelDiscussionId() {
         return _modelDiscussionId;
     }
 
-    public void setModelDiscussionId(Long modelDiscussionId) {
+    public void setModelDiscussionId(long modelDiscussionId) {
         _modelDiscussionId = modelDiscussionId;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
-    public Long getCategoryId() {
+    public long getCategoryId() {
         return _categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(long categoryId) {
         _categoryId = categoryId;
     }
 }

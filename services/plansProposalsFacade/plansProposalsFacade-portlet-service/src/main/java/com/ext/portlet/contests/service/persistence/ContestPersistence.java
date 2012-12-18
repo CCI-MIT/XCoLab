@@ -44,8 +44,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param ContestPK the primary key for the new contest
     * @return the new contest
     */
-    public com.ext.portlet.contests.model.Contest create(
-        java.lang.Long ContestPK);
+    public com.ext.portlet.contests.model.Contest create(long ContestPK);
 
     /**
     * Removes the contest with the primary key from the database. Also notifies the appropriate model listeners.
@@ -55,8 +54,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.contests.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.contests.model.Contest remove(
-        java.lang.Long ContestPK)
+    public com.ext.portlet.contests.model.Contest remove(long ContestPK)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -73,7 +71,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByPrimaryKey(
-        java.lang.Long ContestPK)
+        long ContestPK)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -85,7 +83,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest fetchByPrimaryKey(
-        java.lang.Long ContestPK)
+        long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -96,7 +94,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByType(
-        java.lang.Long PlanTypeId)
+        long PlanTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -113,7 +111,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByType(
-        java.lang.Long PlanTypeId, int start, int end)
+        long PlanTypeId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -131,7 +129,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByType(
-        java.lang.Long PlanTypeId, int start, int end,
+        long PlanTypeId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -149,7 +147,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByType_First(
-        java.lang.Long PlanTypeId,
+        long PlanTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -168,7 +166,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByType_Last(
-        java.lang.Long PlanTypeId,
+        long PlanTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -188,7 +186,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest[] findByType_PrevAndNext(
-        java.lang.Long ContestPK, java.lang.Long PlanTypeId,
+        long ContestPK, long PlanTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -202,7 +200,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findBycontestActive(
-        java.lang.Boolean contestActive)
+        boolean contestActive)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -214,7 +212,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest fetchBycontestActive(
-        java.lang.Boolean contestActive)
+        boolean contestActive)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -226,7 +224,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest fetchBycontestActive(
-        java.lang.Boolean contestActive, boolean retrieveFromCache)
+        boolean contestActive, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -238,7 +236,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFeatured(
-        java.lang.Boolean contestActive, java.lang.Boolean featured)
+        boolean contestActive, boolean featured)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -256,8 +254,8 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFeatured(
-        java.lang.Boolean contestActive, java.lang.Boolean featured, int start,
-        int end) throws com.liferay.portal.kernel.exception.SystemException;
+        boolean contestActive, boolean featured, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns an ordered range of all the contests where contestActive = &#63; and featured = &#63;.
@@ -275,8 +273,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFeatured(
-        java.lang.Boolean contestActive, java.lang.Boolean featured, int start,
-        int end,
+        boolean contestActive, boolean featured, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -295,7 +292,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByActiveFeatured_First(
-        java.lang.Boolean contestActive, java.lang.Boolean featured,
+        boolean contestActive, boolean featured,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -315,7 +312,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByActiveFeatured_Last(
-        java.lang.Boolean contestActive, java.lang.Boolean featured,
+        boolean contestActive, boolean featured,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -336,8 +333,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest[] findByActiveFeatured_PrevAndNext(
-        java.lang.Long ContestPK, java.lang.Boolean contestActive,
-        java.lang.Boolean featured,
+        long ContestPK, boolean contestActive, boolean featured,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -351,7 +347,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFlag(
-        java.lang.Boolean contestActive, java.lang.Integer flag)
+        boolean contestActive, int flag)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -369,8 +365,8 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFlag(
-        java.lang.Boolean contestActive, java.lang.Integer flag, int start,
-        int end) throws com.liferay.portal.kernel.exception.SystemException;
+        boolean contestActive, int flag, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns an ordered range of all the contests where contestActive = &#63; and flag = &#63;.
@@ -388,8 +384,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFlag(
-        java.lang.Boolean contestActive, java.lang.Integer flag, int start,
-        int end,
+        boolean contestActive, int flag, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -408,7 +403,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByActiveFlag_First(
-        java.lang.Boolean contestActive, java.lang.Integer flag,
+        boolean contestActive, int flag,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -428,7 +423,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByActiveFlag_Last(
-        java.lang.Boolean contestActive, java.lang.Integer flag,
+        boolean contestActive, int flag,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -449,8 +444,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest[] findByActiveFlag_PrevAndNext(
-        java.lang.Long ContestPK, java.lang.Boolean contestActive,
-        java.lang.Integer flag,
+        long ContestPK, boolean contestActive, int flag,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -464,7 +458,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFlagText(
-        java.lang.Boolean contestActive, java.lang.String flagText)
+        boolean contestActive, java.lang.String flagText)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -482,8 +476,8 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFlagText(
-        java.lang.Boolean contestActive, java.lang.String flagText, int start,
-        int end) throws com.liferay.portal.kernel.exception.SystemException;
+        boolean contestActive, java.lang.String flagText, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns an ordered range of all the contests where contestActive = &#63; and flagText = &#63;.
@@ -501,8 +495,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.Contest> findByActiveFlagText(
-        java.lang.Boolean contestActive, java.lang.String flagText, int start,
-        int end,
+        boolean contestActive, java.lang.String flagText, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -521,7 +514,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByActiveFlagText_First(
-        java.lang.Boolean contestActive, java.lang.String flagText,
+        boolean contestActive, java.lang.String flagText,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -541,7 +534,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest findByActiveFlagText_Last(
-        java.lang.Boolean contestActive, java.lang.String flagText,
+        boolean contestActive, java.lang.String flagText,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -562,8 +555,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.Contest[] findByActiveFlagText_PrevAndNext(
-        java.lang.Long ContestPK, java.lang.Boolean contestActive,
-        java.lang.String flagText,
+        long ContestPK, boolean contestActive, java.lang.String flagText,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -617,7 +609,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param PlanTypeId the plan type ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByType(java.lang.Long PlanTypeId)
+    public void removeByType(long PlanTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -626,7 +618,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param contestActive the contest active
     * @throws SystemException if a system exception occurred
     */
-    public void removeBycontestActive(java.lang.Boolean contestActive)
+    public void removeBycontestActive(boolean contestActive)
         throws com.ext.portlet.contests.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -637,8 +629,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param featured the featured
     * @throws SystemException if a system exception occurred
     */
-    public void removeByActiveFeatured(java.lang.Boolean contestActive,
-        java.lang.Boolean featured)
+    public void removeByActiveFeatured(boolean contestActive, boolean featured)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -648,8 +639,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param flag the flag
     * @throws SystemException if a system exception occurred
     */
-    public void removeByActiveFlag(java.lang.Boolean contestActive,
-        java.lang.Integer flag)
+    public void removeByActiveFlag(boolean contestActive, int flag)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -659,7 +649,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param flagText the flag text
     * @throws SystemException if a system exception occurred
     */
-    public void removeByActiveFlagText(java.lang.Boolean contestActive,
+    public void removeByActiveFlagText(boolean contestActive,
         java.lang.String flagText)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -678,7 +668,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByType(java.lang.Long PlanTypeId)
+    public int countByType(long PlanTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -688,7 +678,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countBycontestActive(java.lang.Boolean contestActive)
+    public int countBycontestActive(boolean contestActive)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -699,8 +689,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByActiveFeatured(java.lang.Boolean contestActive,
-        java.lang.Boolean featured)
+    public int countByActiveFeatured(boolean contestActive, boolean featured)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -711,8 +700,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByActiveFlag(java.lang.Boolean contestActive,
-        java.lang.Integer flag)
+    public int countByActiveFlag(boolean contestActive, int flag)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -723,7 +711,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByActiveFlagText(java.lang.Boolean contestActive,
+    public int countByActiveFlagText(boolean contestActive,
         java.lang.String flagText)
         throws com.liferay.portal.kernel.exception.SystemException;
 

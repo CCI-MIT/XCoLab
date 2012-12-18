@@ -42,10 +42,10 @@ public class MessageRecipientStatusLocalServiceClp
                 com.ext.portlet.messaging.model.MessageRecipientStatus.class);
 
         _createMessageRecipientStatusMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createMessageRecipientStatus", java.lang.Long.class);
+                "createMessageRecipientStatus", long.class);
 
         _deleteMessageRecipientStatusMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteMessageRecipientStatus", java.lang.Long.class);
+                "deleteMessageRecipientStatus", long.class);
 
         _deleteMessageRecipientStatusMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteMessageRecipientStatus",
@@ -71,10 +71,10 @@ public class MessageRecipientStatusLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchMessageRecipientStatusMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchMessageRecipientStatus", java.lang.Long.class);
+                "fetchMessageRecipientStatus", long.class);
 
         _getMessageRecipientStatusMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getMessageRecipientStatus", java.lang.Long.class);
+                "getMessageRecipientStatus", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -149,11 +149,11 @@ public class MessageRecipientStatusLocalServiceClp
     }
 
     public com.ext.portlet.messaging.model.MessageRecipientStatus createMessageRecipientStatus(
-        java.lang.Long messageRecipientId) {
+        long messageRecipientId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createMessageRecipientStatusMethodKey1,
-                ClpSerializer.translateInput(messageRecipientId));
+                messageRecipientId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -169,11 +169,11 @@ public class MessageRecipientStatusLocalServiceClp
         return (com.ext.portlet.messaging.model.MessageRecipientStatus) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteMessageRecipientStatus(java.lang.Long messageRecipientId)
+    public void deleteMessageRecipientStatus(long messageRecipientId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteMessageRecipientStatusMethodKey2,
-                ClpSerializer.translateInput(messageRecipientId));
+                messageRecipientId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -328,12 +328,12 @@ public class MessageRecipientStatusLocalServiceClp
     }
 
     public com.ext.portlet.messaging.model.MessageRecipientStatus fetchMessageRecipientStatus(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchMessageRecipientStatusMethodKey8,
-                ClpSerializer.translateInput(messageRecipientId));
+                messageRecipientId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -354,13 +354,13 @@ public class MessageRecipientStatusLocalServiceClp
     }
 
     public com.ext.portlet.messaging.model.MessageRecipientStatus getMessageRecipientStatus(
-        java.lang.Long messageRecipientId)
+        long messageRecipientId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getMessageRecipientStatusMethodKey9,
-                ClpSerializer.translateInput(messageRecipientId));
+                messageRecipientId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

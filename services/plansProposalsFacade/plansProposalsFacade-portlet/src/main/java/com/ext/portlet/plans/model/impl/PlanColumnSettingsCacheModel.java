@@ -17,10 +17,10 @@ import java.io.Serializable;
  */
 public class PlanColumnSettingsCacheModel implements CacheModel<PlanColumnSettings>,
     Serializable {
-    public Long planColumnSettingsId;
+    public long planColumnSettingsId;
     public String columnName;
-    public Long planUserSettingsId;
-    public Boolean visible;
+    public long planUserSettingsId;
+    public boolean visible;
 
     @Override
     public String toString() {

@@ -41,7 +41,7 @@ public class DiscussionMessageLocalServiceWrapper
     * @return the new discussion message
     */
     public com.ext.portlet.discussions.model.DiscussionMessage createDiscussionMessage(
-        java.lang.Long pk) {
+        long pk) {
         return _discussionMessageLocalService.createDiscussionMessage(pk);
     }
 
@@ -52,7 +52,7 @@ public class DiscussionMessageLocalServiceWrapper
     * @throws PortalException if a discussion message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteDiscussionMessage(java.lang.Long pk)
+    public void deleteDiscussionMessage(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _discussionMessageLocalService.deleteDiscussionMessage(pk);
@@ -143,8 +143,7 @@ public class DiscussionMessageLocalServiceWrapper
     }
 
     public com.ext.portlet.discussions.model.DiscussionMessage fetchDiscussionMessage(
-        java.lang.Long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long pk) throws com.liferay.portal.kernel.exception.SystemException {
         return _discussionMessageLocalService.fetchDiscussionMessage(pk);
     }
 
@@ -157,7 +156,7 @@ public class DiscussionMessageLocalServiceWrapper
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.discussions.model.DiscussionMessage getDiscussionMessage(
-        java.lang.Long pk)
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _discussionMessageLocalService.getDiscussionMessage(pk);
@@ -309,6 +308,104 @@ public class DiscussionMessageLocalServiceWrapper
     public void reIndex(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         _discussionMessageLocalService.reIndex(messageId);
+    }
+
+    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessage> getThreadMessages(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getThreadMessages(dMessage);
+    }
+
+    public int getThreadMessagesCount(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getThreadMessagesCount(dMessage);
+    }
+
+    public void store(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _discussionMessageLocalService.store(dMessage);
+    }
+
+    public com.ext.portlet.discussions.model.DiscussionMessage addThreadMessage(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage,
+        java.lang.String subject, java.lang.String body,
+        com.liferay.portal.model.User author)
+        throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.addThreadMessage(dMessage,
+            subject, body, author);
+    }
+
+    public com.liferay.portal.model.User getAuthor(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getAuthor(dMessage);
+    }
+
+    public com.liferay.portal.model.User getLastActivityAuthor(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getLastActivityAuthor(dMessage);
+    }
+
+    public void delete(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _discussionMessageLocalService.delete(dMessage);
+    }
+
+    public void update(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage,
+        java.lang.String subject, java.lang.String body)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _discussionMessageLocalService.update(dMessage, subject, body);
+    }
+
+    public com.ext.portlet.discussions.model.DiscussionCategory getCategory(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.ext.portlet.discussions.NoSuchDiscussionCategoryException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getCategory(dMessage);
+    }
+
+    public com.ext.portlet.discussions.model.DiscussionCategoryGroup getCategoryGroup(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getCategoryGroup(dMessage);
+    }
+
+    public com.ext.portlet.discussions.model.DiscussionMessage getThread(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.ext.portlet.discussions.NoSuchDiscussionMessageException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getThread(dMessage);
+    }
+
+    public java.util.List<com.ext.portlet.discussions.model.DiscussionMessageFlag> getFlags(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getFlags(dMessage);
+    }
+
+    public void addFlag(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage,
+        java.lang.String flagType, java.lang.String data,
+        com.liferay.portal.model.User user)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _discussionMessageLocalService.addFlag(dMessage, flagType, data, user);
+    }
+
+    public void removeFlag(
+        com.ext.portlet.discussions.model.DiscussionMessage dMessage,
+        java.lang.String flagType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _discussionMessageLocalService.removeFlag(dMessage, flagType);
     }
 
     /**

@@ -47,7 +47,7 @@ public class PlanTypeLocalServiceUtil {
     * @return the new plan type
     */
     public static com.ext.portlet.plans.model.PlanType createPlanType(
-        java.lang.Long planTypeId) {
+        long planTypeId) {
         return getService().createPlanType(planTypeId);
     }
 
@@ -58,7 +58,7 @@ public class PlanTypeLocalServiceUtil {
     * @throws PortalException if a plan type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanType(java.lang.Long planTypeId)
+    public static void deletePlanType(long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanType(planTypeId);
@@ -148,7 +148,7 @@ public class PlanTypeLocalServiceUtil {
     }
 
     public static com.ext.portlet.plans.model.PlanType fetchPlanType(
-        java.lang.Long planTypeId)
+        long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanType(planTypeId);
     }
@@ -162,7 +162,7 @@ public class PlanTypeLocalServiceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.plans.model.PlanType getPlanType(
-        java.lang.Long planTypeId)
+        long planTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanType(planTypeId);
@@ -270,6 +270,36 @@ public class PlanTypeLocalServiceUtil {
     public static boolean isRegionalType(long planTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().isRegionalType(planTypeId);
+    }
+
+    public static java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAvailableModels(planType);
+    }
+
+    public static edu.mit.cci.simulation.client.Simulation getDefaultModel(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getDefaultModel(planType);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanTypeColumn> getColumns(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getColumns(planType);
+    }
+
+    public static java.util.List<com.ext.portlet.plans.model.PlanTypeAttribute> getAttributes(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAttributes(planType);
+    }
+
+    public static boolean isRegional(
+        com.ext.portlet.plans.model.PlanType planType)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().isRegional(planType);
     }
 
     public static void clearService() {

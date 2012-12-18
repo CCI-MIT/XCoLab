@@ -32,7 +32,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @return the primary key of this model position
     */
-    public java.lang.Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _modelPosition.getPrimaryKey();
     }
 
@@ -41,7 +41,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @param primaryKey the primary key of this model position
     */
-    public void setPrimaryKey(java.lang.Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _modelPosition.setPrimaryKey(primaryKey);
     }
 
@@ -50,7 +50,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @return the ID of this model position
     */
-    public java.lang.Long getId() {
+    public long getId() {
         return _modelPosition.getId();
     }
 
@@ -59,7 +59,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @param id the ID of this model position
     */
-    public void setId(java.lang.Long id) {
+    public void setId(long id) {
         _modelPosition.setId(id);
     }
 
@@ -68,7 +68,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @return the position ID of this model position
     */
-    public java.lang.Long getPositionId() {
+    public long getPositionId() {
         return _modelPosition.getPositionId();
     }
 
@@ -77,7 +77,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @param positionId the position ID of this model position
     */
-    public void setPositionId(java.lang.Long positionId) {
+    public void setPositionId(long positionId) {
         _modelPosition.setPositionId(positionId);
     }
 
@@ -86,7 +86,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @return the model ID of this model position
     */
-    public java.lang.Long getModelId() {
+    public long getModelId() {
         return _modelPosition.getModelId();
     }
 
@@ -95,7 +95,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @param modelId the model ID of this model position
     */
-    public void setModelId(java.lang.Long modelId) {
+    public void setModelId(long modelId) {
         _modelPosition.setModelId(modelId);
     }
 

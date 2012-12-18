@@ -46,7 +46,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @return the new contest phase
     */
     public com.ext.portlet.contests.model.ContestPhase create(
-        java.lang.Long ContestPhasePK);
+        long ContestPhasePK);
 
     /**
     * Removes the contest phase with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase remove(
-        java.lang.Long ContestPhasePK)
+        long ContestPhasePK)
         throws com.ext.portlet.contests.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -74,7 +74,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase findByPrimaryKey(
-        java.lang.Long ContestPhasePK)
+        long ContestPhasePK)
         throws com.ext.portlet.contests.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -86,7 +86,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase fetchByPrimaryKey(
-        java.lang.Long ContestPhasePK)
+        long ContestPhasePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -100,7 +100,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase findByContestIdStartEnd(
-        java.lang.Long ContestPK, java.util.Date PhaseStartDate,
+        long ContestPK, java.util.Date PhaseStartDate,
         java.util.Date PhaseEndDate)
         throws com.ext.portlet.contests.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -115,7 +115,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase fetchByContestIdStartEnd(
-        java.lang.Long ContestPK, java.util.Date PhaseStartDate,
+        long ContestPK, java.util.Date PhaseStartDate,
         java.util.Date PhaseEndDate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -130,7 +130,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase fetchByContestIdStartEnd(
-        java.lang.Long ContestPK, java.util.Date PhaseStartDate,
+        long ContestPK, java.util.Date PhaseStartDate,
         java.util.Date PhaseEndDate, boolean retrieveFromCache)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -142,7 +142,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.ContestPhase> findByContestId(
-        java.lang.Long ContestPK)
+        long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -159,7 +159,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.ContestPhase> findByContestId(
-        java.lang.Long ContestPK, int start, int end)
+        long ContestPK, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -177,7 +177,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public java.util.List<com.ext.portlet.contests.model.ContestPhase> findByContestId(
-        java.lang.Long ContestPK, int start, int end,
+        long ContestPK, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -195,7 +195,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase findByContestId_First(
-        java.lang.Long ContestPK,
+        long ContestPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -214,7 +214,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase findByContestId_Last(
-        java.lang.Long ContestPK,
+        long ContestPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -234,7 +234,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.contests.model.ContestPhase[] findByContestId_PrevAndNext(
-        java.lang.Long ContestPhasePK, java.lang.Long ContestPK,
+        long ContestPhasePK, long ContestPK,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.contests.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -290,7 +290,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @param PhaseEndDate the phase end date
     * @throws SystemException if a system exception occurred
     */
-    public void removeByContestIdStartEnd(java.lang.Long ContestPK,
+    public void removeByContestIdStartEnd(long ContestPK,
         java.util.Date PhaseStartDate, java.util.Date PhaseEndDate)
         throws com.ext.portlet.contests.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -301,7 +301,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @param ContestPK the contest p k
     * @throws SystemException if a system exception occurred
     */
-    public void removeByContestId(java.lang.Long ContestPK)
+    public void removeByContestId(long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -321,7 +321,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @return the number of matching contest phases
     * @throws SystemException if a system exception occurred
     */
-    public int countByContestIdStartEnd(java.lang.Long ContestPK,
+    public int countByContestIdStartEnd(long ContestPK,
         java.util.Date PhaseStartDate, java.util.Date PhaseEndDate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -332,7 +332,7 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     * @return the number of matching contest phases
     * @throws SystemException if a system exception occurred
     */
-    public int countByContestId(java.lang.Long ContestPK)
+    public int countByContestId(long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

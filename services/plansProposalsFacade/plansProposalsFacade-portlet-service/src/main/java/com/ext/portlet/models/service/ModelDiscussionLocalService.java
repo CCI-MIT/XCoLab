@@ -48,7 +48,7 @@ public interface ModelDiscussionLocalService extends PersistedModelLocalService 
     * @return the new model discussion
     */
     public com.ext.portlet.models.model.ModelDiscussion createModelDiscussion(
-        java.lang.Long modelDiscussionId);
+        long modelDiscussionId);
 
     /**
     * Deletes the model discussion with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ModelDiscussionLocalService extends PersistedModelLocalService 
     * @throws PortalException if a model discussion with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelDiscussion(java.lang.Long modelDiscussionId)
+    public void deleteModelDiscussion(long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -135,7 +135,7 @@ public interface ModelDiscussionLocalService extends PersistedModelLocalService 
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelDiscussion fetchModelDiscussion(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -148,7 +148,7 @@ public interface ModelDiscussionLocalService extends PersistedModelLocalService 
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.models.model.ModelDiscussion getModelDiscussion(
-        java.lang.Long modelDiscussionId)
+        long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

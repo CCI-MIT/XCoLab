@@ -140,7 +140,7 @@ public abstract class DiscussionMessageLocalServiceBaseImpl
      * @param pk the primary key for the new discussion message
      * @return the new discussion message
      */
-    public DiscussionMessage createDiscussionMessage(Long pk) {
+    public DiscussionMessage createDiscussionMessage(long pk) {
         return discussionMessagePersistence.create(pk);
     }
 
@@ -151,7 +151,7 @@ public abstract class DiscussionMessageLocalServiceBaseImpl
      * @throws PortalException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteDiscussionMessage(Long pk)
+    public void deleteDiscussionMessage(long pk)
         throws PortalException, SystemException {
         DiscussionMessage discussionMessage = discussionMessagePersistence.remove(pk);
 
@@ -257,7 +257,7 @@ public abstract class DiscussionMessageLocalServiceBaseImpl
         return discussionMessagePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public DiscussionMessage fetchDiscussionMessage(Long pk)
+    public DiscussionMessage fetchDiscussionMessage(long pk)
         throws SystemException {
         return discussionMessagePersistence.fetchByPrimaryKey(pk);
     }
@@ -270,7 +270,7 @@ public abstract class DiscussionMessageLocalServiceBaseImpl
      * @throws PortalException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public DiscussionMessage getDiscussionMessage(Long pk)
+    public DiscussionMessage getDiscussionMessage(long pk)
         throws PortalException, SystemException {
         return discussionMessagePersistence.findByPrimaryKey(pk);
     }

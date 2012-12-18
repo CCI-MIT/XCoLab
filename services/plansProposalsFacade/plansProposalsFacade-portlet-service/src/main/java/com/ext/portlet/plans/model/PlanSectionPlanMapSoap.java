@@ -15,8 +15,8 @@ import java.util.List;
  * @generated
  */
 public class PlanSectionPlanMapSoap implements Serializable {
-    private Long _sectionId;
-    private Long _relatedPlanId;
+    private long _sectionId;
+    private long _relatedPlanId;
 
     public PlanSectionPlanMapSoap() {
     }
@@ -78,19 +78,19 @@ public class PlanSectionPlanMapSoap implements Serializable {
         setRelatedPlanId(pk.relatedPlanId);
     }
 
-    public Long getSectionId() {
+    public long getSectionId() {
         return _sectionId;
     }
 
-    public void setSectionId(Long sectionId) {
+    public void setSectionId(long sectionId) {
         _sectionId = sectionId;
     }
 
-    public Long getRelatedPlanId() {
+    public long getRelatedPlanId() {
         return _relatedPlanId;
     }
 
-    public void setRelatedPlanId(Long relatedPlanId) {
+    public void setRelatedPlanId(long relatedPlanId) {
         _relatedPlanId = relatedPlanId;
     }
 }

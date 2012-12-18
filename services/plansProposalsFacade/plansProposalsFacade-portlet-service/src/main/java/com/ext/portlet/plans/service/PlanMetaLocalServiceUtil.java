@@ -46,8 +46,7 @@ public class PlanMetaLocalServiceUtil {
     * @param id the primary key for the new plan meta
     * @return the new plan meta
     */
-    public static com.ext.portlet.plans.model.PlanMeta createPlanMeta(
-        java.lang.Long id) {
+    public static com.ext.portlet.plans.model.PlanMeta createPlanMeta(long id) {
         return getService().createPlanMeta(id);
     }
 
@@ -58,7 +57,7 @@ public class PlanMetaLocalServiceUtil {
     * @throws PortalException if a plan meta with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanMeta(java.lang.Long id)
+    public static void deletePlanMeta(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().deletePlanMeta(id);
@@ -147,8 +146,7 @@ public class PlanMetaLocalServiceUtil {
         return getService().dynamicQueryCount(dynamicQuery);
     }
 
-    public static com.ext.portlet.plans.model.PlanMeta fetchPlanMeta(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanMeta fetchPlanMeta(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanMeta(id);
     }
@@ -161,8 +159,7 @@ public class PlanMetaLocalServiceUtil {
     * @throws PortalException if a plan meta with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.plans.model.PlanMeta getPlanMeta(
-        java.lang.Long id)
+    public static com.ext.portlet.plans.model.PlanMeta getPlanMeta(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlanMeta(id);
@@ -278,6 +275,21 @@ public class PlanMetaLocalServiceUtil {
         com.ext.portlet.plans.model.PlanItem plan, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().createNewVersionForPlan(plan, store);
+    }
+
+    public static void store(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().store(pm);
+    }
+
+    public static void vote(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().vote(pm);
+    }
+
+    public static void unvote(com.ext.portlet.plans.model.PlanMeta pm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().unvote(pm);
     }
 
     public static void clearService() {

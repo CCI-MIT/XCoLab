@@ -15,8 +15,8 @@ import java.lang.reflect.Proxy;
 
 public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
     implements PlanSectionPlanMap {
-    private Long _sectionId;
-    private Long _relatedPlanId;
+    private long _sectionId;
+    private long _relatedPlanId;
 
     public PlanSectionPlanMapClp() {
     }
@@ -46,24 +46,20 @@ public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
         setPrimaryKey((PlanSectionPlanMapPK) primaryKeyObj);
     }
 
-    public Long getSectionId() {
+    public long getSectionId() {
         return _sectionId;
     }
 
-    public void setSectionId(Long sectionId) {
+    public void setSectionId(long sectionId) {
         _sectionId = sectionId;
     }
 
-    public Long getRelatedPlanId() {
+    public long getRelatedPlanId() {
         return _relatedPlanId;
     }
 
-    public void setRelatedPlanId(Long relatedPlanId) {
+    public void setRelatedPlanId(long relatedPlanId) {
         _relatedPlanId = relatedPlanId;
-    }
-
-    public void store() {
-        throw new UnsupportedOperationException();
     }
 
     public void persist() throws SystemException {

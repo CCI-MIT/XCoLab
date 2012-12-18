@@ -49,7 +49,7 @@ public interface PlanTypeAttributeLocalService
     * @return the new plan type attribute
     */
     public com.ext.portlet.plans.model.PlanTypeAttribute createPlanTypeAttribute(
-        java.lang.Long planTypeAttributeId);
+        long planTypeAttributeId);
 
     /**
     * Deletes the plan type attribute with the primary key from the database. Also notifies the appropriate model listeners.
@@ -58,7 +58,7 @@ public interface PlanTypeAttributeLocalService
     * @throws PortalException if a plan type attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanTypeAttribute(java.lang.Long planTypeAttributeId)
+    public void deletePlanTypeAttribute(long planTypeAttributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -136,7 +136,7 @@ public interface PlanTypeAttributeLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanTypeAttribute fetchPlanTypeAttribute(
-        java.lang.Long planTypeAttributeId)
+        long planTypeAttributeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -149,7 +149,7 @@ public interface PlanTypeAttributeLocalService
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.plans.model.PlanTypeAttribute getPlanTypeAttribute(
-        java.lang.Long planTypeAttributeId)
+        long planTypeAttributeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

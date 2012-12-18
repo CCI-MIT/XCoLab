@@ -14,9 +14,9 @@ import java.lang.reflect.Proxy;
 
 public class ModelPositionClp extends BaseModelImpl<ModelPosition>
     implements ModelPosition {
-    private Long _id;
-    private Long _positionId;
-    private Long _modelId;
+    private long _id;
+    private long _positionId;
+    private long _modelId;
 
     public ModelPositionClp() {
     }
@@ -29,11 +29,11 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
         return ModelPosition.class.getName();
     }
 
-    public Long getPrimaryKey() {
+    public long getPrimaryKey() {
         return _id;
     }
 
-    public void setPrimaryKey(Long primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
@@ -45,27 +45,27 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
-    public Long getId() {
+    public long getId() {
         return _id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         _id = id;
     }
 
-    public Long getPositionId() {
+    public long getPositionId() {
         return _positionId;
     }
 
-    public void setPositionId(Long positionId) {
+    public void setPositionId(long positionId) {
         _positionId = positionId;
     }
 
-    public Long getModelId() {
+    public long getModelId() {
         return _modelId;
     }
 
-    public void setModelId(Long modelId) {
+    public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
@@ -95,7 +95,7 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
     }
 
     public int compareTo(ModelPosition modelPosition) {
-        Long primaryKey = modelPosition.getPrimaryKey();
+        long primaryKey = modelPosition.getPrimaryKey();
 
         if (getPrimaryKey() < primaryKey) {
             return -1;
@@ -120,7 +120,7 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
             return false;
         }
 
-        Long primaryKey = modelPosition.getPrimaryKey();
+        long primaryKey = modelPosition.getPrimaryKey();
 
         if (getPrimaryKey() == primaryKey) {
             return true;
@@ -131,7 +131,7 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override
