@@ -6,7 +6,6 @@
   -->
 
 <service-builder package-path="com.ext.portlet.models">
-    <namespace>xcolab</namespace>
 
     <entity name="ModelDiscussion" remote-service="true" local-service="true">
         <!-- PK field -->
@@ -33,7 +32,7 @@
         </finder>
     </entity>
 
-    <entity name="ModelGlobalPreference" local-service="true" remove-service="true">
+    <entity name="ModelGlobalPreference" local-service="true">
         <column name="modelGlobalPreferencePK" type="long" primary="true"/>
         <column name="modelId" type="long"/>
         <column name="visible" type="boolean"/>

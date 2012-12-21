@@ -18,12 +18,12 @@ import org.climatecollaboratorium.validation.ValueRequiredValidator;
 
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.DiscussionMessageFlagType;
-import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
-import com.ext.portlet.discussions.model.DiscussionMessage;
-import com.ext.portlet.discussions.model.DiscussionMessageFlag;
-import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.discussions.service.DiscussionCategoryLocalServiceUtil;
-import com.ext.portlet.discussions.service.DiscussionMessageLocalServiceUtil;
+import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.DiscussionMessage;
+import com.ext.portlet.model.DiscussionMessageFlag;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
+import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
 import com.liferay.portal.kernel.exception.PortalException;

@@ -1,17 +1,5 @@
 package org.climatecollaboratorium.plans;
 
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
-import edu.mit.cci.simulation.client.Scenario;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +11,17 @@ import org.climatecollaboratorium.events.HandlerRegistration;
 import org.climatecollaboratorium.facelets.simulations.ScenarioEditEvent;
 import org.climatecollaboratorium.facelets.simulations.ScenarioSavedEvent;
 import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
+
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
+import edu.mit.cci.simulation.client.Scenario;
 
 public class SimulationBean {
     private Long scenario;

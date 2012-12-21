@@ -225,6 +225,7 @@ public enum PlanPageType {
     }
     
     public static PlanPageType getPageTypeForParams(Map<String, String> params) {
+        System.out.println(PlanPageType.values());
         for (PlanPageType type: values()) {
             if (type.pageDeterminator.determine(params)) {
                 return type;

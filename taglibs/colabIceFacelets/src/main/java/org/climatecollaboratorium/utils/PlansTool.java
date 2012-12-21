@@ -6,8 +6,8 @@ import javax.faces.event.ActionEvent;
 
 import org.apache.log4j.Logger;
 
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 public class PlansTool {

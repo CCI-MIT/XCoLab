@@ -21,15 +21,15 @@ import org.climatecollaboratorium.plans.CreatePlanBean;
 import org.climatecollaboratorium.plans.Helper;
 import org.climatecollaboratorium.plans.PlansIndexBean;
 
-import com.ext.portlet.contests.NoSuchContestPhaseException;
-import com.ext.portlet.contests.model.Contest;
-import com.ext.portlet.contests.model.ContestPhase;
-import com.ext.portlet.contests.service.ContestLocalServiceUtil;
-import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.ontology.model.FocusArea;
-import com.ext.portlet.ontology.model.OntologyTerm;
-import com.ext.portlet.ontology.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.ontology.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 

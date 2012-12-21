@@ -13,11 +13,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.ext.portlet.models.model.ModelInputGroup;
-import com.ext.portlet.models.model.ModelInputItem;
-import com.ext.portlet.models.service.ModelInputGroupLocalServiceUtil;
-import com.ext.portlet.models.service.ModelInputItemLocalServiceUtil;
-import com.ext.portlet.models.service.base.ModelInputGroupType;
+import com.ext.portlet.model.ModelInputGroup;
+import com.ext.portlet.model.ModelInputItem;
+import com.ext.portlet.models.ModelInputGroupType;
+import com.ext.portlet.service.ModelInputGroupLocalServiceUtil;
+import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

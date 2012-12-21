@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import com.ext.portlet.model.PlanAttribute;
+import com.ext.portlet.model.PlanAttributeFilter;
+import com.ext.portlet.model.PlansUserSettings;
 import com.ext.portlet.plans.PlanConstants.Attribute;
-import com.ext.portlet.plans.model.PlanAttribute;
-import com.ext.portlet.plans.model.PlanAttributeFilter;
-import com.ext.portlet.plans.model.PlansUserSettings;
-import com.ext.portlet.plans.service.PlanAttributeLocalServiceUtil;
+import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
 
 public enum PlanFilterOperatorType {
     LIKE(new PlanFilterOperator.LikeOperator()),
@@ -55,11 +55,12 @@ public enum PlanFilterOperatorType {
 
             @Override
             public boolean isInFilteredSet(PlansUserSettings userSettings, PlanAttributeFilter planAttributeFilter, PlanAttribute planAttribute) {
-                if (planAttributeFilter.getTypedValue() == null) {
+                //if (planAttributeFilter.getTypedValue() == null) {
                     return true;
-                }
-                Comparable attributeVal = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
-                return attributeVal == null ? false : attributeVal.compareTo(planAttributeFilter.getTypedValue()) <= 0;
+                //}
+                //Comparable attributeVal = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
+                //return attributeVal == null ? false : attributeVal.compareTo(planAttributeFilter.getTypedValue()) <= 0;
+                //return false;
             }
         }
 
@@ -85,11 +86,13 @@ public enum PlanFilterOperatorType {
 
             @Override
             public boolean isInFilteredSet(PlansUserSettings userSettings, PlanAttributeFilter planAttributeFilter, PlanAttribute planAttribute) {
-                if (planAttributeFilter.getTypedValue() == null) {
+                /*if (planAttributeFilter.getTypedValue() == null) {
                     return true;
                 }
                 Comparable attributeVal = (Comparable) PlanAttributeLocalServiceUtil.getTypedValue(planAttribute);
                 return attributeVal == null ? false : attributeVal.compareTo(planAttributeFilter.getTypedValue()) >= 0;
+                */
+                return true;
             }
         }
 
@@ -168,7 +171,7 @@ public enum PlanFilterOperatorType {
             @Override
             public boolean isInFilteredSet(PlansUserSettings userSettings, PlanAttributeFilter planAttributeFilter, PlanAttribute planAttribute) {
                 boolean operatorAll = userSettings.getFilterPositionsAll();
-                if (userSettings.getPositionsIds().size() == 0) {
+                /*if (userSettings.getPositionsIds().size() == 0) {
                     return true;
                 }
                 Set<Long> positionsIds = new HashSet<Long>(userSettings.getPositionsIds());
@@ -184,7 +187,8 @@ public enum PlanFilterOperatorType {
                 else {
                     positionsIds.retainAll(planPositions);
                     return positionsIds.size() > 0;
-                }
+                }*/
+                return true;
             }
         }
 

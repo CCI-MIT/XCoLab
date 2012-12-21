@@ -6,8 +6,8 @@
 
 package com.ext.portlet.plans;
 
+import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.plans.PlanConstants.Attribute;
-import com.ext.portlet.plans.model.PlanItem;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 

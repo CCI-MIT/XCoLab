@@ -7,10 +7,8 @@
 
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet.messaging">
-	<namespace>xcolab</namespace>
 
-
-	<entity name="Message" remote-service="true" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessagePersistenceImpl">
+	<entity name="Message" remote-service="true" local-service="true">
 
 		<!-- PK field -->
 		<column name="messageId" type="long" primary="true" />
@@ -37,7 +35,7 @@
         <reference package-path="com.liferay.portal" entity="User" />
 
 	</entity>
-    	<entity name="MessageRecipientStatus" remote-service="true" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessageRecipientStatusPersistenceImpl">
+    	<entity name="MessageRecipientStatus" remote-service="true" local-service="true">
 
 		<!-- PK field -->
         <column name="messageRecipientId" type="long" primary="true"/>
@@ -78,7 +76,7 @@
 
 
 
-	<entity name="MessagingUserPreferences" local-service="true" persistence-class="com.ext.portlet.messaging.service.persistence.MessagingUserPreferencesPersistenceImpl">
+	<entity name="MessagingUserPreferences" local-service="true" >
 		<column name="messagingPreferencesId" type="long" primary="true"/>
         <column name="userId" type="long"/>
 		<column name="emailOnSend" type="boolean"/>

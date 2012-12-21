@@ -14,8 +14,8 @@ import javax.portlet.ValidatorException;
 
 import org.climatecollaboratorium.plans.wrappers.ContestPreferenceWrapper;
 
-import com.ext.portlet.contests.model.Contest;
-import com.ext.portlet.contests.service.ContestLocalServiceUtil;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 

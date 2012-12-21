@@ -20,13 +20,13 @@ import org.climatecollaboratorium.plans.events.PlanUpdatedEvent;
 import org.climatecollaboratorium.plans.exceptions.BeanInitializationException;
 import org.climatecollaboratorium.plans.wrappers.PlanItemWrapper;
 
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanTypeAttribute;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.plans.PlanConstants;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.model.PlanTypeAttribute;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanTypeLocalServiceUtil;
+import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

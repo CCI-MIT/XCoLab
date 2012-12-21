@@ -1,12 +1,9 @@
 package org.climatecollaboratorium.plans.wrappers;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -17,15 +14,15 @@ import org.climatecollaboratorium.plans.NavigationBean;
 import org.climatecollaboratorium.plans.PlansIndexBean;
 import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
 
-import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.plans.NoSuchPlanPositionsException;
+import com.ext.portlet.NoSuchPlanPositionsException;
+import com.ext.portlet.model.PlanAttribute;
+import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.PlanConstants.Columns;
-import com.ext.portlet.plans.model.PlanAttribute;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.service.PlanAttributeLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;

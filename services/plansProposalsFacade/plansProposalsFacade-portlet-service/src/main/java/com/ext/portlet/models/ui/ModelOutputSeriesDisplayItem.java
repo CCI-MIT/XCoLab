@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ext.portlet.models.NoSuchModelOutputItemException;
-import com.ext.portlet.models.model.ModelOutputItem;
-import com.ext.portlet.models.service.ModelOutputItemLocalServiceUtil;
+import com.ext.portlet.NoSuchModelOutputItemException;
+import com.ext.portlet.model.ModelOutputItem;
+import com.ext.portlet.service.ModelOutputItemLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

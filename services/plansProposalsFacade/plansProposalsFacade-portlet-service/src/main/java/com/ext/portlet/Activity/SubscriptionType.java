@@ -1,8 +1,8 @@
 package com.ext.portlet.Activity;
 
-import com.ext.portlet.contests.model.Contest;
-import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
-import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.PlanItem;
 
 public enum SubscriptionType {
     DISCUSSION(DiscussionCategoryGroup.class.getName(), "Discussion"),

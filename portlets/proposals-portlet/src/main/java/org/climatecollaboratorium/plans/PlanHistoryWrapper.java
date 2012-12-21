@@ -8,14 +8,14 @@ package org.climatecollaboratorium.plans;
 
 import java.util.Date;
 
-import com.ext.portlet.plans.model.PlanDescription;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.model.PlanModelRun;
-import com.ext.portlet.plans.model.PlanPositions;
-import com.ext.portlet.plans.service.PlanDescriptionLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanModelRunLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanPositionsLocalServiceUtil;
+import com.ext.portlet.model.PlanDescription;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanModelRun;
+import com.ext.portlet.model.PlanPositions;
+import com.ext.portlet.service.PlanDescriptionLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanModelRunLocalServiceUtil;
+import com.ext.portlet.service.PlanPositionsLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;

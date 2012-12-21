@@ -8,8 +8,7 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 
 <service-builder package-path="com.ext.portlet.Activity">
-	<namespace>xcolab</namespace>
-	<entity name="ActivitySubscription" local-service="true" persistence-class="com.ext.portlet.Activity.service.persistence.ActivitySubscriptionPersistenceImpl">
+	<entity name="ActivitySubscription" local-service="true" >
         <column name="pk" type="long" primary="true" />    
 		<column name="classNameId" type="long" />
 		<column name="classPK" type="long" />

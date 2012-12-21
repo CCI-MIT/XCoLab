@@ -6,8 +6,8 @@
 
 package com.ext.portlet.models.ui;
 
-import com.ext.portlet.models.model.ModelOutputChartOrder;
-import com.ext.portlet.models.model.ModelOutputItem;
+import com.ext.portlet.model.ModelOutputChartOrder;
+import com.ext.portlet.model.ModelOutputItem;
 
 import edu.mit.cci.simulation.client.TupleStatus;
 

@@ -12,22 +12,26 @@ import java.util.List;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.NoSuchPlanException;
+import com.ext.portlet.NoSuchPlanTypeException;
+import com.ext.portlet.NoSuchPlanVoteException;
+import com.ext.portlet.NoSuchPlansUserSettingsException;
+import com.ext.portlet.model.PlanColumnSettings;
+import com.ext.portlet.model.PlanType;
+import com.ext.portlet.model.PlanTypeColumn;
+import com.ext.portlet.model.PlanVote;
+import com.ext.portlet.model.PlansFilter;
+import com.ext.portlet.model.PlansFilterPosition;
+import com.ext.portlet.model.PlansUserSettings;
 import com.ext.portlet.plans.PlanConstants.Columns;
-import com.ext.portlet.plans.model.PlanColumnSettings;
-import com.ext.portlet.plans.model.PlanType;
-import com.ext.portlet.plans.model.PlanTypeColumn;
-import com.ext.portlet.plans.model.PlanVote;
-import com.ext.portlet.plans.model.PlansFilter;
-import com.ext.portlet.plans.model.PlansFilterPosition;
-import com.ext.portlet.plans.model.PlansUserSettings;
-import com.ext.portlet.plans.service.PlanColumnSettingsLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
-import com.ext.portlet.plans.service.PlansFilterLocalServiceUtil;
-import com.ext.portlet.plans.service.PlansFilterPositionLocalServiceUtil;
-import com.ext.portlet.plans.service.PlansUserSettingsLocalServiceUtil;
-import com.ext.portlet.plans.service.persistence.PlanVotePK;
-import com.ext.portlet.plans.service.persistence.PlansFilterPositionPK;
+import com.ext.portlet.service.PlanColumnSettingsLocalServiceUtil;
+import com.ext.portlet.service.PlanTypeLocalServiceUtil;
+import com.ext.portlet.service.PlanVoteLocalServiceUtil;
+import com.ext.portlet.service.PlansFilterLocalServiceUtil;
+import com.ext.portlet.service.PlansFilterPositionLocalServiceUtil;
+import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
+import com.ext.portlet.service.persistence.PlanVotePK;
+import com.ext.portlet.service.persistence.PlansFilterPositionPK;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -413,16 +417,17 @@ public class PlanLocalServiceHelper {
             User user = UserLocalServiceUtil.getUser(userId);
 
             if (!user.isDefaultUser()) {
-                try {
+               // try {
                     List tmp = PlansUserSettingsLocalServiceUtil.getPlansUserSettingses(0, 9999);
-                    userSettings = PlansUserSettingsLocalServiceUtil.getByUserIdPlanTypeId(userId, planTypeId);
+                    //userSettings = PlansUserSettingsLocalServiceUtil.getByUserIdPlanTypeId(userId, planTypeId);
+                    userSettings = null;
                     if (userSettings != null) {
                         setPlansFilterPositionsIds(userSettings);
                     }
 
-                } catch (NoSuchPlansUserSettingsException e) {
-                    System.out.print(e);
-                }
+                //} catch (NoSuchPlansUserSettingsException e) {
+                 //   System.out.print(e);
+                //}
             }
 
             if (userSettings == null || user.isDefaultUser()) {
@@ -440,7 +445,7 @@ public class PlanLocalServiceHelper {
                     settings.setVisible(planTypeColumn.getVisibleByDefault());
 
 
-                    userSettings.addColumnSettings(settings);
+                    //userSettings.addColumnSettings(settings);
                 }
                 /*
                 for (Columns c:Columns.defaults()) {
@@ -661,7 +666,7 @@ public class PlanLocalServiceHelper {
             PlansFilterPosition plansFilterPosition = (PlansFilterPosition) positionObj;
             positionsIds.add(plansFilterPosition.getPositionId());
         }
-        planUserSettings.setPositionsIds(positionsIds);
+       // planUserSettings.setPositionsIds(positionsIds);
     }
 
     /**
@@ -713,6 +718,7 @@ public class PlanLocalServiceHelper {
         }
 
         // add new associations
+        /*
         for (Long positionId : plansFilter.getPositionsIds()) {
             PlansFilterPositionPK plansFilterPositionPK = new PlansFilterPositionPK();
             plansFilterPositionPK.setPlanTypeId(plansFilter.getPlanTypeId());
@@ -721,7 +727,7 @@ public class PlanLocalServiceHelper {
 
             PlansFilterPosition plansFilterPosition = PlansFilterPositionLocalServiceUtil.createPlansFilterPosition(plansFilterPositionPK);
             PlansFilterPositionLocalServiceUtil.updatePlansFilterPosition(plansFilterPosition);
-        }
+        }*/
     }
 
 
@@ -785,7 +791,7 @@ public class PlanLocalServiceHelper {
         for (PlanTypeColumn typeColumn : PlanTypeLocalServiceUtil.getColumns(planType)) {
             if (columnSettings.getColumnName().equals(typeColumn.getColumnName())) {
                 columnSettings.setVisible(typeColumn.getVisibleByDefault());
-                settings.addColumnSettings(columnSettings);
+                //settings.addColumnSettings(columnSettings);
                 return columnSettings;
             }
         }

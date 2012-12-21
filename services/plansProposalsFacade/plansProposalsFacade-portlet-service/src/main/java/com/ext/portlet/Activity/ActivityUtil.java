@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ext.portlet.Activity.model.ActivitySubscription;
-import com.ext.portlet.Activity.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.model.ActivitySubscription;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

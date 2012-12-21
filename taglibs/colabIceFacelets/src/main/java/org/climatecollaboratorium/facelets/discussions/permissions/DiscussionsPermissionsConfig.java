@@ -11,7 +11,7 @@ import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.utils.Helper;
 
 import com.ext.portlet.discussions.DiscussionActions;
-import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

@@ -9,13 +9,13 @@ import javax.faces.model.SelectItem;
 import org.climatecollaboratorium.plans.Helper;
 import org.climatecollaboratorium.plans.utils.ContentFilteringHelper;
 
-import com.ext.portlet.ontology.model.FocusArea;
-import com.ext.portlet.plans.NoSuchPlanItemException;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.model.PlanSection;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanSectionLocalServiceUtil;
+import com.ext.portlet.NoSuchPlanItemException;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanSection;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 

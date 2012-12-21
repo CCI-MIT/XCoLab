@@ -14,9 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.ext.portlet.models.NoSuchModelOutputChartOrderException;
-import com.ext.portlet.models.model.ModelOutputChartOrder;
-import com.ext.portlet.models.service.ModelOutputChartOrderLocalServiceUtil;
+import com.ext.portlet.NoSuchModelOutputChartOrderException;
+import com.ext.portlet.model.ModelOutputChartOrder;
+import com.ext.portlet.service.ModelOutputChartOrderLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

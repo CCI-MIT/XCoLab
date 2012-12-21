@@ -1,6 +1,6 @@
 package org.climatecollaboratorium.plans.wrappers;
 
-import com.ext.portlet.contests.model.Contest;
+import com.ext.portlet.model.Contest;
 
 public class ContestPreferenceWrapper {
 

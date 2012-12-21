@@ -1,9 +1,9 @@
 package org.climatecollaboratorium.plans;
 
-import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.plans.PlanUserPermission;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.security.permission.PermissionChecker;

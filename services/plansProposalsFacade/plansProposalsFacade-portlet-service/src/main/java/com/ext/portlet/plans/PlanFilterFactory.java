@@ -6,7 +6,7 @@
 
 package com.ext.portlet.plans;
 
-import com.ext.portlet.plans.model.PlanAttributeFilter;
+import com.ext.portlet.model.PlanAttributeFilter;
 
 public interface PlanFilterFactory {
 	

@@ -10,12 +10,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.ext.portlet.contests.model.ContestPhase;
-import com.ext.portlet.contests.model.ContestStatus;
-import com.ext.portlet.contests.service.ContestLocalServiceUtil;
-import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.model.PlanType;
+import com.ext.portlet.contests.ContestStatus;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanType;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -59,7 +59,7 @@ public class ContestPhaseWrapper {
     }
 
     public ContestStatus getStatus() {
-        return ContestPhaseLocalServiceUtil.getContestStatus(phase);
+        return  phase.getContestPhaseStatus() == null ? null : ContestStatus.valueOf(phase.getContestPhaseStatus());
     }
 
     public boolean getCanVote() {

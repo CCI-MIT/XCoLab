@@ -26,8 +26,8 @@ import java.util.Locale;
 
 import javax.portlet.PortletURL;
 
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;

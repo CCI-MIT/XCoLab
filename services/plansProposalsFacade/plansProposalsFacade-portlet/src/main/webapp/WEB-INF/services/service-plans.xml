@@ -7,10 +7,9 @@
 
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet.plans">
-    <namespace>xcolab</namespace>
     
     
-    <entity name="PlanAttribute" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanAttributePersistenceImpl">
+    <entity name="PlanAttribute" local-service="true">
         <!-- PK field -->
         <column name="attributeId" type="long" primary="true"/>
         
@@ -33,7 +32,7 @@
     </entity>
     
     
-    <entity name="PlanPosition" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanPositionPersistenceImpl">
+    <entity name="PlanPosition" local-service="true" >
 
         <!-- PK field -->
         <column name="planId" type="long" primary="true" />
@@ -65,7 +64,7 @@
     
     
     
-    <entity name="PlansUserSettings" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansUserSettingsPersistenceImpl">
+    <entity name="PlansUserSettings" local-service="true" >
        <column name="planUserSettingsId" type="long" primary="true" />
         <column name="userId" type="long"/>
         <column name="planTypeId" type="long" />
@@ -84,7 +83,7 @@
 
     </entity>
     
-    <entity name="PlanVote" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlanVotePersistenceImpl">
+    <entity name="PlanVote" local-service="true">
         <column name="userId" type="long" primary="true" />
         <column name="contestId" type="long" primary="true" />
         <column name="planId" type="long" />
@@ -106,7 +105,7 @@
         </finder>
     </entity>
     
-    <entity name="PlansFilter" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansFilterPersistenceImpl">
+    <entity name="PlansFilter" local-service="true" >
         <column name="userId" type="long" primary="true" />
         <column name="planTypeId" type="long" primary="true" />
         <column name="name" type="String" />
@@ -164,7 +163,7 @@
        </finder>
     </entity>
 
-    <entity name="PlansFilterPosition" local-service="true" persistence-class="com.ext.portlet.plans.service.persistence.PlansFilterPositionPersistenceImpl">
+    <entity name="PlansFilterPosition" local-service="true">
         <column name="userId" type="long" primary="true" />
         <column name="planTypeId" type="long" primary="true" />
         <column name="positionId" type="long" primary="true" />

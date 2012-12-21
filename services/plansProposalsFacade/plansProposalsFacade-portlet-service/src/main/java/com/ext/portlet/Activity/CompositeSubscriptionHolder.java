@@ -9,7 +9,7 @@ package com.ext.portlet.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ext.portlet.Activity.model.ActivitySubscription;
+import com.ext.portlet.model.ActivitySubscription;
 
 public class CompositeSubscriptionHolder {
 	

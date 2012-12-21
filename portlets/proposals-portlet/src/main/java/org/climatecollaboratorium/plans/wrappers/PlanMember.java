@@ -6,9 +6,9 @@ import org.climatecollaboratorium.plans.Helper;
 import org.climatecollaboratorium.plans.PlanMembershipBean;
 import org.climatecollaboratorium.plans.PlansPermissionsBean;
 
+import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.plans.PlanUserPermission;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;

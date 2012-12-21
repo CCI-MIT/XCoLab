@@ -4,10 +4,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
-import com.ext.portlet.discussions.NoSuchDiscussionCategoryException;
-import com.ext.portlet.discussions.model.DiscussionCategory;
-import com.ext.portlet.discussions.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.discussions.service.DiscussionCategoryLocalServiceUtil;
+import com.ext.portlet.NoSuchDiscussionCategoryException;
+import com.ext.portlet.model.DiscussionCategory;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

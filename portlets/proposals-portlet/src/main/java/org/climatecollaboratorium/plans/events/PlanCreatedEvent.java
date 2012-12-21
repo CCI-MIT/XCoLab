@@ -2,7 +2,7 @@ package org.climatecollaboratorium.plans.events;
 
 import org.climatecollaboratorium.events.Event;
 
-import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.model.PlanItem;
 
 public class PlanCreatedEvent implements Event {
     private PlanItem planItem;

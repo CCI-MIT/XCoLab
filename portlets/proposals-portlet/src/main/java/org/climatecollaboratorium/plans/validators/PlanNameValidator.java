@@ -8,8 +8,8 @@ import javax.faces.validator.ValidatorException;
 
 import org.climatecollaboratorium.plans.wrappers.PlanItemWrapper;
 
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 

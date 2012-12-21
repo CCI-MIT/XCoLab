@@ -7,7 +7,6 @@
 
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet.contests">
-    <namespace>xcolab</namespace>
     <entity name="Contest" local-service="true" remote-service="true">
         <column name="ContestPK" type="long" primary="true" />
         <column name="ContestName" type="String" />

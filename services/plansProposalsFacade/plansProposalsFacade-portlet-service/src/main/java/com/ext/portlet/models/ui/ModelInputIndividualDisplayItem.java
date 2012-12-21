@@ -8,8 +8,8 @@ package com.ext.portlet.models.ui;
 
 import java.io.IOException;
 
-import com.ext.portlet.models.model.ModelInputItem;
-import com.ext.portlet.models.service.ModelInputItemLocalServiceUtil;
+import com.ext.portlet.model.ModelInputItem;
+import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 

@@ -8,7 +8,6 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 
 <service-builder package-path="com.ext.portlet.ontology">
-    <namespace>xcolab</namespace>
     <entity name="OntologySpace" local-service="true">
         <!-- PK field -->
         <column name="id" type="long" primary="true" />

@@ -16,12 +16,12 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.PortletRequest;
 
-import com.ext.portlet.messaging.model.Message;
-import com.ext.portlet.messaging.model.MessageRecipientStatus;
-import com.ext.portlet.messaging.model.MessagingUserPreferences;
-import com.ext.portlet.messaging.service.MessageLocalServiceUtil;
-import com.ext.portlet.messaging.service.MessageRecipientStatusLocalServiceUtil;
-import com.ext.portlet.messaging.service.MessagingUserPreferencesLocalServiceUtil;
+import com.ext.portlet.model.Message;
+import com.ext.portlet.model.MessageRecipientStatus;
+import com.ext.portlet.model.MessagingUserPreferences;
+import com.ext.portlet.service.MessageLocalServiceUtil;
+import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
+import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

@@ -15,16 +15,16 @@ import org.climatecollaboratorium.plans.wrappers.ContestPhaseWrapper;
 import org.climatecollaboratorium.plans.wrappers.ContestWrapper;
 import org.climatecollaboratorium.utils.Helper;
 
-import com.ext.portlet.Activity.service.ActivitySubscriptionLocalServiceUtil;
-import com.ext.portlet.contests.NoSuchContestPhaseException;
-import com.ext.portlet.contests.model.Contest;
-import com.ext.portlet.contests.model.ContestPhase;
-import com.ext.portlet.contests.service.ContestLocalServiceUtil;
-import com.ext.portlet.discussions.model.DiscussionCategoryGroup;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.model.PlanType;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanTypeLocalServiceUtil;
+import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanType;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -186,7 +186,7 @@ public class ContestBean {
     public boolean isUserSubscribed() throws PortalException, SystemException {
         if (Helper.isUserLoggedIn()) {
             boolean subscribed =  ActivitySubscriptionLocalServiceUtil.isSubscribed(Helper.getLiferayUser().getUserId(),
-                    Contest.class, contest.getContestId(), null, "");
+                    Contest.class, contest.getContestId(), 0, "");
             return subscribed;
         }
         return false;

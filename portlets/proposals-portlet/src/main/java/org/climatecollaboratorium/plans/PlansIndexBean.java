@@ -1,11 +1,9 @@
 package org.climatecollaboratorium.plans;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,20 +24,19 @@ import org.climatecollaboratorium.plans.utils.PagedListDataModel;
 import org.climatecollaboratorium.plans.wrappers.ContestPhaseWrapper;
 import org.climatecollaboratorium.plans.wrappers.PlanIndexItemWrapper;
 
+import com.ext.portlet.NoSuchPlanVoteException;
 import com.ext.portlet.contests.ContestPhaseHelper;
-import com.ext.portlet.contests.model.ContestPhase;
-import com.ext.portlet.contests.service.ContestLocalServiceUtil;
-import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.plans.NoSuchPlanVoteException;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanVote;
+import com.ext.portlet.model.PlansUserSettings;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.PlanConstants.Attribute;
 import com.ext.portlet.plans.PlanConstants.Columns;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.model.PlanVote;
-import com.ext.portlet.plans.model.PlansUserSettings;
-import com.ext.portlet.plans.service.PlanItemLocalService;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.plans.service.PlanVoteLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.icesoft.faces.component.datapaginator.DataPaginator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -381,10 +378,7 @@ public class PlansIndexBean {
 
 
             final Long userId = Helper.isUserLoggedIn() ? Helper.getLiferayUser().getUserId() : -1;
-            for (Iterator<PlanItem> i = PlanItemLocalServiceUtil.applyFilters(ectx.getSessionMap(), 
-                    ectx.getRequestMap(), ContestLocalServiceUtil.getPlanType(
-                            ContestPhaseLocalServiceUtil.getContest(contestPhase.getPhase())), 
-                    notFilteredPlans).iterator();i.hasNext();) {
+            for (Iterator<PlanItem> i = notFilteredPlans.iterator();i.hasNext();) {
                 PlanItem plan = i.next();
                 if (plan.getVersion() < 2) {
                     i.remove();

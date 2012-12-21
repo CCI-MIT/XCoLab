@@ -17,7 +17,7 @@ import org.climatecollaboratorium.facelets.simulations.SimulationBean;
 import org.climatecollaboratorium.navigation.NavigationEvent;
 import org.climatecollaboratorium.plans.exceptions.BeanInitializationException;
 
-import com.ext.portlet.contests.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

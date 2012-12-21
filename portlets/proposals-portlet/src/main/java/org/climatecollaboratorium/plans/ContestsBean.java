@@ -17,8 +17,8 @@ import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.navigation.NavigationEvent;
 import org.climatecollaboratorium.plans.wrappers.ContestWrapper;
 
-import com.ext.portlet.contests.model.Contest;
-import com.ext.portlet.contests.service.ContestLocalServiceUtil;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Tuple;

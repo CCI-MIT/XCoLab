@@ -8,7 +8,7 @@
 
 <custom-sql>
 
-<sql id="com.ext.portlet.plans.service.persistence.PlanItemFinderImpl.countVotesByPlanType">
+<sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.countVotesByPlanType">
         <![CDATA[
             select count(*) as COUNT_VALUE from
                 xcolab_PlanVote
@@ -22,7 +22,7 @@
 
 
 
-<sql id="com.ext.portlet.plans.service.persistence.PlanItemFinderImpl.getPlans">
+<sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.getPlans">
         <![CDATA[
             SELECT
                 xcolab_PlanItem.*
@@ -38,7 +38,7 @@
         ]]>
         
 </sql>
-<sql id="com.ext.portlet.plans.service.persistence.PlanItemFinderImpl.getPlansForContestPhase">
+<sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.getPlansForContestPhase">
         <![CDATA[
             SELECT
                 xcolab_PlanItem.*
@@ -63,7 +63,7 @@
 </sql>
 
 
-<sql id="com.ext.portlet.plans.service.persistence.PlanItemFinderImpl.removePlanWithHistory">
+<sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.removePlanWithHistory">
         <![CDATA[
             DELETE 
                 xcolab_PlanItem, xcolab_PlanDescription, xcolab_PlanMeta, xcolab_PlanModelRun 
@@ -78,7 +78,7 @@
         
 </sql>
 
-<sql id="com.ext.portlet.plans.service.persistence.PlanItemFinderImpl.getPlansForType">
+<sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.getPlansForType">
         <![CDATA[
             SELECT
                 xcolab_PlanItem.*,
@@ -106,7 +106,7 @@
         
 </sql>
 
-<sql id="com.ext.portlet.plans.service.persistence.PlanItemFinderImpl.getFilteredPlans">
+<sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.getFilteredPlans">
         <![CDATA[
             SELECT 
                 xcolab_PlanItem.*, PLAN_ATTRIBUTE_NAME_PLACEHOLDER
@@ -134,7 +134,7 @@
         ]]>
     </sql>
     
-    <sql id="com.ext.portlet.plans.service.persistence.PlanItemFinderImpl.getLatestPlanVersion">
+    <sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.getLatestPlanVersion">
         <![CDATA[
             SELECT 
                 xcolab_PlanItem.*

@@ -3,11 +3,11 @@ package com.ext.portlet.contests;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ext.portlet.contests.model.ContestPhase;
-import com.ext.portlet.contests.model.ContestPhaseColumn;
-import com.ext.portlet.contests.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseColumn;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.PlanConstants.Columns;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 public class ContestPhaseHelper {

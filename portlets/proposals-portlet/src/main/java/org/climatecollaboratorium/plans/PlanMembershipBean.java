@@ -11,10 +11,10 @@ import javax.mail.internet.AddressException;
 import org.climatecollaboratorium.plans.wrappers.PlanMember;
 
 import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.plans.PlanUserPermission;
-import com.ext.portlet.plans.model.PlanItem;
-import com.ext.portlet.plans.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.MembershipRequest;

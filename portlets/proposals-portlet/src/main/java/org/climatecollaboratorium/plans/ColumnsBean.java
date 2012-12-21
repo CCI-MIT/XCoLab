@@ -3,9 +3,9 @@ package org.climatecollaboratorium.plans;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import com.ext.portlet.model.PlansUserSettings;
 import com.ext.portlet.plans.PlanConstants.Columns;
-import com.ext.portlet.plans.model.PlansUserSettings;
-import com.ext.portlet.plans.service.PlansUserSettingsLocalServiceUtil;
+import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -16,7 +16,7 @@ public class ColumnsBean {
 
     public ColumnsBean(Columns wrapped, PlansIndexBean plansIndex) throws PortalException, SystemException {
         ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
-        PlansUserSettings plansUserSettings = PlansUserSettingsLocalServiceUtil.getPlanUserSettings(ectx.getSessionMap(), ectx.getRequestMap(), plansIndex.getContestPhase().getPlanType());
+        //PlansUserSettings plansUserSettings = PlansUserSettingsLocalServiceUtil.getPlanUserSettings(ectx.getSessionMap(), ectx.getRequestMap(), plansIndex.getContestPhase().getPlanType());
         //visible = wrapped.getUserSetting(plansUserSettings);
         this.wrapped = wrapped;
         this.plansIndexBean = plansIndex;

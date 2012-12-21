@@ -6,17 +6,17 @@
 
 package org.climatecollaboratorium.plans;
 
-import com.ext.portlet.contests.model.Contest;
-import com.ext.portlet.contests.service.ContestLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.plans.wrappers.ContestPhaseWrapper;
 import org.climatecollaboratorium.plans.wrappers.ContestWrapper;
 
-import javax.faces.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * Created by IntelliJ IDEA.

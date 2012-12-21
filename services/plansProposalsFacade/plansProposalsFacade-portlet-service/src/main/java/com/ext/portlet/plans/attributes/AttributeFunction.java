@@ -6,7 +6,7 @@
 
 package com.ext.portlet.plans.attributes;
 
-import com.ext.portlet.plans.model.PlanItem;
+import com.ext.portlet.model.PlanItem;
 import com.liferay.portal.kernel.exception.SystemException;
 
 /**
