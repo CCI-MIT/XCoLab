@@ -134,9 +134,9 @@ public class CreatePlanBean {
             
             // fetch all users subscribed to current contest, and subscribe them to this proposal too
             for (ActivitySubscription subscription: ActivitySubscriptionLocalServiceUtil.getActivitySubscriptions(Contest.class, 
-                    PlanItemLocalServiceUtil.getContest(planItem).getContestPK(), null, "")) {
+                    PlanItemLocalServiceUtil.getContest(planItem).getContestPK(), 0, "")) {
             	//subscription.getReceiverId();
-                ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), null, "",
+                ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), 0, "",
                         subscription.getReceiverId());
 
                 ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
@@ -144,10 +144,10 @@ public class CreatePlanBean {
                         null, "", subscription.getReceiverId());
             }
 
-            ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), null, "", Helper.getLiferayUser().getUserId());
+            ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), 0, "", Helper.getLiferayUser().getUserId());
             // subscribe to comments
             ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
-                    PlanItemLocalServiceUtil.getCategoryGroupId(planItem), null, "", 
+                    PlanItemLocalServiceUtil.getCategoryGroupId(planItem), 0, "", 
                     PlanItemLocalServiceUtil.getAuthorId(planItem));
             planId = planItem.getPlanId();
             navigateToPlan = true;

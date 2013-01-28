@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:jstl="http://java.sun.com/jsp/jstl/functions" >
+ <ice:dataTable value="#{simulationDetailsBean.allOutputsFromDisplay}" var="output">
+    <ice:column>
+        <f:facet name="header">Name</f:facet>
+        #{output.name}
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">Type</f:facet>
+        #{output.displayItemType}
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">Visible</f:facet>
+        <ice:selectOneMenu value="#{output.visible}">
+            <f:selectItem itemValue="true" itemLabel="true" />
+            <f:selectItem itemValue="false" itemLabel="false" />
+        </ice:selectOneMenu>
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">Series type</f:facet>
+        <ice:selectOneMenu value="#{output.seriesType}" rendered="#{output.displayItemType == 'SERIES'}">
+            <f:selectItem itemValue="NORMAL" itemLabel="NORMAL" />
+            <f:selectItem itemValue="CONF_INTERVAL_5" itemLabel="CONF_INTERVAL_5" />
+            <f:selectItem itemValue="CONF_INTERVAL_95" itemLabel="CONF_INTERVAL_95" />
+        </ice:selectOneMenu>
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">Associated metadata</f:facet>
+        <ice:selectOneMenu value="#{output.associatedMetaDataId}" rendered="#{output.displayItemType == 'SERIES' and (output.seriesType == 'CONF_INTERVAL_5' or output.seriesType == 'CONF_INTERVAL_95')}">
+            <f:selectItems value="#{simulationDetailsBean.outputAssociationOptions[output]}" /> 
+        </ice:selectOneMenu>
+    </ice:column>
+    <ice:column>
+        <f:facet name="header">Label format string (use %label for label and %unit for unit)</f:facet>
+        <ice:inputText value='#{output.labelFormatString}' rendered="#{output.displayItemType == 'SERIES'}" />
+    </ice:column>
+ </ice:dataTable>
+    <ice:commandButton value="Update" actionListener="#{simulationDetailsBean.updateInputs}" styleClass="inputsWidgetsUpdate"/>
+    <f:subview>
+        <ui:include src="editJsWidgets.xhtml" />
+    </f:subview>
+</f:view>

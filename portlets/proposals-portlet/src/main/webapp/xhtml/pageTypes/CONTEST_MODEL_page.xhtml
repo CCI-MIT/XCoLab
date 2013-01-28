@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<f:view
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:sharedcollab="http://climatecollaboratorium.org/components">
+
+    <ui:composition template="../templates/contestPageTemplate.xhtml">
+    
+        <ui:define name="page_subtitle">Run the model</ui:define>
+
+        <ui:define name="contest_content">
+            
+    <div class="actboxtop">
+        <div class="type"><strong>Model:</strong> #{contest.contest.contestModelDescription}</div>
+        <div class="clear"></div>
+    </div>
+        <!-- 
+             <ice:form>
+            <sharedcollab:helpMessage messageId="contestModelHelp" styleClass="planHelp"
+                                      hideThisMessage="Hide this message" defaultState="closed">
+                <p>
+                    The Climate CoLab uses the&amp;nbsp;<a href="/web/guest/resources/-/wiki/Main/MIT+Composite+Model">MIT Composite model</a>.
+                </p>
+                <p>
+                    See how this model works by selecting inputs (left) and viewing outputs (right).
+                </p>
+                <p> 
+                    Add your own model by clicking the&amp;nbsp;<b>Upload</b> button.
+                </p> 
+            </sharedcollab:helpMessage>
+            <sharedcollab:helpMessageTrigger
+                    messageId="contestModelHelp">+show help</sharedcollab:helpMessageTrigger>
+            </ice:form>
+ -->
+            <ice:form>
+                <collab:simulationEdit simulationId="#{contest.modelId}"
+                                   editActions="true" />
+            
+            
+            <div class="clear"></div>
+            <br />
+            <f:subview rendered="#{contest.contestId == 3 || contest.contestId == 2 || contest.contestId == 4}">
+            <div class="act-edit-box_left" style="height: 80px;">
+            
+                <p>Select varying levels of geographic disaggregation for the actions</p>
+                <div class="select-pro_wrap">
+                    <ice:selectOneMenu value="#{contest.modelId}" styleClass="selectbox1" style="width: 300px;" partialSubmit="true" >
+                        <f:selectItems value="#{contest.availableModels}"/>
+                    </ice:selectOneMenu>
+       <!--             <script type="text/javascript">
+                        jQuery(document).ready(function() {initSelectbox()});
+                    </script>-->
+                </div>
+            </div>
+    
+        <div class="act-edit-box_right" style="height: 80px;">
+            <p>You can also upload your own disaggregation mode</p>
+            <div class="butt_wrap">
+                <div class="button"><a href="/web/guest/resources/-/wiki/Main/Upload+model+help"><span>CONTRIBUTE</span> model</a></div>
+            </div>
+        
+        </div>
+        </f:subview>
+            <div class="clear"></div>
+        </ice:form>
+
+        </ui:define>
+    </ui:composition>
+</f:view>

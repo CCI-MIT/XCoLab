@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+	<!-- application related managed beans -->
+	<application>
+		<view-handler>com.icesoft.faces.facelets.D2DFaceletViewHandler</view-handler>
+	</application>
+	<factory/>
+	<managed-bean>
+		<managed-bean-name>edit</managed-bean-name>
+		<managed-bean-class>com.liferay.util.bridges.jsf.common.PortletPreferencesManagedBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>language</managed-bean-name>
+		<managed-bean-class>com.liferay.util.bridges.jsf.common.LanguageManagedBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>renderManager</managed-bean-name>
+		<managed-bean-class>com.icesoft.faces.async.render.RenderManager</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>resumeUploader</managed-bean-name>
+		<managed-bean-class>com.liferay.util.bridges.jsf.icefaces.FileUploadManagedBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>renderManager</property-name>
+			<value>#{renderManager}</value>
+		</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>themeDisplay</managed-bean-name>
+		<managed-bean-class>com.liferay.util.bridges.jsf.common.ThemeDisplayManagedBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>userprofileBean</managed-bean-name>
+		<managed-bean-class>org.xcolab.portlets.userprofile.UserProfileBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>messagingPortletId</property-name>
+			<value>messaging_WAR_messagingportlet_INSTANCE_9HzD</value>
+		</managed-property>
+	</managed-bean>
+	<validator>
+		<validator-id>screenNameValidator</validator-id>
+		<validator-class>org.xcolab.portlets.userprofile.validators.ScreenNameValidator</validator-class>
+	</validator>
+	<validator>
+		<validator-id>portraitUploadValidator</validator-id>
+		<validator-class>org.xcolab.portlets.userprofile.validators.PortraitUploadValidator</validator-class>
+	</validator>
+	<validator>
+		<validator-id>emailValidator</validator-id>
+		<validator-class>org.xcolab.portlets.userprofile.validators.UserEmailValidator</validator-class>
+	</validator>
+	<validator>
+		<validator-id>userPasswordValidator</validator-id>
+		<validator-class>org.xcolab.portlets.userprofile.validators.UserPasswordValidator</validator-class>
+	</validator>
+</faces-config>

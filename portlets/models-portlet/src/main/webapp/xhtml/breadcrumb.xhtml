@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces">
+    <h2 class="modelIndexLink">
+        <ice:panelSeries value="#{navigation.breadcrumbBean.items}" var="item" varStatus="status">
+            <f:subview rendered="#{item.link != null}">
+                <a href="#{item.link}">#{item.name}</a> 
+            </f:subview>
+            <f:subview rendered="#{item.link == null}">
+                #{item.name}
+            </f:subview>
+            <ice:outputText value="&gt;" rendered="#{not status.last}" />
+        </ice:panelSeries>
+    </h2>
+</f:view>

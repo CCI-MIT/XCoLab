@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<f:view
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+        
+<ice:form>
+
+<f:subview rendered="#{contestsBean.planIndexPage}">
+    
+    <ice:dataTable value="#{plansIndexBean.plans}" styleClass="plansTable" rowClasses="odd,even"
+            var="singlePlan" sortColumn="#{plansIndexBean.sortColumn}"
+            sortAscending="#{plansIndexBean.sortAscending}" id="plansIndex"
+            rows="#{plansIndexBean.pageSize}" headerClass="#{plansIndexBean.columns}">
+        <ice:columns value="#{plansIndexBean.columns}" var="column">
+            <f:facet name="header">
+                <div>
+                    <div class="popup-info-box hidden" id="info-popup-#{column}">#{column.description}</div>
+                    <div class="clear"></div>
+                    <ice:commandSortHeader styleClass="column-hover" columnName="#{column}">
+                        <ice:outputText id="column-#{column}" value="#{column.name}" escape="false"/>
+                    </ice:commandSortHeader>
+                </div>
+            </f:facet>
+            <ice:outputLink rendered="#{column == 'NAME'}"
+                    value="#plans=contests:#{contest.contestActive ? 'active' : 'past'},subview:proposals,planId:#{singlePlan.planId}">
+                <ice:outputText value="#{singlePlan.columnValues[column]}" styleClass="#{column}"/>
+            </ice:outputLink>
+            <f:subview rendered="#{column == 'POSITIONS' and !singlePlan.hasPositions}">
+                N/A
+            </f:subview>
+            <f:subview rendered="#{column == 'POSITIONS' and singlePlan.hasPositions}">
+                <a href="javascript:;" class="showPositions"
+                        onclick="showPositionsOnIndexPageDialog('plan_positions_#{singlePlan.planId}');return;"/>
+                <div class="hidden" id="plan_positions_#{singlePlan.planId}">
+                    <div class="positionsDialog">
+                        <div class="positionsDialog_top">
+                            <div class="title"><h2>Positions for #{singlePlan.planName}</h2></div>
+                        </div>
+                        <div class="positionsDialog_bg">
+                            <div class="scrollBox">
+                                <ice:panelSeries value="#{singlePlan.positions}" var="question">
+                                    <div class="assumption">
+                                        <h3 class="question">#{question.debateAnchor}</h3>
+                                        <h4 class="position">#{question.selectedPosition.itemAnchor}</h4>
+                                    </div>
+                                </ice:panelSeries>
+                            </div>
+                        </div>
+                        <div class="positionsDialog_bottom">
+                            <a href="javascript:;"
+                                    onclick="hidePositionsOnIndexPageDialog('plan_positions_#{singlePlan.planId}')">Close</a>
+                        </div>
+                    </div>
+                </div>
+            </f:subview>
+            <ice:outputText value="#{singlePlan.columnValues[column]}"
+                    rendered="#{column != 'NAME' and column != 'POSITIONS'}" escape="false"/>
+        </ice:columns>
+        <ice:column rendered="#{plansIndexBean.contestPhase.canVote}">
+            <f:facet name="header">
+                <div class="voteForPlan"><span>Vote for Plan</span></div>
+            </f:facet>
+            <ice:commandLink actionListener="#{singlePlan.vote}" onclick="if(! deferUntilLogin()) return false; "
+                    styleClass="indexVoteForPlan #{singlePlan.votedOn ? 'en userVote' : 'dis'} ">
+            </ice:commandLink>
+        </ice:column>
+    </ice:dataTable>
+</f:subview>
+
+</ice:form>
+
+<f:subview rendered="#{not contestsBean.planIndexPage}">
+    <ui:include src="../planDetails.xhtml">
+        <ui:param name="planBean" value="#{contestsBean.planBean}" />
+    </ui:include>
+
+
+</f:subview>
+
+</f:view>

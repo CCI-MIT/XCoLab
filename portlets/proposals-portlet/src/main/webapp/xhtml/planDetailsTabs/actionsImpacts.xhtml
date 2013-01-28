@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets" 
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:liferay-faces="http://liferay.com/tld/faces"
+        xmlns:collabcomps="http://climatecollaboratorium.org/components">
+
+
+    <ice:commandLink styleClass="editStateTrigger hidden" value="Edit" actionListener="#{simulationBean.editActions}" />
+    <ice:panelGroup styleClass="hidden">
+        <script type="text/javascript">
+            Collab.nav.addEditorDirtyValidationCallback(checkIfActionsImpactsDirty);
+        </script>
+    </ice:panelGroup>
+    
+    <ice:panelGroup styleClass='hidden'>
+    
+        <script type="text/javascript">
+            // #{simulationBean.display}
+            Collab.nav.unblock();
+        </script>
+        
+    </ice:panelGroup>
+    
+    <ui:decorate template="breadcrumb.xhtml">
+        <ui:define name="breadcrumbButtons">
+        <!-- 
+            <ice:panelGroup styleClass="breadbutt" rendered="#{permissions.canEdit and not simulationBean.embeddedEditing}">
+                <img src="/collaboratorium-theme/images/icon_edit-page.gif" width="19" height="21" alt=" " /> 
+                <ice:commandLink actionListener="#{simulationBean.editActions}" value="edit page" />
+            </ice:panelGroup>
+             -->
+            <div class="breadbutt">
+                <a href="javascript:;" id="showhistory" onclick="triggerVersionsContainerVisibility();">
+                    <img src="/collaboratorium-theme/images/icon_show-history.gif" width="23" height="21" alt=" " />
+                    <span class="hidden">hide history</span><span class="versionsTrigger">show history</span>
+                </a>
+            </div>
+        </ui:define>
+    </ui:decorate>
+  
+    <div class="versionsContainer">
+        <div class="versions">
+            <ice:dataTable value="#{planBean.plan.planModelRunVersionItems}" rows="10" var="historyItem" styleClass="basicTable" rowClasses="odd,even">
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="Date"/>
+
+                    </f:facet>
+                    <ice:commandLink
+                                     actionListener="#{planBean.plan.selectModelRunVersion}"  >
+                        <ice:outputText value="#{historyItem.updateDate}">
+                        <f:convertDateTime type="both" dateStyle="short" timeStyle="short"/>
+                        </ice:outputText>
+                        <f:attribute name="item" value="#{historyItem}"/>
+                    </ice:commandLink>
+
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="User"/>
+                    </f:facet>
+                    <collab:userLinkSimple userId="#{historyItem.updateAuthor.userId}" text="#{historyItem.updateAuthor.screenName}"/>
+
+
+                </ice:column>
+            </ice:dataTable>
+            <br/>
+
+        </div>
+    </div>
+    
+            <ice:panelGroup rendered="#{permissions.canEdit}">
+            <table class="saveEditCancel">
+                <tr><td>
+                    <f:subview rendered="#{not simulationBean.embeddedEditing}">
+                        <ice:commandButton value="EDIT" styleClass="mothButton orange" actionListener="#{simulationBean.editActions}" />
+                            &amp;nbsp;&amp;nbsp; Edit this page to define proposal actions &amp; impacts.
+                    </f:subview>
+                
+                    <f:subview rendered="#{simulationBean.embeddedEditing}">
+                        <ice:commandButton value="CANCEL" styleClass="mothButton orange" actionListener="#{planBean.cancelSimulationEdit}" />
+                        <ice:commandButton value="SAVE" styleClass="mothButton orange" actionListener="#{simulationBean.saveScenario}" />
+                            &amp;nbsp;&amp;nbsp; You are currently editing this page, click "save" to keep your changes.
+                    </f:subview>
+                        
+                        
+                </td></tr>
+            </table>
+        </ice:panelGroup>   
+    
+    <div class="actboxtop">
+        <div class="type"><strong>Model:</strong> #{contest.contest.contestModelDescription}</div>
+    </div>
+           
+           
+        
+    
+    <!-- 
+        <ice:panelGroup styleClass="chooseVersionWidget">
+            <a href="javascript:;" onclick="triggerVersionsContainerVisibility();" class="versionsTrigger">Show old versions</a>
+        </ice:panelGroup>
+        -->
+        
+    
+    <div class="clear"></div>
+    
+        <ice:panelGroup styleClass="edit editControls hidden"
+                        rendered="#{planBean.plan.selectedModel != null and permissions.canEdit and not simulationBean.embeddedEditing}">
+            <ice:commandLink styleClass="editButton" value="Edit" actionListener="#{simulationBean.editActions}"
+                    />
+        </ice:panelGroup>
+    
+
+   
+
+    <ice:panelGroup styleClass="actionsImpactsContainer">
+        <ice:panelGroup styleClass="versionInfo" rendered="#{not planBean.plan.simulationLatestVersion}">
+            Viewing version from &amp;nbsp; <strong><ice:outputText
+                value="#{planBean.plan.simulationVersionDate}"/></strong> by &amp;nbsp;
+            <a href="/web/guest/members?userId=#{planBean.plan.simulationVersionAuthor.userId}">
+                <strong><ice:outputText value="#{planBean.plan.simulationVersionAuthor.screenName}"/></strong>
+            </a>
+        </ice:panelGroup>
+        <ice:panelGroup styleClass="inputsAndOutputsWidget" rendered="#{planBean.plan.selectedModel != null}">
+            <ice:panelGroup rendered="#{simulationBean.embeddedEditing}">
+                <collab:simulationEdit simulationId="#{planBean.plan.selectedModel}"
+                                   scenarioId="#{planBean.plan.planModelRunScenarioId}" 
+                                   editActions="#{planBean.planOpenForEditing}" />
+            </ice:panelGroup>
+            <ice:panelGroup  rendered="#{not simulationBean.embeddedEditing}">
+                <collab:simulationView simulationId="#{planBean.plan.selectedModel}" showEditButton="#{permissions.canEdit}"
+                                   scenarioId="#{planBean.plan.planModelRunScenarioId}" rendered="#{not simulationBean.embeddedEditing}"/>
+            </ice:panelGroup>
+        </ice:panelGroup>
+        
+        <ice:panelGroup rendered="#{simulationBean.embeddedEditing}">
+            <br />
+            <div class="act-edit-box_left">
+                <p>Select varying levels of geographic disaggregation for the actions</p>
+                <div class="select-pro_wrap">
+                    <ice:selectOneMenu value="#{planBean.modelBean.selectedItem}" styleClass="selectbox1" style="width: 191px;" partialSubmit="true" valueChangeListener="#{planBean.modelBean.modelChagnedListener}">
+                        <f:selectItems value="#{planBean.modelBean.availableModels}"/>
+                    </ice:selectOneMenu>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function() {initSelectbox()});
+                    </script>
+                </div>
+
+            </div>
+    
+        <div class="act-edit-box_right">
+            <p>You can also upload your own disaggregation mode</p>
+            <div class="butt_wrap">
+                <div class="button"><a href="/web/guest/resources/-/wiki/Main/Upload+model+help"><span>CONTRIBUTE</span> model</a></div>
+            </div>
+        
+        </div>
+    </ice:panelGroup>
+    
+    <div class="clearfix"></div>
+        <ice:panelGroup styleClass="inputsAndOutputsWidget" rendered="#{planBean.plan.selectedModel == null}">
+            No model has been set.
+        </ice:panelGroup>
+
+
+    </ice:panelGroup>
+</f:view>

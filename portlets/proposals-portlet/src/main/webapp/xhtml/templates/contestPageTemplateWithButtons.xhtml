@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<f:view  
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets">
+    <ui:composition template="./singlePageWithBreadcrumb.xhtml">
+    
+        <ui:define name="plans_content">
+        
+            <!-- 
+            <ice:form>
+                    <ice:panelGroup styleClass="categoryHeader" rendered="#{not contest.contest.editor.editing}">
+                        <h2><ice:outputText styleClass="categoryName" value="#{contest.contest.name}"/></h2>
+                        <ice:commandButton styleClass="editCategoryButton" value="Edit"
+                                           action="#{contest.contest.editor.edit}"
+                                           rendered="#{not contest.contest.editor.editing and permissions.canAdminAll}"/>
+                    </ice:panelGroup>
+                    <ice:panelGroup styleClass="categoryHeader" rendered="#{contest.contest.editor.editing}">
+                        <ice:outputLabel for="name">Name</ice:outputLabel>
+
+                        <h2><ice:inputText id="name" styleClass="categoryName" value="#{contest.contest.editor.name}"/>
+                        </h2>
+                    </ice:panelGroup>
+                    <ice:panelGroup styleClass="categoryShortName" rendered="#{contest.contest.editor.editing}">
+                        <ice:outputLabel for="shortName">Short name</ice:outputLabel>
+                        <ice:inputText id="shortName" value="#{contest.contest.editor.shortName}"/>
+                    </ice:panelGroup>
+                    <table class="single-contest-layout">
+                        <tr>
+                            <td class="description">
+
+
+                                <ice:panelGroup styleClass="categoryDescription"
+                                                rendered="#{not contest.contest.editor.editing}">
+                                    
+                                    <ice:outputText id="description" value="#{contest.contest.description}"
+                                                    escape="false"/>
+                                </ice:panelGroup>
+                                <ice:panelGroup styleClass="categoryDescription"
+                                                rendered="#{contest.contest.editor.editing}">
+                                    <ice:inputTextarea value="#{contest.contest.editor.description}"/>
+                                </ice:panelGroup>
+                                <ice:panelGrid columns="2" styleClass="editCategory buttonPanel"
+                                               rendered="#{contest.contest.editor.editing}">
+                                    <ice:commandButton value="Save" action="#{contest.contest.editor.save}"/>
+                                    <ice:commandButton value="Cancel" action="#{contest.contest.editor.cancel}"/>
+                                </ice:panelGrid>
+
+                            </td>
+                            <td class="contestNavItems">
+
+
+                                <collab:contestLink contestId="#{contest.contestId}" hashString="plans=subview:issues" text="&lt;div class='prominantButton' &gt;Debate the issues&lt;/div&gt;" />
+                    
+                                <collab:contestLink contestId="#{contest.contestId}" hashString="plans=subview:model" text="&lt;div class='prominantButton' &gt;Run the model&lt;/div&gt;" />                            
+                            </td>
+                        </tr>
+                    </table>
+                </ice:form>
+            
+            <table class="contestNavItems">
+                <tr>
+                    <td>
+                        <a href="#plans=contests:#{contest.contest.contestActive ? 'active' : 'past'},subview:proposals" class="#{contest.subView == 'PROPOSALS' ? 'active' : ''}" >Proposals</a>
+                    </td>
+                    <td>
+                        <a href="#plans=contests:#{contest.contest.contestActive ? 'active' : 'past'},subview:issues" class="#{contest.subView == 'ISSUES' ? 'active' : ''}">Issues</a>
+                    </td>
+                    <td>
+                        <a href="#plans=contests:#{contest.contest.contestActive ? 'active' : 'past'},subview:model" class="#{contest.subView == 'MODEL' ? 'active' : ''}">Model</a>
+                    </td>
+                </tr>
+            </table>
+            -->
+            <div class="contestContent">
+                
+                <ui:insert name="contest_content" />
+            </div>
+        </ui:define>
+    
+    </ui:composition>    
+</f:view>

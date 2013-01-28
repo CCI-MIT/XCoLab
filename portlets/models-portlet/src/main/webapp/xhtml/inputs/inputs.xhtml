@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces">
+<div class="floatLeft leftContent">
+    <ice:panelGroup styleClass="actions">
+        <div class="corcen_top">
+            <div class="corcen_bottom">
+                <div class="corcen">
+                    <div class="title">
+                        <h3><span class="hidden">Actions Input</span></h3>
+                    </div>
+                    <div class="tableContent">
+                        <ice:panelSeries value="#{simulationBean.display.nonTabs}" var="input" varStatus="status">
+                            <div class="hidden">#{simulationBean.display}</div>
+                            <div  class="simulationInput #{status.index mod 2 == 0 ? 'even' : 'odd'}">
+                                <f:subview id="inputView" >
+                                    <ui:include src="./inputDef.xhtml" />
+                                    <!-- <ui:include src="./individual.xhtml" />-->
+                                </f:subview>
+                            </div>
+                        </ice:panelSeries>
+                        <ice:panelTabSet value="#{simulationBean.display.tabsWrapped}" var="input1" rendered="#{simulationBean.hasTabs}">
+                            <ice:panelTab label="#{input1.oryginalName}">
+                               <ice:panelSeries value="#{input1.allItems}" var="input" varStatus="status">
+                                    <div class="hidden">#{simulationBean.display}</div>
+                                    <div  class="simulationInput #{status.index mod 2 == 0 ? 'even' : 'odd'}">
+                                        <f:subview id="inputView" >
+                                            <ui:include src="./inputDef.xhtml" />
+                                        <!-- <ui:include src="./individual.xhtml" />-->
+                                        </f:subview>
+                                    </div>
+                                </ice:panelSeries>
+
+                            </ice:panelTab>
+                        </ice:panelTabSet>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ice:panelGroup>
+</div>
+</f:view>

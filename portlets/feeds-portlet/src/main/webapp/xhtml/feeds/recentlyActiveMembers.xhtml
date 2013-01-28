@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:collab="http://climatecollaboratorium.org/facelets"
+    >
+    <ice:portlet>
+    <div class="comm_rightcol-bdr">
+        <h3>Recently active</h3><br />
+        <ui:repeat value="#{feedsBean.membersBean.recentlyActiveMembers}" var="member">
+            <div class="comm_rightcol-time">
+                #{member.lastActivityDateAgo}
+                <!-- 
+                <ice:outputText value="#{member.lastActivityDate}" styleClass="date">
+                    <f:convertDateTime type="time" timeStyle="short"/>
+                </ice:outputText>
+                 -->
+            </div>
+            <p>
+                <!-- <collab:userLinkSimple userId="#{member.userId}" text="#{member.screenName}" />-->
+                #{member.lastActivityBody}
+            </p>
+        </ui:repeat>
+    </div>
+    </ice:portlet>
+</f:view>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:jstl="http://java.sun.com/jsp/jstl/functions" >
+    
+ <div class='orderContainer'>
+    <ul class="orderList">
+        <ui:repeat value="#{simulationDetailsBean.display.outputs}" var="output">
+            <li class="orderItem orderListItem">Output: #{output.name} <ice:inputText value="#{output.order}" styleClass="hidden" />
+                <f:subview rendered="#{output.displayItemType == 'INDEXED'}">
+                    <ul class="orderSubList">
+                        <ui:repeat value="#{output.series}" var="serie">
+                            <li class="orderItem orderSubListItem">Serie: #{serie.name} <ice:inputText value="#{serie.order}" styleClass="hidden" /></li>
+                        </ui:repeat>
+                    </ul>    
+                </f:subview>
+            </li>
+        </ui:repeat>
+    
+    </ul>
+    <!-- 
+    <ice:panelSeries value="#{simulationDetailsBean.display.outputs}" var="output" styleClass="outputOrderDef">
+        <li class="output-#{output.metaData.id} singleOutputOrderDef">
+             <ice:outputText value="#{output.name}" styleClass="name"/> <ice:inputText value="#{output.order}" styleClass="order hidden" />
+             
+             <ice:panelGroup rendered="#{output.displayItemType == 'INDEXED'}">
+                <ul class="subOutputsOrder">
+                </ul> 
+                <ice:panelSeries  value="#{output.series}" var="serie" styleClass="subInptusOrderItems">
+                    <li>
+                        <ice:outputText value="#{individualInput.name}" styleClass="name"/> <ice:inputText value="#{individualInput.order}" styleClass="order hidden" />
+                    </li> 
+                </ice:panelSeries>
+             </ice:panelGroup>
+        </li>
+    </ice:panelSeries>
+     -->
+</div>
+<ice:commandButton value="Update" actionListener="#{simulationDetailsBean.updateInputs}" styleClass="inputsWidgetsUpdate"/>
+
+
+    <f:subview>
+        <ui:include src="editJsWidgets.xhtml" />
+    </f:subview>
+</f:view>

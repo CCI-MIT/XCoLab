@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<f:view  xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:collab="http://climatecollaboratorium.org/facelets"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"   
+    xmlns:h="http://java.sun.com/jsf/html"  >
+    
+    <f:subview rendered="#{showShadebar and (fn:length(plansList) > 0)}">
+        <div class="shadebar"></div>
+    </f:subview>
+    
+    <ice:panelSeries var="singleProposal" value="#{plansList}">
+        <div class="propbox #{singleProposal.featured ? 'featured' : ''}">
+          <f:subview rendered="#{singleProposal.ribbon != null and singleProposal.ribbon > 0}">
+            <div class="ribbonPlaceholder">
+                <span class="fieldWithTooltip">
+                    <br />
+                    <img src="/climatecolab-theme/images/icon-prize.png" />
+                </span>
+                <div class="tooltip">
+                    #{singleProposal.ribbonText}
+                </div>
+            </div>
+            </f:subview>
+            <div class="row1">
+                <div class="title-author">
+                    <h4>
+                        <f:subview rendered="#{not empty singleProposal.tags}">
+                            <div style="display: inline; display: inline-block;">
+                                <span class="fieldWithTooltip">#{singleProposal.tags}:</span>
+                                <div class="tooltip">
+                                    #{singleProposal.tagsHover}
+                                    <div class="tt-arrow"></div>
+                                </div>
+                            </div>
+                                
+                        </f:subview>
+                        <!-- 
+                        <f:subview rendered="#{singleProposal.scrapbook}">
+                            <div class="tooltips" style="display: inline-block;">
+                                <div>
+                                <a href="javascript:;">
+                                    <img src="/climatecolab-theme/images/scrapbook_icon.png"  class="scrapbook_icon" width="20px" height="20px" />
+                                </a> 
+                                </div>
+                                <div class="tooltip">#{singleProposal.scrapbookText}<div class="tt-arrow"></div></div>
+                            </div>
+                        </f:subview>
+                         -->
+                        <!-- 
+                        <f:subview rendered="#{singleProposal.ribbon != null and singleProposal.ribbon > 0}">
+                            <div class="tooltips" style="display: inline-block;">
+                                <div>
+                                    <a href="javascript:;" class="ribbon-hover planRibbon ribbon_#{singleProposal.ribbon}">&amp;nbsp;</a>
+                                    <div class="tooltip">
+                                        #{singleProposal.ribbonText}
+                                    </div>
+                                </div>
+                            </div>
+                        </f:subview>
+                         -->
+                        
+                        <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.name}" escape="true" />
+                        
+                        /&amp;nbsp;
+                        <f:subview rendered="#{empty singleProposal.team}">
+                            <collab:userLinkSimple userId="#{singleProposal.author.userId}" text="#{singleProposal.author.screenName}" />
+                        </f:subview>
+                        <f:subview rendered="#{not empty singleProposal.team}">
+                            #{singleProposal.team}
+                        </f:subview>
+                    </h4>
+                    <div class="clear" ></div>
+                </div>
+                <div class="thumbbox">
+                    <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.supportersCount}" hashString="plans%3Dtab%3ATEAM"/>
+                </div>
+                <div class="commbox">
+                    <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.commentsCount}" hashString="plans%3Dtab%3ACOMMENTS" />
+                </div>
+                <div class="modbox">
+                    <ice:outputText value="#{singleProposal.lastModifiedDate}" >
+                        <f:convertDateTime pattern="MM/d/yy" />
+                    </ice:outputText>
+                </div>
+                <div class="conbox">
+                    <f:subview rendered="#{singleProposal.open}">
+                        anyone
+                    </f:subview>
+                    <f:subview rendered="#{not singleProposal.open}">
+                        team only
+                    </f:subview>
+                </div>
+            </div>
+            <div class="row2">
+                #{singleProposal.abstract}
+            </div>
+        </div> <!-- /proposal -->
+    </ice:panelSeries>
+    
+    <script type="text/javascript">
+        initTooltips();
+    </script>
+    
+    
+</f:view>

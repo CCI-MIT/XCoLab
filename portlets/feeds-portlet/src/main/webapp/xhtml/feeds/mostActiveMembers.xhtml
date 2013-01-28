@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<f:view 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:collab="http://climatecollaboratorium.org/facelets"
+    >
+    <ice:portlet>
+        <table>
+        <ui:repeat value="#{feedsBean.membersBean.mostActiveMembers}" var="memberFeedActivity">
+            <tr>
+                <td><collab:userLinkSimple userId="#{memberFeedActivity.userId}" text="#{memberFeedActivity.screenName}" /></td>
+            </tr>
+        </ui:repeat>
+        </table>
+    </ice:portlet>
+</f:view>

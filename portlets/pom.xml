@@ -16,7 +16,19 @@
 
 
   <modules>
-    <module>sampleSpringMvc1</module>
     <module>proposals-portlet</module>
+    <module>discussions-portlet</module>
+    <module>contactform-portlet</module>
+    <module>members-portlet</module>
+    <module>userprofile-portlet</module>
+    <module>contests-portlet</module>
+    <module>search-portlet</module>
+    <module>feeds-portlet</module>
+    <module>messaging-portlet</module>
+    <module>ontology-portlet</module>
+    <module>models-portlet</module>
+    <module>plansadmin-portlet</module>
+    <module>loginregister-portlet</module>
+    <module>massmessaging-portlet</module>
   </modules>
 </project>

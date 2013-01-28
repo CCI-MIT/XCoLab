@@ -1,0 +1,362 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets" 
+        xmlns:liferay-faces="http://liferay.com/tld/faces"
+        xmlns:addthis="http://www.addthis.com/help/api-spec"
+        xmlns:collab="http://climatecollaboratorium.org/facelets">
+        <ice:commandLink styleClass="editStateTrigger hidden" value="Edit" actionListener="#{planBean.editDescription}" />
+        
+        <ui:decorate template="breadcrumb.xhtml">
+            <ui:define name="breadcrumbButtons">
+            <!-- 
+                <ice:panelGroup rendered="#{permissions.canEdit}" styleClass="breadbutt">
+                    <img src="/collaboratorium-theme/images/icon_edit-page.gif" width="19" height="21" alt=" " />
+                    <ice:commandLink actionListener="#{planBean.editDescription}"> 
+                        edit page
+                    </ice:commandLink>
+                </ice:panelGroup>
+                 -->
+                <div class="breadbutt"> 
+                    <a href="javascript:;" id="showhistory" onclick="triggerVersionsContainerVisibility();">
+                        <img src="/collaboratorium-theme/images/icon_show-history.gif" width="23" height="21" alt=" " />
+                        <span class="hidden historyHide">hide history</span><span class="versionsTrigger">show history</span>
+                    </a>
+                </div>
+            </ui:define>
+        </ui:decorate>
+  
+        <div class="versionsContainer hidden">
+            <div class="versions">
+                <ice:dataTable value="#{planBean.plan.allDescriptionVersions}" rows="10" var="historyItem" styleClass="basicTable" rowClasses="odd,even">
+                    <ice:column>
+                        <f:facet name="header">
+                            <ice:outputText value="Date"/>
+                        </f:facet>
+                        <ice:commandLink onclick="showAlertIfInEdit('Changing version will remove all changes that have been done, are you sure?'); "
+                                value="#{historyItem.updateDate}" actionListener="#{planBean.plan.selectDescriptionVersion}">
+                            <f:attribute name="item" value="#{historyItem}"/>
+                        </ice:commandLink>
+
+
+                    </ice:column>
+                    <ice:column>
+                        <f:facet name="header">
+                            <ice:outputText value="User"/>
+                        </f:facet>
+                        <collab:userLinkSimple userId="#{historyItem.updateAuthor.userId}" text="#{historyItem.updateAuthor.screenName}"/>
+
+
+                    </ice:column>
+                </ice:dataTable>
+                <br/>
+
+            </div>
+        </div>
+        
+            <div class="clear"></div>
+            
+        <ice:panelGroup rendered="#{permissions.canEdit}">
+            <table class="saveEditCancel">
+                <tr><td>
+                    <f:subview rendered="#{not planBean.editingDescription}">
+                        <ice:commandButton value="EDIT" styleClass="mothButton orange" actionListener="#{planBean.editDescription}" />
+                            &amp;nbsp;&amp;nbsp; Edit this page to rename the proposal or modify its description.
+                    </f:subview>
+                
+                    <f:subview rendered="#{planBean.editingDescription}">
+                        <ice:commandButton value="CANCEL" styleClass="mothButton orange" actionListener="#{planBean.editDescription}" />
+                        <ice:commandButton value="SAVE" styleClass="mothButton orange" actionListener="#{planBean.plan.saveDescription}" />
+                            &amp;nbsp;&amp;nbsp; You are currently editing this page, click "save" to keep your changes.
+                    </f:subview>
+                        
+                        
+                </td></tr>
+            </table>
+        </ice:panelGroup>
+
+    <!-- 
+        <ice:panelGroup styleClass="chooseVersionWidget">
+            <a href="javascript:;" onclick="triggerVersionsContainerVisibility();" class="versionsTrigger">Show old versions</a>
+        </ice:panelGroup>
+       
+
+
+        <div class="clear"></div>
+        
+          <ice:panelGroup styleClass="edit editControls hidden"
+                            rendered="#{permissions.canEdit and not planBean.editingDescription}">
+                <ice:commandLink styleClass="editButton" value="Edit" actionListener="#{planBean.editDescription}"
+                        />
+            </ice:panelGroup> 
+         -->
+            
+    <div class="content">
+  
+        <div id="main" class="planDescription">
+        <!-- 
+        <ice:panelGroup rendered="#{not planBean.editingDescription and planBean.plan.descriptionSet}"
+                        styleClass="planDescription editTriggerContainer">
+                         -->
+        <ice:panelGroup rendered="#{not planBean.editingDescription and planBean.plan.descriptionSet}"
+                        styleClass="planDescription">
+                        <!-- 
+                        <div class="editTrigger hidden"><span class="message">Click to edit!</span></div>
+                         -->
+            <ice:panelGroup styleClass="versionInfo" rendered="#{planBean.plan.planDescriptionHistoryItem != null and !planBean.plan.planDescriptionHistoryItem.latest}">
+            
+                Viewing version from &amp;nbsp; <strong><ice:outputText
+                    value="#{planBean.plan.planDescriptionHistoryItem.updateDate}"/></strong> by &amp;nbsp;
+                <a href="/web/guest/members?userId=#{planBean.plan.planDescriptionHistoryItem.updateAuthor.userId}">
+                    <strong><ice:outputText value="#{planBean.plan.planDescriptionHistoryItem.updateAuthor.screenName}"/></strong>
+                </a>
+            </ice:panelGroup>
+            
+            
+            
+            <ice:panelGroup rendered="#{planBean.hasAbstract}">
+                <div>
+                    <h1 class="planDetailsSection pitch">Pitch</h1>
+                    <div class="popup-info-box hidden">
+                        The pitch is a tweet-length (140 character) description of your proposal
+                    </div>
+                </div>
+                <ice:panelGroup styleClass="hidden">
+                    <script language="javascript">
+                        initializePopups();
+                    </script>
+                </ice:panelGroup>
+                <div class="abstractText">
+                    <ice:outputText value="#{planBean.plan.abstract}" />
+                </div>
+            </ice:panelGroup>
+            
+            <h1 class="planDetailsSection">Body</h1>
+                
+            <ice:outputText value="#{planBean.plan.description}" escape="false" nospan="true" />
+        <ice:panelGroup styleClass="hidden ">
+            <script type="text/javascript">
+                setColabInEditMode(false); 
+                initiailzeEditTrigger(#{permissions.loggedIn}, #{permissions.canEdit}, #{permissions.planEditable},true);
+            </script>
+        </ice:panelGroup>
+
+        </ice:panelGroup>
+
+        <ice:panelGroup rendered="#{planBean.editingDescription}"
+                        styleClass="editWithVersions descriptionEditContainer">
+                        
+            <ice:panelGroup rendered="#{planBean.plan.regional}">
+                <table><tr>
+                    <td width="200px" style="vertical-align: middle;">
+                        Transnational group/large country
+                    </td>
+                    <td width="250">
+                        <div class="select-pro_wrap">
+                            <ice:selectOneMenu value="#{planBean.plan.region}" styleClass="selectbox1" style="width: 290px;">
+                                <f:selectItems value="#{planBean.plan.availableRegions}" /> 
+                            </ice:selectOneMenu>
+                            <script type="text/javascript">
+                                jQuery(document).ready(initSelectbox());
+                                setColabInEditMode(true);
+                            </script>
+                        </div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td width="200px" style="vertical-align: middle; height: 30px; padding-top: 10px;">
+                        Country within transnational group (optional)
+                    </td>
+                    <td>
+                        <ice:inputText value="#{planBean.plan.subregion}" styleClass="profile_input" style="margin-top: 10px;"/>
+                    </td>
+                </tr></table>
+                <br />
+                <br />
+            </ice:panelGroup>
+            <ice:panelGroup rendered="#{planBean.hasAbstract}">
+                <div>
+                    <h1 class="planDetailsSection pitch">Pitch</h1>
+                    <div class="popup-info-box hidden">
+                        The pitch is a tweet-length (140 character) description of your proposal
+                    </div>
+                </div>
+                <ice:panelGroup styleClass="hidden">
+                    <script language="javascript">
+                        initializePopups();
+                    </script>
+                </ice:panelGroup>
+                <div id="planAbstractContainer">
+                    <ice:inputTextarea value="#{planBean.plan.abstract}" styleClass="abstractInput" style="margin-top: 10px;" maxlength="140"/>
+                </div>
+                <script type="text/javascript">
+                jQuery('#planAbstractContainer textarea').jqEasyCounter({
+                                    'maxChars': 140,
+                                    'maxCharsWarning': 130,
+                                    'msgFontSize': '12px',
+                                    'msgFontColor': '#000',
+                                    'msgFontFamily': 'Arial',
+                                    'msgTextAlign': 'right',
+                                    'msgWarningColor': '#F00',
+                                    'msgAppendMethod': 'insertBefore'});
+                                    
+                                    
+                            </script>
+            </ice:panelGroup>
+
+            <h1 class="planDetailsSection">Body</h1>
+            <div class="descriptionInput">
+                            <script type="text/javascript">
+                                setColabInEditMode(true);
+                            </script>
+                <ice:inputRichText value="#{planBean.plan.description}" saveOnSubmit="true" toolbar="colabTab" 
+                                   height="500px" partialSubmit="true" customConfigPath="/js/fckeditor_config.js?11" />
+
+            </div>
+        </ice:panelGroup>
+
+
+<!-- 
+        <ice:panelGroup rendered="#{not planBean.plan.descriptionSet and not planBean.editingDescription}"
+                styleClass="planDescription editTriggerContainer">
+            <div class="editTrigger hidden"><span class="message">Click to edit!</span></div>
+             -->
+             <ice:panelGroup rendered="#{not planBean.plan.descriptionSet and not planBean.editingDescription}"
+                styleClass="planDescription">
+            <ice:panelGroup styleClass="versionInfo" rendered="#{planBean.plan.planDescriptionHistoryItem != null and !planBean.plan.planDescriptionHistoryItem.latest}">
+            
+                Viewing version from &amp;nbsp; <strong><ice:outputText
+                    value="#{planBean.plan.planDescriptionHistoryItem.updateDate}"/></strong> by &amp;nbsp;
+                <a href="/web/guest/members?userId=#{planBean.plan.planDescriptionHistoryItem.updateAuthor.userId}">
+                    <strong><ice:outputText value="#{planBean.plan.planDescriptionHistoryItem.updateAuthor.screenName}"/></strong>
+                </a>
+            </ice:panelGroup>
+            
+
+            <div class="nothingSetInfo">
+                <div class="nothingSetMessage">No description set.</div>
+            </div>
+        </ice:panelGroup>
+
+        </div>
+    <div class="right_col">
+      <div class="grid-gray">
+        <f:subview rendered="#{planBean.plan.subscribed}">
+        
+            <div class="icon"><img src="/collaboratorium-theme/images/unsubscribe.png" /></div>
+            <div class="info subscribe">
+                <ice:commandLink actionListener="#{planBean.plan.subscribe}" onclick="if(!deferUntilLogin()) return false;" >Unsubscribe</ice:commandLink>
+            </div>
+            
+        </f:subview>
+        
+        <f:subview rendered="#{not planBean.plan.subscribed}">
+        
+            <div class="icon"><img src="/collaboratorium-theme/images/icon_star.gif" /></div>
+            <div class="info subscribe">
+                <ice:commandLink actionListener="#{planBean.plan.subscribe}" onclick="if(!deferUntilLogin()) return false;" >Subscribe</ice:commandLink>
+            </div>
+        </f:subview>
+        <div class="icon">
+            <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact"
+                      addthis:title="#{discussionBean.currentThread.title}"
+                      addthis:description="#{discussionBean.currentThread.filteredDescription}"
+                
+                >
+                <script type="text/javascript">
+                    if (typeof(addthis) != 'undefined') {
+                        addthis.button('.addthis_button_compact');
+                    }
+                    //#{debateBean.currentItem}
+                    
+                </script>
+                    <img src="/collaboratorium-theme/images/icon_share_big.png"  alt="Share" class="" />
+                </a>
+        </div>
+        <div class="info share">
+            <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact"
+                      addthis:title="#{discussionBean.currentThread.title}"
+                      addthis:description="#{discussionBean.currentThread.filteredDescription}"
+                
+                >
+                <script type="text/javascript">
+                    if (typeof(addthis) != 'undefined') {
+                        addthis.button('.addthis_button_compact');
+                    }
+                    //#{debateBean.currentItem}
+                    
+                </script>
+                    <img src="/collaboratorium-theme/images/empty.gif" />
+                    Share
+                </a>
+         
+        </div>
+        
+        <div class="icon"><img src="/collaboratorium-theme/images/icon_blue-chk.gif" width="29" height="23" /></div>
+        <div class="info"><span>${planBean.plan.votes}</span> <em>votes (#{planBean.plan.votesPercent}%)</em></div>
+        <div class="icon"><img src="/collaboratorium-theme/images/icon_comments.gif" width="32" height="30" /></div>
+        <div class="info"><span>#{planBean.plan.commentsCount}</span> 
+            <collab:planLink planId="#{planBean.planId}" contestId="#{contest.contestId}" hashString="plans=tab:comments" text="&lt;em&gt;comments&lt;/em&gt;" />
+        </div>
+        <div class="clearfix">&amp;nbsp;</div>
+      </div>
+      
+       
+      <ice:panelGroup rendered="#{planBean.plan.hasModel}" styleClass="grid-blue">
+        <div class="icon"><img src="/collaboratorium-theme/images/icon_blue-arrows.gif" width="30" height="23" /></div>
+        <div class="info">
+          <div class="infohead">
+            <collab:planLink contestId="#{contest.contestId}" planId="#{planBean.planId}" text="ACTIONS &amp; IMPACTS" hashString="plans=tab:actionsimpacts" />
+          </div>
+          <div class="infotext">
+            <p><strong>CO2 concentration</strong><br />#{planBean.plan.attributes['CO2_CONCENTRATION']} ppm in 2100</p>
+            <p><strong>Temperature Increase</strong><br />#{planBean.plan.attributes['TEMP_CHANGE']} &amp;deg;C</p>
+            <p><strong>Mitigation Costs</strong><br />#{planBean.plan.attributes['MITIGATION_COST_NO_ERRORS']} %GDP in 2100</p>
+            <strong>Damage Costs</strong><br />#{planBean.plan.attributes['DAMAGE_COST']} %GDP in 2100  
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </ice:panelGroup>
+      
+      <ice:panelGroup rendered="#{planBean.plan.regional}" styleClass="grid-blue">
+        <div class="icon"><img src="/collaboratorium-theme/images/icon_blue-regions.gif" width="30" height="28" /></div>
+        <div class="info">
+          <div class="infohead">
+            REGION
+          </div>
+          <div class="infotext">
+            <p><strong>Economy</strong><br />#{planBean.plan.regionEconomy}</p>
+            <p><strong>Transnational group/large country</strong><br />#{planBean.plan.attributes['REGION']}</p>
+            <f:subview rendered="#{not empty planBean.plan.subregion}">
+                <p><strong>Country within transnational group</strong><br />#{planBean.plan.attributes['SUBREGION']}</p>
+            </f:subview>  
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </ice:panelGroup>
+      
+      <div class="grid-gray">
+        <div class="icon"><img src="/collaboratorium-theme/images/icon_people.gif" width="32" height="29" /></div>
+        <div class="info"><span>#{plan.plan.membersCount}</span> <em>team members</em></div>
+        <div class="icon"><img src="/collaboratorium-theme/images/icon_thumb-up.gif" width="27" height="31" /></div>
+        <div class="info"><span>#{plan.plan.attributes['SUPPORTERS']}</span> <em>supporters</em></div>
+        <div class="clearfix"></div>
+      </div>
+
+    </div> <!-- /proright -->
+        
+        
+        
+        </div>
+
+
+        <ice:panelGroup styleClass="hidden ">
+            <script type="text/javascript">
+                Collab.nav.addEditorDirtyValidationCallback(checkIfPlanDescriptionDirty);
+                initiailzeEditTrigger(#{permissions.loggedIn}, #{permissions.canEdit}, #{permissions.planEditable},true);
+            </script>
+        </ice:panelGroup>
+        
+
+</f:view>

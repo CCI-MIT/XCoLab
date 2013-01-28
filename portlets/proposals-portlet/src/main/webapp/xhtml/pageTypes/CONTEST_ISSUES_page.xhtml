@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<f:view
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:sharedcollab="http://climatecollaboratorium.org/components">
+        
+    <ui:composition template="../templates/contestPageTemplate.xhtml">
+    
+        <ui:define name="page_subtitle">Debate the issues</ui:define>
+        <ui:define name="plans_breadcrumb">
+        
+            <collab:contestsPageLink text="Contests Index" /> 
+            <img src="/collaboratorium-theme/images/arrow.gif" width="8" height="8" />
+            
+            <collab:contestLink contestId="#{contest.contestId}" text="#{contest.contest.shortName}" />
+            <img src="/collaboratorium-theme/images/arrow.gif" width="8" height="8" />
+            
+            <span>Debate the Issues</span>
+            
+        </ui:define>
+        
+        <ui:define name="contest_content">
+            <div id="content">
+            <f:subview rendered="#{contest.contest.editor.editingPositions}">
+                <ice:form>
+                    <h2>Choose debates that you want to associate with contest</h2>
+                    <div>
+                        <ice:selectManyCheckbox value="#{contest.contest.editor.contestDebates}" layout="pageDirection">
+                            <f:selectItems value="#{contest.contest.editor.availableDebatesItems}" />
+                        </ice:selectManyCheckbox>
+                    </div>
+                    <ice:commandButton action="#{contest.contest.editor.editPositions}"  value="Ok" />
+                </ice:form>
+            </f:subview>
+            
+            <f:subview rendered="#{not contest.contest.editor.editingPositions}">
+                <ice:form>
+                    <ice:commandButton action="#{contest.contest.editor.editPositions}" value="Edit" rendered="#{permissions.canAdminAll}" />
+                </ice:form>
+                <ice:form>
+                <!-- 
+                <sharedcollab:helpMessage messageId="planDebatesHelp" styleClass="planHelp"
+                                      hideThisMessage="Hide this message" defaultState="closed">
+                Several key debates are at the heart of the global conversation about international climate agreements.
+                <a href="/web/guest/resources/-/wiki/Main/What+Are+Debates">See more</a>.
+            </sharedcollab:helpMessage>
+            <sharedcollab:helpMessageTrigger
+                    messageId="planDebatesHelp">+show help</sharedcollab:helpMessageTrigger>
+                     -->
+                </ice:form>
+                <collab:debatesDetails debateDetailsBean="#{debatesDetailsBean}" debatesIds="#{contest.contest.debatesIds}" 
+                        linkPatternPrefix="#plans=contests:#{contest.contest.contestActive ? 'active' : 'past'},subview:issues;" />
+            </f:subview>
+            
+            </div>
+        </ui:define>
+        
+    </ui:composition>
+</f:view>

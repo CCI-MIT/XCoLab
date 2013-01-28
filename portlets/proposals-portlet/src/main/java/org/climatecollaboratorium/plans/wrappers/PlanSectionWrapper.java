@@ -13,6 +13,7 @@ import com.ext.portlet.NoSuchPlanItemException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanSection;
+import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
@@ -115,6 +116,10 @@ public class PlanSectionWrapper {
 
     public boolean isLast() {
         return last;
+    }
+    
+    public PlanSectionDefinition getDefinition() throws PortalException, SystemException {
+        return PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(section.getPlanSectionDefinitionId());
     }
     
     

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:collab="http://climatecollaboratorium.org/facelets"
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    >
+    <ice:portlet>
+        <div id="bread" class="pro">
+            <a href="/web/guest/community">Community</a>
+            <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />
+            <a href="/web/guest/members">Members</a>
+            <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />
+            <collab:userLinkSimple userId="#{messagingBean.user.userId}" text="#{messagingBean.user.screenName}" />
+            <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />
+            <a href="/web/guest/messaging">Messages</a>
+        </div>
+  
+        <div class="clear"></div>
+        <ui:include src="./#{messagingBean.sendingMessage ? 'sendMessage' : 'messages'}.xhtml" />
+        <br /><br /><br /><br /><br />
+    </ice:portlet>
+</f:view>

@@ -1,0 +1,247 @@
+<f:view  
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets">
+    <ice:dataTable value="#{multiContest ? plansIndex.plansMultiContestPage : plansIndex.plans}" styleClass="colab prohome" rowClasses="nt,t" columnClasses="ng,g"
+                   var="singlePlan" sortColumn="#{plansIndex.sortColumn}"
+                   sortAscending="#{plansIndex.sortAscending}" id="plansIndexTable"
+                   rows="#{maxRows}" headerClasses="ng,g">
+                   
+        <ice:column>
+            
+            <f:facet name="header">
+                <div>
+                    <div class="popup-info-box hidden"
+                         id="info-popup-#{plansIndex.nameColumn}">#{plansIndex.nameColumn.description}</div>
+                    <div class="clear"></div>
+                    <ice:commandSortHeader styleClass="column-hover" columnName="#{plansIndex.nameColumn}">
+                        <ice:outputText id="column-#{plansIndex.nameColumn}" value="#{plansIndex.nameColumn.name}"
+                                        escape="true"/>
+                    </ice:commandSortHeader>
+                </div>
+            </f:facet>
+                <table class="ribbonsAndPlanName"><tr><td class="planRibbonsContainer">
+                    <f:subview rendered="#{singlePlan.place gt 0}">
+                        <div>
+                            <div class="ribbon-hover planPlace place_#{singlePlan.place}">
+                            </div>
+                            <div class="popup-info-box hidden">
+                                <ice:outputText rendered="#{singlePlan.place == 1}">
+                                Finalist: Proposal that went on to the voting round of the contest.
+                                </ice:outputText>
+                                <ice:outputText rendered="#{singlePlan.place == 2}">
+                                    Honorable mention: Team undertook diligent work in its proposal and raised awareness of the Climate CoLab.
+                                </ice:outputText>
+                            </div>
+                        </div>
+                    </f:subview>
+                    <f:subview rendered="#{singlePlan.ribbon != null and singlePlan.ribbon > 0}">
+                        <div>
+                            <div class="ribbon-hover planRibbon ribbon_#{singlePlan.ribbon}">
+                                <a href="javascript:;">&amp;nbsp;</a>
+                            </div>
+                            <div class="tooltip">
+                                #{singleProposal.ribbonText}
+                            </div>
+                        </div>
+                    </f:subview>
+                    
+                    <f:subview rendered="#{singlePlan.scrapbook}">
+                        <div class="scrapbookProposal">
+                            <img src="/collaboratorium-theme/images/scrapbook_icon.png"  class="scrapbook_icon" width="20px" height="20px" />
+                        </div>
+                        <div class="popup-info-box hidden">
+                            ${singlePlan.scrapbookText}
+                        </div>
+                    </f:subview>
+                </td>
+                <td>
+                    <collab:planLink planId="#{singlePlan.planId}" contestId="#{singlePlan.contestId}" text="#{singlePlan.planName}" escape="true" />
+                    by&amp;nbsp;
+                    <collab:userLinkSimple userId="#{singlePlan.author.userId}" text="#{singlePlan.author.screenName}" />
+                </td>
+                </tr></table>
+     
+        </ice:column>
+        
+        <ice:column rendered="#{plansIndex.contestPhase.canVote}" styleClass="table-cell-padding">
+            <f:facet name="header">
+                <div class="voteForPlan"><span>Vote for Plan</span></div>
+            </f:facet>
+
+            <ice:commandLink actionListener="#{singlePlan.vote}"
+                             onclick="if(! deferUntilLogin()) { deferPlanVoteUntilLoggedIn(${singlePlan.planId}); return false; }"
+                             styleClass="indexVoteForPlan #{singlePlan.votedOn ? 'en userVote' : 'dis'} voteForPlanTrigger_#{singlePlan.planId}"
+                             id="vote_for_pan_#{singlePlan.planId}">
+            </ice:commandLink>
+        </ice:column>
+        
+        
+        <ice:columns value="#{plansIndex.columns}" var="column">
+            <f:facet name="header">
+                <div>
+                    <div class="popup-info-box hidden"
+                         id="info-popup-#{column}">#{column.description}</div>
+                    <div class="clear"></div>
+                    <ice:commandSortHeader styleClass="column-hover" columnName="#{column}">
+                        <ice:outputText id="column-#{column}" value="#{column.name}"
+                                        escape="false"/>
+                    </ice:commandSortHeader>
+                </div>
+            </f:facet>
+            <!-- 
+            <ice:panelGroup rendered="#{column == 'NAME'}" styleClass="table-cell-padding #{column}">
+                <f:subview rendered="#{not plansIndex.contestPhase.active}">
+                    <div class="ribbon-hover planPlace place_#{singlePlan.place}">
+                    </div>
+                    <div class="popup-info-box hidden">
+                        <ice:outputText rendered="#{singlePlan.place == 1}">
+                          Finalist: Proposal that went on to the voting round of the contest.
+                        </ice:outputText>
+                        <ice:outputText rendered="#{singlePlan.place == 2}">
+                          Honorable mention: Team undertook diligent work in its proposal and raised awareness of the Climate CoLab.
+                        </ice:outputText>
+
+                    </div>
+                </f:subview>
+                <f:subview rendered="#{singlePlan.ribbon != null}">
+                    <div class="ribbon-hover planRibbon ribbon_#{singlePlan.ribbon}">
+                    </div>
+                    <div class="popup-info-box hidden">
+                        <ice:outputText value="#{singlePlan.ribbonText}" />
+                    </div>
+                </f:subview>
+                
+                <collab:planLink planId="#{singlePlan.planId}" contestId="#{singlePlan.contestId}" text="#{singlePlan.columnValues[column]}" escape="true" />
+            </ice:panelGroup>
+             -->
+            <ice:panelGroup rendered="#{column == 'POSITIONS' and !singlePlan.hasPositions}"
+                            styleClass="table-cell-padding #{column}">
+                N/A
+            </ice:panelGroup>
+            <ice:panelGroup rendered="#{column == 'POSITIONS' and singlePlan.hasPositions}"
+                            styleClass="table-cell-padding #{column}">
+                <a href="javascript:;" class="showPositions"
+                   onclick="showPositionsOnIndexPageDialog('plan_positions_#{singlePlan.planId}');return;"/>
+
+                <div class="hidden" id="plan_positions_#{singlePlan.planId}">
+                    <div class="positionsDialog">
+                        <div class="positionsDialog_top">
+                            <div class="title"><h2>Positions for #{singlePlan.planName}</h2></div>
+                        </div>
+                        <div class="positionsDialog_bg">
+                            <div class="scrollBox">
+                                <ice:panelSeries value="#{singlePlan.positions}" var="question">
+                                    <div class="assumption">
+                                        <h3 class="question">#{question.debateAnchor}</h3>
+                                        <h4 class="position">#{question.selectedPosition.itemAnchor}</h4>
+                                    </div>
+                                </ice:panelSeries>
+                            </div>
+                        </div>
+                        <div class="positionsDialog_bottom">
+                            <a href="javascript:;"
+                               onclick="hidePositionsOnIndexPageDialog('plan_positions_#{singlePlan.planId}')">Close</a>
+                        </div>
+                    </div>
+                </div>
+            </ice:panelGroup>
+            <ice:panelGroup
+                    rendered="#{column == 'SEEKING_ASSISTANCE' and singlePlan.columnValues[column] == 'true'}"
+                    styleClass="table-cell-padding #{column}">
+                <img src="/collaboratorium-theme/images/hand_icon.png"/>
+            </ice:panelGroup>
+            <ice:panelGroup
+                    rendered="#{column == 'SEEKING_ASSISTANCE' and singlePlan.columnValues[column] == 'false'}"
+                    styleClass="table-cell-padding #{column}">
+                    &amp;nbsp;
+            </ice:panelGroup>
+            <ice:panelGroup rendered="#{column == 'CREATOR'}">
+                <collab:userLinkSimple userId="#{singlePlan.author.userId}" text="#{singlePlan.author.screenName}" />
+            </ice:panelGroup>
+            
+            
+            <ice:panelGroup rendered="#{column == 'IS_PLAN_OPEN'}" styleClass="table-cell-padding #{column}">
+                <ice:outputText value="Anyone"
+                                rendered="#{singlePlan.columnValues[column] == 'true'}"/>
+                <ice:outputText value="Team only"
+                                rendered="#{singlePlan.columnValues[column] != 'true'}"/>
+            </ice:panelGroup>
+            
+            <ice:panelGroup rendered="#{column == 'COMMENTS'}">
+                <collab:planLink planId="#{singlePlan.planId}" contestId="#{singlePlan.contestId}" text="#{singlePlan.columnValues[column]}" hashString="plans%3Dtab%3Acomments%3Bcomments%3D" escape="true" />
+            </ice:panelGroup>
+                    
+            
+            <ice:panelGroup
+                    rendered="#{column != 'NAME' and column != 'POSITIONS' and column != 'SEEKING_ASSISTANCE' and column != 'IS_PLAN_OPEN' and column != 'CREATOR' and column != 'COMMENTS'}"
+                    styleClass="table-cell-padding #{column}">
+                <ice:outputText value="#{singlePlan.columnValues[column]}"
+                                escape="false"/>
+            </ice:panelGroup>
+
+        </ice:columns>
+    </ice:dataTable>
+    
+    
+    <ice:panelGroup rendered="#{renderPaginator}" styleClass="pager">
+            <table style="float: right;">
+            
+                <tr>
+                <!-- 
+                    <td class="oldestNewestPager">
+                        <ice:commandLink disabled="#{not containerBean.byNewest}" actionListener="#{containerBean.resort}">
+                            Oldest
+                        </ice:commandLink>
+                        <span class="vdiv">|</span>
+                        <ice:commandLink disabled="#{containerBean.byNewest}" actionListener="#{containerBean.resort}">
+                            Newest
+                        </ice:commandLink>
+                    </td>
+                    <td> 
+                        <ice:dataPaginator for="#{paginatorFor}" rowsCountVar="rowsCount" displayedRowsCountVar="displayedRowsCountVar" 
+                                firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex" pageCountVar="pageCount" 
+                                pageIndexVar="pageIndex" >
+                            <ice:outputFormat value="Page {0} of {1}" styleClass="page" escape="false">
+                                <f:param value="#{pageIndex}" />
+                                <f:param value="#{pageCount}" />
+                            </ice:outputFormat>
+                        </ice:dataPaginator>
+                </td>     
+                    -->
+                <td class="paginatorControls">
+                    <ice:dataPaginator rendered="true" for="plansIndexTable" paginator="true" paginatorMaxPages="5" styleClass="comm_controls" style="display: inline;"> 
+                        <f:facet name="first" rendered="true">
+                            <ice:panelGroup >First</ice:panelGroup>
+                        </f:facet>
+                        <f:facet name="last" rendered="true">
+                            <ice:panelGroup styleClass="">Last</ice:panelGroup>
+                        </f:facet>
+                        <f:facet name="previous" rendered="true">
+                            <ice:panelGroup styleClass="pagerPrev">&lt; Prev</ice:panelGroup>
+                        </f:facet>
+                        <f:facet name="next">
+                            <ice:panelGroup styleClass="">Next &gt;</ice:panelGroup>
+                        </f:facet>
+                    </ice:dataPaginator>
+                </td>
+            </tr>
+          </table>
+          <div class="clear"></div>
+          
+          
+          </ice:panelGroup>  
+
+    <ice:panelGroup styleClass="hidden">
+        #{plansIndex.plansUpdateToken}
+        <script language="javascript">
+                initializeColumnsInfo();
+                initializeRibbons();
+                makeNANotesVisible();
+               
+        </script>
+    </ice:panelGroup>
+
+</f:view>

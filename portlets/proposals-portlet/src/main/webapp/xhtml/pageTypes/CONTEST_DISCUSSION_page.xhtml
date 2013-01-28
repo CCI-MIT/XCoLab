@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<f:view
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:sharedcollab="http://climatecollaboratorium.org/components">
+        
+                
+<div class="proposal-head contest-discussion">
+    <div class="inner">
+        <div class="headline">
+            <div class="contest-image"><img src="#{contest.contest.logo}" width="52" height="52" alt="Contest Image" /></div>
+            <div class="proposal-title">
+                <div class="prop-description">
+                    <h2><collab:contestLink contestId="#{contest.contest.contestId}" text=" #{contest.contest.shortName} " /></h2>
+                    <div class="clear"></div>
+                    <h1>
+                        Discussion
+                    </h1>
+                </div>
+            </div>
+        </div> <!-- /headline -->
+    </div> <!-- /inner -->
+</div> <!-- /proposal-head -->
+
+<div id="content">
+    <ice:form>
+        <collab:comments discussionId="#{contest.contest.categoryGroupId}" groupId="#{contest.contest.groupId}" comments="true" />
+    </ice:form>
+</div>
+  
+</f:view>

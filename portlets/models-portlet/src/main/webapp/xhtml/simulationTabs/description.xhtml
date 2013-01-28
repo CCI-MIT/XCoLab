@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces">
+
+    <ice:panelGroup styleClass="modelDescription" rendered="#{not simulationDetailsBean.tabEditing}">
+        <p>#{simulationDetailsBean.description}</p>
+    </ice:panelGroup>
+    
+    <ice:panelGroup styleClass="modelDescription" rendered="#{simulationDetailsBean.tabEditing}">
+        <ice:inputRichText value="#{simulationDetailsBean.description}"   saveOnSubmit="true" skin="office2003" height="500px"  />
+        <ice:commandButton value="Submit" actionListener="#{simulationDetailsBean.updateSimulation}" />
+    </ice:panelGroup>
+    
+</f:view>

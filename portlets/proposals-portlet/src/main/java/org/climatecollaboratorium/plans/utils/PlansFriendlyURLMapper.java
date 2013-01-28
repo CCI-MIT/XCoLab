@@ -20,7 +20,6 @@ public class PlansFriendlyURLMapper extends BaseFriendlyURLMapper {
         return _PORTLET_ID;
     }
 
-    @Override
     public String buildPath(LiferayPortletURL portletURL) {
         StringBuilder friendlyURLPathSB = new StringBuilder();
         String friendlyURLPath = null;
@@ -79,7 +78,6 @@ public class PlansFriendlyURLMapper extends BaseFriendlyURLMapper {
         }
     }
 
-    @Override
     public void populateParams(String friendlyURLPath, Map<String, String[]> parameterMap,
             Map<String, Object> requestContext) {
         populateParams(friendlyURLPath, parameterMap);

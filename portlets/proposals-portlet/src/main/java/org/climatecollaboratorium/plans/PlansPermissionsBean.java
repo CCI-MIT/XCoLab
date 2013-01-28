@@ -1,8 +1,9 @@
 package org.climatecollaboratorium.plans;
 
+import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.plans.PlanUserPermission;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -108,7 +109,9 @@ public class PlansPermissionsBean {
         if (plan!=null) {
             // use group id from plans community
             planGroupId = PlanItemLocalServiceUtil.getPlanGroupId(plan);
-            planIsEditable = ContestPhaseLocalServiceUtil.getContestStatus(PlanItemLocalServiceUtil.getContestPhase(plan)).isCanEdit();
+            String status = 
+                    ContestPhaseTypeLocalServiceUtil.getContestPhaseType(PlanItemLocalServiceUtil.getContestPhase(plan).getContestPhaseType()).getStatus();
+            planIsEditable = ContestStatus.valueOf(status).isCanEdit();
             updatePlanUserPermission();
         }
     }

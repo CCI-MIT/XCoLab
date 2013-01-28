@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:ui="http://java.sun.com/jsf/facelets"  
+    xmlns:liferay-faces="http://liferay.com/tld/faces">
+
+    <ice:panelTabSet>
+    <ice:messages />
+        <ice:panelTab label="Basic info">
+            <f:subview>
+                <ui:include src="simulationEdit/basicSimulationInfo.xhtml" />
+            </f:subview>
+        </ice:panelTab>
+        <ice:panelTab label="Exp eval">
+            <f:subview>
+                <ui:include src="simulationEdit/expertEvaluation.xhtml" />
+            </f:subview>
+        </ice:panelTab>
+        <ice:panelTab label="Inputs widgets">
+            <f:subview>
+                <ui:include src="simulationEdit/inputsWidgets.xhtml" />
+            </f:subview>
+        </ice:panelTab>
+        <ice:panelTab label="Input groups">
+            <f:subview>
+                <ui:include src="simulationEdit/inputGroups.xhtml" />
+            </f:subview>
+        </ice:panelTab>
+        <ice:panelTab label="Inputs order">
+            <f:subview>
+                <ui:include src="simulationEdit/inputsOrder.xhtml" />
+            </f:subview>
+        </ice:panelTab>
+        <ice:panelTab label="Outputs settings">
+            <f:subview>
+                <ui:include src="simulationEdit/outputsSettings.xhtml" />
+            </f:subview>
+        </ice:panelTab>
+        <ice:panelTab label="Outputs order">
+            <f:subview>
+                <ui:include src="simulationEdit/outputsOrder.xhtml" />
+            </f:subview>
+        </ice:panelTab>
+        <ice:panelTab label="Outputs error settings">
+            <f:subview>
+                <ui:include src="simulationEdit/outputsErrorSettings.xhtml" />
+            </f:subview>
+        </ice:panelTab>
+    </ice:panelTabSet>
+
+    
+    <!-- 
+    <div id="editModel">
+        <ul>
+            <li><a href="#tabs-1">Basic info</a></li>
+            <li><a href="#tabs-2">Input widgets</a></li>
+            <li><a href="#tabs-3">Order of inputs</a></li>
+            <li><a href="#tabs-4">Order of outputs</a></li>
+        </ul>
+        <div class="clear"></div>
+    
+        <div id="tabs-1">
+        <ice:form>
+                <ice:inputTextarea value="#{simulationBean.description}" />
+                <ice:commandButton value="Submit" actionListener="#{simulationBean.updateSimulation}" />
+    </ice:form>
+        
+        </div>
+        <div id="tabs-2">
+            <f:subview>
+                <ui:include src="simulationEdit/inputsWidgets.xhtml" />
+            </f:subview>
+        </div>
+        <div id="tabs-3">
+            <f:subview>
+                <ui:include src="simulationEdit/inputsOrder.xhtml" />
+            </f:subview>
+        </div>
+        <div id="tabs-4">
+            <ice:panelGroup>
+                <h1>Output groups order</h1>
+                <ice:panelSeries value="#{simulationBean.display.outputs}" var="output" styleClass="sortableOutputDisplay">
+                    <li>#{output.name} #{output.order}
+                        <ice:panelSeries value="#{output.series}" var="serie" styleClass="subSortableOutputDisplay" rendered="#{output.displayItemType == 'INDEXED'}">
+                            <li>#{serie.name} #{serie.order}<input type="hidden" class="outputId" value="#{serie.metaData.id}" /></li>
+                        </ice:panelSeries>
+                    </li>
+                </ice:panelSeries>
+            </ice:panelGroup>
+            <button id="showOrder">show order</button>
+        </div>
+    </div>
+    -->
+    <ice:commandButton value="Cancel" actionListener="#{simulationBean.cancelEditing}" />
+</f:view>

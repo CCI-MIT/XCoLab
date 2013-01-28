@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:ui="http://java.sun.com/jsf/facelets" 
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+   
+       
+    <ui:decorate template="breadcrumb.xhtml">
+    </ui:decorate>
+    <div id="content">
+    <div class="admin_left">
+        <h2>This proposal can be edited by:</h2>
+        <div class="admin_box">
+            <ice:selectOneRadio value="#{planBean.plan.planMode}" layout="pageDirection" partialSubmit="true">
+                <f:selectItems value="#{planBean.plan.allPlanModes}"></f:selectItems>
+            </ice:selectOneRadio>                
+        </div>        
+        
+        <h2>This proposal is:</h2>
+        <div class="admin_box">
+            <ice:selectOneRadio value="#{planBean.plan.planStatusSelection}"  layout="pageDirection" partialSubmit="true">
+                <f:selectItems value="#{planBean.plan.allPlanStatusSelections}"></f:selectItems>
+            </ice:selectOneRadio>
+            <p class="special-info">
+                <em>By entering the contest you agree to our&amp;nbsp;<a href="/web/guest/resources/-/wiki/Main/2010+CoLab+Global+Challenge+Rules">Contest Rules</a>and &amp;nbsp;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of Use</a></em>.
+            </p>
+        </div>
+        
+        <h2>Ask for help:</h2>
+        <div class="admin_box">
+            <ice:selectManyCheckbox value="#{planBean.plan.helpStatus}" partialSubmit="true" styleClass="plan-mode-select">
+                <f:selectItems value="#{planBean.plan.allHelpStatuses}"></f:selectItems>    
+            </ice:selectManyCheckbox>
+        </div> 
+        
+        <ice:panelGroup rendered="#{permissions.canAdminAll and contest.currentPhase.hasNextPhase and !planBean.plan.promoted}">
+            <h2>Promote to next phase</h2>
+            <div class="admin_box">           
+                <div class="buttgrid">
+                    <ice:commandLink actionListener="#{planBean.plan.promote}" onclick="if(!confirm('Are you sure you want to proceed with promoting this plan?')){ return false; }">
+                        <span>PROMOTE</span> plan to next phase
+                    </ice:commandLink>
+                </div> 
+            </div>
+        </ice:panelGroup>
+        
+        <ice:panelGroup rendered="#{permissions.canAdminAll and planBean.plan.place le 0}">
+            <h2>Mark as semi-finalist</h2>
+            <div class="admin_box">  
+                <div class="buttgrid">
+                    <ice:commandLink actionListener="#{planBean.plan.markAsSemiFinalist}" onclick="if(!confirm('Are you sure you want to proceed with marking this proposal as semi finalist?')){ return false; }">
+                        <span>MARK</span> as semi-finalist
+                    </ice:commandLink>
+                </div> 
+            </div>
+        </ice:panelGroup>
+        
+        <ice:panelGroup rendered="#{permissions.canAdminAll and planBean.plan.place == 2}">
+            <h2>Remove semi-finalist ribbon</h2>
+            <div class="admin_box">
+                <div class="buttgrid">
+                    <ice:commandLink actionListener="#{planBean.plan.removeSemiFinalistRibbon}" onclick="if(!confirm('Are you sure you want to remove semi-finalist ribbon?')){ return false; }">
+                        <span>REMOVE</span> semi-finalist ribbon
+                    </ice:commandLink>
+                    
+                </div> 
+            </div>
+        </ice:panelGroup>
+        
+        <ice:panelGroup rendered="#{permissions.canAdminAll}">
+            <h2>Set ribbon type (integer value 1 to 3)</h2>
+            
+            <div class="admin_box">
+                <ice:inputText value="#{planBean.plan.ribbon}" partialSubmit="true" /> 
+            </div>
+                
+            
+            <h2>Set ribbon text (it will be shown when user hovers over the ribbon)</h2>
+            <div class="admin_box">
+                <ice:inputText value="#{planBean.plan.ribbonText}" partialSubmit="true" /> 
+            </div>
+        </ice:panelGroup>
+        
+        <ice:panelGroup rendered="#{permissions.canAdminAll}">
+          <h2>Scrapbook</h2>
+            
+          <div class="admin_box">
+            <div class="buttgrid">
+                <f:subview rendered="#{planBean.plan.scrapbook}">
+                    <ice:commandLink actionListener="#{planBean.plan.toggleScrapbook}">
+                        <span>REMOVE</span> scrapbook mark
+                    </ice:commandLink>
+                </f:subview>
+                
+                <f:subview rendered="#{not planBean.plan.scrapbook}">
+                    <ice:commandLink actionListener="#{planBean.plan.toggleScrapbook}">
+                        <span>MARK</span> proposal as a scrapbook
+                    </ice:commandLink>
+                </f:subview>
+                
+            </div>
+          </div>
+          
+          <h2>Scrapbook hover text</h2>
+          <div class="admin_box">
+              <ice:inputText value="#{planBean.plan.scrapbookText}" partialSubmit="true" /> 
+          </div>
+        </ice:panelGroup>
+        
+        <ice:panelGroup rendered="#{permissions.planOwner}">
+            <h2>Owner actions</h2>
+            
+            <div class="admin_box">
+                <div class="buttgrid">
+                    <ice:commandLink rendered="#{permissions.canAdmin}"  actionListener="#{planBean.plan.delete}" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; }">
+                        <span>DELETE</span> plan
+                    </ice:commandLink>
+                </div>
+            </div>
+        </ice:panelGroup>
+    
+    </div>
+    
+    
+    <div class="admin_right">
+        <h2>Membership requests</h2>
+        <ice:panelGroup  styleClass="admin_box" rendered="#{fn:length(planBean.membershipBean.planMembershipRequests) lt 1}">
+            <i>No new requests</i>
+        </ice:panelGroup>
+        <ice:dataTable value="#{planBean.membershipBean.planMembershipRequests}" var="membershipRequest" styleClass="colab adm" rendered="#{fn:length(planBean.membershipBean.planMembershipRequests) gt 0}" rowClasses="t,nt">
+            <ice:column>
+                <collab:userLinkSimple userId="#{membershipRequest.userId}" text="#{membershipRequest.screenName}" />
+            </ice:column>
+            <!-- 
+            <ice:column>
+                <ice:outputText value="#{membershipRequest.requestDate}" />
+            </ice:column>
+            -->
+            <ice:column rendered="#{permissions.canAdmin}">
+                <a href="javascript:;" onclick="showManageMembershipRequestDialog('manage_membership_request_#{membershipRequest.id}')">
+                    View
+                </a>                                                                          
+                <div id="manage_membership_request_#{membershipRequest.id}">
+                    <div class="content hidden">
+                        <div class="manageMembersTop">
+                            <h4>Respond to membership request</h4>
+                        </div>
+                        <div class="manageMembersContent">
+                            User comment:
+                            <p class="userComment">
+                                <ice:outputText value="#{membershipRequest.comment}" />
+                            </p>
+                            Optional message to requestor:<br />
+                                <ice:inputTextarea value="#{membershipRequest.response}" styleClass="membershipRequestResponse" />
+                            Action:
+                            <ice:selectOneRadio value="#{membershipRequest.approve}">
+                                <f:selectItem itemValue="true" itemLabel="approve" />
+                                <f:selectItem itemValue="false" itemLabel="deny" />
+                            </ice:selectOneRadio>
+                        </div>
+                        <div class="manageMembersActions">
+                            <button class="checkBtn first" onclick="respondToMembershipRequest('manage_membership_request_#{membershipRequest.id}')">OK</button>
+                            <button class="cancelBtn"  onclick="hideManageMembershipRequestDialog('manage_membership_request_#{membershipRequest.id}')">Cancel</button>
+                        </div>
+                    </div>
+                    <ice:commandLink actionListener="#{membershipRequest.update}" styleClass="hidden membershipRequestResponseSubmitButton" />
+                </div>
+            </ice:column>
+
+        </ice:dataTable>
+        <div id="manage_membership_request_dialog"></div>
+        
+        <h2>History</h2>
+        <table class="colab adm2">
+            <ui:repeat value="#{planBean.plan.allVersions}" var="planVersion">
+                <tr class="createdate">
+                    <td colspan="2" class="createdate">
+                        <ice:outputText value="#{planVersion.updateDate}">
+                            <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
+                        </ice:outputText>
+                    </td>
+                </tr>
+                <tr class="t">
+                    <td width="210" class="b">
+                        <collab:userLinkSimple userId="#{planVersion.updateAuthor.userId}" text="#{planVersion.updateAuthor.screenName}" />
+                    </td>
+                    <td>
+                        #{planVersion.updateType}
+                    </td>
+                </tr>
+        
+            </ui:repeat>
+        </table>
+    </div>
+   <!--  if plan has been deleted, redirect user to plansIndex -->
+    
+    <f:subview rendered="#{planBean.plan.deleted}">    
+        <script language="javascript">
+            Collab.nav.navigate("plans", {});
+        </script>
+    
+    </f:subview>
+
+</div>
+    
+</f:view>

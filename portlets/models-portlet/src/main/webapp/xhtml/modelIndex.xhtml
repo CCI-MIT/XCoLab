@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:liferay-faces="http://liferay.com/tld/faces"
+        xmlns:collabcomps="http://climatecollaboratorium.org/components">
+
+
+    <ice:panelPopup rendered="#{category.adding}" styleClass="collaboratoriumPopup"
+                    autoPosition="manual" modal="true">
+
+        <f:facet name="header">Add Category</f:facet>
+        <f:facet name="body">
+            <ice:form id="debate-question-edit-form">
+                <table style="width: 500px; height: 300px" id="addQuestionDialog">
+                    <tr>
+                        <td><ice:outputLabel value="Name:"/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h2><ice:inputText styleClass="modelCategoryName" value="#{category.addCategory.name}"/>
+                            </h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><ice:outputLabel value="Details:"/></td>
+                    </tr>
+                    <tr>
+                        <td class="editDebateItemContent"><ice:inputTextarea styleClass="modelCategoryDescription"
+                                                                             value="#{category.addCategory.description}"/>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td><ice:commandButton value="Cancel" actionListener="#{category.cancelAdd}"/>
+                            <ice:commandButton value="Add" actionListener="#{category.submitAdd}"/>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </ice:form>
+        </f:facet>
+
+    </ice:panelPopup>
+    <ice:form>
+    <!-- 
+<collabcomps:helpMessage messageId="modelsHelp" styleClass="modelHelp" hideThisMessage="Hide this message">
+    Computer simulation models are at the heart of the CoLab. Actions specified in Plans get translated into inputs for models. The models then project what would happen if the proposed actions were taken. For more, see&#160;<a href="/web/guest/resources/-/wiki/Main/Models%20Help">Models Help</a> .
+</collabcomps:helpMessage>
+<collabcomps:helpMessageTrigger messageId="modelsHelp">+show help</collabcomps:helpMessageTrigger>
+ -->
+</ice:form>
+       
+    <div class="categoriesHeader">
+        <div class="buttonPanel">
+            <ice:form>
+                <ice:commandButton value="Edit Index" actionListener="#{sim.edit}"
+                                   rendered="#{permissions.canEditModel and not sim.editing}"/>
+                <ice:commandButton value="Add Category" actionListener="#{category.addingCategory}"
+                                   rendered="#{permissions.canEditModel and not sim.editing}"/>
+            </ice:form>
+        </div>
+    </div>
+   
+    <ice:panelSeries value="#{category.categories}" var="modelcategory" rendered="#{not sim.editing}"
+                     styleClass="categorySeriesContainer">
+
+        <ice:panelGroup styleClass="categoryDisplay">
+            <ice:panelGroup styleClass="categoryDetails">
+                <ice:form>
+                    <div class="categoryHeader">
+
+                        <div class="categoryButtonPanel">
+                            <ice:commandButton actionListener="#{modelcategory.edit}" value="Edit Category"
+                                               rendered="#{permissions.canEditModel and not modelcategory.editing}"/>
+                        </div>
+                        <h2>
+                            <ice:outputText styleClass="categoryName" value="#{modelcategory.name}"
+                                            rendered="#{not modelcategory.editing}"/>
+                            <ice:inputText value="#{modelcategory.name}" rendered="#{modelcategory.editing}"/>
+                        </h2>
+                    </div>
+                    <ice:panelGroup styleClass="categoryDescription"
+                                    rendered="#{modelcategory.description!=null and modelcategory.description!=''}">
+                        <p>
+                            <ice:outputText value="#{modelcategory.description}" rendered="#{not modelcategory.editing}"
+                                            escape="false"/>
+                            <ice:inputTextarea value="#{modelcategory.description}"
+                                               rendered="#{modelcategory.editing}"/>
+                        </p>
+                    </ice:panelGroup>
+                    <ice:panelGroup styleClass="float-right buttonPanel" rendered="#{modelcategory.editing}">
+                        <ice:commandButton actionListener="#{modelcategory.edit}" value="Submit"/>
+                        <ice:commandButton actionListener="#{modelcategory.edit}" value="Cancel"/>
+                    </ice:panelGroup>
+                </ice:form>
+            </ice:panelGroup>
+            <ice:panelGroup styleClass="categoryContents">
+                <ice:dataTable var="simulation" value="#{modelcategory.visibleSimulations}"
+                               headerClass="categoryContentsTableHeader"
+                               styleClass="categoryContentsTable"
+                               columnClasses="modelName,modelDescription,modelCreated">
+                    <ice:column>
+                        <f:facet name="header">
+                             <ice:outputText value="Name"/>
+
+                        </f:facet>
+                        <a href="javascript:;"
+                           onclick="Collab.nav.navigate('models', {modelId: #{simulation.id}});">#{simulation.name}</a>
+                    </ice:column>
+                    <ice:column >
+                        <f:facet name="header">
+                            <ice:outputText value="Description"/>
+                        </f:facet>
+                        #{simulation.firstParagraph}
+                    </ice:column>
+                    <ice:column >
+                        <f:facet name="header">
+                           <ice:outputText value="Created"/>
+                        </f:facet>
+                      <ice:outputText value="#{simulation.creation}">
+                            <f:convertDateTime type="both" dateStyle="short"/>
+                        </ice:outputText>
+                    </ice:column>
+                </ice:dataTable>
+            </ice:panelGroup>
+        </ice:panelGroup>
+    </ice:panelSeries>
+
+
+    <ice:panelGroup rendered="#{sim.editing}">
+        <ice:form>
+            <ice:dataTable var="simulation" value="#{sim.simulations}" styleClass="modelsTable"
+                           columnClasses="name,description,created" rowClasses="odd,even">
+
+                <ice:column>
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    <a href="#modelId=#{simulation.id}">#{simulation.name}</a>
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        Id
+                    </f:facet>
+                    #{simulation.id}
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        Visible
+                    </f:facet>
+                    <ice:selectOneMenu value="#{simulation.visible}">
+                        <f:selectItem itemValue="#{true}" itemLabel="true"/>
+                        <f:selectItem itemValue="#{false}" itemLabel="false"/>
+                    </ice:selectOneMenu>
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        Weight
+                    </f:facet>
+                    <ice:inputText value="#{simulation.weight}"/>
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        Expert evaluation page id
+                    </f:facet>
+                    <ice:inputText value="#{simulation.expertEvaluationPageId}"/>
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        Category ID
+                    </f:facet>
+                    <ice:selectOneMenu value="#{simulation.selectedCategory}"
+                                       valueChangeListener="#{category.changeSimulationCategory}">
+                        <f:attribute name="simulation" value="#{simulation}"/>
+                        <f:selectItems value="#{category.availableCategories}"/>
+
+                    </ice:selectOneMenu>
+
+                </ice:column>
+            </ice:dataTable>
+
+            <ice:commandButton value="Update" actionListener="#{sim.edit}" rendered="#{permissions.canEditModel}"/>
+        </ice:form>
+        <ice:form>
+            <ice:commandButton value="Cancel" actionListener="#{sim.edit}" rendered="#{permissions.canEditModel}"/>
+        </ice:form>
+    </ice:panelGroup>
+
+</f:view>

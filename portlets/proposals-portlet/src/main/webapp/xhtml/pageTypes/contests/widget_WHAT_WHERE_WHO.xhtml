@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<f:view
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:sharedcollab="http://climatecollaboratorium.org/components">
+     <ice:panelSeries value="#{whatWhoWhere}" var="item" varStatus="status" styleClass="whatWhoWhere">
+        <f:subview rendered="#{not empty item.descriptionUrl}">
+            <a href="#{item.descriptionUrl}">#{item.name}<f:subview rendered="#{not status.last}">,</f:subview></a>
+        </f:subview> 
+                
+        <f:subview rendered="#{empty item.descriptionUrl}">
+            #{item.name}<f:subview rendered="#{not status.last}">,</f:subview>
+        </f:subview> 
+        
+        
+        
+    </ice:panelSeries>
+
+</f:view>

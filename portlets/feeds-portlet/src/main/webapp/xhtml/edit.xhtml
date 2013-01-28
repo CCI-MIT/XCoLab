@@ -1,0 +1,64 @@
+<!--
+/**
+ * Copyright (c) 2000-2007 Liferay, Inc. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+-->
+
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<ice:form>
+			<ice:panelTabSet styleClass="contactFormPreferences">
+				<ice:panelTab label="#{language['edit-preferences']}">
+					<ice:messages globalOnly="true" layout="table" />
+                    
+                    <strong>Feeds configuration</strong>
+                    
+					<ice:panelGrid columns="3" columnClasses="labels,inputs,messages" rowClasses="odd,even">
+						<ice:outputLabel for="feedSize" value="Feed size"/>
+                        <ice:inputText id="feedSize" value="#{preferences.feedSize}" />
+                        <ice:message for="feedSize" />    
+                        
+                        <ice:outputLabel for="feedType" value="Feed type"/>
+                        <ice:selectOneMenu id="feedType" value="#{preferences.feedType}">
+                            <f:selectItems value="#{preferences.feedTypes}" />
+                        </ice:selectOneMenu>
+                        <ice:message for="feedType" />
+                        
+                        <ice:outputLabel for="feedTitle" value="Feed title"/>
+                        <ice:inputText id="feedTitle" value="#{preferences.feedTitle}" />
+                        <ice:message for="feedTitle" />
+
+                        <ice:outputLabel for="feedStyle" value="Feed style"/>
+                        <ice:inputText id="feedStyle" value="#{preferences.feedStyle}"/>
+                        <ice:message for="feedStyle"/>
+
+                        <ice:outputLabel for="removeAdmin" value="Remove administrative actions"/>
+                        <ice:selectBooleanCheckbox id="removeAdmin" value="#{preferences.removeAdmin}"/>
+                        <ice:message for="removeAdmin"/>
+
+                    </ice:panelGrid>
+                    
+					<ice:commandButton action="#{preferences.submit}" value="#{language['submit']}" />
+				</ice:panelTab>
+			</ice:panelTabSet>
+		</ice:form>
+	</ice:portlet>
+</f:view>

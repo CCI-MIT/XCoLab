@@ -42,7 +42,7 @@ public class PlanCopyTool {
         availableContestPhases.add(new SelectItem(-1, "-- Select --"));
         for (ContestPhase phase: ContestPhaseLocalServiceUtil.getContestPhases(0, Integer.MAX_VALUE)) {
             availableContestPhases.add(new SelectItem(phase.getContestPhasePK(), 
-                    ContestPhaseLocalServiceUtil.getContest(phase).getContestShortName() + ": " + phase.getContestPhaseName()));
+                    ContestPhaseLocalServiceUtil.getContest(phase).getContestShortName() + ": " + ContestPhaseLocalServiceUtil.getName(phase)));
         }
     }
 

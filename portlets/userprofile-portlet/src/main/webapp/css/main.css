@@ -1,0 +1,7 @@
+.filepcBtn { 
+	font-size: 50px;
+	background-color: red;
+	}
+	
+
+.filepcTxt { position: relative; left: -100px; opacity: 0.0; -moz-opacity: 0.0; filter: alpha(opacity=00); width:233px; height:34px; z-index: 1000; cursor: pointer;}

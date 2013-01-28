@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:collab="http://climatecollaboratorium.org/facelets"
+        xmlns:liferay-faces="http://liferay.com/tld/faces"
+        xmlns:ui="http://java.sun.com/jsf/facelets" 
+        xmlns:sharedcollab="http://climatecollaboratorium.org/components">
+        
+    <ui:decorate template="breadcrumb.xhtml">
+    </ui:decorate>
+    <collab:comments discussionId="#{planBean.plan.categoryGroupId}" groupId="#{planBean.plan.groupId}" comments="true" />
+</f:view>

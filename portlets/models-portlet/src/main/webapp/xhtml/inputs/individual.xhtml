@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces">
+
+<table>
+    <tr class="#{(status.index + 1) % 2 == 0 ? 'even' : 'odd'}">
+        <td colspan="2" class="first"><span>#{input.name}</span> <a class="toggle-description" onclick="jQuery(this).parent().find('.inputDescription').toggle(400)" href="javascript:;"> <img alt="question" src="/collaboratorium-theme/images/qustion_icon.png" /> </a>
+        <p class="hidden inputDescription">#{input.description}</p>
+
+        </td>
+    </tr>
+    <tr class="sliderDef #{(status.index + 1) % 2 == 0 ? 'even' : 'odd'}">
+
+        <td class="sliderCol">
+            <div class="slider"></div>
+        </td>
+        <td class="valueCol">
+            <ice:panelGroup>
+                <input class="id hidden" value="#{input.metaData.id}" /> 
+                <input class="default hidden" value="#{input.metaData.default[0]}" />  
+                <input class="min hidden" value="#{input.metaData.min[0]}" /> 
+                <input class="max hidden" value="#{input.metaData.max[0]}" /> 
+                <input class="dataType hidden" value="#{input.metaData.profile[0].name}" /> 
+                <input class="fieldValue hidden" value="#{simulationBean.inputValues[input.metaData.id]}" /> 
+                <input class="type hidden" value="#{input.type}" /> 
+                <input class="unit hidden" value="#{input.metaData.units[0]}" />
+            </ice:panelGroup>
+            <input type="text" class="value" />
+            <ice:inputText styleClass="valueBinding hidden" value="#{input.value}" />
+            
+        </td>
+    </tr>
+ </table>
+</f:view>

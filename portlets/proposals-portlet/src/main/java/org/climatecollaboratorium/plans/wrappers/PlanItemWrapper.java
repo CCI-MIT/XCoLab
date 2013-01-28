@@ -232,7 +232,7 @@ public class PlanItemWrapper {
 
         if (Helper.isUserLoggedIn()) {
             subscribed = ActivitySubscriptionLocalServiceUtil.isSubscribed(Helper.getLiferayUser().getUserId(),
-                    PlanItem.class, wrapped.getPlanId(), null, "");
+                    PlanItem.class, wrapped.getPlanId(), 0, "");
         }
     }
 
@@ -389,20 +389,20 @@ public class PlanItemWrapper {
         if (Helper.isUserLoggedIn()) {
             if (isSubscribed()) {
                 ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(),
-                        PlanItem.class, wrapped.getPlanId(), null, "");
+                        PlanItem.class, wrapped.getPlanId(), 0, "");
 
                 ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(),
                         DiscussionCategoryGroup.class, PlanItemLocalServiceUtil.getCategoryGroupId(wrapped), 
-                        null, "");
+                        0, "");
             } else {
-                ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, wrapped.getPlanId(), null, "",
+                ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, wrapped.getPlanId(), 0, "",
                         Helper.getLiferayUser().getUserId());
 
                 ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, PlanItemLocalServiceUtil.getCategoryGroupId(wrapped), 
-                        null, "", Helper.getLiferayUser().getUserId());
+                        0, "", Helper.getLiferayUser().getUserId());
             }
             ActivitySubscriptionLocalServiceUtil.isSubscribed(Helper.getLiferayUser().getUserId(), PlanItem.class,
-                    wrapped.getPlanId(), null, "");
+                    wrapped.getPlanId(), 0, "");
             subscribed = !subscribed;
         }
     }
@@ -410,7 +410,7 @@ public class PlanItemWrapper {
     public boolean isSubscribed() throws PortalException, SystemException {
         if (Helper.isUserLoggedIn()) {
             return ActivitySubscriptionLocalServiceUtil.isSubscribed(Helper.getLiferayUser().getUserId(),
-                    PlanItem.class, wrapped.getPlanId(), null, "");
+                    PlanItem.class, wrapped.getPlanId(), 0, "");
         }
         return false;
     }
@@ -424,8 +424,8 @@ public class PlanItemWrapper {
         return PlanItemLocalServiceUtil.getContestPhase(wrapped).getContestPhasePK();
     }
 
-    public ContestPhase getContestPhase() throws PortalException, SystemException {
-        return PlanItemLocalServiceUtil.getContestPhase(wrapped);
+    public ContestPhaseWrapper getContestPhase() throws PortalException, SystemException {
+        return new ContestPhaseWrapper(PlanItemLocalServiceUtil.getContestPhase(wrapped));
     }
 
     public List<PlanHistoryWrapper> getAllDescriptionVersions() throws PortalException, SystemException {
@@ -609,9 +609,9 @@ public class PlanItemWrapper {
             for (PlanFan fan : PlanItemLocalServiceUtil.getFans(wrapped)) {
                 if (t == null) {
                     t = new Tuple();
-                    t.setFirst(fan);
+                    t.setFirst(new PlanFanWrapper(fan));
                 } else {
-                    t.setSecond(fan);
+                    t.setSecond(new PlanFanWrapper(fan));
                     planFanPairs.add(t);
                     t = null;
                 }
@@ -1041,7 +1041,7 @@ public class PlanItemWrapper {
         }
 
         if (img != null) {
-            return Helper.getThemeDisplay().getPathImage() + "?img_id=" + img.getImageId();
+            return Helper.getThemeDisplay().getPathImage() + "/proposal?img_id=" + img.getImageId();
         }
         return null;
     }

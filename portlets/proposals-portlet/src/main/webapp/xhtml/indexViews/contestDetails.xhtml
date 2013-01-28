@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<f:view
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ice:form>
+        <ice:panelGroup styleClass="categoryHeader" rendered="#{not contest.editor.editing}">
+            <h2><ice:outputText styleClass="categoryName" value="#{contest.name}"/></h2>
+            <ice:commandButton styleClass="editCategoryButton" value="Edit" action="#{contest.editor.edit}" rendered="#{not contest.editor.editing and permissions.canAdminAll}"/>
+        </ice:panelGroup>
+        <ice:panelGroup styleClass="categoryHeader" rendered="#{contest.editor.editing}">
+            <h2><ice:inputText styleClass="categoryName" value="#{contest.editor.name}"/></h2>
+        </ice:panelGroup>
+        <ice:panelGroup styleClass="categoryDescription" rendered="#{not contest.editor.editing}">
+            <ice:outputText value="#{contest.description}"/>
+        </ice:panelGroup>
+        <ice:panelGroup styleClass="categoryDescription" rendered="#{contest.editor.editing}">
+            <ice:inputTextarea value="#{contest.editor.description}"/>
+        </ice:panelGroup>
+        <ice:panelGrid columns="2" styleClass="editCategory buttonPanel" rendered="#{contest.editor.editing}">
+            <ice:commandButton value="Save" action="#{contest.editor.save}"/>
+            <ice:commandButton value="Cancel" action="#{contest.editor.cancel}"/>
+        </ice:panelGrid>
+    </ice:form>
+    
+    
+    
+        <table class="contestNavItems">
+            <tr>
+                <td>
+                    <a href="#plans=contests:#{contest.contestActive ? 'active' : 'past'},subview:proposals" class="#{contestsBean.subView == 'PROPOSALS' ? 'active' : ''}" >Proposals</a>
+                </td>
+                <td>
+                    <a href="#plans=contests:#{contest.contestActive ? 'active' : 'past'},subview:issues" class="#{contestsBean.subView == 'ISSUES' ? 'active' : ''}">Issues</a>
+                </td>
+                <td>
+                    <a href="#plans=contests:#{contest.contestActive ? 'active' : 'past'},subview:model" class="#{contestsBean.subView == 'MODEL' ? 'active' : ''}">Model</a>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="subViewContent">
+            <ice:panelGroup>
+                <ui:include src="contest_#{contestsBean.subView}.xhtml" >
+                    <ui:param name="plansIndexBean" value="#{contestsBean.plansIndexBean}" />
+                </ui:include>
+            </ice:panelGroup>
+        </div>
+</f:view>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:liferay-faces="http://liferay.com/tld/faces" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:ice="http://www.icesoft.com/icefaces/component">
+    
+    <br />
+  
+    <div class="main_long sendMessage">
+    <div id="ComposeMessage">
+        <ice:form styleClass="composeMessageForm">
+          <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                <tr>
+                    <td class="b" width="60px">To:</td>
+                    <td>
+                        <input id="userSelectorInput" type="text" class="profile_input messageReceipients" /> 
+                        <!-- <input type="hidden" class="messageReceipientsInput" />-->
+                        <ice:inputText styleClass="hidden messageReceipientsInput" value="#{sendMessageBean.receipients}"/>
+                        <!-- <input type="hidden" class="required profile_input"  />-->
+                        <div id="please_choose_from_list" style="display: none; color: red; font-weight: bold;">Please choose value from list</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="b">Subject:</td>
+                    <td>
+                        <ice:inputText styleClass="required profile_input subject" value="#{sendMessageBean.subject}"/><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="b">BODY:</td>
+                    <td>
+                        <div id="composemessage">
+                            <ice:inputTextarea rows="6" cols="30" styleClass="profile_about required" value="#{sendMessageBean.content}"/><br />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <div class="blue-button">
+                    <a href="javascript:;" onclick='sendMessage()'>Send</a>
+                </div>
+                <ice:commandLink value="SEND" actionListener="#{sendMessageBean.send}" styleClass="sendMessageLink hidden"/>
+                
+                <div class="blue-button">
+                    <ice:commandLink value="Cancel" actionListener="#{sendMessageBean.cancel}"  />
+                </div>
+            </div>
+        </ice:form>
+    </div>
+    <script type="text/javascript">
+        var users = [];
+        var usersMap = {};
+        var preFill = null;
+        
+        <f:subview rendered="#{sendMessageBean.replyMessage != null and sendMessageBean.replyMessage.from.userId != null}">
+            preFill = [{username: '#{sendMessageBean.replyMessage.from.screenName}', value: #{sendMessageBean.replyMessage.from.userId}}];
+        </f:subview>
+        
+        <ui:repeat var="user" value="#{sendMessageBean.usersList}">
+            users.push({username: '#{user.screenName}', value: '#{user.userId}'});
+            usersMap['#{user.screenName}'] = #{user.userId};
+        </ui:repeat>
+        jQuery(document).ready(function() {
+                initSendMessageForm(users, usersMap, preFill);
+        });
+    </script>
+    </div>
+    
+    <div class="right_col3 v1">
+    </div>
+    
+<div class="clearfix"></div>
+
+
+</f:view>
