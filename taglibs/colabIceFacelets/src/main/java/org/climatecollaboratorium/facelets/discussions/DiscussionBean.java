@@ -459,11 +459,11 @@ public class DiscussionBean {
             if (isSubscribed()) {
                 // user is subscribed, usubscribe
                 ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), 
-                        DiscussionCategoryGroup.class, getDiscussionId(), null, extraData.toString());
+                        DiscussionCategoryGroup.class, getDiscussionId(), 0, extraData.toString());
             }
             else {
                 ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, getDiscussionId(), 
-                        null, extraData.toString(), Helper.getLiferayUser().getUserId());
+                        0, extraData.toString(), Helper.getLiferayUser().getUserId());
             }
         }
     }
@@ -483,7 +483,7 @@ public class DiscussionBean {
                 return false;
             }
             return ActivitySubscriptionLocalServiceUtil.isSubscribed(
-                    Helper.getLiferayUser().getUserId(), DiscussionCategoryGroup.class, getDiscussionId(), null, extraData.toString());
+                    Helper.getLiferayUser().getUserId(), DiscussionCategoryGroup.class, getDiscussionId(), 0, extraData.toString());
             
         }
         return false;

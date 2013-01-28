@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:addthis="http://www.addthis.com/help/api-spec"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <div class="advanced">
+        <div class="advanced_inner">
+            <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact"
+                      addthis:title="#{debateBean.debate.currentRoot.debateSummary}"
+                      addthis:description="#{debateBean.debate.currentRoot.debateDetail}"
+                
+                >
+                <script type="text/javascript">
+                    if (typeof(addthis) != 'undefined') {
+                        addthis.button('.addthis_button_compact');
+                    }
+                    //#{debateBean.currentItem}
+                    
+                </script>
+                    <img src="/collaboratorium-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
+                    Share
+                </a>
+            <f:subview  rendered="#{debateBean.debatesPermissionsBean.canEditDebateMap}" >
+            <ice:commandLink actionListener="#{debateBean.subscribe}" onclick='if(!deferUntilLogin()) return false;'>
+            
+                <f:subview rendered="#{debateBean.subscribed}">
+                <img src="/collaboratorium-theme/images/unsubscribe_small.png" />
+                    Unsubscribe
+                </f:subview>
+                
+                <f:subview rendered="#{not debateBean.subscribed}">
+                    <img src="/collaboratorium-theme/images/icon_star-small.gif" />
+                    Subscribe
+                </f:subview>
+                
+            </ice:commandLink>
+            <f:subview rendered="#{not (debateBean.currentItem == null) and not (debateBean.pageType == 'WELCOME')}">
+            &amp;nbsp; | &amp;nbsp; 
+                <f:subview rendered="#{not debateBean.showAdvanced}">
+                    <ice:commandLink value="advanced mode" actionListener="#{debateBean.toggleAdvanced}" />
+                </f:subview>
+            </f:subview>
+            <f:subview rendered="#{debateBean.showAdvanced}">
+                
+                <ice:commandLink actionListener="#{debateBean.addDebateItem}" rendered="#{debateBean.currentItem.canHaveSubargument}">
+                    <f:attribute name="type" value="ARGUMENT_PRO" />
+                    <img src="/collaboratorium-theme/images/icon_advanced-chk.png" width="16" height="18" />
+                    add argument for
+                </ice:commandLink>
+                 &amp;nbsp; &amp;nbsp;
+                
+                <ice:commandLink actionListener="#{debateBean.addDebateItem}" rendered="#{debateBean.currentItem.canHaveSubargument}">
+                    <f:attribute name="type" value="ARGUMENT_CON" />
+                    <img src="/collaboratorium-theme/images/icon_advanced-x.png" width="16" height="18" />
+                    add argument against
+                </ice:commandLink>
+                 &amp;nbsp; &amp;nbsp;
+                
+                <ice:commandLink value="add position" actionListener="#{debateBean.addDebateItem}" rendered="#{debateBean.currentItem.canHavePosition}">
+                    <f:attribute name="type" value="POSITION" />
+                </ice:commandLink>
+                 &amp;nbsp; &amp;nbsp;
+                
+                
+                <ice:commandLink actionListener="#{debateBean.toggleEditing}">
+                    <img src="/collaboratorium-theme/images/icon_advanced-edit.png" width="19" height="19" />
+                    edit
+                </ice:commandLink>
+                <ice:commandLink onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; }" actionListener="#{debateBean.addEditBean.deleteSelectedItem}" rendered="#{debateBean.debatesPermissionsBean.canAdmin}">
+                    &amp;nbsp; &amp;nbsp; remove &amp;nbsp; &amp;nbsp; 
+                </ice:commandLink>
+                 
+                    
+            
+                <ice:commandLink value="close advanced" actionListener="#{debateBean.toggleAdvanced}" /> &amp;nbsp; &amp;nbsp;
+            </f:subview>
+      
+            <div class="advanced_open"><a href="#"><img src="/collaboratorium-theme/images/icon_advanced-chk.png" width="16" height="18" /> add argument pro</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="#"><img src="/collaboratorium-theme/images/icon_advanced-x.png" width="16" height="18" /> add argument against</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="#"><img src="/collaboratorium-theme/images/icon_advanced-edit.png" width="19" height="19" /> edit</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="javascript:;" id="adv2">close advanced</a> &amp;nbsp; &amp;nbsp;</div>
+            </f:subview>
+        </div>
+    </div>
+</f:view>

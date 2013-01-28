@@ -56,7 +56,7 @@ Bold    "proxima-nova"  700 normal
 Bold Italic "proxima-nova"  700 italic  
 */
 
-body, .homespot-left h1, .proposal-head h1, .search-submit, .login-submit {font-family:"proxima-nova", "proxima-nova-1", Arial, Helvetica, sans-serif; font-weight:400;}
+body, .homespot-left h1, .proposal-head h1, .search-submit, .login-submit {line-height: normal; font-family:"proxima-nova", "proxima-nova-1", Arial, Helvetica, sans-serif; font-weight:400;}
 h1 {font-family:"bree", "bree-1", Verdana, sans-serif; font-weight:400;}
 
 h1 {font-size:32px; color:#404040;}

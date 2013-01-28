@@ -13,7 +13,7 @@
             <p>This page requires you to login...</p>
         </div>
            <div class="login_popup_box">
-                <form id="signInForm_form" method="post" action="/web/guest/loginregister?p_p_id=loginregister&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=0&_loginregister_struts_action=%2Fext%2Floginregister%2Flogin&_loginregister_isLoggingIn=true"
+                <form id="signInForm_form" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true"
                         onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
                     <label>Username:</label> 
                     <input name="login" type="text" class="username" onkeypress="return submitenter(this,event)" />
@@ -51,7 +51,7 @@
         #parse ("$full_templates_path/signin_reg_error_message_translator.vm")
         #end            
         <div class="login_popup_box">
-            <form id="forgotPasswordForm" method="post" action="/web/guest/loginregister?p_p_id=loginregister&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=0&_loginregister_struts_action=%2Fext%2Floginregister%2Fforgotpassword"
+            <form id="forgotPasswordForm" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isForgotpass=true"
                     onsubmit="addRedirectBeforeSubmit('forgotPasswordForm'); processForgotPasswordForm('forgotPasswordForm');" >
                 <label>Username/email:</label> 
                 <input name="screenName" type="text" class="username screenName" placeholder="username/email" onkeypress="return submitenter(this,event)" />

@@ -1077,3 +1077,32 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 .contest-tax-header{ background: url(../images/icon-prize.png) no-repeat left; margin-left:38px; padding-left:27px; padding-top: 6px; font-size:21px; font-weight:bold;padding-bottom:5px;color: #66B035;}
 
 .contest-tax-contests{ margin-left:21px; padding-left: 12px;}
+
+
+
+.alert {
+    padding: 4px 35px 4px 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+
+.alert, .alert h4 {
+    color: #c09853;
+}
+
+.alert-danger, .alert-error {
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+

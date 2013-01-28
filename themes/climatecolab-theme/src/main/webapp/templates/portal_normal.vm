@@ -7,6 +7,9 @@
 <head>
 	<title>$the_title - $company_name</title>
 
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.history.js?tt=$themeTimestamp"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.blockUI.js?tt=$themeTimestamp"></script>
 	$theme.include($top_head_include)
 	
     <link type="text/css" rel="stylesheet" href="$css_folder/jquery/jquery.css?tt=$themeTimestamp" media="all"/>
@@ -14,10 +17,10 @@
     <link rel="stylesheet" href="$css_folder/jquery.jqplot.min.css?tt=$themeTimestamp" type="text/css"/>
     <link rel="stylesheet" href="$css_folder/style.css" type="text/css" />
     <link rel="stylesheet" href="$css_folder/style_additions.css" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/style_lr6.css" type="text/css" />
     <link rel="stylesheet" href="$css_folder/autoSuggest.css" type="text/css" />
     <link rel="stylesheet" href="$css_folder/ui.dynatree.css" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    
     <script type="text/javascript" src="http://use.typekit.com/zdq3gry.js?kisc"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <!--[if IE]>
@@ -32,7 +35,6 @@
     <!-- AddThis Button END -->
     
 </head>
-
 
 
 #if ($page.getName($locale).toLowerCase().replaceAll("\s","") == 'home')
@@ -60,6 +62,12 @@
 
 
 <body class="$css_class $page.getName($locale).toLowerCase() $body_style_class">
+
+#if ($permissionChecker.isOmniadmin())
+	<link rel='stylesheet' href='$css_folder/dockbar.css' />
+	#dockbar()
+#end
+
 <div id="header">
  <div class="inner">
   <div id="logo"><a href="/"><img src="$images_folder/logo-climate-colab.png" width="203" height="42" alt="Climate Colab" /></a></div>
@@ -141,7 +149,7 @@
     </div>
     -->
     use your username &amp; password
-    <form id="signInFormPopup" method="post" action="/web/guest/loginregister?p_p_id=loginregister&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=0&_loginregister_struts_action=%2Fext%2Floginregister%2Flogin&_loginregister_isLoggingIn=true">
+    <form id="signInFormPopup" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true">
      <input name="login" type="text" class="username" placeholder="username"  />
      <input name="password" type="password" class="password" placeholder="password" />
      <input name="redirect" type="hidden" />
