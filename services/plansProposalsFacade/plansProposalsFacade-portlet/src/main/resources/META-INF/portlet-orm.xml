@@ -54,6 +54,7 @@
 			<basic name="plansOpenByDefault" />
 			<basic name="flag" />
 			<basic name="flagText" />
+			<basic name="flagTooltip" />
 			<basic name="groupId" />
 			<basic name="discussionGroupId" />
 			<basic name="weight" />
@@ -77,9 +78,9 @@
 		<attributes>
 			<id name="ContestPhasePK" />
 			<basic name="ContestPK" />
-			<basic name="ContestPhaseName" />
-			<basic name="ContestPhaseDescription" />
-			<basic name="ContestPhaseStatus" />
+			<basic name="ContestPhaseType" />
+			<basic name="ContestPhaseDescriptionOverride" />
+			<basic name="phaseActiveOverride" />
 			<basic name="PhaseStartDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
@@ -107,6 +108,18 @@
 			<basic name="columnName" />
 			<basic name="columnWeight" />
 			<basic name="defaultSort" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestPhaseTypeModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="name" />
+			<basic name="description" />
+			<basic name="status" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
@@ -797,6 +810,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestPhaseColumnImpl" name="ContestPhaseColumn">
 		<table name="xcolab_ContestPhaseColumn" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestPhaseTypeImpl" name="ContestPhaseType">
+		<table name="xcolab_ContestPhaseType" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestTeamMemberImpl" name="ContestTeamMember">

@@ -1,6 +1,19 @@
 <?xml version="1.0"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorService" class="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceImpl">
+		<property name="nameGenerators">
+			<list>
+				<bean id="com.ext.portlet.Activity.nameGenerators.PlanSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.PlanSubscriptionNameGenerator" />
+				<bean id="com.ext.portlet.Activity.nameGenerators.DiscussionSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.DiscussionSubscriptionNameGenerator" />
+				<bean id="com.ext.portlet.Activity.nameGenerators.ContestSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.ContestSubscriptionNameGenerator" />
+				<bean id="com.ext.portlet.Activity.nameGenerators.DefaultSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.DefaultSubscriptionNameGenerator" />
+			</list>
+		</property>
+	</bean>
+	<bean id="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil" class="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil">
+		<property name="service" ref="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorService" />
+	</bean>
 	<bean id="com.ext.portlet.service.ActivitySubscriptionLocalService" class="com.ext.portlet.service.impl.ActivitySubscriptionLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil" class="com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.ActivitySubscriptionLocalService" />
@@ -46,6 +59,15 @@
 		<property name="service" ref="com.ext.portlet.service.ContestPhaseColumnService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.ContestPhaseColumnPersistence" class="com.ext.portlet.service.persistence.ContestPhaseColumnPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ContestPhaseTypeLocalService" class="com.ext.portlet.service.impl.ContestPhaseTypeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil" class="com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ContestPhaseTypeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.ContestPhaseTypeService" class="com.ext.portlet.service.impl.ContestPhaseTypeServiceImpl" />
+	<bean id="com.ext.portlet.service.ContestPhaseTypeServiceUtil" class="com.ext.portlet.service.ContestPhaseTypeServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ContestPhaseTypeService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.ContestPhaseTypePersistence" class="com.ext.portlet.service.persistence.ContestPhaseTypePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestTeamMemberLocalService" class="com.ext.portlet.service.impl.ContestTeamMemberLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestTeamMemberLocalServiceUtil" class="com.ext.portlet.service.ContestTeamMemberLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.ContestTeamMemberLocalService" />
@@ -470,4 +492,15 @@
 		<property name="service" ref="com.ext.portlet.service.PlanVoteService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.PlanVotePersistence" class="com.ext.portlet.service.persistence.PlanVotePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.utils.userInput.PolicyFct" class="com.ext.utils.userInput.PolicyFct">
+		<property name="policyFile">
+			<value>/antisamy-policy.xml</value>
+		</property>
+	</bean>
+	<bean id="com.ext.utils.userInput.UserInputFilter" class="com.ext.utils.userInput.UserInputFilterImpl">
+		<property name="policyFactory" ref="com.ext.utils.userInput.PolicyFct" />
+	</bean>
+	<bean id="com.ext.utils.userInput.service.UserInputFilterUtil" class="com.ext.utils.userInput.service.UserInputFilterUtil">
+		<property name="service" ref="com.ext.utils.userInput.UserInputFilter" />
+	</bean>
 </beans>

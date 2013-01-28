@@ -7,6 +7,8 @@
 
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet.contests">
+    
+    
     <entity name="Contest" local-service="true" remote-service="true">
         <column name="ContestPK" type="long" primary="true" />
         <column name="ContestName" type="String" />
@@ -28,6 +30,7 @@
         
         <column name="flag" type="int" />
         <column name="flagText" type="String" />
+        <column name="flagTooltip" type="String" />
         
         <column name="groupId" type="long" />
         <column name="discussionGroupId" type="long" />
@@ -75,9 +78,9 @@
     <entity name="ContestPhase" local-service="true" remote-service="true">
         <column name="ContestPhasePK" type="long" primary="true" />
         <column name="ContestPK" type="long"/>
-        <column name="ContestPhaseName" type="String" />
-        <column name="ContestPhaseDescription" type="String"/>
-        <column name="ContestPhaseStatus" type="String" />
+        <column name="ContestPhaseType" type="long" />
+        <column name="ContestPhaseDescriptionOverride" type="String"/>
+        <column name="phaseActiveOverride" type="boolean" />
         <column name="PhaseStartDate" type="Date" />
         <column name="PhaseEndDate" type="Date" />
         <column name="nextStatus" type="String" />
@@ -98,6 +101,17 @@
         <finder name="ContestId" return-type="Collection">
             <finder-column name="ContestPK"/>
         </finder>
+        <finder name="PhaseActiveOverride" return-type="Collection">
+            <finder-column name="ContestPK" />
+            <finder-column name="phaseActiveOverride" />
+        </finder>
+      </entity>
+      
+      <entity name="ContestPhaseType" local-service="true" remote-service="true">
+        <column name="id" type="long" primary="true" />
+        <column name="name" type="String" />
+        <column name="description" type="String" />
+        <column name="status" type="String" />
       </entity>
       
       <entity name="ContestPhaseColumn" local-service="true">
@@ -138,4 +152,5 @@
         <exception>NoSuchContestPhase</exception>
         <exception>NoSuchContest</exception>
     </exceptions>
+
 </service-builder>

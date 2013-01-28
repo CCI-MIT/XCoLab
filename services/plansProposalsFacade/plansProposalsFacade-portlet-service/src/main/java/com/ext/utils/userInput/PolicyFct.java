@@ -1,12 +1,13 @@
 package com.ext.utils.userInput;
 
+import java.net.URL;
+
+import org.apache.commons.lang.StringUtils;
 import org.owasp.validator.html.Policy;
-import org.springframework.core.io.Resource;
 
 public class PolicyFct {
-    Policy policy;
-
-    Resource policyFile;
+    private Policy policy;
+    private String policyFile;
     
     
     public Policy getPolicy() {
@@ -14,14 +15,24 @@ public class PolicyFct {
     }
 
     public void afterPropertiesSet() throws Exception {
-        policy = Policy.getInstance(policyFile.getFile());
+        if (StringUtils.isBlank(policyFile)) {
+            throw new RuntimeException("Policy file can't be null");
+        }
+        URL policyFileUrl = PolicyFct.class.getClassLoader().getResource(policyFile);
+        
+        if (policyFileUrl == null) {
+            throw new RuntimeException("Can't find policy file: " + policyFile);
+        }
+        
+        policy = Policy.getInstance(policyFileUrl.getFile());
+
     }
 
-    public void setPolicyFile(Resource policyFile) {
+    public void setPolicyFile(String policyFile) {
         this.policyFile = policyFile;
     }
 
-    public Resource getPolicyFile() {
+    public String getPolicyFile() {
         return policyFile;
     }
 

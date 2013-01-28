@@ -7,6 +7,7 @@
 	<import class="com.ext.portlet.model.ContestDebate" />
 	<import class="com.ext.portlet.model.ContestPhase" />
 	<import class="com.ext.portlet.model.ContestPhaseColumn" />
+	<import class="com.ext.portlet.model.ContestPhaseType" />
 	<import class="com.ext.portlet.model.ContestTeamMember" />
 	<import class="com.ext.portlet.model.DiscussionCategory" />
 	<import class="com.ext.portlet.model.DiscussionCategoryGroup" />
@@ -90,6 +91,7 @@
 		<property name="plansOpenByDefault" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="flag" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="flagText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="flagTooltip" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="discussionGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
@@ -109,9 +111,9 @@
 			<generator class="assigned" />
 		</id>
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ContestPhaseName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="ContestPhaseDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="ContestPhaseStatus" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="ContestPhaseType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ContestPhaseDescriptionOverride" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="phaseActiveOverride" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="PhaseStartDate" type="org.hibernate.type.TimestampType" />
 		<property name="PhaseEndDate" type="org.hibernate.type.TimestampType" />
 		<property name="nextStatus" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -128,6 +130,15 @@
 		<property name="columnName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="columnWeight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="defaultSort" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ContestPhaseTypeImpl" table="xcolab_ContestPhaseType">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestTeamMemberImpl" table="xcolab_ContestTeamMember">
 		<cache usage="read-write" />

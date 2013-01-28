@@ -40,7 +40,7 @@ import edu.mit.cci.simulation.client.model.transitional.AdaptedVariable;
 public class AttributeFunctionFactory {
 
 
-    private static Log _log = LogFactoryUtil.getLog(AttributeFunctionFactory.class);
+    private final static Log _log = LogFactoryUtil.getLog(AttributeFunctionFactory.class);
 
 
     public <T extends Number> AttributeFunction<T> getMaxValueFunction(final String variableId, final Class<T> resultType) {
@@ -275,14 +275,15 @@ public class AttributeFunctionFactory {
             }
 
             @Override
-            public T process(PlanItem plan) throws SystemException {
+            public T process(PlanItem plan) {
                 String getterMethod = "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
                 try {
                     Method getter = PlanItem.class.getMethod(getterMethod);
                     return (T)getter.invoke(plan);
                 }
                 catch (Throwable e) {
-                    throw new SystemException("Illegal property: " + propertyName, e);
+                    _log.error("Illegal property: " + propertyName, e);
+                    return null;
                 }
             }
             

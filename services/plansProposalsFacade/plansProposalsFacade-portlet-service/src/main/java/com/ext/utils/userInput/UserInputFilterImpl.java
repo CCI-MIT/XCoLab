@@ -5,13 +5,21 @@ import org.owasp.validator.html.CleanResults;
 import org.owasp.validator.html.PolicyException;
 import org.owasp.validator.html.ScanException;
 
-public class UserInputFilterImpl implements IUserInputFilter {
+public class UserInputFilterImpl implements UserInputFilter {
     
     
     private AntiSamy as;
     
-    public UserInputFilterImpl(com.ext.utils.userInput.PolicyFct policyFactoryBean) throws Exception {
+    public UserInputFilterImpl() {
+        System.out.println("hej ho");
+    }
+    
+    public void setPolicyFactory(com.ext.utils.userInput.PolicyFct policyFactoryBean) throws Exception {
         as = new AntiSamy(policyFactoryBean.getPolicy());
+    }
+    
+    public void init() {
+        
     }
 
     @Override
