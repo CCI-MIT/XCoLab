@@ -102,6 +102,13 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.owasp</groupId>
+			<artifactId>antisamy</artifactId>
+			<version>1.4</version>
+		</dependency>
+		
+		
+		<dependency>
   			<groupId>org.xcolab.taglibs</groupId>
   			<artifactId>sharedColabIceFacelets</artifactId>
   			<version>1.0-SNAPSHOT</version>

@@ -86,7 +86,7 @@ update ClassName_ set value = REPLACE(value, 'com.ext.portlet.Activity', 'com.ex
 insert into Roles_Permissions SELECT 10119 as roleId, p.permissionId FROM Permission_ p left join Roles_Permissions rp on rp.roleId = 10119 and rp.permissionId = p.permissionId where rp.roleId is Null and p.actionId = 'VIEW';
 
 
-UPDATE `xcolab_lportal`.`WikiPage` SET `content` = '==Contents of this page==
+UPDATE `WikiPage` SET `content` = '==Contents of this page==
 * Introduction
 * What are the goals of the contest?
 * Who can participate?

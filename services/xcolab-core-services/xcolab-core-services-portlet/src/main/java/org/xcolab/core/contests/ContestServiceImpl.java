@@ -1,8 +1,5 @@
 package org.xcolab.core.contests;
 
-import java.util.List;
-
-import org.xcolab.core.documententity.DocumentEntityException;
 import org.xcolab.core.documententity.DocumentEntityService;
 import org.xcolab.core.documententity.impl.BaseDocumentEntityWrapperServiceImpl;
 
