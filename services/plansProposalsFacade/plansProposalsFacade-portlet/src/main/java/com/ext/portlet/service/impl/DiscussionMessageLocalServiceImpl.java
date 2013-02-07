@@ -50,27 +50,27 @@ public class DiscussionMessageLocalServiceImpl
 
     private final static Log _log = LogFactoryUtil.getLog(DiscussionMessageLocalServiceImpl.class);
        
-       public List<DiscussionMessage> getThreadsByCategory(Long categoryId) throws SystemException {
-           return discussionMessagePersistence.findByCategoryIdThreadId(categoryId, -1);
+       public List<DiscussionMessage> getThreadsByCategory(long categoryId) throws SystemException {
+           return discussionMessagePersistence.findByCategoryIdThreadId(categoryId, 0);
        }
        
-       public List<DiscussionMessage> getThreadMessages(Long threadId) throws SystemException {
+       public List<DiscussionMessage> getThreadMessages(long threadId) throws SystemException {
            return discussionMessagePersistence.findByThreadId(threadId);
        }
        
-       public int getThreadMessagesCount(Long threadId) throws SystemException {
+       public int getThreadMessagesCount(long threadId) throws SystemException {
            return discussionMessagePersistence.countByThreadId(threadId);
        }
        
-       public DiscussionMessage getThreadByThreadId(Long threadId) throws NoSuchDiscussionMessageException, SystemException {
+       public DiscussionMessage getThreadByThreadId(long threadId) throws NoSuchDiscussionMessageException, SystemException {
            return discussionMessagePersistence.findBySingleThreadId(threadId);
        }
        
-       public DiscussionMessage addThread(Long categoryGroupId, Long categoryId, String subject, String body, User author) throws SystemException  {
-           return addMessage(categoryGroupId, categoryId, null, subject, body, author);
+       public DiscussionMessage addThread(long categoryGroupId, long categoryId, String subject, String body, User author) throws SystemException  {
+           return addMessage(categoryGroupId, categoryId, 0, subject, body, author);
        }
        
-       public DiscussionMessage addMessage(Long categoryGroupId, Long categoryId, Long threadId, String subject, String body, User author) throws SystemException {
+       public DiscussionMessage addMessage(long categoryGroupId, long categoryId, long threadId, String subject, String body, User author) throws SystemException {
            Long id = CounterLocalServiceUtil.increment(DiscussionMessage.class.getName());
            Long messageId = CounterLocalServiceUtil.increment(DiscussionMessage.class.getName() + ".discussion");
            
@@ -97,7 +97,7 @@ public class DiscussionMessageLocalServiceImpl
            return message;
        }
        
-       public List<DiscussionMessage> search(String query, Long categoryGroupId) throws SystemException {
+       public List<DiscussionMessage> search(String query, long categoryGroupId) throws SystemException {
            // preprocess query
            query = "%" + query.replaceAll("\\s", "%") + "%";
            Set<DiscussionMessage> messages = new HashSet<DiscussionMessage>();
@@ -107,7 +107,7 @@ public class DiscussionMessageLocalServiceImpl
            return new ArrayList<DiscussionMessage>(messages);
        }
        
-       public DiscussionMessage getMessageByMessageId(Long messageId) throws NoSuchDiscussionMessageException, SystemException {
+       public DiscussionMessage getMessageByMessageId(long messageId) throws NoSuchDiscussionMessageException, SystemException {
            return discussionMessagePersistence.findByMessageId(messageId);
        }
        
@@ -175,8 +175,8 @@ public class DiscussionMessageLocalServiceImpl
        }
        
        public DiscussionMessage addThreadMessage(DiscussionMessage dMessage, String subject, String body, User author) throws SystemException, NoSuchDiscussionCategoryException {
-           Long threadId = dMessage.getThreadId();
-           if (threadId == null) {
+           long threadId = dMessage.getThreadId();
+           if (threadId <= 0L) {
                // threadId is null so we have first message (that represents the thread) 
                // use messageId instead of threadId
                threadId = dMessage.getMessageId();

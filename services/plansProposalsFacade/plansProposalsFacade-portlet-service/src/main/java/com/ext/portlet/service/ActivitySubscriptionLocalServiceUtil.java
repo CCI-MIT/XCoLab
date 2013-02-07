@@ -342,6 +342,12 @@ public class ActivitySubscriptionLocalServiceUtil {
         getService().delete(activitySubscription);
     }
 
+    public static void sendEmailNotifications()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().sendEmailNotifications();
+    }
+
     public static void clearService() {
         _service = null;
     }

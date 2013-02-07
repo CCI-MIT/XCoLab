@@ -49,6 +49,7 @@ public class SearchBean extends DataSource {
     
     public SearchBean() {
         super("");
+        
         selectedSearchItemType = null;
     }
 

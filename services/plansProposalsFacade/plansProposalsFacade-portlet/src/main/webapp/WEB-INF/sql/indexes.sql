@@ -42,6 +42,13 @@ create index IX_76FF2A4C on xcolab_MessageRecipientStatus (messageId, userId);
 create index IX_74DCC2DA on xcolab_MessageRecipientStatus (userId);
 create index IX_88CD5CB0 on xcolab_MessageRecipientStatus (userId, archived);
 
+create index IX_2073B48 on xcolab_MessagingIgnoredRecipients (email);
+create index IX_19B87BE on xcolab_MessagingIgnoredRecipients (userId);
+
+create index IX_F1E7F5C on xcolab_MessagingMessageConversion (messageId, conversionTypeId);
+
+create index IX_15CF71AE on xcolab_MessagingMessageConversionType (name);
+
 create index IX_F504493F on xcolab_MessagingUserPreferences (userId);
 
 create index IX_C4F6226E on xcolab_ModelDiscussion (categoryId);

@@ -366,7 +366,7 @@ public class PlansIndexBean {
                 notFilteredPlans = PlanItemLocalServiceUtil.getPlans(ectx.getSessionMap(), ectx.getRequestMap(), null, 
                         queryPhases, 0, 1000, sortAttribute, sortAscending ? "ASC" : "DESC", false);
             } else {
-                notFilteredPlans = PlanItemLocalServiceUtil.getPlans(ectx.getSessionMap(), ectx.getRequestMap(), 0L, contestPhase.getPhase().getContestPK(), 0, 1000, sortAttribute, sortAscending ? "ASC" : "DESC", false);                
+                notFilteredPlans = PlanItemLocalServiceUtil.getPlans(ectx.getSessionMap(), ectx.getRequestMap(), 0L, contestPhase.getPhase().getContestPhasePK(), 0, 1000, sortAttribute, sortAscending ? "ASC" : "DESC", false);                
             }
             
             Attribute sortAttr = Attribute.valueOf(sortAttribute);

@@ -1023,8 +1023,8 @@ public class PlanItemWrapper {
         newImage = ImageLocalServiceUtil.getImage(inputFile.getFile());
 
         newImage.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
-
         ImageLocalServiceUtil.addImage(newImage);
+        ImageLocalServiceUtil.updateImage(newImage.getImageId(), newImage.getTextObj());
     }
 
 

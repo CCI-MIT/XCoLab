@@ -5,6 +5,7 @@
 	<portlet>
 		<portlet-name>search-portlet</portlet-name>
 		<icon>/icon.png</icon>
+		<indexer-class>org.xcolab.portlets.search.Indexer</indexer-class>
 		<instanceable>false</instanceable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</header-portlet-javascript>

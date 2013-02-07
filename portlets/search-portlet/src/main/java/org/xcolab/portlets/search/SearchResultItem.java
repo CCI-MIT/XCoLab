@@ -1,8 +1,6 @@
 package org.xcolab.portlets.search;
 
 import java.io.IOException;
-import java.io.ObjectStreamClass;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +17,6 @@ import org.apache.lucene.util.Version;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Query;
-import com.liferay.portal.kernel.search.QueryTranslatorUtil;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
 
 public class SearchResultItem {
     private SearchItemType itemType = null;

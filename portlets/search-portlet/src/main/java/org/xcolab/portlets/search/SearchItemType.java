@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.search.Field;
 
 public enum SearchItemType {
     
-    PLAN("Proposals", new String[] {"entryClassName", "com.ext.portlet.plans.model.*" }, new String[] { "content", "title" },
+    PLAN("Proposals", new String[] {"entryClassName", "com.ext.portlet.model.PlanItem" }, new String[] { "content", "title" },
             new String[] { "title" }, new String[] { "content" }, new URLCreator() {
                 public String getUrl(Document doc) {
                     String idStr = doc.get(Field.ENTRY_CLASS_PK);
@@ -43,7 +43,7 @@ public enum SearchItemType {
                     return "/web/guest/plans";
                 }
      }),
-     CONTEST("Contests", new String[] {"entryClassName", "com.ext.portlet.contests.model.*" }, new String[] { "content", "title" },
+     CONTEST("Contests", new String[] {"entryClassName", "com.ext.portlet.model.Contest" }, new String[] { "content", "title" },
              new String[] { "title" }, new String[] { "content" }, new URLCreator() {
                  public String getUrl(Document doc) {
                      String idStr = doc.get(Field.ENTRY_CLASS_PK);
@@ -60,7 +60,7 @@ public enum SearchItemType {
                  }
             }),            
 
-    USER("Users", new String[] { "entryClassName", "com.liferay.portal.model.*" }, new String[] { "screenName", "firstName", "lastName" },
+    USER("Users", new String[] { "entryClassName", "com.liferay.portal.model.User" }, new String[] { "screenName", "firstName", "lastName" },
             new String[] { "screenName" }, new String[] { "firstName", "lastName" }, new URLCreator() {
                 public String getUrl(Document doc) {
                     String id = doc.get(Field.USER_ID);
@@ -70,7 +70,7 @@ public enum SearchItemType {
             }
     ), 
     
-    CONTENT("Content", new String[] { "entryClassName", "com.liferay.portlet.wiki.model.* OR com.liferay.portlet.journal.model.*.index" }, new String[] { "title",
+    CONTENT("Content", new String[] { "entryClassName", "com.liferay.portlet.wiki.model.* OR com.liferay.portlet.journal.model.JournalArticle" }, new String[] { "title",
             "content" }, new String[] { "title" }, new String[] { "content" }, new URLCreator() {
 
         @Override
@@ -117,7 +117,7 @@ public enum SearchItemType {
                         }
             }),
 */
-    DISCUSSION("Discussions", new String[] { "entryClassName", "com.ext.portlet.discussions.model.*" }, new String[] { "title",
+    DISCUSSION("Discussions", new String[] { "entryClassName", "com.ext.portlet.model.DiscussionMessage" }, new String[] { "title",
             "content" }, new String[] { "title" }, new String[] { "content" }, new URLCreator() {
 
         private static final String DISCUSSION_URL_FORMAT = "alert('this is discussion');";
@@ -131,7 +131,7 @@ public enum SearchItemType {
                 msg = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
 
                 Long threadId = msg.getThreadId();
-                if (threadId == null) {
+                if (threadId == 0) {
                     threadId = messageId;
                 }
 

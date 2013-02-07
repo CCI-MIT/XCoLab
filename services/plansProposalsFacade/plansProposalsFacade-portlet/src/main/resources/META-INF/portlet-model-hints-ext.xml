@@ -6,38 +6,56 @@
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />
 		<field name="type" type="int" />
-		<field name="extraData" type="String" />
+		<field name="extraData" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
 		<field name="receiverId" type="long" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 	</model>
 	<model name="com.ext.portlet.model.Contest">
 		<field name="ContestPK" type="long" />
-		<field name="ContestName" type="String" >
+		<field name="ContestName" type="String">
 			<hint name="max-length">2048</hint>
 		</field>
-		<field name="ContestShortName" type="String" />
-		<field name="ContestDescription" type="String" />
-		<field name="ContestModelDescription" type="String" />
-		<field name="ContestPositionsDescription" type="String" />
-		<field name="defaultPlanDescription" type="String" />
+		<field name="ContestShortName" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="ContestDescription" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="ContestModelDescription" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="ContestPositionsDescription" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="defaultPlanDescription" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
 		<field name="PlanTypeId" type="long" />
 		<field name="created" type="Date" />
 		<field name="updated" type="Date" />
 		<field name="authorId" type="long" />
-		<field name="contestActive" type="Boolean" />
+		<field name="contestActive" type="boolean" />
 		<field name="planTemplateId" type="long" />
 		<field name="focusAreaId" type="long" />
 		<field name="contestLogoId" type="long" />
-		<field name="featured" type="Boolean" />
-		<field name="plansOpenByDefault" type="Boolean" />
-		<field name="flag" type="Integer" />
-		<field name="flagText" type="String" />
-		<field name="flagTooltip" type="String" />
+		<field name="featured" type="boolean" />
+		<field name="plansOpenByDefault" type="boolean" />
+		<field name="flag" type="int" />
+		<field name="flagText" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="flagTooltip" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
 		<field name="groupId" type="long" />
 		<field name="discussionGroupId" type="long" />
-		<field name="weight" type="Integer" />
-		<field name="resourcesUrl" type="String" />
+		<field name="weight" type="int" />
+		<field name="resourcesUrl" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />
@@ -48,8 +66,10 @@
 		<field name="ContestPhasePK" type="long" />
 		<field name="ContestPK" type="long" />
 		<field name="ContestPhaseType" type="long" />
-		<field name="ContestPhaseDescriptionOverride" type="String" />
-		<field name="phaseActiveOverride" type="Boolean" />
+		<field name="ContestPhaseDescriptionOverride" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
+		<field name="phaseActiveOverride" type="boolean" />
 		<field name="PhaseStartDate" type="Date" />
 		<field name="PhaseEndDate" type="Date" />
 		<field name="nextStatus" type="String" />
@@ -61,13 +81,17 @@
 		<field name="id" type="long" />
 		<field name="ContestPhasePK" type="long" />
 		<field name="columnName" type="String" />
-		<field name="columnWeight" type="Integer" />
-		<field name="defaultSort" type="Boolean" />
+		<field name="columnWeight" type="int" />
+		<field name="defaultSort" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ContestPhaseType">
 		<field name="id" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
 		<field name="status" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.ContestTeamMember">
@@ -81,8 +105,12 @@
 		<field name="categoryId" type="long" />
 		<field name="categoryGroupId" type="long" />
 		<field name="authorId" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
 		<field name="createDate" type="Date" />
 		<field name="deleted" type="Date" />
 		<field name="threadsCount" type="int" />
@@ -91,15 +119,23 @@
 	</model>
 	<model name="com.ext.portlet.model.DiscussionCategoryGroup">
 		<field name="id" type="long" />
-		<field name="description" type="String" />
-		<field name="url" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
+		<field name="url" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
 		<field name="commentsThread" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.DiscussionMessage">
 		<field name="pk" type="long" />
 		<field name="messageId" type="long" />
-		<field name="subject" type="String" />
-		<field name="body" type="String" />
+		<field name="subject" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="body" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
 		<field name="threadId" type="long" />
 		<field name="categoryId" type="long" />
 		<field name="categoryGroupId" type="long" />
@@ -115,25 +151,43 @@
 		<field name="pk" type="long" />
 		<field name="messageId" type="long" />
 		<field name="flagType" type="String" />
-		<field name="data" type="String" />
+		<field name="data" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 		<field name="created" type="Date" />
 		<field name="userId" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.FocusArea">
 		<field name="id" type="long" />
-		<field name="name" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">256</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.FocusAreaOntologyTerm">
 		<field name="focusAreaId" type="long" />
 		<field name="ontologyTermId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.LandingPage">
+		<field name="id" type="long" />
+		<field name="baseUrl" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="targetUrl" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="updated" type="Date" />
 	</model>
 	<model name="com.ext.portlet.model.Message">
 		<field name="messageId" type="long" />
 		<field name="fromId" type="long" />
 		<field name="repliesTo" type="long" />
 		<field name="createDate" type="Date" />
-		<field name="subject" type="String" />
-		<field name="content" type="String" />
+		<field name="subject" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="content" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.MessageRecipientStatus">
 		<field name="messageRecipientId" type="long" />
@@ -141,6 +195,81 @@
 		<field name="userId" type="long" />
 		<field name="opened" type="boolean" />
 		<field name="archived" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingIgnoredRecipients">
+		<field name="ignoredRecipientId" type="long" />
+		<field name="email" type="String">
+			<hint name="max-length">512</hint>
+		</field>
+		<field name="name" type="String">
+			<hint name="max-length">512</hint>
+		</field>
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessage">
+		<field name="messageId" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
+		<field name="subject" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="body" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="replyTo" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="sendToAll" type="boolean" />
+		<field name="conversionCount" type="long" />
+		<field name="redirectURL" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="creatorId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageConversion">
+		<field name="conversionId" type="long" />
+		<field name="conversionTypeId" type="long" />
+		<field name="messageId" type="long" />
+		<field name="ipAddress" type="String" />
+		<field name="extraData" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="extraData2" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageConversionType">
+		<field name="typeId" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageRecipient">
+		<field name="recipientId" type="long" />
+		<field name="messageId" type="long" />
+		<field name="userId" type="long" />
+		<field name="emailAddress" type="String">
+			<hint name="max-length">512</hint>
+		</field>
+	</model>
+	<model name="com.ext.portlet.model.MessagingRedirectLink">
+		<field name="redirectId" type="long" />
+		<field name="link" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="messageId" type="long" />
+		<field name="createDate" type="Date" />
 	</model>
 	<model name="com.ext.portlet.model.MessagingUserPreferences">
 		<field name="messagingPreferencesId" type="long" />
@@ -151,8 +280,12 @@
 	</model>
 	<model name="com.ext.portlet.model.ModelCategory">
 		<field name="modelCategoryPK" type="long" />
-		<field name="modelCategoryName" type="String" />
-		<field name="modelCategoryDescription" type="String" />
+		<field name="modelCategoryName" type="String">
+			<hint name="max-length">256</hint>
+		</field>
+		<field name="modelCategoryDescription" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 		<field name="modelCategoryDisplayWeight" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.ModelDiscussion">
@@ -172,10 +305,16 @@
 		<field name="modelInputGroupPK" type="long" />
 		<field name="modelId" type="long" />
 		<field name="nameAndDescriptionMetaDataId" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
 		<field name="displayItemOrder" type="int" />
-		<field name="groupType" type="String" />
+		<field name="groupType" type="String">
+			<hint name="max-length">256</hint>
+		</field>
 		<field name="parentGroupPK" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.ModelInputItem">
@@ -184,18 +323,32 @@
 		<field name="modelInputItemID" type="long" />
 		<field name="modelGroupId" type="long" />
 		<field name="displayItemOrder" type="int" />
-		<field name="type" type="String" />
-		<field name="properties" type="String" />
+		<field name="type" type="String">
+			<hint name="max-length">256</hint>
+		</field>
+		<field name="properties" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.ModelOutputChartOrder">
 		<field name="modelOutputChartOrderPK" type="long" />
 		<field name="modelId" type="long" />
-		<field name="modelOutputLabel" type="String" />
+		<field name="modelOutputLabel" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
 		<field name="modelOutputChartOrder" type="int" />
-		<field name="modelIndexRangePolicy" type="String" />
-		<field name="modelIndexRangeMessage" type="String" />
-		<field name="modelIndexErrorPolicy" type="String" />
-		<field name="modelIndexErrorMessage" type="String" />
+		<field name="modelIndexRangePolicy" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="modelIndexRangeMessage" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="modelIndexErrorPolicy" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="modelIndexErrorMessage" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 		<field name="modelChartIsVisible" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ModelOutputItem">
@@ -203,13 +356,25 @@
 		<field name="modelId" type="long" />
 		<field name="modelOutputItemId" type="long" />
 		<field name="modelOutputItemOrder" type="int" />
-		<field name="modelItemRangePolicy" type="String" />
-		<field name="modelItemRangeMessage" type="String" />
-		<field name="modelItemErrorPolicy" type="String" />
-		<field name="modelItemErrorMessage" type="String" />
-		<field name="modelItemLabelFormat" type="String" />
+		<field name="modelItemRangePolicy" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="modelItemRangeMessage" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="modelItemErrorPolicy" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="modelItemErrorMessage" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="modelItemLabelFormat" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 		<field name="modelItemIsVisible" type="boolean" />
-		<field name="itemType" type="String" />
+		<field name="itemType" type="String">
+			<hint name="max-length">256</hint>
+		</field>
 		<field name="relatedOutputItem" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.ModelPosition">
@@ -219,15 +384,23 @@
 	</model>
 	<model name="com.ext.portlet.model.OntologySpace">
 		<field name="id" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">256</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.OntologyTerm">
 		<field name="id" type="long" />
 		<field name="parentId" type="long" />
 		<field name="ontologySpaceId" type="long" />
-		<field name="name" type="String" />
-		<field name="descriptionUrl" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">256</hint>
+		</field>
+		<field name="descriptionUrl" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.OntologyTermEntity">
 		<field name="id" type="long" />
@@ -238,8 +411,12 @@
 	<model name="com.ext.portlet.model.PlanAttribute">
 		<field name="attributeId" type="long" />
 		<field name="planId" type="long" />
-		<field name="attributeName" type="String" />
-		<field name="attributeValue" type="String" />
+		<field name="attributeName" type="String">
+			<hint name="max-length">256</hint>
+		</field>
+		<field name="attributeValue" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.PlanAttributeFilter">
 		<field name="planAttributeFilterId" type="long" />
@@ -247,7 +424,9 @@
 		<field name="planUserSettingsId" type="long" />
 		<field name="max" type="Double" />
 		<field name="min" type="Double" />
-		<field name="stringVal" type="String" />
+		<field name="stringVal" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.PlanColumnSettings">
 		<field name="planColumnSettingsId" type="long" />
@@ -258,14 +437,20 @@
 	<model name="com.ext.portlet.model.PlanDescription">
 		<field name="id" type="long" />
 		<field name="planId" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
 		<field name="version" type="long" />
 		<field name="planVersion" type="long" />
 		<field name="created" type="Date" />
 		<field name="updateAuthorId" type="long" />
 		<field name="image" type="long" />
-		<field name="pitch" type="String" />
+		<field name="pitch" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.PlanFan">
 		<field name="id" type="long" />
@@ -347,7 +532,9 @@
 		<field name="id" type="long" />
 		<field name="planSectionDefinitionId" type="long" />
 		<field name="planId" type="long" />
-		<field name="content" type="String" />
+		<field name="content" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
 		<field name="created" type="Date" />
 		<field name="version" type="long" />
 		<field name="planVersion" type="long" />
@@ -355,10 +542,18 @@
 	</model>
 	<model name="com.ext.portlet.model.PlanSectionDefinition">
 		<field name="id" type="long" />
-		<field name="adminTitle" type="String" />
-		<field name="title" type="String" />
-		<field name="defaultText" type="String" />
-		<field name="helpText" type="String" />
+		<field name="adminTitle" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="title" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="defaultText" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="helpText" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
 		<field name="characterLimit" type="int" />
 		<field name="focusAreaId" type="long" />
 		<field name="locked" type="boolean" />
@@ -411,7 +606,9 @@
 	</model>
 	<model name="com.ext.portlet.model.PlanTemplate">
 		<field name="id" type="long" />
-		<field name="name" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.PlanTemplateSection">
 		<field name="planTemplateId" type="long" />
@@ -421,7 +618,9 @@
 	<model name="com.ext.portlet.model.PlanType">
 		<field name="planTypeId" type="long" />
 		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 		<field name="modelId" type="long" />
 		<field name="modelTypeName" type="String" />
 		<field name="published" type="boolean" />

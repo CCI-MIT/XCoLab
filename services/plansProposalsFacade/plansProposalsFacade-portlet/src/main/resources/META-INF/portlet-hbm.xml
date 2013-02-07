@@ -15,8 +15,15 @@
 	<import class="com.ext.portlet.model.DiscussionMessageFlag" />
 	<import class="com.ext.portlet.model.FocusArea" />
 	<import class="com.ext.portlet.model.FocusAreaOntologyTerm" />
+	<import class="com.ext.portlet.model.LandingPage" />
 	<import class="com.ext.portlet.model.Message" />
 	<import class="com.ext.portlet.model.MessageRecipientStatus" />
+	<import class="com.ext.portlet.model.MessagingIgnoredRecipients" />
+	<import class="com.ext.portlet.model.MessagingMessage" />
+	<import class="com.ext.portlet.model.MessagingMessageConversion" />
+	<import class="com.ext.portlet.model.MessagingMessageConversionType" />
+	<import class="com.ext.portlet.model.MessagingMessageRecipient" />
+	<import class="com.ext.portlet.model.MessagingRedirectLink" />
 	<import class="com.ext.portlet.model.MessagingUserPreferences" />
 	<import class="com.ext.portlet.model.ModelCategory" />
 	<import class="com.ext.portlet.model.ModelDiscussion" />
@@ -218,6 +225,15 @@
 			<key-property name="ontologyTermId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 	</class>
+	<class name="com.ext.portlet.model.impl.LandingPageImpl" table="xcolab_LandingPage">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="baseUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="targetUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="updated" type="org.hibernate.type.TimestampType" />
+	</class>
 	<class name="com.ext.portlet.model.impl.MessageImpl" table="xcolab_Message">
 		<cache usage="read-write" />
 		<id name="messageId" type="long">
@@ -238,6 +254,71 @@
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="opened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="archived" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl" table="xcolab_MessagingIgnoredRecipients">
+		<cache usage="read-write" />
+		<id name="ignoredRecipientId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="email" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.MessagingMessageImpl" table="xcolab_MessagingMessage">
+		<cache usage="read-write" />
+		<id name="messageId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="subject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="body" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="replyTo" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sendToAll" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="conversionCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="redirectURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="creatorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.MessagingMessageConversionImpl" table="xcolab_MessagingMessageConversion">
+		<cache usage="read-write" />
+		<id name="conversionId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="conversionTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ipAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="extraData" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="extraData2" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.MessagingMessageConversionTypeImpl" table="xcolab_MessagingMessageConversionType">
+		<cache usage="read-write" />
+		<id name="typeId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.MessagingMessageRecipientImpl" table="xcolab_MessagingMessageRecipient">
+		<cache usage="read-write" />
+		<id name="recipientId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="emailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.MessagingRedirectLinkImpl" table="xcolab_MessagingRedirectLink">
+		<cache usage="read-write" />
+		<id name="redirectId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="link" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.MessagingUserPreferencesImpl" table="xcolab_MessagingUserPreferences">
 		<cache usage="read-write" />

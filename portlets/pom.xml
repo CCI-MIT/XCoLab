@@ -30,5 +30,7 @@
     <module>plansadmin-portlet</module>
     <module>loginregister-portlet</module>
     <module>massmessaging-portlet</module>
+    <module>blogsstats-portlet</module>
+    <module>landingpage-portlet</module>
   </modules>
 </project>

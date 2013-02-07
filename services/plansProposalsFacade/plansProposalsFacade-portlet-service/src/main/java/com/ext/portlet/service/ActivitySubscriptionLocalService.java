@@ -290,4 +290,8 @@ public interface ActivitySubscriptionLocalService
     public void delete(
         com.ext.portlet.model.ActivitySubscription activitySubscription)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void sendEmailNotifications()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

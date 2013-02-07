@@ -89,7 +89,7 @@ public class PlansActivityFeedEntry extends BaseSocialActivityInterpreter implem
 	}
 
 	private static final String[] _CLASS_NAMES = new String[] {
-	    "com.ext.portlet.Activity", "com.ext.portlet.plans.model.PlanItem"
+	    PlanItem.class.getName()
 	};
 
 	private String getUser(SocialActivity activity) {

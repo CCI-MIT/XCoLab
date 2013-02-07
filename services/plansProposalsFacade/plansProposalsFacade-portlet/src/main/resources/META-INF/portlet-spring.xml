@@ -131,6 +131,15 @@
 		<property name="service" ref="com.ext.portlet.service.FocusAreaOntologyTermService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence" class="com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.LandingPageLocalService" class="com.ext.portlet.service.impl.LandingPageLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.LandingPageLocalServiceUtil" class="com.ext.portlet.service.LandingPageLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.LandingPageLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.LandingPageService" class="com.ext.portlet.service.impl.LandingPageServiceImpl" />
+	<bean id="com.ext.portlet.service.LandingPageServiceUtil" class="com.ext.portlet.service.LandingPageServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.LandingPageService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.LandingPagePersistence" class="com.ext.portlet.service.persistence.LandingPagePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.MessageLocalService" class="com.ext.portlet.service.impl.MessageLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.MessageLocalServiceUtil" class="com.ext.portlet.service.MessageLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.MessageLocalService" />
@@ -149,6 +158,60 @@
 		<property name="service" ref="com.ext.portlet.service.MessageRecipientStatusService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.MessageRecipientStatusPersistence" class="com.ext.portlet.service.persistence.MessageRecipientStatusPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsLocalService" class="com.ext.portlet.service.impl.MessagingIgnoredRecipientsLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil" class="com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingIgnoredRecipientsLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsService" class="com.ext.portlet.service.impl.MessagingIgnoredRecipientsServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsServiceUtil" class="com.ext.portlet.service.MessagingIgnoredRecipientsServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingIgnoredRecipientsService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence" class="com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.MessagingMessageLocalService" class="com.ext.portlet.service.impl.MessagingMessageLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingMessageLocalServiceUtil" class="com.ext.portlet.service.MessagingMessageLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingMessageLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.MessagingMessageService" class="com.ext.portlet.service.impl.MessagingMessageServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingMessageServiceUtil" class="com.ext.portlet.service.MessagingMessageServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingMessageService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.MessagingMessagePersistence" class="com.ext.portlet.service.persistence.MessagingMessagePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.MessagingMessageConversionLocalService" class="com.ext.portlet.service.impl.MessagingMessageConversionLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingMessageConversionLocalServiceUtil" class="com.ext.portlet.service.MessagingMessageConversionLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingMessageConversionLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.MessagingMessageConversionService" class="com.ext.portlet.service.impl.MessagingMessageConversionServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingMessageConversionServiceUtil" class="com.ext.portlet.service.MessagingMessageConversionServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingMessageConversionService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.MessagingMessageConversionPersistence" class="com.ext.portlet.service.persistence.MessagingMessageConversionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.MessagingMessageConversionTypeLocalService" class="com.ext.portlet.service.impl.MessagingMessageConversionTypeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingMessageConversionTypeLocalServiceUtil" class="com.ext.portlet.service.MessagingMessageConversionTypeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingMessageConversionTypeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.MessagingMessageConversionTypeService" class="com.ext.portlet.service.impl.MessagingMessageConversionTypeServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingMessageConversionTypeServiceUtil" class="com.ext.portlet.service.MessagingMessageConversionTypeServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingMessageConversionTypeService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence" class="com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.MessagingMessageRecipientLocalService" class="com.ext.portlet.service.impl.MessagingMessageRecipientLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingMessageRecipientLocalServiceUtil" class="com.ext.portlet.service.MessagingMessageRecipientLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingMessageRecipientLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.MessagingMessageRecipientService" class="com.ext.portlet.service.impl.MessagingMessageRecipientServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingMessageRecipientServiceUtil" class="com.ext.portlet.service.MessagingMessageRecipientServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingMessageRecipientService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence" class="com.ext.portlet.service.persistence.MessagingMessageRecipientPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.MessagingRedirectLinkLocalService" class="com.ext.portlet.service.impl.MessagingRedirectLinkLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil" class="com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingRedirectLinkLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.MessagingRedirectLinkService" class="com.ext.portlet.service.impl.MessagingRedirectLinkServiceImpl" />
+	<bean id="com.ext.portlet.service.MessagingRedirectLinkServiceUtil" class="com.ext.portlet.service.MessagingRedirectLinkServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.MessagingRedirectLinkService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence" class="com.ext.portlet.service.persistence.MessagingRedirectLinkPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.MessagingUserPreferencesLocalService" class="com.ext.portlet.service.impl.MessagingUserPreferencesLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil" class="com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.MessagingUserPreferencesLocalService" />

@@ -74,7 +74,7 @@ public class PlansFriendlyURLMapper extends BaseFriendlyURLMapper {
             String value = urlParts[i + 1];
 
             params.put(Helper.getUrlParameterKey(key), new String[] { value });
-            addParam(params, key, value);
+            addParameter(params, key, value);
         }
     }
 

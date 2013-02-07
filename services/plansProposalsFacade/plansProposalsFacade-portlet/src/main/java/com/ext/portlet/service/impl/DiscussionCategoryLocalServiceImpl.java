@@ -40,15 +40,15 @@ public class DiscussionCategoryLocalServiceImpl
      */
 
 
-    public List<DiscussionCategory> getCategoriesByCategoryGroupId(Long categoryGroupId) throws SystemException {
+    public List<DiscussionCategory> getCategoriesByCategoryGroupId(long categoryGroupId) throws SystemException {
         return discussionCategoryPersistence.findByCategoryGroupId(categoryGroupId);
     }
     
-    public DiscussionCategory getDiscussionCategoryById(Long categoryId) throws NoSuchDiscussionCategoryException, SystemException {
+    public DiscussionCategory getDiscussionCategoryById(long categoryId) throws NoSuchDiscussionCategoryException, SystemException {
         return discussionCategoryPersistence.findByCategoryId(categoryId);
     }
     
-    public DiscussionCategory createDebateCategory(Long categoryGroupId, String name, String description, User author)
+    public DiscussionCategory createDebateCategory(long categoryGroupId, String name, String description, User author)
     throws SystemException {
         Long id = CounterLocalServiceUtil.increment(DiscussionCategory.class.getName());
         Long categoryId = CounterLocalServiceUtil.increment(DiscussionCategory.class.getName() + ".category");

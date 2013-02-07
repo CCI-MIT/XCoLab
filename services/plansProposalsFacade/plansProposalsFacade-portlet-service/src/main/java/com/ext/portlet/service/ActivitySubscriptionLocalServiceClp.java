@@ -38,6 +38,7 @@ public class ActivitySubscriptionLocalServiceClp
     private MethodKey _getNameMethodKey27;
     private MethodKey _getSubscriptionTypeMethodKey28;
     private MethodKey _deleteMethodKey29;
+    private MethodKey _sendEmailNotificationsMethodKey30;
 
     public ActivitySubscriptionLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -158,6 +159,9 @@ public class ActivitySubscriptionLocalServiceClp
 
         _deleteMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
                 "delete", com.ext.portlet.model.ActivitySubscription.class);
+
+        _sendEmailNotificationsMethodKey30 = new MethodKey(_classLoaderProxy.getClassName(),
+                "sendEmailNotifications");
     }
 
     public com.ext.portlet.model.ActivitySubscription addActivitySubscription(
@@ -940,6 +944,31 @@ public class ActivitySubscriptionLocalServiceClp
         try {
             _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void sendEmailNotifications()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_sendEmailNotificationsMethodKey30);
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }

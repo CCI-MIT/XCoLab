@@ -229,13 +229,12 @@ public interface DiscussionCategoryGroupLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.DiscussionCategory getCategoryById(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.DiscussionMessage getThreadById(
-        java.lang.Long threadId)
+    public com.ext.portlet.model.DiscussionMessage getThreadById(long threadId)
         throws com.ext.portlet.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException;
 

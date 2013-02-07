@@ -167,6 +167,16 @@
 		<field name="focusAreaId" type="long" />
 		<field name="ontologyTermId" type="long" />
 	</model>
+	<model name="com.ext.portlet.model.LandingPage">
+		<field name="id" type="long" />
+		<field name="baseUrl" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="targetUrl" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="updated" type="Date" />
+	</model>
 	<model name="com.ext.portlet.model.Message">
 		<field name="messageId" type="long" />
 		<field name="fromId" type="long" />
@@ -185,6 +195,81 @@
 		<field name="userId" type="long" />
 		<field name="opened" type="boolean" />
 		<field name="archived" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingIgnoredRecipients">
+		<field name="ignoredRecipientId" type="long" />
+		<field name="email" type="String">
+			<hint name="max-length">512</hint>
+		</field>
+		<field name="name" type="String">
+			<hint name="max-length">512</hint>
+		</field>
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessage">
+		<field name="messageId" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">4096</hint>
+		</field>
+		<field name="subject" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="body" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="replyTo" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="sendToAll" type="boolean" />
+		<field name="conversionCount" type="long" />
+		<field name="redirectURL" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="creatorId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageConversion">
+		<field name="conversionId" type="long" />
+		<field name="conversionTypeId" type="long" />
+		<field name="messageId" type="long" />
+		<field name="ipAddress" type="String" />
+		<field name="extraData" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="extraData2" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageConversionType">
+		<field name="typeId" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageRecipient">
+		<field name="recipientId" type="long" />
+		<field name="messageId" type="long" />
+		<field name="userId" type="long" />
+		<field name="emailAddress" type="String">
+			<hint name="max-length">512</hint>
+		</field>
+	</model>
+	<model name="com.ext.portlet.model.MessagingRedirectLink">
+		<field name="redirectId" type="long" />
+		<field name="link" type="String">
+			<hint name="max-length">1024</hint>
+		</field>
+		<field name="messageId" type="long" />
+		<field name="createDate" type="Date" />
 	</model>
 	<model name="com.ext.portlet.model.MessagingUserPreferences">
 		<field name="messagingPreferencesId" type="long" />

@@ -27,10 +27,24 @@ import com.ext.portlet.service.FocusAreaLocalService;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalService;
 import com.ext.portlet.service.FocusAreaOntologyTermService;
 import com.ext.portlet.service.FocusAreaService;
+import com.ext.portlet.service.LandingPageLocalService;
+import com.ext.portlet.service.LandingPageService;
 import com.ext.portlet.service.MessageLocalService;
 import com.ext.portlet.service.MessageRecipientStatusLocalService;
 import com.ext.portlet.service.MessageRecipientStatusService;
 import com.ext.portlet.service.MessageService;
+import com.ext.portlet.service.MessagingIgnoredRecipientsLocalService;
+import com.ext.portlet.service.MessagingIgnoredRecipientsService;
+import com.ext.portlet.service.MessagingMessageConversionLocalService;
+import com.ext.portlet.service.MessagingMessageConversionService;
+import com.ext.portlet.service.MessagingMessageConversionTypeLocalService;
+import com.ext.portlet.service.MessagingMessageConversionTypeService;
+import com.ext.portlet.service.MessagingMessageLocalService;
+import com.ext.portlet.service.MessagingMessageRecipientLocalService;
+import com.ext.portlet.service.MessagingMessageRecipientService;
+import com.ext.portlet.service.MessagingMessageService;
+import com.ext.portlet.service.MessagingRedirectLinkLocalService;
+import com.ext.portlet.service.MessagingRedirectLinkService;
 import com.ext.portlet.service.MessagingUserPreferencesLocalService;
 import com.ext.portlet.service.MessagingUserPreferencesService;
 import com.ext.portlet.service.ModelCategoryLocalService;
@@ -120,8 +134,15 @@ import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
 import com.ext.portlet.service.persistence.FocusAreaPersistence;
+import com.ext.portlet.service.persistence.LandingPagePersistence;
 import com.ext.portlet.service.persistence.MessagePersistence;
 import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
+import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
+import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
+import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
+import com.ext.portlet.service.persistence.MessagingMessagePersistence;
+import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
+import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
 import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
 import com.ext.portlet.service.persistence.ModelCategoryPersistence;
 import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
@@ -285,6 +306,12 @@ public abstract class PlansUserSettingsLocalServiceBaseImpl
     protected FocusAreaOntologyTermService focusAreaOntologyTermService;
     @BeanReference(type = FocusAreaOntologyTermPersistence.class)
     protected FocusAreaOntologyTermPersistence focusAreaOntologyTermPersistence;
+    @BeanReference(type = LandingPageLocalService.class)
+    protected LandingPageLocalService landingPageLocalService;
+    @BeanReference(type = LandingPageService.class)
+    protected LandingPageService landingPageService;
+    @BeanReference(type = LandingPagePersistence.class)
+    protected LandingPagePersistence landingPagePersistence;
     @BeanReference(type = MessageLocalService.class)
     protected MessageLocalService messageLocalService;
     @BeanReference(type = MessageService.class)
@@ -297,6 +324,42 @@ public abstract class PlansUserSettingsLocalServiceBaseImpl
     protected MessageRecipientStatusService messageRecipientStatusService;
     @BeanReference(type = MessageRecipientStatusPersistence.class)
     protected MessageRecipientStatusPersistence messageRecipientStatusPersistence;
+    @BeanReference(type = MessagingIgnoredRecipientsLocalService.class)
+    protected MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService;
+    @BeanReference(type = MessagingIgnoredRecipientsService.class)
+    protected MessagingIgnoredRecipientsService messagingIgnoredRecipientsService;
+    @BeanReference(type = MessagingIgnoredRecipientsPersistence.class)
+    protected MessagingIgnoredRecipientsPersistence messagingIgnoredRecipientsPersistence;
+    @BeanReference(type = MessagingMessageLocalService.class)
+    protected MessagingMessageLocalService messagingMessageLocalService;
+    @BeanReference(type = MessagingMessageService.class)
+    protected MessagingMessageService messagingMessageService;
+    @BeanReference(type = MessagingMessagePersistence.class)
+    protected MessagingMessagePersistence messagingMessagePersistence;
+    @BeanReference(type = MessagingMessageConversionLocalService.class)
+    protected MessagingMessageConversionLocalService messagingMessageConversionLocalService;
+    @BeanReference(type = MessagingMessageConversionService.class)
+    protected MessagingMessageConversionService messagingMessageConversionService;
+    @BeanReference(type = MessagingMessageConversionPersistence.class)
+    protected MessagingMessageConversionPersistence messagingMessageConversionPersistence;
+    @BeanReference(type = MessagingMessageConversionTypeLocalService.class)
+    protected MessagingMessageConversionTypeLocalService messagingMessageConversionTypeLocalService;
+    @BeanReference(type = MessagingMessageConversionTypeService.class)
+    protected MessagingMessageConversionTypeService messagingMessageConversionTypeService;
+    @BeanReference(type = MessagingMessageConversionTypePersistence.class)
+    protected MessagingMessageConversionTypePersistence messagingMessageConversionTypePersistence;
+    @BeanReference(type = MessagingMessageRecipientLocalService.class)
+    protected MessagingMessageRecipientLocalService messagingMessageRecipientLocalService;
+    @BeanReference(type = MessagingMessageRecipientService.class)
+    protected MessagingMessageRecipientService messagingMessageRecipientService;
+    @BeanReference(type = MessagingMessageRecipientPersistence.class)
+    protected MessagingMessageRecipientPersistence messagingMessageRecipientPersistence;
+    @BeanReference(type = MessagingRedirectLinkLocalService.class)
+    protected MessagingRedirectLinkLocalService messagingRedirectLinkLocalService;
+    @BeanReference(type = MessagingRedirectLinkService.class)
+    protected MessagingRedirectLinkService messagingRedirectLinkService;
+    @BeanReference(type = MessagingRedirectLinkPersistence.class)
+    protected MessagingRedirectLinkPersistence messagingRedirectLinkPersistence;
     @BeanReference(type = MessagingUserPreferencesLocalService.class)
     protected MessagingUserPreferencesLocalService messagingUserPreferencesLocalService;
     @BeanReference(type = MessagingUserPreferencesService.class)
@@ -1531,6 +1594,62 @@ public abstract class PlansUserSettingsLocalServiceBaseImpl
     }
 
     /**
+     * Returns the landing page local service.
+     *
+     * @return the landing page local service
+     */
+    public LandingPageLocalService getLandingPageLocalService() {
+        return landingPageLocalService;
+    }
+
+    /**
+     * Sets the landing page local service.
+     *
+     * @param landingPageLocalService the landing page local service
+     */
+    public void setLandingPageLocalService(
+        LandingPageLocalService landingPageLocalService) {
+        this.landingPageLocalService = landingPageLocalService;
+    }
+
+    /**
+     * Returns the landing page remote service.
+     *
+     * @return the landing page remote service
+     */
+    public LandingPageService getLandingPageService() {
+        return landingPageService;
+    }
+
+    /**
+     * Sets the landing page remote service.
+     *
+     * @param landingPageService the landing page remote service
+     */
+    public void setLandingPageService(LandingPageService landingPageService) {
+        this.landingPageService = landingPageService;
+    }
+
+    /**
+     * Returns the landing page persistence.
+     *
+     * @return the landing page persistence
+     */
+    public LandingPagePersistence getLandingPagePersistence() {
+        return landingPagePersistence;
+    }
+
+    /**
+     * Sets the landing page persistence.
+     *
+     * @param landingPagePersistence the landing page persistence
+     */
+    public void setLandingPagePersistence(
+        LandingPagePersistence landingPagePersistence) {
+        this.landingPagePersistence = landingPagePersistence;
+    }
+
+    /**
      * Returns the message local service.
      *
      * @return the message local service
@@ -1639,6 +1758,348 @@ public abstract class PlansUserSettingsLocalServiceBaseImpl
     public void setMessageRecipientStatusPersistence(
         MessageRecipientStatusPersistence messageRecipientStatusPersistence) {
         this.messageRecipientStatusPersistence = messageRecipientStatusPersistence;
+    }
+
+    /**
+     * Returns the messaging ignored recipients local service.
+     *
+     * @return the messaging ignored recipients local service
+     */
+    public MessagingIgnoredRecipientsLocalService getMessagingIgnoredRecipientsLocalService() {
+        return messagingIgnoredRecipientsLocalService;
+    }
+
+    /**
+     * Sets the messaging ignored recipients local service.
+     *
+     * @param messagingIgnoredRecipientsLocalService the messaging ignored recipients local service
+     */
+    public void setMessagingIgnoredRecipientsLocalService(
+        MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService) {
+        this.messagingIgnoredRecipientsLocalService = messagingIgnoredRecipientsLocalService;
+    }
+
+    /**
+     * Returns the messaging ignored recipients remote service.
+     *
+     * @return the messaging ignored recipients remote service
+     */
+    public MessagingIgnoredRecipientsService getMessagingIgnoredRecipientsService() {
+        return messagingIgnoredRecipientsService;
+    }
+
+    /**
+     * Sets the messaging ignored recipients remote service.
+     *
+     * @param messagingIgnoredRecipientsService the messaging ignored recipients remote service
+     */
+    public void setMessagingIgnoredRecipientsService(
+        MessagingIgnoredRecipientsService messagingIgnoredRecipientsService) {
+        this.messagingIgnoredRecipientsService = messagingIgnoredRecipientsService;
+    }
+
+    /**
+     * Returns the messaging ignored recipients persistence.
+     *
+     * @return the messaging ignored recipients persistence
+     */
+    public MessagingIgnoredRecipientsPersistence getMessagingIgnoredRecipientsPersistence() {
+        return messagingIgnoredRecipientsPersistence;
+    }
+
+    /**
+     * Sets the messaging ignored recipients persistence.
+     *
+     * @param messagingIgnoredRecipientsPersistence the messaging ignored recipients persistence
+     */
+    public void setMessagingIgnoredRecipientsPersistence(
+        MessagingIgnoredRecipientsPersistence messagingIgnoredRecipientsPersistence) {
+        this.messagingIgnoredRecipientsPersistence = messagingIgnoredRecipientsPersistence;
+    }
+
+    /**
+     * Returns the messaging message local service.
+     *
+     * @return the messaging message local service
+     */
+    public MessagingMessageLocalService getMessagingMessageLocalService() {
+        return messagingMessageLocalService;
+    }
+
+    /**
+     * Sets the messaging message local service.
+     *
+     * @param messagingMessageLocalService the messaging message local service
+     */
+    public void setMessagingMessageLocalService(
+        MessagingMessageLocalService messagingMessageLocalService) {
+        this.messagingMessageLocalService = messagingMessageLocalService;
+    }
+
+    /**
+     * Returns the messaging message remote service.
+     *
+     * @return the messaging message remote service
+     */
+    public MessagingMessageService getMessagingMessageService() {
+        return messagingMessageService;
+    }
+
+    /**
+     * Sets the messaging message remote service.
+     *
+     * @param messagingMessageService the messaging message remote service
+     */
+    public void setMessagingMessageService(
+        MessagingMessageService messagingMessageService) {
+        this.messagingMessageService = messagingMessageService;
+    }
+
+    /**
+     * Returns the messaging message persistence.
+     *
+     * @return the messaging message persistence
+     */
+    public MessagingMessagePersistence getMessagingMessagePersistence() {
+        return messagingMessagePersistence;
+    }
+
+    /**
+     * Sets the messaging message persistence.
+     *
+     * @param messagingMessagePersistence the messaging message persistence
+     */
+    public void setMessagingMessagePersistence(
+        MessagingMessagePersistence messagingMessagePersistence) {
+        this.messagingMessagePersistence = messagingMessagePersistence;
+    }
+
+    /**
+     * Returns the messaging message conversion local service.
+     *
+     * @return the messaging message conversion local service
+     */
+    public MessagingMessageConversionLocalService getMessagingMessageConversionLocalService() {
+        return messagingMessageConversionLocalService;
+    }
+
+    /**
+     * Sets the messaging message conversion local service.
+     *
+     * @param messagingMessageConversionLocalService the messaging message conversion local service
+     */
+    public void setMessagingMessageConversionLocalService(
+        MessagingMessageConversionLocalService messagingMessageConversionLocalService) {
+        this.messagingMessageConversionLocalService = messagingMessageConversionLocalService;
+    }
+
+    /**
+     * Returns the messaging message conversion remote service.
+     *
+     * @return the messaging message conversion remote service
+     */
+    public MessagingMessageConversionService getMessagingMessageConversionService() {
+        return messagingMessageConversionService;
+    }
+
+    /**
+     * Sets the messaging message conversion remote service.
+     *
+     * @param messagingMessageConversionService the messaging message conversion remote service
+     */
+    public void setMessagingMessageConversionService(
+        MessagingMessageConversionService messagingMessageConversionService) {
+        this.messagingMessageConversionService = messagingMessageConversionService;
+    }
+
+    /**
+     * Returns the messaging message conversion persistence.
+     *
+     * @return the messaging message conversion persistence
+     */
+    public MessagingMessageConversionPersistence getMessagingMessageConversionPersistence() {
+        return messagingMessageConversionPersistence;
+    }
+
+    /**
+     * Sets the messaging message conversion persistence.
+     *
+     * @param messagingMessageConversionPersistence the messaging message conversion persistence
+     */
+    public void setMessagingMessageConversionPersistence(
+        MessagingMessageConversionPersistence messagingMessageConversionPersistence) {
+        this.messagingMessageConversionPersistence = messagingMessageConversionPersistence;
+    }
+
+    /**
+     * Returns the messaging message conversion type local service.
+     *
+     * @return the messaging message conversion type local service
+     */
+    public MessagingMessageConversionTypeLocalService getMessagingMessageConversionTypeLocalService() {
+        return messagingMessageConversionTypeLocalService;
+    }
+
+    /**
+     * Sets the messaging message conversion type local service.
+     *
+     * @param messagingMessageConversionTypeLocalService the messaging message conversion type local service
+     */
+    public void setMessagingMessageConversionTypeLocalService(
+        MessagingMessageConversionTypeLocalService messagingMessageConversionTypeLocalService) {
+        this.messagingMessageConversionTypeLocalService = messagingMessageConversionTypeLocalService;
+    }
+
+    /**
+     * Returns the messaging message conversion type remote service.
+     *
+     * @return the messaging message conversion type remote service
+     */
+    public MessagingMessageConversionTypeService getMessagingMessageConversionTypeService() {
+        return messagingMessageConversionTypeService;
+    }
+
+    /**
+     * Sets the messaging message conversion type remote service.
+     *
+     * @param messagingMessageConversionTypeService the messaging message conversion type remote service
+     */
+    public void setMessagingMessageConversionTypeService(
+        MessagingMessageConversionTypeService messagingMessageConversionTypeService) {
+        this.messagingMessageConversionTypeService = messagingMessageConversionTypeService;
+    }
+
+    /**
+     * Returns the messaging message conversion type persistence.
+     *
+     * @return the messaging message conversion type persistence
+     */
+    public MessagingMessageConversionTypePersistence getMessagingMessageConversionTypePersistence() {
+        return messagingMessageConversionTypePersistence;
+    }
+
+    /**
+     * Sets the messaging message conversion type persistence.
+     *
+     * @param messagingMessageConversionTypePersistence the messaging message conversion type persistence
+     */
+    public void setMessagingMessageConversionTypePersistence(
+        MessagingMessageConversionTypePersistence messagingMessageConversionTypePersistence) {
+        this.messagingMessageConversionTypePersistence = messagingMessageConversionTypePersistence;
+    }
+
+    /**
+     * Returns the messaging message recipient local service.
+     *
+     * @return the messaging message recipient local service
+     */
+    public MessagingMessageRecipientLocalService getMessagingMessageRecipientLocalService() {
+        return messagingMessageRecipientLocalService;
+    }
+
+    /**
+     * Sets the messaging message recipient local service.
+     *
+     * @param messagingMessageRecipientLocalService the messaging message recipient local service
+     */
+    public void setMessagingMessageRecipientLocalService(
+        MessagingMessageRecipientLocalService messagingMessageRecipientLocalService) {
+        this.messagingMessageRecipientLocalService = messagingMessageRecipientLocalService;
+    }
+
+    /**
+     * Returns the messaging message recipient remote service.
+     *
+     * @return the messaging message recipient remote service
+     */
+    public MessagingMessageRecipientService getMessagingMessageRecipientService() {
+        return messagingMessageRecipientService;
+    }
+
+    /**
+     * Sets the messaging message recipient remote service.
+     *
+     * @param messagingMessageRecipientService the messaging message recipient remote service
+     */
+    public void setMessagingMessageRecipientService(
+        MessagingMessageRecipientService messagingMessageRecipientService) {
+        this.messagingMessageRecipientService = messagingMessageRecipientService;
+    }
+
+    /**
+     * Returns the messaging message recipient persistence.
+     *
+     * @return the messaging message recipient persistence
+     */
+    public MessagingMessageRecipientPersistence getMessagingMessageRecipientPersistence() {
+        return messagingMessageRecipientPersistence;
+    }
+
+    /**
+     * Sets the messaging message recipient persistence.
+     *
+     * @param messagingMessageRecipientPersistence the messaging message recipient persistence
+     */
+    public void setMessagingMessageRecipientPersistence(
+        MessagingMessageRecipientPersistence messagingMessageRecipientPersistence) {
+        this.messagingMessageRecipientPersistence = messagingMessageRecipientPersistence;
+    }
+
+    /**
+     * Returns the messaging redirect link local service.
+     *
+     * @return the messaging redirect link local service
+     */
+    public MessagingRedirectLinkLocalService getMessagingRedirectLinkLocalService() {
+        return messagingRedirectLinkLocalService;
+    }
+
+    /**
+     * Sets the messaging redirect link local service.
+     *
+     * @param messagingRedirectLinkLocalService the messaging redirect link local service
+     */
+    public void setMessagingRedirectLinkLocalService(
+        MessagingRedirectLinkLocalService messagingRedirectLinkLocalService) {
+        this.messagingRedirectLinkLocalService = messagingRedirectLinkLocalService;
+    }
+
+    /**
+     * Returns the messaging redirect link remote service.
+     *
+     * @return the messaging redirect link remote service
+     */
+    public MessagingRedirectLinkService getMessagingRedirectLinkService() {
+        return messagingRedirectLinkService;
+    }
+
+    /**
+     * Sets the messaging redirect link remote service.
+     *
+     * @param messagingRedirectLinkService the messaging redirect link remote service
+     */
+    public void setMessagingRedirectLinkService(
+        MessagingRedirectLinkService messagingRedirectLinkService) {
+        this.messagingRedirectLinkService = messagingRedirectLinkService;
+    }
+
+    /**
+     * Returns the messaging redirect link persistence.
+     *
+     * @return the messaging redirect link persistence
+     */
+    public MessagingRedirectLinkPersistence getMessagingRedirectLinkPersistence() {
+        return messagingRedirectLinkPersistence;
+    }
+
+    /**
+     * Sets the messaging redirect link persistence.
+     *
+     * @param messagingRedirectLinkPersistence the messaging redirect link persistence
+     */
+    public void setMessagingRedirectLinkPersistence(
+        MessagingRedirectLinkPersistence messagingRedirectLinkPersistence) {
+        this.messagingRedirectLinkPersistence = messagingRedirectLinkPersistence;
     }
 
     /**

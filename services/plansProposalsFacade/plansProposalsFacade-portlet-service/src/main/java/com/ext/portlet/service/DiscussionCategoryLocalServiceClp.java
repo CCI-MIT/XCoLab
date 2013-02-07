@@ -103,15 +103,14 @@ public class DiscussionCategoryLocalServiceClp
                 "setBeanIdentifier", java.lang.String.class);
 
         _getCategoriesByCategoryGroupIdMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getCategoriesByCategoryGroupId", java.lang.Long.class);
+                "getCategoriesByCategoryGroupId", long.class);
 
         _getDiscussionCategoryByIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDiscussionCategoryById", java.lang.Long.class);
+                "getDiscussionCategoryById", long.class);
 
         _createDebateCategoryMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createDebateCategory", java.lang.Long.class,
-                java.lang.String.class, java.lang.String.class,
-                com.liferay.portal.model.User.class);
+                "createDebateCategory", long.class, java.lang.String.class,
+                java.lang.String.class, com.liferay.portal.model.User.class);
 
         _getThreadsMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getThreads", com.ext.portlet.model.DiscussionCategory.class);
@@ -574,12 +573,12 @@ public class DiscussionCategoryLocalServiceClp
     }
 
     public java.util.List<com.ext.portlet.model.DiscussionCategory> getCategoriesByCategoryGroupId(
-        java.lang.Long categoryGroupId)
+        long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getCategoriesByCategoryGroupIdMethodKey17,
-                ClpSerializer.translateInput(categoryGroupId));
+                categoryGroupId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -600,13 +599,13 @@ public class DiscussionCategoryLocalServiceClp
     }
 
     public com.ext.portlet.model.DiscussionCategory getDiscussionCategoryById(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getDiscussionCategoryByIdMethodKey18,
-                ClpSerializer.translateInput(categoryId));
+                categoryId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -631,14 +630,13 @@ public class DiscussionCategoryLocalServiceClp
     }
 
     public com.ext.portlet.model.DiscussionCategory createDebateCategory(
-        java.lang.Long categoryGroupId, java.lang.String name,
+        long categoryGroupId, java.lang.String name,
         java.lang.String description, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createDebateCategoryMethodKey19,
-                ClpSerializer.translateInput(categoryGroupId),
-                ClpSerializer.translateInput(name),
+                categoryGroupId, ClpSerializer.translateInput(name),
                 ClpSerializer.translateInput(description),
                 ClpSerializer.translateInput(author));
 

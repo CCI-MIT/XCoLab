@@ -116,32 +116,31 @@ public class DiscussionMessageLocalServiceClp
                 "setBeanIdentifier", java.lang.String.class);
 
         _getThreadsByCategoryMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadsByCategory", java.lang.Long.class);
+                "getThreadsByCategory", long.class);
 
         _getThreadMessagesMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadMessages", java.lang.Long.class);
+                "getThreadMessages", long.class);
 
         _getThreadMessagesCountMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadMessagesCount", java.lang.Long.class);
+                "getThreadMessagesCount", long.class);
 
         _getThreadByThreadIdMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadByThreadId", java.lang.Long.class);
+                "getThreadByThreadId", long.class);
 
         _addThreadMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addThread", java.lang.Long.class, java.lang.Long.class,
+                "addThread", long.class, long.class, java.lang.String.class,
+                java.lang.String.class, com.liferay.portal.model.User.class);
+
+        _addMessageMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "addMessage", long.class, long.class, long.class,
                 java.lang.String.class, java.lang.String.class,
                 com.liferay.portal.model.User.class);
 
-        _addMessageMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addMessage", java.lang.Long.class, java.lang.Long.class,
-                java.lang.Long.class, java.lang.String.class,
-                java.lang.String.class, com.liferay.portal.model.User.class);
-
         _searchMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
-                "search", java.lang.String.class, java.lang.Long.class);
+                "search", java.lang.String.class, long.class);
 
         _getMessageByMessageIdMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getMessageByMessageId", java.lang.Long.class);
+                "getMessageByMessageId", long.class);
 
         _reIndexMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
                 "reIndex");
@@ -632,12 +631,12 @@ public class DiscussionMessageLocalServiceClp
     }
 
     public java.util.List<com.ext.portlet.model.DiscussionMessage> getThreadsByCategory(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getThreadsByCategoryMethodKey17,
-                ClpSerializer.translateInput(categoryId));
+                categoryId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -658,12 +657,12 @@ public class DiscussionMessageLocalServiceClp
     }
 
     public java.util.List<com.ext.portlet.model.DiscussionMessage> getThreadMessages(
-        java.lang.Long threadId)
+        long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getThreadMessagesMethodKey18,
-                ClpSerializer.translateInput(threadId));
+                threadId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -683,12 +682,12 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List<com.ext.portlet.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
     }
 
-    public int getThreadMessagesCount(java.lang.Long threadId)
+    public int getThreadMessagesCount(long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getThreadMessagesCountMethodKey19,
-                ClpSerializer.translateInput(threadId));
+                threadId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -709,13 +708,13 @@ public class DiscussionMessageLocalServiceClp
     }
 
     public com.ext.portlet.model.DiscussionMessage getThreadByThreadId(
-        java.lang.Long threadId)
+        long threadId)
         throws com.ext.portlet.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getThreadByThreadIdMethodKey20,
-                ClpSerializer.translateInput(threadId));
+                threadId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -740,15 +739,13 @@ public class DiscussionMessageLocalServiceClp
     }
 
     public com.ext.portlet.model.DiscussionMessage addThread(
-        java.lang.Long categoryGroupId, java.lang.Long categoryId,
-        java.lang.String subject, java.lang.String body,
-        com.liferay.portal.model.User author)
+        long categoryGroupId, long categoryId, java.lang.String subject,
+        java.lang.String body, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_addThreadMethodKey21,
-                ClpSerializer.translateInput(categoryGroupId),
-                ClpSerializer.translateInput(categoryId),
+                categoryGroupId, categoryId,
                 ClpSerializer.translateInput(subject),
                 ClpSerializer.translateInput(body),
                 ClpSerializer.translateInput(author));
@@ -772,16 +769,14 @@ public class DiscussionMessageLocalServiceClp
     }
 
     public com.ext.portlet.model.DiscussionMessage addMessage(
-        java.lang.Long categoryGroupId, java.lang.Long categoryId,
-        java.lang.Long threadId, java.lang.String subject,
-        java.lang.String body, com.liferay.portal.model.User author)
+        long categoryGroupId, long categoryId, long threadId,
+        java.lang.String subject, java.lang.String body,
+        com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_addMessageMethodKey22,
-                ClpSerializer.translateInput(categoryGroupId),
-                ClpSerializer.translateInput(categoryId),
-                ClpSerializer.translateInput(threadId),
+                categoryGroupId, categoryId, threadId,
                 ClpSerializer.translateInput(subject),
                 ClpSerializer.translateInput(body),
                 ClpSerializer.translateInput(author));
@@ -805,13 +800,12 @@ public class DiscussionMessageLocalServiceClp
     }
 
     public java.util.List<com.ext.portlet.model.DiscussionMessage> search(
-        java.lang.String query, java.lang.Long categoryGroupId)
+        java.lang.String query, long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_searchMethodKey23,
-                ClpSerializer.translateInput(query),
-                ClpSerializer.translateInput(categoryGroupId));
+                ClpSerializer.translateInput(query), categoryGroupId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -832,13 +826,13 @@ public class DiscussionMessageLocalServiceClp
     }
 
     public com.ext.portlet.model.DiscussionMessage getMessageByMessageId(
-        java.lang.Long messageId)
+        long messageId)
         throws com.ext.portlet.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getMessageByMessageIdMethodKey24,
-                ClpSerializer.translateInput(messageId));
+                messageId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

@@ -67,6 +67,13 @@ RENAME TABLE PlanSectionPlanMap TO xcolab_PlanSectionPlanMap;
 RENAME TABLE PlanTemplate TO xcolab_PlanTemplate;
 RENAME TABLE PlanTemplateSection TO xcolab_PlanTemplateSection;
 
+RENAME TABLE LandingPage TO xcolab_LandingPage;
+RENAME TABLE MessagingIgnoredRecipients TO xcolab_MessagingIgnoredRecipients;
+RENAME TABLE MessagingMessage TO xcolab_MessagingMessage;
+RENAME TABLE MessagingMessageConversion TO xcolab_MessagingMessageConversion;
+RENAME TABLE MessagingMessageConversionType TO xcolab_MessagingMessageConversionType;
+RENAME TABLE MessagingMessageRecipient TO xcolab_MessagingMessageRecipient;
+RENAME TABLE MessagingRedirectLink TO xcolab_MessagingRedirectLink;
 
 
 UPDATE `xcolab_OntologyTerm` SET parentId = 0 WHERE parentId is null;
@@ -80,8 +87,20 @@ update ClassName_ set value = REPLACE(value, 'com.ext.portlet.contests', 'com.ex
 update ClassName_ set value = REPLACE(value, 'com.ext.portlet.messaging', 'com.ext.portlet') WHERE value LIKE '%com.ext.portlet.messaging%';
 update ClassName_ set value = REPLACE(value, 'com.ext.portlet.models', 'com.ext.portlet') WHERE value LIKE '%com.ext.portlet.models%';
 update ClassName_ set value = REPLACE(value, 'com.ext.portlet.ontology', 'com.ext.portlet') WHERE value LIKE '%com.ext.portlet.ontology%';
-update ClassName_ set value = REPLACE(value, 'com.ext.portlet.Activity', 'com.ext.portlet') WHERE value LIKE '%com.ext.portlet.Activity%';
-update ClassName_ set value = REPLACE(value, 'com.ext.portlet.Activity', 'com.ext.portlet') WHERE value LIKE '%com.ext.portlet.Activity%';
+update ClassName_ set value = REPLACE(value, 'com.ext.portlet.landingPage', 'com.ext.portlet') WHERE value LIKE '%com.ext.portlet.landingPage%';
+update ClassName_ set value = REPLACE(value, 'com.ext.portlet.mass_messaging', 'com.ext.portlet') WHERE value LIKE '%com.ext.portlet.mass_messaging%';
+
+delete from Counter where name LIKE '%com.ext.portlet.model%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.plans', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.plans%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.discussions', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.discussions%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.Activity', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.Activity%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.contests', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.contests%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.messaging', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.messaging%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.models', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.models%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.ontology', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.ontology%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.landingPage', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.landingPage%';
+update Counter set name = REPLACE(name, 'com.ext.portlet.mass_messaging', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.mass_messaging%';
+
 
 insert into Roles_Permissions SELECT 10119 as roleId, p.permissionId FROM Permission_ p left join Roles_Permissions rp on rp.roleId = 10119 and rp.permissionId = p.permissionId where rp.roleId is Null and p.actionId = 'VIEW';
 

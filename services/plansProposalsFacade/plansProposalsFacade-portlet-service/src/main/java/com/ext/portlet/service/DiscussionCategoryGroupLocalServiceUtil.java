@@ -258,14 +258,14 @@ public class DiscussionCategoryGroupLocalServiceUtil {
     }
 
     public static com.ext.portlet.model.DiscussionCategory getCategoryById(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getCategoryById(categoryId);
     }
 
     public static com.ext.portlet.model.DiscussionMessage getThreadById(
-        java.lang.Long threadId)
+        long threadId)
         throws com.ext.portlet.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getThreadById(threadId);

@@ -250,20 +250,20 @@ public class DiscussionCategoryLocalServiceUtil {
     }
 
     public static java.util.List<com.ext.portlet.model.DiscussionCategory> getCategoriesByCategoryGroupId(
-        java.lang.Long categoryGroupId)
+        long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getCategoriesByCategoryGroupId(categoryGroupId);
     }
 
     public static com.ext.portlet.model.DiscussionCategory getDiscussionCategoryById(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getDiscussionCategoryById(categoryId);
     }
 
     public static com.ext.portlet.model.DiscussionCategory createDebateCategory(
-        java.lang.Long categoryGroupId, java.lang.String name,
+        long categoryGroupId, java.lang.String name,
         java.lang.String description, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()

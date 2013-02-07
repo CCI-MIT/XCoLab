@@ -141,7 +141,7 @@ public class CreatePlanBean {
 
                 ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
                         PlanItemLocalServiceUtil.getCategoryGroupId(planItem), 
-                        null, "", subscription.getReceiverId());
+                        0, "", subscription.getReceiverId());
             }
 
             ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), 0, "", Helper.getLiferayUser().getUserId());

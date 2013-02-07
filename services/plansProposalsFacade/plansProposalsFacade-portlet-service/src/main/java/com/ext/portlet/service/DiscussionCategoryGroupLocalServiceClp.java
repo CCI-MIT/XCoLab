@@ -107,10 +107,10 @@ public class DiscussionCategoryGroupLocalServiceClp
                 "createDiscussionCategoryGroup", java.lang.String.class);
 
         _getCategoryByIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getCategoryById", java.lang.Long.class);
+                "getCategoryById", long.class);
 
         _getThreadByIdMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadById", java.lang.Long.class);
+                "getThreadById", long.class);
 
         _getCategoriesMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getCategories",
@@ -602,13 +602,13 @@ public class DiscussionCategoryGroupLocalServiceClp
     }
 
     public com.ext.portlet.model.DiscussionCategory getCategoryById(
-        java.lang.Long categoryId)
+        long categoryId)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getCategoryByIdMethodKey18,
-                ClpSerializer.translateInput(categoryId));
+                categoryId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -632,14 +632,13 @@ public class DiscussionCategoryGroupLocalServiceClp
         return (com.ext.portlet.model.DiscussionCategory) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.DiscussionMessage getThreadById(
-        java.lang.Long threadId)
+    public com.ext.portlet.model.DiscussionMessage getThreadById(long threadId)
         throws com.ext.portlet.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getThreadByIdMethodKey19,
-                ClpSerializer.translateInput(threadId));
+                threadId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

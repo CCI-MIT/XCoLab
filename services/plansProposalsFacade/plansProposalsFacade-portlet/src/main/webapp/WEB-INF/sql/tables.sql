@@ -136,6 +136,13 @@ create table xcolab_FocusAreaOntologyTerm (
 	primary key (focusAreaId, ontologyTermId)
 );
 
+create table xcolab_LandingPage (
+	id_ LONG not null primary key,
+	baseUrl VARCHAR(1024) null,
+	targetUrl VARCHAR(1024) null,
+	updated DATE null
+);
+
 create table xcolab_Message (
 	messageId LONG not null primary key,
 	fromId LONG,
@@ -151,6 +158,59 @@ create table xcolab_MessageRecipientStatus (
 	userId LONG,
 	opened BOOLEAN,
 	archived BOOLEAN
+);
+
+create table xcolab_MessagingIgnoredRecipients (
+	ignoredRecipientId LONG not null primary key,
+	email VARCHAR(512) null,
+	name VARCHAR(512) null,
+	userId LONG,
+	createDate DATE null
+);
+
+create table xcolab_MessagingMessage (
+	messageId LONG not null primary key,
+	name VARCHAR(1024) null,
+	description TEXT null,
+	subject VARCHAR(2048) null,
+	body TEXT null,
+	replyTo VARCHAR(1024) null,
+	sendToAll BOOLEAN,
+	conversionCount LONG,
+	redirectURL VARCHAR(1024) null,
+	creatorId LONG,
+	createDate DATE null,
+	modifiedDate DATE null
+);
+
+create table xcolab_MessagingMessageConversion (
+	conversionId LONG not null primary key,
+	conversionTypeId LONG,
+	messageId LONG,
+	ipAddress VARCHAR(75) null,
+	extraData VARCHAR(2048) null,
+	extraData2 VARCHAR(2048) null,
+	createDate DATE null
+);
+
+create table xcolab_MessagingMessageConversionType (
+	typeId LONG not null primary key,
+	name VARCHAR(1024) null,
+	description VARCHAR(2048) null
+);
+
+create table xcolab_MessagingMessageRecipient (
+	recipientId LONG not null primary key,
+	messageId LONG,
+	userId LONG,
+	emailAddress VARCHAR(512) null
+);
+
+create table xcolab_MessagingRedirectLink (
+	redirectId LONG not null primary key,
+	link VARCHAR(1024) null,
+	messageId LONG,
+	createDate DATE null
 );
 
 create table xcolab_MessagingUserPreferences (

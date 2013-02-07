@@ -17,8 +17,15 @@ import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
 import com.ext.portlet.service.persistence.FocusAreaPersistence;
+import com.ext.portlet.service.persistence.LandingPagePersistence;
 import com.ext.portlet.service.persistence.MessagePersistence;
 import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
+import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
+import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
+import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
+import com.ext.portlet.service.persistence.MessagingMessagePersistence;
+import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
+import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
 import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
 import com.ext.portlet.service.persistence.ModelCategoryPersistence;
 import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
@@ -174,10 +181,24 @@ public class PlanTemplatePersistenceImpl extends BasePersistenceImpl<PlanTemplat
     protected FocusAreaPersistence focusAreaPersistence;
     @BeanReference(type = FocusAreaOntologyTermPersistence.class)
     protected FocusAreaOntologyTermPersistence focusAreaOntologyTermPersistence;
+    @BeanReference(type = LandingPagePersistence.class)
+    protected LandingPagePersistence landingPagePersistence;
     @BeanReference(type = MessagePersistence.class)
     protected MessagePersistence messagePersistence;
     @BeanReference(type = MessageRecipientStatusPersistence.class)
     protected MessageRecipientStatusPersistence messageRecipientStatusPersistence;
+    @BeanReference(type = MessagingIgnoredRecipientsPersistence.class)
+    protected MessagingIgnoredRecipientsPersistence messagingIgnoredRecipientsPersistence;
+    @BeanReference(type = MessagingMessagePersistence.class)
+    protected MessagingMessagePersistence messagingMessagePersistence;
+    @BeanReference(type = MessagingMessageConversionPersistence.class)
+    protected MessagingMessageConversionPersistence messagingMessageConversionPersistence;
+    @BeanReference(type = MessagingMessageConversionTypePersistence.class)
+    protected MessagingMessageConversionTypePersistence messagingMessageConversionTypePersistence;
+    @BeanReference(type = MessagingMessageRecipientPersistence.class)
+    protected MessagingMessageRecipientPersistence messagingMessageRecipientPersistence;
+    @BeanReference(type = MessagingRedirectLinkPersistence.class)
+    protected MessagingRedirectLinkPersistence messagingRedirectLinkPersistence;
     @BeanReference(type = MessagingUserPreferencesPersistence.class)
     protected MessagingUserPreferencesPersistence messagingUserPreferencesPersistence;
     @BeanReference(type = ModelCategoryPersistence.class)

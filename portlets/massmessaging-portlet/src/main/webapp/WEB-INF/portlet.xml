@@ -9,7 +9,7 @@
 	<portlet>
 		<portlet-name>massmessaging-portlet</portlet-name>
 		<display-name>massmessaging-portlet</display-name>
-		<portlet-class>com.liferay.util.bridges.mvc.MVCPortlet</portlet-class>
+		<portlet-class>org.xcolab.portlets.massmessaging.MassMessagingPortlet</portlet-class>
 		<init-param>
 			<name>view-jsp</name>
 			<value>/view.jsp</value>
@@ -19,8 +19,8 @@
 			<mime-type>text/html</mime-type>
 		</supports>
 		<portlet-info>
-			<title>massmessaging-portlet</title>
-			<short-title>massmessaging-portlet</short-title>
+			<title>Mass messaging (XColab)</title>
+			<short-title>Mass messaging (XColab)</short-title>
 			<keywords>massmessaging-portlet</keywords>
 		</portlet-info>
 		<security-role-ref>

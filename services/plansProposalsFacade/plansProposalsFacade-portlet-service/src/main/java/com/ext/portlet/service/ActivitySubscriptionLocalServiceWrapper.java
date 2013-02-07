@@ -342,6 +342,12 @@ public class ActivitySubscriptionLocalServiceWrapper
         _activitySubscriptionLocalService.delete(activitySubscription);
     }
 
+    public void sendEmailNotifications()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _activitySubscriptionLocalService.sendEmailNotifications();
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

@@ -13,8 +13,15 @@ import com.ext.portlet.model.DiscussionMessageClp;
 import com.ext.portlet.model.DiscussionMessageFlagClp;
 import com.ext.portlet.model.FocusAreaClp;
 import com.ext.portlet.model.FocusAreaOntologyTermClp;
+import com.ext.portlet.model.LandingPageClp;
 import com.ext.portlet.model.MessageClp;
 import com.ext.portlet.model.MessageRecipientStatusClp;
+import com.ext.portlet.model.MessagingIgnoredRecipientsClp;
+import com.ext.portlet.model.MessagingMessageClp;
+import com.ext.portlet.model.MessagingMessageConversionClp;
+import com.ext.portlet.model.MessagingMessageConversionTypeClp;
+import com.ext.portlet.model.MessagingMessageRecipientClp;
+import com.ext.portlet.model.MessagingRedirectLinkClp;
 import com.ext.portlet.model.MessagingUserPreferencesClp;
 import com.ext.portlet.model.ModelCategoryClp;
 import com.ext.portlet.model.ModelDiscussionClp;
@@ -189,12 +196,44 @@ public class ClpSerializer {
             return translateInputFocusAreaOntologyTerm(oldModel);
         }
 
+        if (oldModelClassName.equals(LandingPageClp.class.getName())) {
+            return translateInputLandingPage(oldModel);
+        }
+
         if (oldModelClassName.equals(MessageClp.class.getName())) {
             return translateInputMessage(oldModel);
         }
 
         if (oldModelClassName.equals(MessageRecipientStatusClp.class.getName())) {
             return translateInputMessageRecipientStatus(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    MessagingIgnoredRecipientsClp.class.getName())) {
+            return translateInputMessagingIgnoredRecipients(oldModel);
+        }
+
+        if (oldModelClassName.equals(MessagingMessageClp.class.getName())) {
+            return translateInputMessagingMessage(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    MessagingMessageConversionClp.class.getName())) {
+            return translateInputMessagingMessageConversion(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    MessagingMessageConversionTypeClp.class.getName())) {
+            return translateInputMessagingMessageConversionType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    MessagingMessageRecipientClp.class.getName())) {
+            return translateInputMessagingMessageRecipient(oldModel);
+        }
+
+        if (oldModelClassName.equals(MessagingRedirectLinkClp.class.getName())) {
+            return translateInputMessagingRedirectLink(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -1406,6 +1445,61 @@ public class ClpSerializer {
         return oldModel;
     }
 
+    public static Object translateInputLandingPage(BaseModel<?> oldModel) {
+        LandingPageClp oldCplModel = (LandingPageClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.LandingPageImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setBaseUrl",
+                        new Class[] { String.class });
+
+                String value1 = oldCplModel.getBaseUrl();
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setTargetUrl",
+                        new Class[] { String.class });
+
+                String value2 = oldCplModel.getTargetUrl();
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setUpdated",
+                        new Class[] { Date.class });
+
+                Date value3 = oldCplModel.getUpdated();
+
+                method3.invoke(newModel, value3);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
     public static Object translateInputMessage(BaseModel<?> oldModel) {
         MessageClp oldCplModel = (MessageClp) oldModel;
 
@@ -1526,6 +1620,418 @@ public class ClpSerializer {
                 Boolean value4 = new Boolean(oldCplModel.getArchived());
 
                 method4.invoke(newModel, value4);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputMessagingIgnoredRecipients(
+        BaseModel<?> oldModel) {
+        MessagingIgnoredRecipientsClp oldCplModel = (MessagingIgnoredRecipientsClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setIgnoredRecipientId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getIgnoredRecipientId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setEmail",
+                        new Class[] { String.class });
+
+                String value1 = oldCplModel.getEmail();
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setName",
+                        new Class[] { String.class });
+
+                String value2 = oldCplModel.getName();
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setUserId",
+                        new Class[] { Long.TYPE });
+
+                Long value3 = new Long(oldCplModel.getUserId());
+
+                method3.invoke(newModel, value3);
+
+                Method method4 = newModelClass.getMethod("setCreateDate",
+                        new Class[] { Date.class });
+
+                Date value4 = oldCplModel.getCreateDate();
+
+                method4.invoke(newModel, value4);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputMessagingMessage(BaseModel<?> oldModel) {
+        MessagingMessageClp oldCplModel = (MessagingMessageClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.MessagingMessageImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setMessageId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getMessageId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setName",
+                        new Class[] { String.class });
+
+                String value1 = oldCplModel.getName();
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setDescription",
+                        new Class[] { String.class });
+
+                String value2 = oldCplModel.getDescription();
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setSubject",
+                        new Class[] { String.class });
+
+                String value3 = oldCplModel.getSubject();
+
+                method3.invoke(newModel, value3);
+
+                Method method4 = newModelClass.getMethod("setBody",
+                        new Class[] { String.class });
+
+                String value4 = oldCplModel.getBody();
+
+                method4.invoke(newModel, value4);
+
+                Method method5 = newModelClass.getMethod("setReplyTo",
+                        new Class[] { String.class });
+
+                String value5 = oldCplModel.getReplyTo();
+
+                method5.invoke(newModel, value5);
+
+                Method method6 = newModelClass.getMethod("setSendToAll",
+                        new Class[] { Boolean.TYPE });
+
+                Boolean value6 = new Boolean(oldCplModel.getSendToAll());
+
+                method6.invoke(newModel, value6);
+
+                Method method7 = newModelClass.getMethod("setConversionCount",
+                        new Class[] { Long.TYPE });
+
+                Long value7 = new Long(oldCplModel.getConversionCount());
+
+                method7.invoke(newModel, value7);
+
+                Method method8 = newModelClass.getMethod("setRedirectURL",
+                        new Class[] { String.class });
+
+                String value8 = oldCplModel.getRedirectURL();
+
+                method8.invoke(newModel, value8);
+
+                Method method9 = newModelClass.getMethod("setCreatorId",
+                        new Class[] { Long.TYPE });
+
+                Long value9 = new Long(oldCplModel.getCreatorId());
+
+                method9.invoke(newModel, value9);
+
+                Method method10 = newModelClass.getMethod("setCreateDate",
+                        new Class[] { Date.class });
+
+                Date value10 = oldCplModel.getCreateDate();
+
+                method10.invoke(newModel, value10);
+
+                Method method11 = newModelClass.getMethod("setModifiedDate",
+                        new Class[] { Date.class });
+
+                Date value11 = oldCplModel.getModifiedDate();
+
+                method11.invoke(newModel, value11);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputMessagingMessageConversion(
+        BaseModel<?> oldModel) {
+        MessagingMessageConversionClp oldCplModel = (MessagingMessageConversionClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.MessagingMessageConversionImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setConversionId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getConversionId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setConversionTypeId",
+                        new Class[] { Long.TYPE });
+
+                Long value1 = new Long(oldCplModel.getConversionTypeId());
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setMessageId",
+                        new Class[] { Long.TYPE });
+
+                Long value2 = new Long(oldCplModel.getMessageId());
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setIpAddress",
+                        new Class[] { String.class });
+
+                String value3 = oldCplModel.getIpAddress();
+
+                method3.invoke(newModel, value3);
+
+                Method method4 = newModelClass.getMethod("setExtraData",
+                        new Class[] { String.class });
+
+                String value4 = oldCplModel.getExtraData();
+
+                method4.invoke(newModel, value4);
+
+                Method method5 = newModelClass.getMethod("setExtraData2",
+                        new Class[] { String.class });
+
+                String value5 = oldCplModel.getExtraData2();
+
+                method5.invoke(newModel, value5);
+
+                Method method6 = newModelClass.getMethod("setCreateDate",
+                        new Class[] { Date.class });
+
+                Date value6 = oldCplModel.getCreateDate();
+
+                method6.invoke(newModel, value6);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputMessagingMessageConversionType(
+        BaseModel<?> oldModel) {
+        MessagingMessageConversionTypeClp oldCplModel = (MessagingMessageConversionTypeClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.MessagingMessageConversionTypeImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setTypeId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getTypeId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setName",
+                        new Class[] { String.class });
+
+                String value1 = oldCplModel.getName();
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setDescription",
+                        new Class[] { String.class });
+
+                String value2 = oldCplModel.getDescription();
+
+                method2.invoke(newModel, value2);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputMessagingMessageRecipient(
+        BaseModel<?> oldModel) {
+        MessagingMessageRecipientClp oldCplModel = (MessagingMessageRecipientClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.MessagingMessageRecipientImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setRecipientId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getRecipientId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setMessageId",
+                        new Class[] { Long.TYPE });
+
+                Long value1 = new Long(oldCplModel.getMessageId());
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setUserId",
+                        new Class[] { Long.TYPE });
+
+                Long value2 = new Long(oldCplModel.getUserId());
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setEmailAddress",
+                        new Class[] { String.class });
+
+                String value3 = oldCplModel.getEmailAddress();
+
+                method3.invoke(newModel, value3);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputMessagingRedirectLink(
+        BaseModel<?> oldModel) {
+        MessagingRedirectLinkClp oldCplModel = (MessagingRedirectLinkClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.MessagingRedirectLinkImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setRedirectId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getRedirectId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setLink",
+                        new Class[] { String.class });
+
+                String value1 = oldCplModel.getLink();
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setMessageId",
+                        new Class[] { Long.TYPE });
+
+                Long value2 = new Long(oldCplModel.getMessageId());
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setCreateDate",
+                        new Class[] { Date.class });
+
+                Date value3 = oldCplModel.getCreateDate();
+
+                method3.invoke(newModel, value3);
 
                 return newModel;
             } catch (Exception e) {
@@ -4259,6 +4765,11 @@ public class ClpSerializer {
             return translateOutputFocusAreaOntologyTerm(oldModel);
         }
 
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.LandingPageImpl")) {
+            return translateOutputLandingPage(oldModel);
+        }
+
         if (oldModelClassName.equals("com.ext.portlet.model.impl.MessageImpl")) {
             return translateOutputMessage(oldModel);
         }
@@ -4266,6 +4777,36 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.MessageRecipientStatusImpl")) {
             return translateOutputMessageRecipientStatus(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl")) {
+            return translateOutputMessagingIgnoredRecipients(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingMessageImpl")) {
+            return translateOutputMessagingMessage(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingMessageConversionImpl")) {
+            return translateOutputMessagingMessageConversion(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingMessageConversionTypeImpl")) {
+            return translateOutputMessagingMessageConversionType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingMessageRecipientImpl")) {
+            return translateOutputMessagingMessageRecipient(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingRedirectLinkImpl")) {
+            return translateOutputMessagingRedirectLink(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -5431,6 +5972,56 @@ public class ClpSerializer {
         return oldModel;
     }
 
+    public static Object translateOutputLandingPage(BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                LandingPageClp newModel = new LandingPageClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setId(value0);
+
+                Method method1 = oldModelClass.getMethod("getBaseUrl");
+
+                String value1 = (String) method1.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setBaseUrl(value1);
+
+                Method method2 = oldModelClass.getMethod("getTargetUrl");
+
+                String value2 = (String) method2.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setTargetUrl(value2);
+
+                Method method3 = oldModelClass.getMethod("getUpdated");
+
+                Date value3 = (Date) method3.invoke(oldModel, (Object[]) null);
+
+                newModel.setUpdated(value3);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
     public static Object translateOutputMessage(BaseModel<?> oldModel) {
         Thread currentThread = Thread.currentThread();
 
@@ -5539,6 +6130,382 @@ public class ClpSerializer {
                         (Object[]) null);
 
                 newModel.setArchived(value4);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputMessagingIgnoredRecipients(
+        BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                MessagingIgnoredRecipientsClp newModel = new MessagingIgnoredRecipientsClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod(
+                        "getIgnoredRecipientId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setIgnoredRecipientId(value0);
+
+                Method method1 = oldModelClass.getMethod("getEmail");
+
+                String value1 = (String) method1.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setEmail(value1);
+
+                Method method2 = oldModelClass.getMethod("getName");
+
+                String value2 = (String) method2.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setName(value2);
+
+                Method method3 = oldModelClass.getMethod("getUserId");
+
+                Long value3 = (Long) method3.invoke(oldModel, (Object[]) null);
+
+                newModel.setUserId(value3);
+
+                Method method4 = oldModelClass.getMethod("getCreateDate");
+
+                Date value4 = (Date) method4.invoke(oldModel, (Object[]) null);
+
+                newModel.setCreateDate(value4);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputMessagingMessage(BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                MessagingMessageClp newModel = new MessagingMessageClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getMessageId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setMessageId(value0);
+
+                Method method1 = oldModelClass.getMethod("getName");
+
+                String value1 = (String) method1.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setName(value1);
+
+                Method method2 = oldModelClass.getMethod("getDescription");
+
+                String value2 = (String) method2.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setDescription(value2);
+
+                Method method3 = oldModelClass.getMethod("getSubject");
+
+                String value3 = (String) method3.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setSubject(value3);
+
+                Method method4 = oldModelClass.getMethod("getBody");
+
+                String value4 = (String) method4.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setBody(value4);
+
+                Method method5 = oldModelClass.getMethod("getReplyTo");
+
+                String value5 = (String) method5.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setReplyTo(value5);
+
+                Method method6 = oldModelClass.getMethod("getSendToAll");
+
+                Boolean value6 = (Boolean) method6.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setSendToAll(value6);
+
+                Method method7 = oldModelClass.getMethod("getConversionCount");
+
+                Long value7 = (Long) method7.invoke(oldModel, (Object[]) null);
+
+                newModel.setConversionCount(value7);
+
+                Method method8 = oldModelClass.getMethod("getRedirectURL");
+
+                String value8 = (String) method8.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setRedirectURL(value8);
+
+                Method method9 = oldModelClass.getMethod("getCreatorId");
+
+                Long value9 = (Long) method9.invoke(oldModel, (Object[]) null);
+
+                newModel.setCreatorId(value9);
+
+                Method method10 = oldModelClass.getMethod("getCreateDate");
+
+                Date value10 = (Date) method10.invoke(oldModel, (Object[]) null);
+
+                newModel.setCreateDate(value10);
+
+                Method method11 = oldModelClass.getMethod("getModifiedDate");
+
+                Date value11 = (Date) method11.invoke(oldModel, (Object[]) null);
+
+                newModel.setModifiedDate(value11);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputMessagingMessageConversion(
+        BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                MessagingMessageConversionClp newModel = new MessagingMessageConversionClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getConversionId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setConversionId(value0);
+
+                Method method1 = oldModelClass.getMethod("getConversionTypeId");
+
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setConversionTypeId(value1);
+
+                Method method2 = oldModelClass.getMethod("getMessageId");
+
+                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
+
+                newModel.setMessageId(value2);
+
+                Method method3 = oldModelClass.getMethod("getIpAddress");
+
+                String value3 = (String) method3.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setIpAddress(value3);
+
+                Method method4 = oldModelClass.getMethod("getExtraData");
+
+                String value4 = (String) method4.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setExtraData(value4);
+
+                Method method5 = oldModelClass.getMethod("getExtraData2");
+
+                String value5 = (String) method5.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setExtraData2(value5);
+
+                Method method6 = oldModelClass.getMethod("getCreateDate");
+
+                Date value6 = (Date) method6.invoke(oldModel, (Object[]) null);
+
+                newModel.setCreateDate(value6);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputMessagingMessageConversionType(
+        BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                MessagingMessageConversionTypeClp newModel = new MessagingMessageConversionTypeClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getTypeId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setTypeId(value0);
+
+                Method method1 = oldModelClass.getMethod("getName");
+
+                String value1 = (String) method1.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setName(value1);
+
+                Method method2 = oldModelClass.getMethod("getDescription");
+
+                String value2 = (String) method2.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setDescription(value2);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputMessagingMessageRecipient(
+        BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                MessagingMessageRecipientClp newModel = new MessagingMessageRecipientClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getRecipientId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setRecipientId(value0);
+
+                Method method1 = oldModelClass.getMethod("getMessageId");
+
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setMessageId(value1);
+
+                Method method2 = oldModelClass.getMethod("getUserId");
+
+                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
+
+                newModel.setUserId(value2);
+
+                Method method3 = oldModelClass.getMethod("getEmailAddress");
+
+                String value3 = (String) method3.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setEmailAddress(value3);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputMessagingRedirectLink(
+        BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                MessagingRedirectLinkClp newModel = new MessagingRedirectLinkClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getRedirectId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setRedirectId(value0);
+
+                Method method1 = oldModelClass.getMethod("getLink");
+
+                String value1 = (String) method1.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setLink(value1);
+
+                Method method2 = oldModelClass.getMethod("getMessageId");
+
+                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
+
+                newModel.setMessageId(value2);
+
+                Method method3 = oldModelClass.getMethod("getCreateDate");
+
+                Date value3 = (Date) method3.invoke(oldModel, (Object[]) null);
+
+                newModel.setCreateDate(value3);
 
                 return newModel;
             } catch (Exception e) {

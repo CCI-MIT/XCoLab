@@ -27,10 +27,24 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermServiceUtil;
 import com.ext.portlet.service.FocusAreaServiceUtil;
+import com.ext.portlet.service.LandingPageLocalServiceUtil;
+import com.ext.portlet.service.LandingPageServiceUtil;
 import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.MessageRecipientStatusServiceUtil;
 import com.ext.portlet.service.MessageServiceUtil;
+import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
+import com.ext.portlet.service.MessagingIgnoredRecipientsServiceUtil;
+import com.ext.portlet.service.MessagingMessageConversionLocalServiceUtil;
+import com.ext.portlet.service.MessagingMessageConversionServiceUtil;
+import com.ext.portlet.service.MessagingMessageConversionTypeLocalServiceUtil;
+import com.ext.portlet.service.MessagingMessageConversionTypeServiceUtil;
+import com.ext.portlet.service.MessagingMessageLocalServiceUtil;
+import com.ext.portlet.service.MessagingMessageRecipientLocalServiceUtil;
+import com.ext.portlet.service.MessagingMessageRecipientServiceUtil;
+import com.ext.portlet.service.MessagingMessageServiceUtil;
+import com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil;
+import com.ext.portlet.service.MessagingRedirectLinkServiceUtil;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.ext.portlet.service.MessagingUserPreferencesServiceUtil;
 import com.ext.portlet.service.ModelCategoryLocalServiceUtil;
@@ -163,12 +177,33 @@ public class ClpMessageListener extends BaseMessageListener {
             FocusAreaOntologyTermLocalServiceUtil.clearService();
 
             FocusAreaOntologyTermServiceUtil.clearService();
+            LandingPageLocalServiceUtil.clearService();
+
+            LandingPageServiceUtil.clearService();
             MessageLocalServiceUtil.clearService();
 
             MessageServiceUtil.clearService();
             MessageRecipientStatusLocalServiceUtil.clearService();
 
             MessageRecipientStatusServiceUtil.clearService();
+            MessagingIgnoredRecipientsLocalServiceUtil.clearService();
+
+            MessagingIgnoredRecipientsServiceUtil.clearService();
+            MessagingMessageLocalServiceUtil.clearService();
+
+            MessagingMessageServiceUtil.clearService();
+            MessagingMessageConversionLocalServiceUtil.clearService();
+
+            MessagingMessageConversionServiceUtil.clearService();
+            MessagingMessageConversionTypeLocalServiceUtil.clearService();
+
+            MessagingMessageConversionTypeServiceUtil.clearService();
+            MessagingMessageRecipientLocalServiceUtil.clearService();
+
+            MessagingMessageRecipientServiceUtil.clearService();
+            MessagingRedirectLinkLocalServiceUtil.clearService();
+
+            MessagingRedirectLinkServiceUtil.clearService();
             MessagingUserPreferencesLocalServiceUtil.clearService();
 
             MessagingUserPreferencesServiceUtil.clearService();

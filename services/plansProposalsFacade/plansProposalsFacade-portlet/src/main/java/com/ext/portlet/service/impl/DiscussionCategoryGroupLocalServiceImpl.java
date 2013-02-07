@@ -48,12 +48,12 @@ public class DiscussionCategoryGroupLocalServiceImpl
     }
     
 
-    public DiscussionCategory getCategoryById(Long categoryId) throws NoSuchDiscussionCategoryException, SystemException {
+    public DiscussionCategory getCategoryById(long categoryId) throws NoSuchDiscussionCategoryException, SystemException {
         return DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(categoryId);
         
     }
     
-    public DiscussionMessage getThreadById(Long threadId) throws NoSuchDiscussionMessageException, SystemException {
+    public DiscussionMessage getThreadById(long threadId) throws NoSuchDiscussionMessageException, SystemException {
         return DiscussionMessageLocalServiceUtil.getThreadByThreadId(threadId);   
     }
     
