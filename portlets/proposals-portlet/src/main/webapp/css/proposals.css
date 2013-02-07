@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+.filepcBtn { 
+    font-size: 50px;
+    background-color: red;
+    }
+    
+
+.filepcTxt { position: relative; left: -100px; opacity: 0.0; -moz-opacity: 0.0; filter: alpha(opacity=00); width:233px; height:34px; z-index: 1000; cursor: pointer;}
+
+.addprophelp {
+    display: none;
+}
+
+.addpropInputContainer {
+    float: right;
+    font-size: 16px;
+    width: 450px;
+    /*padding: 5px;*/
+    position: relative;
+}
+
+.addpropInputContainer .nicEdit-main {
+    overflow: scroll;
+    
+}
+
+#uploadWidget {
+    background: url(../img/image_upload-button.png) no-repeat;
+    width: 219px;
+    height: 30px;
+    margin-top: 12px;
+    cursor: pointer;
+    float: left;
+}
+#uploadWidget:hover {
+    background: url(../img/image_upload-button-hover.png) no-repeat;
+}
+
+.addpropform textarea {
+	display: none;
+}
+
+.inputLimitContainer {
+	margin-top: 5px;
+	font-size: 12px;
+	text-align: right;
+}
+
+table.jqplot-table-legend {
+	margin-top: 320px;
+}

@@ -1,0 +1,4 @@
+<'xcolab'='http://xcolab.org'>
+
+[xcolab:proposal] > mix:versionable, nt:unstructured 
+- xcolab:name (String) copy
