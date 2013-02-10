@@ -32,10 +32,9 @@
     </f:subview>
     
 </div> <!-- /headline -->
-
  <div class="blueheaderbar">
     <div class="contestbar">
-        <ui:include src="./contests/widget_CONTEST_PHASES_#{contest.contestState}.xhtml" />
+        <ui:include src="./contests/widget_CONTEST_PHASES.xhtml" />
         <div class="contestSubscribe">
             <ice:form>
                 <f:subview rendered="#{not contest.userSubscribed}">
@@ -76,24 +75,34 @@
             </ice:panelGroup>
         </f:subview>
     </div>
+    
     <div class="moreinfo">
-    <!-- 
-    FIXME - accessing team members
         <f:subview rendered="#{fn:length(contest.contest.teamMembers) gt 0}">
-            <ice:panelSeries styleClass="advisors" var="teamMember" value="#{contest.contest.contest.teamMembers}">
-            <span>#{teamMember.role}:&amp;nbsp;
-                <collab:userPortrait screenName="#{empty proposal.plan.team ? teamMember.user.screenName : ''}" portraitId="#{teamMember.user.portraitId}" width="30" height="30" />
-                <collab:userLinkSimple userId="#{teamMember.userId}" text="#{teamMember.user.fullName}" />
-            </span>
+            <ice:panelSeries styleClass="advisors" var="teamRole" value="#{contest.contest.teamRoles}">
+                <div class="contestTeamRole">
+            	   <f:subview rendered="#{fn:length(contest.contest.teamRoleUsers[teamRole]) eq 1}">
+            		  <span>#{teamRole}</span>
+            	   </f:subview>
+            	   <f:subview rendered="#{fn:length(contest.contest.teamRoleUsers[teamRole]) gt 1}">
+            		  <span>#{teamRole}s</span>
+            	   </f:subview>
+            	   <ice:panelSeries style="display: inline;" var="teamRoleUser" value="#{contest.contest.teamRoleUsers[teamRole]}" varStatus="status">
+                	   <collab:userPortrait screenName="#{teamRoleUser.screenName }" portraitId="#{teamRoleUser.portraitId}" width="30" height="30" />
+                	   <collab:userLinkSimple userId="#{teamRoleUser.userId}" text="#{teamRoleUser.fullName}" />
+            	   </ice:panelSeries>
+            	</div>
+            	
             
             </ice:panelSeries>
         </f:subview>
-         -->
         <div class="buttons">
             <f:subview rendered="#{not empty contest.contest.resourcesUrl}">
                 <a href="#{contest.contest.resourcesUrl}">Resources</a>
             </f:subview>
-            <a href="/web/guest/plans/-/plans/contestId/#{contest.contestId}/page/discussion">Discussion</a></div>
+            <a href="/web/guest/plans/-/plans/contestId/#{contest.contestId}/page/discussion">Discussion</a>
+        </div>
+        <div class="clearfix"><!--  --></div>
+        <div class="clear"><!--  --></div>
     </div>
  </div>
  

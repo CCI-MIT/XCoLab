@@ -68,7 +68,7 @@ public class ContestBean {
             contest = new ContestWrapper(ContestLocalServiceUtil.getContestByActiveFlag(true));
         }
         if (contest.getContest().getContestActive() && ContestLocalServiceUtil.isActive(contest.getContest())) {
-            currentPhase = new ContestPhaseWrapper(contest, ContestLocalServiceUtil.getActivePhase(contest.getContest()));
+            currentPhase = new ContestPhaseWrapper(contest, ContestLocalServiceUtil.getActivePhase(contest.getContest()), false);
             contestState = ContestState.ACTIVE;
         }
         else {

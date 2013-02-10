@@ -782,47 +782,54 @@ public class ClpSerializer {
 
                 method4.invoke(newModel, value4);
 
-                Method method5 = newModelClass.getMethod("setPhaseStartDate",
-                        new Class[] { Date.class });
+                Method method5 = newModelClass.getMethod("setPhaseInactiveOverride",
+                        new Class[] { Boolean.TYPE });
 
-                Date value5 = oldCplModel.getPhaseStartDate();
+                Boolean value5 = new Boolean(oldCplModel.getPhaseInactiveOverride());
 
                 method5.invoke(newModel, value5);
 
-                Method method6 = newModelClass.getMethod("setPhaseEndDate",
+                Method method6 = newModelClass.getMethod("setPhaseStartDate",
                         new Class[] { Date.class });
 
-                Date value6 = oldCplModel.getPhaseEndDate();
+                Date value6 = oldCplModel.getPhaseStartDate();
 
                 method6.invoke(newModel, value6);
 
-                Method method7 = newModelClass.getMethod("setNextStatus",
-                        new Class[] { String.class });
+                Method method7 = newModelClass.getMethod("setPhaseEndDate",
+                        new Class[] { Date.class });
 
-                String value7 = oldCplModel.getNextStatus();
+                Date value7 = oldCplModel.getPhaseEndDate();
 
                 method7.invoke(newModel, value7);
 
-                Method method8 = newModelClass.getMethod("setCreated",
-                        new Class[] { Date.class });
+                Method method8 = newModelClass.getMethod("setNextStatus",
+                        new Class[] { String.class });
 
-                Date value8 = oldCplModel.getCreated();
+                String value8 = oldCplModel.getNextStatus();
 
                 method8.invoke(newModel, value8);
 
-                Method method9 = newModelClass.getMethod("setUpdated",
+                Method method9 = newModelClass.getMethod("setCreated",
                         new Class[] { Date.class });
 
-                Date value9 = oldCplModel.getUpdated();
+                Date value9 = oldCplModel.getCreated();
 
                 method9.invoke(newModel, value9);
 
-                Method method10 = newModelClass.getMethod("setAuthorId",
-                        new Class[] { Long.TYPE });
+                Method method10 = newModelClass.getMethod("setUpdated",
+                        new Class[] { Date.class });
 
-                Long value10 = new Long(oldCplModel.getAuthorId());
+                Date value10 = oldCplModel.getUpdated();
 
                 method10.invoke(newModel, value10);
+
+                Method method11 = newModelClass.getMethod("setAuthorId",
+                        new Class[] { Long.TYPE });
+
+                Long value11 = new Long(oldCplModel.getAuthorId());
+
+                method11.invoke(newModel, value11);
 
                 return newModel;
             } catch (Exception e) {
@@ -5371,42 +5378,50 @@ public class ClpSerializer {
 
                 newModel.setPhaseActiveOverride(value4);
 
-                Method method5 = oldModelClass.getMethod("getPhaseStartDate");
+                Method method5 = oldModelClass.getMethod(
+                        "getPhaseInactiveOverride");
 
-                Date value5 = (Date) method5.invoke(oldModel, (Object[]) null);
+                Boolean value5 = (Boolean) method5.invoke(oldModel,
+                        (Object[]) null);
 
-                newModel.setPhaseStartDate(value5);
+                newModel.setPhaseInactiveOverride(value5);
 
-                Method method6 = oldModelClass.getMethod("getPhaseEndDate");
+                Method method6 = oldModelClass.getMethod("getPhaseStartDate");
 
                 Date value6 = (Date) method6.invoke(oldModel, (Object[]) null);
 
-                newModel.setPhaseEndDate(value6);
+                newModel.setPhaseStartDate(value6);
 
-                Method method7 = oldModelClass.getMethod("getNextStatus");
+                Method method7 = oldModelClass.getMethod("getPhaseEndDate");
 
-                String value7 = (String) method7.invoke(oldModel,
+                Date value7 = (Date) method7.invoke(oldModel, (Object[]) null);
+
+                newModel.setPhaseEndDate(value7);
+
+                Method method8 = oldModelClass.getMethod("getNextStatus");
+
+                String value8 = (String) method8.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setNextStatus(value7);
+                newModel.setNextStatus(value8);
 
-                Method method8 = oldModelClass.getMethod("getCreated");
-
-                Date value8 = (Date) method8.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreated(value8);
-
-                Method method9 = oldModelClass.getMethod("getUpdated");
+                Method method9 = oldModelClass.getMethod("getCreated");
 
                 Date value9 = (Date) method9.invoke(oldModel, (Object[]) null);
 
-                newModel.setUpdated(value9);
+                newModel.setCreated(value9);
 
-                Method method10 = oldModelClass.getMethod("getAuthorId");
+                Method method10 = oldModelClass.getMethod("getUpdated");
 
-                Long value10 = (Long) method10.invoke(oldModel, (Object[]) null);
+                Date value10 = (Date) method10.invoke(oldModel, (Object[]) null);
 
-                newModel.setAuthorId(value10);
+                newModel.setUpdated(value10);
+
+                Method method11 = oldModelClass.getMethod("getAuthorId");
+
+                Long value11 = (Long) method11.invoke(oldModel, (Object[]) null);
+
+                newModel.setAuthorId(value11);
 
                 return newModel;
             } catch (Exception e) {

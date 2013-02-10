@@ -298,8 +298,6 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 
 /* contest page */
 .blueheaderbar .contestbar {padding:11px 0 0 14px; position: relative;}
-.blueheaderbar .contestbar span {padding-left:30px;}
-.blueheaderbar .contestbar a, .blueheaderbar .contestbar strong {padding-left:12px;}
 
 .contestSubscribe {
 position: absolute;
@@ -408,13 +406,16 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .about-right h2.ex {font-size:24px; font-weight:400; font-style:italic; margin-top:18px;}
 
 .how {background:url(../images/about-how-top.jpg) no-repeat right; width:420px; padding:13px 290px 0 0;}
+.deciding {margin-top:40px;margin-bottom:20px}
 
-.breaking {background:url(../images/about-how-break-1_small.jpg) no-repeat; margin-top:45px; width:460px; height:80px; padding:30px 0 0 260px;}
-.breaking2 {padding:30px 0 0 12px;}
+ .breaking {background:url(../images/about-how-break-1_small.jpg) no-repeat; margin-top:19px; width:460px; padding:0px 0 0 260px; margin-bottom:48px}
+ 
+ .breaking2 {padding:30px 0 0 12px;}
 .apad {padding:10px 30px 0 30px;}
 .cpad {padding-right:30px;}
 
-.putting {background:url(../images/about-how-putting.jpg) no-repeat; margin:70px 0 98px 0; width:365px; height:179px; padding:40px 0 0 310px;}
+.putting {background:url(../images/about-how-putting.jpg) no-repeat; margin:35px 0 40px 0; width:365px; height:179px; padding:40px 0 0 310px;}
+ 	
 .putting img {float:left; margin-right:40px;}
 
 .continue {text-align:center;}
@@ -423,19 +424,18 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 .webview {position:absolute; top:116px; left:254px;}
 
-.one {width:315px; background:url(../images/about-contests-1-number.png) no-repeat; margin-top:120px; position:relative; z-index:5;}
+.one {width:315px; background:url(../images/about-contests-1-number.png) no-repeat; position:relative; z-index:5;}
 .one h2 {padding:22px 0 0 40px;}
+.one-collab {margin-top:70px; background:url(../images/about-contests-3-illustration.jpg) no-repeat left top; width: 436px; padding-left: 300px;}
 .one-butt {background:#e7f1f5; border:1px solid #30a3fb; height:27px; padding:7px 12px 0; display:inline-block; margin-top:6px; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px;}
-.two {width:524px; height:103px; background:url(../images/about-contests-2-speech_bubble.jpg) no-repeat; padding:60px 0 0 170px; margin:84px 0 0 28px;}
+ .two {width:454px; background:url(../images/about-contests-4-illustration.jpg) no-repeat right top; padding:0px 260px 0 0px; margin:56px 0 0 0px;}
 .two .txt {background:url(../images/about-contests-2-number.png) no-repeat; padding:0 0 0 55px;}
-.three {width:429px; height:173px; background:url(../images/about-contests-3-illustration.jpg) no-repeat right top; padding:38px 283px 0 0; margin-top:66px;}
+.three {width:559px; background:url(../images/about-getinvolved-row-04.png) no-repeat left top; padding:0px 0px 0px 145px; margin-top:54px; margin-left:13px}
 .three .txt {background:url(../images/about-contests-3-number.png) no-repeat; padding:0 0 0 55px;}
-.four {width:360px; height:122px; background:url(../images/about-contests-4-illustration.jpg) no-repeat; padding:42px 0 0 275px; margin:46px 0 0 46px;}
+.four {width:419px; height:204px; background:url(../images/about-contests-5-webview.jpg) no-repeat top right; padding:14px 290px 0 0px; margin:58px 29px 0 0px;}
 .four .txt {background:url(../images/about-contests-4-number.png) no-repeat; padding:0 0 0 55px;}
-.five {width:376px; height:182px; background:url(../images/about-contests-5-webview.jpg) no-repeat right top; padding:32px 336px 0 0; margin-top:86px;}
+.five {width:485px; background:url(../images/about-contests-6-illustration.jpg) no-repeat; padding:0px 0 0 212px; margin:46px 0 35px 0px;}
 .five .txt {background:url(../images/about-contests-5-number.png) no-repeat; padding:0 0 0 55px;}
-.six {width:426px; height:183px; background:url(../images/about-contests-6-illustration.jpg) no-repeat; padding:29px 0 0 209px; margin:43px 0 41px 10px;}
-.six .txt {background:url(../images/about-contests-6-number.png) no-repeat; padding:0 0 0 55px;}
 .one a, .two a, .three a, .four a, .five a, .six a {font-weight:700;}
 
 .contribute {width:365px; height:131px; background:url(../images/about-getinvolved-top_illustration.jpg) no-repeat; padding:34px 0 0 320px; margin-top:55px;}
@@ -520,12 +520,12 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .contest-detail .where {background:url(../images/icon-list-where.png) no-repeat; padding-left:33px;}
 .contest-detail .who {background:url(../images/icon-list-who.png) no-repeat; padding-left:25px;}
 
-.contest-detail .moreinfo {clear:both; height:35px; padding:14px 16px 16px 18px;}
-.contest-detail .advisors {float:left; width:500px; font-size:14px; font-weight:700; padding-top:0px; color:#757572;}
+.contest-detail .moreinfo {clear:both; padding:14px 16px 16px 18px; position: relative; min-height: 37px;}
+.contest-detail .advisors {width:500px; font-size:14px; font-weight:700; padding-top:0px; color:#757572; float:left;}
 .contest-detail .advisors img {margin-left: 5px; margin-right: 10px; vertical-align: bottom;}
-.contest-detail .advisors span {margin-left:20px;}
+.contest-detail .contestTeamRole { padding: 5px 0px; }
 
-.contest-detail .buttons {float:right; width:270px; text-align:right;}
+.contest-detail .buttons {float:right; width:270px; text-align:right; position: absolute; right: 15px; bottom: 20px;}
 .contest-detail .buttons a {width:115px; height:27px; display:inline-block; padding-top:8px; margin-left:3px; background:#fcfbf9; border:1px solid #6a96a7; font-size:16px; font-weight:700; text-align:center; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px;}
 
 

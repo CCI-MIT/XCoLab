@@ -235,6 +235,12 @@ public interface ContestPhaseLocalService extends PersistedModelLocalService {
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getContestStatusStr(
+        com.ext.portlet.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<java.lang.String> getPhaseColumns(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.SystemException;

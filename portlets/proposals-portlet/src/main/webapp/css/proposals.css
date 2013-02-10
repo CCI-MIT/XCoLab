@@ -1,3 +1,1293 @@
+/**
+SHARED ELEMENTS
+**/
+.versionEditToolbar {
+  width:100%;
+  height:20px;
+}
+
+.versionEditToolbar .editButton {
+    float:right;
+}
+
+.versionIndicator {
+
+}
+
+
+
+.modelSelection td input[type="submit"].prominantButton-dis {
+    width:100%;
+}
+
+.modelSelection td input[type="submit"].prominantButton {
+
+    width:100%;
+}
+
+.prominantButton.deletePlan {
+    width:100%;
+}
+
+
+
+.plans ul li {
+    list-style:disc inside;
+    line-height:1.4;
+
+}
+
+input[type="submit"].prominantButton.createNewPlanButton {
+
+    font-size: 1.6em;
+    padding: 12px;
+}
+
+
+
+.container_top {
+
+    padding: 0px 18px 0px 30px;
+}
+
+.container_top .topActions {
+	text-align: right;
+	padding-bottom: 10px;
+    float:right;
+
+}
+
+.container_top table.topActions {
+    border-collapse:separate;
+
+}
+
+.container_top table.topActions td {
+    padding-right:5px;
+}
+
+.topActions input[type="submit"].prominantButton {
+    width:150px;
+    white-space:normal;
+}
+
+
+/** INLINE HELP **/
+
+
+
+.hideThisTrigger {
+    padding-top: 10px;
+}
+
+.hideThisTrigger a {
+    color: #858572;
+    font-weight:bold;
+}
+
+
+
+a.helpMessageTrigger {
+    font-style:italic;
+   
+}
+
+a.helpMessageTrigger.commentHelp {
+    padding-top:8px;
+}
+
+a.helpMessageTrigger.helpVisible {
+    display:none;
+}
+
+a.helpMessageTrigger.helpHidden {
+    display:inline;
+    color: #8c96b4;
+    float:left;
+    margin-left:30px;
+  
+}
+
+.contestContent a.helpMessageTrigger.helpHidden {
+     margin-left:0px;
+    margin-top:-10px;
+}
+
+
+/**CONTESTINDEX**/
+
+
+div.selectContestType {
+    background-color:#EDEBEA;
+    padding-top:10px;
+}
+
+
+
+.categoryHeader {
+
+    margin-bottom:5px;
+    padding: 10px;
+    background-color:transparent;
+}
+
+.categoryHeader h2 {
+    margin:0;
+}
+
+
+
+
+
+.categoryDisplay {
+    margin-top:15px;
+    padding:10px;
+     background-color: #FAF7F7;
+    width:100%;
+}
+
+.categorySeriesContainer {
+    padding-right:20px;
+}
+
+.categoryButtonPanel {
+    float:right;
+}
+
+
+.categoryDetails {
+
+}
+
+.categoryDescription {
+    margin-right:10px;
+    margin-left:10px;
+    margin-bottom:10px;
+    padding:10px;
+    background-color:#FFFFFF;
+    font-size:1.2em;
+}
+
+.categoryDescription p  {
+    font-size:16px;
+   color:#000000 !important;
+}
+
+.categoryContents {
+    padding:10px;
+}
+.categoryContents table {
+    width:100%;
+    border:none;
+}
+
+.categoryContentsTable td {
+    border:none;
+   padding:5px;
+}
+
+
+
+.categoryContentsTableHeader {
+    background-image:none;
+    background:transparent;
+    padding-top:3px;
+    padding-bottom:3px;
+    border-left:none;
+    border-right:none;
+    border-top:none;
+    border-bottom:1px #CCCCCC solid;
+    color: #777777;
+    font-weight:bold;
+
+}
+
+.categoryContentsTableHeader span {
+    padding:0px;
+}
+
+.categoryContentsTableHeader td {
+    padding:0px;
+}
+
+.categoryContentsTable tr.Row1 {
+    background-color: #FFFFFF;
+}
+
+.categoryContentsTable tr.Row2 {
+    background-color: #FAF7F7;
+}
+
+
+.categoryContentsTable .modelName
+    {
+    width:125px;
+    }
+
+.categoryContentsTable .modelDescription {
+    width:600px;
+}
+
+.categoryHeader input {
+    width:100%;
+}
+
+.categoryHeader input[type="submit"].editCategoryButton {
+    width:auto;
+    float:right;
+    margin-top:-24px;
+}
+
+.categoryDescription textarea {
+    width:100%;
+    height: 150px;
+}
+
+table.editCategory.buttonPanel {
+    float:right;
+}
+
+
+
+/*
+ *
+ * PLANS INDEX
+ *
+ */
+
+
+
+.plan-question {
+    margin:20px 10px;
+}
+
+.page-context-help-container {
+    display:inline;
+    left:807px;
+    line-height:0;
+    position:relative;
+    top:-30px;
+}
+
+
+.phaseInfoPanel{
+
+    padding: 20px 15px;
+    background-color: #F0F0F0;
+}
+
+.phaseInfoPanel table {
+    width:100%;
+}
+
+.phaseInfoPanel td.button {
+    width:0;
+}
+
+.phaseInfoPanel .dateInfo {
+    padding-top:5px;
+    font-size:1.2em;
+}
+
+.dateInfo .phaseDateLabel {
+   font-weight:bold;
+}
+
+.phaseInfo {
+    color: #555555;
+    font-size:1.6em;
+    font-style:italic;
+    font-weight:bold;
+}
+
+h2.phaseStatus {
+    display:inline;
+}
+
+
+
+td.myTabStyle {
+
+    border-top:1px solid #F0F0F0;
+    border-right:1px solid #F0F0F0;
+    border-left:1px solid #F0F0F0;
+}
+
+.myTabStyleOn.icePnlTbOn td {
+    background-image:none;
+    font-size:1.2em;
+    background-color: #F0F0F0;
+}
+
+.myTabStyleOver.icePnlTbOver td {
+    background-color: #fbcb9c;
+    background-image:none;
+    font-size:1.2em;
+}
+
+.myTabStyleOff.icePnlTbOff td {
+    background-color:#C0C0C0;
+    color: #606060;
+    background-image:none;
+    font-size:1.2em;
+}
+
+.myTabStyleOn.icePnlTbOn td.MidMid,
+.myTabStyleOff.icePnlTbOff td.MidMid,
+.myTabStyleOver.icePnlTbOver td.MidMid
+{
+  padding:5px;
+}
+
+td.LftBtm {
+    padding-bottom: 6px;
+}
+
+
+
+/**
+End index
+**/
+
+td.contestTabSetCnt {
+    border:none;
+    padding:0px;
+}
+
+.contestTabSetSpcr {
+    border-color:#F0F0F0;
+}
+
+
+
+/* 
+ *
+ * TITLE
+ *
+ */
+.title {
+}
+
+.title .icon {
+    float:left;
+    width: 580px;
+    margin-bottom:10px;
+    padding-top:20px;
+    padding-bottom:10px;
+    overflow:hidden;
+}
+
+
+.title .icon h2 {
+    margin: 0px 0 10px
+}
+
+.title .icon h2, 
+.title .icon input {
+	float: left;
+	margin-right:10px;
+}
+
+.title .icon h1 {
+    display:inline;
+}
+
+
+.title .icon input.planNameInput {
+	width: 350px;
+   
+}
+
+.title .icon .actions {
+	float: left;
+    padding-top:3px;
+}
+
+.title .icon .actions.textual {
+	padding-top: 7px;
+}
+
+.title .planVotes {
+	float: right;
+	font-size: 1.6em;
+	padding-top: 5px;
+}
+
+/*
+ * 
+ * CONTENT
+ *
+ */
+.container_middle {
+    /*border:15px solid;
+    border-color: #E3DFD7;
+    */
+  
+}
+
+
+table.categoryContentsTable td {
+    text-align:center;
+}
+
+table.categoryContentsTable td.phaseName {
+    width:200px;
+}
+
+table.categoryContentsTable td.phaseStatus {
+    width:250px;
+}
+
+table.categoryContentsTable td.phasePlanCount {
+    width:80px;
+}
+
+
+.content {
+	
+}
+
+
+/*
+ * 
+ * DETAIL TABS
+ *
+ */
+ /*
+
+table.mainTabs {
+    width:100%;
+}
+
+table.mainTabs > tbody > tr:first-child > td {
+   background-color: #EDEBEA;
+}
+ 
+ table.mainTabs > tbody > tr:first-child table .icePnlTb,
+ table.mainTabs > tbody > tr:first-child tableSpcr {
+
+    border: 0;
+ }
+ 
+ table.mainTabs > tbody > tr:first-child table .icePnlTbSetCnt  {
+    border: 0;
+ }
+ 
+table.mainTabs > tbody > tr:first-child table .LftMid,
+table.mainTabs > tbody > tr:first-child table .RtMid,
+table.mainTabs > tbody > tr:first-child table .LftTop,
+table.mainTabs > tbody > tr:first-child table .RtTop,
+table.mainTabs > tbody > tr:first-child table .MidTop,
+table.mainTabs > tbody > tr:first-child table .LftBtm,
+table.mainTabs > tbody > tr:first-child table .RtBtm,
+table.mainTabs > tbody > tr:first-child table .MidBtm {
+	background: none;
+	display: none;
+}
+
+
+
+table.mainTabs > tbody > tr:first-child table .MidMid {
+    display:inline;
+    float:left;
+    height:30px;
+    list-style:none outside none;
+    text-align:center;
+    margin-right: 4px;
+    padding-top:16px;
+    width:auto;
+    padding-right:20px;
+    padding-left:20px;
+}
+
+table.mainTabs > tbody > tr:first-child table td.admin {
+  background:url("/collaboratorium-theme/images/link_bg_continuous.gif") repeat; 
+
+}
+
+table.mainTabs > tbody > tr:first-child table td.positions-tab {
+    width:100%
+}
+
+
+table.mainTabs > tbody > tr:first-child table .icePnlTbOn .MidMid a,
+table.mainTabs > tbody > tr:first-child table .icePnlTbOn .MidMid td {
+	color: #C74430;
+}
+
+table.mainTabs > tbody > tr:first-child table .MidMid div table {
+	width: 100%;
+	text-align: center;
+}
+
+table.mainTabs > tbody > tr:first-child table .MidMid a {
+	padding-left: 0;
+	padding-right: 0;
+    color:#676767;
+    display:block;
+    font-size:20px;
+    font-family:"gloriola-web-1","gloriola-web-2";
+    white-space:nowrap;
+    width:auto;
+}
+
+
+table.mainTabs > tbody > tr:first-child table .icePnlTbOver .MidMid td {
+	color: #C74430;
+}
+*/
+
+
+ table.mainTabs > tbody > tr:first-child table .icePnlTb,
+ table.mainTabs > tbody > tr:first-child tableSpcr {
+
+    border: 0;
+ }
+ 
+ table.mainTabs > tbody > tr:first-child table .icePnlTbSetCnt  {
+    border: 0;
+ }
+ 
+table.mainTabs > tbody > tr:first-child table .LftMid,
+table.mainTabs > tbody > tr:first-child table .RtMid,
+table.mainTabs > tbody > tr:first-child table .LftTop,
+table.mainTabs > tbody > tr:first-child table .RtTop,
+table.mainTabs > tbody > tr:first-child table .MidTop,
+table.mainTabs > tbody > tr:first-child table .LftBtm,
+table.mainTabs > tbody > tr:first-child table .RtBtm,
+table.mainTabs > tbody > tr:first-child table .MidBtm {
+    background: none;
+    display: none;
+}
+
+
+table.mainTabs {
+	margin-top: -33px;
+}
+
+table.mainTabs .MidMid a {
+	background:url(/collaboratorium-theme/images/tab_off.gif) no-repeat #2498b3; height:17px; padding:10px 12px 3px 12px; margin:3px 6px 0 0; display:inline-block; font-size:13px; font-weight:600; color:#fff;
+     
+}
+
+table.mainTabs .icePnlTbOn a,
+table.mainTabs .icePnlTbOver a {
+ background:url(/collaboratorium-theme/images/tab_on.png) no-repeat right #fff; height:20px; padding:13px 16px 0 8px; margin:0 6px 0 0; color:#2498b3;
+}
+
+/**
+TAB CONTENTS
+**/
+
+table.icePnlTbSet.contestTabSet {
+    width:100%
+}
+
+td.icePnlTbSetCnt.mainTabsCnt {
+    background-color: transparent;
+}
+
+.toolbar {
+    float:left;
+}
+
+.chooseVersionWidget {
+	float: right;
+}
+
+
+div.editControls {
+    padding:7px;
+    font-size:1.1em;
+
+}
+
+div.editControls.edit {
+    background:url("../img/page_edit.png") no-repeat scroll 9px 4px transparent;
+    padding:3px 7px 2px 30px;
+     margin-right:15px;
+}
+
+div.editControls.save {
+    background:url("../img/disk.png") no-repeat scroll 9px 4px transparent;
+    padding:3px 7px 2px 30px;
+}
+
+div.editControls.cancelEdit {
+    background:url("../img/cross.png") no-repeat scroll 9px 4px transparent;
+    padding:3px 7px 2px 30px;
+    font-weight: normal;
+     margin-right:15px;
+}
+
+
+
+
+
+
+/*
+ *
+ * BOTTOM
+ *
+ */
+.container_bottom {
+    background:url("/collaboratorium-theme/images/tabContent_bottom.gif") no-repeat scroll center top transparent;
+    padding-top:4px;
+}
+
+
+.tab {
+    height:60px;
+    margin-top:15px;
+    width:100%;
+}
+
+
+
+.plans .tabContent_bottom,
+.tabContent_bottom {
+    background: none repeat scroll 0 0 #EDEDED;
+    margin-bottom:20px;
+    padding-bottom:4px;
+    width:100%;
+}
+
+.plansTable  {
+    border:0 none;
+    border-collapse:collapse;
+    width:100%;
+}
+
+
+
+.plansTable th {
+   
+    padding:5px;
+    border-right: 1px solid #efefef;
+    vertical-align:bottom;
+    font-weight: normal;
+    font-size: 1.1em;
+    background: #E3DFD7;
+    text-align: center;
+   
+}
+
+.plansTable th a {
+   color:#000000;
+
+}
+
+.plansTable th a:hover {
+   color:#000000;
+
+}
+
+.plansTable .iceDatTblRow td {
+	border: 1px solid #ffffff;
+    text-align: center;
+}
+
+.plansTable .iceDatTblRow td .table-cell-padding {
+    padding:8px;
+}
+
+.plansTable .iceDatTblRow td .table-cell-padding.SEEKING_ASSISTANCE {
+    padding-left:8px;
+    padding-right:8px;
+    padding-top:6px;
+    padding-bottom:6px;
+}
+
+
+.plansTable .iceDatTblRow:hover td{
+	background: #f7f0c5;
+}
+
+.plansTable td .NAME {
+	font-weight:bold;
+}
+
+
+
+.plansTable .odd td {
+    background: #EDEBEA;
+}
+
+.plansTable .even td {
+    background: #dedcdb;
+}
+.plansTable th table {
+    margin: auto;
+}
+
+.plansTable th .iceOutTxt {
+    padding: 0;
+}
+
+.linkbox {
+    position: relative;
+    font-size: 1.2em;
+    top:28px;
+    margin-left:22px;
+    margin-top:2px;
+    width:auto;
+}
+
+.linkbox span {
+    padding: 1px 9px;
+}
+
+.linkbox .enable-filters {
+    padding: 0;
+}
+
+.pageBottom {
+    background:url("/collaboratorium-theme/images/table_bottom_bg.gif") repeat-x scroll center top transparent;
+    margin-top:20px;
+    width:100%;
+}
+
+.pageNum  {
+    display:inline;
+    float:right;
+    padding-top:9px;
+}
+
+
+.paginator {
+	display:block;
+    float:right;
+    width:auto;
+}
+
+.paginatorInfo {
+	display: inline;
+    margin-right:14px;
+    width:auto;
+    
+}
+
+.paginator .iceCmdLnk-dis,
+.paginator .iceOutTxt {
+    color: #000000;
+}
+	
+
+
+.paginator .prev {
+    background:url("/collaboratorium-theme/images/previous_btn.gif") no-repeat scroll 0 center transparent;
+    border:0 none;
+    padding-left:21px;
+}
+
+.paginator .iceCmdLnk-dis .prev {
+    background:url("/collaboratorium-theme/images/previous_disable_btn.gif") no-repeat scroll 0 center transparent;
+}
+
+.paginator .next {
+    background:url("/collaboratorium-theme/images/next_btn.gif") no-repeat scroll 0 center transparent;
+    border:0 none;
+    padding-left:21px;
+}
+
+.paginator .iceCmdLnk-dis .next {
+    background:url("/collaboratorium-theme/images/next_disable_btn.gif") no-repeat scroll 0 center transparent;
+}
+
+.paginator .first {
+    background:url("/collaboratorium-theme/images/firstPage_btn.gif") no-repeat scroll 0 center transparent;
+    border:0 none;
+    padding-left:21px;
+}
+.paginator .iceCmdLnk-dis .first {
+    background:url("/collaboratorium-theme/images/firstPage_disable_btn.gif") no-repeat scroll 0 center transparent;
+}
+
+
+.paginator .last {
+    background:url("/collaboratorium-theme/images/lastPage_btn.gif") no-repeat scroll 0 center transparent;
+    border:0 none;
+    padding-left:21px;
+}
+.paginator .iceCmdLnk-dis .last {
+    background:url("/collaboratorium-theme/images/lastPage_disable_btn.gif") no-repeat scroll 0 center transparent;
+}
+
+.paginator .iceDatPgrTbl {
+    display: none;
+}
+
+.title .iceOutConStat {
+	float: right;
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+
+.iceOutConStat {
+	margin-left: 10px;
+    display: inline;
+    float: right;
+}
+
+.plansIndexDialog {
+    background: none;
+    border: 0;
+}
+.plansIndexDialog  .ui-dialog-titlebar {
+    display: none;
+}
+
+th.voteForPlan {
+ 
+    color:#3E5B7B;
+    width: auto;
+    height: 100%;
+
+}
+
+
+
+.plansTableHdr .voteForPlan span {
+	padding-top:  16px;
+	display: block;
+}
+
+
+.plansTable .iceCmdSrtHdr {
+	height: auto;
+	display: inline;
+}
+
+.plansTable tr.active td {
+	background: #FCFFB3;
+}
+.indexVoteForPlan {
+	width: 29px;
+	height: 24px;
+	display: block;
+	margin: auto;
+}
+
+.indexVoteForPlan.en {
+	background: url("/collaboratorium-theme/images/radio_chk.gif") no-repeat scroll 0 center transparent;
+}
+
+.indexVoteForPlan.dis {
+    background: url("/collaboratorium-theme/images/radio.gif") no-repeat scroll 0 center transparent;
+}
+
+.nothingSetInfo {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #bbb;
+    margin: 10px 0px;
+}
+ 
+.nothingSetMessage {
+    margin: auto;
+    padding-top: 50px;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #999;
+    text-align: center;
+}
+
+.DialogBox .content {
+    background: transparent;
+}
+
+.showPositions {
+    background: url("/html/portlet/ext/plans/img/positions_btn.png") no-repeat scroll 0 center transparent;
+    width: 37px;
+    height: 31px;
+    display: block;
+    margin: auto;
+}
+
+.positionsDialog {
+    width:459px;
+    overflow: hidden;
+}
+
+.positionsDialog_top {
+    background:url("/collaboratorium-theme/images/yourSuggest_pop_top.png") no-repeat scroll 0 0 transparent;
+    height:50px;
+    width:100%;
+}
+
+.positionsDialog_top .title {
+    background:url("/collaboratorium-theme/images/pop_line.gif") repeat-x scroll center bottom transparent;
+    margin:0 auto;
+    padding-bottom:7px;
+    width:413px;
+    height: auto;
+    padding-top: 15px;
+}
+
+.positionsDialog_bg {
+    background:url("/collaboratorium-theme/images/yourSuggest_pop_bg.png") no-repeat scroll 0 0 transparent;
+    height:205px;
+    width:100%;
+    overflow: hidden;
+}
+
+
+.positionsDialog_bg .scrollBox {
+    overflow: auto;
+    height:100%;
+    width: 437px;
+
+}
+
+.positionsDialog_bg .position {
+	width: auto;
+}
+.positionsDialog_bottom {
+    background:url("/collaboratorium-theme/images/yourSuggest_pop_bottom.png") no-repeat scroll 0 0 transparent;
+    height:52px;
+    width:100%;
+    text-align: center;
+
+    padding-top: 10px;
+}
+
+.positionsDialog_bottom a {
+    text-decoration:underline;
+    font-size:14px;
+}
+
+
+
+.positionsDialog_bg .assumption {
+    margin: 0 10px 10px 25px;
+    background: #fff;   
+}
+
+.renamePlanMessageError {
+    display: block;
+    position: absolute;
+    margin-top: 30px;
+}
+
+
+/** replacing xp theme elts **/
+
+/*
+   Classes for the output progress bar
+*/
+
+.iceOutProgIndetActv {
+    background-color: #EFEFEF;
+    background-image: url(css-images/in_progress.gif);
+    background-position: center;
+    background-repeat: repeat-x;
+}
+
+.iceOutProgIndetInactv {
+    background-color: #EFEFEF;
+    background-image: url(css-images/in_progress_inactive.gif);
+    background-position: center;
+    background-repeat: repeat-x;
+}
+
+/*
+    Classes for the connection status indicator
+*/
+
+.iceOutConStat {
+    margin: 0px;
+    width: 25px;
+    height: 25px;
+    border: none;
+    font-size: .5em;
+}
+
+.iceOutConStatInactv {
+    position: absolute;
+    background-image: url("../xmlhttp/css/xp/css-images/connect_idle.gif");
+    background-position: top;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+}
+
+.iceOutConStatActv {
+    position: absolute;
+    background-image: url(../xmlhttp/css/xp/css-images/connect_active.gif);
+    background-position: top;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+}
+
+.iceOutConStatCaution {
+    position: absolute;
+    background-image: url(../xmlhttp/css/xp/css-images/connect_caution.gif);
+    background-position: top;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+}
+
+.iceOutConStatDisconnect {
+    position: absolute;
+    background-image: url(../xmlhttp/css/xp/css-images/connect_disconnected.gif);
+    background-position: top;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+}
+
+
+/** actions nd impacts **/
+
+.model-info {
+    font-size:1.3em;
+padding-bottom:20px;
+padding-left:40px;
+padding-top:20px;
+}
+
+.contestContent .model-info {
+    background: none repeat scroll 0 0 #EDEBEA;
+}
+
+.modelSelection {
+    background: none repeat scroll 0 0 #EDEBEA;
+    margin-top:20px;
+    font-size:1.3em;
+    padding:40px;
+
+}
+
+.modelSelection td {
+    vertical-align:middle;
+    padding:10px;
+}
+
+
+
+
+
+/** debate summary override**/
+
+
+
+div.singleDebatePositions {
+    padding-left:25px;
+    padding-right:25px;
+}
+
+.singleDebatePositions table.debatePositions {
+   margin-bottom:30px;
+margin-top:0 
+}
+
+.singleDebatePositions th {
+  background:none repeat scroll 0 0 #E3DFD7;
+    border-right:1px solid #EFEFEF;
+font-size:1.2em;
+font-weight:normal;
+    padding: 12px 5px 5px;
+    vertical-align:bottom;
+    text-align:center;
+}
+
+.singleDebatePositions table.debatePositions td {
+    font-size:1.1em;
+}
+
+.debateVotes, .debateVotes .debateVotesBg {
+    margin:0;
+}
+
+
+
+.plansContent .debateDetail {
+  background-color:#FEFEFE;  
+  padding: 10px;
+}
+
+.plansContent .debateDetail .layoutPanel .East {
+    background:transparent;
+}
+
+.plansContent .debateDetail .layoutPanel .West {
+    vertical-align:top;
+}
+
+div.plansBreadcrumb {
+    font-size:1.2em;
+    padding: 10px 35px;
+    border-bottom: thin solid #E3DFD7;
+    margin-left:20px;
+    margin-right:20px;
+    padding: 1px 15px 3px 0px;
+    
+    
+}
+
+
+
+.underLinks {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.noEntries {
+    padding-top:10px;
+    padding-bottom:10px;
+    background: #EDEBEA;
+    text-align:center;
+    margin-top:36px;
+}
+
+
+/* admin */
+
+table.plan-mode-select.iceSelOneRb td input, table.plan-mode-select.iceSelMnyCb td input {
+    float:left;
+    margin-top:3px;
+}
+
+table.plan-mode-select.iceSelOneRb td, table.plan-mode-select.iceSelMnyCb td {
+    text-align:left;
+    padding:5px;
+    padding-left:25px;
+    
+}
+
+table.plan-mode-select.iceSelOneRb td label, table.plan-mode-select.iceSelMnyCb td label {
+    padding-left:20px;
+    display:block;
+    margin-left: 15px;
+}
+
+.sectionContent {
+    background:#EDEBEA;
+    padding:10px;
+}
+
+p.special-info {
+    margin-left:20px;
+    margin-right:20px;
+    margin-bottom:5px;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+
+
+
+
+.iceCmdSrtHdr .column-hoverDesc {
+	width: 10px; 
+	height: 10px;
+	display: block;
+    margin-top: auto;
+    margin-left: 5px;
+    background: url(/collaboratorium-theme/images/sort-arrow-up_on.gif) no-repeat center;
+}
+
+.iceCmdSrtHdr .column-hoverAsc {
+    width: 10px; 
+    height: 10px;
+    display: block;
+    padding-top: 30%;
+    margin-left: 5px;
+    background: url(/collaboratorium-theme/images/sort-arrow-down_on.gif) no-repeat center;
+}
+
+.prohome .column-hover tr {
+	background: transparent;
+}
+
+.prohome .column-hover td {
+    padding: 0;
+}
+
+.planPlace,
+.planRibbon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    background-repeat: no-repeat;
+    float: left;
+}
+
+.planPlace.place_2,
+.planRibbon.ribbon_2  {
+    background: url(/collaboratorium-theme/images/ribbon-orange.gif);
+}
+
+.planPlace.place_1,
+.planRibbon.ribbon_1  {
+    background: url(/collaboratorium-theme/images/ribbon-blue.gif);
+}
+
+.planPlace.place_3,
+.planRibbon.ribbon_3  {
+    background: url(/collaboratorium-theme/images/ribbon-green.gif);
+}
+
+.scrapbook_icon {
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+
+.plansContent .SEEKING_ASSISTANCE {
+	text-align: center;
+}
+
+.scrapbookProposal {
+	height: 100%;
+}
+
+.plansContent .ABSTRACT {
+	vertical-align: top;
+	width: 400px;
+}
+
+h1.planDetailsSection {
+	font-size: 28px;
+	border-bottom: 1px solid #BBBBBB;
+	margin-top: 0px;
+	margin-bottom: 15px;
+}
+
+.abstractText {
+	margin-bottom: 20px;
+}
+
+.abstractInput {
+	width: 707px;
+	height: 44px;
+	font: 12px/20px Verdana, sans-serif;
+}
+
+.planRibbonsContainer {
+	width: 22px;
+	vertical-align: top;
+}
+
+table.ribbonsAndPlanName td {
+	padding: 0;
+}
+
+.contestSubscribe {
+	position: absolute;
+	right: 20px;
+	top: 6px;
+}
+
+.contestSubscribe img {
+	width: 25px;
+	vertical-align: bottom;
+	margin-right: 5px;
+}
+
 @CHARSET "UTF-8";
 .filepcBtn { 
     font-size: 50px;

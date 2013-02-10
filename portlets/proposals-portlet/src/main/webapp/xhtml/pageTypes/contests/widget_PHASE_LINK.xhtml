@@ -6,13 +6,21 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:collab="http://climatecollaboratorium.org/facelets"
         xmlns:sharedcollab="http://climatecollaboratorium.org/components">
-    <f:subview rendered="#{phase.name eq contest.currentPhase.name}">
-        <strong>#{phase.name}</strong>
-    </f:subview>
     
-    <f:subview rendered="#{not (phase.name eq contest.currentPhase.name)}">
-        <collab:contestLink contestId="#{contest.contest.contestId}" text="#{phase.name}" hashString="plans=phase:#{phase.phaseId}" />
+  <span class="#{phase.ended ? 'phasePast' : ''} #{phase.active ? 'phaseActive' : ''} #{not phase.alreadyStarted ? 'phaseFuture' : ''} #{phase.name eq contest.currentPhase.name ? 'phaseSelected' : ''}">
+    <f:subview rendered="#{not phase.alreadyStarted}">
+        <span>#{phase.name}</span>
     </f:subview>
+    <f:subview rendered="#{phase.alreadyStarted}">
+        <f:subview rendered="#{phase.name eq contest.currentPhase.name}">
+            <span>#{phase.name}</span>
+        </f:subview>
+    
+        <f:subview rendered="#{not (phase.name eq contest.currentPhase.name)}">
+            <collab:contestLink contestId="#{contest.contest.contestId}" text="#{phase.name}" hashString="plans=phase:#{phase.phaseId}" />
+        </f:subview>
+    </f:subview>
+  </span>
     
         
 

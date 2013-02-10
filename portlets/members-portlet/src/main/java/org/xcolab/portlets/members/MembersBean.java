@@ -2,16 +2,17 @@ package org.xcolab.portlets.members;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.apache.commons.lang.StringUtils;
 import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.events.EventHandler;
 import org.climatecollaboratorium.events.HandlerRegistration;
@@ -21,13 +22,17 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.BooleanClauseOccur;
+import com.liferay.portal.kernel.search.BooleanClauseOccurImpl;
+import com.liferay.portal.kernel.search.BooleanQuery;
+import com.liferay.portal.kernel.search.BooleanQueryFactoryUtil;
 import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
-import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 public class MembersBean {
     
@@ -123,6 +128,7 @@ public class MembersBean {
 
     public void setSearchPhrase(String searchPhrase) throws SystemException, NumberFormatException, PortalException, ParseException {
         this.searchPhrase = searchPhrase;
+        categoryFilter = MemberCategory.ALL;
         updateSearchResults();
     }
 
@@ -152,17 +158,36 @@ public class MembersBean {
 
     private void updateSearchResults() throws SystemException, NumberFormatException, PortalException, ParseException {
     	searchResults.clear();
-      
-        LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+
+    	 SearchContext context = new SearchContext();
+    	 context.setCompanyId(10112L);
+    	 BooleanQuery query = BooleanQueryFactoryUtil.create(context);
+         query.addRequiredTerm(Field.ENTRY_CLASS_NAME, "com.liferay.portal.model.User");
+         if (categoryFilter != null && !categoryFilter.equals(MemberCategory.ALL)) {
+             if (categoryFilter.equals(MemberCategory.MODERATOR) || categoryFilter.equals(MemberCategory.STAFF)) {
+                 BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
+                 subQuery.addTerm("memberCategory", MemberCategory.MODERATOR.name().toLowerCase(), false);
+                 subQuery.addTerm("memberCategory", MemberCategory.STAFF.name().toLowerCase(), false);
+                 query.add(subQuery, BooleanClauseOccurImpl.MUST);
+                 
+             }
+             else {
+                 query.addRequiredTerm("memberCategory", categoryFilter.name(), false);
+             }
+         }
+         if (StringUtils.isNotBlank(searchPhrase)) {
+             BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
+             String fuzzyPhrase = searchPhrase + "*";
+             subQuery.addTerm("screenName", fuzzyPhrase);
+             subQuery.addTerm("firstName", fuzzyPhrase);
+             subQuery.addTerm("lastName", fuzzyPhrase);
+             query.add(subQuery, BooleanClauseOccurImpl.MUST);
+         }
+
+
+         Hits hits = SearchEngineUtil.search(10112L, query, 0, Integer.MAX_VALUE);
         
-        // apply category filters
-        if (categoryFilter != null && !categoryFilter.equals(MemberCategory.ALL)) {
-            params.put("memberCategory", categoryFilter.name());
-        }
-        
-        Sort sorting = new Sort();
-        Hits hits = UserLocalServiceUtil.search(DEFAULT_COMPANY_ID, searchPhrase, WorkflowConstants.STATUS_ANY, 
-                params, 0, Integer.MAX_VALUE, sorting);
+         
         
         
         for (Document userDoc: hits.getDocs()) {

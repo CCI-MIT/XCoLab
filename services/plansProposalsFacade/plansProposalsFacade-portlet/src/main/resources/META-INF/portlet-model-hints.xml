@@ -70,6 +70,7 @@
 			<hint name="max-length">4096</hint>
 		</field>
 		<field name="phaseActiveOverride" type="boolean" />
+		<field name="phaseInactiveOverride" type="boolean" />
 		<field name="PhaseStartDate" type="Date" />
 		<field name="PhaseEndDate" type="Date" />
 		<field name="nextStatus" type="String" />

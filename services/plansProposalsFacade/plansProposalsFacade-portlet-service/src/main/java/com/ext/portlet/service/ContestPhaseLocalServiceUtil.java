@@ -263,6 +263,13 @@ public class ContestPhaseLocalServiceUtil {
         return getService().getContestStatus(contestPhase);
     }
 
+    public static java.lang.String getContestStatusStr(
+        com.ext.portlet.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestStatusStr(contestPhase);
+    }
+
     public static java.util.List<java.lang.String> getPhaseColumns(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.SystemException {

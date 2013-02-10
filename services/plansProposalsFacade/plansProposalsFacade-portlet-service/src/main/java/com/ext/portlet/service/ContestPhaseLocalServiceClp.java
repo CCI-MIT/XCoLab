@@ -26,15 +26,16 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _getPlansMethodKey17;
     private MethodKey _getContestStatusMethodKey18;
-    private MethodKey _getPhaseColumnsMethodKey19;
-    private MethodKey _getPhaseColumnsRawMethodKey20;
-    private MethodKey _getPreviousPhasesMethodKey21;
-    private MethodKey _getNextContestPhaseMethodKey22;
-    private MethodKey _getPhaseActiveMethodKey23;
-    private MethodKey _getPhasesForContestMethodKey24;
-    private MethodKey _getActivePhaseForContestMethodKey25;
-    private MethodKey _getContestMethodKey26;
-    private MethodKey _getNameMethodKey27;
+    private MethodKey _getContestStatusStrMethodKey19;
+    private MethodKey _getPhaseColumnsMethodKey20;
+    private MethodKey _getPhaseColumnsRawMethodKey21;
+    private MethodKey _getPreviousPhasesMethodKey22;
+    private MethodKey _getNextContestPhaseMethodKey23;
+    private MethodKey _getPhaseActiveMethodKey24;
+    private MethodKey _getPhasesForContestMethodKey25;
+    private MethodKey _getActivePhaseForContestMethodKey26;
+    private MethodKey _getContestMethodKey27;
+    private MethodKey _getNameMethodKey28;
 
     public ContestPhaseLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -104,31 +105,34 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         _getContestStatusMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getContestStatus", com.ext.portlet.model.ContestPhase.class);
 
-        _getPhaseColumnsMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getContestStatusStrMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getContestStatusStr", com.ext.portlet.model.ContestPhase.class);
+
+        _getPhaseColumnsMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPhaseColumns", com.ext.portlet.model.ContestPhase.class);
 
-        _getPhaseColumnsRawMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getPhaseColumnsRawMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPhaseColumnsRaw", com.ext.portlet.model.ContestPhase.class);
 
-        _getPreviousPhasesMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getPreviousPhasesMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPreviousPhases", com.ext.portlet.model.ContestPhase.class);
 
-        _getNextContestPhaseMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getNextContestPhaseMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getNextContestPhase", com.ext.portlet.model.ContestPhase.class);
 
-        _getPhaseActiveMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getPhaseActiveMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPhaseActive", com.ext.portlet.model.ContestPhase.class);
 
-        _getPhasesForContestMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getPhasesForContestMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPhasesForContest", com.ext.portlet.model.Contest.class);
 
-        _getActivePhaseForContestMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getActivePhaseForContestMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getActivePhaseForContest", com.ext.portlet.model.Contest.class);
 
-        _getContestMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getContestMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getContest", com.ext.portlet.model.ContestPhase.class);
 
-        _getNameMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getNameMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getName", com.ext.portlet.model.ContestPhase.class);
     }
 
@@ -624,12 +628,43 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         return (com.ext.portlet.contests.ContestStatus) ClpSerializer.translateOutput(returnObj);
     }
 
+    public java.lang.String getContestStatusStr(
+        com.ext.portlet.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getContestStatusStrMethodKey19,
+                ClpSerializer.translateInput(contestPhase));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
     public java.util.List<java.lang.String> getPhaseColumns(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPhaseColumnsMethodKey19,
+        MethodHandler methodHandler = new MethodHandler(_getPhaseColumnsMethodKey20,
                 ClpSerializer.translateInput(contestPhase));
 
         try {
@@ -655,7 +690,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPhaseColumnsRawMethodKey20,
+        MethodHandler methodHandler = new MethodHandler(_getPhaseColumnsRawMethodKey21,
                 ClpSerializer.translateInput(contestPhase));
 
         try {
@@ -682,7 +717,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPreviousPhasesMethodKey21,
+        MethodHandler methodHandler = new MethodHandler(_getPreviousPhasesMethodKey22,
                 ClpSerializer.translateInput(contestPhase));
 
         try {
@@ -713,7 +748,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getNextContestPhaseMethodKey22,
+        MethodHandler methodHandler = new MethodHandler(_getNextContestPhaseMethodKey23,
                 ClpSerializer.translateInput(contestPhase));
 
         try {
@@ -742,7 +777,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         com.ext.portlet.model.ContestPhase contestPhase) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPhaseActiveMethodKey23,
+        MethodHandler methodHandler = new MethodHandler(_getPhaseActiveMethodKey24,
                 ClpSerializer.translateInput(contestPhase));
 
         try {
@@ -764,7 +799,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPhasesForContestMethodKey24,
+        MethodHandler methodHandler = new MethodHandler(_getPhasesForContestMethodKey25,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -791,7 +826,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getActivePhaseForContestMethodKey25,
+        MethodHandler methodHandler = new MethodHandler(_getActivePhaseForContestMethodKey26,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -822,7 +857,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getContestMethodKey26,
+        MethodHandler methodHandler = new MethodHandler(_getContestMethodKey27,
                 ClpSerializer.translateInput(contestPhase));
 
         try {
@@ -853,7 +888,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getNameMethodKey27,
+        MethodHandler methodHandler = new MethodHandler(_getNameMethodKey28,
                 ClpSerializer.translateInput(contestPhase));
 
         try {

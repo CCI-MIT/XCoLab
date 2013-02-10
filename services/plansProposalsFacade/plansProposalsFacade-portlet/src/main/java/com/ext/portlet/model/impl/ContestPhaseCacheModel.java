@@ -24,6 +24,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
     public long ContestPhaseType;
     public String ContestPhaseDescriptionOverride;
     public boolean phaseActiveOverride;
+    public boolean phaseInactiveOverride;
     public long PhaseStartDate;
     public long PhaseEndDate;
     public String nextStatus;
@@ -33,7 +34,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("{ContestPhasePK=");
         sb.append(ContestPhasePK);
@@ -45,6 +46,8 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         sb.append(ContestPhaseDescriptionOverride);
         sb.append(", phaseActiveOverride=");
         sb.append(phaseActiveOverride);
+        sb.append(", phaseInactiveOverride=");
+        sb.append(phaseInactiveOverride);
         sb.append(", PhaseStartDate=");
         sb.append(PhaseStartDate);
         sb.append(", PhaseEndDate=");
@@ -76,6 +79,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         }
 
         contestPhaseImpl.setPhaseActiveOverride(phaseActiveOverride);
+        contestPhaseImpl.setPhaseInactiveOverride(phaseInactiveOverride);
 
         if (PhaseStartDate == Long.MIN_VALUE) {
             contestPhaseImpl.setPhaseStartDate(null);

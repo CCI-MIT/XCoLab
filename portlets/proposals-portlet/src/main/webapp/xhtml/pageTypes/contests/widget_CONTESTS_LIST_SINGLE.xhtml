@@ -14,11 +14,16 @@
         xmlns:sharedcollab="http://climatecollaboratorium.org/components">
     <ice:dataTable var="singleContest" value="#{contests}" styleClass="contestlist #{class} ">
         <ice:column style="width: 366px;">
-            <f:subview rendered="#{not empty singleContest.flagText}">
-                <strong>#{singleContest.flagText}:</strong>
-            </f:subview>
-            <collab:contestLink contestId="#{singleContest.contestId}" text="#{singleContest.shortName}:" />
-            #{singleContest.name}
+            <div style="position: relative;">
+                <f:subview rendered="#{not empty singleContest.flagText}">
+                    <span class="#{not empty singleContest.flagTooltip ? 'fieldWithTooltip' : ''}">#{singleContest.flagText}:&amp;nbsp;</span>
+                    <f:subview rendered="#{not empty singleContest.flagTooltip}">
+                        <div class="tooltip">#{singleContest.flagTooltip}<div class="tt-arrow"></div></div>
+                    </f:subview>
+                </f:subview>
+                <collab:contestLink contestId="#{singleContest.contestId}" text="#{singleContest.shortName}:" />
+                #{singleContest.name}
+            </div>
         </ice:column>
         <ice:column style="width: 31px" styleClass="g">#{singleContest.proposalsCount}</ice:column>
         <ice:column style="width: 35px" >#{singleContest.commentsCount}</ice:column>

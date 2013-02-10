@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.ext.portlet.NoSuchContestPhaseTypeException;
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PlanItem;
@@ -34,20 +34,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 public class ContestPhaseWrapper {
     private ContestPhase phase;
     private ContestWrapper contestWrapper;
+    private boolean last;
 
-    public ContestPhaseWrapper( ContestPhase phase) {
-        this.phase = phase;
-        try {
-            contestWrapper = new ContestWrapper(ContestLocalServiceUtil.getContest(phase.getContestPK()));
-        } catch (SystemException e) {
-            e.printStackTrace();
-        } catch (PortalException e) {
-            e.printStackTrace();
-        }
-    }
-    public ContestPhaseWrapper(ContestWrapper wrapper, ContestPhase phase) {
+    public ContestPhaseWrapper(ContestWrapper wrapper, ContestPhase phase, boolean last) {
         this.phase = phase;
         this.contestWrapper = wrapper;
+        this.last = last;
     }
 
     public ContestPhase getPhase() {
@@ -60,7 +52,6 @@ public class ContestPhaseWrapper {
 
     public String getName() throws PortalException, SystemException {
         return ContestPhaseLocalServiceUtil.getName(phase);
-        //return "fooey";
     }
 
     public Date getStartDate() {
@@ -71,20 +62,25 @@ public class ContestPhaseWrapper {
        return phase.getPhaseEndDate();
        // return new Date();
     }
+    
+    public boolean isAlreadyStarted() {
+    	return phase.getPhaseStartDate().before(new Date());
+    }
 
     public ContestStatus getStatus() throws PortalException, SystemException {
-        String status = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(phase.getContestPhaseType()).getStatus();
-        return  status == null ? null : ContestStatus.valueOf(status);
+        String status = ContestPhaseLocalServiceUtil.getContestStatusStr(phase);
+        if (status != null) {
+            return ContestStatus.valueOf(status);
+        }
+        return null;
     }
 
     public boolean getCanVote() throws PortalException, SystemException {
-        ContestStatus status = getStatus();
-        return status != null ? status.isCanVote() : false;
+        return getStatus().isCanVote();
     }
 
     public boolean getCanEdit() throws PortalException, SystemException {
-        ContestStatus status = getStatus();
-        return status != null ? status.isCanEdit() : false;
+        return getStatus().isCanEdit();
     }
 
     public Long getPhaseId() {
@@ -123,6 +119,8 @@ public class ContestPhaseWrapper {
     public boolean isActive() {
         return ContestPhaseLocalServiceUtil.getPhaseActive(phase);
     }
+    
+
     
     public boolean getHasNextPhase() {
         boolean hasNext = false;
@@ -168,21 +166,32 @@ public class ContestPhaseWrapper {
         return 0;
     }
     
+    public boolean isLast() {
+    	return last;
+    }
+    
+    public boolean isEnded() {
+    	if (phase.getPhaseEndDate() != null) {
+    		return phase.getPhaseEndDate().before(new Date());
+    	}
+    	return false;
+    }
+    
     public String getPhaseStatusDescription() throws PortalException, SystemException {
-        String descriptionOverride = phase.getContestPhaseDescriptionOverride();
-        if (StringUtils.isBlank(descriptionOverride)) {
-            try {
-                return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(phase.getContestPhaseType()).getDescription();
-            }
-            catch (NoSuchContestPhaseTypeException e) {
-                // ignore
-            }
-            return null;
-        }
-        return descriptionOverride;
+    	String descriptionOverride = phase.getContestPhaseDescriptionOverride();
+    	if (StringUtils.isBlank(descriptionOverride)) {
+    		try {
+    			return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(phase.getContestPhaseType()).getDescription();
+    		}
+    		catch (NoSuchContestPhaseException e) {
+    			// ignore
+    		}
+    		return null;
+    	}
+    	return descriptionOverride;
     }
     
     public ContestStatus getContestPhaseStatus() throws PortalException, SystemException {
-        return ContestStatus.valueOf(ContestPhaseTypeLocalServiceUtil.getContestPhaseType(phase.getContestPhaseType()).getStatus());
+        return getStatus();
     }
 }

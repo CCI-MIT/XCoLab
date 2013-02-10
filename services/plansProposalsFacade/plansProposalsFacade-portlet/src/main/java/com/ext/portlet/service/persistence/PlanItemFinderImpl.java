@@ -397,8 +397,9 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
     public List<PlanItem> getPlansForPhase(Long phaseId) {
         Object[] args = new Object[] { phaseId };
         
-        List<PlanItem> planItems = (List<PlanItem>) 
-                FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args, this);
+        List<PlanItem> planItems = null;
+        //(List<PlanItem>) 
+         //        FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args, this);
 
         if (planItems == null) {
 
@@ -410,7 +411,7 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
             query.setLong(0, phaseId);
             planItems = (List<PlanItem>) QueryUtil.list(query,getDialect(),0,Integer.MAX_VALUE);
             
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args, planItems);
+            //FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args, planItems);
         }
         return planItems;
      }

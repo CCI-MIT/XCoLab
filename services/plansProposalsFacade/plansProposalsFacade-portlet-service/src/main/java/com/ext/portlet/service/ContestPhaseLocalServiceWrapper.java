@@ -256,6 +256,13 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         return _contestPhaseLocalService.getContestStatus(contestPhase);
     }
 
+    public java.lang.String getContestStatusStr(
+        com.ext.portlet.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getContestStatusStr(contestPhase);
+    }
+
     public java.util.List<java.lang.String> getPhaseColumns(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.SystemException {

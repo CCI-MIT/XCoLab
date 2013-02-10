@@ -1106,3 +1106,48 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
     border-color: #eed3d7;
 }
 
+
+.contestbar .phaseSeparatorContainer {
+    width: 16px;
+    display: inline-block;
+    padding-left: 7px; 
+    padding-right: 7px;
+    
+}
+
+.contestbar .phaseSeparator {
+	width: 16px;
+    height: 37px;
+    top: 0px;
+    position: absolute;
+    background: url(../images/contest_blueheader_separator.png) no-repeat;
+}
+
+.contestbar .phaseActive, .contestbar .phaseActive a{
+	font-weight: 700;
+}
+
+.contestbar .phaseFuture {
+	color: #858585;
+}
+
+.phaseLinkContainer {
+	display: inline-block;
+	position: relative;
+}
+
+.tooltip {
+	z-index: 10000;
+}
+.mitproject {
+    background: url(../images/logo_mit_bluegreen.gif) no-repeat;
+    padding-left: 90px;
+}
+
+.portlet-topper {
+	display: none;
+}
+
+.dockbar-ready .portlet-topper {
+	display: block;
+}

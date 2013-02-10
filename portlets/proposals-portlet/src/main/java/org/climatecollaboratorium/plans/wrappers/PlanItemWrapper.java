@@ -425,7 +425,7 @@ public class PlanItemWrapper {
     }
 
     public ContestPhaseWrapper getContestPhase() throws PortalException, SystemException {
-        return new ContestPhaseWrapper(PlanItemLocalServiceUtil.getContestPhase(wrapped));
+        return new ContestPhaseWrapper(new ContestWrapper(PlanItemLocalServiceUtil.getContest(wrapped)), PlanItemLocalServiceUtil.getContestPhase(wrapped), false);
     }
 
     public List<PlanHistoryWrapper> getAllDescriptionVersions() throws PortalException, SystemException {

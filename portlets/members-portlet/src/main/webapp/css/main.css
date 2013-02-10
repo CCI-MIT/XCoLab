@@ -58,3 +58,32 @@ h2.feedTitle {
     
     background: url(/collaboratorium-theme/images/sort-arrow-up_on.gif) no-repeat center;
 }
+
+
+#content .membersCategories .c a {
+	color: #333;
+	cursor: default;
+}
+
+.comm_info-large {
+	position: relative;
+}
+
+#clearSearchBox {
+    position: absolute;
+    right: 175px;
+    background: #bbb;
+    border-radius: 5px;
+    font-size: 10px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    text-align: center;
+    color: #fff;
+    top: 12px;
+    cursor: pointer;
+}
+
+#clearSearchBox:hover {
+	background: #aaa;
+}

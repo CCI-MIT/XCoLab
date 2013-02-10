@@ -15,6 +15,7 @@ create index IX_379DF74A on xcolab_ContestDebate (ContestPK);
 create index IX_ED61C03C on xcolab_ContestPhase (ContestPK);
 create index IX_2BA2B787 on xcolab_ContestPhase (ContestPK, PhaseStartDate, PhaseEndDate);
 create index IX_9F1D3B81 on xcolab_ContestPhase (ContestPK, phaseActiveOverride);
+create index IX_4F735B66 on xcolab_ContestPhase (ContestPK, phaseInactiveOverride);
 
 create index IX_D97B920F on xcolab_ContestPhaseColumn (ContestPhasePK);
 

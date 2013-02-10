@@ -160,8 +160,7 @@ public class PlanIndexItemWrapper {
     }
     
     public String getAbstract() throws SystemException {
-        PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.ABSTRACT.name());
-        return attr != null ? attr.getAttributeValue() : null;
+        return PlanItemLocalServiceUtil.getPitch(wrapped);
     }
     
     public int getCommentsCount() throws SystemException, PortalException {
@@ -171,7 +170,7 @@ public class PlanIndexItemWrapper {
     
     public String getSupportersCount() throws SystemException {
         PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.SUPPORTERS.name());
-        return attr != null ? attr.getAttributeValue() : null;
+        return attr != null ? attr.getAttributeValue() : "0";
     }
     
     public Date getLastModifiedDate() {

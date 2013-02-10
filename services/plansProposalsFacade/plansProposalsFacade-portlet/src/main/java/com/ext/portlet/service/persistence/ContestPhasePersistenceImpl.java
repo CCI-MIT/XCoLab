@@ -185,6 +185,30 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByPhaseActiveOverride",
             new String[] { Long.class.getName(), Boolean.class.getName() });
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PHASEINACTIVEOVERRIDE =
+        new FinderPath(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
+            ContestPhaseModelImpl.FINDER_CACHE_ENABLED, ContestPhaseImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findByPhaseInactiveOverride",
+            new String[] {
+                Long.class.getName(), Boolean.class.getName(),
+                
+            "java.lang.Integer", "java.lang.Integer",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PHASEINACTIVEOVERRIDE =
+        new FinderPath(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
+            ContestPhaseModelImpl.FINDER_CACHE_ENABLED, ContestPhaseImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "findByPhaseInactiveOverride",
+            new String[] { Long.class.getName(), Boolean.class.getName() },
+            ContestPhaseModelImpl.CONTESTPK_COLUMN_BITMASK |
+            ContestPhaseModelImpl.PHASEINACTIVEOVERRIDE_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_PHASEINACTIVEOVERRIDE = new FinderPath(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
+            ContestPhaseModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByPhaseInactiveOverride",
+            new String[] { Long.class.getName(), Boolean.class.getName() });
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
             ContestPhaseModelImpl.FINDER_CACHE_ENABLED, ContestPhaseImpl.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
@@ -209,6 +233,10 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
     private static final String _FINDER_COLUMN_PHASEACTIVEOVERRIDE_CONTESTPK_2 = "contestPhase.ContestPK = ? AND ";
     private static final String _FINDER_COLUMN_PHASEACTIVEOVERRIDE_PHASEACTIVEOVERRIDE_2 =
         "contestPhase.phaseActiveOverride = ?";
+    private static final String _FINDER_COLUMN_PHASEINACTIVEOVERRIDE_CONTESTPK_2 =
+        "contestPhase.ContestPK = ? AND ";
+    private static final String _FINDER_COLUMN_PHASEINACTIVEOVERRIDE_PHASEINACTIVEOVERRIDE_2 =
+        "contestPhase.phaseInactiveOverride = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "contestPhase.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ContestPhase exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ContestPhase exists with the key {";
@@ -619,6 +647,29 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
                 FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PHASEACTIVEOVERRIDE,
                     args);
             }
+
+            if ((contestPhaseModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PHASEINACTIVEOVERRIDE.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        Long.valueOf(contestPhaseModelImpl.getOriginalContestPK()),
+                        Boolean.valueOf(contestPhaseModelImpl.getOriginalPhaseInactiveOverride())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PHASEINACTIVEOVERRIDE,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PHASEINACTIVEOVERRIDE,
+                    args);
+
+                args = new Object[] {
+                        Long.valueOf(contestPhaseModelImpl.getContestPK()),
+                        Boolean.valueOf(contestPhaseModelImpl.getPhaseInactiveOverride())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PHASEINACTIVEOVERRIDE,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PHASEINACTIVEOVERRIDE,
+                    args);
+            }
         }
 
         EntityCacheUtil.putResult(ContestPhaseModelImpl.ENTITY_CACHE_ENABLED,
@@ -678,6 +729,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         contestPhaseImpl.setContestPhaseType(contestPhase.getContestPhaseType());
         contestPhaseImpl.setContestPhaseDescriptionOverride(contestPhase.getContestPhaseDescriptionOverride());
         contestPhaseImpl.setPhaseActiveOverride(contestPhase.isPhaseActiveOverride());
+        contestPhaseImpl.setPhaseInactiveOverride(contestPhase.isPhaseInactiveOverride());
         contestPhaseImpl.setPhaseStartDate(contestPhase.getPhaseStartDate());
         contestPhaseImpl.setPhaseEndDate(contestPhase.getPhaseEndDate());
         contestPhaseImpl.setNextStatus(contestPhase.getNextStatus());
@@ -1641,6 +1693,366 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
     }
 
     /**
+     * Returns all the contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+     *
+     * @param ContestPK the contest p k
+     * @param phaseInactiveOverride the phase inactive override
+     * @return the matching contest phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ContestPhase> findByPhaseInactiveOverride(long ContestPK,
+        boolean phaseInactiveOverride) throws SystemException {
+        return findByPhaseInactiveOverride(ContestPK, phaseInactiveOverride,
+            QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param ContestPK the contest p k
+     * @param phaseInactiveOverride the phase inactive override
+     * @param start the lower bound of the range of contest phases
+     * @param end the upper bound of the range of contest phases (not inclusive)
+     * @return the range of matching contest phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ContestPhase> findByPhaseInactiveOverride(long ContestPK,
+        boolean phaseInactiveOverride, int start, int end)
+        throws SystemException {
+        return findByPhaseInactiveOverride(ContestPK, phaseInactiveOverride,
+            start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param ContestPK the contest p k
+     * @param phaseInactiveOverride the phase inactive override
+     * @param start the lower bound of the range of contest phases
+     * @param end the upper bound of the range of contest phases (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching contest phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ContestPhase> findByPhaseInactiveOverride(long ContestPK,
+        boolean phaseInactiveOverride, int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PHASEINACTIVEOVERRIDE;
+            finderArgs = new Object[] { ContestPK, phaseInactiveOverride };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PHASEINACTIVEOVERRIDE;
+            finderArgs = new Object[] {
+                    ContestPK, phaseInactiveOverride,
+                    
+                    start, end, orderByComparator
+                };
+        }
+
+        List<ContestPhase> list = (List<ContestPhase>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(4 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(4);
+            }
+
+            query.append(_SQL_SELECT_CONTESTPHASE_WHERE);
+
+            query.append(_FINDER_COLUMN_PHASEINACTIVEOVERRIDE_CONTESTPK_2);
+
+            query.append(_FINDER_COLUMN_PHASEINACTIVEOVERRIDE_PHASEINACTIVEOVERRIDE_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            }
+            else {
+                query.append(ContestPhaseModelImpl.ORDER_BY_JPQL);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(ContestPK);
+
+                qPos.add(phaseInactiveOverride);
+
+                list = (List<ContestPhase>) QueryUtil.list(q, getDialect(),
+                        start, end);
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (list == null) {
+                    FinderCacheUtil.removeResult(finderPath, finderArgs);
+                } else {
+                    cacheResult(list);
+
+                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                }
+
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first contest phase in the ordered set where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param ContestPK the contest p k
+     * @param phaseInactiveOverride the phase inactive override
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching contest phase
+     * @throws com.ext.portlet.NoSuchContestPhaseException if a matching contest phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ContestPhase findByPhaseInactiveOverride_First(long ContestPK,
+        boolean phaseInactiveOverride, OrderByComparator orderByComparator)
+        throws NoSuchContestPhaseException, SystemException {
+        List<ContestPhase> list = findByPhaseInactiveOverride(ContestPK,
+                phaseInactiveOverride, 0, 1, orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("ContestPK=");
+            msg.append(ContestPK);
+
+            msg.append(", phaseInactiveOverride=");
+            msg.append(phaseInactiveOverride);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchContestPhaseException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the last contest phase in the ordered set where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param ContestPK the contest p k
+     * @param phaseInactiveOverride the phase inactive override
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching contest phase
+     * @throws com.ext.portlet.NoSuchContestPhaseException if a matching contest phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ContestPhase findByPhaseInactiveOverride_Last(long ContestPK,
+        boolean phaseInactiveOverride, OrderByComparator orderByComparator)
+        throws NoSuchContestPhaseException, SystemException {
+        int count = countByPhaseInactiveOverride(ContestPK,
+                phaseInactiveOverride);
+
+        List<ContestPhase> list = findByPhaseInactiveOverride(ContestPK,
+                phaseInactiveOverride, count - 1, count, orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("ContestPK=");
+            msg.append(ContestPK);
+
+            msg.append(", phaseInactiveOverride=");
+            msg.append(phaseInactiveOverride);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchContestPhaseException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the contest phases before and after the current contest phase in the ordered set where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param ContestPhasePK the primary key of the current contest phase
+     * @param ContestPK the contest p k
+     * @param phaseInactiveOverride the phase inactive override
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next contest phase
+     * @throws com.ext.portlet.NoSuchContestPhaseException if a contest phase with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ContestPhase[] findByPhaseInactiveOverride_PrevAndNext(
+        long ContestPhasePK, long ContestPK, boolean phaseInactiveOverride,
+        OrderByComparator orderByComparator)
+        throws NoSuchContestPhaseException, SystemException {
+        ContestPhase contestPhase = findByPrimaryKey(ContestPhasePK);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            ContestPhase[] array = new ContestPhaseImpl[3];
+
+            array[0] = getByPhaseInactiveOverride_PrevAndNext(session,
+                    contestPhase, ContestPK, phaseInactiveOverride,
+                    orderByComparator, true);
+
+            array[1] = contestPhase;
+
+            array[2] = getByPhaseInactiveOverride_PrevAndNext(session,
+                    contestPhase, ContestPK, phaseInactiveOverride,
+                    orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected ContestPhase getByPhaseInactiveOverride_PrevAndNext(
+        Session session, ContestPhase contestPhase, long ContestPK,
+        boolean phaseInactiveOverride, OrderByComparator orderByComparator,
+        boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_CONTESTPHASE_WHERE);
+
+        query.append(_FINDER_COLUMN_PHASEINACTIVEOVERRIDE_CONTESTPK_2);
+
+        query.append(_FINDER_COLUMN_PHASEINACTIVEOVERRIDE_PHASEINACTIVEOVERRIDE_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        }
+        else {
+            query.append(ContestPhaseModelImpl.ORDER_BY_JPQL);
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(ContestPK);
+
+        qPos.add(phaseInactiveOverride);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(contestPhase);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<ContestPhase> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Returns all the contest phases.
      *
      * @return the contest phases
@@ -1788,6 +2200,21 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         boolean phaseActiveOverride) throws SystemException {
         for (ContestPhase contestPhase : findByPhaseActiveOverride(ContestPK,
                 phaseActiveOverride)) {
+            remove(contestPhase);
+        }
+    }
+
+    /**
+     * Removes all the contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63; from the database.
+     *
+     * @param ContestPK the contest p k
+     * @param phaseInactiveOverride the phase inactive override
+     * @throws SystemException if a system exception occurred
+     */
+    public void removeByPhaseInactiveOverride(long ContestPK,
+        boolean phaseInactiveOverride) throws SystemException {
+        for (ContestPhase contestPhase : findByPhaseInactiveOverride(
+                ContestPK, phaseInactiveOverride)) {
             remove(contestPhase);
         }
     }
@@ -1978,6 +2405,63 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
                 }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PHASEACTIVEOVERRIDE,
+                    finderArgs, count);
+
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns the number of contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+     *
+     * @param ContestPK the contest p k
+     * @param phaseInactiveOverride the phase inactive override
+     * @return the number of matching contest phases
+     * @throws SystemException if a system exception occurred
+     */
+    public int countByPhaseInactiveOverride(long ContestPK,
+        boolean phaseInactiveOverride) throws SystemException {
+        Object[] finderArgs = new Object[] { ContestPK, phaseInactiveOverride };
+
+        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PHASEINACTIVEOVERRIDE,
+                finderArgs, this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_CONTESTPHASE_WHERE);
+
+            query.append(_FINDER_COLUMN_PHASEINACTIVEOVERRIDE_CONTESTPK_2);
+
+            query.append(_FINDER_COLUMN_PHASEINACTIVEOVERRIDE_PHASEINACTIVEOVERRIDE_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(ContestPK);
+
+                qPos.add(phaseInactiveOverride);
+
+                count = (Long) q.uniqueResult();
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (count == null) {
+                    count = Long.valueOf(0);
+                }
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PHASEINACTIVEOVERRIDE,
                     finderArgs, count);
 
                 closeSession(session);

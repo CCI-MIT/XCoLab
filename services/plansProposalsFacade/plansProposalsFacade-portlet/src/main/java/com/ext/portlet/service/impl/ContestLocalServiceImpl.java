@@ -214,7 +214,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public List<ContestPhase> getActivePhases(Contest contest) throws SystemException, PortalException {
         List<ContestPhase> result = getPhases(contest);
         for (Iterator<ContestPhase> i=result.iterator();i.hasNext();) {
-           if (! ContestPhaseLocalServiceUtil.getContestStatus(i.next()).isCanEdit()) {
+           if (!ContestPhaseLocalServiceUtil.getPhaseActive(i.next())) {
                i.remove();
            }
         }
@@ -222,7 +222,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
     
     public ContestPhase getActivePhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
-        return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+        
+        for (ContestPhase phase: getPhases(contest)) {
+            if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
+        }
+        return null;
     }
     
     public boolean isActive(Contest contest) throws SystemException {

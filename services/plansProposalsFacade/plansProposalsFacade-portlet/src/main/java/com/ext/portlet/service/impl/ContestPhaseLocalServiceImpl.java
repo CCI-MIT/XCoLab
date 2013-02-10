@@ -19,6 +19,7 @@ import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.OrderByComparator;
 
 /**
  * The implementation of the contest phase local service.
@@ -51,6 +52,11 @@ public class ContestPhaseLocalServiceImpl
     public ContestStatus getContestStatus(ContestPhase contestPhase) throws SystemException, PortalException {
         String status = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getStatus();
         return status == null?null:ContestStatus.valueOf(status);
+    }
+    
+    public String getContestStatusStr(ContestPhase contestPhase) throws SystemException, PortalException {
+        String status = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getStatus();
+        return status;
     }
 
     public List<String> getPhaseColumns(ContestPhase contestPhase) throws SystemException {
@@ -91,6 +97,12 @@ public class ContestPhaseLocalServiceImpl
     }
 
     public boolean getPhaseActive(ContestPhase contestPhase) {
+        if (contestPhase.getPhaseActiveOverride()) { 
+            return contestPhase.getPhaseActiveOverride();
+        }
+        if (contestPhase.getPhaseInactiveOverride()) {
+            return contestPhase.getPhaseInactiveOverride();
+        }
         if (contestPhase.getPhaseStartDate() != null && contestPhase.getPhaseEndDate() != null) {
             java.util.Date now = new java.util.Date();
             return now.after(contestPhase.getPhaseStartDate()) && now.before(contestPhase.getPhaseEndDate());
@@ -101,12 +113,32 @@ public class ContestPhaseLocalServiceImpl
     
 
    public List<ContestPhase> getPhasesForContest(Contest contest) throws SystemException {
-       List<ContestPhase> result = new ArrayList<ContestPhase>();
        return contestPhasePersistence.findByContestId(contest.getContestPK());
    }
 
    public ContestPhase getActivePhaseForContest(Contest contest) throws NoSuchContestPhaseException, SystemException {
        Date now = new Date();
+       try {
+           contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true, new OrderByComparator() {
+               
+               private final String[] ORDERY_BY_FIELDS = new String[] {"PhaseStartDate"};
+               @Override
+            public String[] getOrderByFields() {
+                   return ORDERY_BY_FIELDS;
+            }
+
+            @Override
+               public int compare(Object arg0, Object arg1) {
+                   if (((ContestPhase) arg0).getPhaseStartDate().before(((ContestPhase) arg1).getPhaseStartDate())) {
+                       return -1;
+                   }
+                   return 1;
+               }
+           });
+       }
+       catch (NoSuchContestPhaseException e) {
+           // ignore
+       }
        return contestPhasePersistence.findByContestIdStartEnd(contest.getContestPK(), now, now);
    }
 

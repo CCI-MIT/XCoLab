@@ -19,6 +19,7 @@ public class ContestPhaseSoap implements Serializable {
     private long _ContestPhaseType;
     private String _ContestPhaseDescriptionOverride;
     private boolean _phaseActiveOverride;
+    private boolean _phaseInactiveOverride;
     private Date _PhaseStartDate;
     private Date _PhaseEndDate;
     private String _nextStatus;
@@ -37,6 +38,7 @@ public class ContestPhaseSoap implements Serializable {
         soapModel.setContestPhaseType(model.getContestPhaseType());
         soapModel.setContestPhaseDescriptionOverride(model.getContestPhaseDescriptionOverride());
         soapModel.setPhaseActiveOverride(model.getPhaseActiveOverride());
+        soapModel.setPhaseInactiveOverride(model.getPhaseInactiveOverride());
         soapModel.setPhaseStartDate(model.getPhaseStartDate());
         soapModel.setPhaseEndDate(model.getPhaseEndDate());
         soapModel.setNextStatus(model.getNextStatus());
@@ -134,6 +136,18 @@ public class ContestPhaseSoap implements Serializable {
 
     public void setPhaseActiveOverride(boolean phaseActiveOverride) {
         _phaseActiveOverride = phaseActiveOverride;
+    }
+
+    public boolean getPhaseInactiveOverride() {
+        return _phaseInactiveOverride;
+    }
+
+    public boolean isPhaseInactiveOverride() {
+        return _phaseInactiveOverride;
+    }
+
+    public void setPhaseInactiveOverride(boolean phaseInactiveOverride) {
+        _phaseInactiveOverride = phaseInactiveOverride;
     }
 
     public Date getPhaseStartDate() {

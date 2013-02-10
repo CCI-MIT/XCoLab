@@ -21,7 +21,7 @@
   
     <!-- HELP DIVS -->
     <div class="help" id="help1">
-      <div class="helptop"><span>Registration and Contacting Members</span> <div class="closehelp"><a href="javascript:;" onclick="jQuery('#help1').hide()"><img src="/collaboratorium-theme/images/help_close.png" width="20" height="20" alt="X" /></a></div></div>
+      <div class="helptop"><span>Registration and Contacting Members</span> <div class="closehelp"><a href="javascript:;" onclick="jQuery('#help1').hide()"><img src="/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" /></a></div></div>
       <div class="helptext">Anyone in the world can become a Member of the Climate CoLab community by&amp;nbsp;<a href="/web/guest/loginregister">registering</a> on the site. Send a message to a member by clicking on the screen name below to open their profile and then selecting "Send message."</div>
     </div>
     <!-- HELP DIVS -->
@@ -40,6 +40,9 @@
       <div class="comm_disc-head">        
         <div class="comm_info-left members"><span>#{membersBean.usersCount}</span> Members</div>
         <div class="comm_info-large">
+            <f:subview rendered="#{not empty membersBean.searchPhrase}">
+                <span id="clearSearchBox" onclick="jQuery('.comm_search').val(''); jQuery('.comm_disc-head .blue-button a').click();">x</span>
+            </f:subview>
             <ice:inputText styleClass="comm_search" value="#{membersBean.searchPhrase}" partialSubmit="true" style="float: left;"/>
             <div class="blue-button" style="float: left;"> 
                 <ice:commandLink actionListener="#{membersBean.doSearch}" value="Search" />
@@ -177,7 +180,7 @@
                     </ice:commandLink>
                 </li>
                 <li class="#{membersBean.categoryFilter == null or membersBean.categoryFilter == 'ALL' ? 'c' : ''}">
-                    <ice:commandLink actionListener="#{membersBean.updateCategoryFilter}" value="All Members" onclick="Collab.nav.navigateAddParams('members', {filter: 'ALL'}); return false;">
+                    <ice:commandLink actionListener="#{membersBean.updateCategoryFilter}" value="All" onclick="Collab.nav.navigateAddParams('members', {filter: 'ALL'}); return false;">
                         <f:attribute name="category" value="ALL" />
                     </ice:commandLink>
                 </li>

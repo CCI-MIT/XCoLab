@@ -1207,7 +1207,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         store(pi);
         
         setAttribute(pi, PlanConstants.Attribute.LAST_MOD_DATE, String.valueOf(pi.getUpdated()));
-
+        
         return pi;
     }
 

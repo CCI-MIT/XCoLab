@@ -146,6 +146,33 @@ public class ContestPhaseWrapper implements ContestPhase,
     }
 
     /**
+    * Returns the phase inactive override of this contest phase.
+    *
+    * @return the phase inactive override of this contest phase
+    */
+    public boolean getPhaseInactiveOverride() {
+        return _contestPhase.getPhaseInactiveOverride();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest phase is phase inactive override.
+    *
+    * @return <code>true</code> if this contest phase is phase inactive override; <code>false</code> otherwise
+    */
+    public boolean isPhaseInactiveOverride() {
+        return _contestPhase.isPhaseInactiveOverride();
+    }
+
+    /**
+    * Sets whether this contest phase is phase inactive override.
+    *
+    * @param phaseInactiveOverride the phase inactive override of this contest phase
+    */
+    public void setPhaseInactiveOverride(boolean phaseInactiveOverride) {
+        _contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
+    }
+
+    /**
     * Returns the phase start date of this contest phase.
     *
     * @return the phase start date of this contest phase

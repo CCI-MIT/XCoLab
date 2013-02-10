@@ -8,9 +8,12 @@ package org.climatecollaboratorium.plans.wrappers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.faces.model.SelectItem;
 
@@ -24,14 +27,18 @@ import org.climatecollaboratorium.plans.PlansIndexBean;
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestTeamMember;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,14 +59,22 @@ public class ContestWrapper {
     private List<ContestPhaseWrapper> pastPhases = new ArrayList<ContestPhaseWrapper>();
     ContestPhaseWrapper activePhase = null;
 
+    private Map<String, List<User>> teamRoleUsersMap = new TreeMap<String, List<User>>();
     private CreatePlanBean createPlanBean;
 
 
     public ContestWrapper(Contest contest) throws SystemException, PortalException {
+        ContestPhase defaultPhase = null;
         boolean addAsActiveOrPast = true;
         this.contest = contest;
-        for (ContestPhase phase: ContestLocalServiceUtil.getPhases(contest)) {
-            ContestPhaseWrapper phaseWrapper = new ContestPhaseWrapper(this,phase);
+        Date now = new Date();
+        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getPhases(contest);
+        int phasesCount = phases.size();
+        int phaseNumber = 0;
+        for (ContestPhase phase: contestPhases) {
+            phaseNumber++;
+            
+            ContestPhaseWrapper phaseWrapper = new ContestPhaseWrapper(this,phase, phaseNumber == phasesCount);
             if (addAsActiveOrPast) {
                 activeOrPastPhases.add(phaseWrapper);
                 if (! phaseWrapper.isActive()) {
@@ -75,10 +90,11 @@ public class ContestWrapper {
             if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
                 activePhase = phaseWrapper;
             }
+            if (phase.getPhaseStartDate().before(now))
+                defaultPhase = defaultPhase == null || defaultPhase.getPhaseStartDate().before(phase.getPhaseStartDate()) ? phase : defaultPhase;
         }
         if (activePhase == null) {
-            List<ContestPhase> phases = ContestLocalServiceUtil.getPhases(contest);
-            activePhase = new ContestPhaseWrapper(this, phases.get(phases.size()-1));
+            activePhase = new ContestPhaseWrapper(this, defaultPhase, false);
         }
         editor = new EditContestBean();
         plansIndex = new PlansIndexBean(activePhase);
@@ -86,6 +102,15 @@ public class ContestWrapper {
         // reverse list to have active phase as the first one
         Collections.reverse(activeOrPastPhases);
         createPlanBean = new CreatePlanBean(this);
+        
+        for (ContestTeamMember ctm: ContestLocalServiceUtil.getTeamMembers(contest)) {
+            List<User> roleUsers = teamRoleUsersMap.get(ctm.getRole());
+            if (roleUsers == null) {
+                roleUsers = new ArrayList<User>();
+                teamRoleUsersMap.put(ctm.getRole(), roleUsers);
+            }
+            roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+        }
     }
 
     public String getName() {
@@ -339,13 +364,11 @@ public class ContestWrapper {
     }
     
     public long getProposalsCount() throws SystemException, PortalException {
-        //return ContestLocalServiceUtil.getProposalsCount(contest);
-        return 15;
+        return ContestLocalServiceUtil.getProposalsCount(contest);
     }
     
     public long getCommentsCount() throws PortalException, SystemException {
-        //return ContestLocalServiceUtil.getTotalComments(contest);
-        return 15;
+        return ContestLocalServiceUtil.getTotalComments(contest);
     }
     
     public String getResourcesUrl() {
@@ -374,5 +397,25 @@ public class ContestWrapper {
     
     public Long getGroupId() {
         return contest.getGroupId();
+    }
+    
+    public List<ContestTeamMemberWrapper> getTeamMembers() throws SystemException {
+        List<ContestTeamMemberWrapper> ret = new ArrayList<ContestTeamMemberWrapper>();
+        for (ContestTeamMember member: ContestLocalServiceUtil.getTeamMembers(contest)) {
+            ret.add(new ContestTeamMemberWrapper(member));
+        }
+        return ret;
+    }
+    
+    public Map<String, List<User>> getTeamRoleUsers() {
+        return teamRoleUsersMap;
+    }
+    
+    public Set<String> getTeamRoles() {
+        return teamRoleUsersMap.keySet();
+    }
+    
+    public String getFlagTooltip() {
+        return contest.getFlagTooltip();
     }
 }

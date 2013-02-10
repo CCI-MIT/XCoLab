@@ -48,6 +48,7 @@ create table xcolab_ContestPhase (
 	ContestPhaseType LONG,
 	ContestPhaseDescriptionOverride TEXT null,
 	phaseActiveOverride BOOLEAN,
+	phaseInactiveOverride BOOLEAN,
 	PhaseStartDate DATE null,
 	PhaseEndDate DATE null,
 	nextStatus VARCHAR(75) null,

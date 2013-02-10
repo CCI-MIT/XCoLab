@@ -348,6 +348,117 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns all the contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+    *
+    * @param ContestPK the contest p k
+    * @param phaseInactiveOverride the phase inactive override
+    * @return the matching contest phases
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ContestPhase> findByPhaseInactiveOverride(
+        long ContestPK, boolean phaseInactiveOverride)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param ContestPK the contest p k
+    * @param phaseInactiveOverride the phase inactive override
+    * @param start the lower bound of the range of contest phases
+    * @param end the upper bound of the range of contest phases (not inclusive)
+    * @return the range of matching contest phases
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ContestPhase> findByPhaseInactiveOverride(
+        long ContestPK, boolean phaseInactiveOverride, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param ContestPK the contest p k
+    * @param phaseInactiveOverride the phase inactive override
+    * @param start the lower bound of the range of contest phases
+    * @param end the upper bound of the range of contest phases (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contest phases
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ContestPhase> findByPhaseInactiveOverride(
+        long ContestPK, boolean phaseInactiveOverride, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest phase in the ordered set where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param ContestPK the contest p k
+    * @param phaseInactiveOverride the phase inactive override
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest phase
+    * @throws com.ext.portlet.NoSuchContestPhaseException if a matching contest phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ContestPhase findByPhaseInactiveOverride_First(
+        long ContestPK, boolean phaseInactiveOverride,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest phase in the ordered set where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param ContestPK the contest p k
+    * @param phaseInactiveOverride the phase inactive override
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest phase
+    * @throws com.ext.portlet.NoSuchContestPhaseException if a matching contest phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ContestPhase findByPhaseInactiveOverride_Last(
+        long ContestPK, boolean phaseInactiveOverride,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contest phases before and after the current contest phase in the ordered set where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param ContestPhasePK the primary key of the current contest phase
+    * @param ContestPK the contest p k
+    * @param phaseInactiveOverride the phase inactive override
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest phase
+    * @throws com.ext.portlet.NoSuchContestPhaseException if a contest phase with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ContestPhase[] findByPhaseInactiveOverride_PrevAndNext(
+        long ContestPhasePK, long ContestPK, boolean phaseInactiveOverride,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the contest phases.
     *
     * @return the contest phases
@@ -424,6 +535,17 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes all the contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63; from the database.
+    *
+    * @param ContestPK the contest p k
+    * @param phaseInactiveOverride the phase inactive override
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByPhaseInactiveOverride(long ContestPK,
+        boolean phaseInactiveOverride)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Removes all the contest phases from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -464,6 +586,18 @@ public interface ContestPhasePersistence extends BasePersistence<ContestPhase> {
     */
     public int countByPhaseActiveOverride(long ContestPK,
         boolean phaseActiveOverride)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contest phases where ContestPK = &#63; and phaseInactiveOverride = &#63;.
+    *
+    * @param ContestPK the contest p k
+    * @param phaseInactiveOverride the phase inactive override
+    * @return the number of matching contest phases
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByPhaseInactiveOverride(long ContestPK,
+        boolean phaseInactiveOverride)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

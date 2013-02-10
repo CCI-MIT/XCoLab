@@ -54,6 +54,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "ContestPhaseType", Types.BIGINT },
             { "ContestPhaseDescriptionOverride", Types.VARCHAR },
             { "phaseActiveOverride", Types.BOOLEAN },
+            { "phaseInactiveOverride", Types.BOOLEAN },
             { "PhaseStartDate", Types.TIMESTAMP },
             { "PhaseEndDate", Types.TIMESTAMP },
             { "nextStatus", Types.VARCHAR },
@@ -61,7 +62,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "updated", Types.TIMESTAMP },
             { "authorId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhase";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhase.PhaseStartDate ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhase.PhaseStartDate ASC";
@@ -81,6 +82,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     public static long PHASEENDDATE_COLUMN_BITMASK = 2L;
     public static long PHASESTARTDATE_COLUMN_BITMASK = 4L;
     public static long PHASEACTIVEOVERRIDE_COLUMN_BITMASK = 8L;
+    public static long PHASEINACTIVEOVERRIDE_COLUMN_BITMASK = 16L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ContestPhase"));
     private static ClassLoader _classLoader = ContestPhase.class.getClassLoader();
@@ -96,6 +98,9 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     private boolean _phaseActiveOverride;
     private boolean _originalPhaseActiveOverride;
     private boolean _setOriginalPhaseActiveOverride;
+    private boolean _phaseInactiveOverride;
+    private boolean _originalPhaseInactiveOverride;
+    private boolean _setOriginalPhaseInactiveOverride;
     private Date _PhaseStartDate;
     private Date _originalPhaseStartDate;
     private Date _PhaseEndDate;
@@ -125,6 +130,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         model.setContestPhaseType(soapModel.getContestPhaseType());
         model.setContestPhaseDescriptionOverride(soapModel.getContestPhaseDescriptionOverride());
         model.setPhaseActiveOverride(soapModel.getPhaseActiveOverride());
+        model.setPhaseInactiveOverride(soapModel.getPhaseInactiveOverride());
         model.setPhaseStartDate(soapModel.getPhaseStartDate());
         model.setPhaseEndDate(soapModel.getPhaseEndDate());
         model.setNextStatus(soapModel.getNextStatus());
@@ -254,6 +260,31 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     @JSON
+    public boolean getPhaseInactiveOverride() {
+        return _phaseInactiveOverride;
+    }
+
+    public boolean isPhaseInactiveOverride() {
+        return _phaseInactiveOverride;
+    }
+
+    public void setPhaseInactiveOverride(boolean phaseInactiveOverride) {
+        _columnBitmask |= PHASEINACTIVEOVERRIDE_COLUMN_BITMASK;
+
+        if (!_setOriginalPhaseInactiveOverride) {
+            _setOriginalPhaseInactiveOverride = true;
+
+            _originalPhaseInactiveOverride = _phaseInactiveOverride;
+        }
+
+        _phaseInactiveOverride = phaseInactiveOverride;
+    }
+
+    public boolean getOriginalPhaseInactiveOverride() {
+        return _originalPhaseInactiveOverride;
+    }
+
+    @JSON
     public Date getPhaseStartDate() {
         return _PhaseStartDate;
     }
@@ -370,6 +401,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         contestPhaseImpl.setContestPhaseType(getContestPhaseType());
         contestPhaseImpl.setContestPhaseDescriptionOverride(getContestPhaseDescriptionOverride());
         contestPhaseImpl.setPhaseActiveOverride(getPhaseActiveOverride());
+        contestPhaseImpl.setPhaseInactiveOverride(getPhaseInactiveOverride());
         contestPhaseImpl.setPhaseStartDate(getPhaseStartDate());
         contestPhaseImpl.setPhaseEndDate(getPhaseEndDate());
         contestPhaseImpl.setNextStatus(getNextStatus());
@@ -435,6 +467,10 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
         contestPhaseModelImpl._setOriginalPhaseActiveOverride = false;
 
+        contestPhaseModelImpl._originalPhaseInactiveOverride = contestPhaseModelImpl._phaseInactiveOverride;
+
+        contestPhaseModelImpl._setOriginalPhaseInactiveOverride = false;
+
         contestPhaseModelImpl._originalPhaseStartDate = contestPhaseModelImpl._PhaseStartDate;
 
         contestPhaseModelImpl._originalPhaseEndDate = contestPhaseModelImpl._PhaseEndDate;
@@ -462,6 +498,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         }
 
         contestPhaseCacheModel.phaseActiveOverride = getPhaseActiveOverride();
+
+        contestPhaseCacheModel.phaseInactiveOverride = getPhaseInactiveOverride();
 
         Date PhaseStartDate = getPhaseStartDate();
 
@@ -510,7 +548,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("{ContestPhasePK=");
         sb.append(getContestPhasePK());
@@ -522,6 +560,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         sb.append(getContestPhaseDescriptionOverride());
         sb.append(", phaseActiveOverride=");
         sb.append(getPhaseActiveOverride());
+        sb.append(", phaseInactiveOverride=");
+        sb.append(getPhaseInactiveOverride());
         sb.append(", PhaseStartDate=");
         sb.append(getPhaseStartDate());
         sb.append(", PhaseEndDate=");
@@ -540,7 +580,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(37);
+        StringBundler sb = new StringBundler(40);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhase");
@@ -565,6 +605,10 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         sb.append(
             "<column><column-name>phaseActiveOverride</column-name><column-value><![CDATA[");
         sb.append(getPhaseActiveOverride());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>phaseInactiveOverride</column-name><column-value><![CDATA[");
+        sb.append(getPhaseInactiveOverride());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>PhaseStartDate</column-name><column-value><![CDATA[");

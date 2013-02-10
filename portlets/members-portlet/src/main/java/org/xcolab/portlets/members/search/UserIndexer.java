@@ -504,7 +504,7 @@ public class UserIndexer extends BaseIndexer {
 	            
 	                
 	            if (roleIdToCategoryMap.containsKey(roleId)) {
-	                categories.add(roleIdToCategoryMap.get(roleId).name());
+	                categories.add(roleIdToCategoryMap.get(roleId).name().toLowerCase());
 	            }
 	        }
 	        String[] ret = new String[categories.size()];

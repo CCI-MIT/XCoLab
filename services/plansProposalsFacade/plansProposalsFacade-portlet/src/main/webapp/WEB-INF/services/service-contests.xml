@@ -81,6 +81,7 @@
         <column name="ContestPhaseType" type="long" />
         <column name="ContestPhaseDescriptionOverride" type="String"/>
         <column name="phaseActiveOverride" type="boolean" />
+        <column name="phaseInactiveOverride" type="boolean" />
         <column name="PhaseStartDate" type="Date" />
         <column name="PhaseEndDate" type="Date" />
         <column name="nextStatus" type="String" />
@@ -104,6 +105,10 @@
         <finder name="PhaseActiveOverride" return-type="Collection">
             <finder-column name="ContestPK" />
             <finder-column name="phaseActiveOverride" />
+        </finder>
+        <finder name="PhaseInactiveOverride" return-type="Collection">
+            <finder-column name="ContestPK" />
+            <finder-column name="phaseInactiveOverride" />
         </finder>
       </entity>
       

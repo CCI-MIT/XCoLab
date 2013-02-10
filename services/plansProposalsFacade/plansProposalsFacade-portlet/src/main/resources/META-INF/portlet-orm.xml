@@ -81,6 +81,7 @@
 			<basic name="ContestPhaseType" />
 			<basic name="ContestPhaseDescriptionOverride" />
 			<basic name="phaseActiveOverride" />
+			<basic name="phaseInactiveOverride" />
 			<basic name="PhaseStartDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>

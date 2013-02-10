@@ -121,6 +121,7 @@
 		<property name="ContestPhaseType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPhaseDescriptionOverride" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="phaseActiveOverride" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="phaseInactiveOverride" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="PhaseStartDate" type="org.hibernate.type.TimestampType" />
 		<property name="PhaseEndDate" type="org.hibernate.type.TimestampType" />
 		<property name="nextStatus" type="com.liferay.portal.dao.orm.hibernate.StringType" />
