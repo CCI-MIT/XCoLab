@@ -16,7 +16,7 @@
     <table class="inputDefTable">
         <tr class="#{(status.index + 1) % 2 == 0 ? 'even' : 'odd'}">
         <!--  colspan takes 1 col for first input and 2 cols for each following inputs -->
-            <td class="first"  colspan="#{fn:length(input.displayItems) * 2 - 1}"><span>#{input.name}</span> <a class="toggle-description" onclick="jQuery(this).parent().find('.inputDescription').toggle(400)" href="javascript:;"> <img alt="question" src="/collaboratorium-theme/images/qustion_icon.png" /> </a>
+            <td class="first"  colspan="#{fn:length(input.displayItems) * 2 - 1}"><span>#{input.name}</span> <a class="toggle-description" onclick="jQuery(this).parent().find('.inputDescription').toggle(400)" href="javascript:;"> <img alt="question" src="/climatecolab-theme/images/qustion_icon.png" /> </a>
             <p class="hidden inputDescription">#{input.description}</p>
 
             </td>

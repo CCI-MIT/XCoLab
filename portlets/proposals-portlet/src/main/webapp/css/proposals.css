@@ -501,7 +501,7 @@ table.mainTabs > tbody > tr:first-child table .MidMid {
 }
 
 table.mainTabs > tbody > tr:first-child table td.admin {
-  background:url("/collaboratorium-theme/images/link_bg_continuous.gif") repeat; 
+  background:url("/climatecolab-theme/images/link_bg_continuous.gif") repeat; 
 
 }
 
@@ -566,13 +566,13 @@ table.mainTabs {
 }
 
 table.mainTabs .MidMid a {
-	background:url(/collaboratorium-theme/images/tab_off.gif) no-repeat #2498b3; height:17px; padding:10px 12px 3px 12px; margin:3px 6px 0 0; display:inline-block; font-size:13px; font-weight:600; color:#fff;
+	background:url(/climatecolab-theme/images/tab_off.gif) no-repeat #2498b3; height:17px; padding:10px 12px 3px 12px; margin:3px 6px 0 0; display:inline-block; font-size:13px; font-weight:600; color:#fff;
      
 }
 
 table.mainTabs .icePnlTbOn a,
 table.mainTabs .icePnlTbOver a {
- background:url(/collaboratorium-theme/images/tab_on.png) no-repeat right #fff; height:20px; padding:13px 16px 0 8px; margin:0 6px 0 0; color:#2498b3;
+ background:url(/climatecolab-theme/images/tab_on.png) no-repeat right #fff; height:20px; padding:13px 16px 0 8px; margin:0 6px 0 0; color:#2498b3;
 }
 
 /**
@@ -631,7 +631,7 @@ div.editControls.cancelEdit {
  *
  */
 .container_bottom {
-    background:url("/collaboratorium-theme/images/tabContent_bottom.gif") no-repeat scroll center top transparent;
+    background:url("/climatecolab-theme/images/tabContent_bottom.gif") no-repeat scroll center top transparent;
     padding-top:4px;
 }
 
@@ -742,7 +742,7 @@ div.editControls.cancelEdit {
 }
 
 .pageBottom {
-    background:url("/collaboratorium-theme/images/table_bottom_bg.gif") repeat-x scroll center top transparent;
+    background:url("/climatecolab-theme/images/table_bottom_bg.gif") repeat-x scroll center top transparent;
     margin-top:20px;
     width:100%;
 }
@@ -775,42 +775,42 @@ div.editControls.cancelEdit {
 
 
 .paginator .prev {
-    background:url("/collaboratorium-theme/images/previous_btn.gif") no-repeat scroll 0 center transparent;
+    background:url("/climatecolab-theme/images/previous_btn.gif") no-repeat scroll 0 center transparent;
     border:0 none;
     padding-left:21px;
 }
 
 .paginator .iceCmdLnk-dis .prev {
-    background:url("/collaboratorium-theme/images/previous_disable_btn.gif") no-repeat scroll 0 center transparent;
+    background:url("/climatecolab-theme/images/previous_disable_btn.gif") no-repeat scroll 0 center transparent;
 }
 
 .paginator .next {
-    background:url("/collaboratorium-theme/images/next_btn.gif") no-repeat scroll 0 center transparent;
+    background:url("/climatecolab-theme/images/next_btn.gif") no-repeat scroll 0 center transparent;
     border:0 none;
     padding-left:21px;
 }
 
 .paginator .iceCmdLnk-dis .next {
-    background:url("/collaboratorium-theme/images/next_disable_btn.gif") no-repeat scroll 0 center transparent;
+    background:url("/climatecolab-theme/images/next_disable_btn.gif") no-repeat scroll 0 center transparent;
 }
 
 .paginator .first {
-    background:url("/collaboratorium-theme/images/firstPage_btn.gif") no-repeat scroll 0 center transparent;
+    background:url("/climatecolab-theme/images/firstPage_btn.gif") no-repeat scroll 0 center transparent;
     border:0 none;
     padding-left:21px;
 }
 .paginator .iceCmdLnk-dis .first {
-    background:url("/collaboratorium-theme/images/firstPage_disable_btn.gif") no-repeat scroll 0 center transparent;
+    background:url("/climatecolab-theme/images/firstPage_disable_btn.gif") no-repeat scroll 0 center transparent;
 }
 
 
 .paginator .last {
-    background:url("/collaboratorium-theme/images/lastPage_btn.gif") no-repeat scroll 0 center transparent;
+    background:url("/climatecolab-theme/images/lastPage_btn.gif") no-repeat scroll 0 center transparent;
     border:0 none;
     padding-left:21px;
 }
 .paginator .iceCmdLnk-dis .last {
-    background:url("/collaboratorium-theme/images/lastPage_disable_btn.gif") no-repeat scroll 0 center transparent;
+    background:url("/climatecolab-theme/images/lastPage_disable_btn.gif") no-repeat scroll 0 center transparent;
 }
 
 .paginator .iceDatPgrTbl {
@@ -870,11 +870,11 @@ th.voteForPlan {
 }
 
 .indexVoteForPlan.en {
-	background: url("/collaboratorium-theme/images/radio_chk.gif") no-repeat scroll 0 center transparent;
+	background: url("/climatecolab-theme/images/radio_chk.gif") no-repeat scroll 0 center transparent;
 }
 
 .indexVoteForPlan.dis {
-    background: url("/collaboratorium-theme/images/radio.gif") no-repeat scroll 0 center transparent;
+    background: url("/climatecolab-theme/images/radio.gif") no-repeat scroll 0 center transparent;
 }
 
 .nothingSetInfo {
@@ -911,13 +911,13 @@ th.voteForPlan {
 }
 
 .positionsDialog_top {
-    background:url("/collaboratorium-theme/images/yourSuggest_pop_top.png") no-repeat scroll 0 0 transparent;
+    background:url("/climatecolab-theme/images/yourSuggest_pop_top.png") no-repeat scroll 0 0 transparent;
     height:50px;
     width:100%;
 }
 
 .positionsDialog_top .title {
-    background:url("/collaboratorium-theme/images/pop_line.gif") repeat-x scroll center bottom transparent;
+    background:url("/climatecolab-theme/images/pop_line.gif") repeat-x scroll center bottom transparent;
     margin:0 auto;
     padding-bottom:7px;
     width:413px;
@@ -926,7 +926,7 @@ th.voteForPlan {
 }
 
 .positionsDialog_bg {
-    background:url("/collaboratorium-theme/images/yourSuggest_pop_bg.png") no-repeat scroll 0 0 transparent;
+    background:url("/climatecolab-theme/images/yourSuggest_pop_bg.png") no-repeat scroll 0 0 transparent;
     height:205px;
     width:100%;
     overflow: hidden;
@@ -944,7 +944,7 @@ th.voteForPlan {
 	width: auto;
 }
 .positionsDialog_bottom {
-    background:url("/collaboratorium-theme/images/yourSuggest_pop_bottom.png") no-repeat scroll 0 0 transparent;
+    background:url("/climatecolab-theme/images/yourSuggest_pop_bottom.png") no-repeat scroll 0 0 transparent;
     height:52px;
     width:100%;
     text-align: center;
@@ -1187,7 +1187,7 @@ p.special-info {
 	display: block;
     margin-top: auto;
     margin-left: 5px;
-    background: url(/collaboratorium-theme/images/sort-arrow-up_on.gif) no-repeat center;
+    background: url(/climatecolab-theme/images/sort-arrow-up_on.gif) no-repeat center;
 }
 
 .iceCmdSrtHdr .column-hoverAsc {
@@ -1196,7 +1196,7 @@ p.special-info {
     display: block;
     padding-top: 30%;
     margin-left: 5px;
-    background: url(/collaboratorium-theme/images/sort-arrow-down_on.gif) no-repeat center;
+    background: url(/climatecolab-theme/images/sort-arrow-down_on.gif) no-repeat center;
 }
 
 .prohome .column-hover tr {
@@ -1218,17 +1218,17 @@ p.special-info {
 
 .planPlace.place_2,
 .planRibbon.ribbon_2  {
-    background: url(/collaboratorium-theme/images/ribbon-orange.gif);
+    background: url(/climatecolab-theme/images/ribbon-orange.gif);
 }
 
 .planPlace.place_1,
 .planRibbon.ribbon_1  {
-    background: url(/collaboratorium-theme/images/ribbon-blue.gif);
+    background: url(/climatecolab-theme/images/ribbon-blue.gif);
 }
 
 .planPlace.place_3,
 .planRibbon.ribbon_3  {
-    background: url(/collaboratorium-theme/images/ribbon-green.gif);
+    background: url(/climatecolab-theme/images/ribbon-green.gif);
 }
 
 .scrapbook_icon {

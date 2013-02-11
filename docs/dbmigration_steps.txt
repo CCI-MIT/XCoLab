@@ -218,7 +218,7 @@ The Climate CoLab team is arranging briefings for relevant policy-makers about t
 ' WHERE `WikiPage`.`pageId` = 146624;
 
 2. dump database
-3. fix encodings %s/latin1/utf8/g  
+3. fix encodings %s/latin1/utf8/g  and replace collaboratorium theme   %s/collaboratorium-theme/climatecolab-theme/g
 4. change db name
 5.a image.hook.impl=com.liferay.portal.image.DatabaseHook  <- in portal-ext.properties
 5. launch lr

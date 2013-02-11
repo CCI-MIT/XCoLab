@@ -147,11 +147,14 @@ function initTreeWithDynatree() {
     		});
     		linkSpan.replaceWith(linkAnchor);
     	});
+    	jQuery(".jsTreeExpandDefaultToggle a").click(expandDynatree);
     }
 }
 
 function expandDynatree() { 
 	var treeContainer = jQuery(".jsTreeContainer");
+	if (treeContainer.hasClass('expanded')) window.location.reload();
+	treeContainer.addClass("expanded");
 	treeContainer.dynatree("getTree").visit(function(node) {node.expand(true); }, true); 
 	jQuery(".jsTreeExpandDefaultToggle").toggle();
 	treeContainer.find(".externallink").each(function() {
@@ -424,7 +427,7 @@ function updateBreadcrumb(placeholder, items) {
     var breadcrumb = [];
     for (var i = 0; i < items.length; i++) {
     	var item = items[i];
-        breadcrumb[2*i] = '<img width="8" height="8" alt="" src="/collaboratorium-theme/images/arrow.gif" /> ';
+        breadcrumb[2*i] = '<img width="8" height="8" alt="" src="/climatecolab-theme/images/arrow.gif" /> ';
         breadcrumb[2*i + 1] = '<a href="' + item.href + '" onclick="' + item.onclick + '; return false;">' + item.text + '</a>';
     }
 

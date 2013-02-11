@@ -58,7 +58,7 @@
 		
 		<dependency>
 			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces</artifactId>
+			<artifactId>icefaces-xcolab</artifactId>
 			<version>1.8.2</version>
 		</dependency>
 		<dependency>

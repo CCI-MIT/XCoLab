@@ -4,7 +4,7 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>messaging-portlet</portlet-name>
-		<instanceable>true</instanceable>
+		<instanceable>false</instanceable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-css>/css/autoSuggest.css</header-portlet-css>
 		<header-portlet-javascript>/js/jquery.autoSuggest.js</header-portlet-javascript>

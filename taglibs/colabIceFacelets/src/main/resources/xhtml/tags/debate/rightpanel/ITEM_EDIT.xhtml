@@ -2,16 +2,16 @@
 <f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:collab="http://climatecollaboratorium.org/facelets" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <ice:panelGroup styleClass="debate_item_editor">
         <div class="title_editor"><span> <f:subview rendered="#{editBean.debatePostType == 'QUESTION'}">
-            <img src="/collaboratorium-theme/images/icon_qmrk-w.png" />
+            <img src="/climatecolab-theme/images/icon_qmrk-w.png" />
                 QUESTION
             </f:subview> <f:subview rendered="#{editBean.debatePostType == 'POSITION'}">
-            <img src="/collaboratorium-theme/images/icon_question-flag-w.png" />
+            <img src="/climatecolab-theme/images/icon_question-flag-w.png" />
                 POSITION
             </f:subview> <f:subview rendered="#{editBean.debatePostType == 'ARGUMENT_PRO'}">
-            <img src="/collaboratorium-theme/images/icon_question-chk-w.png" />
+            <img src="/climatecolab-theme/images/icon_question-chk-w.png" />
                 ARGUMENT
             </f:subview> <f:subview rendered="#{editBean.debatePostType == 'ARGUMENT_CON'}">
-            <img src="/collaboratorium-theme/images/icon_question-x-w.png" />
+            <img src="/climatecolab-theme/images/icon_question-x-w.png" />
                 ARGUMENT
             </f:subview> TITLE </span> <ice:inputTextarea styleClass="argument_input-box" value="#{editBean.title}" required="true" id="itemTitle" /><br />
                 <ice:message for="itemTitle" />

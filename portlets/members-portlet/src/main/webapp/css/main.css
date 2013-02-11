@@ -46,7 +46,7 @@ h2.feedTitle {
     margin-top: auto;
     margin-left: 5px;
 	
-    background: url(/collaboratorium-theme/images/sort-arrow-down_on.gif) no-repeat center;
+    background: url(/climatecolab-theme/images/sort-arrow-down_on.gif) no-repeat center;
 }
 
 .community .colab .iceCmdSrtHdr .column-hoverAsc {
@@ -56,7 +56,7 @@ h2.feedTitle {
     margin-top: auto;
     margin-left: 5px;
     
-    background: url(/collaboratorium-theme/images/sort-arrow-up_on.gif) no-repeat center;
+    background: url(/climatecolab-theme/images/sort-arrow-up_on.gif) no-repeat center;
 }
 
 

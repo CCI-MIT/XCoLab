@@ -1,0 +1,139 @@
+<%--
+/**
+ * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+boolean showAddEntryButton = BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_ENTRY);
+boolean showPermissionsButton = BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.PERMISSIONS);
+boolean showSubscribeButton = BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.SUBSCRIBE);
+showSearch = showSearch && !results.isEmpty();
+%>
+
+
+	<c:if test="<%= showAddEntryButton %>">
+		<portlet:renderURL var="editEntryURL">
+			<portlet:param name="struts_action" value="/blogs/edit_entry" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="backURL" value="<%= currentURL %>" />
+		</portlet:renderURL>
+
+		<aui:button href="<%= editEntryURL %>" name="addEntryButton" value="add-blog-entry" />
+	</c:if>
+
+<%
+for (Object result : results) {
+	BlogsEntry entry = null;
+
+	AssetEntry assetEntry = null;
+
+	if (result instanceof AssetEntry) {
+		assetEntry = (AssetEntry)result;
+
+		entry = BlogsEntryLocalServiceUtil.getEntry(assetEntry.getClassPK());
+
+		AssetUtil.addLayoutTags(request, assetEntry.getTags());
+	}
+	else {
+		entry = (BlogsEntry)result;
+	}
+
+	if (((entry.getStatus() == WorkflowConstants.STATUS_DRAFT) || (entry.getDisplayDate().after(new Date()))) && (entry.getUserId() != user.getUserId()) && !permissionChecker.isGroupAdmin(scopeGroupId)) {
+		searchContainer.setTotal(searchContainer.getTotal() - 1);
+
+		continue;
+	}
+
+	request.setAttribute("view_entry_content.jsp-searchContainer", searchContainer);
+
+	request.setAttribute("view_entry_content.jsp-entry", entry);
+
+	request.setAttribute("view_entry_content.jsp-assetEntry", assetEntry);
+%>
+
+	<liferay-util:include page="/html/portlet/blogs/view_entry_content.jsp" />
+
+<%
+}
+
+ResourceURL rssURL = liferayPortletResponse.createResourceURL();
+
+rssURL.setCacheability(ResourceURL.FULL);
+rssURL.setParameter("struts_action", "/blogs/rss");
+
+if ((rssDelta != SearchContainer.DEFAULT_DELTA) || !rssFormatType.equals(RSSUtil.TYPE_DEFAULT) || (rssFormatVersion != RSSUtil.VERSION_DEFAULT) || !rssDisplayStyle.equals(RSSUtil.DISPLAY_STYLE_FULL_CONTENT)) {
+	if (rssDelta != SearchContainer.DEFAULT_DELTA) {
+		rssURL.setParameter("max", String.valueOf(rssDelta));
+	}
+
+	if (!rssFormatType.equals(RSSUtil.TYPE_DEFAULT)) {
+		rssURL.setParameter("type", rssFormatType);
+	}
+
+	if (rssFormatVersion != RSSUtil.VERSION_DEFAULT) {
+		rssURL.setParameter("version", String.valueOf(rssFormatVersion));
+	}
+
+	if (!rssDisplayStyle.equals(RSSUtil.DISPLAY_STYLE_FULL_CONTENT)) {
+		rssURL.setParameter("displayStyle", rssDisplayStyle);
+	}
+}
+%>
+
+<div class="subscribe">
+	<liferay-ui:icon
+		image="rss"
+		label="<%= true %>"
+		method="get"
+		target="_blank"
+		url="<%= rssURL.toString() %>"
+	/>
+
+	<c:if test="<%= showSubscribeButton %>">
+		<c:choose>
+			<c:when test="<%= SubscriptionLocalServiceUtil.isSubscribed(company.getCompanyId(), user.getUserId(), BlogsEntry.class.getName(), scopeGroupId) %>">
+				<portlet:actionURL var="unsubscribeURL">
+					<portlet:param name="struts_action" value="/blogs/edit_entry" />
+					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.UNSUBSCRIBE %>" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+				</portlet:actionURL>
+
+				<liferay-ui:icon
+					image="unsubscribe"
+					label="<%= true %>"
+					url="<%= unsubscribeURL %>"
+				/>
+			</c:when>
+			<c:otherwise>
+				<portlet:actionURL var="subscribeURL">
+					<portlet:param name="struts_action" value="/blogs/edit_entry" />
+					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.SUBSCRIBE %>" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+				</portlet:actionURL>
+
+				<liferay-ui:icon
+					image="subscribe"
+					label="<%= true %>"
+					url="<%= subscribeURL %>"
+				/>
+			</c:otherwise>
+		</c:choose>
+	</c:if>
+</div>
+
+<liferay-util:html-top>
+	<link href="<%= rssURL %>" rel="alternate" title="RSS" type="application/rss+xml" />
+</liferay-util:html-top>
+
+<liferay-ui:search-paginator searchContainer="<%= searchContainer %>" />

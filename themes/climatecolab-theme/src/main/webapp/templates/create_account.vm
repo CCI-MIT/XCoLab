@@ -5,10 +5,10 @@
     <!-- Registration -->
     <div class="popup_reg">
       <div class="popupreg_form">
-        <div class="closepopupreg"><a href="javascript:;" class="closereg"><img src="/collaboratorium-theme/images/help_close.png" width="20" height="20" alt="X" /></a></div>
+        <div class="closepopupreg"><a href="javascript:;" class="closereg"><img src="/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" /></a></div>
         <div class="popupreg_head"><h3>Join the CoLab</h3></div>
-        <div class="popupreg_message">This page requires you to login...<div class="popupreg_facebook"><a href="javascript:clickFacebookButton()"><img src="/collaboratorium-theme/images/popuplogin_facebook.gif" width="154" height="22" alt="Login with Facebook" /></a></div></div>
-        <div class="is-required"><img src="/collaboratorium-theme/images/reg-star.png" width="8" height="7" align="texttop" /> is a required field.</div>      
+        <div class="popupreg_message">This page requires you to login...<div class="popupreg_facebook"><a href="javascript:clickFacebookButton()"><img src="/climatecolab-theme/images/popuplogin_facebook.gif" width="154" height="22" alt="Login with Facebook" /></a></div></div>
+        <div class="is-required"><img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" /> is a required field.</div>      
         <form method="post" id="createAccountForm" action="/web/guest/loginregister?p_p_id=loginregister&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregister_struts_action=%2Fext%2Floginregister%2Fcreate_account&_loginregister_isRegistering=true">
           <input name="cmd" type="hidden" value="add"/>
           <input name="birthdayMonth" type="hidden" value="0"/>

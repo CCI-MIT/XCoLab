@@ -25,7 +25,7 @@ function portletPlansModifyMessageBoardsInnerPortlet() {
 
     var actionTags = contentDocument.find(".lfr-trigger");
     actionTags.find("strong").hide();
-    actionTags.append('<img align="middle" alt="action" src="/collaboratorium-theme/images/aciont_icon.png"/><div>Action</div>');
+    actionTags.append('<img align="middle" alt="action" src="/climatecolab-theme/images/aciont_icon.png"/><div>Action</div>');
 
 
     contentDocument.find(".page-selector").remove();

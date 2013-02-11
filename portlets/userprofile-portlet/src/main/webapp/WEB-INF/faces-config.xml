@@ -41,7 +41,7 @@
 		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
 			<property-name>messagingPortletId</property-name>
-			<value>messaging_WAR_messagingportlet_INSTANCE_9HzD</value>
+			<value>messagingportlet_WAR_messagingportlet</value>
 		</managed-property>
 	</managed-bean>
 	<validator>

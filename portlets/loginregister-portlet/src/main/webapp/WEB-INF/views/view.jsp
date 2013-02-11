@@ -17,7 +17,7 @@
 	<div class="popupreg_head"><h1>Join the CoLab</h1></div>
 	<div class="popupreg_message"><p>Fill out the form below or import your data from another service.</p></div>
 	
-	<div class="is-required"><img src="/collaboratorium-theme/images/reg-star.png" width="8" height="7" align="texttop" /> is a required field.</div>
+	<div class="is-required"><img src="/climatecolab-theme/images/reg-star.png" width="8" height="7" align="texttop" /> is a required field.</div>
 	
 	<c:if test="${ error != null and isRegistering }">
     	<div class="error-message">${error}</div>

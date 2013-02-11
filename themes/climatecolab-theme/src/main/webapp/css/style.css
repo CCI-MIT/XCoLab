@@ -264,7 +264,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 
 /* blue header bar ------------- */
 .blueheaderbar {height:37px; background:#e7f1f5; border-top:1px solid #a7d7fb; border-bottom:1px solid #9cbcca; color:#404040;}
-.blueheaderbar a {font-weight:700;}
+.blueheaderbar a {font-weight:normal;}
 
 /* list page */
 .blueheaderbar .contest {float:left; width:377px; height:37px; padding-left:9px;}

@@ -260,7 +260,7 @@ fieldset { border: 0; padding: 0; margin: 0}
 input.comm_butt[type="submit"], 
 input.comm_butt[type="submit"]:hover,
 input.comm_butt[type="submit"]:focus
- { background: url(/collaboratorium-theme/images/comment_submit.gif); border:none; width:119px; height:30px; cursor:pointer;}
+ { background: url(/climatecolab-theme/images/comment_submit.gif); border:none; width:119px; height:30px; cursor:pointer;}
  
  .commentsActions {
     margin-top: 15px;
@@ -967,12 +967,12 @@ display: inline;
 }
 
 .column-hoverAsc {
-	background: url(../images/sort-arrow-down.png) 0 5px no-repeat;
+	background: url(../images/sort-arrow-up.png) 0 5px no-repeat;
 	width: 10px;
 	height: 20px;
 }
 .column-hoverDesc {
-    background: url(../images/sort-arrow-up.png) 0 5px no-repeat;
+    background: url(../images/sort-arrow-down.png) 0 5px no-repeat;
     width: 10px;
     height: 20px;
 }
@@ -1106,6 +1106,13 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
     border-color: #eed3d7;
 }
 
+#content  .membersCategories , #content  .membersCategories li {
+	list-style: none;
+	background: none;
+	padding-left: 0px;
+    margin-left: 0px;
+	
+}
 
 .contestbar .phaseSeparatorContainer {
     width: 16px;
@@ -1150,4 +1157,20 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 
 .dockbar-ready .portlet-topper {
 	display: block;
+}
+
+.portlet-blogs .entry-tags {
+	clear: both;
+}
+
+.header-back-to {
+	display: none;
+}
+
+.taglib-header {
+	border-bottom: 0;
+}
+
+.toplinks li {
+	list-style: none;
 }

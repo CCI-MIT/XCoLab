@@ -18,19 +18,19 @@
                     //#{debateBean.currentItem}
                     
                 </script>
-                    <img src="/collaboratorium-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
+                    <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
                     Share
                 </a>
             <f:subview  rendered="#{debateBean.debatesPermissionsBean.canEditDebateMap}" >
             <ice:commandLink actionListener="#{debateBean.subscribe}" onclick='if(!deferUntilLogin()) return false;'>
             
                 <f:subview rendered="#{debateBean.subscribed}">
-                <img src="/collaboratorium-theme/images/unsubscribe_small.png" />
+                <img src="/climatecolab-theme/images/unsubscribe_small.png" />
                     Unsubscribe
                 </f:subview>
                 
                 <f:subview rendered="#{not debateBean.subscribed}">
-                    <img src="/collaboratorium-theme/images/icon_star-small.gif" />
+                    <img src="/climatecolab-theme/images/icon_star-small.gif" />
                     Subscribe
                 </f:subview>
                 
@@ -45,14 +45,14 @@
                 
                 <ice:commandLink actionListener="#{debateBean.addDebateItem}" rendered="#{debateBean.currentItem.canHaveSubargument}">
                     <f:attribute name="type" value="ARGUMENT_PRO" />
-                    <img src="/collaboratorium-theme/images/icon_advanced-chk.png" width="16" height="18" />
+                    <img src="/climatecolab-theme/images/icon_advanced-chk.png" width="16" height="18" />
                     add argument for
                 </ice:commandLink>
                  &amp;nbsp; &amp;nbsp;
                 
                 <ice:commandLink actionListener="#{debateBean.addDebateItem}" rendered="#{debateBean.currentItem.canHaveSubargument}">
                     <f:attribute name="type" value="ARGUMENT_CON" />
-                    <img src="/collaboratorium-theme/images/icon_advanced-x.png" width="16" height="18" />
+                    <img src="/climatecolab-theme/images/icon_advanced-x.png" width="16" height="18" />
                     add argument against
                 </ice:commandLink>
                  &amp;nbsp; &amp;nbsp;
@@ -64,7 +64,7 @@
                 
                 
                 <ice:commandLink actionListener="#{debateBean.toggleEditing}">
-                    <img src="/collaboratorium-theme/images/icon_advanced-edit.png" width="19" height="19" />
+                    <img src="/climatecolab-theme/images/icon_advanced-edit.png" width="19" height="19" />
                     edit
                 </ice:commandLink>
                 <ice:commandLink onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; }" actionListener="#{debateBean.addEditBean.deleteSelectedItem}" rendered="#{debateBean.debatesPermissionsBean.canAdmin}">
@@ -76,7 +76,7 @@
                 <ice:commandLink value="close advanced" actionListener="#{debateBean.toggleAdvanced}" /> &amp;nbsp; &amp;nbsp;
             </f:subview>
       
-            <div class="advanced_open"><a href="#"><img src="/collaboratorium-theme/images/icon_advanced-chk.png" width="16" height="18" /> add argument pro</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="#"><img src="/collaboratorium-theme/images/icon_advanced-x.png" width="16" height="18" /> add argument against</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="#"><img src="/collaboratorium-theme/images/icon_advanced-edit.png" width="19" height="19" /> edit</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="javascript:;" id="adv2">close advanced</a> &amp;nbsp; &amp;nbsp;</div>
+            <div class="advanced_open"><a href="#"><img src="/climatecolab-theme/images/icon_advanced-chk.png" width="16" height="18" /> add argument pro</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="#"><img src="/climatecolab-theme/images/icon_advanced-x.png" width="16" height="18" /> add argument against</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="#"><img src="/climatecolab-theme/images/icon_advanced-edit.png" width="19" height="19" /> edit</a> &amp;nbsp; &amp;nbsp; &amp;nbsp; <a href="javascript:;" id="adv2">close advanced</a> &amp;nbsp; &amp;nbsp;</div>
             </f:subview>
         </div>
     </div>

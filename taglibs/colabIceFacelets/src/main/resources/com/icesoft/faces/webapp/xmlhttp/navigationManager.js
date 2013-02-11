@@ -117,7 +117,7 @@ Collab.nav = new function() {
 	}
 	
 	this.block = function() {
-		jQuery("#content_wrap").block({message: "<center><img src='/collaboratorium-theme/images/ajax-loader.gif' /></center>"});
+		jQuery("#content_wrap").block({message: "<center><img src='/climatecolab-theme/images/ajax-loader.gif' /></center>"});
 	}
 	
 	this.unblock = function() {

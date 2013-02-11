@@ -128,7 +128,9 @@ public class MembersBean {
 
     public void setSearchPhrase(String searchPhrase) throws SystemException, NumberFormatException, PortalException, ParseException {
         this.searchPhrase = searchPhrase;
-        categoryFilter = MemberCategory.ALL;
+        
+        if (StringUtils.isNotBlank(searchPhrase)) 
+            categoryFilter = MemberCategory.ALL;
         updateSearchResults();
     }
 

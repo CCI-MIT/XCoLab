@@ -101,6 +101,7 @@ update Counter set name = REPLACE(name, 'com.ext.portlet.ontology', 'com.ext.por
 update Counter set name = REPLACE(name, 'com.ext.portlet.landingPage', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.landingPage%';
 update Counter set name = REPLACE(name, 'com.ext.portlet.mass_messaging', 'com.ext.portlet') WHERE name LIKE '%com.ext.portlet.mass_messaging%';
 
+update Counter set currentId = currentId + 1000000;
 
 insert into Roles_Permissions SELECT 10119 as roleId, p.permissionId FROM Permission_ p left join Roles_Permissions rp on rp.roleId = 10119 and rp.permissionId = p.permissionId where rp.roleId is Null and p.actionId = 'VIEW';
 

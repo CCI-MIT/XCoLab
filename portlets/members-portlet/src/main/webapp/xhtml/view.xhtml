@@ -12,7 +12,7 @@
   
   <div id="bread" class="pro">
     <a href="/web/guest/community">Community</a>&amp;nbsp;
-    <img src="/collaboratorium-theme/images/arrow.gif" width="8" height="8" />&amp;nbsp;
+    <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&amp;nbsp;
     <a href="/web/guest/members">Members</a>
   </div>
   
@@ -191,7 +191,11 @@
     </div> <!-- /right_col4 -->
         
         <div class="clearfix"></div>
-    
+    <f:subview rendered="#{membersBean.categoryFilter == null || membersBean.categoryFilter == 'ALL'}">
+    <script type="text/javascript">
+      window.location = '#';
+    </script>
+    </f:subview>
         
     </ice:portlet>
 </f:view>

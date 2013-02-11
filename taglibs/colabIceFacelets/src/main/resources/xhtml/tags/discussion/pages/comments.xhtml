@@ -11,9 +11,9 @@
   
     <div class="com-info">
       <div class="info-left">
-        <img src="/collaboratorium-theme/images/icon_comments-big.png" width="53" height="50" /> 
+        <img src="/climatecolab-theme/images/icon_comments-big.png" width="53" height="50" /> 
         <span>#{discussionBean.commentsCount}</span> comments
-        <img src="/collaboratorium-theme/images/icon_new-comment.png" width="44" height="41" class="spc" /> 
+        <img src="/climatecolab-theme/images/icon_new-comment.png" width="44" height="41" class="spc" /> 
         <a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery.scrollTo(jQuery("#thecomment")); return false;'>add new comment</a>
 
       </div>
@@ -31,7 +31,7 @@
                     //#{debateBean.currentItem}
                     
                 </script>
-                    <img src="/collaboratorium-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
+                    <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
                     Share
             </a>
             &amp;nbsp;
@@ -39,11 +39,11 @@
             &amp;nbsp;
         
             <ice:commandLink actionListener="#{discussionBean.subscribe}" onclick='if(!deferUntilLogin()) return false;' rendered="#{not discussionBean.subscribed}">
-                <img src="/collaboratorium-theme/images/icon_star-small.gif" class="spc" />
+                <img src="/climatecolab-theme/images/icon_star-small.gif" class="spc" />
                 Subscribe
             </ice:commandLink>
             <ice:commandLink actionListener="#{discussionBean.subscribe}" onclick='if(!deferUntilLogin()) return false;' rendered="#{discussionBean.subscribed}">
-                <img src="/collaboratorium-theme/images/unsubscribe_small.png" class="spc" />
+                <img src="/climatecolab-theme/images/unsubscribe_small.png" class="spc" />
                 Unsubscribe 
             </ice:commandLink>
             &amp;nbsp;
@@ -103,7 +103,7 @@
                                 }
                     
                             </script>
-                                <img src="/collaboratorium-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
+                                <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
                                 Share
                         </a>
                     </div>
