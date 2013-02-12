@@ -6,6 +6,8 @@ import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.xcolab.utils.PropertiesUtils;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.util.mail.MailEngine;
@@ -30,10 +32,10 @@ public class ContactBean {
     private String captchaChallenge;
     
     public ContactBean() {
-        captchaScriptURL = PortletProps.get("captcha.engine.recaptcha.url.script");
-        captchaNoScriptURL = PortletProps.get("captcha.engine.recaptcha.url.noscript");
-        captchaPublicKey = PortletProps.get("captcha.engine.recaptcha.key.public");
-        fromAddress = PortletProps.get("contact.form.from.email");
+        captchaScriptURL = PropertiesUtils.get("captcha.engine.recaptcha.url.script");
+        captchaNoScriptURL = PropertiesUtils.get("captcha.engine.recaptcha.url.noscript");
+        captchaPublicKey = PropertiesUtils.get("captcha.engine.recaptcha.key.public");
+        fromAddress = PropertiesUtils.get("contact.form.from.email");
         
     }
     

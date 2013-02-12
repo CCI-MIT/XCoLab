@@ -235,3 +235,5 @@ The Climate CoLab team is arranging briefings for relevant policy-makers about t
 * A briefing on Capitol Hill sponsored by the U.S. House of Representatives Select Committee on Energy Independence and Global Warming (Washington, DC)
 * A briefing to the United Nations Secretary General''s Climate Change Support Team (New York, NY)
 ' WHERE `WikiPage`.`pageId` = 146624;
+
+ALTER TABLE  `xcolab_ContestPhase` ADD  `phaseInactiveOverride` TINYINT NULL;
