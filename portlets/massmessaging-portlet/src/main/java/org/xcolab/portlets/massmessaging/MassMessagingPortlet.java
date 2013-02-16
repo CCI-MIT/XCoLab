@@ -13,11 +13,8 @@ import java.util.regex.Pattern;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletConfig;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
+import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
 import com.ext.portlet.model.MessagingIgnoredRecipients;

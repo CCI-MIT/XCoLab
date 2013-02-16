@@ -1,6 +1,6 @@
 package org.climatecollaboratorium.facelets.simulations;
 
-import edu.mit.cci.simulation.client.*;
+import edu.mit.cci.roma.client.*;
 
 import org.climatecollaboratorium.events.Event;
 

@@ -656,7 +656,7 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
         return ((Boolean) returnObj).booleanValue();
     }
 
-    public java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels(
+    public java.util.List<edu.mit.cci.roma.client.Simulation> getAvailableModels(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -679,10 +679,10 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
             }
         }
 
-        return (java.util.List<edu.mit.cci.simulation.client.Simulation>) ClpSerializer.translateOutput(returnObj);
+        return (java.util.List<edu.mit.cci.roma.client.Simulation>) ClpSerializer.translateOutput(returnObj);
     }
 
-    public edu.mit.cci.simulation.client.Simulation getDefaultModel(
+    public edu.mit.cci.roma.client.Simulation getDefaultModel(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -705,7 +705,7 @@ public class PlanTypeLocalServiceClp implements PlanTypeLocalService {
             }
         }
 
-        return (edu.mit.cci.simulation.client.Simulation) ClpSerializer.translateOutput(returnObj);
+        return (edu.mit.cci.roma.client.Simulation) ClpSerializer.translateOutput(returnObj);
     }
 
     public java.util.List<com.ext.portlet.model.PlanTypeColumn> getColumns(

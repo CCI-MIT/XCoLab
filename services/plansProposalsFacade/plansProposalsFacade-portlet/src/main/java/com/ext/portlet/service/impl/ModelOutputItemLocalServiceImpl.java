@@ -5,7 +5,7 @@ import com.ext.portlet.model.ModelOutputItem;
 import com.ext.portlet.service.base.ModelOutputItemLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.MetaData;
+import edu.mit.cci.roma.client.MetaData;
 
 /**
  * The implementation of the model output item local service.

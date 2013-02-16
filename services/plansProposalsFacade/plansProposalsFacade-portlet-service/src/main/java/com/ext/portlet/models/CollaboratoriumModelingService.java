@@ -6,14 +6,15 @@
 
 package com.ext.portlet.models;
 
+import com.ext.PropertiesUtils;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.util.portlet.PortletProps;
 
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.comm.ClientRepository;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.comm.ClientRepository;
  
 public class CollaboratoriumModelingService {
 
@@ -25,27 +26,16 @@ public class CollaboratoriumModelingService {
         if (instance == null) {
 
             // try to read configuration from default location (portal-ext.properties)
-            String host = null;
-            int port = 0;
-            try {
-                host = PropsUtil.get("climatecollaboratorium.model.server");
-                if (host != null) {
-                    port = Integer.parseInt(PropsUtil.get("climatecollaboratorium.model.port"));
-                }
-                
-            } catch (Throwable e) {
-                _log.error("Exception has been thrown when trying to access PropsUtil: " + e.getClass().getName());
-            }
+            String host = PropsUtil.get("edu.mit.roma.address");
             if (host == null) {
-                // if configuration isn't available try to load it from portlet preferences
-                host = PortletProps.get("climatecollaboratorium.model.server");
-                port = Integer.parseInt(PortletProps.get("climatecollaboratorium.model.port"));
+                _log.error("Can't find edu.mit.roma.address property, it has to be set in portal-ext.properties");
+                throw new SystemException("Error initializing modeling service client: Can't find " +
+                		"edu.mit.roma.address property, it has to be set in portal-ext.properties");
             }
-
            
-             _log.info("Starting up modeling client ("+host+":"+port+")");
+             _log.info("Starting up modeling client ("+host+")");
             try {
-                instance = ClientRepository.instance(host, port);
+                instance = ClientRepository.instance(host);
 
                 for (Simulation s : ClientRepository.instance().getAllSimulations()) {
                     _log.info("Loaded... " + s.getName());
@@ -53,7 +43,7 @@ public class CollaboratoriumModelingService {
                 _log.info("Modeling client initialized");
             } catch (Exception e) {
                 _log.error(e);
-                //throw new SystemException("Error initializing modeling service client", e);
+                throw new SystemException("Error initializing modeling service client", e);
             }
 
         }

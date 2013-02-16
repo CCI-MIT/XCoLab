@@ -245,12 +245,12 @@ public class ModelInputItemLocalServiceWrapper
     }
 
     public java.util.List<com.ext.portlet.model.ModelInputItem> getItemsForModel(
-        edu.mit.cci.simulation.client.Simulation sim) {
+        edu.mit.cci.roma.client.Simulation sim) {
         return _modelInputItemLocalService.getItemsForModel(sim);
     }
 
     public com.ext.portlet.model.ModelInputItem getItemForMetaData(
-        java.lang.Long modelId, edu.mit.cci.simulation.client.MetaData md) {
+        java.lang.Long modelId, edu.mit.cci.roma.client.MetaData md) {
         return _modelInputItemLocalService.getItemForMetaData(modelId, md);
     }
 
@@ -259,14 +259,14 @@ public class ModelInputItemLocalServiceWrapper
         return _modelInputItemLocalService.getItemForGroupId(groupid);
     }
 
-    public edu.mit.cci.simulation.client.MetaData getMetaData(
+    public edu.mit.cci.roma.client.MetaData getMetaData(
         com.ext.portlet.model.ModelInputItem item)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
         return _modelInputItemLocalService.getMetaData(item);
     }
 
-    public edu.mit.cci.simulation.client.Simulation getModel(
+    public edu.mit.cci.roma.client.Simulation getModel(
         com.ext.portlet.model.ModelInputItem item)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {

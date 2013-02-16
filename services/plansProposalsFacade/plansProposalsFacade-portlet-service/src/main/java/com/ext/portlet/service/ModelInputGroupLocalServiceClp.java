@@ -98,7 +98,7 @@ public class ModelInputGroupLocalServiceClp
                 "setBeanIdentifier", java.lang.String.class);
 
         _getInputGroupsMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getInputGroups", edu.mit.cci.simulation.client.Simulation.class);
+                "getInputGroups", edu.mit.cci.roma.client.Simulation.class);
 
         _getChildGroupsMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getChildGroups", com.ext.portlet.model.ModelInputGroup.class);
@@ -547,7 +547,7 @@ public class ModelInputGroupLocalServiceClp
     }
 
     public java.util.List<com.ext.portlet.model.ModelInputGroup> getInputGroups(
-        edu.mit.cci.simulation.client.Simulation sim) {
+        edu.mit.cci.roma.client.Simulation sim) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getInputGroupsMethodKey17,
@@ -630,7 +630,7 @@ public class ModelInputGroupLocalServiceClp
         return (com.ext.portlet.model.ModelInputGroup) ClpSerializer.translateOutput(returnObj);
     }
 
-    public edu.mit.cci.simulation.client.Simulation getModel(
+    public edu.mit.cci.roma.client.Simulation getModel(
         com.ext.portlet.model.ModelInputGroup group)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
@@ -658,10 +658,10 @@ public class ModelInputGroupLocalServiceClp
             }
         }
 
-        return (edu.mit.cci.simulation.client.Simulation) ClpSerializer.translateOutput(returnObj);
+        return (edu.mit.cci.roma.client.Simulation) ClpSerializer.translateOutput(returnObj);
     }
 
-    public edu.mit.cci.simulation.client.MetaData getMetaData(
+    public edu.mit.cci.roma.client.MetaData getMetaData(
         com.ext.portlet.model.ModelInputGroup group)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
@@ -689,7 +689,7 @@ public class ModelInputGroupLocalServiceClp
             }
         }
 
-        return (edu.mit.cci.simulation.client.MetaData) ClpSerializer.translateOutput(returnObj);
+        return (edu.mit.cci.roma.client.MetaData) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

@@ -14,9 +14,9 @@ import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.EntityState;
-import edu.mit.cci.simulation.client.MetaData;
-import edu.mit.cci.simulation.client.Simulation;
+import edu.mit.cci.roma.client.EntityState;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Simulation;
 
 
 public class SimulationDecorator implements Simulation {

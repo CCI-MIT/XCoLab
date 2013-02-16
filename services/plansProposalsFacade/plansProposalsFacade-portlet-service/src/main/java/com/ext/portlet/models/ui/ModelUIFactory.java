@@ -26,10 +26,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import edu.mit.cci.simulation.client.MetaData;
-import edu.mit.cci.simulation.client.Scenario;
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.Variable;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.Variable;
 
 /**
  * @author: jintrone

@@ -13,9 +13,9 @@ import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.MetaData;
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.Variable;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.Variable;
 
 /**
  * Layout information for individual (non-group) display elements.

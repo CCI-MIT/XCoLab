@@ -250,12 +250,12 @@ public class ModelInputItemLocalServiceUtil {
     }
 
     public static java.util.List<com.ext.portlet.model.ModelInputItem> getItemsForModel(
-        edu.mit.cci.simulation.client.Simulation sim) {
+        edu.mit.cci.roma.client.Simulation sim) {
         return getService().getItemsForModel(sim);
     }
 
     public static com.ext.portlet.model.ModelInputItem getItemForMetaData(
-        java.lang.Long modelId, edu.mit.cci.simulation.client.MetaData md) {
+        java.lang.Long modelId, edu.mit.cci.roma.client.MetaData md) {
         return getService().getItemForMetaData(modelId, md);
     }
 
@@ -264,14 +264,14 @@ public class ModelInputItemLocalServiceUtil {
         return getService().getItemForGroupId(groupid);
     }
 
-    public static edu.mit.cci.simulation.client.MetaData getMetaData(
+    public static edu.mit.cci.roma.client.MetaData getMetaData(
         com.ext.portlet.model.ModelInputItem item)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
         return getService().getMetaData(item);
     }
 
-    public static edu.mit.cci.simulation.client.Simulation getModel(
+    public static edu.mit.cci.roma.client.Simulation getModel(
         com.ext.portlet.model.ModelInputItem item)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {

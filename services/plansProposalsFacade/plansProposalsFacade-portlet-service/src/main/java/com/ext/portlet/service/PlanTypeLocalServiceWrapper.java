@@ -261,13 +261,13 @@ public class PlanTypeLocalServiceWrapper implements PlanTypeLocalService,
         return _planTypeLocalService.isRegionalType(planTypeId);
     }
 
-    public java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels(
+    public java.util.List<edu.mit.cci.roma.client.Simulation> getAvailableModels(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTypeLocalService.getAvailableModels(planType);
     }
 
-    public edu.mit.cci.simulation.client.Simulation getDefaultModel(
+    public edu.mit.cci.roma.client.Simulation getDefaultModel(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTypeLocalService.getDefaultModel(planType);

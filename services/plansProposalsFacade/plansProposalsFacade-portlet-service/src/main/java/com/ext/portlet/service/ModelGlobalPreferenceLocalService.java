@@ -225,27 +225,27 @@ public interface ModelGlobalPreferenceLocalService
     public void setBeanIdentifier(java.lang.String beanIdentifier);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public boolean isVisible(edu.mit.cci.simulation.client.Simulation s)
+    public boolean isVisible(edu.mit.cci.roma.client.Simulation s)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public void setVisible(edu.mit.cci.simulation.client.Simulation s,
+    public void setVisible(edu.mit.cci.roma.client.Simulation s,
         boolean visible)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public int getWeight(edu.mit.cci.simulation.client.Simulation s)
+    public int getWeight(edu.mit.cci.roma.client.Simulation s)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public void setWeight(edu.mit.cci.simulation.client.Simulation s, int weight)
+    public void setWeight(edu.mit.cci.roma.client.Simulation s, int weight)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.Long getExpertEvaluationPageId(
-        edu.mit.cci.simulation.client.Simulation s)
+        edu.mit.cci.roma.client.Simulation s)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public void setExpertEvaluationPageId(
-        edu.mit.cci.simulation.client.Simulation s, java.lang.Long pageId)
+        edu.mit.cci.roma.client.Simulation s, java.lang.Long pageId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.ext.portlet.model.ModelGlobalPreference> findByCategory(
@@ -254,11 +254,11 @@ public interface ModelGlobalPreferenceLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ModelCategory getCategory(
-        edu.mit.cci.simulation.client.Simulation sim)
+        edu.mit.cci.roma.client.Simulation sim)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     public void updateModelCategory(com.ext.portlet.model.ModelCategory cat,
-        edu.mit.cci.simulation.client.Simulation sim)
+        edu.mit.cci.roma.client.Simulation sim)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

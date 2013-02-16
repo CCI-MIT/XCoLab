@@ -250,7 +250,7 @@ public class ModelOutputItemLocalServiceUtil {
     }
 
     public static com.ext.portlet.model.ModelOutputItem getOutputItem(
-        edu.mit.cci.simulation.client.MetaData md)
+        edu.mit.cci.roma.client.MetaData md)
         throws com.ext.portlet.NoSuchModelOutputItemException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getOutputItem(md);

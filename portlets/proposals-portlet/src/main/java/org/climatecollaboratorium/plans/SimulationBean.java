@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-import edu.mit.cci.simulation.client.Scenario;
+import edu.mit.cci.roma.client.Scenario;
 
 public class SimulationBean {
     private Long scenario;

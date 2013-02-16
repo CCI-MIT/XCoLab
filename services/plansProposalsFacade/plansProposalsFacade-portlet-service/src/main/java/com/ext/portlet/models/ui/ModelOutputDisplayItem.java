@@ -6,13 +6,10 @@
 
 package com.ext.portlet.models.ui;
 
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.Tuple;
-import edu.mit.cci.simulation.client.TupleStatus;
-import edu.mit.cci.simulation.client.Variable;
-
-import java.util.List;
-import java.util.Map;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.Tuple;
+import edu.mit.cci.roma.client.TupleStatus;
+import edu.mit.cci.roma.client.Variable;
 
 /**
  * All model output display items (charts, scalar items, and series items) extend

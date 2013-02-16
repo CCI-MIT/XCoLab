@@ -95,7 +95,7 @@ public class ModelOutputChartOrderLocalServiceClp
 
         _getChartOrderMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getChartOrder",
-                edu.mit.cci.simulation.client.Simulation.class,
+                edu.mit.cci.roma.client.Simulation.class,
                 java.lang.String.class);
     }
 
@@ -531,7 +531,7 @@ public class ModelOutputChartOrderLocalServiceClp
     }
 
     public com.ext.portlet.model.ModelOutputChartOrder getChartOrder(
-        edu.mit.cci.simulation.client.Simulation sim, java.lang.String label)
+        edu.mit.cci.roma.client.Simulation sim, java.lang.String label)
         throws com.ext.portlet.NoSuchModelOutputChartOrderException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;

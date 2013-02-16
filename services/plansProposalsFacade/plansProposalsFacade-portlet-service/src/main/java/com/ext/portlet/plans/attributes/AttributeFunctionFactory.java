@@ -25,12 +25,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import edu.mit.cci.simulation.client.Scenario;
-import edu.mit.cci.simulation.client.Tuple;
-import edu.mit.cci.simulation.client.TupleStatus;
-import edu.mit.cci.simulation.client.Variable;
-import edu.mit.cci.simulation.client.model.transitional.AdaptedScenario;
-import edu.mit.cci.simulation.client.model.transitional.AdaptedVariable;
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Tuple;
+import edu.mit.cci.roma.client.TupleStatus;
+import edu.mit.cci.roma.client.Variable;
+import edu.mit.cci.roma.client.model.transitional.AdaptedScenario;
+import edu.mit.cci.roma.client.model.transitional.AdaptedVariable;
 
 
 /**

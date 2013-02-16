@@ -93,7 +93,7 @@ public class ModelOutputItemLocalServiceClp
                 "setBeanIdentifier", java.lang.String.class);
 
         _getOutputItemMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getOutputItem", edu.mit.cci.simulation.client.MetaData.class);
+                "getOutputItem", edu.mit.cci.roma.client.MetaData.class);
     }
 
     public com.ext.portlet.model.ModelOutputItem addModelOutputItem(
@@ -527,7 +527,7 @@ public class ModelOutputItemLocalServiceClp
     }
 
     public com.ext.portlet.model.ModelOutputItem getOutputItem(
-        edu.mit.cci.simulation.client.MetaData md)
+        edu.mit.cci.roma.client.MetaData md)
         throws com.ext.portlet.NoSuchModelOutputItemException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;

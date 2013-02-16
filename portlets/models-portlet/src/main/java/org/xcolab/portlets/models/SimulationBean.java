@@ -43,13 +43,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
-import edu.mit.cci.simulation.client.MetaData;
-import edu.mit.cci.simulation.client.Scenario;
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.TupleStatus;
-import edu.mit.cci.simulation.client.Variable;
-import edu.mit.cci.simulation.client.comm.ModelNotFoundException;
-import edu.mit.cci.simulation.client.comm.ScenarioNotFoundException;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.TupleStatus;
+import edu.mit.cci.roma.client.Variable;
+import edu.mit.cci.roma.client.comm.ModelNotFoundException;
+import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 
 
 public class SimulationBean implements JSEventHandler {

@@ -16,8 +16,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import edu.mit.cci.simulation.client.MetaData;
-import edu.mit.cci.simulation.client.Simulation;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Simulation;
 
 /**
  * The implementation of the model input item local service.

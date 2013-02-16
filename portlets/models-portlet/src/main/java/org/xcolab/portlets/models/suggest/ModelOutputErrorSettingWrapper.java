@@ -10,7 +10,7 @@ import com.ext.portlet.models.ui.ModelOutputIndexedDisplayItem;
 import com.ext.portlet.models.ui.ModelOutputSeriesDisplayItem;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.TupleStatus;
+import edu.mit.cci.roma.client.TupleStatus;
 
 public class ModelOutputErrorSettingWrapper {
     private ModelOutputDisplayItem item;

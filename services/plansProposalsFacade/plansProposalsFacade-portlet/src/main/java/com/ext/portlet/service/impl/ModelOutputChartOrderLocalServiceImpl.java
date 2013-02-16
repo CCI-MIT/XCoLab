@@ -5,7 +5,7 @@ import com.ext.portlet.model.ModelOutputChartOrder;
 import com.ext.portlet.service.base.ModelOutputChartOrderLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.Simulation;
+import edu.mit.cci.roma.client.Simulation;
 
 /**
  * The implementation of the model output chart order local service.

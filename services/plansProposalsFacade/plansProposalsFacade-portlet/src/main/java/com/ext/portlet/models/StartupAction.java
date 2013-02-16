@@ -13,8 +13,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.comm.ClientRepository;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.comm.ClientRepository;
 
 /**
  *
@@ -34,9 +34,8 @@ public class StartupAction extends SimpleAction {
 
 	protected void doRun(long companyId) throws Exception {
         _log.info("Starting up modeling client ");
-        String host = PropsUtil.get("climatecollaboratorium.model.server");
-        int port = Integer.parseInt(PropsUtil.get("climatecollaboratorium.model.port"));
-		ClientRepository.instance(host,port);
+        String host = PropsUtil.get("edu.mit.roma.address");
+		ClientRepository.instance(host);
 
         for (Simulation s: ClientRepository.instance().getAllSimulations()) {
             _log.info("Loaded... "+s.getName());

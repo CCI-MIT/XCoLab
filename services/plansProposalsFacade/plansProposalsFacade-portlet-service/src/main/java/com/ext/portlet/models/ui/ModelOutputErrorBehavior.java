@@ -9,7 +9,7 @@ package com.ext.portlet.models.ui;
 import com.ext.portlet.model.ModelOutputChartOrder;
 import com.ext.portlet.model.ModelOutputItem;
 
-import edu.mit.cci.simulation.client.TupleStatus;
+import edu.mit.cci.roma.client.TupleStatus;
 
 /**
  * Created by IntelliJ IDEA.

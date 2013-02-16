@@ -99,11 +99,11 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
 
         _getItemsForModelMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getItemsForModel",
-                edu.mit.cci.simulation.client.Simulation.class);
+                edu.mit.cci.roma.client.Simulation.class);
 
         _getItemForMetaDataMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getItemForMetaData", java.lang.Long.class,
-                edu.mit.cci.simulation.client.MetaData.class);
+                edu.mit.cci.roma.client.MetaData.class);
 
         _getItemForGroupIdMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getItemForGroupId", java.lang.Long.class);
@@ -556,7 +556,7 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
     }
 
     public java.util.List<com.ext.portlet.model.ModelInputItem> getItemsForModel(
-        edu.mit.cci.simulation.client.Simulation sim) {
+        edu.mit.cci.roma.client.Simulation sim) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getItemsForModelMethodKey17,
@@ -577,7 +577,7 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
     }
 
     public com.ext.portlet.model.ModelInputItem getItemForMetaData(
-        java.lang.Long modelId, edu.mit.cci.simulation.client.MetaData md) {
+        java.lang.Long modelId, edu.mit.cci.roma.client.MetaData md) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getItemForMetaDataMethodKey18,
@@ -619,7 +619,7 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
         return (java.util.List<com.ext.portlet.model.ModelInputItem>) ClpSerializer.translateOutput(returnObj);
     }
 
-    public edu.mit.cci.simulation.client.MetaData getMetaData(
+    public edu.mit.cci.roma.client.MetaData getMetaData(
         com.ext.portlet.model.ModelInputItem item)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
@@ -647,10 +647,10 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
             }
         }
 
-        return (edu.mit.cci.simulation.client.MetaData) ClpSerializer.translateOutput(returnObj);
+        return (edu.mit.cci.roma.client.MetaData) ClpSerializer.translateOutput(returnObj);
     }
 
-    public edu.mit.cci.simulation.client.Simulation getModel(
+    public edu.mit.cci.roma.client.Simulation getModel(
         com.ext.portlet.model.ModelInputItem item)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
@@ -678,7 +678,7 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
             }
         }
 
-        return (edu.mit.cci.simulation.client.Simulation) ClpSerializer.translateOutput(returnObj);
+        return (edu.mit.cci.roma.client.Simulation) ClpSerializer.translateOutput(returnObj);
     }
 
     public java.util.Map<java.lang.String, java.lang.String> getPropertyMap(

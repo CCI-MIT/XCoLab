@@ -6,7 +6,12 @@
 6. execute sql/lr5_to_6.sql
 7. copy conf/portal-ext.properties to $TOMCATDIR/webapps/ROOT/WEB-INF/classes
 8.a image.hook.impl=com.liferay.portal.image.DatabaseHook  <- in portal-ext.properties
-9. launch lr and wait till it migrates 
+9. copy conf/member_photo.png to $tomcat/webapps/ROOT/WEB-INF/classes/images
+10. launch lr and wait till it migrates 
+11. deploy services/plansProposalsFacade/plansProposalsFacade-portlet
+12. deploy hooks/ layouts themes
+13. deploy portlets
+14. remove image.hook.impl=com.liferay.portal.image.DatabaseHook  <- in portal-ext.properties
+15. reindex search indexes
+16. restart
 
-
-7. change permission algorithm to 5 in portal-ext.properties

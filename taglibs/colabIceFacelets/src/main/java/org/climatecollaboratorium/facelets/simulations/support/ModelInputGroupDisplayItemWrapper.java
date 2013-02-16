@@ -17,7 +17,7 @@ import com.ext.portlet.models.ui.ModelInputGroupDisplayItem;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.MetaData;
+import edu.mit.cci.roma.client.MetaData;
 
 public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrapper {
     private boolean editing;

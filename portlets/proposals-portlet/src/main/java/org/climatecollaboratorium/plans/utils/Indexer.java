@@ -49,7 +49,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 
-import edu.mit.cci.simulation.client.EntityState;
+import edu.mit.cci.roma.client.EntityState;
 
 /**
  * <a href="Indexer.java.html"><b><i>View Source</i></b></a>

@@ -38,8 +38,8 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
-import edu.mit.cci.simulation.client.Scenario;
-import edu.mit.cci.simulation.client.Variable;
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Variable;
 
 public class MigrationTool {
     private static Logger _log = Logger.getLogger(MigrationTool.class);
@@ -447,8 +447,8 @@ public class MigrationTool {
     }
 
     public String rerunPlansSimulations() throws SystemException,
-            java.io.IOException, edu.mit.cci.simulation.client.comm.ModelNotFoundException, PortalException {
-        edu.mit.cci.simulation.client.comm.ClientRepository repository = com.ext.portlet.models.CollaboratoriumModelingService
+            java.io.IOException, edu.mit.cci.roma.client.comm.ModelNotFoundException, PortalException {
+        edu.mit.cci.roma.client.comm.ClientRepository repository = com.ext.portlet.models.CollaboratoriumModelingService
                 .repository();
 
         for (PlanItem basePlan : PlanItemLocalServiceUtil.getPlans()) {

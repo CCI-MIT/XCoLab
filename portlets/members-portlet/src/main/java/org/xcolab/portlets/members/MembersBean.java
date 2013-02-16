@@ -168,10 +168,9 @@ public class MembersBean {
          if (categoryFilter != null && !categoryFilter.equals(MemberCategory.ALL)) {
              if (categoryFilter.equals(MemberCategory.MODERATOR) || categoryFilter.equals(MemberCategory.STAFF)) {
                  BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
-                 subQuery.addTerm("memberCategory", MemberCategory.MODERATOR.name().toLowerCase(), false);
-                 subQuery.addTerm("memberCategory", MemberCategory.STAFF.name().toLowerCase(), false);
+                 subQuery.addExactTerm("memberCategory", MemberCategory.MODERATOR.name().toLowerCase());
+                 subQuery.addExactTerm("memberCategory", MemberCategory.STAFF.name().toLowerCase());
                  query.add(subQuery, BooleanClauseOccurImpl.MUST);
-                 
              }
              else {
                  query.addRequiredTerm("memberCategory", categoryFilter.name(), false);

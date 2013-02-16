@@ -268,13 +268,13 @@ public class PlanTypeLocalServiceUtil {
         return getService().isRegionalType(planTypeId);
     }
 
-    public static java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels(
+    public static java.util.List<edu.mit.cci.roma.client.Simulation> getAvailableModels(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getAvailableModels(planType);
     }
 
-    public static edu.mit.cci.simulation.client.Simulation getDefaultModel(
+    public static edu.mit.cci.roma.client.Simulation getDefaultModel(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getDefaultModel(planType);

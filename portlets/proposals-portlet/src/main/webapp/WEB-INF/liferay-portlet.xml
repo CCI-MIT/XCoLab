@@ -21,9 +21,16 @@
 		<ajaxable>false</ajaxable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-css>/css/proposals.css</header-portlet-css>
+		<header-portlet-css>/xmlhttp/css/simulation/simulation.css</header-portlet-css>
 		<header-portlet-javascript>/js/plans-portlet.js?t=123456</header-portlet-javascript>
 		<header-portlet-javascript>/js/dirtyCheckCallbacks.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/editTrigger.js</header-portlet-javascript>
+		<header-portlet-javascript>/../html/js/jquery/jquery.jqplot.js</header-portlet-javascript>
+		<header-portlet-javascript>/../html/js/jquery/jqplot.ohlcRenderer.min.js</header-portlet-javascript>
+		<header-portlet-javascript>/../html/js/jquery/jqplot.barRenderer.min.js</header-portlet-javascript>
+		<header-portlet-javascript>/../html/js/jquery/jqplot.canvasTextRenderer.min.js</header-portlet-javascript>
+		<header-portlet-javascript>/../html/js/jquery/jqplot.canvasAxisLabelRenderer.min.js</header-portlet-javascript>
+		<header-portlet-javascript>/../html/js/jquery/jquery-ui-1.7.2.custom.js</header-portlet-javascript>
 		<header-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</header-portlet-javascript>
 		<header-portlet-javascript>/xmlhttp/js/simulation/model-inputs-render.js</header-portlet-javascript>
 	</portlet>

@@ -459,7 +459,7 @@ function runSim()
 	$("#infoBox").css({'display':'block'});
 	$("#infoBox").unblock();
 	$("#infoBox").block({
-		message: '<img src="/html/portlet/ext/models/images/ajax-loader.gif"/>',
+		message: '<img src="/climatecolab-theme/images/ajax-loader.gif"/>',
 		css: { 	color: '#000',
 		padding: "15px",
 		'-webkit-border-radius': '10px',

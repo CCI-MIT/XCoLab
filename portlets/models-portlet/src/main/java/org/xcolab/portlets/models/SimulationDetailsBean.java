@@ -44,10 +44,10 @@ import com.liferay.portlet.wiki.NoSuchPageResourceException;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.TupleStatus;
-import edu.mit.cci.simulation.client.comm.ClientRepository;
-import edu.mit.cci.simulation.client.comm.ModelNotFoundException;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.TupleStatus;
+import edu.mit.cci.roma.client.comm.ClientRepository;
+import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 
 public class SimulationDetailsBean {
 

@@ -248,7 +248,7 @@ public class ModelOutputChartOrderLocalServiceWrapper
     }
 
     public com.ext.portlet.model.ModelOutputChartOrder getChartOrder(
-        edu.mit.cci.simulation.client.Simulation sim, java.lang.String label)
+        edu.mit.cci.roma.client.Simulation sim, java.lang.String label)
         throws com.ext.portlet.NoSuchModelOutputChartOrderException,
             com.liferay.portal.kernel.exception.SystemException {
         return _modelOutputChartOrderLocalService.getChartOrder(sim, label);

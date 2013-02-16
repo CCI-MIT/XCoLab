@@ -11,7 +11,7 @@ import com.ext.portlet.models.ui.ModelInputIndividualDisplayItem;
 import com.ext.portlet.models.ui.ModelInputWidgetType;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.MetaData;
+import edu.mit.cci.roma.client.MetaData;
 
 public class ModelInputDisplayItemWrapper {
     protected ModelInputDisplayItem wrappedItem;

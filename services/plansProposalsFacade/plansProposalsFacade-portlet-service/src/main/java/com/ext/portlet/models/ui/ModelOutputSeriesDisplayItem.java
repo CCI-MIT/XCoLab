@@ -18,11 +18,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import edu.mit.cci.simulation.client.MetaData;
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.TupleStatus;
-import edu.mit.cci.simulation.client.Variable;
-import edu.mit.cci.simulation.client.comm.ClientRepository;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.TupleStatus;
+import edu.mit.cci.roma.client.Variable;
+import edu.mit.cci.roma.client.comm.ClientRepository;
 
 /**
  * Wrapper around series metadata; series metadata is merely that
@@ -144,7 +144,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
             Long l = item.getRelatedOutputItem();
             // FIXME CollaboratoriumModelingService won't work as PropsUtil can't be found from portlet
             //return l==null?null:CollaboratoriumModelingService.repository().getMetaData(item.getRelatedOutputItem());
-            return l==null?null:ClientRepository.instance().getMetaData(item.getRelatedOutputItem());
+            return l==null || l <= 0 ?null:ClientRepository.instance().getMetaData(item.getRelatedOutputItem());
     }
 
     public void setAssociatedMetaData(MetaData md) throws SystemException {

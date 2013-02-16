@@ -11,7 +11,7 @@ import org.xcolab.portlets.models.suggest.SimulationsHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.comm.ClientRepository;
+import edu.mit.cci.roma.client.comm.ClientRepository;
 
 public class SimulationsBean {
 

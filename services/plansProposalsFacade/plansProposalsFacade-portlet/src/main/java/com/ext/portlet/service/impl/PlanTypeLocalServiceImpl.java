@@ -15,7 +15,7 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.base.PlanTypeLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.Simulation;
+import edu.mit.cci.roma.client.Simulation;
 
 /**
  * The implementation of the plan type local service.
@@ -62,8 +62,7 @@ public class PlanTypeLocalServiceImpl extends PlanTypeLocalServiceBaseImpl {
     public List<Simulation> getAvailableModels(PlanType planType) throws SystemException {
 
         if (planType.getModelTypeName()!=null && planType.getModelTypeName().trim().length() > 0) {
-               //return new ArrayList<Simulation>(CollaboratoriumModelingService.repository().getSimulationsOfType(planType.getModelTypeName()));
-            return new ArrayList<Simulation>();
+            return new ArrayList<Simulation>(CollaboratoriumModelingService.repository().getSimulationsOfType(planType.getModelTypeName()));
         } else if (planType.getModelId()>0) {
             try {
                 return Collections.singletonList(CollaboratoriumModelingService.repository().getSimulation(planType.getModelId()));

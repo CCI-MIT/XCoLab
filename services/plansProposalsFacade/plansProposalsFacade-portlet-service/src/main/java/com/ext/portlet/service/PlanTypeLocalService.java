@@ -238,12 +238,12 @@ public interface PlanTypeLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<edu.mit.cci.simulation.client.Simulation> getAvailableModels(
+    public java.util.List<edu.mit.cci.roma.client.Simulation> getAvailableModels(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public edu.mit.cci.simulation.client.Simulation getDefaultModel(
+    public edu.mit.cci.roma.client.Simulation getDefaultModel(
         com.ext.portlet.model.PlanType planType)
         throws com.liferay.portal.kernel.exception.SystemException;
 

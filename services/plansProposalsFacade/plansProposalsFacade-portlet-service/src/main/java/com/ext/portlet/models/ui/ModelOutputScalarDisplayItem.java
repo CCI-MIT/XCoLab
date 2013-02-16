@@ -9,10 +9,11 @@ package com.ext.portlet.models.ui;
 import com.liferay.portal.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import edu.mit.cci.simulation.client.*;
 
-import java.util.Collections;
-import java.util.Map;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.TupleStatus;
+import edu.mit.cci.roma.client.Variable;
 
 /**
  * Very simple wrapper class around a singleton output variable.  Not backed,

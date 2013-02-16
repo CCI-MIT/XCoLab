@@ -12,11 +12,11 @@ import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.Scenario;
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.comm.ClientRepository;
-import edu.mit.cci.simulation.client.comm.ModelNotFoundException;
-import edu.mit.cci.simulation.client.comm.ScenarioNotFoundException;
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.comm.ClientRepository;
+import edu.mit.cci.roma.client.comm.ModelNotFoundException;
+import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 
 public class SimulationsHelper {
     

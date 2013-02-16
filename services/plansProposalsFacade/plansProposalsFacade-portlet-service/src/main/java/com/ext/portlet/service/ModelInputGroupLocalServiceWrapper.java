@@ -246,7 +246,7 @@ public class ModelInputGroupLocalServiceWrapper
     }
 
     public java.util.List<com.ext.portlet.model.ModelInputGroup> getInputGroups(
-        edu.mit.cci.simulation.client.Simulation sim) {
+        edu.mit.cci.roma.client.Simulation sim) {
         return _modelInputGroupLocalService.getInputGroups(sim);
     }
 
@@ -265,14 +265,14 @@ public class ModelInputGroupLocalServiceWrapper
         return _modelInputGroupLocalService.getParent(group);
     }
 
-    public edu.mit.cci.simulation.client.Simulation getModel(
+    public edu.mit.cci.roma.client.Simulation getModel(
         com.ext.portlet.model.ModelInputGroup group)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
         return _modelInputGroupLocalService.getModel(group);
     }
 
-    public edu.mit.cci.simulation.client.MetaData getMetaData(
+    public edu.mit.cci.roma.client.MetaData getMetaData(
         com.ext.portlet.model.ModelInputGroup group)
         throws com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {

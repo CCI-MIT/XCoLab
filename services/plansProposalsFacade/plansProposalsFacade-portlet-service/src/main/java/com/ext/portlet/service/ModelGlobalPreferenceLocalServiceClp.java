@@ -102,38 +102,38 @@ public class ModelGlobalPreferenceLocalServiceClp
                 "setBeanIdentifier", java.lang.String.class);
 
         _isVisibleMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "isVisible", edu.mit.cci.simulation.client.Simulation.class);
+                "isVisible", edu.mit.cci.roma.client.Simulation.class);
 
         _setVisibleMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setVisible", edu.mit.cci.simulation.client.Simulation.class,
+                "setVisible", edu.mit.cci.roma.client.Simulation.class,
                 boolean.class);
 
         _getWeightMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getWeight", edu.mit.cci.simulation.client.Simulation.class);
+                "getWeight", edu.mit.cci.roma.client.Simulation.class);
 
         _setWeightMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setWeight", edu.mit.cci.simulation.client.Simulation.class,
+                "setWeight", edu.mit.cci.roma.client.Simulation.class,
                 int.class);
 
         _getExpertEvaluationPageIdMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getExpertEvaluationPageId",
-                edu.mit.cci.simulation.client.Simulation.class);
+                edu.mit.cci.roma.client.Simulation.class);
 
         _setExpertEvaluationPageIdMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setExpertEvaluationPageId",
-                edu.mit.cci.simulation.client.Simulation.class,
+                edu.mit.cci.roma.client.Simulation.class,
                 java.lang.Long.class);
 
         _findByCategoryMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
                 "findByCategory", com.ext.portlet.model.ModelCategory.class);
 
         _getCategoryMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getCategory", edu.mit.cci.simulation.client.Simulation.class);
+                "getCategory", edu.mit.cci.roma.client.Simulation.class);
 
         _updateModelCategoryMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
                 "updateModelCategory",
                 com.ext.portlet.model.ModelCategory.class,
-                edu.mit.cci.simulation.client.Simulation.class);
+                edu.mit.cci.roma.client.Simulation.class);
     }
 
     public com.ext.portlet.model.ModelGlobalPreference addModelGlobalPreference(
@@ -567,7 +567,7 @@ public class ModelGlobalPreferenceLocalServiceClp
         }
     }
 
-    public boolean isVisible(edu.mit.cci.simulation.client.Simulation s)
+    public boolean isVisible(edu.mit.cci.roma.client.Simulation s)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -592,7 +592,7 @@ public class ModelGlobalPreferenceLocalServiceClp
         return ((Boolean) returnObj).booleanValue();
     }
 
-    public void setVisible(edu.mit.cci.simulation.client.Simulation s,
+    public void setVisible(edu.mit.cci.roma.client.Simulation s,
         boolean visible)
         throws com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_setVisibleMethodKey18,
@@ -614,7 +614,7 @@ public class ModelGlobalPreferenceLocalServiceClp
         }
     }
 
-    public int getWeight(edu.mit.cci.simulation.client.Simulation s)
+    public int getWeight(edu.mit.cci.roma.client.Simulation s)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -639,7 +639,7 @@ public class ModelGlobalPreferenceLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
-    public void setWeight(edu.mit.cci.simulation.client.Simulation s, int weight)
+    public void setWeight(edu.mit.cci.roma.client.Simulation s, int weight)
         throws com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_setWeightMethodKey20,
                 ClpSerializer.translateInput(s), weight);
@@ -661,7 +661,7 @@ public class ModelGlobalPreferenceLocalServiceClp
     }
 
     public java.lang.Long getExpertEvaluationPageId(
-        edu.mit.cci.simulation.client.Simulation s)
+        edu.mit.cci.roma.client.Simulation s)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -687,7 +687,7 @@ public class ModelGlobalPreferenceLocalServiceClp
     }
 
     public void setExpertEvaluationPageId(
-        edu.mit.cci.simulation.client.Simulation s, java.lang.Long pageId)
+        edu.mit.cci.roma.client.Simulation s, java.lang.Long pageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_setExpertEvaluationPageIdMethodKey22,
                 ClpSerializer.translateInput(s),
@@ -736,7 +736,7 @@ public class ModelGlobalPreferenceLocalServiceClp
     }
 
     public com.ext.portlet.model.ModelCategory getCategory(
-        edu.mit.cci.simulation.client.Simulation sim)
+        edu.mit.cci.roma.client.Simulation sim)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -767,7 +767,7 @@ public class ModelGlobalPreferenceLocalServiceClp
     }
 
     public void updateModelCategory(com.ext.portlet.model.ModelCategory cat,
-        edu.mit.cci.simulation.client.Simulation sim)
+        edu.mit.cci.roma.client.Simulation sim)
         throws com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_updateModelCategoryMethodKey25,
                 ClpSerializer.translateInput(cat),

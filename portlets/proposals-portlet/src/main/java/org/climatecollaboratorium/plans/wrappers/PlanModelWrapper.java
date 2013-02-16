@@ -11,8 +11,8 @@ import java.io.IOException;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.Simulation;
-import edu.mit.cci.simulation.client.model.impl.ClientSimulation;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.model.impl.ClientSimulation;
 
 /**
  * Created by IntelliJ IDEA.

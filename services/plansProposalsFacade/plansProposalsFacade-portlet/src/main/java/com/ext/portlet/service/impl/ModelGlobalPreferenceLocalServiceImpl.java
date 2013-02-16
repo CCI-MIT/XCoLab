@@ -12,7 +12,7 @@ import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import edu.mit.cci.simulation.client.Simulation;
+import edu.mit.cci.roma.client.Simulation;
 
 /**
  * The implementation of the model global preference local service.

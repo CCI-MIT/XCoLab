@@ -6,7 +6,7 @@ import java.util.Map;
 import com.ext.portlet.models.ui.*;
 import org.climatecollaboratorium.facelets.simulations.SimulationBean;
 
-import edu.mit.cci.simulation.client.MetaData;
+import edu.mit.cci.roma.client.MetaData;
 
 
 

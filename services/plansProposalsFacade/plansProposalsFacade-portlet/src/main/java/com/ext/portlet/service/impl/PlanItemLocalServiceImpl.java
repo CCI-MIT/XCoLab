@@ -92,7 +92,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-import edu.mit.cci.simulation.client.Simulation;
+import edu.mit.cci.roma.client.Simulation;
 
 /**
  * The implementation of the plan item local service.

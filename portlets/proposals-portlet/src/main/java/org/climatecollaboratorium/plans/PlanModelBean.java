@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import edu.mit.cci.simulation.client.Simulation;
+import edu.mit.cci.roma.client.Simulation;
 
 /**
  * Created by IntelliJ IDEA.
