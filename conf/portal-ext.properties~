@@ -32,6 +32,3 @@ captcha.engine.recaptcha.key.public=6LdNM70SAAAAAFv2SnBbq8opXcT_2KlDRl-_iWsy
 
 image.default.user.male.portrait=images/member_photo.png
 image.default.user.female.portrait=images/member_photo.png
-
-
-edu.mit.roma.address=http://climatecolab.org/simulation
