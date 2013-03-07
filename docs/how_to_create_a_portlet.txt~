@@ -27,7 +27,7 @@ How to create a portlet:
 
 10. if you mean to use services deployed for xcolab then reference them in dependencies section
 
-11. change compiler version (in maven-compiler-plugin) to 1.7 (that's not required but let's be consistent) 
+11. change compiler version (in maven-compiler-plugin) to 1.6 (that's not required but let's be consistent) 
 
 12. add classes, web views etc
 

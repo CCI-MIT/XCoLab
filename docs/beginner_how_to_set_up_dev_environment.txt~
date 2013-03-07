@@ -26,19 +26,22 @@
   cd XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet-service
   mvn compile package install
 
-  cd XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet
-  mvn compile package install
-
-
 7. install common taglibs/libraries
   cd XCOLAB_SRC/taglibs/collabIceFacelets
   mvn compile package install
 
-8. install theme and layout tmpl
+8. 
+  cd XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet
+  mvn compile package liferay:deploy
+
+8. install theme, layout tmpl and hooks
   cd XCOLAB_SRC/themes/climatecolab-theme
   mvn compile package liferay:deploy
 
   cd XCOLAB_SRC/layouts/climatecolab-layout
+  mvn compile package liferay:deploy
+
+  cd XCOLAB_SRC/hooks/climatecolab-hooks
   mvn compile package liferay:deploy
 
 9. install all portlets

@@ -26,13 +26,13 @@
   cd XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet-service
   mvn compile package install
 
-  cd XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet
-  mvn compile package install
-
-
 7. install common taglibs/libraries
   cd XCOLAB_SRC/taglibs/collabIceFacelets
   mvn compile package install
+
+8. 
+  cd XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet
+  mvn compile package liferay:deploy
 
 8. install theme, layout tmpl and hooks
   cd XCOLAB_SRC/themes/climatecolab-theme
@@ -49,6 +49,17 @@
 
   for each PORTLET go to PORTLET directory and execute
   mvn compile package liferay:deploy
+
+
+(ie you can use following bash script)
+for D in *; do
+    if [ -d "${D}" ]; then
+        cd $D
+		pwd
+		mvn compile package liferay:deploy
+		cd ..
+    fi
+done
 
 
 10. edit file XCOLAB_BUNDLES_DIR/tomcat-xxx/conf/context.xml
