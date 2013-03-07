@@ -66,13 +66,13 @@ done
 
 inside <Context></Context> add definition of jdbc/LiferayPool resource, IE: 
 
-        <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/LiferayPool" password="liferay" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/xcolab_lportal?useUnicode=true&amp;characterEncoding=UTF-8&amp;useFastDateParsing=false" username="liferay"/>
+        <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/LiferayPool" password="liferay" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/xcolab?useUnicode=true&amp;characterEncoding=UTF-8&amp;useFastDateParsing=false" username="liferay"/>
 
 
 11. copy XCOLAB_SRC/conf/portal-ext.properties to XCOLAB_BUNDLES_DIR/tomcat-xxx/webapps/ROOT/WEB-INF/classes
 12. copy XCOLAB_SRC/conf/member_photo.png XCOLAB_BUNDLES_DIR/tomcat-xxx/webapps/ROOT/WEB-INF/classes/images/
 
-13. import database dump
+13. import database dump. set up db user & password (if you used the supplied <context/> it is liferay:liferay). 
 
 14. It might be needed to increase permGen and Xmx, go to XCOLAB_BUNDLES_DIR/tomcat-xxx/bin/  edit setenv.sh and change permgen to 512 and Xmx to 2048 (or higher if resources are available)
 
