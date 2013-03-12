@@ -15,150 +15,148 @@ import com.liferay.util.mail.MailEngineException;
 import com.liferay.util.portlet.PortletProps;
 
 public class ContactBean {
-    private String name;
-    private String email;
-    private String message;
-    private int requestCount;
-    private boolean expanded;
-    private int tryNumber;
-    private final String captchaScriptURL;
-    private final String captchaNoScriptURL;
-    private final String captchaPublicKey;
-    private final String fromAddress;
-    
+	private String name;
+	private String email;
+	private String message;
+	private int requestCount;
+	private boolean expanded;
+	private int tryNumber;
+	private final String captchaScriptURL;
+	private final String captchaNoScriptURL;
+	private final String captchaPublicKey;
+	private final String fromAddress;
 
-    private ContactPreferences contactPreferences;
-    private String captchaText;
-    private String captchaChallenge;
-    
-    public ContactBean() {
-        captchaScriptURL = PropertiesUtils.get("captcha.engine.recaptcha.url.script");
-        captchaNoScriptURL = PropertiesUtils.get("captcha.engine.recaptcha.url.noscript");
-        captchaPublicKey = PropertiesUtils.get("captcha.engine.recaptcha.key.public");
-        fromAddress = PropertiesUtils.get("contact.form.from.email");
-        
-    }
-    
-    public String getMessage() {
-        return message;
-    }
+	private ContactPreferences contactPreferences;
+	private String captchaText;
+	private String captchaChallenge;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public ContactBean() {
+		captchaScriptURL = PropertiesUtils
+				.get("captcha.engine.recaptcha.url.script");
+		captchaNoScriptURL = PropertiesUtils
+				.get("captcha.engine.recaptcha.url.noscript");
+		captchaPublicKey = PropertiesUtils
+				.get("captcha.engine.recaptcha.key.public");
+		fromAddress = PropertiesUtils.get("contact.form.from.email");
+	}
 
+	public String getMessage() {
+		return message;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    public void setCaptchaText(String captchaText) {
-        this.captchaText = captchaText;
-    }
-    
-    public String getCaptchaText() {
-        return captchaText;
-    }
+	public String getEmail() {
+		return email;
+	}
 
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
+	public void setCaptchaText(String captchaText) {
+		this.captchaText = captchaText;
+	}
 
-    public void sendMessage(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
-        String messageSubject = applyFilters(contactPreferences.getMessageSubject());
-        String messageBody = applyFilters(contactPreferences.getMessageFormat());        
+	public String getCaptchaText() {
+		return captchaText;
+	}
 
-        InternetAddress addressFrom = new InternetAddress(fromAddress);
-        
-        String[] receipients = contactPreferences.getReceipientsArray();
-        InternetAddress[] addressTo = new InternetAddress[receipients.length];
-        for (int i=0; i < receipients.length; i++) {
-            addressTo[i] = new InternetAddress(receipients[i]);
-        }
-        
-        InternetAddress replyTo[] = {new InternetAddress(email)};
-        
-        
-        MailEngine.send(addressFrom, addressTo, null, null, null, messageSubject, messageBody, false, replyTo, null, null);
-        toggleExpanded(e);
+	public void sendMessage(ActionEvent e) throws AddressException,
+			SystemException, PortalException, MailEngineException {
+		String messageSubject = applyFilters(contactPreferences
+				.getMessageSubject());
+		String messageBody = applyFilters(contactPreferences.getMessageFormat());
 
-        FacesMessage fm = new FacesMessage();
-        fm.setSummary("Message has been sent.");
-        fm.setSeverity(FacesMessage.SEVERITY_INFO);
-        FacesContext.getCurrentInstance().addMessage(null, fm);
-    }
-    
-    private String applyFilters(String msg) {
-        msg = msg.replaceAll("USER_NAME", name);
-        msg = msg.replaceAll("USER_EMAIL", email);
-        msg = msg.replaceAll("USER_MESSAGE", message);
-        return msg; 
-    }
-    
-    
-    public int getRequestCount() {
-        return requestCount++;
-    }
+		InternetAddress addressFrom = new InternetAddress(fromAddress);
 
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
+		String[] receipients = contactPreferences.getReceipientsArray();
+		InternetAddress[] addressTo = new InternetAddress[receipients.length];
+		for (int i = 0; i < receipients.length; i++) {
+			addressTo[i] = new InternetAddress(receipients[i]);
+		}
 
-    public boolean isExpanded() {
-        return expanded;
-    }
-    
-    public void toggleExpanded(ActionEvent e) {
-        expanded = !expanded;
-        
-        captchaText = "";
-        captchaChallenge = "";
-        name = "";
-        message = "";
-        email = "";
-    }
-    
-    public String getExpandFormMessage() {
-        return contactPreferences.getExpandLinkText();
-    }
+		InternetAddress replyTo[] = { new InternetAddress(email) };
 
+		MailEngine.send(addressFrom, addressTo, null, null, null,
+				messageSubject, messageBody, false, replyTo, null, null);
+		toggleExpanded(e);
 
-    public void setContactPreferences(ContactPreferences contactPreferences) {
-        this.contactPreferences = contactPreferences;
-    }
+		FacesMessage fm = new FacesMessage();
+		fm.setSummary("Message has been sent.");
+		fm.setSeverity(FacesMessage.SEVERITY_INFO);
+		FacesContext.getCurrentInstance().addMessage(null, fm);
+	}
 
-    public String getCaptchaScriptURL() {
-        return captchaScriptURL;
-    }
+	private String applyFilters(String msg) {
+		msg = msg.replaceAll("USER_NAME", name);
+		msg = msg.replaceAll("USER_EMAIL", email);
+		msg = msg.replaceAll("USER_MESSAGE", message);
+		return msg;
+	}
 
-    public String getCaptchaNoScriptURL() {
-        return captchaNoScriptURL;
-    }
+	public int getRequestCount() {
+		return requestCount++;
+	}
 
-    public String getCaptchaPublicKey() {
-        return captchaPublicKey;
-    }
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
+	}
 
-    public void setCaptchaChallenge(String captchaChallenge) {
-        this.captchaChallenge = captchaChallenge;
-    }
+	public boolean isExpanded() {
+		return expanded;
+	}
 
-    public String getCaptchaChallenge() {
-        return captchaChallenge;
-    }
-    
-    public int getTryNumber() {
-        return tryNumber++;
-    }
+	public void toggleExpanded(ActionEvent e) {
+		expanded = !expanded;
+
+		captchaText = "";
+		captchaChallenge = "";
+		name = "";
+		message = "";
+		email = "";
+	}
+
+	public String getExpandFormMessage() {
+		return contactPreferences.getExpandLinkText();
+	}
+
+	public void setContactPreferences(ContactPreferences contactPreferences) {
+		this.contactPreferences = contactPreferences;
+	}
+
+	public String getCaptchaScriptURL() {
+		return captchaScriptURL;
+	}
+
+	public String getCaptchaNoScriptURL() {
+		return captchaNoScriptURL;
+	}
+
+	public String getCaptchaPublicKey() {
+		return captchaPublicKey;
+	}
+
+	public void setCaptchaChallenge(String captchaChallenge) {
+		this.captchaChallenge = captchaChallenge;
+	}
+
+	public String getCaptchaChallenge() {
+		return captchaChallenge;
+	}
+
+	public int getTryNumber() {
+		return tryNumber++;
+	}
 
 }

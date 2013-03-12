@@ -80,7 +80,6 @@ public class ReCaptchaUtils {
             HttpClient client = new HttpClient();
             post = new PostMethod(postURL);
             post.addParameter("privatekey", privateKey);
-            post.addParameter("privatekey", privateKey);
             post.addParameter("remoteip", remoteIp);
             post.addParameter("challenge", recaptchaChallenge);
             post.addParameter("response", recaptchaResponse);
