@@ -623,54 +623,68 @@ public class ClpSerializer {
 
                 method16.invoke(newModel, value16);
 
-                Method method17 = newModelClass.getMethod("setFlag",
-                        new Class[] { Integer.TYPE });
+                Method method17 = newModelClass.getMethod("setSponsorLogoId",
+                        new Class[] { Long.TYPE });
 
-                Integer value17 = new Integer(oldCplModel.getFlag());
+                Long value17 = new Long(oldCplModel.getSponsorLogoId());
 
                 method17.invoke(newModel, value17);
 
-                Method method18 = newModelClass.getMethod("setFlagText",
+                Method method18 = newModelClass.getMethod("setSponsorText",
                         new Class[] { String.class });
 
-                String value18 = oldCplModel.getFlagText();
+                String value18 = oldCplModel.getSponsorText();
 
                 method18.invoke(newModel, value18);
 
-                Method method19 = newModelClass.getMethod("setFlagTooltip",
-                        new Class[] { String.class });
+                Method method19 = newModelClass.getMethod("setFlag",
+                        new Class[] { Integer.TYPE });
 
-                String value19 = oldCplModel.getFlagTooltip();
+                Integer value19 = new Integer(oldCplModel.getFlag());
 
                 method19.invoke(newModel, value19);
 
-                Method method20 = newModelClass.getMethod("setGroupId",
-                        new Class[] { Long.TYPE });
+                Method method20 = newModelClass.getMethod("setFlagText",
+                        new Class[] { String.class });
 
-                Long value20 = new Long(oldCplModel.getGroupId());
+                String value20 = oldCplModel.getFlagText();
 
                 method20.invoke(newModel, value20);
 
-                Method method21 = newModelClass.getMethod("setDiscussionGroupId",
-                        new Class[] { Long.TYPE });
+                Method method21 = newModelClass.getMethod("setFlagTooltip",
+                        new Class[] { String.class });
 
-                Long value21 = new Long(oldCplModel.getDiscussionGroupId());
+                String value21 = oldCplModel.getFlagTooltip();
 
                 method21.invoke(newModel, value21);
 
-                Method method22 = newModelClass.getMethod("setWeight",
-                        new Class[] { Integer.TYPE });
+                Method method22 = newModelClass.getMethod("setGroupId",
+                        new Class[] { Long.TYPE });
 
-                Integer value22 = new Integer(oldCplModel.getWeight());
+                Long value22 = new Long(oldCplModel.getGroupId());
 
                 method22.invoke(newModel, value22);
 
-                Method method23 = newModelClass.getMethod("setResourcesUrl",
-                        new Class[] { String.class });
+                Method method23 = newModelClass.getMethod("setDiscussionGroupId",
+                        new Class[] { Long.TYPE });
 
-                String value23 = oldCplModel.getResourcesUrl();
+                Long value23 = new Long(oldCplModel.getDiscussionGroupId());
 
                 method23.invoke(newModel, value23);
+
+                Method method24 = newModelClass.getMethod("setWeight",
+                        new Class[] { Integer.TYPE });
+
+                Integer value24 = new Integer(oldCplModel.getWeight());
+
+                method24.invoke(newModel, value24);
+
+                Method method25 = newModelClass.getMethod("setResourcesUrl",
+                        new Class[] { String.class });
+
+                String value25 = oldCplModel.getResourcesUrl();
+
+                method25.invoke(newModel, value25);
 
                 return newModel;
             } catch (Exception e) {
@@ -5230,53 +5244,66 @@ public class ClpSerializer {
 
                 newModel.setPlansOpenByDefault(value16);
 
-                Method method17 = oldModelClass.getMethod("getFlag");
+                Method method17 = oldModelClass.getMethod("getSponsorLogoId");
 
-                Integer value17 = (Integer) method17.invoke(oldModel,
-                        (Object[]) null);
+                Long value17 = (Long) method17.invoke(oldModel, (Object[]) null);
 
-                newModel.setFlag(value17);
+                newModel.setSponsorLogoId(value17);
 
-                Method method18 = oldModelClass.getMethod("getFlagText");
+                Method method18 = oldModelClass.getMethod("getSponsorText");
 
                 String value18 = (String) method18.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setFlagText(value18);
+                newModel.setSponsorText(value18);
 
-                Method method19 = oldModelClass.getMethod("getFlagTooltip");
+                Method method19 = oldModelClass.getMethod("getFlag");
 
-                String value19 = (String) method19.invoke(oldModel,
+                Integer value19 = (Integer) method19.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setFlagTooltip(value19);
+                newModel.setFlag(value19);
 
-                Method method20 = oldModelClass.getMethod("getGroupId");
+                Method method20 = oldModelClass.getMethod("getFlagText");
 
-                Long value20 = (Long) method20.invoke(oldModel, (Object[]) null);
+                String value20 = (String) method20.invoke(oldModel,
+                        (Object[]) null);
 
-                newModel.setGroupId(value20);
+                newModel.setFlagText(value20);
 
-                Method method21 = oldModelClass.getMethod(
+                Method method21 = oldModelClass.getMethod("getFlagTooltip");
+
+                String value21 = (String) method21.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setFlagTooltip(value21);
+
+                Method method22 = oldModelClass.getMethod("getGroupId");
+
+                Long value22 = (Long) method22.invoke(oldModel, (Object[]) null);
+
+                newModel.setGroupId(value22);
+
+                Method method23 = oldModelClass.getMethod(
                         "getDiscussionGroupId");
 
-                Long value21 = (Long) method21.invoke(oldModel, (Object[]) null);
+                Long value23 = (Long) method23.invoke(oldModel, (Object[]) null);
 
-                newModel.setDiscussionGroupId(value21);
+                newModel.setDiscussionGroupId(value23);
 
-                Method method22 = oldModelClass.getMethod("getWeight");
+                Method method24 = oldModelClass.getMethod("getWeight");
 
-                Integer value22 = (Integer) method22.invoke(oldModel,
+                Integer value24 = (Integer) method24.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setWeight(value22);
+                newModel.setWeight(value24);
 
-                Method method23 = oldModelClass.getMethod("getResourcesUrl");
+                Method method25 = oldModelClass.getMethod("getResourcesUrl");
 
-                String value23 = (String) method23.invoke(oldModel,
+                String value25 = (String) method25.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setResourcesUrl(value23);
+                newModel.setResourcesUrl(value25);
 
                 return newModel;
             } catch (Exception e) {

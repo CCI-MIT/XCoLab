@@ -98,8 +98,7 @@ public class ModelInputItemLocalServiceClp implements ModelInputItemLocalService
                 "setBeanIdentifier", java.lang.String.class);
 
         _getItemsForModelMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getItemsForModel",
-                edu.mit.cci.roma.client.Simulation.class);
+                "getItemsForModel", edu.mit.cci.roma.client.Simulation.class);
 
         _getItemForMetaDataMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getItemForMetaData", java.lang.Long.class,

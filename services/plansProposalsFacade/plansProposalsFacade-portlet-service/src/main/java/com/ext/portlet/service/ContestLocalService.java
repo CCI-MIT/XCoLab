@@ -309,7 +309,19 @@ public interface ContestLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.model.Image getSponsorLogo(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     public void setLogo(com.ext.portlet.model.Contest contest,
+        java.io.File logoFile)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException;
+
+    public void setSponsorLogo(com.ext.portlet.model.Contest contest,
         java.io.File logoFile)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
@@ -317,6 +329,12 @@ public interface ContestLocalService extends PersistedModelLocalService {
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getLogoPath(com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getSponsorLogoPath(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

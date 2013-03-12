@@ -252,8 +252,7 @@ public class ModelGlobalPreferenceLocalServiceWrapper
         return _modelGlobalPreferenceLocalService.isVisible(s);
     }
 
-    public void setVisible(edu.mit.cci.roma.client.Simulation s,
-        boolean visible)
+    public void setVisible(edu.mit.cci.roma.client.Simulation s, boolean visible)
         throws com.liferay.portal.kernel.exception.SystemException {
         _modelGlobalPreferenceLocalService.setVisible(s, visible);
     }

@@ -33,6 +33,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private long _contestLogoId;
     private boolean _featured;
     private boolean _plansOpenByDefault;
+    private long _sponsorLogoId;
+    private String _sponsorText;
     private int _flag;
     private String _flagText;
     private String _flagTooltip;
@@ -217,6 +219,22 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         _plansOpenByDefault = plansOpenByDefault;
     }
 
+    public long getSponsorLogoId() {
+        return _sponsorLogoId;
+    }
+
+    public void setSponsorLogoId(long sponsorLogoId) {
+        _sponsorLogoId = sponsorLogoId;
+    }
+
+    public String getSponsorText() {
+        return _sponsorText;
+    }
+
+    public void setSponsorText(String sponsorText) {
+        _sponsorText = sponsorText;
+    }
+
     public int getFlag() {
         return _flag;
     }
@@ -308,6 +326,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setContestLogoId(getContestLogoId());
         clone.setFeatured(getFeatured());
         clone.setPlansOpenByDefault(getPlansOpenByDefault());
+        clone.setSponsorLogoId(getSponsorLogoId());
+        clone.setSponsorText(getSponsorText());
         clone.setFlag(getFlag());
         clone.setFlagText(getFlagText());
         clone.setFlagTooltip(getFlagTooltip());
@@ -373,7 +393,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(49);
+        StringBundler sb = new StringBundler(53);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -409,6 +429,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getFeatured());
         sb.append(", plansOpenByDefault=");
         sb.append(getPlansOpenByDefault());
+        sb.append(", sponsorLogoId=");
+        sb.append(getSponsorLogoId());
+        sb.append(", sponsorText=");
+        sb.append(getSponsorText());
         sb.append(", flag=");
         sb.append(getFlag());
         sb.append(", flagText=");
@@ -429,7 +453,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(76);
+        StringBundler sb = new StringBundler(82);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -502,6 +526,14 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>plansOpenByDefault</column-name><column-value><![CDATA[");
         sb.append(getPlansOpenByDefault());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>sponsorLogoId</column-name><column-value><![CDATA[");
+        sb.append(getSponsorLogoId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>sponsorText</column-name><column-value><![CDATA[");
+        sb.append(getSponsorText());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>flag</column-name><column-value><![CDATA[");

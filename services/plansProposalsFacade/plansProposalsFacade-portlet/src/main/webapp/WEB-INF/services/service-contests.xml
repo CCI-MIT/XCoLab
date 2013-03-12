@@ -28,6 +28,9 @@
         <column name="featured" type="boolean" />
         <column name="plansOpenByDefault" type="boolean" />
         
+        <column name="sponsorLogoId" type="long" />
+        <column name="sponsorText" type="String" />
+        
         <column name="flag" type="int" />
         <column name="flagText" type="String" />
         <column name="flagTooltip" type="String" />

@@ -38,8 +38,6 @@
                 padding: 5px;
             }
             
-            
-            
             .even {
                 background: #f0f0f0;
             }
@@ -107,6 +105,19 @@
                 <img src="#{contestsAdmin.editedContest.logo}" />
                 
                 <ice:inputFile actionListener="#{contestsAdmin.editedContest.uploadLogo}" styleClass="filepc" autoUpload="true" />
+           
+           </f:subview>
+           
+           
+            <ice:outputLabel value="Sponsor text" />
+           <ice:inputText value="#{contestsAdmin.editedContest.contest.sponsorText}" />
+           
+           <ice:outputLabel value="Sponsor logo" />
+           
+           <f:subview>
+                <img src="#{contestsAdmin.editedContest.sponsorLogo}" />
+                
+                <ice:inputFile actionListener="#{contestsAdmin.editedContest.uploadSponsorLogo}" styleClass="filepc" autoUpload="true" />
            
            </f:subview>
            

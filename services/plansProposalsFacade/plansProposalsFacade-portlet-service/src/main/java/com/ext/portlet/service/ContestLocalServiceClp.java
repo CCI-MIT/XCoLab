@@ -42,14 +42,17 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private MethodKey _getPlanTemplateMethodKey32;
     private MethodKey _getFocusAreaMethodKey33;
     private MethodKey _getLogoMethodKey34;
-    private MethodKey _setLogoMethodKey35;
-    private MethodKey _getLogoPathMethodKey36;
-    private MethodKey _getProposalsCountMethodKey37;
-    private MethodKey _getDiscussionCategoryGroupMethodKey38;
-    private MethodKey _getCommentsCountMethodKey39;
-    private MethodKey _getProposalsCommentsCountMethodKey40;
-    private MethodKey _getTotalCommentsMethodKey41;
-    private MethodKey _getTeamMembersMethodKey42;
+    private MethodKey _getSponsorLogoMethodKey35;
+    private MethodKey _setLogoMethodKey36;
+    private MethodKey _setSponsorLogoMethodKey37;
+    private MethodKey _getLogoPathMethodKey38;
+    private MethodKey _getSponsorLogoPathMethodKey39;
+    private MethodKey _getProposalsCountMethodKey40;
+    private MethodKey _getDiscussionCategoryGroupMethodKey41;
+    private MethodKey _getCommentsCountMethodKey42;
+    private MethodKey _getProposalsCommentsCountMethodKey43;
+    private MethodKey _getTotalCommentsMethodKey44;
+    private MethodKey _getTeamMembersMethodKey45;
 
     public ContestLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -168,30 +171,40 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _getLogoMethodKey34 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getLogo", com.ext.portlet.model.Contest.class);
 
-        _setLogoMethodKey35 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getSponsorLogoMethodKey35 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getSponsorLogo", com.ext.portlet.model.Contest.class);
+
+        _setLogoMethodKey36 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setLogo", com.ext.portlet.model.Contest.class,
                 java.io.File.class);
 
-        _getLogoPathMethodKey36 = new MethodKey(_classLoaderProxy.getClassName(),
+        _setSponsorLogoMethodKey37 = new MethodKey(_classLoaderProxy.getClassName(),
+                "setSponsorLogo", com.ext.portlet.model.Contest.class,
+                java.io.File.class);
+
+        _getLogoPathMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getLogoPath", com.ext.portlet.model.Contest.class);
 
-        _getProposalsCountMethodKey37 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getSponsorLogoPathMethodKey39 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getSponsorLogoPath", com.ext.portlet.model.Contest.class);
+
+        _getProposalsCountMethodKey40 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getProposalsCount", com.ext.portlet.model.Contest.class);
 
-        _getDiscussionCategoryGroupMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getDiscussionCategoryGroupMethodKey41 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getDiscussionCategoryGroup",
                 com.ext.portlet.model.Contest.class);
 
-        _getCommentsCountMethodKey39 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getCommentsCountMethodKey42 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getCommentsCount", com.ext.portlet.model.Contest.class);
 
-        _getProposalsCommentsCountMethodKey40 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getProposalsCommentsCountMethodKey43 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getProposalsCommentsCount", com.ext.portlet.model.Contest.class);
 
-        _getTotalCommentsMethodKey41 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getTotalCommentsMethodKey44 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getTotalComments", com.ext.portlet.model.Contest.class);
 
-        _getTeamMembersMethodKey42 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getTeamMembersMethodKey45 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getTeamMembers", com.ext.portlet.model.Contest.class);
     }
 
@@ -1115,12 +1128,76 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.liferay.portal.model.Image) ClpSerializer.translateOutput(returnObj);
     }
 
+    public com.liferay.portal.model.Image getSponsorLogo(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getSponsorLogoMethodKey35,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.model.Image) ClpSerializer.translateOutput(returnObj);
+    }
+
     public void setLogo(com.ext.portlet.model.Contest contest,
         java.io.File logoFile)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
-        MethodHandler methodHandler = new MethodHandler(_setLogoMethodKey35,
+        MethodHandler methodHandler = new MethodHandler(_setLogoMethodKey36,
+                ClpSerializer.translateInput(contest),
+                ClpSerializer.translateInput(logoFile));
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof java.io.IOException) {
+                throw (java.io.IOException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void setSponsorLogo(com.ext.portlet.model.Contest contest,
+        java.io.File logoFile)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        MethodHandler methodHandler = new MethodHandler(_setSponsorLogoMethodKey37,
                 ClpSerializer.translateInput(contest),
                 ClpSerializer.translateInput(logoFile));
 
@@ -1153,7 +1230,38 @@ public class ContestLocalServiceClp implements ContestLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getLogoPathMethodKey36,
+        MethodHandler methodHandler = new MethodHandler(_getLogoPathMethodKey38,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.lang.String getSponsorLogoPath(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getSponsorLogoPathMethodKey39,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -1183,7 +1291,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalsCountMethodKey37,
+        MethodHandler methodHandler = new MethodHandler(_getProposalsCountMethodKey40,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -1214,7 +1322,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getDiscussionCategoryGroupMethodKey38,
+        MethodHandler methodHandler = new MethodHandler(_getDiscussionCategoryGroupMethodKey41,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -1244,7 +1352,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey39,
+        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey42,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -1274,7 +1382,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalsCommentsCountMethodKey40,
+        MethodHandler methodHandler = new MethodHandler(_getProposalsCommentsCountMethodKey43,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -1304,7 +1412,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getTotalCommentsMethodKey41,
+        MethodHandler methodHandler = new MethodHandler(_getTotalCommentsMethodKey44,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -1334,7 +1442,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getTeamMembersMethodKey42,
+        MethodHandler methodHandler = new MethodHandler(_getTeamMembersMethodKey45,
                 ClpSerializer.translateInput(contest));
 
         try {

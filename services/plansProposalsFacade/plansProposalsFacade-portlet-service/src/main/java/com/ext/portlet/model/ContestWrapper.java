@@ -381,6 +381,42 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     /**
+    * Returns the sponsor logo ID of this contest.
+    *
+    * @return the sponsor logo ID of this contest
+    */
+    public long getSponsorLogoId() {
+        return _contest.getSponsorLogoId();
+    }
+
+    /**
+    * Sets the sponsor logo ID of this contest.
+    *
+    * @param sponsorLogoId the sponsor logo ID of this contest
+    */
+    public void setSponsorLogoId(long sponsorLogoId) {
+        _contest.setSponsorLogoId(sponsorLogoId);
+    }
+
+    /**
+    * Returns the sponsor text of this contest.
+    *
+    * @return the sponsor text of this contest
+    */
+    public java.lang.String getSponsorText() {
+        return _contest.getSponsorText();
+    }
+
+    /**
+    * Sets the sponsor text of this contest.
+    *
+    * @param sponsorText the sponsor text of this contest
+    */
+    public void setSponsorText(java.lang.String sponsorText) {
+        _contest.setSponsorText(sponsorText);
+    }
+
+    /**
     * Returns the flag of this contest.
     *
     * @return the flag of this contest

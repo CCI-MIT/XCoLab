@@ -353,6 +353,13 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getLogo(contest);
     }
 
+    public com.liferay.portal.model.Image getSponsorLogo(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getSponsorLogo(contest);
+    }
+
     public void setLogo(com.ext.portlet.model.Contest contest,
         java.io.File logoFile)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -361,10 +368,25 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         _contestLocalService.setLogo(contest, logoFile);
     }
 
+    public void setSponsorLogo(com.ext.portlet.model.Contest contest,
+        java.io.File logoFile)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        _contestLocalService.setSponsorLogo(contest, logoFile);
+    }
+
     public java.lang.String getLogoPath(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getLogoPath(contest);
+    }
+
+    public java.lang.String getSponsorLogoPath(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getSponsorLogoPath(contest);
     }
 
     public long getProposalsCount(com.ext.portlet.model.Contest contest)

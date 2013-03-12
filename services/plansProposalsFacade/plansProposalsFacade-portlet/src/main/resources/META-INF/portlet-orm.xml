@@ -52,6 +52,8 @@
 				<column name="FEATURED_" />
 			</basic>
 			<basic name="plansOpenByDefault" />
+			<basic name="sponsorLogoId" />
+			<basic name="sponsorText" />
 			<basic name="flag" />
 			<basic name="flagText" />
 			<basic name="flagTooltip" />

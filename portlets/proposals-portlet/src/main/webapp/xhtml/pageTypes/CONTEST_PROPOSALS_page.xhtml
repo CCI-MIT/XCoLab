@@ -95,6 +95,16 @@
             
             </ice:panelSeries>
         </f:subview>
+        <f:subview rendered="#{not empty contest.contest.sponsorText}">
+        	<div class="sponsorLogo">
+	       		<table>
+		       		<tr>
+			       		<td><img src="#{contest.contest.sponsorLogo}" alt="Sponsor Logo" /></td>
+			       		<td width="100%" style="vertical-align:middle;">${contest.contest.sponsorText}</td>
+		       		</tr>
+	       		</table>
+	       		</div>
+        </f:subview>
         <div class="buttons">
             <f:subview rendered="#{not empty contest.contest.resourcesUrl}">
                 <a href="#{contest.contest.resourcesUrl}">Resources</a>

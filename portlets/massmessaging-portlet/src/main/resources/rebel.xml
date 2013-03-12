@@ -2,18 +2,18 @@
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zeroturnaround.com" xsi:schemaLocation="http://www.zeroturnaround.com http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd">
 
 	<classpath>
-		<dir name="/home/janusz/workdir/xcolab/XCoLab/portlets/massmessaging-portlet/target/classes">
+		<dir name="${xcolab.root}/portlets/massmessaging-portlet/target/classes">
 		</dir>
 	</classpath>
 
 	<web>
 		<link target="/">
-			<dir name="/home/janusz/workdir/xcolab/XCoLab/portlets/massmessaging-portlet/target/m2e-wtp/web-resources">
+			<dir name="${xcolab.root}/portlets/massmessaging-portlet/target/m2e-wtp/web-resources">
 				<exclude name="/"/>
 			</dir>
 		</link>
 		<link target="/">
-			<dir name="/home/janusz/workdir/xcolab/XCoLab/portlets/massmessaging-portlet/src/main/webapp">
+			<dir name="${xcolab.root}/portlets/massmessaging-portlet/src/main/webapp">
 			</dir>
 		</link>
 	</web>

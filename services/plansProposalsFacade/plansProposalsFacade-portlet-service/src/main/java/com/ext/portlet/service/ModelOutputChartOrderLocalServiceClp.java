@@ -94,8 +94,7 @@ public class ModelOutputChartOrderLocalServiceClp
                 "setBeanIdentifier", java.lang.String.class);
 
         _getChartOrderMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getChartOrder",
-                edu.mit.cci.roma.client.Simulation.class,
+                "getChartOrder", edu.mit.cci.roma.client.Simulation.class,
                 java.lang.String.class);
     }
 

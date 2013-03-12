@@ -26,9 +26,6 @@ public class ContestsAdmin {
     
     public void editCotnestActionListener(ActionEvent e) {
         editedContest = (ContestWrapper) e.getComponent().getAttributes().get("contest");
-        
-        
-        
     }
     
     public String editContest() {

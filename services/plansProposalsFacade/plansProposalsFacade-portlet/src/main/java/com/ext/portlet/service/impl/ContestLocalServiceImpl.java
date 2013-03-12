@@ -289,19 +289,42 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 null;
     }
     
+    public Image getSponsorLogo(Contest contest) throws PortalException, SystemException {
+        return contest.getSponsorLogoId() > 0 ? 
+                ImageLocalServiceUtil.getImage(contest.getSponsorLogoId()) : 
+                null;
+    }
+    
     public void setLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
-        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
-        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
-        
-        ImageLocalServiceUtil.addImage(i);
-        contest.setContestLogoId(i.getImageId());
-        
+//        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
+//        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
+//        
+//        ImageLocalServiceUtil.addImage(i);
+//        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
+//        contest.setContestLogoId(i.getImageId());
+    }
+    
+    public void setSponsorLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
+//        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
+//        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
+//        
+//        ImageLocalServiceUtil.addImage(i);
+//        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
+//        contest.setSponsorLogoId(i.getImageId());
     }
     
     public String getLogoPath(Contest contest) throws PortalException, SystemException {
         Image i = getLogo(contest);
         if (i != null) {
             return "/contest?img_id=" + i.getImageId();// + "&t=" + ImageServletTokenUtil.getToken(i.getImageId());
+        }
+        return "";
+    }
+    
+    public String getSponsorLogoPath(Contest contest) throws PortalException, SystemException {
+        Image i = getSponsorLogo(contest);
+        if (i != null) {
+            return "/contest?img_id=" + i.getImageId();
         }
         return "";
     }

@@ -39,383 +39,396 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
-
 /**
- * Created by IntelliJ IDEA.
- * User: jintrone
- * Date: Aug 6, 2010
- * Time: 2:53:38 PM
+ * Created by IntelliJ IDEA. User: jintrone Date: Aug 6, 2010 Time: 2:53:38 PM
  * To change this template use File | Settings | File Templates.
  */
 public class ContestWrapper {
-    private Contest contest;
-    private List<ContestPhaseWrapper> phases = new ArrayList<ContestPhaseWrapper>();
-    private Map<Long,ContestPhaseWrapper> index = new HashMap<Long,ContestPhaseWrapper>();
-    private EditContestBean editor;
-    private String debatesIdsStr = null;
-    private PlansIndexBean plansIndex;
-    private EventBus eventBus;
-    private List<ContestPhaseWrapper> activeOrPastPhases = new ArrayList<ContestPhaseWrapper>();
-    private List<ContestPhaseWrapper> pastPhases = new ArrayList<ContestPhaseWrapper>();
-    ContestPhaseWrapper activePhase = null;
+	private Contest contest;
+	private List<ContestPhaseWrapper> phases = new ArrayList<ContestPhaseWrapper>();
+	private Map<Long, ContestPhaseWrapper> index = new HashMap<Long, ContestPhaseWrapper>();
+	private EditContestBean editor;
+	private String debatesIdsStr = null;
+	private PlansIndexBean plansIndex;
+	private EventBus eventBus;
+	private List<ContestPhaseWrapper> activeOrPastPhases = new ArrayList<ContestPhaseWrapper>();
+	private List<ContestPhaseWrapper> pastPhases = new ArrayList<ContestPhaseWrapper>();
+	ContestPhaseWrapper activePhase = null;
 
-    private Map<String, List<User>> teamRoleUsersMap = new TreeMap<String, List<User>>();
-    private CreatePlanBean createPlanBean;
+	private Map<String, List<User>> teamRoleUsersMap = new TreeMap<String, List<User>>();
+	private CreatePlanBean createPlanBean;
 
+	public ContestWrapper(Contest contest) throws SystemException,
+			PortalException {
+		ContestPhase defaultPhase = null;
+		boolean addAsActiveOrPast = true;
+		this.contest = contest;
+		Date now = new Date();
+		List<ContestPhase> contestPhases = ContestLocalServiceUtil
+				.getPhases(contest);
+		int phasesCount = phases.size();
+		int phaseNumber = 0;
+		for (ContestPhase phase : contestPhases) {
+			phaseNumber++;
 
-    public ContestWrapper(Contest contest) throws SystemException, PortalException {
-        ContestPhase defaultPhase = null;
-        boolean addAsActiveOrPast = true;
-        this.contest = contest;
-        Date now = new Date();
-        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getPhases(contest);
-        int phasesCount = phases.size();
-        int phaseNumber = 0;
-        for (ContestPhase phase: contestPhases) {
-            phaseNumber++;
-            
-            ContestPhaseWrapper phaseWrapper = new ContestPhaseWrapper(this,phase, phaseNumber == phasesCount);
-            if (addAsActiveOrPast) {
-                activeOrPastPhases.add(phaseWrapper);
-                if (! phaseWrapper.isActive()) {
-                    pastPhases.add(phaseWrapper);
-                }
-            }
-            if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
-                // don't add next phases as they haven't started yet
-                addAsActiveOrPast = false;
-            }
-            phases.add(phaseWrapper);
-            index.put(phase.getContestPhasePK(),phaseWrapper);
-            if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
-                activePhase = phaseWrapper;
-            }
-            if (phase.getPhaseStartDate().before(now))
-                defaultPhase = defaultPhase == null || defaultPhase.getPhaseStartDate().before(phase.getPhaseStartDate()) ? phase : defaultPhase;
-        }
-        if (activePhase == null) {
-            activePhase = new ContestPhaseWrapper(this, defaultPhase, false);
-        }
-        editor = new EditContestBean();
-        plansIndex = new PlansIndexBean(activePhase);
+			ContestPhaseWrapper phaseWrapper = new ContestPhaseWrapper(this,
+					phase, phaseNumber == phasesCount);
+			if (addAsActiveOrPast) {
+				activeOrPastPhases.add(phaseWrapper);
+				if (!phaseWrapper.isActive()) {
+					pastPhases.add(phaseWrapper);
+				}
+			}
+			if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
+				// don't add next phases as they haven't started yet
+				addAsActiveOrPast = false;
+			}
+			phases.add(phaseWrapper);
+			index.put(phase.getContestPhasePK(), phaseWrapper);
+			if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
+				activePhase = phaseWrapper;
+			}
+			if (phase.getPhaseStartDate().before(now))
+				defaultPhase = defaultPhase == null
+						|| defaultPhase.getPhaseStartDate().before(
+								phase.getPhaseStartDate()) ? phase
+						: defaultPhase;
+		}
+		if (activePhase == null) {
+			activePhase = new ContestPhaseWrapper(this, defaultPhase, false);
+		}
+		editor = new EditContestBean();
+		plansIndex = new PlansIndexBean(activePhase);
 
-        // reverse list to have active phase as the first one
-        Collections.reverse(activeOrPastPhases);
-        createPlanBean = new CreatePlanBean(this);
-        
-        for (ContestTeamMember ctm: ContestLocalServiceUtil.getTeamMembers(contest)) {
-            List<User> roleUsers = teamRoleUsersMap.get(ctm.getRole());
-            if (roleUsers == null) {
-                roleUsers = new ArrayList<User>();
-                teamRoleUsersMap.put(ctm.getRole(), roleUsers);
-            }
-            roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
-        }
-    }
+		// reverse list to have active phase as the first one
+		Collections.reverse(activeOrPastPhases);
+		createPlanBean = new CreatePlanBean(this);
 
-    public String getName() {
-        return contest.getContestName();
+		for (ContestTeamMember ctm : ContestLocalServiceUtil
+				.getTeamMembers(contest)) {
+			List<User> roleUsers = teamRoleUsersMap.get(ctm.getRole());
+			if (roleUsers == null) {
+				roleUsers = new ArrayList<User>();
+				teamRoleUsersMap.put(ctm.getRole(), roleUsers);
+			}
+			roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+		}
+	}
 
-    }
+	public String getName() {
+		return contest.getContestName();
 
-    public String getDescription() {
-        return contest.getContestDescription();
-    }
+	}
 
-    public String getModelDescription() {
-        return contest.getContestModelDescription();
-    }
+	public String getDescription() {
+		return contest.getContestDescription();
+	}
 
-    public String getPositionsDescription() {
-        return contest.getContestPositionsDescription();
-    }
+	public String getModelDescription() {
+		return contest.getContestModelDescription();
+	}
 
-    public List<ContestPhaseWrapper> getPhases() {
-        return phases;
-    }
+	public String getPositionsDescription() {
+		return contest.getContestPositionsDescription();
+	}
 
-    public ContestPhaseWrapper findPhase(Long contestPhaseId) {
-        return index.get(contestPhaseId);
-    }
+	public List<ContestPhaseWrapper> getPhases() {
+		return phases;
+	}
 
-    public Contest getContest() {
-        return contest;
-    }
+	public ContestPhaseWrapper findPhase(Long contestPhaseId) {
+		return index.get(contestPhaseId);
+	}
 
-    public EditContestBean getEditor() {
-        return editor;
-    }
-    
-    public List<Long> getDebatesIds() throws SystemException {
-        return ContestLocalServiceUtil.getDebatesIds(contest);
-    }
+	public Contest getContest() {
+		return contest;
+	}
 
-    public String getShortName() {
-        return contest.getContestShortName();
-    }
-    
-    public String getContestModelDescription() {
-        return contest.getContestModelDescription();
-    }
-    
-    public String getLogo() throws PortalException, SystemException {
-        
-        return Helper.getThemeDisplay().getPathImage() + ContestLocalServiceUtil.getLogoPath(contest);
-    }
-    
-    public boolean isFeatured() {
-        return contest.getFlagText().toLowerCase().equals("featured");
-    }
-    
-    public Integer getFlag() {
-        return contest.getFlag();
-    }
-    
-    public String getFlagText() {
-        return contest.getFlagText();
-    }
-    
-    public String getFlagTextClass() {
-        return contest.getFlagText().toLowerCase().replaceAll("\\s", "");
-    }
-    
-    public List<ContestPhaseWrapper> getPastPhases() {
-        return pastPhases;
-    }
-    
+	public EditContestBean getEditor() {
+		return editor;
+	}
 
-    /**
-     * Created by IntelliJ IDEA.
-     * User: jintrone
-     * Date: Aug 17, 2010
-     * Time: 10:08:58 AM
-     * To change this template use File | Settings | File Templates.
-     */
-    public class EditContestBean {
+	public List<Long> getDebatesIds() throws SystemException {
+		return ContestLocalServiceUtil.getDebatesIds(contest);
+	}
 
+	public String getSponsorText() {
+		return contest.getSponsorText();
+	}
 
-        String name;
-        String description;
-        String modelDescription;
-        String positionsDescription;
-        String shortName;
-        String defaultPlanDescription;
-        boolean editing = false;
-        boolean editingPositions = false;
-        private List<SelectItem> questionItems ;
+	public String getSponsorLogo() throws PortalException, SystemException {
+		return Helper.getThemeDisplay().getPathImage()
+				+ ContestLocalServiceUtil.getSponsorLogoPath(contest);
+	}
 
+	public String getShortName() {
+		return contest.getContestShortName();
+	}
 
-        public String getDescription() {
-            return description;
-        }
+	public String getContestModelDescription() {
+		return contest.getContestModelDescription();
+	}
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+	public String getLogo() throws PortalException, SystemException {
 
-        public String getModelDescription() {
-            return modelDescription;
-        }
+		return Helper.getThemeDisplay().getPathImage()
+				+ ContestLocalServiceUtil.getLogoPath(contest);
+	}
 
-        public void setModelDescription(String description) {
-            this.modelDescription = description;
-        }
+	public boolean isFeatured() {
+		return contest.getFlagText().toLowerCase().equals("featured");
+	}
 
-        public String getPositionsDescription() {
-            return positionsDescription;
-        }
+	public Integer getFlag() {
+		return contest.getFlag();
+	}
 
-        public void setPositionsDescription(String description) {
-            this.positionsDescription = description;
-        }
+	public String getFlagText() {
+		return contest.getFlagText();
+	}
 
-        public String getName() {
-            return name;
-        }
+	public String getFlagTextClass() {
+		return contest.getFlagText().toLowerCase().replaceAll("\\s", "");
+	}
 
-        public void setName(String name) {
-            this.name = name;
-        }
-        
-        public String getShortName() {
-            return shortName;
-        }
-        
-        public void setShortName(String shortName) {
-            this.shortName = shortName; 
-        }
+	public List<ContestPhaseWrapper> getPastPhases() {
+		return pastPhases;
+	}
 
+	/**
+	 * Created by IntelliJ IDEA. User: jintrone Date: Aug 17, 2010 Time:
+	 * 10:08:58 AM To change this template use File | Settings | File Templates.
+	 */
+	public class EditContestBean {
 
-        public boolean getEditing() {
-            return editing;
-        }
+		String name;
+		String description;
+		String modelDescription;
+		String positionsDescription;
+		String shortName;
+		String defaultPlanDescription;
+		boolean editing = false;
+		boolean editingPositions = false;
+		private List<SelectItem> questionItems;
 
+		public String getDescription() {
+			return description;
+		}
 
-        public void edit() {
-            editing = true;
-            this.name = contest.getContestName();
-            this.description = contest.getContestDescription();
-            this.positionsDescription = contest.getContestPositionsDescription();
-            this.modelDescription = contest.getContestModelDescription();
-            this.shortName = contest.getContestShortName();
-            this.defaultPlanDescription = contest.getDefaultPlanDescription();
+		public void setDescription(String description) {
+			this.description = description;
+		}
 
-        }
+		public String getModelDescription() {
+			return modelDescription;
+		}
 
-        public void save() throws SystemException {
+		public void setModelDescription(String description) {
+			this.modelDescription = description;
+		}
 
-            contest.setContestName(name);
-            contest.setContestDescription(description);
-            contest.setContestModelDescription(modelDescription);
-            contest.setContestPositionsDescription(positionsDescription);
-            contest.setContestShortName(shortName);
-            contest.setDefaultPlanDescription(defaultPlanDescription);
-            ContestLocalServiceUtil.updateContest(contest);
-            editing = false;
-        }
+		public String getPositionsDescription() {
+			return positionsDescription;
+		}
 
-        public void cancel() {
-            editing = false;
-        }
+		public void setPositionsDescription(String description) {
+			this.positionsDescription = description;
+		}
 
-        public boolean isEditingPositions() {
-            return editingPositions;
-        }
-        
-        public void editPositions() {
-            editingPositions = ! editingPositions;
-        }
-        
-        
-        public String getDefaultPlanDescription() {
-            return defaultPlanDescription;
-        }
-        
-        public void setDefaultPlanDescription(String defaultPlanDescription) {
-            this.defaultPlanDescription = defaultPlanDescription;
-        }
+		public String getName() {
+			return name;
+		}
 
-    }
-    
-    public boolean isContestActive() {
-        return contest.getContestActive();
-    }
-    
-    public Long getModelId() throws PortalException, SystemException {
-        
-        return ContestLocalServiceUtil.getPlanType(contest).getDefaultModelId();
-    }
-    
-    public PlansIndexBean getPlansIndex() {
-        return plansIndex;
-    }
+		public void setName(String name) {
+			this.name = name;
+		}
 
-    public void setEventBus(EventBus eventBus) {
-        this.eventBus = eventBus;
-        plansIndex.setEventBus(eventBus);
-        createPlanBean.setEventBus(eventBus);
-    }
-    
-    public Long getContestId() {
-        return contest.getContestPK();
-    }
-    
-    public List<ContestPhaseWrapper> getActiveOrPastPhases() {
-        return activeOrPastPhases;
-    }
-    
-    public boolean getHasModel() throws PortalException, SystemException {
-        Long modelId = ContestLocalServiceUtil.getPlanType(getContest()).getDefaultModelId();
-        return modelId != null && modelId > 0;
-    }
+		public String getShortName() {
+			return shortName;
+		}
 
-    public void setCreatePlanBean(CreatePlanBean createPlanBean) {
-        this.createPlanBean = createPlanBean;
-    }
+		public void setShortName(String shortName) {
+			this.shortName = shortName;
+		}
 
-    public CreatePlanBean getCreatePlanBean() {
-        return createPlanBean;
-    }
+		public boolean getEditing() {
+			return editing;
+		}
 
-    public void init(ContestBean contestBean, NavigationEvent event) throws NoSuchContestPhaseException, PortalException, SystemException {
-        plansIndex.init(contestBean.getCurrentPhase(), event);
-    }
-    
-    
-    public ContestPhaseWrapper getActivePhase() {
-        return activePhase;
-    }
-    
-    public boolean getHasFocusArea() throws PortalException, SystemException {
-        return contest.getFocusAreaId() > 0;
-    }
-    
-    public List<OntologyTerm> getWho() throws PortalException, SystemException {
-        return getTermFromSpace("who");
-    }
-    
-    public List<OntologyTerm> getWhat() throws PortalException, SystemException {
-        return getTermFromSpace("what");
-        
-    }
-    
-    public List<OntologyTerm> getWhere() throws PortalException, SystemException {
-        return getTermFromSpace("where");
-    }
-    
-    public long getProposalsCount() throws SystemException, PortalException {
-        return ContestLocalServiceUtil.getProposalsCount(contest);
-    }
-    
-    public long getCommentsCount() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getTotalComments(contest);
-    }
-    
-    public String getResourcesUrl() {
-        return contest.getResourcesUrl();
-    }
-    
-    private List<OntologyTerm> getTermFromSpace(String space) throws PortalException, SystemException {
-        
-        FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-        if (fa == null) return null;
-        List<OntologyTerm> terms = new ArrayList<OntologyTerm>();
-        for (OntologyTerm t: FocusAreaLocalServiceUtil.getTerms(fa)) {
-            if (OntologyTermLocalServiceUtil.getSpace(t).getName().equalsIgnoreCase(space)) {
-                terms.add(t);
-            }
-        }
-        return terms.isEmpty() ? null : terms;
-    }
-    
-    public Long getCategoryGroupId() throws PortalException, SystemException {
-        if (contest.getDiscussionGroupId() <= 0) {
-            ContestLocalServiceUtil.updateContestGroupsAndDiscussions();
-        }
-        return contest.getDiscussionGroupId();
-    }
-    
-    public Long getGroupId() {
-        return contest.getGroupId();
-    }
-    
-    public List<ContestTeamMemberWrapper> getTeamMembers() throws SystemException {
-        List<ContestTeamMemberWrapper> ret = new ArrayList<ContestTeamMemberWrapper>();
-        for (ContestTeamMember member: ContestLocalServiceUtil.getTeamMembers(contest)) {
-            ret.add(new ContestTeamMemberWrapper(member));
-        }
-        return ret;
-    }
-    
-    public Map<String, List<User>> getTeamRoleUsers() {
-        return teamRoleUsersMap;
-    }
-    
-    public Set<String> getTeamRoles() {
-        return teamRoleUsersMap.keySet();
-    }
-    
-    public String getFlagTooltip() {
-        return contest.getFlagTooltip();
-    }
+		public void edit() {
+			editing = true;
+			this.name = contest.getContestName();
+			this.description = contest.getContestDescription();
+			this.positionsDescription = contest
+					.getContestPositionsDescription();
+			this.modelDescription = contest.getContestModelDescription();
+			this.shortName = contest.getContestShortName();
+			this.defaultPlanDescription = contest.getDefaultPlanDescription();
+
+		}
+
+		public void save() throws SystemException {
+
+			contest.setContestName(name);
+			contest.setContestDescription(description);
+			contest.setContestModelDescription(modelDescription);
+			contest.setContestPositionsDescription(positionsDescription);
+			contest.setContestShortName(shortName);
+			contest.setDefaultPlanDescription(defaultPlanDescription);
+			ContestLocalServiceUtil.updateContest(contest);
+			editing = false;
+		}
+
+		public void cancel() {
+			editing = false;
+		}
+
+		public boolean isEditingPositions() {
+			return editingPositions;
+		}
+
+		public void editPositions() {
+			editingPositions = !editingPositions;
+		}
+
+		public String getDefaultPlanDescription() {
+			return defaultPlanDescription;
+		}
+
+		public void setDefaultPlanDescription(String defaultPlanDescription) {
+			this.defaultPlanDescription = defaultPlanDescription;
+		}
+
+	}
+
+	public boolean isContestActive() {
+		return contest.getContestActive();
+	}
+
+	public Long getModelId() throws PortalException, SystemException {
+
+		return ContestLocalServiceUtil.getPlanType(contest).getDefaultModelId();
+	}
+
+	public PlansIndexBean getPlansIndex() {
+		return plansIndex;
+	}
+
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+		plansIndex.setEventBus(eventBus);
+		createPlanBean.setEventBus(eventBus);
+	}
+
+	public Long getContestId() {
+		return contest.getContestPK();
+	}
+
+	public List<ContestPhaseWrapper> getActiveOrPastPhases() {
+		return activeOrPastPhases;
+	}
+
+	public boolean getHasModel() throws PortalException, SystemException {
+		Long modelId = ContestLocalServiceUtil.getPlanType(getContest())
+				.getDefaultModelId();
+		return modelId != null && modelId > 0;
+	}
+
+	public void setCreatePlanBean(CreatePlanBean createPlanBean) {
+		this.createPlanBean = createPlanBean;
+	}
+
+	public CreatePlanBean getCreatePlanBean() {
+		return createPlanBean;
+	}
+
+	public void init(ContestBean contestBean, NavigationEvent event)
+			throws NoSuchContestPhaseException, PortalException,
+			SystemException {
+		plansIndex.init(contestBean.getCurrentPhase(), event);
+	}
+
+	public ContestPhaseWrapper getActivePhase() {
+		return activePhase;
+	}
+
+	public boolean getHasFocusArea() throws PortalException, SystemException {
+		return contest.getFocusAreaId() > 0;
+	}
+
+	public List<OntologyTerm> getWho() throws PortalException, SystemException {
+		return getTermFromSpace("who");
+	}
+
+	public List<OntologyTerm> getWhat() throws PortalException, SystemException {
+		return getTermFromSpace("what");
+
+	}
+
+	public List<OntologyTerm> getWhere() throws PortalException,
+			SystemException {
+		return getTermFromSpace("where");
+	}
+
+	public long getProposalsCount() throws SystemException, PortalException {
+		return ContestLocalServiceUtil.getProposalsCount(contest);
+	}
+
+	public long getCommentsCount() throws PortalException, SystemException {
+		return ContestLocalServiceUtil.getTotalComments(contest);
+	}
+
+	public String getResourcesUrl() {
+		return contest.getResourcesUrl();
+	}
+
+	private List<OntologyTerm> getTermFromSpace(String space)
+			throws PortalException, SystemException {
+
+		FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest
+				.getFocusAreaId());
+		if (fa == null)
+			return null;
+		List<OntologyTerm> terms = new ArrayList<OntologyTerm>();
+		for (OntologyTerm t : FocusAreaLocalServiceUtil.getTerms(fa)) {
+			if (OntologyTermLocalServiceUtil.getSpace(t).getName()
+					.equalsIgnoreCase(space)) {
+				terms.add(t);
+			}
+		}
+		return terms.isEmpty() ? null : terms;
+	}
+
+	public Long getCategoryGroupId() throws PortalException, SystemException {
+		if (contest.getDiscussionGroupId() <= 0) {
+			ContestLocalServiceUtil.updateContestGroupsAndDiscussions();
+		}
+		return contest.getDiscussionGroupId();
+	}
+
+	public Long getGroupId() {
+		return contest.getGroupId();
+	}
+
+	public List<ContestTeamMemberWrapper> getTeamMembers()
+			throws SystemException {
+		List<ContestTeamMemberWrapper> ret = new ArrayList<ContestTeamMemberWrapper>();
+		for (ContestTeamMember member : ContestLocalServiceUtil
+				.getTeamMembers(contest)) {
+			ret.add(new ContestTeamMemberWrapper(member));
+		}
+		return ret;
+	}
+
+	public Map<String, List<User>> getTeamRoleUsers() {
+		return teamRoleUsersMap;
+	}
+
+	public Set<String> getTeamRoles() {
+		return teamRoleUsersMap.keySet();
+	}
+
+	public String getFlagTooltip() {
+		return contest.getFlagTooltip();
+	}
 }

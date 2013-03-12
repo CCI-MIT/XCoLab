@@ -312,6 +312,35 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setPlansOpenByDefault(boolean plansOpenByDefault);
 
     /**
+     * Returns the sponsor logo ID of this contest.
+     *
+     * @return the sponsor logo ID of this contest
+     */
+    public long getSponsorLogoId();
+
+    /**
+     * Sets the sponsor logo ID of this contest.
+     *
+     * @param sponsorLogoId the sponsor logo ID of this contest
+     */
+    public void setSponsorLogoId(long sponsorLogoId);
+
+    /**
+     * Returns the sponsor text of this contest.
+     *
+     * @return the sponsor text of this contest
+     */
+    @AutoEscape
+    public String getSponsorText();
+
+    /**
+     * Sets the sponsor text of this contest.
+     *
+     * @param sponsorText the sponsor text of this contest
+     */
+    public void setSponsorText(String sponsorText);
+
+    /**
      * Returns the flag of this contest.
      *
      * @return the flag of this contest

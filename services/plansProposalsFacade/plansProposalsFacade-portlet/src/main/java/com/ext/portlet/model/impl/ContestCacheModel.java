@@ -35,6 +35,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Serializable {
     public long contestLogoId;
     public boolean featured;
     public boolean plansOpenByDefault;
+    public long sponsorLogoId;
+    public String sponsorText;
     public int flag;
     public String flagText;
     public String flagTooltip;
@@ -45,7 +47,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Serializable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(49);
+        StringBundler sb = new StringBundler(53);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -81,6 +83,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Serializable {
         sb.append(featured);
         sb.append(", plansOpenByDefault=");
         sb.append(plansOpenByDefault);
+        sb.append(", sponsorLogoId=");
+        sb.append(sponsorLogoId);
+        sb.append(", sponsorText=");
+        sb.append(sponsorText);
         sb.append(", flag=");
         sb.append(flag);
         sb.append(", flagText=");
@@ -162,6 +168,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Serializable {
         contestImpl.setContestLogoId(contestLogoId);
         contestImpl.setFeatured(featured);
         contestImpl.setPlansOpenByDefault(plansOpenByDefault);
+        contestImpl.setSponsorLogoId(sponsorLogoId);
+
+        if (sponsorText == null) {
+            contestImpl.setSponsorText(StringPool.BLANK);
+        } else {
+            contestImpl.setSponsorText(sponsorText);
+        }
+
         contestImpl.setFlag(flag);
 
         if (flagText == null) {

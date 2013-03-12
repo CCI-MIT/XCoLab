@@ -521,7 +521,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .contest-detail .who {background:url(../images/icon-list-who.png) no-repeat; padding-left:25px;}
 
 .contest-detail .moreinfo {clear:both; padding:14px 16px 16px 18px; position: relative; min-height: 37px;}
-.contest-detail .advisors {width:500px; font-size:14px; font-weight:700; padding-top:0px; color:#757572; float:left;}
+.contest-detail .advisors {font-size:14px; font-weight:700; padding-top:0px; color:#757572; float:left;}
 .contest-detail .advisors img {margin-left: 5px; margin-right: 10px; vertical-align: bottom;}
 .contest-detail .contestTeamRole { padding: 5px 0px; }
 

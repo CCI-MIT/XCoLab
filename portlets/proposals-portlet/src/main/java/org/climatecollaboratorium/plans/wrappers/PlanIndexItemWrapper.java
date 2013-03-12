@@ -159,7 +159,7 @@ public class PlanIndexItemWrapper {
         return PlanItemLocalServiceUtil.getName(wrapped);
     }
     
-    public String getAbstract() throws SystemException {
+    public String getPitch() throws SystemException {
         return PlanItemLocalServiceUtil.getPitch(wrapped);
     }
     

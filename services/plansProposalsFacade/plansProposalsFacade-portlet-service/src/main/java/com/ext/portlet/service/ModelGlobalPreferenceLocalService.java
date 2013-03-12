@@ -228,8 +228,7 @@ public interface ModelGlobalPreferenceLocalService
     public boolean isVisible(edu.mit.cci.roma.client.Simulation s)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public void setVisible(edu.mit.cci.roma.client.Simulation s,
-        boolean visible)
+    public void setVisible(edu.mit.cci.roma.client.Simulation s, boolean visible)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
