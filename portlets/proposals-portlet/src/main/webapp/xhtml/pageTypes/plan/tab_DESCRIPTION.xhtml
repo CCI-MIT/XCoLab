@@ -22,7 +22,7 @@
                 <ice:dataTable value="#{planBean.plan.allDescriptionVersions}" rows="20" var="historyItem" styleClass="historyTable" rowClasses="odd,even">
                     <ice:column style="width: 400px;">
                         <ice:commandLink onclick="showAlertIfInEdit('Changing version will remove all changes that have been done, are you sure?'); triggerVersionsContainerVisibility();"
-                                value="#{historyItem.updateDate}" actionListener="#{planBean.plan.selectDescriptionVersion}">
+                                value="#{historyItem.updateDateFormatted}" actionListener="#{planBean.plan.selectDescriptionVersion}">
                             <f:attribute name="item" value="#{historyItem}"/>
                         </ice:commandLink>
                     </ice:column>

@@ -6,6 +6,7 @@
 
 package org.climatecollaboratorium.plans;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.ext.portlet.model.PlanDescription;
@@ -29,15 +30,20 @@ import com.liferay.portal.model.User;
  */
 public abstract class PlanHistoryWrapper<T> {
 
-    public abstract Date getUpdateDate();
+	public abstract Date getUpdateDate();
     public abstract User getUpdateAuthor();
     public abstract long getUpdateVersion();
     public abstract boolean isLatest(); 
     public abstract T getWrapped();
+    
+    public String getUpdateDateFormatted() {
+    	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+    	return sdf.format(getUpdateDate());
+    }
 
     public static PlanHistoryWrapper<PlanModelRun> getWrapper(final PlanModelRun run, final boolean latest) {
         return new PlanHistoryWrapper<PlanModelRun>() {
-
+        	
             @Override
             public Date getUpdateDate() {
                 return run.getCreated();

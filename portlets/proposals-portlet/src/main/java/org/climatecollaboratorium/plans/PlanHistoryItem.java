@@ -10,25 +10,26 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
 public class PlanHistoryItem {
-    private PlanItem plan;
-    private String updateType;
-    private User updateAuthor;
+	private PlanItem plan;
+	private String updateType;
+	private User updateAuthor;
 
-    public PlanHistoryItem(PlanItem plan) throws PortalException, SystemException  {
-        this.plan = plan;
-        updateAuthor = PlanItemLocalServiceUtil.getUpdateAuthor(plan);
-        updateType = plan.getUpdateType();
-    }
+	public PlanHistoryItem(PlanItem plan) throws PortalException,
+			SystemException {
+		this.plan = plan;
+		updateAuthor = PlanItemLocalServiceUtil.getUpdateAuthor(plan);
+		updateType = plan.getUpdateType();
+	}
 
-    public String getUpdateType() {
-        return UpdateType.valueOf(plan.getUpdateType()).description();
-    }
+	public String getUpdateType() {
+		return UpdateType.valueOf(plan.getUpdateType()).description();
+	}
 
-    public User getUpdateAuthor() {
-        return updateAuthor;
-    }
+	public User getUpdateAuthor() {
+		return updateAuthor;
+	}
 
-    public Date getUpdateDate() {
-        return plan.getUpdated();
-    }
+	public Date getUpdateDate() {
+		return plan.getUpdated();
+	}
 }
