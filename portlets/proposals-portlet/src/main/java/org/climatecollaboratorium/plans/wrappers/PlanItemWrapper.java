@@ -862,11 +862,11 @@ public class PlanItemWrapper {
         sectionsShown.clear();
     }
 
-    public void setAbstract(String abstractStr) throws SystemException {
+    public void setPitch(String abstractStr) throws SystemException {
         newAbstract = abstractStr;
     }
 
-    public String getAbstract() throws SystemException {
+    public String getPitch() throws SystemException {
         return newAbstract;
     }
 
