@@ -12,7 +12,7 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:collab="http://climatecollaboratorium.org/facelets"
         xmlns:sharedcollab="http://climatecollaboratorium.org/components">
-    <ice:dataTable var="singleContest" value="#{contests}" styleClass="contestlist #{class} ">
+    <ice:dataTable var="singleContest" value="#{contests}" styleClass="contestlist #{cls} ">
         <ice:column style="width: 366px;">
             <div style="position: relative;">
                 <f:subview rendered="#{not empty singleContest.flagText}">

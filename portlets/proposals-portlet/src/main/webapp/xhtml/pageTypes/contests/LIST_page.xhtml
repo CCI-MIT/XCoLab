@@ -92,7 +92,7 @@
     <f:subview rendered="#{fn:length(contests.contestsFeatured) gt 0}">
         <ui:include src="./widget_CONTESTS_LIST_SINGLE.xhtml">
             <ui:param name="contests" value="#{contests.contestsFeatured}" />
-            <ui:param name="class" value="featured" />
+            <ui:param name="cls" value="featured" />
         </ui:include>
     
         <div class="shadebar"></div>
@@ -101,7 +101,7 @@
     <f:subview rendered="#{fn:length(contests.contestsNormal) gt 0}">
         <ui:include src="./widget_CONTESTS_LIST_SINGLE.xhtml">
             <ui:param name="contests" value="#{contests.contestsNormal}" />
-            <ui:param name="class" value="" />
+            <ui:param name="cls" value="" />
         </ui:include>
     </f:subview>
     <f:subview rendered="#{fn:length(contests.contests) eq 0}">
