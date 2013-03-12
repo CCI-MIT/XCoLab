@@ -90,11 +90,11 @@
             </ice:panelGroup>
             <ice:panelGroup rendered="#{message.editing}" styleClass="newMessageForm">
                 <ice:outputLabel for="messageTitle" value="Title: " /><br />
-                <ice:inputText id="messageTitle" value="#{message.title}" styleClass="title text"/>
+                <ice:inputText id="messageTitle" value="#{message.title}" styleClass="title text edit"/>
                 <ice:message for="messageTitle" />
                 <br />
                 <ice:outputLabel for="messageContent" value="Message: " /><br />
-                <ice:inputTextarea id="messageContent"  value="#{message.description}" styleClass="description text"/>
+                <ice:inputTextarea id="messageContent"  value="#{message.description}" styleClass="description text edit"/>
             <ice:message for="messageContent" /><br />
         
                 <ice:commandButton actionListener="#{message.updateMessage}" value="Save" />

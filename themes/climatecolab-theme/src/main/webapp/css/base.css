@@ -260,6 +260,17 @@ hr, .separator {
 	text-align: left;
 }
 
+/* ---------- Text area size ---------- */
+.newMessageForm .edit {
+	width:80%;
+}
+
+.newMessageForm textarea.edit{
+	height:200px;
+}
+
+
+
 /* ---------- Text highlighting ---------- */
 
 .highlight {
