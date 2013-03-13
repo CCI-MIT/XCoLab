@@ -194,16 +194,16 @@ public class ContestBean {
     
     public void subscribe(ActionEvent e) throws PortalException, SystemException {
     	if (Helper.isUserLoggedIn()) {
-    		ActivitySubscriptionLocalServiceUtil.addSubscription(Contest.class, contest.getContestId(), null, "", Helper.getLiferayUser().getUserId());
+    		ActivitySubscriptionLocalServiceUtil.addSubscription(Contest.class, contest.getContestId(), 0, "", Helper.getLiferayUser().getUserId());
     		
     		// add subscription to each proposal and it's comments
     		for (PlanItem planItem: PlanItemLocalServiceUtil.getPlansByContest(contest.getContest().getContestPK())) {
-                ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), null, "",
+                ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, planItem.getPlanId(), 0, "",
                         Helper.getLiferayUser().getUserId());
 
                 ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
                         PlanItemLocalServiceUtil.getCategoryGroupId(planItem),
-                        null, "", Helper.getLiferayUser().getUserId());
+                        0, "", Helper.getLiferayUser().getUserId());
     		}
     	}
     }
