@@ -210,14 +210,14 @@ public class ContestBean {
     
     public void unsubscribe(ActionEvent e) throws SystemException, PortalException {
     	if (Helper.isUserLoggedIn()) {
-    		ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), Contest.class, contest.getContestId(), null, "");
+    		ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), Contest.class, contest.getContestId(), 0, "");
     		
     		// add subscription to each proposal and it's comments
     		for (PlanItem planItem: PlanItemLocalServiceUtil.getPlansByContest(contest.getContest().getContestPK())) {
-                ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), PlanItem.class, planItem.getPlanId(), null, "");
+                ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), PlanItem.class, planItem.getPlanId(), 0, "");
 
                 ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(), DiscussionCategoryGroup.class, 
-                        PlanItemLocalServiceUtil.getCategoryGroupId(planItem), null, "");
+                        PlanItemLocalServiceUtil.getCategoryGroupId(planItem), 0, "");
     		}
     	}
     }
