@@ -10,15 +10,17 @@
                     
     <script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js" ><!-- --></script>
     <div id="main">
-    
+    	<ice:panelGroup>
       <div class="comm_member">
         <div class="comm_member-photo">
+        	<ice:panelGroup>
             <f:subview rendered="#{empty currentUser.uploadedFileName}">
                 <img src="#{currentUser.portrait}" width="150" height="150" alt="#{currentUser.screenName}" />
             </f:subview>
             <f:subview rendered="#{not empty currentUser.uploadedFileName}">
                 <img src="/userprofile-portlet/showUploadedImg?fileName=#{currentUser.uploadedFileName}" width="150" height="150" alt="#{currentUser.screenName}" />
             </f:subview>
+            </ice:panelGroup>
         
         </div>
         <div class="comm_member-info">
@@ -41,7 +43,7 @@
                     </tr>
                 </table>
                 
-            <div class="profile_upload"> 
+            <ice:panelGroup styleClass="profile_upload"> 
                     <ice:inputFile id="profileImage" actionListener="#{currentUser.uploadPortrait}" styleClass="filepc" autoUpload="true" >
                         <ice:outputStyle href="/css/main.css" />
                     </ice:inputFile><br />
@@ -57,7 +59,7 @@
               <input name="filepc" type="file" size="30" id="filepc" onchange="document.getElementById('fakefilepc').value = this.value;"/>
               <div id="fakeinputfile"><input name="fakefilepc" type="text" id="fakefilepc" /></div>
                -->
-            </div>
+            </ice:panelGroup>
             
             <f:subview rendered="#{not empty currentUser.fileErrorMessage}">
                 <span class="iceMsgError portlet-msg-error Error form_error_messageError">
@@ -68,6 +70,8 @@
         </div>
         <div class="clearfix"></div>
       </div>
+      </ice:panelGroup>
+      <ice:panelGroup>
       <table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
         <tr>
             <td class="b m" width="170">Screen Name</td>
@@ -129,7 +133,9 @@
       </table>
 
       <div class="profile_about-head">About me</div>
-      <ice:inputTextarea rows="6" cols="30" styleClass="profile_about ckeditor hidden" value="#{currentUser.about}" />
+      <ice:panelGroup styleClass="userProfileAbout" >
+      <ice:inputTextarea rows="6" cols="30" styleClass="profile_about ckeditor" value="#{currentUser.about}" />
+      </ice:panelGroup>
       <script>
         function updateTextarea() {
         	for (var instance in CKEDITOR.instances) {
@@ -145,6 +151,7 @@
       <div class="blue-button"><a href="/web/guest/member/-/member/userId/#{currentUser.userId}">Cancel</a></div>
       <!-- <input type="reset" name="reset" class="profile_reset" value="CANCEL" />-->
           
+          </ice:panelGroup>
         </div> <!-- /main -->
                     </ice:form>
         <ice:form>
@@ -170,7 +177,9 @@
                 </tr>
         </table>
         <div class="clearfix"></div>
+        
      </div>
+     
 
     </div> <!-- /right_col3 -->
      </ice:form>
