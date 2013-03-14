@@ -16,6 +16,7 @@ import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.base.ActivitySubscriptionLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.ActivitySubscriptionUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -70,16 +71,16 @@ public class ActivitySubscriptionLocalServiceImpl
 
     public List<ActivitySubscription>  getActivitySubscriptions(Class clasz, Long classPK, Integer type, String extraData)
             throws PortalException, SystemException {
-        return activitySubscriptionPersistence.findByClassNameIdClassPKTypeExtraData(PortalUtil.getClassNameId(clasz), classPK, type, extraData);
+        return ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraData(PortalUtil.getClassNameId(clasz), classPK, type, extraData);
     }
     
     public List<ActivitySubscription> findByUser(Long userId) throws SystemException {
-        return activitySubscriptionPersistence.findByreceiverId(userId);
+        return ActivitySubscriptionUtil.findByreceiverId(userId);
     }
 
     public boolean isSubscribed(Long userId, Long classNameId, Long classPK, Integer type, String extraData)
             throws PortalException, SystemException {
-        List<ActivitySubscription> ret = activitySubscriptionPersistence.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK,
+        List<ActivitySubscription> ret = ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK,
                 type, extraData, userId);
         return ret != null && !ret.isEmpty(); 
     }
@@ -91,7 +92,7 @@ public class ActivitySubscriptionLocalServiceImpl
     
     public void deleteSubscription(Long userId, Long classNameId, Long classPK, Integer type, String extraData) throws SystemException {
         List<ActivitySubscription> subscriptions = 
-            activitySubscriptionPersistence.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type, extraData, userId);
+            ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type, extraData, userId);
         for (ActivitySubscription subscription: subscriptions) {
             delete(subscription);
         }
@@ -105,7 +106,7 @@ public class ActivitySubscriptionLocalServiceImpl
     public void addSubscription(Long classNameId, Long classPK, Integer type, String extraData, Long userId)
             throws PortalException, SystemException {
 
-        if (activitySubscriptionPersistence.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type,
+        if (ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type,
                 extraData, userId).size() > 0) {
             // subscription exists, do nothing
             return;
@@ -136,7 +137,7 @@ public class ActivitySubscriptionLocalServiceImpl
     public List<SocialActivity> getActivities(Long userId, int start, int count) throws SystemException {
         List<ActivitySubscription> subscriptions = null;
         // for now no activity selection is made, TODO
-        subscriptions = activitySubscriptionPersistence.findByreceiverId(userId);
+        subscriptions = ActivitySubscriptionUtil.findByreceiverId(userId);
 
         if (subscriptions.size() == 0) {
             return new ArrayList<SocialActivity>();
