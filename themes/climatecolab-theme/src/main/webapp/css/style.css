@@ -804,3 +804,6 @@ ul li {
 .whatWhoWhere {
 	display: inline;
 }
+.delta-selector {
+	display: none;
+}
