@@ -132,6 +132,7 @@ public class PlanMembershipBean {
     public void toggleRequestingOrJoin(ActionEvent e) throws SystemException, PortalException {
         if (PlanItemLocalServiceUtil.getOpen(plan)) {
             PlanItemLocalServiceUtil.joinIfNotAMember(plan, Helper.getLiferayUser().getUserId());
+            planMembers.clear();
         } else {
             requesting = !requesting;
         }

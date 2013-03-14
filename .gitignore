@@ -45,3 +45,4 @@ target*
 *.classpath
 *.iml
 .idea*
+rebel.xml

@@ -630,6 +630,7 @@ public class PlanItemWrapper {
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
                     wrapped.getPlanId(), PlanActivityKeys.BECOME_A_SUPPORTER.id(), null, 0);
             subscribed = true;
+            planFanPairs = null;
         }
     }
 
@@ -640,6 +641,7 @@ public class PlanItemWrapper {
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
                     wrapped.getPlanId(), PlanActivityKeys.STOPPED_BEEING_A_SUPPORTER.id(), null, 0);
             subscribed = false;
+            planFanPairs = null;
         }
     }
 

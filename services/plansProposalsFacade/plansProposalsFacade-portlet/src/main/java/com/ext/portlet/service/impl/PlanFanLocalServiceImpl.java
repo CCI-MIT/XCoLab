@@ -71,6 +71,7 @@ public class PlanFanLocalServiceImpl extends PlanFanLocalServiceBaseImpl {
             
             // flush the cache
             planFanPersistence.fetchByPlanIdUserId(planId, userId, false);
+            planFanPersistence.clearCache();
         } catch (NoSuchPlanFanException e) {
             // ignore
         }
