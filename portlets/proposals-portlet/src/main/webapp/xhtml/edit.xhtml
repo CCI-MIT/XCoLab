@@ -1,0 +1,129 @@
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+    
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                Collab.nav.unblock();
+            });
+        </script>
+                    <ice:outputConnectionStatus/>
+        <ice:messages globalOnly="false" layout="table" />
+		<ice:form>
+			<ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css" />
+			<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+                <ice:panelTab label="Proposal settings">
+                    <ice:messages globalOnly="false" layout="table" />
+                    <h1>Contest rules</h1>
+                    <ice:inputTextarea value="#{preferences.defaultDescription}" style="width: 90%; height: 400px" /><br />
+                    <ice:commandButton value="Update" />
+                
+                </ice:panelTab>
+				<ice:panelTab label="Questions for assumptions">
+                    <strong><ice:outputLabel for="questions" value="Select how many proposals should be displayed for each contest:" /></strong>
+                    <ice:dataTable value="#{preferences.contestPreferences}" var="contestPref">
+                        <ice:column>
+                            #{contestPref.contest.contestName}
+                        </ice:column>
+                        <ice:column>
+                            <ice:inputText value="#{contestPref.maxProposalsCount}" />
+                        </ice:column>                           
+                    </ice:dataTable>
+                    <ice:commandButton value="Submit" action="#{preferences.submit}" />
+				</ice:panelTab>
+                <ice:panelTab label="Migration">
+                    <ice:messages globalOnly="false" layout="table" />
+                    <ice:commandButton action="#{migrationTool.migrate}" value="MIGRATE" onclick="if(!confirm('Are you sure you want to proceed with migration?')){ return false; }"/>
+                    <ice:commandButton action="#{migrationTool.updateLastUpdateDate}" value="Update last mod date" />
+                    <ice:commandButton action="#{migrationTool.subscribePlanCreators}" value="Subscribe creators to plans" />
+                    <ice:commandButton action="#{migrationTool.resetDiscussionCategoryGroupPermissions}" value="Update discussions permissions" />
+                </ice:panelTab>
+                <ice:panelTab label="Migrate discussions">
+                    <ice:messages globalOnly="false" layout="table" />
+                    <ice:commandButton action="#{migrationTool.migrateDiscussions}" value="MIGRATE DISCUSSIONS" onclick="if(!confirm('Are you sure you want to proceed with discussions migration?')){ return false; }"/>
+                    
+                    <ice:commandButton action="#{migrationTool.updateDiscussionUrlsAndDescriptions}" value="UPDATE DISCUSSIONS Descriptions/Urls" />
+                    <ice:commandButton action="#{migrationTool.updateDiscussionsPermissions}" value="Update discussions permissions" />
+                    
+                </ice:panelTab>
+
+                <ice:panelTab label="Migrate general discussions">
+                    <ice:messages globalOnly="false" layout="table" />
+                    <ice:inputText value="#{migrationTool.mbCategoryId}"/>
+                    <ice:commandButton action="#{migrationTool.migrateGeneralDiscussions}" value="MIGRATE DISCUSSIONS_GENERAL" onclick="if(!confirm('Are you sure you want to proceed with discussions migration?')){ return false; }"/>
+                    
+                    <ice:commandButton action="#{migrationTool.updateUrlsInErrors}" value="Update urls in errors" />
+
+                </ice:panelTab>
+                
+                <ice:panelTab label="Update plan open attribute">
+                    <ice:messages globalOnly="false" layout="table" />
+                    <ice:commandButton value="Update plan open attribute and supporters" action="#{migrationTool.updatePlanOpenAttribute}" /><br />
+                    <ice:commandButton value="Set sliders intervals" action="#{migrationTool.setIntervals}" /><br />
+                    <ice:commandButton value="Update old plan votes" action="#{migrationTool.updateOldPlanVotes}" /><br />
+			<ice:commandButton value="rerun simulations" action="#{migrationTool.rerunPlansSimulations}" /><br />
+                
+                </ice:panelTab>
+                <ice:panelTab label="Plan Copy Tool">
+                    <ice:messages />
+                    <table>
+                        <tr>
+                            <td>Choose source contest phase</td>
+                            <td>
+                                <ice:selectOneMenu value="#{planCopyTool.sourceContestPhase}" partialSubmit="true">
+                                    <f:selectItems value="#{planCopyTool.availableContestPhases}" />
+                                </ice:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Choose target contest phase</td>
+                            <td>
+                                <ice:selectOneMenu value="#{planCopyTool.targetContestPhase}" partialSubmit="true">
+                                    <f:selectItems value="#{planCopyTool.availableContestPhases}" />
+                                </ice:selectOneMenu>
+                            </td>
+                        </tr>
+                            
+                        <f:subview rendered="#{planCopyTool.readyForCopy}">
+                        
+                            Add plan advanced to next phase ribbon: <ice:selectBooleanCheckbox value="#{planCopyTool.addSemiFinalistRibbon}" partialSubmit="true" /> <br />
+                            <f:subview rendered="#{planCopyTool.addSemiFinalistRibbon}">
+                                Ribbon text <ice:inputText value="#{planCopyTool.planAdvancedText}" />
+                            </f:subview>
+                            <br /><br />
+                             <button onclick="jQuery('.planCopyItemsTbl input[type=checkbox]').attr('checked', 'true')">Select all</button>
+                             
+                            <ice:dataTable value="#{planCopyTool.planCopyItems}" var="copyItem" styleClass="planCopyItemsTbl">
+                                <ice:column>
+                                    <f:facet name="header">Id</f:facet>
+                                    #{copyItem.planId}
+                                </ice:column>
+                                <ice:column>
+                                    <f:facet name="header">Plan name</f:facet>
+                                    #{copyItem.planName}
+                                </ice:column>
+                                <ice:column>
+                                    <f:facet name="header">Copy</f:facet>
+                                    <ice:selectBooleanCheckbox value="#{copyItem.selected}" /> 
+                                </ice:column>
+                            </ice:dataTable>
+                            <tr>
+                                <td colspan="2">
+                                    <ice:commandButton actionListener="#{planCopyTool.copy}" value="Copy" />
+                                </td>
+                            </tr>
+                        </f:subview>
+                    </table>
+                    
+                    
+                
+                </ice:panelTab>
+			</ice:panelTabSet>
+		</ice:form>
+	</ice:portlet>
+</f:view>
