@@ -134,7 +134,7 @@
 
       <div class="profile_about-head">About me</div>
       <ice:panelGroup styleClass="userProfileAbout" >
-      <ice:inputTextarea rows="6" cols="30" styleClass="profile_about ckeditor" value="#{currentUser.about}" />
+      <ice:inputTextarea rows="6" cols="30" styleClass="profile_about ckeditor" value="#{currentUser.about}" onblur="return false;" />
       </ice:panelGroup>
       <script>
         function updateTextarea() {
