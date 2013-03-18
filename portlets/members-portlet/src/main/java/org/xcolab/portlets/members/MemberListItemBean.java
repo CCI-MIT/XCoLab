@@ -3,6 +3,8 @@ package org.xcolab.portlets.members;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
@@ -28,6 +30,14 @@ public class MemberListItemBean {
             realName = firstPart;
         }
         
+        if (StringUtils.isBlank(realName)) {
+            if (StringUtils.isNotBlank(firstName)) {
+                realName = firstName;
+            }
+            else {
+                realName = screenName;
+            }
+        }
         
         joinDate = userDoc.getDate("joinDate");
 
