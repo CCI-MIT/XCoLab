@@ -17,6 +17,7 @@
         float: left;
     }
    </style>
+   
    <ice:form>
     <div class="admin_left">
         <div class="addpropbox">
@@ -155,6 +156,7 @@
         <ice:panelGroup rendered="#{fn:length(planBean.membershipBean.planMembershipRequests) lt 1}">
             <i>No new requests</i>
         </ice:panelGroup>
+        <ice:outputText value="#{membershipRequest.id}" />
         <ice:dataTable value="#{planBean.membershipBean.planMembershipRequests}" var="membershipRequest" styleClass="colab adm" rendered="#{fn:length(planBean.membershipBean.planMembershipRequests) gt 0}" rowClasses="t,nt">
             <ice:column>
                 <strong><collab:userLinkSimple userId="#{membershipRequest.userId}" text="#{membershipRequest.screenName}" /></strong>

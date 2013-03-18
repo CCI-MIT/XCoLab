@@ -719,8 +719,9 @@ function showManageMembershipRequestDialog(contentContainerId) {
     var container = jQuery("#" + contentContainerId);
     var dialog = jQuery("#manage_membership_request_dialog");
     var content = container.find(".content");
-
-
+    dialog.dialog({
+        autoOpen: false
+    });
     dialog.dialog("destroy");
     content.appendTo(dialog);
     content.show();
