@@ -106,6 +106,7 @@ function updateReceipients() {
 
 function sendMessage() {
     if (jQuery(".composeMessageForm").valid() && receipientsValid()) {
+    	jQuery("#ComposeMessage").block();
         jQuery(".sendMessageLink").click();
     }
 }
