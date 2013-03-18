@@ -14,7 +14,7 @@
         <img src="/climatecolab-theme/images/icon_comments-big.png" width="53" height="50" /> 
         <span>#{discussionBean.commentsCount}</span> comments
         <img src="/climatecolab-theme/images/icon_new-comment.png" width="44" height="41" class="spc" /> 
-        <a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery.scrollTo(jQuery("#thecomment")); return false;'>add new comment</a>
+        <a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); return false;'>add new comment</a>
 
       </div>
         <ice:panelGroup rendered="#{discussionBean.hasComments}" styleClass="pager" style="width: 365px;">
@@ -175,7 +175,7 @@
        
         var navItems = window.collab.nav.getNavigationItems();
         if ('discussion' in navItems &amp;&amp; 'messageId' in navItems.discussion) {
-            jQuery.scrollTo("#_message_" + navItems.discussion.messageId);
+            scrollTo("#_message_" + navItems.discussion.messageId).scrollIntoView();
 
         } 
 

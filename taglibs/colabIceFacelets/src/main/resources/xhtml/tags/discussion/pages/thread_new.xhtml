@@ -176,7 +176,7 @@
         
         jQuery(".loginnew").click(function() {
           jQuery('.popup_login').show();
-          jQuery.scrollTo(jQuery(".popup_login"));
+          jQuery(".popup_login")[0].scrollIntoView();
             
         });
     
@@ -193,7 +193,7 @@
             var navItems = window.collab.nav.getNavigationItems();
             
             if ('discussion' in navItems &amp;&amp; 'messageId' in navItems.discussion) {
-                jQuery.scrollTo("#_message_" + navItems.discussion.messageId);
+                jQuery("#_message_" + navItems.discussion.messageId).scrollIntoView();
 
             } 
             
