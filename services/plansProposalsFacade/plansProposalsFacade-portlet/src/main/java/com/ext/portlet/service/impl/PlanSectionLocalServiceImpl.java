@@ -101,6 +101,7 @@ public class PlanSectionLocalServiceImpl extends PlanSectionLocalServiceBaseImpl
         if (store) {
             store(ps);
         }
+        planSectionPersistence.clearCache(ps);
         return ps;
     }
     
@@ -124,6 +125,7 @@ public class PlanSectionLocalServiceImpl extends PlanSectionLocalServiceBaseImpl
         if (store) {
             store(newSection);
         }
+        planSectionPersistence.clearCache(newSection);
         
         return newSection;
     }

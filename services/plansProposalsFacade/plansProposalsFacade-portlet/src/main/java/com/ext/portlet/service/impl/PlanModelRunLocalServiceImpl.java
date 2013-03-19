@@ -86,6 +86,7 @@ public class PlanModelRunLocalServiceImpl
         if (store) {
             newModelRun = PlanModelRunLocalServiceUtil.addPlanModelRun(newModelRun);
         }
+        planModelRunPersistence.clearCache(newModelRun);
         
         return newModelRun;
     }

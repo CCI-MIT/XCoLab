@@ -85,6 +85,7 @@ public class PlanMetaLocalServiceImpl extends PlanMetaLocalServiceBaseImpl {
         if (store) {
             newMeta = PlanMetaLocalServiceUtil.addPlanMeta(newMeta);
         }
+        this.planMetaPersistence.clearCache(newMeta);
         
         return newMeta;
     }
