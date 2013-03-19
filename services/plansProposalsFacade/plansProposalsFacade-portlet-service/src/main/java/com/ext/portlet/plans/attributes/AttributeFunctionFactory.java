@@ -278,8 +278,14 @@ public class AttributeFunctionFactory {
             public T process(PlanItem plan) {
                 String getterMethod = "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
                 try {
-                    Method getter = PlanItem.class.getMethod(getterMethod);
-                    return (T)getter.invoke(plan);
+                    try {
+                        Method getter = PlanItem.class.getMethod(getterMethod);
+                        return (T) getter.invoke(plan);
+                    }
+                    catch (NoSuchMethodException e) {
+                        Method getter = PlanItemLocalServiceUtil.class.getMethod(getterMethod, PlanItem.class);
+                        return (T)getter.invoke(PlanItemLocalServiceUtil.class, plan);
+                    }
                 }
                 catch (Throwable e) {
                     _log.error("Illegal property: " + propertyName, e);

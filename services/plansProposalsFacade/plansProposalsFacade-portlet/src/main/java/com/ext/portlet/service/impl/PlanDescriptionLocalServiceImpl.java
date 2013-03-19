@@ -90,7 +90,9 @@ public class PlanDescriptionLocalServiceImpl
 
         if (store) {
             newDescription = PlanDescriptionLocalServiceUtil.addPlanDescription(newDescription);
+            
         }
+        this.planDescriptionPersistence.cacheResult(newDescription);
         
         return newDescription;
     }
