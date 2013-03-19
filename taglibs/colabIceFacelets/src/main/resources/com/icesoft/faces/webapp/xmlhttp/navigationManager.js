@@ -95,6 +95,11 @@ Collab.nav = new function() {
 	
 	
 	this.pageload = function(hash) {
+		var pos = window.location.hash.indexOf("?rvn=");
+		if (pos >= 0) {
+			var newUrl = window.location.pathname + window.location.hash.substring(pos) + window.location.hash.substring(0, pos-1);
+			window.location = newUrl;
+		}
 		navigationItems = parseToken(hash);
 		//alert("after parsing token " + hash + "try to force navigation..." + jQuery(".navigationManagerForm .submit").length + " " + jQuery(".navigationManagerForm .navigationToken").length);
 		if(!initialized) {
@@ -157,6 +162,9 @@ Collab.nav = new function() {
 	
 	function parseToken(token) {
 		tokenNavigationMap = {};
+		if (token.indexOf("?rvn=") > 0) {
+			token = token.substring(0, token.indexOf("?rvn="));
+		}
 		var paramGroups = token.split(";");
 		for (var i=0; i < paramGroups.length; i++) {
 			var paramGroup = paramGroups[i];
