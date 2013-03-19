@@ -44,7 +44,9 @@
 		<field name="featured" type="boolean" />
 		<field name="plansOpenByDefault" type="boolean" />
 		<field name="sponsorLogoId" type="long" />
-		<field name="sponsorText" type="String" />
+		<field name="sponsorText" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 		<field name="flag" type="int" />
 		<field name="flagText" type="String">
 			<hint name="max-length">1024</hint>
