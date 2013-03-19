@@ -26,10 +26,10 @@ SHARED ELEMENTS
 }
 
 div.sponsorLogo {
-	width:320px;
+	max-width:320px;
 	display:inline-block;
 	margin-top:20px;
-	margin-left:10px;
+	/*margin-left:10px;*/
 }
 
 div.sponsorLogo table {
