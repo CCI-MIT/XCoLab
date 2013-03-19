@@ -22,6 +22,8 @@ package org.climatecollaboratorium.plans.utils;
  * SOFTWARE.
  */
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +31,11 @@ import java.util.Locale;
 
 import javax.portlet.PortletURL;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.ext.portlet.NoSuchPlanItemException;
 import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -63,32 +69,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     public static final String PORTLET_ID = "plans";
     private static final Log _log = LogFactoryUtil.getLog(Indexer.class);
-
-    /*
-     * public static void updateEntry(long companyId, PlanItem plan) throws
-     * SearchException, SystemException {
-     * 
-     * Document doc = getEntryDocument(companyId, plan);
-     * 
-     * SearchEngineUtil.updateDocument(companyId, doc.get(Field.UID), doc); }
-     * 
-     * public String[] getClassNames() { return _CLASS_NAMES; }
-     * 
-     * public DocumentSummary getDocumentSummary(
-     * com.liferay.portal.kernel.search.Document doc, PortletURL portletURL) {
-     * 
-     * String title = doc.get(Field.TITLE); String url = doc.get(Field.URL);
-     * 
-     * return new DocumentSummary(title, url, portletURL); }
-     * 
-     * public void reIndex(String className, long classPK) throws
-     * SearchException { try { PlanItemLocalServiceUtil.reIndex(classPK); }
-     * catch (Exception e) { throw new SearchException(e); } }
-     * 
-     * public void reIndex(String[] ids) throws SearchException { try {
-     * PlanItemLocalServiceUtil.reIndex(); } catch (Exception e) { throw new
-     * SearchException(e); } }
-     */
+    private long defaultCompanyId = 10112L;
 
     private static final String[] _CLASS_NAMES = new String[] { PlanItem.class.getName() };
 
@@ -100,7 +81,15 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void delete(Object obj) throws SearchException {
-        // TODO Auto-generated method stub
+        PlanItem plan;
+        try {
+            plan = PlanItemLocalServiceUtil.getPlan((Long) obj);
+            SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, getDocument(plan).getUID()); 
+        } catch (NoSuchPlanItemException e) {
+            _log.error("Can't remove plan from index: " + obj, e);
+        } catch (SystemException e) {
+            _log.error("Can't remove plan from index: " + obj, e);
+        }
 
     }
 
@@ -115,12 +104,25 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
         doc.addModifiedDate(plan.getUpdated());
 
-        doc.addKeyword(Field.COMPANY_ID, GroupLocalServiceUtil.getGroup(PlanItemLocalServiceUtil.getPlanMeta(plan).getPlanGroupId()).getCompanyId());
+        doc.addKeyword(Field.COMPANY_ID, defaultCompanyId);
         doc.addKeyword(Field.PORTLET_ID, PORTLET_ID);
-        doc.addKeyword(Field.GROUP_ID, PlanItemLocalServiceUtil.getCategoryGroupId(plan));
+        doc.addKeyword(Field.GROUP_ID, PlanItemLocalServiceUtil.getPlanGroupId(plan));
 
         doc.addText(Field.TITLE, PlanItemLocalServiceUtil.getName(plan));
+        doc.addText("pitch", PlanItemLocalServiceUtil.getPitch(plan));
         doc.addText(Field.CONTENT, PlanItemLocalServiceUtil.getDescription(plan));
+        
+        StringBuilder sectionsCombined = new StringBuilder();
+        List<PlanSection> sections = PlanItemLocalServiceUtil.getPlanSections(plan);
+        if (sections != null) {
+            for (PlanSection section: sections) {
+                if (StringUtils.isNotBlank(section.getContent())) {
+                    sectionsCombined.append(section.getContent());
+                    sectionsCombined.append(" ");
+                }
+            }
+        }
+        doc.addText("sections", sectionsCombined.toString());
 
         doc.addKeyword(Field.ENTRY_CLASS_NAME, PlanItem.class.getName());
         doc.addKeyword(Field.ENTRY_CLASS_PK, plan.getPlanId());
@@ -172,61 +174,90 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
     @Override
     public Summary getSummary(Document document, Locale locale, String snippet, PortletURL portletURL)
             throws SearchException {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public boolean hasPermission(PermissionChecker permissionChecker, long entryClassPK, String actionId)
             throws Exception {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean isFilterSearch() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean isPermissionAware() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean isStagingAware() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public void postProcessContextQuery(BooleanQuery contextQuery, SearchContext searchContext) throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void postProcessSearchQuery(BooleanQuery searchQuery, SearchContext searchContext) throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void registerIndexerPostProcessor(IndexerPostProcessor indexerPostProcessor) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void reindex(Object obj) throws SearchException {
-
+        PlanItem plan = null;
+        if (obj instanceof Long) {
+            try {
+                plan = PlanItemLocalServiceUtil.getPlan((Long) obj);
+            } catch (NoSuchPlanItemException e) {
+                _log.error("Can't reindex plan " + plan.getId(), e);
+            } catch (SystemException e) {
+                _log.error("Can't reindex plan " + plan.getId(), e);
+            }
+            
+        }
+        else {
+            try {
+                Method m = obj.getClass().getMethod("getPlanId");
+                Long planId = (Long) m.invoke(obj);
+                plan = PlanItemLocalServiceUtil.getPlan(planId);
+            } catch (NoSuchPlanItemException e) {
+                _log.error("Can't reindex plan " + obj, e);
+            } catch (SystemException e) {
+                _log.error("Can't reindex plan " + obj, e);
+            } catch (IllegalAccessException e) {
+                _log.error("Can't reindex plan " + obj, e);
+            } catch (IllegalArgumentException e) {
+                _log.error("Can't reindex plan " + obj, e);
+            } catch (InvocationTargetException e) {
+                _log.error("Can't reindex plan " + obj, e);
+            } catch (NoSuchMethodException e) {
+                _log.error("Can't reindex plan " + obj, e);
+            } catch (SecurityException e) {
+                _log.error("Can't reindex plan " + obj, e);
+            }
+        }
+                
+            
+        if (plan.getState().equals("DELETED")) return;
+        Document doc = getDocument(plan);
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
+        SearchEngineUtil.addDocument(getSearchEngineId(), defaultCompanyId, doc);
+        
     }
 
     @Override
     public void reindex(String className, long classPK) throws SearchException {
-
     }
 
     @Override

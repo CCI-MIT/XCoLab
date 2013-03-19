@@ -1,5 +1,7 @@
 package org.xcolab.portlets.contests;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,9 +10,7 @@ import java.util.Locale;
 import javax.portlet.PortletURL;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -45,13 +45,17 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void delete(long companyId, String uid) throws SearchException {
-        // TODO Auto-generated method stub
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), companyId, uid);
         
     }
+    
+    
 
     @Override
     public void delete(Object obj) throws SearchException {
-        // TODO Auto-generated method stub
+
+        Document doc = getDocument(getContest(obj));
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
         
     }
 
@@ -165,13 +169,18 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void reindex(Object obj) throws SearchException {
-        // TODO Auto-generated method stub
+        Document doc = getDocument(getContest(obj));
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
+        SearchEngineUtil.addDocument(getSearchEngineId(), defaultCompanyId, doc);
         
     }
 
     @Override
     public void reindex(String className, long classPK) throws SearchException {
-        // TODO Auto-generated method stub
+
+        Document doc = getDocument(getContest(classPK));
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
+        SearchEngineUtil.addDocument(getSearchEngineId(), defaultCompanyId, doc);
         
     }
 
@@ -182,8 +191,8 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         try {
             contetsts = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
         } catch (SystemException e) {
-            _log.error("Can't reindex plans", e);
-            throw new SearchException("Can't reindex plans", e);
+            _log.error("Can't reindex contests", e);
+            throw new SearchException("Can't reindex contests", e);
         }
         Collection<Document> documents = new ArrayList<Document>();
         for (Contest contest : contetsts) {
@@ -210,5 +219,45 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         // TODO Auto-generated method stub
         
     }
-
+    
+    private Contest getContest(Object obj) throws SearchException {
+        Long contestId = null;
+        if (obj instanceof Long) {
+            contestId = (Long) obj;
+        }
+        else {
+            try {
+                Method m = obj.getClass().getMethod("getContestPK");
+                contestId = (Long) m.invoke(obj);
+        } catch (IllegalAccessException e) {
+            _log.error("Can't reindex contest " + obj, e);
+        } catch (IllegalArgumentException e) {
+            _log.error("Can't reindex contest " + obj, e);
+        } catch (InvocationTargetException e) {
+            _log.error("Can't reindex contest " + obj, e);
+        } catch (NoSuchMethodException e) {
+            _log.error("Can't reindex contest " + obj, e);
+        } catch (SecurityException e) {
+            _log.error("Can't reindex contest " + obj, e);
+        }
+            
+             
+        }
+        if (contestId == null) 
+            return null;
+        
+            try {
+                Contest c = ContestLocalServiceUtil.getContest(contestId);
+                return c;
+            } catch (PortalException e) {
+                _log.error("Can't reindex contest " + obj, e);
+                return null;
+            } catch (SystemException e) {
+                _log.error("Can't reindex contest " + obj, e);
+                return null;
+            }
+        
+        
+    }
+    
 }

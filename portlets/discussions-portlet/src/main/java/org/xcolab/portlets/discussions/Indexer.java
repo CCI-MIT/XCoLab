@@ -22,6 +22,8 @@ package org.xcolab.portlets.discussions;
  * SOFTWARE.
  */
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +33,7 @@ import javax.portlet.PortletURL;
 
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -59,6 +62,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
 	public static final String PORTLET_ID = "Discussions";
     private static final Log _log = LogFactoryUtil.getLog(Indexer.class);
+    private long defaultCompanyId = 10112L;
 
 	public String getEntryUID(long entryId) {
 		Document doc = new DocumentImpl();
@@ -75,7 +79,10 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
 
 	public void reIndex(String className, long classPK) throws SearchException {
-		
+		DiscussionMessage msg = getMessage(classPK);
+		Document doc = getDocument(msg);
+		SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
+        SearchEngineUtil.updateDocument(getSearchEngineId(), defaultCompanyId, doc);
 	}
 
 	private static final String[] _CLASS_NAMES = new String[] {
@@ -84,11 +91,15 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void delete(long companyId, String uid) throws SearchException {
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, uid);
         
     }
 
     @Override
     public void delete(Object obj) throws SearchException {
+        DiscussionMessage msg = getMessage(obj);
+        Document doc = getDocument(msg);
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
     }
 
     @Override
@@ -188,11 +199,19 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void reindex(Object obj) throws SearchException {
+        DiscussionMessage msg = getMessage(obj);
+        Document doc = getDocument(msg);
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
+        SearchEngineUtil.updateDocument(getSearchEngineId(), defaultCompanyId, doc);
         
     }
 
     @Override
     public void reindex(String className, long classPK) throws SearchException {
+        DiscussionMessage msg = getMessage(classPK);
+        Document doc = getDocument(msg);
+        SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
+        SearchEngineUtil.updateDocument(getSearchEngineId(), defaultCompanyId, doc);
         
     }
 
@@ -208,6 +227,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         }
         Collection<Document> documents = new ArrayList<Document>();
         for (DiscussionMessage message : messages) {
+            
             if (message.getDeleted() != null) continue;
             try {
                 
@@ -228,6 +248,46 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void unregisterIndexerPostProcessor(IndexerPostProcessor indexerPostProcessor) {
+        
+    }
+    
+    private DiscussionMessage getMessage(Object obj) throws SearchException {
+        Long messageId = null;
+        if (obj instanceof Long) {
+            messageId = (Long) obj;
+        }
+        else {
+            try {
+                Method m = obj.getClass().getMethod("getMessageId");
+                messageId = (Long) m.invoke(obj);
+        } catch (IllegalAccessException e) {
+            _log.error("Can't reindex message " + obj, e);
+        } catch (IllegalArgumentException e) {
+            _log.error("Can't reindex message " + obj, e);
+        } catch (InvocationTargetException e) {
+            _log.error("Can't reindex message " + obj, e);
+        } catch (NoSuchMethodException e) {
+            _log.error("Can't reindex message " + obj, e);
+        } catch (SecurityException e) {
+            _log.error("Can't reindex message " + obj, e);
+        }
+            
+             
+        }
+        if (messageId == null) 
+            return null;
+        
+            try {
+                DiscussionMessage c = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
+                return c;
+            } catch (PortalException e) {
+                _log.error("Can't reindex message " + obj, e);
+                return null;
+            } catch (SystemException e) {
+                _log.error("Can't reindex message " + obj, e);
+                return null;
+            }
+        
         
     }
 
