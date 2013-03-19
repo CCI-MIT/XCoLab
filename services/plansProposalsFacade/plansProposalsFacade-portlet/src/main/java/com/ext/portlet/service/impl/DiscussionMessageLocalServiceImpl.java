@@ -12,6 +12,7 @@ import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.DiscussionMessageFlag;
+import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageFlagLocalServiceUtil;
@@ -23,6 +24,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -171,6 +175,14 @@ public class DiscussionMessageLocalServiceImpl
            }
            else {
                DiscussionMessageLocalServiceUtil.updateDiscussionMessage(dMessage);
+           }
+           
+           Indexer indexer = IndexerRegistryUtil.getIndexer(DiscussionMessage.class);
+
+           try {
+               indexer.reindex(dMessage.getMessageId());
+           } catch (SearchException e) {
+               _log.error("Can't reindex message " + dMessage.getMessageId(), e);
            }
        }
        

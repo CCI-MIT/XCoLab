@@ -27,8 +27,8 @@ import com.liferay.portal.kernel.search.Field;
 
 public enum SearchItemType {
     
-    PLAN("Proposals", new String[] {"entryClassName", "com.ext.portlet.model.PlanItem" }, new String[] { "content", "title" },
-            new String[] { "title" }, new String[] { "content" }, new URLCreator() {
+    PLAN("Proposals", new String[] {"entryClassName", "com.ext.portlet.model.PlanItem" }, new String[] { "content", "title", "pitch", "sections" },
+            new String[] { "title" }, new String[] { "content", "pitch", "sections" }, new URLCreator() {
                 public String getUrl(Document doc) {
                     String idStr = doc.get(Field.ENTRY_CLASS_PK);
                     try {

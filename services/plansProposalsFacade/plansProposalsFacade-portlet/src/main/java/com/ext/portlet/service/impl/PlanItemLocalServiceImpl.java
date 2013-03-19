@@ -67,6 +67,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
@@ -203,7 +205,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         updateAttribute(planItem, Attribute.STATUS.name());
 
         // populate fields with default values
-
+        reindex(planItem);
         return planItem;
     }
 
@@ -375,7 +377,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
                 setAttribute(plan, pa.getAttributeName(), pa.getAttributeValue());
             }
         }
-
+        reindex(plan);
         return plan;
     }
 
@@ -475,6 +477,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         planMeta.setCategoryGroupId(categoryGroup.getId());
         planMeta.setPlanGroupId(group.getGroupId());
         PlanMetaLocalServiceUtil.store(planMeta);
+        reindex(plan);
     }
 
     public List<PlanItem> getPlans() throws SystemException {
@@ -849,6 +852,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         
        //joinIfNotAMember(updateAuthorId);
         updateSearchIndex(pi);
+        reindex(pi);
     }
 
     public void setName(PlanItem pi, String name, Long updateAuthorId) throws SystemException, PortalException {
@@ -865,6 +869,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         DiscussionCategoryGroup dcg = getDiscussionCategoryGroup(pi);
         dcg.setDescription(name + " discussion");
         DiscussionCategoryGroupLocalServiceUtil.store(dcg);
+        reindex(pi);
     }
     
     public void setImage(PlanItem pi, Long imageId, Long updateAuthorId) throws SystemException, PortalException {
@@ -877,6 +882,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         updateAttribute(pi, Attribute.IMAGE);
         //joinIfNotAMember(updateAuthorId);
         updateSearchIndex(pi);
+        reindex(pi);
     }
     
     public void setPitch(PlanItem pi, String pitch, Long updateAuthorId) throws SystemException, SearchException {
@@ -887,6 +893,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanDescriptionLocalServiceUtil.store(planDescription);
         updateAttribute(pi, Attribute.ABSTRACT);
         updateSearchIndex(pi);
+        reindex(pi);
     }
 
     public List<PlanDescription> getAllDescriptionVersions(PlanItem pi) throws SystemException {
@@ -924,6 +931,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
             updateAttribute(pi, attribute);
         }
         
+        reindex(pi);
         //joinIfNotAMember(authorId);
     }
 
@@ -949,6 +957,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
         setScenarioId(pi, null, authorId);
         //joinIfNotAMember(authorId);
+        reindex(pi);
     }
 
     public List<PlanModelRun> getAllPlanModelRuns(PlanItem pi) throws SystemException {
@@ -993,6 +1002,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanMetaLocalServiceUtil.store(planMeta);
 
         //joinIfNotAMember(updateAuthorId);
+        reindex(pi);
     }
 
     public void setPlanTypeId(PlanItem pi, Long planTypeId, Long updateAuthorId) throws SystemException, PortalException {
@@ -1003,6 +1013,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanMetaLocalServiceUtil.store(planMeta);
         
         //joinIfNotAMember(updateAuthorId);
+        reindex(pi);
     }
 
     public Long getMBCategoryId(PlanItem pi) throws SystemException {
@@ -1015,6 +1026,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
         planMeta.setMbCategoryId(mbCategoryId);
         PlanMetaLocalServiceUtil.store(planMeta);
+        reindex(pi);
     }
 
     public Long getCategoryGroupId(PlanItem pi) throws SystemException {
@@ -1027,6 +1039,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
         planMeta.setCategoryGroupId(categoryGroupId);
         PlanMetaLocalServiceUtil.store(planMeta);
+        reindex(pi);
     }
 
     public Long getPlanGroupId(PlanItem pi) throws SystemException {
@@ -1039,6 +1052,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
         planMeta.setPlanGroupId(groupId);
         PlanMetaLocalServiceUtil.store(planMeta);
+        reindex(pi);
     }
 
     public Long getAuthorId(PlanItem pi) throws SystemException {
@@ -1055,6 +1069,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanMeta planMeta = PlanMetaLocalServiceUtil.createNewVersionForPlan(pi);
         planMeta.setAuthorId(authorId);
         PlanMetaLocalServiceUtil.store(planMeta);
+        reindex(pi);
     }
 
     public Date getCreateDate(PlanItem pi) throws SystemException {
@@ -1092,6 +1107,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         planMeta.setOpen(open);
         PlanMetaLocalServiceUtil.store(planMeta);
         updateAttribute(pi, Attribute.IS_PLAN_OPEN);
+        reindex(pi);
 
     }
     
@@ -1100,6 +1116,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         planMeta.setOpen(open);
         PlanMetaLocalServiceUtil.store(planMeta);
         updateAttribute(pi, Attribute.IS_PLAN_OPEN);
+        reindex(pi);
 
     }
 
@@ -1114,7 +1131,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         planMeta.setStatus(status);
         PlanMetaLocalServiceUtil.store(planMeta);
         updateAttribute(pi, PlanConstants.Attribute.STATUS);
-
+        reindex(pi);
     }
 
     /*
@@ -1365,6 +1382,9 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
             _log.error("can't remove plan " + getPlanId() + " from search index", e);
         }
         */
+        
+        IndexerRegistryUtil.getIndexer(PlanItem.class).delete(pi.getPlanId());
+        
     }
 
     public User getUpdateAuthor(PlanItem pi) throws PortalException, SystemException {
@@ -1574,6 +1594,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         }
         
         PlanSectionLocalServiceUtil.store(ps);
+        reindex(pi);
         
     }
     
@@ -1676,4 +1697,14 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         setAttribute(pi, Attribute.TAGS_ORDER, String.valueOf(tagsOrder));
     }
 
+    
+    private void reindex(PlanItem plan) {
+        Indexer indexer = IndexerRegistryUtil.getIndexer(PlanItem.class);
+
+        try {
+            indexer.reindex(plan.getPlanId());
+        } catch (SearchException e) {
+            _log.error("Can't reindex plan " + plan.getPlanId(), e);
+        }
+    }
 }

@@ -38,6 +38,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Image;
@@ -91,7 +94,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         setGroupAndDiscussionForContest(c);
         
         store(c);
-        
         return c;
     }
     
@@ -267,6 +269,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         else {
             ContestLocalServiceUtil.updateContest(contest);
         }
+
+        reindex(contest);
     }
     
     public PlanTemplate getPlanTemplate(Contest contest) throws PortalException, SystemException {
@@ -358,5 +362,15 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     
     public List<ContestTeamMember> getTeamMembers(Contest contest) throws SystemException {
         return ContestTeamMemberLocalServiceUtil.findForContest(contest.getContestPK());
+    }
+    
+    private void reindex(Contest contest) {
+        Indexer indexer = IndexerRegistryUtil.getIndexer(Contest.class);
+
+        try {
+            indexer.reindex(contest.getContestPK());
+        } catch (SearchException e) {
+            _log.error("Can't reindex contest " + contest.getContestPK(), e);
+        }
     }
 }

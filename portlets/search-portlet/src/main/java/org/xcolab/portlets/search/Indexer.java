@@ -54,6 +54,7 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.model.Layout;
@@ -64,6 +65,7 @@ import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeIndexerUtil;
 import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalArticleConstants;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 
 /**
@@ -514,13 +516,44 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void reindex(Object obj) throws SearchException {
-        // TODO Auto-generated method stub
+
+        JournalArticle article = (JournalArticle)obj;
+
+        Document document = getDocument(article);
+
+        if (!article.isIndexable() ||
+            (!article.isApproved() &&
+             (article.getVersion() !=
+                  JournalArticleConstants.VERSION_DEFAULT))) {
+
+            SearchEngineUtil.deleteDocument(
+                getSearchEngineId(), article.getCompanyId(),
+                document.get(Field.UID));
+
+            return;
+        }
+
+        SearchEngineUtil.deleteDocument(
+            getSearchEngineId(), article.getCompanyId(), document.getUID());
+        SearchEngineUtil.updateDocument(
+            getSearchEngineId(), article.getCompanyId(), document);
         
     }
 
     @Override
     public void reindex(String className, long classPK) throws SearchException {
-        // TODO Auto-generated method stub
+
+        JournalArticle article;
+        try {
+            article = JournalArticleLocalServiceUtil.getLatestArticle(
+                classPK, WorkflowConstants.STATUS_APPROVED);
+
+            reindex(article);
+        } catch (PortalException e) {
+            throw new SearchException(e);
+        } catch (SystemException e) {
+            throw new SearchException(e);
+        }
         
     }
 
