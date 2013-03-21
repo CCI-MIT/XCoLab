@@ -13,7 +13,7 @@
         <h2><span>#{discussionBean.commentsCount}</span> comments</h2>
         <div class="comm-butt">
             <img src="/climatecolab-theme/images/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="add a comment" /> 
-            <div class="blue-button" id="addcomment_button2"><a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); document.getElementById("addcomment_button1").style.visibility = "hidden"; document.getElementById("addcomment_button2").style.visibility = "hidden";  return false;'>Add Comment</a></div>
+            <div class="blue-button" id="addcomment_button2"><a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); return false;'>Jump to comment form</a></div>
             <div class="comm-share">
                     <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
                         addthis:title="#{discussionBean.discussion.description}"
