@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang.StringUtils;
 
 import com.liferay.portal.kernel.captcha.CaptchaTextException;
 import com.liferay.portal.kernel.log.Log;
@@ -70,9 +71,13 @@ public class ReCaptchaUtils {
             _log.error("Can't read recaptcha related properties.", e);
             throw new CaptchaTextException(e);
         }
+        
+        if (StringUtils.isBlank(privateKey) || StringUtils.isBlank(remoteIp) || StringUtils.isBlank(recaptchaChallenge) ||
+                StringUtils.isBlank(recaptchaResponse)) {
+            throw new CaptchaTextException("Invalid captcha provided");
+        }
 
         try {
-            
             if (recaptchaResponse.equals(StringPool.BLANK)) {
                 throw new CaptchaTextException();
             }
