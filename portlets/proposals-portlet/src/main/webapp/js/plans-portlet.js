@@ -726,7 +726,7 @@ function showManageMembershipRequestDialog(contentContainerId) {
     content.appendTo(dialog);
     content.show();
     dialog.show();
-    dialog = dialog.dialog({width: 380, modal: true, height: 360, draggable: false, resizable: false, dialogClass: 'plansIndexDialog manageMembersDialog'});
+    dialog = dialog.dialog({width: 600, modal: true, height: 400, draggable: false, resizable: false, dialogClass: 'plansIndexDialog manageMembersDialog'});
 }
 
 function hideManageMembershipRequestDialog(contentContainerId) {
