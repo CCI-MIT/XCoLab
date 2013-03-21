@@ -247,6 +247,7 @@ if (wikiPage != null) {
 		(<liferay-ui:message key="you-are-viewing-an-archived-version-of-this-page" /> (<%= wikiPage.getVersion() %>), <aui:a href="<%= viewPageURL.toString() %>" label="go-to-the-latest-version" />)
 	</div>
 </c:if>
+</div>
 
 <div class="page-categorization">
 	<div class="page-categories">
