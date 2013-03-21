@@ -6,6 +6,10 @@
         <portlet-name>massmessaging-portlet</portlet-name>
 		<control-panel-entry-category>portal</control-panel-entry-category>
 		<control-panel-entry-weight>210.0</control-panel-entry-weight>
+	 	<control-panel-entry-class>
+			org.xcolab.portlets.massmessaging.MassMessagingPortletControlPanelEntry
+		</control-panel-entry-class>
+
 		<use-default-template>false</use-default-template>
 		<instanceable>false</instanceable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
