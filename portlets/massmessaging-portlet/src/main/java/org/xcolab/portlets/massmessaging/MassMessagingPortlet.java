@@ -58,7 +58,6 @@ public class MassMessagingPortlet extends MVCPortlet {
     public void doDispatch(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         renderRequest.setAttribute("sendAs", readSendAsProperties());
 
-        System.out.println(readSendAsProperties());
         super.doDispatch(renderRequest, renderResponse);
     }
     
@@ -361,7 +360,6 @@ public class MassMessagingPortlet extends MVCPortlet {
             session = Session.getInstance(externalMailProps, null);
             t = (SMTPTransport)session.getTransport("smtp");
             t.connect();
-            System.out.println(externalMailProps);
             
             from = new InternetAddress(sendAsBean.getEmail(), messageSenderName);
             
@@ -369,7 +367,6 @@ public class MassMessagingPortlet extends MVCPortlet {
         
         for(MessagingMessageRecipient rec: recipients) {
             InternetAddress to = new InternetAddress(rec.getEmailAddress());
-            //System.out.println(to.getAddress());
             if (StringUtils.isNotBlank(sendAs)) {
                 
                 MimeMessage msg = new MimeMessage(session);
@@ -383,8 +380,9 @@ public class MassMessagingPortlet extends MVCPortlet {
                 t.sendMessage(msg, new Address[] {to});
                 
             }
-            
-            //MailEngine.send(from, to, subject, body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId())), true);
+            else {
+                MailEngine.send(from, to, subject, body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId())), true);
+            }
         }
         
         SessionMessages.add(actionRequest, "Message was sent");
