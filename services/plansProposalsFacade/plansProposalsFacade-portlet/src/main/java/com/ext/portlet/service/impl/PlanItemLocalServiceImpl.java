@@ -167,8 +167,6 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         planItem.setState(EntityState.ACTIVE.name());
         planItem.setUpdateType(UpdateType.CREATED.name());
 
-        planItem = PlanItemLocalServiceUtil.addPlanItem(planItem);
-
         // create related entities, plan description, meta, model run
         PlanDescriptionLocalServiceUtil.createPlanDescription(planItem, name);
         PlanModelRunLocalServiceUtil.createPlanModelRun(planItem);
@@ -193,6 +191,8 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
         /* update/create all attributes */
         // planItem.updateAllAttributes();
+
+        planItem = PlanItemLocalServiceUtil.addPlanItem(planItem);
         updateAttribute(planItem, Attribute.CREATOR.name());
         updateAttribute(planItem, Attribute.NAME.name());
         updateAttribute(planItem, Attribute.DESCRIPTION.name());
@@ -205,7 +205,6 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         updateAttribute(planItem, Attribute.STATUS.name());
 
         // populate fields with default values
-        reindex(planItem);
         return planItem;
     }
 
@@ -377,7 +376,6 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
                 setAttribute(plan, pa.getAttributeName(), pa.getAttributeValue());
             }
         }
-        reindex(plan);
         return plan;
     }
 
@@ -477,7 +475,6 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         planMeta.setCategoryGroupId(categoryGroup.getId());
         planMeta.setPlanGroupId(group.getGroupId());
         PlanMetaLocalServiceUtil.store(planMeta);
-        reindex(plan);
     }
 
     public List<PlanItem> getPlans() throws SystemException {
