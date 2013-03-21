@@ -90,12 +90,7 @@
                                 <f:param value="#{rowsCount}" />
                             </ice:outputFormat>
                         </ice:dataPaginator>
-                            <script type="text/javascript">
-                            jQuery(function() {initShowMessage});
-                                <f:subview rendered="#{messagingBean.messageToShow != null}">
-                                    showMessageById("message_#{messagingBean.messageToShow}");
-                                </f:subview>
-                            </script>
+           
                 </td>     
                 <td class="paginatorControls">
                     <ice:dataPaginator rendered="true" for="messagesTable" paginator="true" paginatorMaxPages="5" styleClass="comm_controls" style="display: inline;"> 
@@ -120,7 +115,12 @@
         </div> <!-- /main -->
     
     <div class="right_col3 v1">
-      
+                       <script type="text/javascript">
+                            jQuery(function() {initShowMessage();});
+                                <f:subview rendered="#{messagingBean.messageToShow != null}">
+                                    showMessageById("message_#{messagingBean.messageToShow}");
+                                </f:subview>
+                            </script>
       <div class="comm_list">
         <h3>Mailboxes</h3>
         <ice:form>
