@@ -23,6 +23,29 @@ SHARED ELEMENTS
 	margin-bottom:40px;
 }
 
+.respondRequest label {
+	margin-left:5px;
+}
+
+.respondRequest td {
+	padding-bottom:5px;
+}
+
+
+.respondRequest textarea {
+	width:550px;
+	height:100px;
+}
+
+.respondRequest h4 {
+	padding-bottom:5px;
+	padding-top:10px;
+}
+
+.respondRequest table {
+	margin-bottom:15px;
+}
+
 .modelSelection td input[type="submit"].prominantButton-dis {
     width:100%;
 }
