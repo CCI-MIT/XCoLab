@@ -100,12 +100,12 @@
             </td>
         </f:subview>
         <td width="100%" style="text-align:center;">
-        <f:subview rendered="#{not empty contest.contest.sponsorText}">
+        <f:subview rendered="#{not empty contest.contest.sponsorLogo}">
         	<div class="sponsorLogo">
 	       		<table>
 		       		<tr>
 			       		<td><img src="#{contest.contest.sponsorLogo}" alt="Sponsor Logo" /></td>
-			       		<td width="100%" style="vertical-align:middle;">${contest.contest.sponsorText}</td>
+			       		<td style="vertical-align:middle;">${contest.contest.sponsorText}</td>
 		       		</tr>
 	       		</table>
 	       		</div>

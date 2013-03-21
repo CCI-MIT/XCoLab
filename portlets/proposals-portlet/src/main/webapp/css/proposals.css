@@ -34,6 +34,7 @@ SHARED ELEMENTS
 
 div.sponsorLogo {
 	max-width:320px;
+	min-width:0;
 	display:inline-block;
 	margin-top:20px;
 	/*margin-left:10px;*/
