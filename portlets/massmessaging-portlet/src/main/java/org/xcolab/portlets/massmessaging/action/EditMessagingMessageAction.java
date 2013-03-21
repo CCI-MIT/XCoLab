@@ -23,10 +23,12 @@ import javax.portlet.PortletConfig;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.xcolab.portlets.massmessaging.InvalidMessageRecipientException;
+import org.xcolab.portlets.massmessaging.MessageSendAsBean;
 import org.xcolab.portlets.massmessaging.MessagingConstants;
 import org.xcolab.portlets.massmessaging.MessagingUtils;
 
@@ -49,6 +51,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.mail.MailEngine;
+import com.liferay.util.portlet.PortletProps;
 
 public class EditMessagingMessageAction extends BaseStrutsPortletAction {
 
@@ -61,6 +64,11 @@ public class EditMessagingMessageAction extends BaseStrutsPortletAction {
 
     public ActionForward render(ActionMapping mapping, ActionForm form, PortletConfig portletConfig,
             RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
+        
+        
+        renderRequest.setAttribute("sendAs", readSendAsProperties());
+        
+        System.out.println(readSendAsProperties());
 
         return mapping.findForward(MessagingConstants.EDIT_MESSAGE_FORWARD);
     }
@@ -281,6 +289,21 @@ public class EditMessagingMessageAction extends BaseStrutsPortletAction {
             return true;
         }
         return false;
+    }
+    
+    private List<MessageSendAsBean> readSendAsProperties() {
+        String accounts = PortletProps.get("user.accounts");
+        List<MessageSendAsBean> msgSendAsBeans = new ArrayList<MessageSendAsBean>();
+        if (StringUtils.isNotBlank(accounts)) {
+            for (String account: accounts.split(",")) {
+                MessageSendAsBean sendAsBean = new MessageSendAsBean();
+                sendAsBean.setName(account);
+                sendAsBean.setPassword(PortletProps.get("user.account." + account + ".password"));
+                sendAsBean.setHost(PortletProps.get("user.account." + account + ".host"));
+                sendAsBean.setPort(Integer.valueOf(PortletProps.get("user.account." + account + ".port")));
+            }
+        }
+        return msgSendAsBeans;
     }
 
 }

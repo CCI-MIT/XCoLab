@@ -267,6 +267,7 @@ function <portlet:namespace />addRecipients(recipientsArray) {
     String subject = ParamUtil.getString(request, "subject");
     String messageText = ParamUtil.getString(request, "body");
     String recipients = ParamUtil.getString(request, "recipients");
+    List sendAs = (List) request.getAttribute("sendAs");
 %>
 
 
@@ -287,10 +288,36 @@ function <portlet:namespace />addRecipients(recipientsArray) {
 <fieldset>
     <legend>Message details</legend>
     <dl>
+        <dt><label for="sendas">Send as <span class="required">*</span> </label></dt>
+        <dd>
+        	<select name="sendas" id="sendAsSelect" >
+        		<option value="">no-reply@climatecolab.org</option>
+        		<c:forEach var="sendAsUser" items="${sendAs }">
+        			<option value="${sendAsUser.name }">${sendAsUser.email }</option>
+        		</c:forEach>
+        	</select>
+        	<script>
+        	var sendAs = {};
+    		<c:forEach var="sendAsUser" items="${sendAs }">
+    			sendAs['${sendAsUser.name }'] = {
+    					name: '${sendAsUser.name }',
+    					email: '${sendAsUser.email }',
+    					fullName: '${sendAsUser.fullName }'
+    			};
+    		</c:forEach>
+        		jQuery("#sendAsSelect").change(function() {
+        			var user = sendAs[jQuery(this).val()];
+        			if (user) {
+        				jQuery("#messageSenderNameInput").val(user.fullName);
+        				jQuery("#replyToInput").val(user.email);
+        			}
+        		});
+        	</script>
+        </dd>
         <dt><label for="replyto">Reply to <span class="required">*</span> </label></dt>
-        <dd><input name="replyto" type="text" value="<%= replyTo %>" /></dd>
+        <dd><input name="replyto" type="text" value="<%= replyTo %>"  id="replyToInput" /></dd>
         <dt><label for="replyto">Name of message sender</label></dt>
-        <dd><input name="messageSenderName" type="text" value="<%= messageSenderName %>"/></dd>
+        <dd><input name="messageSenderName" type="text" value="<%= messageSenderName %>"  id="messageSenderNameInput" /></dd>
         <dt><label for="subject">Message subject <span class="required">*</span></label></dt>
         <dd><input name="subject" type="text" value="<%= subject %>"/></dd>
         

@@ -1,18 +1,27 @@
 package org.xcolab.portlets.massmessaging;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.mail.Address;
+import javax.mail.Message.RecipientType;
+import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -36,12 +45,24 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.util.mail.MailEngine;
+import com.liferay.util.portlet.PortletProps;
+import com.sun.mail.smtp.SMTPTransport;
 
 public class MassMessagingPortlet extends MVCPortlet {
 
     private final static String emailValidationRegexp = "^([a-zA-Z0-9_\\.-])+@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$";
     private final static String screenNameValidationRegexp = "^([a-zA-Z0-9_\\.-])+$";
     
+    
+    @Override
+    public void doDispatch(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        renderRequest.setAttribute("sendAs", readSendAsProperties());
+
+        System.out.println(readSendAsProperties());
+        super.doDispatch(renderRequest, renderResponse);
+    }
+    
+
     public void manageIgnoredRecipients(ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
         
 
@@ -130,6 +151,7 @@ public class MassMessagingPortlet extends MVCPortlet {
         String recipientsStr = ParamUtil.getString(actionRequest, "recipients");
         String messageSenderName = ParamUtil.getString(actionRequest, "messageSenderName");
         boolean sendToAll = ParamUtil.getBoolean(actionRequest, "sendtoall");
+        String sendAs = ParamUtil.getString(actionRequest, "sendas");
 
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
         Long companyId = themeDisplay.getCompanyId();
@@ -315,13 +337,54 @@ public class MassMessagingPortlet extends MVCPortlet {
         MessagingMessageLocalServiceUtil.addMessagingMessage(message);
 
         InternetAddress from = new InternetAddress(replyTo);
+        InternetAddress replyToAddr = new InternetAddress(replyTo);
         if (!isNullOrEmpty(messageSenderName)) {
             from.setPersonal(messageSenderName);    
+            replyToAddr.setPersonal(messageSenderName);    
         }
+        // 
+        Properties externalMailProps = new Properties();
+        MessageSendAsBean sendAsBean = null;
+        Session session = null;
+        SMTPTransport t = null;
+
+        if (StringUtils.isNotBlank(sendAs)) {
+            sendAsBean = getSendAs(sendAs);
+            externalMailProps.setProperty("mail.smtp.host", sendAsBean.getHost());
+            externalMailProps.setProperty("mail.smtp.port", String.valueOf(sendAsBean.getPort()));
+            if (sendAsBean.isUseAuth()) {
+                externalMailProps.setProperty("mail.smtp.auth", "true");
+            }
+            externalMailProps.setProperty("mail.user", sendAsBean.getName());
+            externalMailProps.setProperty("mail.password", sendAsBean.getPassword());
+            
+            session = Session.getInstance(externalMailProps, null);
+            t = (SMTPTransport)session.getTransport("smtp");
+            t.connect();
+            System.out.println(externalMailProps);
+            
+            from = new InternetAddress(sendAsBean.getEmail(), messageSenderName);
+            
+        }
+        
         for(MessagingMessageRecipient rec: recipients) {
             InternetAddress to = new InternetAddress(rec.getEmailAddress());
             //System.out.println(to.getAddress());
-            MailEngine.send(from, to, subject, body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId())), true);
+            if (StringUtils.isNotBlank(sendAs)) {
+                
+                MimeMessage msg = new MimeMessage(session);
+                msg.setFrom(from);
+                msg.setSubject(subject);
+                msg.setSentDate(new Date());
+                msg.setReplyTo(new Address[] { replyToAddr });
+                msg.setContent(body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId())), "text/html; charset=utf-8");
+                msg.setRecipient(RecipientType.TO, to);
+                
+                t.sendMessage(msg, new Address[] {to});
+                
+            }
+            
+            //MailEngine.send(from, to, subject, body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId())), true);
         }
         
         SessionMessages.add(actionRequest, "Message was sent");
@@ -329,10 +392,40 @@ public class MassMessagingPortlet extends MVCPortlet {
         
     }
     
+
+
     public static boolean isNullOrEmpty(String var) {
         if (var == null || var.trim().equals("")) {
             return true;
         }
         return false;
     }
+    
+    private List<MessageSendAsBean> readSendAsProperties() {
+        String accounts = PortletProps.get("user.accounts");
+        List<MessageSendAsBean> msgSendAsBeans = new ArrayList<MessageSendAsBean>();
+        if (StringUtils.isNotBlank(accounts)) {
+            for (String account: accounts.split(",")) {
+                MessageSendAsBean sendAsBean = new MessageSendAsBean();
+                sendAsBean.setName(account);
+                sendAsBean.setPassword(PortletProps.get("user.account." + account + ".password"));
+                sendAsBean.setHost(PortletProps.get("user.account." + account + ".host"));
+                sendAsBean.setPort(Integer.valueOf(PortletProps.get("user.account." + account + ".port")));
+                sendAsBean.setUseAuth(Boolean.valueOf(PortletProps.get("user.account." + account + ".useAuth")));
+                sendAsBean.setFullName(PortletProps.get("user.account." + account + ".fullName"));
+                
+                msgSendAsBeans.add(sendAsBean);
+            }
+        }
+        return msgSendAsBeans;
+    }
+    
+    private MessageSendAsBean getSendAs(String sendAs) {
+        for (MessageSendAsBean msgSendAs: readSendAsProperties()) {
+            if (msgSendAs.getName().equals(sendAs)) 
+                return msgSendAs;
+        }
+        return null;
+    }
+
 }
