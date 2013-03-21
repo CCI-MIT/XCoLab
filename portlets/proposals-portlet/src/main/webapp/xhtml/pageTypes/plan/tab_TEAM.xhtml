@@ -30,12 +30,15 @@
     
     <ice:form>
         <ice:panelGroup rendered="#{planBean.membershipBean.requesting}">
+        		<div class="requestMembershipDIV">
                     <div class="manageMembersTop">
-                        <h4>Request Membership</h4>
+                        <h3>Request Membership</h3>
                     </div>
                     <div class="manageMembersContent">
                         Optional comment:
-                        <ice:inputTextarea value="#{planBean.membershipBean.comment}" styleClass="requestComment"/>
+                        <p>
+                        	<ice:inputTextarea value="#{planBean.membershipBean.comment}" styleClass="requestComment"/>
+                        </p>
                     </div>
                     <div class="blue-button">
                         <ice:commandLink actionListener="#{planBean.membershipBean.requestMembership}" styleClass="requestMembershipSubmitButton">
@@ -47,7 +50,7 @@
                             CANCEL
                         </ice:commandLink>
                     </div>
-
+               </div>
         </ice:panelGroup>
     </ice:form>
     

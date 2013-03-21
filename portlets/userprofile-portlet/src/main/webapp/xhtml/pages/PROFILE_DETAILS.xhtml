@@ -114,7 +114,7 @@
                 <collab:planLink planId="#{supportedPlan.planId}" contestId="#{supportedPlan.contestId}" text="#{supportedPlan.planName}" />
             </ice:column>
             
-            <ice:column style="width: 70px">
+            <ice:column style="text-align: right;">
                 <ice:outputText value="#{supportedPlan.createdDate}">
                     <f:convertDateTime pattern="MM/dd/yy"/>
                 </ice:outputText>
@@ -136,7 +136,7 @@
             <ice:column>
                 #{activity.body}
             </ice:column>
-            <ice:column>
+            <ice:column style="text-align: right;">
                 <ice:outputText value="#{activity.createdDate}">
                     <f:convertDateTime pattern="MM/dd/yy"/>
                 </ice:outputText>

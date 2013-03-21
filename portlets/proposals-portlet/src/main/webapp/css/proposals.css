@@ -14,7 +14,14 @@ SHARED ELEMENTS
 
 }
 
+.requestComment {
+	width:600px;
+	height:100px;
+}
 
+.requestMembershipDIV {
+	margin-bottom:40px;
+}
 
 .modelSelection td input[type="submit"].prominantButton-dis {
     width:100%;
@@ -26,10 +33,11 @@ SHARED ELEMENTS
 }
 
 div.sponsorLogo {
-	width:250px;
+	max-width:320px;
+	min-width:0;
 	display:inline-block;
 	margin-top:20px;
-	margin-left:50px;
+	/*margin-left:10px;*/
 }
 
 div.sponsorLogo table {
