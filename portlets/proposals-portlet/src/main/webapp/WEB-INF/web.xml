@@ -53,6 +53,10 @@
 		<param-value>60000</param-value>
 	</context-param>
 	<context-param>
+    <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+    <param-value>true</param-value>
+</context-param>
+	<context-param>
 		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
 		<param-value>true</param-value>
 	</context-param>
