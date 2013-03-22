@@ -10,6 +10,7 @@
 	   <portlet-name>massmessaging-portlet</portlet-name>
 		<supports>
             <action-key>SEND_MASS_MESSAGES</action-key>
+            <action-key>ACCESS_IN_CONTROL_PANEL</action-key>
 		</supports>
 		
 		<community-defaults />

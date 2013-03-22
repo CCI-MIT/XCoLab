@@ -129,6 +129,12 @@
             #end
 
         #end
+        
+   		#foreach($role in $user.getRoles())
+   			#if($role.getName().toLowerCase() == "outreach specialist")
+   				<li><a href="/group/control_panel">Control panel</a></li>
+			#end
+		#end
      <li><a href="/c/portal/logout">Log out</a></li>
     </ul>
    </div>
