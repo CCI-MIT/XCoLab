@@ -1,37 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-
-<web-app
-	version="2.5"
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
->
-	<context-param>
-		<param-name>com.sun.faces.expressionFactory</param-name>
-		<param-value>org.jboss.el.ExpressionFactoryImpl</param-value>
-	</context-param>
-	<context-param>
-		<param-name>javax.faces.PROJECT_STAGE</param-name>
-		<param-value>Development</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.icefaces.mandatoryResourceConfiguration</param-name>
-		<param-value>none</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.icefaces.uniqueResourceURLs</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-</web-app>
--->
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+<!-- <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+	> <context-param> <param-name>com.sun.faces.expressionFactory</param-name> 
+	<param-value>org.jboss.el.ExpressionFactoryImpl</param-value> </context-param> 
+	<context-param> <param-name>javax.faces.PROJECT_STAGE</param-name> <param-value>Development</param-value> 
+	</context-param> <context-param> <param-name>org.icefaces.mandatoryResourceConfiguration</param-name> 
+	<param-value>none</param-value> </context-param> <context-param> <param-name>org.icefaces.uniqueResourceURLs</param-name> 
+	<param-value>false</param-value> </context-param> <servlet> <servlet-name>Faces 
+	Servlet</servlet-name> <servlet-class>javax.faces.webapp.FacesServlet</servlet-class> 
+	<load-on-startup>1</load-on-startup> </servlet> </web-app> -->
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
 	<display-name>plans-portlet</display-name>
+	
 	<context-param>
 		<param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
 		<param-value>true</param-value>
@@ -53,9 +35,9 @@
 		<param-value>60000</param-value>
 	</context-param>
 	<context-param>
-    <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
-    <param-value>true</param-value>
-</context-param>
+		<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+		<param-value>true</param-value>
+	</context-param>
 	<context-param>
 		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
 		<param-value>true</param-value>
@@ -316,19 +298,19 @@
 		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
-	    <servlet>  
-       <servlet-name>MyPortal Servlet</servlet-name>  
-       <servlet-class>com.liferay.portal.kernel.servlet.PortalClassLoaderServlet</servlet-class>  
-       <init-param>  
-          <param-name>servlet-class</param-name>  
-          <param-value>com.liferay.portal.kernel.servlet.PortletServlet</param-value>  
-       </init-param>  
-       <init-param>  
-          <param-name>portlet-class</param-name>  
-          <param-value>foo.bar.portlets.MyPortlet</param-value>  
-       </init-param>  
-       <load-on-startup>100</load-on-startup>  
-    </servlet>  
+	<servlet>
+		<servlet-name>MyPortal Servlet</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortalClassLoaderServlet</servlet-class>
+		<init-param>
+			<param-name>servlet-class</param-name>
+			<param-value>com.liferay.portal.kernel.servlet.PortletServlet</param-value>
+		</init-param>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>foo.bar.portlets.MyPortlet</param-value>
+		</init-param>
+		<load-on-startup>100</load-on-startup>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Blocking Servlet</servlet-name>
 		<url-pattern>/block/*</url-pattern>
