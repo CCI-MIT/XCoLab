@@ -32,7 +32,7 @@
         <ice:column style="width: 140px">
             <f:facet name="header">Date</f:facet>
                 <ice:outputText value="#{activity.createdDate}">
-                    <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
+                    <f:convertDateTime pattern="MM/dd/yy hh:mm a" locale="en_US" timeZone="America/New_York"/>
                 </ice:outputText>
             
         </ice:column>

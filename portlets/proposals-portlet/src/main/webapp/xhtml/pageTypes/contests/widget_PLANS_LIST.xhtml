@@ -89,7 +89,7 @@
                 </div>
                 <div class="modbox">
                     <ice:outputText value="#{singleProposal.lastModifiedDate}" >
-                        <f:convertDateTime pattern="MM/dd/yy" />
+                        <f:convertDateTime locale="en_US" type="date" dateStyle="short" timeZone="America/New_York" />
                     </ice:outputText>
                 </div>
                 <div class="conbox">

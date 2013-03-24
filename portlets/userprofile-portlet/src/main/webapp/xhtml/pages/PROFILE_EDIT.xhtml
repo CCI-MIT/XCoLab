@@ -84,7 +84,7 @@
             </td></tr>
         <tr><td class="b">Member Since</td><td class="l">
             <ice:outputText value="#{currentUser.joinDate}" >
-                <f:convertDateTime pattern="MM/dd/yy"/>
+                <f:convertDateTime pattern="MM/dd/yy" locale="en_US" timeZone="America/New_York"/>
             </ice:outputText>
         </td></tr>
         <tr>

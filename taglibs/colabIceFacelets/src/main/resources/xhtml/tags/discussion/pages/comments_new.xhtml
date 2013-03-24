@@ -48,10 +48,10 @@
                 <strong>Expert Reviews</strong><br />
             </f:subview>
             <ice:outputText value="#{message.createDate}" nospan="true" >
-                <f:convertDateTime pattern="MMM. dd, yyyy"/>
+                <f:convertDateTime pattern="MMM. dd, yyyy" locale="en_US" timeZone="America/New_York" />
             </ice:outputText><br />
             <ice:outputText value="#{message.createDate}"  nospan="true" >
-                <f:convertDateTime pattern="hh:mm a"/>
+                <f:convertDateTime pattern="hh:mm a" locale="en_US" timeZone="America/New_York" />
             </ice:outputText><br /><br /><br />
             
                         <span class="com_num messageLink" rel="#{message.id}">#{message.messageNum} </span>
