@@ -55,6 +55,13 @@ SHARED ELEMENTS
     width:100%;
 }
 
+td.ontologyItem {
+	padding-right:30px;
+	padding-top:2px;
+}
+
+
+
 div.sponsorLogo {
 	max-width:320px;
 	min-width:0;

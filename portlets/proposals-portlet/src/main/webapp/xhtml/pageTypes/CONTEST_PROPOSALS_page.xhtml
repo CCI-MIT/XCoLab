@@ -55,24 +55,34 @@
     <div class="description">
         <p>#{contest.contest.description}</p>
         <f:subview rendered="#{contest.contest.hasFocusArea}">
-            <ice:panelGroup styleClass="what" rendered="#{not empty contest.contest.what}"><strong>What:</strong>
-                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
-                    <ui:param name="whatWhoWhere" value="#{contest.contest.what}" />
-                </ui:include>
-            </ice:panelGroup>
-            
-            <ice:panelGroup styleClass="where" rendered="#{not empty contest.contest.where}"><strong>Where:</strong> 
-                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
-                    <ui:param name="whatWhoWhere" value="#{contest.contest.where}" />
-                </ui:include>
-            </ice:panelGroup>
-            
-            <ice:panelGroup styleClass="who" rendered="#{not empty contest.contest.who}"><strong>Who:</strong> 
-                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
-                    <ui:param name="whatWhoWhere" value="#{contest.contest.who}" />
-                </ui:include>
-            
-            </ice:panelGroup>
+        <table><tr>
+	            <f:subview rendered="#{not empty contest.contest.what}">
+		        	<td class="what"><strong>What:</strong></td>
+		        	<td class="ontologyItem">
+			                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
+			                    <ui:param name="whatWhoWhere" value="#{contest.contest.what}" />
+			                </ui:include>
+		            </td>            
+	            </f:subview>
+	            <f:subview rendered="#{not empty contest.contest.where}"> 
+		            <td class="where"><strong>Where:</strong></td>
+		            <td class="ontologyItem">
+			                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
+			                    <ui:param name="whatWhoWhere" value="#{contest.contest.where}" />
+			                </ui:include>
+		            </td>
+	            </f:subview>
+	            <f:subview rendered="#{not empty contest.contest.who}">
+		            <td class="who">
+		            	<strong>Who:</strong>
+		            </td>
+			        <td class="ontologyItem" style="padding-right:0;">
+		                <ui:include src="./contests/widget_WHAT_WHERE_WHO.xhtml">
+		                    <ui:param name="whatWhoWhere" value="#{contest.contest.who}" />
+		                </ui:include>
+	            	</td>
+	            </f:subview>
+            </tr></table>
         </f:subview>
     </div>
     
