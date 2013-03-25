@@ -20,10 +20,10 @@
                             </f:subview>
                             <f:subview rendered="#{not empty phase.startDate}"> 
                                 <ice:outputText value="#{phase.startDate}"  nospan="true">
-                                	<f:convertDateTime locale="en_US" type="date" dateStyle="short" timeZone="America/New_York" pattern="MM/d/yy zz hh:mm" />
+                                	<f:convertDateTime locale="en_US" type="date" dateStyle="short" timeZone="America/New_York" pattern="MM/dd/yy" />
                                 </ice:outputText>
                                 <f:subview rendered="#{not empty phase.endDate}"> - <ice:outputText value="#{phase.endDate}" nospan="true">
-                                	<f:convertDateTime locale="en_US" type="date" dateStyle="short" timeZone="America/New_York" pattern="MM/d/yy zz hh:mm" />
+                                	<f:convertDateTime locale="en_US" type="date" dateStyle="short" timeZone="America/New_York" pattern="MM/dd/yy" />
                                 </ice:outputText></f:subview>
                             </f:subview>
                             <div class="tt-arrow"></div></div>
