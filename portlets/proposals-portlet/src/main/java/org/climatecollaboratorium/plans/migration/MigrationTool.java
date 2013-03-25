@@ -385,6 +385,8 @@ public class MigrationTool {
 
 
         String[] userActions = {ActionKeys.VIEW};
+        String[] guestActions = {ActionKeys.VIEW};
+        
 
         Map<Role, String[]> rolesActionsMap = new HashMap<Role, String[]>();
 /*
@@ -393,13 +395,25 @@ public class MigrationTool {
         rolesActionsMap.put(member, memberActions);
         */
         rolesActionsMap.put(user, userActions);
-        
-        //rolesActionsMap.put(guest, guestActions);
+        rolesActionsMap.put(guest, guestActions);
 
         for (Image image: ImageLocalServiceUtil.getImages()) {
             for (Role role : rolesActionsMap.keySet()) {
-                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
-                    String.valueOf(groupId), rolesActionsMap.get(role));
+                try {
+                    PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, Image.class.getName(), 
+                            ResourceConstants.SCOPE_GROUP, String.valueOf(groupId), rolesActionsMap.get(role));
+                }
+                catch (Throwable t) {
+                    _log.warn(t);
+                }
+                
+                try {
+                    PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, Image.class.getName(), 
+                            ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(image.getImageId()), rolesActionsMap.get(role));
+                }
+                catch (Throwable t) {
+                    _log.warn(t);
+                }
             }
         }
         
@@ -410,14 +424,14 @@ public class MigrationTool {
                             ResourceConstants.SCOPE_GROUP, String.valueOf(groupId), rolesActionsMap.get(role));
 
                 }
-                catch (NoSuchPermissionException e) {
+                catch (Throwable e) {
                     _log.warn(e);
                 }
                 try {
                     PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
                             ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(dfe.getPrimaryKey()), rolesActionsMap.get(role));
                 }
-                catch (NoSuchPermissionException e) {
+                catch (Throwable e) {
                     _log.warn(e);
                 }
             }
