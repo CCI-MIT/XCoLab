@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.climatecollaboratorium.utils.Helper;
 
 import com.ext.portlet.discussions.DiscussionActions;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.ModelInputItem;
 import com.ext.portlet.model.PlanAttribute;
@@ -21,6 +22,7 @@ import com.ext.portlet.models.ui.ModelWidgetProperty;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.PlanConstants.Attribute;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
@@ -532,6 +534,54 @@ public class MigrationTool {
 
         for (PlanItem planItem : PlanItemLocalServiceUtil.getPlans()) {
             Group group = GroupLocalServiceUtil.getGroup(PlanItemLocalServiceUtil.getPlanGroupId(planItem));
+            Long companyId = group.getCompanyId();
+            Role owner = RoleLocalServiceUtil.getRole(companyId, RoleConstants.OWNER);
+            Role admin = RoleLocalServiceUtil.getRole(companyId, RoleConstants.ADMINISTRATOR);
+            Role member = RoleLocalServiceUtil.getRole(companyId, RoleConstants.USER);
+            Role userRole = RoleLocalServiceUtil.getRole(companyId, RoleConstants.USER);
+            Role guest = RoleLocalServiceUtil.getRole(companyId, RoleConstants.GUEST);
+            Role moderator = RoleLocalServiceUtil.getRole(companyId, "Moderator");
+
+            String[] ownerActions = { DiscussionActions.ADMIN.name(), DiscussionActions.ADD_CATEGORY.name(),
+                    DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
+                    DiscussionActions.ADMIN_CATEGORIES.name(), DiscussionActions.ADMIN_MESSAGES.name(),
+                    DiscussionActions.ADD_COMMENT.name() };
+
+            String[] adminActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
+                    DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
+                    DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name() };
+
+            String[] moderatorActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
+                    DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
+                    DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name() };
+
+            String[] memberActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
+                    DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADD_COMMENT.name() };
+
+            String[] userActions = { DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
+                    DiscussionActions.ADD_COMMENT.name() };
+
+            String[] guestActions = {};
+
+            Map<Role, String[]> rolesActionsMap = new HashMap<Role, String[]>();
+
+            rolesActionsMap.put(owner, ownerActions);
+            rolesActionsMap.put(admin, adminActions);
+            rolesActionsMap.put(member, memberActions);
+            rolesActionsMap.put(userRole, userActions);
+            rolesActionsMap.put(guest, guestActions);
+            rolesActionsMap.put(moderator, moderatorActions);
+
+            for (Role role : rolesActionsMap.keySet()) {
+                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId,
+                        DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
+                        String.valueOf(group.getGroupId()), rolesActionsMap.get(role));
+            }
+        }
+        
+        for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+            
+            Group group = GroupLocalServiceUtil.getGroup(contest.getDiscussionGroupId());
             Long companyId = group.getCompanyId();
             Role owner = RoleLocalServiceUtil.getRole(companyId, RoleConstants.OWNER);
             Role admin = RoleLocalServiceUtil.getRole(companyId, RoleConstants.ADMINISTRATOR);
