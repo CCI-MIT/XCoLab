@@ -43,7 +43,9 @@ import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
+import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
@@ -333,7 +335,7 @@ public class MigrationTool {
         rolesActionsMap.put(admin, adminActions);
         rolesActionsMap.put(member, memberActions);
         rolesActionsMap.put(user, userActions);
-        rolesActionsMap.put(guest, guestActions);
+        rolesActionsMap.put(guest, guestActions); 
 
         for (PlanItem plan : PlanItemLocalServiceUtil.getPlans()) {
             for (Role role : rolesActionsMap.keySet()) {
@@ -351,7 +353,7 @@ public class MigrationTool {
             for (Role role : rolesActionsMap.keySet()) {
                 try {
                     PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
-                            String.valueOf(contest.getDiscussionGroupId()), rolesActionsMap.get(role));
+                            String.valueOf(contest.getGroupId()), rolesActionsMap.get(role));
                 }
                 catch (Throwable t) {
                     _log.warn(t);
@@ -384,15 +386,15 @@ public class MigrationTool {
         Role guest = RoleLocalServiceUtil.getRole(companyId, RoleConstants.GUEST);
 
 
-        String[] userActions = {ActionKeys.VIEW};
-        String[] guestActions = {ActionKeys.VIEW};
+        String[] userActions = {ActionKeys.VIEW, ActionKeys.ACCESS};
+        String[] guestActions = {ActionKeys.VIEW, ActionKeys.ACCESS};
         
 
         Map<Role, String[]> rolesActionsMap = new HashMap<Role, String[]>();
 /*
         rolesActionsMap.put(owner, ownerActions);
         rolesActionsMap.put(admin, adminActions);
-        rolesActionsMap.put(member, memberActions);
+        rolesActionsMap.put(member, memberActions); 
         */
         rolesActionsMap.put(user, userActions);
         rolesActionsMap.put(guest, guestActions);
@@ -404,7 +406,7 @@ public class MigrationTool {
                             ResourceConstants.SCOPE_GROUP, String.valueOf(groupId), rolesActionsMap.get(role));
                 }
                 catch (Throwable t) {
-                    _log.warn(t);
+                    _log.warn("No such group permission for image", t);
                 }
                 
                 try {
@@ -412,7 +414,27 @@ public class MigrationTool {
                             ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(image.getImageId()), rolesActionsMap.get(role));
                 }
                 catch (Throwable t) {
-                    _log.warn(t);
+                    _log.warn("No such individual permission for image", t);
+                }
+            }
+        }
+        
+        for (DLFolder dfe: DLFolderLocalServiceUtil.getDLFolders(0, Integer.MAX_VALUE)) {
+            for (Role role : rolesActionsMap.keySet()) {
+                try {
+                    PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFolder.class.getName(), 
+                            ResourceConstants.SCOPE_GROUP, String.valueOf(dfe.getGroupId()), rolesActionsMap.get(role));
+
+                }
+                catch (Throwable t) {
+                    _log.warn("No such group permission for folder", t);
+                }
+                try {
+                    PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFolder.class.getName(), 
+                            ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(dfe.getFolderId()), rolesActionsMap.get(role));
+                }
+                catch (Throwable t) {
+                    _log.warn("No such individual permission for folder", t);
                 }
             }
         }
@@ -421,18 +443,18 @@ public class MigrationTool {
             for (Role role : rolesActionsMap.keySet()) {
                 try {
                     PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
-                            ResourceConstants.SCOPE_GROUP, String.valueOf(groupId), rolesActionsMap.get(role));
+                            ResourceConstants.SCOPE_GROUP, String.valueOf(dfe.getGroupId()), rolesActionsMap.get(role));
 
                 }
-                catch (Throwable e) {
-                    _log.warn(e);
+                catch (Throwable t) {
+                    _log.warn("No such group permission for file", t);
                 }
                 try {
                     PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
-                            ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(dfe.getPrimaryKey()), rolesActionsMap.get(role));
+                            ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(dfe.getFileEntryId()), rolesActionsMap.get(role));
                 }
-                catch (Throwable e) {
-                    _log.warn(e);
+                catch (Throwable t) {
+                    _log.warn("No such individual permission for file", t);
                 }
             }
         }

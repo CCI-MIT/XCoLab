@@ -23,6 +23,15 @@
                     <ice:inputTextarea value="#{preferences.defaultDescription}" style="width: 90%; height: 400px" /><br />
                     <ice:commandButton value="Update" />
                 
+                
+                <hr />
+                
+                    <ice:messages globalOnly="false" layout="table" />
+                    <ice:commandButton action="#{migrationTool.migrateDiscussions}" value="MIGRATE DISCUSSIONS" onclick="if(!confirm('Are you sure you want to proceed with discussions migration?')){ return false; }"/>
+                    
+                    <ice:commandButton action="#{migrationTool.updateDiscussionUrlsAndDescriptions}" value="UPDATE DISCUSSIONS Descriptions/Urls" />
+                    <ice:commandButton action="#{migrationTool.updateDiscussionsPermissions}" value="Update discussions permissions" />
+                    <ice:commandButton action="#{migrationTool.fixImagesPermissions}" value="Fix images permissions" />
                 </ice:panelTab>
 				<ice:panelTab label="Questions for assumptions">
                     <strong><ice:outputLabel for="questions" value="Select how many proposals should be displayed for each contest:" /></strong>
