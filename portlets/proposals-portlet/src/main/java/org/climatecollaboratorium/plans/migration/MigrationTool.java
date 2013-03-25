@@ -28,6 +28,7 @@ import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
+import com.liferay.portal.NoSuchPermissionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Group;
@@ -336,15 +337,25 @@ public class MigrationTool {
 
         for (PlanItem plan : PlanItemLocalServiceUtil.getPlans()) {
             for (Role role : rolesActionsMap.keySet()) {
-                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
-                        PlanItemLocalServiceUtil.getPlanGroupId(plan).toString(), rolesActionsMap.get(role));
+                try {
+                    PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
+                            PlanItemLocalServiceUtil.getPlanGroupId(plan).toString(), rolesActionsMap.get(role));
+                }
+                catch (Throwable t) {
+                    _log.warn(t);
+                }
 
             }
         }
         for (Contest contest: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
             for (Role role : rolesActionsMap.keySet()) {
-                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
-                        String.valueOf(contest.getDiscussionGroupId()), rolesActionsMap.get(role));
+                try {
+                    PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
+                            String.valueOf(contest.getDiscussionGroupId()), rolesActionsMap.get(role));
+                }
+                catch (Throwable t) {
+                    _log.warn(t);
+                }
 
             }
         }
@@ -394,12 +405,21 @@ public class MigrationTool {
         
         for (DLFileEntry dfe: DLFileEntryLocalServiceUtil.getDLFileEntries(0,  Integer.MAX_VALUE)) {
             for (Role role : rolesActionsMap.keySet()) {
-                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
-                        ResourceConstants.SCOPE_GROUP, String.valueOf(groupId), rolesActionsMap.get(role));
-                
+                try {
+                    PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
+                            ResourceConstants.SCOPE_GROUP, String.valueOf(groupId), rolesActionsMap.get(role));
 
-                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
-                        ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(dfe.getPrimaryKey()), rolesActionsMap.get(role));
+                }
+                catch (NoSuchPermissionException e) {
+                    _log.warn(e);
+                }
+                try {
+                    PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
+                            ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(dfe.getPrimaryKey()), rolesActionsMap.get(role));
+                }
+                catch (NoSuchPermissionException e) {
+                    _log.warn(e);
+                }
             }
         }
         
