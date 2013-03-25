@@ -31,12 +31,18 @@ import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.model.Image;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
+import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
@@ -335,6 +341,15 @@ public class MigrationTool {
 
             }
         }
+        for (Contest contest: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+            for (Role role : rolesActionsMap.keySet()) {
+                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
+                        String.valueOf(contest.getDiscussionGroupId()), rolesActionsMap.get(role));
+
+            }
+        }
+        
+        
 
         _log.info("Update successful");
         FacesMessage fm = new FacesMessage();
@@ -343,6 +358,51 @@ public class MigrationTool {
 
         FacesContext.getCurrentInstance().addMessage(null, fm);
 
+        return null;
+    }
+    
+    public String fixImagesPermissions() throws PortalException, SystemException {
+
+        String RESOURCE_NAME = Image.class.getName();
+        int SCOPE = ResourceConstants.SCOPE_GROUP;
+        
+        Long companyId = Helper.getThemeDisplay().getCompanyId();
+        Long groupId = Helper.getThemeDisplay().getScopeGroupId();
+
+        Role user = RoleLocalServiceUtil.getRole(companyId, RoleConstants.USER);
+        Role guest = RoleLocalServiceUtil.getRole(companyId, RoleConstants.GUEST);
+
+
+        String[] userActions = {ActionKeys.VIEW};
+
+        Map<Role, String[]> rolesActionsMap = new HashMap<Role, String[]>();
+/*
+        rolesActionsMap.put(owner, ownerActions);
+        rolesActionsMap.put(admin, adminActions);
+        rolesActionsMap.put(member, memberActions);
+        */
+        rolesActionsMap.put(user, userActions);
+        
+        //rolesActionsMap.put(guest, guestActions);
+
+        for (Image image: ImageLocalServiceUtil.getImages()) {
+            for (Role role : rolesActionsMap.keySet()) {
+                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, RESOURCE_NAME, SCOPE, 
+                    String.valueOf(groupId), rolesActionsMap.get(role));
+            }
+        }
+        
+        for (DLFileEntry dfe: DLFileEntryLocalServiceUtil.getDLFileEntries(0,  Integer.MAX_VALUE)) {
+            for (Role role : rolesActionsMap.keySet()) {
+                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
+                        ResourceConstants.SCOPE_GROUP, String.valueOf(groupId), rolesActionsMap.get(role));
+                
+
+                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId, DLFileEntry.class.getName(), 
+                        ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(dfe.getPrimaryKey()), rolesActionsMap.get(role));
+            }
+        }
+        
         return null;
     }
 
@@ -532,6 +592,7 @@ public class MigrationTool {
 
     public String resetDiscussionCategoryGroupPermissions() throws PortalException, SystemException {
 
+        
         for (PlanItem planItem : PlanItemLocalServiceUtil.getPlans()) {
             Group group = GroupLocalServiceUtil.getGroup(PlanItemLocalServiceUtil.getPlanGroupId(planItem));
             Long companyId = group.getCompanyId();
@@ -579,53 +640,6 @@ public class MigrationTool {
             }
         }
         
-        for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
-            
-            Group group = GroupLocalServiceUtil.getGroup(contest.getDiscussionGroupId());
-            Long companyId = group.getCompanyId();
-            Role owner = RoleLocalServiceUtil.getRole(companyId, RoleConstants.OWNER);
-            Role admin = RoleLocalServiceUtil.getRole(companyId, RoleConstants.ADMINISTRATOR);
-            Role member = RoleLocalServiceUtil.getRole(companyId, RoleConstants.USER);
-            Role userRole = RoleLocalServiceUtil.getRole(companyId, RoleConstants.USER);
-            Role guest = RoleLocalServiceUtil.getRole(companyId, RoleConstants.GUEST);
-            Role moderator = RoleLocalServiceUtil.getRole(companyId, "Moderator");
-
-            String[] ownerActions = { DiscussionActions.ADMIN.name(), DiscussionActions.ADD_CATEGORY.name(),
-                    DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
-                    DiscussionActions.ADMIN_CATEGORIES.name(), DiscussionActions.ADMIN_MESSAGES.name(),
-                    DiscussionActions.ADD_COMMENT.name() };
-
-            String[] adminActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                    DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
-                    DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name() };
-
-            String[] moderatorActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                    DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
-                    DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name() };
-
-            String[] memberActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                    DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADD_COMMENT.name() };
-
-            String[] userActions = { DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
-                    DiscussionActions.ADD_COMMENT.name() };
-
-            String[] guestActions = {};
-
-            Map<Role, String[]> rolesActionsMap = new HashMap<Role, String[]>();
-
-            rolesActionsMap.put(owner, ownerActions);
-            rolesActionsMap.put(admin, adminActions);
-            rolesActionsMap.put(member, memberActions);
-            rolesActionsMap.put(userRole, userActions);
-            rolesActionsMap.put(guest, guestActions);
-            rolesActionsMap.put(moderator, moderatorActions);
-
-            for (Role role : rolesActionsMap.keySet()) {
-                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId,
-                        DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-                        String.valueOf(group.getGroupId()), rolesActionsMap.get(role));
-            }
-        }
 
         FacesMessage fm = new FacesMessage();
         fm.setSeverity(FacesMessage.SEVERITY_ERROR);
