@@ -876,7 +876,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanDescription planDescription = PlanDescriptionLocalServiceUtil.createNewVersionForPlan(pi);
         planDescription.setImage(imageId);
         PlanDescriptionLocalServiceUtil.store(planDescription);
-        updateAttribute(pi, Attribute.IMAGE);
+        //updateAttribute(pi, Attribute.IMAGE);
         //joinIfNotAMember(updateAuthorId);
         updateSearchIndex(pi);
         reindex(pi);
@@ -1642,7 +1642,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         updateAttribute(pi, Attribute.ABSTRACT);
         updateAttribute(pi, Attribute.DESCRIPTION);
         updateAttribute(pi, Attribute.NAME);
-        updateAttribute(pi, Attribute.IMAGE);        
+        //updateAttribute(pi, Attribute.IMAGE);        
         
         PlanType planType = getPlanType(pi);
 
