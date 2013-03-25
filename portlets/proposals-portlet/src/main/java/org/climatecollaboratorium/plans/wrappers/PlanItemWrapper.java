@@ -939,7 +939,7 @@ public class PlanItemWrapper {
 
     public void saveContent(ActionEvent e) throws SystemException, PortalException, UserInputException {
         if (Helper.isUserLoggedIn()) {
-            boolean descriptionChanged = false;
+            boolean descriptionChanged = false; 
             
             if (description != null && (PlanItemLocalServiceUtil.getDescription(wrapped) == null || 
                     !description.trim().equals(PlanItemLocalServiceUtil.getDescription(wrapped).trim()))) {
@@ -975,11 +975,6 @@ public class PlanItemWrapper {
                 PlanItemLocalServiceUtil.setImage(wrapped, newImage.getImageId(), Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.CHANGE_IMAGE.id(), null, 0);
-
-                FacesMessage message = new FacesMessage();
-                message.setSeverity(FacesMessage.SEVERITY_INFO);
-                message.setSummary("Image changed.");
-                FacesContext.getCurrentInstance().addMessage(null, message);
             }
 
             if (sections != null) {
