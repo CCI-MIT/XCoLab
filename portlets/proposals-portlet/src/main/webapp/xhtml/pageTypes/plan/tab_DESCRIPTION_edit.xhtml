@@ -31,11 +31,13 @@
             </label>
             <div class="addprophelp">Give your proposal a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
             <div class="addpropInputContainer">
-                <ice:inputText value="#{plan.plan.name}" onchange="jQuery(this).addClass('valueChanged');" required="true" >
+                <ice:inputText value="#{plan.plan.name}" onchange="jQuery(this).addClass('valueChanged');" required="true" id="proposalName">
                     <f:attribute name="plan" value="#{plan.plan}"/>
                     <f:validator validatorId="planNameValidator"/>
                     <f:attribute name="planName" value="#{plan.plan.name}" />
                 </ice:inputText>
+                <div class="clearfix"></div>
+         		<ice:message style="color: red;" id="proposalNameError" for="proposalName"/>
                 <div class="inputLimitContainer"><span class="limit_characterCount"></span>/&amp;nbsp;<span class="limit_charactersMax">80</span> characters</div>
                 <div style="display: none">
                     <textarea class="originalValue">#{plan.plan.originalName}</textarea>
@@ -133,7 +135,7 @@
                     </label>
                     <div class="addprophelp">#{section.definition.helpText}</div>
                     <div class="addpropInputContainer">
-                        <ice:inputTextarea value="#{section.section.content}" cols="54" rows="7" styleClass="rte" />
+                        <ice:inputTextarea value="#{section.section.content}" cols="54" rows="7" styleClass="rte" style="display: block;"/>
                         <f:subview rendered="#{section.definition.characterLimit gt 0}">
                             <div class="inputLimitContainer">
                                 <span class="limit_characterCount"></span>/&amp;nbsp;<span class="limit_charactersMax">#{section.definition.characterLimit}</span> characters
@@ -192,7 +194,7 @@
             window.validatePlanEditForm = function() {
                 for (var ckInstanceId in CKEDITOR.instances) {
                     if (document.getElementById(ckInstanceId)) {
-                        var ckInstance = CKEDITOR.instances[ckInstanceId];
+                    	var ckInstance = CKEDITOR.instances[ckInstanceId];
                         ckInstance.element['$'].value = ckInstance.getData();
                     }
                 }
@@ -209,6 +211,13 @@
                 if (!isValid) {
                     jQuery("#invalidFieldsPopupContainer").show();
                 }
+                for (var ckInstanceId in CKEDITOR.instances) {
+                    if (document.getElementById(ckInstanceId)) {
+                    	// remove all instances
+                    	//ckInstance.destroy();
+                    }
+                }
+                //delete CKEDITOR;
                 
                 return isValid;
             };
@@ -221,6 +230,7 @@
                 tmp = tmp.replace(/&lt;[^&gt;]*&gt;/g, "");
                 */
                 if (editor) {
+                	if (editor == null || editor.document == null) return 0;
                     if (editor.document['$'].body.textContent) {
                         return editor.document['$'].body.textContent.length;
                         
@@ -265,6 +275,7 @@
                 if (jQuery(this).hasClass('rteInitialized')) {
                     return;
                 }
+                
                 
                 var tmp = this;
                 var thiz = jQuery(this);
@@ -321,13 +332,30 @@
                     var editorOptions = {
                     		customConfig : '/proposals-portlet/js/ckeditor_config.js'
                     };
+                    var refreshEditor = false;
+                    var maxSteps = 10;
+                    while (thiz.attr("id") in CKEDITOR.instances &amp;&amp; maxSteps > 0) {
+                    	maxSteps --;
+                    	try {
+                			CKEDITOR.remove(CKEDITOR.instances[thiz.attr("id")]);
+                    		refreshEditor = true;
+                    	}
+                    	catch (e) {
+                    		if (console) {
+                    			console.warn("exception thrown when removing a CKEDITOR instance", e);
+                    		}
+                    	}
+                    }
                     
                     var editor = CKEDITOR.replace(thiz.attr("id"), editorOptions);
+                    
                     thiz.get(0)["ckeditor"] = editor;
                     editor.updatedCharCount = false;
                    
                     function updateEditorCharCount() {
                         try{
+                        	if (editor == null) return;
+                        	
                             if (editor &amp;&amp;  editor.document &amp;&amp; editor.document['$'] &amp;&amp; (editor.checkDirty() || !editor.updatedCharCount)) {
                                 /*editor.element['$'].value = editor.getData();
                                 */
@@ -371,7 +399,7 @@
             
             }
             catch(e) {
-                alert(e);
+            	console.log(e);
             }
         </script>
         

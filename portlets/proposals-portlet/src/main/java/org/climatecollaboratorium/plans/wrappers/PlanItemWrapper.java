@@ -939,8 +939,17 @@ public class PlanItemWrapper {
 
     public void saveContent(ActionEvent e) throws SystemException, PortalException, UserInputException {
         if (Helper.isUserLoggedIn()) {
-            boolean descriptionChanged = false; 
             
+            if (!PlanItemLocalServiceUtil.isNameAvailable(name, PlanItemLocalServiceUtil.getContest(wrapped))) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Name \"" + name + "\" is already taken, please choose different one.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                return;
+
+            }
+
+            boolean descriptionChanged = false; 
             if (description != null && (PlanItemLocalServiceUtil.getDescription(wrapped) == null || 
                     !description.trim().equals(PlanItemLocalServiceUtil.getDescription(wrapped).trim()))) {
                 String savedDescription = UserInputFilterUtil.filterHtml(description);
@@ -951,14 +960,7 @@ public class PlanItemWrapper {
             }
 
             if (name != null && !name.trim().equals(PlanItemLocalServiceUtil.getName(wrapped).trim())) {
-                if (!PlanItemLocalServiceUtil.isNameAvailable(name, PlanItemLocalServiceUtil.getContest(wrapped))) {
-                    FacesMessage message = new FacesMessage();
-                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                    message.setSummary("Name \"" + name + "\" is already taken, please choose different one.");
-                    FacesContext.getCurrentInstance().addMessage(null, message);
-                    return;
 
-                }
                 PlanItemLocalServiceUtil.setName(wrapped, name, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_NAME.id(), null, 0);
