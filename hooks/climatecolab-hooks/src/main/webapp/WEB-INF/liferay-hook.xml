@@ -2,6 +2,8 @@
 <!DOCTYPE hook PUBLIC "-//Liferay//DTD Hook 6.1.0//EN" "http://www.liferay.com/dtd/liferay-hook_6_1_0.dtd">
 
 <hook>
+    <portal-properties>additionalPortal.properties</portal-properties>
+    
 	<custom-jsp-dir>/WEB-INF/jsps</custom-jsp-dir>
 	<servlet-filter>
 		<servlet-filter-name>MassMessaging</servlet-filter-name>
@@ -19,5 +21,6 @@
 		<servlet-filter-name>Landingpage</servlet-filter-name>
 		<url-pattern>/landingpage/*</url-pattern>
 	</servlet-filter-mapping>
+    
 	
 </hook>
