@@ -5,7 +5,6 @@
 
 	<portal-properties>additionalProperties.properties</portal-properties>
 	
-	
 	<custom-jsp-dir>/WEB-INF/jsps</custom-jsp-dir>
 	<servlet-filter>
 		<servlet-filter-name>MassMessaging</servlet-filter-name>
@@ -23,5 +22,6 @@
 		<servlet-filter-name>Landingpage</servlet-filter-name>
 		<url-pattern>/landingpage/*</url-pattern>
 	</servlet-filter-mapping>
+    
 	
 </hook>
