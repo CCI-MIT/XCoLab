@@ -7,9 +7,9 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 	<groupId>org.xcolab.portlets</groupId>
-	<artifactId>userprofile-portlet</artifactId>
+	<artifactId>registration-portlet</artifactId>
 	<packaging>war</packaging>
-	<name>userprofile-portlet Portlet</name>
+	<name>registration-portlet Portlet</name>
 	<version>1.0-SNAPSHOT</version>
 	<build>
 		<plugins>

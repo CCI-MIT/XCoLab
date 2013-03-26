@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    >
+   <ice:form>
+                    
+    <script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js" ><!-- --></script>
+    <div id="main">
+    	<ice:panelGroup>
+      <div class="comm_member">
+        <div class="comm_member-photo">
+        	<ice:panelGroup>
+            <f:subview rendered="#{empty currentUser.uploadedFileName}">
+                <img src="#{currentUser.portrait}" width="150" height="150" alt="#{currentUser.screenName}" />
+            </f:subview>
+            <f:subview rendered="#{not empty currentUser.uploadedFileName}">
+                <img src="/userprofile-portlet/showUploadedImg?fileName=#{currentUser.uploadedFileName}" width="150" height="150" alt="#{currentUser.screenName}" />
+            </f:subview>
+            </ice:panelGroup>
+        
+        </div>
+        <div class="comm_member-info">
+            <h2>Member Profile</h2>
+            
+                <table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
+                    <tr>
+                        <td class="b m" width="170">First Name</td>
+                        <td>
+                            <ice:inputText id="firstName" value="#{currentUser.firstName}" styleClass="profile_input" required="true" partialSubmit="true" /><br />
+                            <ice:message for="firstName" styleClass="form_error_message"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="b">Last Name</td>
+                        <td>
+                            <ice:inputText id="lastName" value="#{currentUser.lastName}" styleClass="profile_input" required="true"  partialSubmit="true"/><br />
+                            <ice:message for="lastName" styleClass="form_error_message"/>
+                        </td>
+                    </tr>
+                </table>
+                
+            <ice:panelGroup styleClass="profile_upload"> 
+                    <ice:inputFile id="profileImage" actionListener="#{currentUser.uploadPortrait}" styleClass="filepc" autoUpload="true" >
+                        <ice:outputStyle href="/css/main.css" />
+                    </ice:inputFile><br />
+                    
+                    <ice:commandLink styleClass="hidden signalPictureUploaded" actionListener="#{currentUser.signalPictureUploaded}" />
+                    <script type="text/javascript">
+                        
+                        monitorUploadFrame();
+                    </script>
+                    
+                    
+              <!-- 
+              <input name="filepc" type="file" size="30" id="filepc" onchange="document.getElementById('fakefilepc').value = this.value;"/>
+              <div id="fakeinputfile"><input name="fakefilepc" type="text" id="fakefilepc" /></div>
+               -->
+            </ice:panelGroup>
+            
+            <f:subview rendered="#{not empty currentUser.fileErrorMessage}">
+                <span class="iceMsgError portlet-msg-error Error form_error_messageError">
+                    #{currentUser.fileErrorMessage}
+                </span>
+            </f:subview>
+            <ice:message for="profileImage" styleClass="form_error_message" />
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      </ice:panelGroup>
+      <ice:panelGroup>
+      <table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
+        <tr>
+            <td class="b m" width="170">Screen Name</td>
+            <td>
+                <ice:inputText id="screenNameMessage" styleClass="profile_input" value="#{currentUser.screenName}" partialSubmit="true" required="true">
+                    <f:attribute name="currentUser" value="#{currentUser}"/>
+                    <f:validator validatorId="screenNameValidator"/>
+                </ice:inputText><br />
+                <ice:message for="screenNameMessage" styleClass="form_error_message"/>
+            </td></tr>
+        <tr><td class="b">Member Since</td><td class="l">
+            <ice:outputText value="#{currentUser.joinDate}" >
+                <f:convertDateTime pattern="MM/dd/yy" locale="en_US" timeZone="America/New_York"/>
+            </ice:outputText>
+        </td></tr>
+        <tr>
+            <td class="b m">Email</td>
+            <td>
+                <ice:inputText  id="email" styleClass="profile_input" value="#{currentUser.email}" partialSubmit="true">
+                    <f:attribute name="currentUser" value="#{currentUser}"/>
+                    <f:validator validatorId="emailValidator"/>
+                </ice:inputText><br />
+                <ice:message for="email" styleClass="form_error_message"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="b m">Current password</td>
+            <td>
+                <ice:inputSecret id="currentPasswordInput" styleClass="profile_input" value="#{currentUser.currentPassword}">
+                    <f:attribute name="currentUser" value="#{currentUser}"/>
+                    <f:validator validatorId="userPasswordValidator"/>
+                    <f:attribute name="type" value="current" />
+                </ice:inputSecret><br />
+                <ice:message for="currentPasswordInput" styleClass="form_error_message"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="b m">New password</td>
+            <td>
+                <ice:inputSecret  id="newPasswordInput" styleClass="profile_input" value="#{currentUser.newPassword}" >
+                    <f:attribute name="currentUser" value="#{currentUser}"/>
+                    <f:validator validatorId="userPasswordValidator"/>
+                    <f:attribute name="type" value="new" />
+                </ice:inputSecret><br />
+                <ice:message for="newPasswordInput" styleClass="form_error_message"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="b m">New password retype</td>
+            <td>
+                <ice:inputSecret  id="newPasswordRetypeInput" styleClass="profile_input" value="#{currentUser.newPasswordRetype}" >
+                    <f:attribute name="currentUser" value="#{currentUser}"/>
+                    <f:attribute name="type" value="newRetype" />
+                    <f:validator validatorId="userPasswordValidator"/>
+                </ice:inputSecret><br />
+                <ice:message for="newPasswordRetypeInput" styleClass="form_error_message"/>
+            </td>
+        </tr>
+      </table>
+
+      <div class="profile_about-head">About me</div>
+      <ice:panelGroup styleClass="userProfileAbout" >
+      <ice:inputTextarea rows="6" cols="30" styleClass="profile_about ckeditor" value="#{currentUser.about}" onblur="return false;" />
+      </ice:panelGroup>
+      <script>
+        function updateTextarea() {
+        	for (var instance in CKEDITOR.instances) {
+        		CKEDITOR.instances[instance].updateElement();
+        	}
+        }
+      
+      </script>
+      
+      
+      
+      <div class="blue-button"><ice:commandLink  actionListener="#{userprofileBean.updateUser}" onclick="updateTextarea();">Save</ice:commandLink></div>
+      <div class="blue-button"><a href="/web/guest/member/-/member/userId/#{currentUser.userId}">Cancel</a></div>
+      <!-- <input type="reset" name="reset" class="profile_reset" value="CANCEL" />-->
+          
+          </ice:panelGroup>
+        </div> <!-- /main -->
+                    </ice:form>
+        <ice:form>
+        <div class="right_col v1">
+          <div class="comm_rightcol">
+              <div class="comm_rightcol-title2">MESSAGE SETTINGS</div>
+              <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                <tr>
+                    <td>
+                        <ice:selectBooleanCheckbox styleClass="profile_cbx" value="#{userprofileBean.sendEmailOnMessage}" partialSubmit="true"/>
+                    </td>
+                    <td class="profile_settings">
+                        Send me an email copy of messages I receive.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <ice:selectBooleanCheckbox styleClass="profile_cbx" value="#{userprofileBean.sendEmailOnActivity}" partialSubmit="true"/>
+                    </td>
+                    <td class="profile_settings">
+                        Send me an email copy of activities that I'm subscribed to.
+                    </td>
+                </tr>
+        </table>
+        <div class="clearfix"></div>
+        
+     </div>
+     
+
+    </div> <!-- /right_col3 -->
+     </ice:form>
+</f:view>
