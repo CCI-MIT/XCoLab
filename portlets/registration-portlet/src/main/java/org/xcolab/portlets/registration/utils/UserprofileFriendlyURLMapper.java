@@ -1,10 +1,10 @@
-package org.xcolab.portlets.userprofile.utils;
+package org.xcolab.portlets.registration.utils;
 
 import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
-import org.xcolab.portlets.userprofile.Helper;
+import org.xcolab.portlets.registration.Helper;
 
 import com.liferay.portal.kernel.portlet.BaseFriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;

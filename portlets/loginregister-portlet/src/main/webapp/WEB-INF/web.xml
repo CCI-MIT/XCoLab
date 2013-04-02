@@ -11,6 +11,17 @@
         <servlet-name>ViewRendererServlet</servlet-name>
         <url-pattern>/WEB-INF/servlet/view</url-pattern>
     </servlet-mapping>
+    
+    
+	<servlet>
+        <servlet-name>fileUploadServlet</servlet-name>
+        <servlet-class>org.xcolab.portlets.loginregister.FileUploadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>fileUploadServlet</servlet-name>
+        <url-pattern>/fileUploadServlet</url-pattern>
+    </servlet-mapping>
 
 
 </web-app>

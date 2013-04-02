@@ -1,4 +1,4 @@
-package org.xcolab.portlets.userprofile;
+package org.xcolab.portlets.registration;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -7,18 +7,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
 
-import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
-
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.model.PlanFan;
-import com.ext.portlet.service.PlanFanLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
 import com.icesoft.faces.component.inputfile.InputFile;
@@ -36,8 +30,6 @@ import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.portlet.social.model.SocialActivity;
-import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 public class UserWrapper {
 
@@ -47,9 +39,6 @@ public class UserWrapper {
     private String firstName;
     private String lastName;
     private String email;
-    private List<SupportedPlanBean> supportedPlans = new ArrayList<SupportedPlanBean>();
-    private List<UserActivityBean> userActivities = new ArrayList<UserActivityBean>();
-    private int maxActivitiesCount = 10;
     private String screenName;
     private File newUserProfile;
     private String filteredAbout;
@@ -83,15 +72,6 @@ public class UserWrapper {
             realName = firstName;
         }
         
-        supportedPlans.clear();
-        for (PlanFan supportedPlanInfo : PlanFanLocalServiceUtil.getPlanFansForUser(user.getUserId())) {
-            supportedPlans.add(new SupportedPlanBean(supportedPlanInfo));
-        }
-        
-        userActivities.clear();
-        for (SocialActivity activity: SocialActivityLocalServiceUtil.getUserActivities(user.getUserId(), 0, maxActivitiesCount)) {;//userActivitiesCount - maxActivitiesCount, userActivitiesCount)) {
-            userActivities.add(new UserActivityBean(activity));
-        }
     }
     
     public String getAbout() {
@@ -111,11 +91,14 @@ public class UserWrapper {
     }
     
     public String getPortrait() throws PortalException, SystemException {
+    	/*
         return Helper.getThemeDisplay().getPathImage() + 
             "/user_" + 
             (user.getFemale() ? "female" : "male") + 
             "_portrait?img_id=" + 
             user.getPortraitId();
+            */
+    	return null;
     }
     
     public String getRealName() {
@@ -142,13 +125,6 @@ public class UserWrapper {
         this.email = email;
     }
     
-    public List<SupportedPlanBean> getSupportedPlans() {
-        return supportedPlans;
-    }
-    
-    public List<UserActivityBean> getActivities() {
-        return userActivities;
-    }
     
     private String getName(String name, String defaultName) {
         if (name == null || name.trim().equals("")) {
@@ -203,13 +179,13 @@ public class UserWrapper {
         }
         
         if (newPassword.trim().length() > 0) {
-            user.setPassword(PwdEncryptor.encrypt(newPassword));
+            //user.setPassword(PwdEncryptor.encrypt(newPassword));
             changed = true;
         }
 
         long companyId = CompanyThreadLocal.getCompanyId(); 
         if (companyId == 0) {
-           CompanyThreadLocal.setCompanyId(Helper.getThemeDisplay().getCompanyId());
+           //CompanyThreadLocal.setCompanyId(Helper.getThemeDisplay().getCompanyId());
         }
         
 

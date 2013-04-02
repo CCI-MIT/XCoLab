@@ -589,18 +589,6 @@ margin: 0px 0 0 54px;
 .wf-active .profile_about {
 font-size: 14px;
 }
-.profile_about {
-border: none;
-background: url(../images/profile_about-box.gif) no-repeat;
-width: 648px;
-height: 220px;
-padding: 10px;
-font-size: 12px;
-line-height: 27px;
-border: 1px solid;
-border-color: #BFBFBF #DEDEDE #DEDEDE #BFBFBF;
-background-image: url(../images/forms/input_shadow.png);
-}
 
 .profile_upload {
 border: none;
@@ -611,6 +599,22 @@ margin-top: 12px;
 cursor: pointer;
 }
 
+
+#uploadImageContainer {
+	width: 100%;
+	height: 30px;
+	background: url(../images/profile_upload-button.gif) no-repeat 15px 0px;
+	margin-top: 20px;
+}
+#portraitUploadInput {
+	width: 121px;
+	height: 30px;
+	opacity: 0;
+	z-index: 99999;
+    opacity:0;
+    filter:alpha(opacity=0); /* For IE8 and earlier */
+    cursor: pointer;
+}
 
 /** Search page **/
 .result {
@@ -777,7 +781,7 @@ color: #444444;
 float: left;
 border: none;
 border: 1px solid #898989;
-width: 375px;
+width: 300px;
 height: 33px;
 padding: 2px 0 0 8px;
 font-size: 13px;

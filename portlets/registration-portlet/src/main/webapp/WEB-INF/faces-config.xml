@@ -37,21 +37,24 @@
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>registrationBean</managed-bean-name>
-		<managed-bean-class>org.xcolab.portlets.registration.UserProfileBean</managed-bean-class>
+		<managed-bean-class>org.xcolab.portlets.registration.RegistrationBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
-		<managed-property>
-			<property-name>messagingPortletId</property-name>
-			<value>messagingportlet_WAR_messagingportlet</value>
-		</managed-property>
+
 	</managed-bean>
 	<validator>
 		<validator-id>screenNameValidator</validator-id>
 		<validator-class>org.xcolab.portlets.registration.validators.ScreenNameValidator</validator-class>
 	</validator>
+		<validator>
+		<validator-id>captchaValidator</validator-id>
+		<validator-class>org.xcolab.portlets.registration.validators.CaptchaValidator</validator-class>
+	</validator>
+	<!-- 
 	<validator>
 		<validator-id>portraitUploadValidator</validator-id>
 		<validator-class>org.xcolab.portlets.registration.validators.PortraitUploadValidator</validator-class>
 	</validator>
+	 -->
 	<validator>
 		<validator-id>emailValidator</validator-id>
 		<validator-class>org.xcolab.portlets.registration.validators.UserEmailValidator</validator-class>

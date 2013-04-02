@@ -1,4 +1,4 @@
-package org.xcolab.portlets.userprofile;
+package org.xcolab.portlets.registration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,10 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class ShowUploadedProfileServlet extends HttpServlet {
-    private final static File UPLOAD_DIR = new File("/tmp");
+public class ShowUploadedAvatarServlet extends HttpServlet {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6763662232218219140L;
+	
+	
+	private final static File UPLOAD_DIR = new File("/tmp");
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    	System.out.println("processing"); 
         process(request, response);
     }
 

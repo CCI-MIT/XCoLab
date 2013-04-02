@@ -1,4 +1,4 @@
-package org.xcolab.portlets.userprofile.validators;
+package org.xcolab.portlets.registration.validators;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -6,45 +6,40 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import org.xcolab.portlets.userprofile.Helper;
-import org.xcolab.portlets.userprofile.UserWrapper;
+import org.xcolab.portlets.registration.Helper;
+import org.xcolab.portlets.registration.RegistrationBean;
+import org.xcolab.portlets.registration.UserWrapper;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-public class UserEmailValidator implements Validator {
+public class ScreenNameValidator implements Validator {
 
-    private String EMAILVALIDATION_REGEXP = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+    private String SCREEN_NAME_VALIDATION_REGEXP = "[_0-9a-zA-Z_\\-\\.]*";
 
     @Override
     public void validate(FacesContext ctx, UIComponent comp, Object obj) throws ValidatorException {
-        String email = obj.toString().trim();
-        UserWrapper currentUser = (UserWrapper) comp.getAttributes().get("currentUser");
+        String screenName = obj.toString().trim();
         
-        if (email.equals(currentUser.getEmail())) {
-            // screen name hasn't changed don't do anything
-            return;
-        }
-        
-        if (email.equals("")) {
+        if (screenName.equals("")) {
             FacesMessage fm = new FacesMessage();
             fm.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throwError("Email can't be empty.");
+            throwError("Screen name can't be empty.");
             throw new ValidatorException(fm);   
         }
         
-        if (!email.matches(EMAILVALIDATION_REGEXP)) {
-            throwError("Email is invalid.");
+        if (!screenName.matches(SCREEN_NAME_VALIDATION_REGEXP)) {
+            throwError("Screen name is invalid.");
         }
          
         try {
             
-            User user = UserLocalServiceUtil.getUserByEmailAddress(Helper.getThemeDisplay().getCompanyId(), email);
+            User user = UserLocalServiceUtil.getUserByScreenName(Helper.getThemeDisplay().getCompanyId(), screenName);
             if (user != null) {
                 // user with given screen name has been found this is forbidden
-                throwError("Email is already used by other user.");
+                throwError("Screen name has been already taken.");
             }
         } catch (PortalException e) {
             // user has not been found, this is good

@@ -12,7 +12,7 @@
  * details.
  */
 
-package org.xcolab.portlets.userprofile.utils;
+package org.xcolab.portlets.registration.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

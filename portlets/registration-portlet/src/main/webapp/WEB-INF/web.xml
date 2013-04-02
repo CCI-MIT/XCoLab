@@ -286,8 +286,8 @@
 		<servlet-class>org.climatecollaboratorium.contact.CaptchaServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>ShowUploadedProfileImg</servlet-name>
-		<servlet-class>org.xcolab.portlets.registration.ShowUploadedProfileServlet</servlet-class>
+		<servlet-name>ShowUploadedAvatarImg</servlet-name>
+		<servlet-class>org.xcolab.portlets.registration.ShowUploadedAvatarServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Blocking Servlet</servlet-name>
@@ -330,8 +330,8 @@
 		<url-pattern>/captcha/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>ShowUploadedProfileImg</servlet-name>
-		<url-pattern>/showUploadedImg</url-pattern>
+		<servlet-name>ShowUploadedAvatarImg</servlet-name>
+		<url-pattern>/ShowUploadedAvatarImg</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>480</session-timeout>

@@ -1,4 +1,4 @@
-package org.xcolab.portlets.userprofile;
+package org.xcolab.portlets.registration;
 
 import java.util.Date;
 

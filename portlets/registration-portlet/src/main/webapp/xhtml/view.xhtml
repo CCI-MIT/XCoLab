@@ -7,13 +7,9 @@
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     >
     <ice:portlet>
-        <ui:include src="./pages/#{userprofileBean.pageType}.xhtml">
-            <ui:param value="#{userprofileBean.currentUser}" name="currentUser" />
-            <ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
+        <ui:include src="./pages/REGISTRATION.xhtml">
+            <ui:param value="#{registrationBean}" name="reg" />
         </ui:include>
         
-        <!-- 
-        <ui:include src="./#{userprofileBean.initialized ? 'userProfileDetails' : 'noSuchUser'}#{userprofileBean.editing ? '_editing' : ''}.xhtml" >
-         -->
     </ice:portlet>
 </f:view>

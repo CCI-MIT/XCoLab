@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-    <artifactId>xcolab-portlets</artifactId>
-    <groupId>org.xcolab.portlets</groupId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
+		<artifactId>xcolab-portlets</artifactId>
+		<groupId>org.xcolab.portlets</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
 	<groupId>org.xcolab.portlets</groupId>
 	<artifactId>loginregister-portlet</artifactId>
 	<packaging>war</packaging>
@@ -52,16 +53,14 @@
 			<version>${liferay.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		
+
 		<dependency>
 			<groupId>javax.portlet</groupId>
 			<artifactId>portlet-api</artifactId>
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		
+
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-el</artifactId>
@@ -73,19 +72,32 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-		
+
+		<!-- <dependency> -->
+		<!-- <groupId>commons-fileupload</groupId> -->
+		<!-- <artifactId>commons-fileupload</artifactId> -->
+		<!-- <version>1.2</version> -->
+		<!-- </dependency> -->
+
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -93,35 +105,53 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc-portlet</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc-portlet</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
+
 		<dependency>
-  			<groupId>org.xcolab.taglibs</groupId>
-  			<artifactId>sharedColabIceFacelets</artifactId>
-  			<version>1.0-SNAPSHOT</version>
-  		</dependency>
-        
-        
-		<dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>4.3.0.Final</version>
+			<groupId>org.xcolab.services</groupId>
+			<artifactId>plansProposalsFacade-portlet-service</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>edu.mit.cci.roma</groupId>
+					<artifactId>simulation</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
+
+
+		<dependency>
+			<groupId>org.xcolab.taglibs</groupId>
+			<artifactId>sharedColabIceFacelets</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.0.Final</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 		</dependency>
-		            
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -136,7 +166,7 @@
 		</repository>
 	</repositories>
 	<properties>
-        <spring.version>3.2.0.RELEASE</spring.version>
-    </properties>
-	
+		<spring.version>3.2.0.RELEASE</spring.version>
+	</properties>
+
 </project>

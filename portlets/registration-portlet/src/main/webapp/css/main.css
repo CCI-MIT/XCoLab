@@ -9,3 +9,34 @@
 .userProfileAbout textarea {
 	display: none;
 }
+
+.reg_errors {
+	margin-top:20px;
+}
+
+.reg_errors span {
+	display: inline-block;
+}
+
+div.req {
+	background: url(../images/reg-star.png) no-repeat;
+	width:20px;
+	height:20px;
+	float:left;
+}
+.userProfileAbout {
+	width:790px;
+}
+table.reg th {
+	padding-top:25px;
+}
+table.reg td {
+	padding-top:15px;
+	padding-left:12px;
+}
+th.second {
+	padding-left:12px;
+}
+table.reg input.popupreg_input  {
+	width:320px !important;
+}

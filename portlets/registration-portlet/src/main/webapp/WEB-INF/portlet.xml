@@ -23,8 +23,8 @@
 			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT Userprofile (ICE)</title>
-			<short-title>Members</short-title>
+			<title>MIT Registration</title>
+			<short-title>registration</short-title>
 			<keywords>registration</keywords>
 		</portlet-info>
 		<security-role-ref>

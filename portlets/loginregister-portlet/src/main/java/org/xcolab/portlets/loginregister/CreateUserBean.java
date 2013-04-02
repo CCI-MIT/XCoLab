@@ -1,15 +1,15 @@
 package org.xcolab.portlets.loginregister;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.loginregister.validation.UniqueScreenNameAndEmail;
 import org.xcolab.utils.validation.CompareStrings;
+import org.xcolab.utils.validation.ValidScreenName;
 
 @CompareStrings(propertyNames = { "password", "retypePassword" })
 @UniqueScreenNameAndEmail(emailProperty = "email", screenNameProperty = "screenName")
+@ValidScreenName(screenNameProperty = "screenName")
 public class CreateUserBean {
 
 	@NotBlank
@@ -33,13 +33,30 @@ public class CreateUserBean {
 	@Length(min = 8, max = 24)
 	private String retypePassword;
 
-	@Length(min = 0, max = 1000)
+	@Length(min = 0, max = 2000)
 	private String shortBio;
 
 	@Length(min = 0, max = 300)
 	private String country;
 
 	private String recaptcha_response_field;
+
+	private String imageId;
+
+	/**
+	 * @return the imageId
+	 */
+	public String getImageId() {
+		return imageId;
+	}
+
+	/**
+	 * @param imageId
+	 *            the imageId to set
+	 */
+	public void setImageId(String imageId) {
+		this.imageId = imageId;
+	}
 
 	/**
 	 * @return the country
