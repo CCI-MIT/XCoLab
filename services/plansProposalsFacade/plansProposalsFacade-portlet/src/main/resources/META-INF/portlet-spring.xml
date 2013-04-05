@@ -113,6 +113,15 @@
 		<property name="service" ref="com.ext.portlet.service.DiscussionMessageFlagService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence" class="com.ext.portlet.service.persistence.DiscussionMessageFlagPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.EmailListLocalService" class="com.ext.portlet.service.impl.EmailListLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.EmailListLocalServiceUtil" class="com.ext.portlet.service.EmailListLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.EmailListLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.EmailListService" class="com.ext.portlet.service.impl.EmailListServiceImpl" />
+	<bean id="com.ext.portlet.service.EmailListServiceUtil" class="com.ext.portlet.service.EmailListServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.EmailListService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.EmailListPersistence" class="com.ext.portlet.service.persistence.EmailListPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.FocusAreaLocalService" class="com.ext.portlet.service.impl.FocusAreaLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.FocusAreaLocalServiceUtil" class="com.ext.portlet.service.FocusAreaLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.FocusAreaLocalService" />

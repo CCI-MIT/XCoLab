@@ -15,6 +15,7 @@ import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
+import com.ext.portlet.service.persistence.EmailListPersistence;
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
 import com.ext.portlet.service.persistence.FocusAreaPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
@@ -196,6 +197,8 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
     protected DiscussionMessagePersistence discussionMessagePersistence;
     @BeanReference(type = DiscussionMessageFlagPersistence.class)
     protected DiscussionMessageFlagPersistence discussionMessageFlagPersistence;
+    @BeanReference(type = EmailListPersistence.class)
+    protected EmailListPersistence emailListPersistence;
     @BeanReference(type = FocusAreaPersistence.class)
     protected FocusAreaPersistence focusAreaPersistence;
     @BeanReference(type = FocusAreaOntologyTermPersistence.class)

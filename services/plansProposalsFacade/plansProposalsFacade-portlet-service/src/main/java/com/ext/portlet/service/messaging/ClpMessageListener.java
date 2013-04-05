@@ -23,6 +23,8 @@ import com.ext.portlet.service.DiscussionMessageFlagLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageFlagServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageServiceUtil;
+import com.ext.portlet.service.EmailListLocalServiceUtil;
+import com.ext.portlet.service.EmailListServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermServiceUtil;
@@ -171,6 +173,9 @@ public class ClpMessageListener extends BaseMessageListener {
             DiscussionMessageFlagLocalServiceUtil.clearService();
 
             DiscussionMessageFlagServiceUtil.clearService();
+            EmailListLocalServiceUtil.clearService();
+
+            EmailListServiceUtil.clearService();
             FocusAreaLocalServiceUtil.clearService();
 
             FocusAreaServiceUtil.clearService();

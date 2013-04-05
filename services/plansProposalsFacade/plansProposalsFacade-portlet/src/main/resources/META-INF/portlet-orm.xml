@@ -218,6 +218,17 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.EmailListModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="name" />
+			<basic name="email" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.FocusAreaModelImpl">
 		<attributes>
 			<id name="id">
@@ -934,6 +945,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.DiscussionMessageFlagImpl" name="DiscussionMessageFlag">
 		<table name="xcolab_DiscussionMessageFlag" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.EmailListImpl" name="EmailList">
+		<table name="xcolab_EmailList" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.FocusAreaImpl" name="FocusArea">

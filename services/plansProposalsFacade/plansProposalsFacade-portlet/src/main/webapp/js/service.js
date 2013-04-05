@@ -15,3 +15,10 @@ Liferay.Service.register("Liferay.Service.Activity", "com.ext.portlet.Activity.s
 Liferay.Service.register("Liferay.Service.Messaging", "com.ext.portlet.messaging.service", "plansProposalsFacade-portlet");
 
 Liferay.Service.register("Liferay.Service.xcolab", "com.ext.portlet.service", "plansProposalsFacade-portlet");
+
+Liferay.Service.registerClass(
+	Liferay.Service.xcolab, "EmailList",
+	{
+		helloWorld: true
+	}
+);

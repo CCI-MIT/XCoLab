@@ -28,7 +28,7 @@ create table xcolab_Contest (
 	featured_ BOOLEAN,
 	plansOpenByDefault BOOLEAN,
 	sponsorLogoId LONG,
-	sponsorText VARCHAR(75) null,
+	sponsorText VARCHAR(2048) null,
 	flag INTEGER,
 	flagText VARCHAR(1024) null,
 	flagTooltip VARCHAR(1024) null,
@@ -126,6 +126,12 @@ create table xcolab_DiscussionMessageFlag (
 	data_ VARCHAR(2048) null,
 	created DATE null,
 	userId LONG
+);
+
+create table xcolab_EmailList (
+	id_ LONG not null primary key,
+	name VARCHAR(256) null,
+	email VARCHAR(256) null
 );
 
 create table xcolab_FocusArea (

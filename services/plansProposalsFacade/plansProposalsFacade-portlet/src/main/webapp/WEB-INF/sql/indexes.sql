@@ -32,6 +32,9 @@ create index IX_FDE36548 on xcolab_DiscussionMessage (threadId);
 
 create index IX_63652E37 on xcolab_DiscussionMessageFlag (messageId);
 
+create index IX_4849B8A9 on xcolab_EmailList (name);
+create index IX_55E95283 on xcolab_EmailList (name, email);
+
 create index IX_B61888D4 on xcolab_FocusArea (name);
 
 create index IX_CE67B1A0 on xcolab_FocusAreaOntologyTerm (focusAreaId);

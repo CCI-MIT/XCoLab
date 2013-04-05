@@ -13,6 +13,7 @@
 	<import class="com.ext.portlet.model.DiscussionCategoryGroup" />
 	<import class="com.ext.portlet.model.DiscussionMessage" />
 	<import class="com.ext.portlet.model.DiscussionMessageFlag" />
+	<import class="com.ext.portlet.model.EmailList" />
 	<import class="com.ext.portlet.model.FocusArea" />
 	<import class="com.ext.portlet.model.FocusAreaOntologyTerm" />
 	<import class="com.ext.portlet.model.LandingPage" />
@@ -213,6 +214,14 @@
 		<property name="data" type="com.liferay.portal.dao.orm.hibernate.StringType" column="data_" />
 		<property name="created" type="org.hibernate.type.TimestampType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.EmailListImpl" table="xcolab_EmailList">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="email" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.FocusAreaImpl" table="xcolab_FocusArea">
 		<cache usage="read-write" />

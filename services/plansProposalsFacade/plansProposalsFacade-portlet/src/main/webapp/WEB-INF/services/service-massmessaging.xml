@@ -119,16 +119,35 @@
 
         
     </entity>
+    
+	<entity name="EmailList" local-service="true" remote-service="true" >
+    
+        <!-- PK field -->
+        <column name="id" type="long" primary="true" />
+        <column name="name" type="String" />
+        <column name="email" type="String" />
+       
+        <finder return-type="Collection" name="findByName">
+            <finder-column name="name" />
+        </finder>
+        
+        <finder return-type="EmailList" name="findByNameEmail" >
+            <finder-column name="name" />
+            <finder-column name="email" />
+        </finder>
+
+        
+    </entity>
 	
 	
 	<exceptions>
 
 		<exception>NoSuchMessagingMessage</exception>
-        <exception>NoSuchMessagingMessageRecipient</exception>
+		<exception>NoSuchMessagingMessageRecipient</exception>
         <exception>NoSuchMessagingMessageConversionType</exception>
         <exception>NoSuchMessagingMessageConversion</exception>
 		<exception>NoSuchEntity</exception>
 		<exception>NoSuchMessagingIgnoredRecipientsException</exception>
-		
+		<exception>NoSuchEmailList</exception>
 	</exceptions>
 </service-builder>

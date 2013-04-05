@@ -23,6 +23,8 @@ import com.ext.portlet.service.DiscussionMessageFlagLocalService;
 import com.ext.portlet.service.DiscussionMessageFlagService;
 import com.ext.portlet.service.DiscussionMessageLocalService;
 import com.ext.portlet.service.DiscussionMessageService;
+import com.ext.portlet.service.EmailListLocalService;
+import com.ext.portlet.service.EmailListService;
 import com.ext.portlet.service.FocusAreaLocalService;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalService;
 import com.ext.portlet.service.FocusAreaOntologyTermService;
@@ -132,6 +134,7 @@ import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
+import com.ext.portlet.service.persistence.EmailListPersistence;
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
 import com.ext.portlet.service.persistence.FocusAreaPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
@@ -294,6 +297,12 @@ public abstract class PlanPositionsLocalServiceBaseImpl
     protected DiscussionMessageFlagService discussionMessageFlagService;
     @BeanReference(type = DiscussionMessageFlagPersistence.class)
     protected DiscussionMessageFlagPersistence discussionMessageFlagPersistence;
+    @BeanReference(type = EmailListLocalService.class)
+    protected EmailListLocalService emailListLocalService;
+    @BeanReference(type = EmailListService.class)
+    protected EmailListService emailListService;
+    @BeanReference(type = EmailListPersistence.class)
+    protected EmailListPersistence emailListPersistence;
     @BeanReference(type = FocusAreaLocalService.class)
     protected FocusAreaLocalService focusAreaLocalService;
     @BeanReference(type = FocusAreaService.class)
@@ -1474,6 +1483,62 @@ public abstract class PlanPositionsLocalServiceBaseImpl
     public void setDiscussionMessageFlagPersistence(
         DiscussionMessageFlagPersistence discussionMessageFlagPersistence) {
         this.discussionMessageFlagPersistence = discussionMessageFlagPersistence;
+    }
+
+    /**
+     * Returns the email list local service.
+     *
+     * @return the email list local service
+     */
+    public EmailListLocalService getEmailListLocalService() {
+        return emailListLocalService;
+    }
+
+    /**
+     * Sets the email list local service.
+     *
+     * @param emailListLocalService the email list local service
+     */
+    public void setEmailListLocalService(
+        EmailListLocalService emailListLocalService) {
+        this.emailListLocalService = emailListLocalService;
+    }
+
+    /**
+     * Returns the email list remote service.
+     *
+     * @return the email list remote service
+     */
+    public EmailListService getEmailListService() {
+        return emailListService;
+    }
+
+    /**
+     * Sets the email list remote service.
+     *
+     * @param emailListService the email list remote service
+     */
+    public void setEmailListService(EmailListService emailListService) {
+        this.emailListService = emailListService;
+    }
+
+    /**
+     * Returns the email list persistence.
+     *
+     * @return the email list persistence
+     */
+    public EmailListPersistence getEmailListPersistence() {
+        return emailListPersistence;
+    }
+
+    /**
+     * Sets the email list persistence.
+     *
+     * @param emailListPersistence the email list persistence
+     */
+    public void setEmailListPersistence(
+        EmailListPersistence emailListPersistence) {
+        this.emailListPersistence = emailListPersistence;
     }
 
     /**

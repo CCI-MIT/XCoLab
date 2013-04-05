@@ -11,6 +11,7 @@ import com.ext.portlet.model.DiscussionCategoryClp;
 import com.ext.portlet.model.DiscussionCategoryGroupClp;
 import com.ext.portlet.model.DiscussionMessageClp;
 import com.ext.portlet.model.DiscussionMessageFlagClp;
+import com.ext.portlet.model.EmailListClp;
 import com.ext.portlet.model.FocusAreaClp;
 import com.ext.portlet.model.FocusAreaOntologyTermClp;
 import com.ext.portlet.model.LandingPageClp;
@@ -186,6 +187,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(DiscussionMessageFlagClp.class.getName())) {
             return translateInputDiscussionMessageFlag(oldModel);
+        }
+
+        if (oldModelClassName.equals(EmailListClp.class.getName())) {
+            return translateInputEmailList(oldModel);
         }
 
         if (oldModelClassName.equals(FocusAreaClp.class.getName())) {
@@ -1371,6 +1376,54 @@ public class ClpSerializer {
                 Long value5 = new Long(oldCplModel.getUserId());
 
                 method5.invoke(newModel, value5);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputEmailList(BaseModel<?> oldModel) {
+        EmailListClp oldCplModel = (EmailListClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.EmailListImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setName",
+                        new Class[] { String.class });
+
+                String value1 = oldCplModel.getName();
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setEmail",
+                        new Class[] { String.class });
+
+                String value2 = oldCplModel.getEmail();
+
+                method2.invoke(newModel, value2);
 
                 return newModel;
             } catch (Exception e) {
@@ -4777,6 +4830,10 @@ public class ClpSerializer {
             return translateOutputDiscussionMessageFlag(oldModel);
         }
 
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.EmailListImpl")) {
+            return translateOutputEmailList(oldModel);
+        }
+
         if (oldModelClassName.equals("com.ext.portlet.model.impl.FocusAreaImpl")) {
             return translateOutputFocusArea(oldModel);
         }
@@ -5928,6 +5985,50 @@ public class ClpSerializer {
                 Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
 
                 newModel.setUserId(value5);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputEmailList(BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                EmailListClp newModel = new EmailListClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setId(value0);
+
+                Method method1 = oldModelClass.getMethod("getName");
+
+                String value1 = (String) method1.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setName(value1);
+
+                Method method2 = oldModelClass.getMethod("getEmail");
+
+                String value2 = (String) method2.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setEmail(value2);
 
                 return newModel;
             } catch (Exception e) {

@@ -43,6 +43,10 @@
 		<field name="contestLogoId" type="long" />
 		<field name="featured" type="boolean" />
 		<field name="plansOpenByDefault" type="boolean" />
+		<field name="sponsorLogoId" type="long" />
+		<field name="sponsorText" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
 		<field name="flag" type="int" />
 		<field name="flagText" type="String">
 			<hint name="max-length">1024</hint>
@@ -70,6 +74,7 @@
 			<hint name="max-length">4096</hint>
 		</field>
 		<field name="phaseActiveOverride" type="boolean" />
+		<field name="phaseInactiveOverride" type="boolean" />
 		<field name="PhaseStartDate" type="Date" />
 		<field name="PhaseEndDate" type="Date" />
 		<field name="nextStatus" type="String" />
@@ -156,6 +161,15 @@
 		</field>
 		<field name="created" type="Date" />
 		<field name="userId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.EmailList">
+		<field name="id" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">256</hint>
+		</field>
+		<field name="email" type="String">
+			<hint name="max-length">256</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.FocusArea">
 		<field name="id" type="long" />
