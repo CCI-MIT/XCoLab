@@ -97,6 +97,15 @@
                 <ice:message for="email" styleClass="form_error_message"/>
             </td>
         </tr>
+                <tr>
+            <td class="b m">Country</td>
+            <td>
+                <ice:inputText  id="country" styleClass="profile_input" value="#{currentUser.country}" partialSubmit="true">
+                    <f:attribute name="currentUser" value="#{currentUser}"/>
+                </ice:inputText><br />
+                <ice:message for="country" styleClass="form_error_message"/>
+            </td>
+        </tr>
         <tr>
             <td class="b m">Current password</td>
             <td>
