@@ -7,20 +7,20 @@
     <ice:panelGroup>
         <div class="act_left">
             <ul class="act_left-list">
-                <ui:repeat value="#{simulationBean.display.nonTabs}" var="input">
-                    <li class="act_left-list-child"><ui:include src="./inputDef.xhtml" /></li>
-                </ui:repeat>
+            	<ice:panelSeries value="#{simulationBean.display.nonTabs}" var="input" style="display: inline;">
+                	<li class="act_left-list-child"><ui:include src="./inputDef.xhtml" /></li>
+                </ice:panelSeries>
                 <f:subview rendered="#{simulationBean.hasTabs}">
-                    <ui:repeat value="#{simulationBean.display.tabsWrapped}" var="input1">
+                    <ice:panelSeries value="#{simulationBean.display.tabsWrapped}" var="input1" style="display: inline;">
                         <li class="d"><a href="javascript:;" onclick="jQuery('#inputInfo_#{input1.groupId}').toggle(); jQuery('#inputInfo_#{input1.groupId}').parent().toggleClass('u d');">#{input1.oryginalName}</a>
                             <ul id="inputInfo_#{input1.groupId}">
-                                <ui:repeat value="#{input1.allItems}" var="input">
+                                <ice:panelSeries value="#{input1.allItems}" var="input"  style="display: inline;">
                                     <li><ui:include src="./inputDef.xhtml" /></li>
-                                </ui:repeat>
+                                </ice:panelSeries>
                             </ul>
                         </li>
                     
-                    </ui:repeat>
+                    </ice:panelSeries>
                     
             
                 </f:subview>
