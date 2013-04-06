@@ -18,8 +18,6 @@
 
 <portlet:defineObjects />
 
-This is the <b>blogsstats-portlet</b>.
-
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="org.xcolab.portlets.blogsstats.BlogsEntryServiceHelper"%>
