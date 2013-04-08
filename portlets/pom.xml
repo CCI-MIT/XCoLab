@@ -19,6 +19,7 @@
     <module>proposals-portlet</module>
     <module>discussions-portlet</module>
     <module>contactform-portlet</module>
+	 <module>contactform-wicket-portlet</module>
     <module>members-portlet</module>
     <module>userprofile-portlet</module>
     <module>contests-portlet</module>
