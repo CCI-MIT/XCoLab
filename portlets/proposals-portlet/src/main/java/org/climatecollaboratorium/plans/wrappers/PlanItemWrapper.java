@@ -939,14 +939,16 @@ public class PlanItemWrapper {
 
     public void saveContent(ActionEvent e) throws SystemException, PortalException, UserInputException {
         if (Helper.isUserLoggedIn()) {
-            
-            if (!PlanItemLocalServiceUtil.isNameAvailable(name, PlanItemLocalServiceUtil.getContest(wrapped))) {
-                FacesMessage message = new FacesMessage();
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                message.setSummary("Name \"" + name + "\" is already taken, please choose different one.");
-                FacesContext.getCurrentInstance().addMessage(null, message);
-                return;
 
+            if (name != null && !name.equals(PlanItemLocalServiceUtil.getName(wrapped))) {
+                if (!PlanItemLocalServiceUtil.isNameAvailable(name, PlanItemLocalServiceUtil.getContest(wrapped))) {
+                    FacesMessage message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Name \"" + name + "\" is already taken, please choose different one.");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                    return;
+
+                }
             }
 
             boolean descriptionChanged = false; 
@@ -998,6 +1000,7 @@ public class PlanItemWrapper {
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_DESCRIPTION.id(), null, 0);
             }
+            PlanItemLocalServiceUtil.reIndex(wrapped.getPlanId());
 
         }
         planBean.refresh();
