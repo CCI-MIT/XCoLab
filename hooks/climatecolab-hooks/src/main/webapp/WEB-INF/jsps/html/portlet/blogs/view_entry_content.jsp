@@ -73,11 +73,18 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
                         </c:if>
                     </a>
                                     
+				<% 
+				  String url = HtmlUtil.escape(viewEntryURL);
+				  String title = HtmlUtil.escape(entry.getTitle());
+				  String description = HtmlUtil.extractText(entry.getContent());
+				  description = description.substring(0, Math.min(description.length(), 255));
+				  description = HtmlUtil.escape(description);
+				%>
                 
                 <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact"
-                      addthis:url="<%= HtmlUtil.escape(viewEntryURL) %>"
-                      addthis:title="<%= HtmlUtil.escape(entry.getTitle()) %>"
-                      addthis:description="<%= HtmlUtil.escape(HtmlUtil.extractText(entry.getContent()).substring(0,255)) %>"
+                      addthis:url="<%= url %>"
+                      addthis:title="<%= title %>"
+                      addthis:description="<%= description %>"
                 
                 >
                     <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
