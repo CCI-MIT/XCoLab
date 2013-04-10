@@ -76,7 +76,9 @@ public class MembersBean {
         for (MemberCategory category: MemberCategory.values()) {
             try {
                 if (category.equals(MemberCategory.ALL)) continue;
-                categoryRoleMap.put(category, RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, category.getRoleName()));
+                for (String roleName: category.getRoleNames()) {
+                    categoryRoleMap.put(category, RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, roleName));
+                }
             }
             catch (com.liferay.portal.NoSuchRoleException e) {
                 _log.warn("Can't find role for user category: " + category.name());

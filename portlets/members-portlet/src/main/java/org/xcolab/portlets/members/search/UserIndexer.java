@@ -59,6 +59,8 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortletKeys;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
+
 /**
  * @author Raymond Augé
  * @author Zsigmond Rab
@@ -254,6 +256,11 @@ public class UserIndexer extends BaseIndexer {
 		document.addKeyword("userGroupIds", user.getUserGroupIds());
 		document.addDate("joinDate", user.getCreateDate());
 		document.addKeyword("memberCategory", getUserCategories(user));
+		if (user.getLastName().contains("Greyson")) {
+		    System.out.println("abc");
+		    System.out.println(Arrays.toString(getUserCategories(user)));
+		    System.out.println("abc");
+		}
         document.addKeyword("realName", new DefaultFullNameGenerator().getFullName(
                 user.getFirstName(),  user.getMiddleName(),  user.getLastName()));
 
@@ -517,8 +524,10 @@ public class UserIndexer extends BaseIndexer {
 	            for (MemberCategory category : MemberCategory.values()) {
 	                try {
 	                    if (category.equals(MemberCategory.ALL)) continue;
-	                    Role role = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, category.getRoleName());
-	                    roleIdToCategoryMap.put(role.getRoleId(), category);
+	                    for (String roleName: category.getRoleNames()) {
+	                        Role role = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, roleName);
+	                        roleIdToCategoryMap.put(role.getRoleId(), category);
+	                    }
 	                } catch (PortalException e) {
 	                    _log.error("Can't find role for user category " + category, e);
 	                } catch (SystemException e) {

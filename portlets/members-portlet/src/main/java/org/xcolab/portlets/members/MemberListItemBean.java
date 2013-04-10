@@ -10,6 +10,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
+
 public class MemberListItemBean {
     private MemberCategory category;
     private String realName;
@@ -39,7 +41,10 @@ public class MemberListItemBean {
             }
         }
         
-        joinDate = userDoc.getDate("joinDate");
+        joinDate = new Date(0);
+        if (userDoc.get("joinDate") != null) {
+            joinDate = userDoc.getDate("joinDate");
+        }
 
         if (userDoc.getValues("memberCategory").length > 0) {
             try {

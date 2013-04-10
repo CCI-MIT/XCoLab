@@ -6,15 +6,17 @@ public enum MemberCategory {
     FELLOW("Fellow"),
     ADVISOR("Advisor"),
     EXPERT("Experts"),
-    STAFF("Staff"),
+    STAFF("Staff", "Moderator"),
     MODERATOR("Staff");
     
     
-    private final String roleName;
+    private final String[] roleNames;
+
+   
     
-    MemberCategory(String roleName) {
-        this.roleName = roleName;
-    }
+    MemberCategory(String...roleNames) {
+        this.roleNames = roleNames;
+    } 
 
     public String getPrintName() {
         return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
@@ -24,7 +26,7 @@ public enum MemberCategory {
         return name().toLowerCase();
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String[] getRoleNames() {
+        return roleNames;
     }
 }
