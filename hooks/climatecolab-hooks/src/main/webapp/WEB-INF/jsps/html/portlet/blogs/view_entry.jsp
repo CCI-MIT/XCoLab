@@ -42,6 +42,10 @@ request.setAttribute(WebKeys.LAYOUT_ASSET_ENTRY, assetEntry);
 request.setAttribute("view_entry_content.jsp-entry", entry);
 
 request.setAttribute("view_entry_content.jsp-assetEntry", assetEntry);
+
+enableComments = false;
+enableRatings = false;
+enableRelatedAssets = false;
 %>
 
 <liferay-ui:header

@@ -17,6 +17,9 @@
 <%@ include file="/html/portlet/wiki/init.jsp" %>
 
 <%
+
+enableComments = false;
+enablePageRatings = false;
 boolean followRedirect = ParamUtil.getBoolean(request, "followRedirect", true);
 
 WikiNode node = (WikiNode)request.getAttribute(WebKeys.WIKI_NODE);
@@ -280,7 +283,7 @@ if (wikiPage != null) {
 		label="<%= true %>"
 	/>
 </liferay-ui:custom-attributes-available>
-
+<c:if test="<%= themeDisplay.isSignedIn() && WikiPermission.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_NODE) %>">
 <c:if test="<%= (wikiPage != null) && Validator.isNotNull(formattedContent) && (followRedirect || (redirectPage == null)) %>">
 	<c:if test="<%= !childPages.isEmpty() %>">
 		<div class="child-pages">
@@ -322,14 +325,15 @@ if (wikiPage != null) {
 					url="<%= addPageURL.toString() %>"
 				/>,
 			</c:if>
-
-			<liferay-ui:icon
-				image="clip"
-				label="<%= true %>"
-				message='<%= attachments.length + " " + LanguageUtil.get(pageContext, (attachments.length == 1) ? "attachment" : "attachments") %>' method="get" url="<%= viewAttachmentsURL.toString() %>"
-			/>
+			<c:if test="<%= attachments.length > 0 %>">
+				<liferay-ui:icon
+					image="clip"
+					label="<%= true %>"
+					message='<%= attachments.length + " " + LanguageUtil.get(pageContext, (attachments.length == 1) ? "attachment" : "attachments") %>' method="get" url="<%= viewAttachmentsURL.toString() %>"
+				/>
+			</c:if>
 		</div>
-
+		<!-- 
 		<div class="stats">
 
 			<%
@@ -345,9 +349,10 @@ if (wikiPage != null) {
 				</c:when>
 			</c:choose>
 		</div>
+		 -->
 	</div>
 
-	<c:if test="<%= enableRelatedAssets %>">
+	<c:if test="<%= WikiNodePermission.contains(permissionChecker, node, ActionKeys.ADD_PAGE) %>">
 		<div class="entry-links">
 			<liferay-ui:asset-links
 				assetEntryId="<%= assetEntry.getEntryId() %>"
@@ -384,6 +389,7 @@ if (wikiPage != null) {
 			</liferay-ui:panel>
 		</liferay-ui:panel-container>
 	</c:if>
+</c:if>
 </c:if>
 
 <aui:script use="aui-base">

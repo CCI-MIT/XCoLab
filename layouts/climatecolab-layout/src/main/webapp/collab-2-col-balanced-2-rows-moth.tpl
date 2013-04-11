@@ -32,7 +32,7 @@
                                 <li><a href="/c/portal/logout">Sign out</a></li>
                             <li><a href="/web/guest/member/-/member/userId/$themeDisplay.user.userId">My profile</a></li>
                             #else 
-                                <li><a href="javascript:return false;" class="openreg">Register</a></li>
+                                <li><a href="/web/guest/loginregister" class="openreg">Register</a></li>
                                 <li><a href="javascript:return false;" onclick="deferUntilLogin();">Sign In</a></li>
                             #end
                         </ul>

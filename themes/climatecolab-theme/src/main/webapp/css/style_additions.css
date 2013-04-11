@@ -1178,3 +1178,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 .toplinks li {
 	list-style: none;
 }
+
+.hashlink { 
+	display: none;
+}

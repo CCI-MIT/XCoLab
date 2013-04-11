@@ -27,8 +27,8 @@ long classNameId = PortalUtil.getClassNameId(BlogsEntry.class.getName());
 
 int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNameId, entry.getEntryId(), WorkflowConstants.STATUS_APPROVED);
 
-%>
 
+%>
 <c:choose>
 	<c:when test="<%= BlogsEntryPermission.contains(permissionChecker, entry, ActionKeys.VIEW) && (entry.isVisible() || (entry.getUserId() == user.getUserId()) || BlogsEntryPermission.contains(permissionChecker, entry, ActionKeys.UPDATE)) %>">
 	<div class="comm_news">
@@ -234,34 +234,6 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 					<liferay-ui:message key="written-by" /> 
 					<a href="http://localhost:8080/web/guest/member/-/member/userId/<%= entry.getUserId() %>"><%= HtmlUtil.escape(PortalUtil.getUserName(entry.getUserId(), entry.getUserName())) %></a>
 					
-				</div>
-
-				<div class="stats">
-					<c:if test="<%= assetEntry != null %>">
-						<span class="view-count">
-							<c:choose>
-								<c:when test="<%= assetEntry.getViewCount() == 1 %>">
-									<%= assetEntry.getViewCount() %> <liferay-ui:message key="view" />,
-								</c:when>
-								<c:when test="<%= assetEntry.getViewCount() > 1 %>">
-									<%= assetEntry.getViewCount() %> <liferay-ui:message key="views" />,
-								</c:when>
-							</c:choose>
-						</span>
-					</c:if>
-
-					<c:if test="<%= enableComments %>">
-						<span class="comments">
-							<c:choose>
-								<c:when test='<%= strutsAction.equals("/blogs/view_entry") %>'>
-									<%= messagesCount %> <liferay-ui:message key='<%= (messagesCount == 1) ? "comment" : "comments" %>' />
-								</c:when>
-								<c:otherwise>
-									<aui:a href='<%= PropsValues.PORTLET_URL_ANCHOR_ENABLE ? viewEntryURL : viewEntryURL + StringPool.POUND + "blogsCommentsPanelContainer" %>'><%= messagesCount %> <liferay-ui:message key='<%= (messagesCount == 1) ? "comment" : "comments" %>' /></aui:a>
-								</c:otherwise>
-							</c:choose>
-						</span>
-					</c:if>
 				</div>
 
 				<c:if test="<%= enableFlags %>">
