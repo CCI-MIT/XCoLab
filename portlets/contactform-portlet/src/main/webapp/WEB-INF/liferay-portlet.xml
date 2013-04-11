@@ -5,6 +5,7 @@
 	<portlet>
 		<portlet-name>contactform-portlet</portlet-name>
 		<instanceable>true</instanceable>
+		<header-portlet-css>/css/main.css</header-portlet-css>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
