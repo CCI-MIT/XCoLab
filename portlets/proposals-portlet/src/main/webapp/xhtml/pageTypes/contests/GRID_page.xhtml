@@ -14,6 +14,7 @@
         xmlns:collab="http://climatecollaboratorium.org/facelets"
         xmlns:sharedcollab="http://climatecollaboratorium.org/components">
         
+  <div class="contestsContainer">
     <ui:include src="./widget_CONTESTS_GRID_SINGLE_LIST.xhtml">
         <ui:param name="contests" value="#{contests.contestsPart1}" />
         <ui:param name="styleClass" value="contest-left" />
@@ -32,6 +33,8 @@
             </td></tr>
         </table>
     </f:subview>
+    <div class="clear"></div>
+  </div>
         
     <script type="text/javascript">
         jQuery.cookie("cc_contests_viewType", null, {expires: -1});

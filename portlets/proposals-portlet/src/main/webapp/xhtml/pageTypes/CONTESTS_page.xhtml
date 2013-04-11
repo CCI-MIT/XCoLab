@@ -21,13 +21,14 @@
 </ice:panelGroup>
 <div id="content">
     <div class="headline formmargin">
+    
     <h1>Contests</h1>
     <ice:form>
     <div class="view ${contests.viewType.lowerCase}view"> <!-- To switch the button over to list view just change "gridview" to "listview" -->
         <div class="grid">
             <div>
                 <f:subview rendered="#{contests.viewType != 'GRID'}">
-                    <ice:commandLink actionListener="#{contests.setViewType}" value="Grid View">
+                    <ice:commandLink actionListener="#{contests.setViewType}" value="Grid View" onclick="jQuery('.contestsContainer').block();">
                         <f:attribute name="viewType" value="GRID" />
                     </ice:commandLink>
                 </f:subview>
@@ -39,7 +40,7 @@
         <div class="list">
             <div>
                 <f:subview rendered="#{contests.viewType != 'LIST'}">
-                    <ice:commandLink actionListener="#{contests.setViewType}" value="List View">
+                    <ice:commandLink actionListener="#{contests.setViewType}" value="List View" onclick="jQuery('.contestsContainer').block();">
                         <f:attribute name="viewType" value="LIST" />
                     </ice:commandLink>
                 </f:subview>
