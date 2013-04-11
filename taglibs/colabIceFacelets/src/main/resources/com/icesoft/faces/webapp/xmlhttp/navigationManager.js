@@ -97,7 +97,7 @@ Collab.nav = new function() {
 	this.pageload = function(hash) {
 		var pos = window.location.hash.indexOf("?rvn=");
 		if (pos >= 0) {
-			var newUrl = window.location.pathname + window.location.hash.substring(pos) + window.location.hash.substring(0, pos-1);
+			var newUrl = window.location.pathname + window.location.hash.substring(pos) + window.location.hash.substring(0, pos);
 			window.location = newUrl;
 		}
 		navigationItems = parseToken(hash);

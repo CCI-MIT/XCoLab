@@ -256,11 +256,6 @@ public class UserIndexer extends BaseIndexer {
 		document.addKeyword("userGroupIds", user.getUserGroupIds());
 		document.addDate("joinDate", user.getCreateDate());
 		document.addKeyword("memberCategory", getUserCategories(user));
-		if (user.getLastName().contains("Greyson")) {
-		    System.out.println("abc");
-		    System.out.println(Arrays.toString(getUserCategories(user)));
-		    System.out.println("abc");
-		}
         document.addKeyword("realName", new DefaultFullNameGenerator().getFullName(
                 user.getFirstName(),  user.getMiddleName(),  user.getLastName()));
 

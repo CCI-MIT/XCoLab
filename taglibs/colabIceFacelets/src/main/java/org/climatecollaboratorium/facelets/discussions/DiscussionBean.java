@@ -471,7 +471,7 @@ public class DiscussionBean {
     public boolean isSubscribed() throws PortalException, SystemException {
         if (Helper.isUserLoggedIn()) {
             StringBuilder extraData = new StringBuilder();
-            if (pageType == DiscussionPageType.CATEGORY) {
+            if (pageType == DiscussionPageType.CATEGORY && currentCategory != null) {
                 extraData.append(currentCategory.getId());
             }
             else if (pageType == DiscussionPageType.THREAD && currentThread != null) {

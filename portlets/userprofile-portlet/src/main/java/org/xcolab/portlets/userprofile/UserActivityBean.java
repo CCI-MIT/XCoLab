@@ -21,6 +21,8 @@ public class UserActivityBean {
         if (activityFeedEntry != null) {
             body = activityFeedEntry.getBody();
             body = body != null && body.trim().equals("") ? activityFeedEntry.getTitle() : body;
+            
+            body = body.replaceAll("c.my_sites[^\\\"]*", "web/guest/member/-/member/userId/" + activity.getUserId());
         }
     }
     

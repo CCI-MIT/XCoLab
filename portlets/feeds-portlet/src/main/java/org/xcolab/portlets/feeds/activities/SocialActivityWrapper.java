@@ -44,6 +44,9 @@ public class SocialActivityWrapper {
         long daysNow = new Date().getTime() / milisecondsInDay;
         daysAgo = daysNow - createDay;
         body = getBodyFromFeedEntry(activityFeedEntry);
+        if (body != null) {
+            body = body.replaceAll("c.my_sites[^\\\"]*", "web/guest/member/-/member/userId/" + activity.getUserId());
+        }
         
         this.odd = odd;
     }
