@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>xcolab-portlets</artifactId>
+		<groupId>org.xcolab.portlets</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.xcolab.portlets</groupId>
+	<artifactId>jsf2-portlet</artifactId>
+	<packaging>war</packaging>
+	<name>jsf2-portlet Portlet</name>
+	<version>1.0-SNAPSHOT</version>
+
+	<properties>
+		<faces.impl.startup.listener>com.sun.faces.config.ConfigureListener</faces.impl.startup.listener>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.1.20</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.portlet</groupId>
+			<artifactId>portlet-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.seam</groupId>
+			<artifactId>jboss-el</artifactId>
+			<version>2.0.0.GA</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>el-api</artifactId>
+					<groupId>javax.el</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.liferay.faces</groupId>
+			<artifactId>liferay-faces-bridge-impl</artifactId>
+			<version>3.0.1-ga2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.liferay.faces</groupId>
+			<artifactId>liferay-faces-alloy</artifactId>
+			<version>3.0.1-ga2</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+		<repository>
+			<id>maven2-repository.jboss.org</id>
+			<name>JBoss Maven Repository</name>
+			<url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
+		</repository>
+	</repositories>
+</project>
