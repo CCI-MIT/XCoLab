@@ -169,14 +169,20 @@ public class ContestWrapper {
 		return contest.getContestModelDescription();
 	}
 
+	private String logo;
 	public String getLogo() throws PortalException, SystemException {
-
-		return Helper.getThemeDisplay().getPathImage()
-				+ ContestLocalServiceUtil.getLogoPath(contest);
+	    if (logo == null) {
+	        logo = Helper.getThemeDisplay().getPathImage() + ContestLocalServiceUtil.getLogoPath(contest);
+	    }
+	    return logo;
 	}
 
+	private Boolean featured;
 	public boolean isFeatured() {
-		return contest.getFlagText().toLowerCase().equals("featured");
+	    if (featured == null) {
+	        featured = contest.getFlagText().toLowerCase().equals("featured");
+	    }
+	    return featured;
 	}
 
 	public Integer getFlag() {
@@ -382,21 +388,33 @@ public class ContestWrapper {
 		return contest.getResourcesUrl();
 	}
 
+	private final static Map<Long, FocusArea> faCache = new HashMap<Long, FocusArea>();
+	private Map<String, List<OntologyTerm>> cache = new HashMap<String, List<OntologyTerm>>();
 	private List<OntologyTerm> getTermFromSpace(String space)
 			throws PortalException, SystemException {
 
-		FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest
-				.getFocusAreaId());
-		if (fa == null)
-			return null;
-		List<OntologyTerm> terms = new ArrayList<OntologyTerm>();
-		for (OntologyTerm t : FocusAreaLocalServiceUtil.getTerms(fa)) {
-			if (OntologyTermLocalServiceUtil.getSpace(t).getName()
-					.equalsIgnoreCase(space)) {
-				terms.add(t);
-			}
-		}
-		return terms.isEmpty() ? null : terms;
+	    if (!cache.containsKey(space)) {
+	        if (! faCache.containsKey(contest.getFocusAreaId())) {
+	            FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest
+	                    .getFocusAreaId());
+	            if (fa == null) {
+	                cache.put(space, null);
+	                return null;
+	            }
+	            faCache.put(fa.getId(), fa);
+	        }
+	        List<OntologyTerm> terms = new ArrayList<OntologyTerm>();
+	        for (OntologyTerm t : FocusAreaLocalServiceUtil.getTerms(faCache.get(contest.getFocusAreaId()))) {
+	            if (OntologyTermLocalServiceUtil.getSpace(t).getName()
+	                    .equalsIgnoreCase(space)) {
+	                terms.add(t);
+	            }
+		    }
+	        cache.put(space, terms.isEmpty() ? null : terms);
+
+        }   
+	    return cache.get(space);
+		
 	}
 
 	public Long getCategoryGroupId() throws PortalException, SystemException {
