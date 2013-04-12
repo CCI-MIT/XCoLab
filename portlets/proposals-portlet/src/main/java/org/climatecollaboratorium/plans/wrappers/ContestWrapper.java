@@ -376,12 +376,20 @@ public class ContestWrapper {
 		return getTermFromSpace("where");
 	}
 
+	private Long proposalsCount = null;
 	public long getProposalsCount() throws SystemException, PortalException {
-		return ContestLocalServiceUtil.getProposalsCount(contest);
+	    if (proposalsCount == null) {
+	        proposalsCount =  ContestLocalServiceUtil.getProposalsCount(contest);
+	    }
+	    return proposalsCount;
 	}
 
+	private Long commentsCount = null;
 	public long getCommentsCount() throws PortalException, SystemException {
-		return ContestLocalServiceUtil.getTotalComments(contest);
+	    if (commentsCount == null) {
+	        commentsCount = ContestLocalServiceUtil.getTotalComments(contest);
+	    }
+	    return commentsCount;
 	}
 
 	public String getResourcesUrl() {
