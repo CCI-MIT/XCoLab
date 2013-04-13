@@ -1,6 +1,11 @@
 package org.xcolab.portlets.massmessaging;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +29,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.xcolab.portlets.massmessaging.action.EditMessagingMessageAction;
 
 import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
 import com.ext.portlet.model.MessagingIgnoredRecipients;
@@ -36,6 +42,8 @@ import com.ext.portlet.service.MessagingMessageRecipientLocalServiceUtil;
 import com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -45,14 +53,15 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.util.mail.MailEngine;
-import com.liferay.util.portlet.PortletProps;
 import com.sun.mail.smtp.SMTPTransport;
 
 public class MassMessagingPortlet extends MVCPortlet {
 
     private final static String emailValidationRegexp = "^([a-zA-Z0-9_\\.-])+@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$";
     private final static String screenNameValidationRegexp = "^([a-zA-Z0-9_\\.-])+$";
-    
+
+    private final static String MAIL_PROPS = "/colabMail.properties";
+    private final static Log _log = LogFactoryUtil.getLog(MassMessagingPortlet.class);
     
     @Override
     public void doDispatch(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
@@ -398,20 +407,56 @@ public class MassMessagingPortlet extends MVCPortlet {
         }
         return false;
     }
-    
-    private List<MessageSendAsBean> readSendAsProperties() {
-        String accounts = PortletProps.get("user.accounts");
-        List<MessageSendAsBean> msgSendAsBeans = new ArrayList<MessageSendAsBean>();
+    private static long propsLastModified = -1;
+    private static List<MessageSendAsBean> msgSendAsBeans = null;
+    private synchronized List<MessageSendAsBean> readSendAsProperties() {
+        URL mailPropsUrl = EditMessagingMessageAction.class.getClassLoader().getResource(MAIL_PROPS);
+        if (mailPropsUrl == null) {
+            throw new RuntimeException("Can't read properties file " + MAIL_PROPS);
+        }
+        File mailPropsFile = new File (mailPropsUrl.getFile());
+        if (! mailPropsFile.exists()) {
+            throw new RuntimeException("Can't read properties file " + MAIL_PROPS);
+        }
+        if (propsLastModified >= mailPropsFile.lastModified()) {
+            return msgSendAsBeans;
+        }
+        propsLastModified = mailPropsFile.lastModified();
+        InputStream propsStream = null;
+        Properties mailProps;
+        try {
+            propsStream = new FileInputStream(mailPropsFile);
+            mailProps = new Properties();
+            mailProps.load(propsStream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Can't read properties file " + MAIL_PROPS);
+        } catch (IOException e) {
+            throw new RuntimeException("Can't read properties file " + MAIL_PROPS);
+        }
+        finally {
+            if (propsStream != null) {
+                try {
+                    propsStream.close();
+                } catch (IOException e) {
+                    _log.error("Error when closing props stream", e);
+                }
+            }
+        }
+        
+        
+        
+        String accounts = mailProps.getProperty("user.accounts");
+        msgSendAsBeans = new ArrayList<MessageSendAsBean>();
         if (StringUtils.isNotBlank(accounts)) {
-            for (String account: accounts.split(",")) {
+            for (String account : accounts.split(",")) {
                 MessageSendAsBean sendAsBean = new MessageSendAsBean();
                 sendAsBean.setName(account);
-                sendAsBean.setPassword(PortletProps.get("user.account." + account + ".password"));
-                sendAsBean.setHost(PortletProps.get("user.account." + account + ".host"));
-                sendAsBean.setPort(Integer.valueOf(PortletProps.get("user.account." + account + ".port")));
-                sendAsBean.setUseAuth(Boolean.valueOf(PortletProps.get("user.account." + account + ".useAuth")));
-                sendAsBean.setFullName(PortletProps.get("user.account." + account + ".fullName"));
-                
+                sendAsBean.setPassword(mailProps.getProperty("user.account." + account + ".password"));
+                sendAsBean.setHost(mailProps.getProperty("user.account." + account + ".host"));
+                sendAsBean.setPort(Integer.valueOf(mailProps.getProperty("user.account." + account + ".port")));
+                sendAsBean.setUseAuth(Boolean.valueOf(mailProps.getProperty("user.account." + account + ".useAuth")));
+                sendAsBean.setFullName(mailProps.getProperty("user.account." + account + ".fullName"));
+
                 msgSendAsBeans.add(sendAsBean);
             }
         }
