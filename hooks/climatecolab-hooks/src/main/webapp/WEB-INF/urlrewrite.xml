@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+
+<!--
+
+    Configuration file for UrlRewriteFilter
+    http://tuckey.org/urlrewrite/
+
+-->
+<urlrewrite>
+
+<!-- 
+<rule>
+    <name>Domain Name Check</name>
+    <condition name="host" operator="notequal">^climatecolab.org$</condition>
+    <from>^(.*)$</from>
+    <to type="redirect">http://climatecolab.org$1</to>
+</rule>
+ -->
+ <rule>
+    <name>redirect to rule</name>
+    <condition type="parameter" name="redirect_to" operator="greater"> </condition>
+    <from>^(.*)$</from>
+    <to type="permanent-redirect" last="true">%{parameter:redirect_to}</to>
+</rule>
+
+ <rule>
+    <name>redirect sponsors rule</name>
+    <condition type="request-url" operator="equal">\/web\/guest\/resources\/-\/wiki\/Main\/Sponsors.and.Collaborators$</condition>
+    <from>^(.*)$</from>
+    <to type="permanent-redirect" last="true">/web/guest/sponsors</to>
+</rule>
+
+<rule>
+    <name>redirect resources rule</name>
+    <condition type="request-url" operator="equal">\/web\/guest\/resources\/-\/wiki\/Main\/Resources$</condition>
+    <from>^(.*)$</from>
+    <to type="permanent-redirect" last="true">/web/guest/resources</to>
+</rule>
+
+<rule>
+    <name>redirect about rule</name>
+    <condition type="request-url" operator="equal">\/web\/guest\/resources\/-\/wiki\/Main\/About$</condition>
+    <from>^(.*)$</from>
+    <to type="permanent-redirect" last="true">/web/guest/about</to>
+</rule>
+</urlrewrite>
+

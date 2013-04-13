@@ -14,9 +14,33 @@
 		<servlet-filter-name>Landingpage</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.landingpage.LandingpageFilter</servlet-filter-impl>
 	</servlet-filter>
+	<servlet-filter>
+		<servlet-filter-name>Landingpage</servlet-filter-name>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.landingpage.LandingpageFilter</servlet-filter-impl>
+	</servlet-filter>
+	<servlet-filter>
+                <servlet-filter-name>URL Rewrite Filter</servlet-filter-name>
+                <servlet-filter-impl>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</servlet-filter-impl>
+                <init-param>
+                        <param-name>logLevel</param-name>
+                        <param-value>ERROR</param-value>
+                </init-param>
+                <init-param>
+                        <param-name>statusEnabled</param-name>
+                        <param-value>false</param-value>
+                </init-param>
+                <init-param>
+                        <param-name>url-regex-ignore-pattern</param-name>
+                        <param-value>^/html/.+\.(css|gif|html|ico|jpg|js|png)(\?.*)?$</param-value>
+                </init-param>
+	</servlet-filter>
 	<servlet-filter-mapping>
 		<servlet-filter-name>MassMessaging</servlet-filter-name>
 		<url-pattern>/convert/*</url-pattern>
+	</servlet-filter-mapping>
+	<servlet-filter-mapping>
+		<servlet-filter-name>URL Rewrite Filter</servlet-filter-name>
+		<url-pattern>/*</url-pattern>
 	</servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>Landingpage</servlet-filter-name>

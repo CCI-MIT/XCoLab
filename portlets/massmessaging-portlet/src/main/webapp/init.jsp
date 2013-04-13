@@ -9,11 +9,15 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil"%>
 <%@ page import="com.ext.portlet.model.MessagingIgnoredRecipients"%>
+<%@ page import="com.ext.portlet.service.EmailListLocalServiceUtil"%>
+<%@ page import="com.ext.portlet.model.EmailList"%>
 <%@ page import="com.liferay.portal.service.UserLocalServiceUtil" %>
 <%@ page import="com.liferay.portal.model.User" %>
 <%@ page import="java.util.Comparator" %> 
 <%@ page import="java.util.Collections" %> 
 <%@ page import="java.util.List" %> 
+<%@ page import="java.util.Set" %> 
+<%@ page import="java.util.TreeSet" %> 
 <%@ page import="com.liferay.portlet.PortletURLUtil" %>
 <%@ page import="javax.portlet.PortletURL" %>
 

@@ -34,12 +34,14 @@ public class EmailListServlet extends HttpServlet {
         if (requestUrl.endsWith("/api/addEmailToList")) {
             addEmailAddressToList(req, resp);
         }
+        /*
         else if (requestUrl.endsWith("/api/getEmailsInList")) {
             getEmailsInList(req, resp);
         }
         else if (requestUrl.endsWith("/api/getListNames")) {
             getListNames(req, resp);
         }
+        */
         else {
             _log.error("Unknown api request: " + requestUrl);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

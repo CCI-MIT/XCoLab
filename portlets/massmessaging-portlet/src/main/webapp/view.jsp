@@ -29,13 +29,18 @@ This is the <b>massmessaging-portlet</b>.
     <portlet:param name="jspPage" value="/edit_message.jsp" />
 </portlet:renderURL>
 
+<portlet:renderURL var="viewEmailListsURL">
+    <portlet:param name="jspPage" value="/view_emailLists.jsp" />
+</portlet:renderURL>
+
 <portlet:renderURL var="ignoredRecipientsURL">
     <portlet:param name="jspPage" value="/manageIgnoredRecipients.jsp" />
 </portlet:renderURL>
 
 <div class="action-link">
     <liferay-ui:icon image="add" url="${addMessageURL}" /><a href="${addMessageURL}">Add new message</a><br />
-    <liferay-ui:icon image="manage_task" url="${addMessageURL}" /><a href="${ignoredRecipientsURL}">Manage "do not call list"</a><br /><br />
+    <liferay-ui:icon image="manage_task" url="${addMessageURL}" /><a href="${ignoredRecipientsURL}">Manage "do not call list"</a><br />
+    <liferay-ui:icon image="manage_task" url="${viewEmailListsURL}" /><a href="${viewEmailListsURL}">View email lists</a><br /><br />
 </div>
 
 
