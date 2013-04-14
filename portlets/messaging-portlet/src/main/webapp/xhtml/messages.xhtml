@@ -7,13 +7,13 @@
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     >
-  
+  <div class="messagingContainer">
     <div class="main_long">
       <div id="message-info">
         <ice:form>
             <span class="num">#{messagingBean.messagesCount}</span> messages
             <div style="float: right;">
-                <ice:commandLink actionListener="#{messagingBean.toggleSendMessage}">
+                <ice:commandLink actionListener="#{messagingBean.toggleSendMessage}" onclick="jQuery('.messagingContainer').block();">
                     <img src="/climatecolab-theme/images/icon_new-message.gif" width="31" height="29" /> compose message
                 </ice:commandLink>
             </div>
@@ -34,7 +34,7 @@
                     <p>#{message.filteredContent}</p>
                     <div class="floatRight">
                     <div class="blue-button">
-                        <ice:commandLink actionListener="#{messagingBean.toggleSendMessage}" value="Reply" >
+                        <ice:commandLink actionListener="#{messagingBean.toggleSendMessage}" value="Reply" onclick="jQuery('.messagingContainer').block();" >
                             <f:attribute name="replyMessageId" value="#{message.messageId}" />
                         </ice:commandLink>
                     </div>
@@ -147,6 +147,7 @@
     </div> <!-- /right_col4 -->
         
         <div class="clearfix"></div>
-
+	
+	</div>
   
 </f:view>
