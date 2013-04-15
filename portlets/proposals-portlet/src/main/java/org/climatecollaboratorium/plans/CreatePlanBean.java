@@ -7,6 +7,7 @@ import javax.faces.event.ActionEvent;
 
 import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.navigation.NavigationEvent;
+import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
 import org.climatecollaboratorium.plans.events.PlanCreatedEvent;
 import org.climatecollaboratorium.plans.wrappers.ContestWrapper;
 import org.climatecollaboratorium.plans.wrappers.PlanItemWrapper;
@@ -25,6 +26,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 public class CreatePlanBean {
 
@@ -37,6 +40,7 @@ public class CreatePlanBean {
     private boolean navigateToPlan;
     private PlansPreferencesBean preferences;
     private EventBus eventBus;
+    private ThemeDisplay td = Helper.getThemeDisplay();
 
     private ContestWrapper contestWrapper;
     
@@ -126,7 +130,11 @@ public class CreatePlanBean {
             }
             else {
                 PlanItemLocalServiceUtil.setOpen(planItem, false);
-            }
+            } 
+            
+            //add activity to log
+            SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
+                    PlanItem.class.getName(), planItem.getPlanId(), PlanActivityKeys.ADD_PLAN.id(), null, 0);
             
             // subscribe plan
             
