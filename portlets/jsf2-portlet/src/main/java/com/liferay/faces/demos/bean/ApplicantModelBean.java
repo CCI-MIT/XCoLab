@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import com.liferay.faces.bridge.model.UploadedFile;
 
@@ -31,7 +31,7 @@ import com.liferay.faces.bridge.model.UploadedFile;
  * @author  "Neil Griffin"
  */
 @ManagedBean(name = "applicantModelBean")
-@ViewScoped
+@SessionScoped
 public class ApplicantModelBean implements Serializable {
 
 	// serialVersionUID
@@ -54,6 +54,7 @@ public class ApplicantModelBean implements Serializable {
 	private Long autoFillProvinceId;
 
 	public ApplicantModelBean() {
+		System.out.println("Im here");
 		clearProperties();
 		this.dateOfBirth = Calendar.getInstance().getTime();
 	}

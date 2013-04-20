@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:aui="http://liferay.com/faces/aui"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:mymodule="http://java.sun.com/jsf/composite/mymodule">
 	<h:head />
 	<h:body styleClass="jsf2-portlet ltr">
-	BLABLABLA
 		<ui:include src="styling.xhtml" />
 		<ui:include src="applicant.xhtml" />
 		<br />
@@ -15,6 +14,7 @@
 					<li><em><h:outputText value="#{bridgeContext.bridgeConfig.attributes['Liferay Faces Alloy']}" /></em></li>
 					<li><em><h:outputText value="#{bridgeContext.bridgeConfig.attributes['Liferay Faces Bridge']}" /></em></li>
 				</ul>
+				outside <mymodule:mymodule bla="asdfasdf" />
 			</aui:column>
 		</aui:layout>
 	</h:body>
