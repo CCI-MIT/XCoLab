@@ -23,7 +23,7 @@ public class ContactPreferences {
     private final static String MESSAGE_SUBJECT_PREF = "MESSAGE_SUBJECT";
     private final static String EXPAND_LINK_TEXT_PREF = "EXPAND_LINK_TEXT";
     
-    private final static String defaultReceipients = "janusz.parfieniuk@gmail.com,jintrone@MIT.EDU,pdeboer@mit.edu";
+    private final static String defaultReceipients = "rjl@mit.edu,janusz.parfieniuk@gmail.com,jintrone@MIT.EDU,pdeboer@mit.edu";
     private final static String defaultMessageFormat = "USER_NAME (USER_EMAIL) has sent message using contact form\nUSER_MESSAGE";
     private final static String defaultMessageSubject = "[CoLab] USER_NAME sent a message using contact form";
     private final static String defaultExpandLinkText = "Send feedback message";    
