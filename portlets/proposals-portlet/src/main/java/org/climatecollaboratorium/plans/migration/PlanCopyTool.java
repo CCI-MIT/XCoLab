@@ -142,11 +142,9 @@ public class PlanCopyTool {
         }
         
         // create new plan in new contest phase
-        System.out.println("Plans to copy: " + plansToBeCopied.size());
         int count = 0;
         for (PlanItem plan: plansToBeCopied) {
             count++;
-            System.out.println("Copying plan " + count + " of " + plansToBeCopied.size());
             PlanItem newPlan = PlanItemLocalServiceUtil.createPlan(plan, targetPhase, PlanItemLocalServiceUtil.getAuthorId(plan));
             //newPlan.setName(plan.getName(), plan.getAuthorId());
             
@@ -209,8 +207,6 @@ public class PlanCopyTool {
             
             
         }
-        
-        System.out.println("Plans copied");
         
         
         ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plans copied", ""));

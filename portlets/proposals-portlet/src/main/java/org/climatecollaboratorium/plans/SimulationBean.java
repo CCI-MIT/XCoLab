@@ -64,7 +64,6 @@ public class SimulationBean {
                             return;
                         }
                         PlanItemLocalServiceUtil.setScenarioId(plan, arg0.getScenario().getId(), Helper.getLiferayUser().getUserId());
-                        //System.out.println("Scenario id: " + arg0.getScenario().getId());
 
                         SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                                 PlanItem.class.getName(), plan.getPlanId(), PlanActivityKeys.EDIT_SCENARIO.id(),null, 0);

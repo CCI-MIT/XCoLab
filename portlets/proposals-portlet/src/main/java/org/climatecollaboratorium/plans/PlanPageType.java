@@ -35,7 +35,9 @@ public enum PlanPageType {
         @Override
         public String getTitle(NavigationBean nb) {
             try {
-                return nb.getPlanBean().getPlan().getName() + " Proposal";
+                if (nb.getPlanBean().getPlan() != null)
+                    return nb.getPlanBean().getPlan().getName() + " Proposal";
+                return "404";
             } catch (SystemException e) {
                 _log.error(e);
             }
@@ -225,7 +227,6 @@ public enum PlanPageType {
     }
     
     public static PlanPageType getPageTypeForParams(Map<String, String> params) {
-        System.out.println(PlanPageType.values());
         for (PlanPageType type: values()) {
             if (type.pageDeterminator.determine(params)) {
                 return type;

@@ -72,7 +72,6 @@ public class ContestsBean {
     
     
     public List<ContestWrapper> getContests() throws SystemException, PortalException {
-        //System.out.println(System.currentTimeMillis() + "\t get contests");
         if (contests.size() == 0) {
             for (Contest contest: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
                 boolean add = true;
@@ -106,7 +105,6 @@ public class ContestsBean {
     }
     
     public List<ContestWrapper> getContestsPart1() throws SystemException, PortalException {
-        //System.out.println(System.currentTimeMillis() + "\t get contests part1 ");
         if (contestsPart1 == null) {
             splitContestsIntoParts();
         }
@@ -114,7 +112,6 @@ public class ContestsBean {
     }
     
     public List<ContestWrapper> getContestsPart2() throws SystemException, PortalException {
-        //System.out.println(System.currentTimeMillis() + "\t get contests part2 ");
         if (contestsPart2 == null) {
             splitContestsIntoParts();
         }
@@ -122,7 +119,6 @@ public class ContestsBean {
     }
     
     public List<ContestWrapper> getContestsFeatured() throws SystemException, PortalException {
-        //System.out.println(System.currentTimeMillis() + "\t get contests featured ");
         if (contestsPart2 == null) {
             splitContestsIntoParts();
         }
@@ -131,7 +127,6 @@ public class ContestsBean {
 
 
     public List<ContestWrapper> getContestsNormal() throws SystemException, PortalException {
-        //System.out.println(System.currentTimeMillis() + "\t get contests normal ");
         if (contestsPart2 == null) {
             splitContestsIntoParts();
         }
@@ -140,7 +135,6 @@ public class ContestsBean {
 
 
     private void splitContestsIntoParts() throws SystemException, PortalException {
-        //System.out.println(System.currentTimeMillis() + "\tspliting contests ");
         if (contestsPart1 == null || contestsPart2 == null) {
             List<ContestWrapper> contests = getContests();
             contestsPart1 = new ArrayList<ContestWrapper>();
@@ -191,7 +185,6 @@ public class ContestsBean {
     }
     
     public void setViewType(ActionEvent e) {
-        //System.out.println(System.currentTimeMillis() + "\t set view Type");
         Object newViewTypeObj = e.getComponent().getAttributes().get("viewType");
         if (newViewTypeObj != null) {
             try {
@@ -204,7 +197,6 @@ public class ContestsBean {
     }
     
     public String getProfileEvent() {
-        //System.out.println(System.currentTimeMillis() + "\t get profile event");
         return "";
     }
     

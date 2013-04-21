@@ -117,9 +117,6 @@ public class ContestBean {
     
 
     public void initModels() throws SystemException, PortalException, NumberFormatException, IOException {
-        System.out.println(contest.getContest());
-        //System.out.println(ContestLocalServiceUtil.getPlanType(contest.getContest()));
-        System.out.println(contest.getContest().getPlanTypeId());
         PlanType planType = PlanTypeLocalServiceUtil.getPlanType(contest.getContest().getPlanTypeId());
         modelId = planType.getDefaultModelId();
             availableModels.clear();

@@ -67,8 +67,6 @@ public class EditMessagingMessageAction extends BaseStrutsPortletAction {
         
         
         renderRequest.setAttribute("sendAs", readSendAsProperties());
-        
-        System.out.println(readSendAsProperties());
 
         return mapping.findForward(MessagingConstants.EDIT_MESSAGE_FORWARD);
     }
@@ -275,7 +273,6 @@ public class EditMessagingMessageAction extends BaseStrutsPortletAction {
         }
         for(MessagingMessageRecipient rec: recipients) {
             InternetAddress to = new InternetAddress(rec.getEmailAddress());
-            //System.out.println(to.getAddress());
             MailEngine.send(from, to, subject, body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId())), true);
         }
         

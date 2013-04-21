@@ -109,7 +109,6 @@ public enum SearchItemType {
 
                         @Override
                         public String getUrl(Document doc) {
-                        	System.out.println(doc.getFields());
                         	
                         	
                             String id = doc.get(Field.ENTRY_CLASS_PK);
