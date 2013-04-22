@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
-import com.liferay.util.portlet.PortletProps;
 
 public class ContactBean {
 	private String name;

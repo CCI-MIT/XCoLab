@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <f:view 
+	xmlns="http://www.w3.org/1999/xhtml"
     xmlns:f="http://java.sun.com/jsf/core" 
     xmlns:liferay-faces="http://liferay.com/tld/faces"
     xmlns:h="http://java.sun.com/jsf/html"  
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     >
-    
-    <ice:portlet>
+    <h:head />
+    <h:body>
+    	<ice:portlet>
     <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
     <script type="text/javascript">
         function populateCaptchaFields() {
@@ -18,7 +20,7 @@
             Recaptcha.create("#{contactBean.captchaPublicKey}", "recaptcha_div", {});
         }
     </script>
-    <div id="contactForm" class="hidden">
+    <div id="contactForm" >
         <ice:form id="contact">
             <ice:panelGroup styleClass="contactForm ">
                 <table>
@@ -32,7 +34,7 @@
                     <tr><td class="contactLabel">
                         <ice:message for="email" />
                         <ice:inputText value="#{contactBean.email}" id="email" required="true" styleClass="text">
-                            <f:validator validatorId="emailValidator" />
+                        	<f:validator validatorId="emailValidator" />
                         </ice:inputText>
                     
                     </td></tr>
@@ -47,37 +49,39 @@
                 
                     <tr><td class="contactLabel"><ice:outputLabel value="Captcha" /></td></tr>
                     <tr><td>
+                        <ice:inputText id="captchaChallenge" value="#{contactBean.captchaChallenge}" styleClass="hidden captchaChallenge" required="true"></ice:inputText>
+                        <ice:inputText id="captcha" value="#{contactBean.captchaText}" styleClass="hidden captchaText" required="true" >
+                            <f:attribute name="challengeId" value="captchaChallenge" />
+                            <f:validator validatorId="captchaValidator" />
+                            
+                        </ice:inputText>
+                        
+                        
+                        <div id="recaptcha_div"><!--  --></div>
+                        
+                        <ice:message for="captcha" />
+                    
                         <script type="text/javascript">
                             // #{contactBean.tryNumber}
                             
                             try {
                             jQuery(document).ready(function() {
                                 initRecaptcha();
+                                console.log(initRecaptcha);
 
                             });
                             }
                             catch (e) { alert(e);}
                             
                         </script>
-                        <ice:inputText id="captchaChallenge" value="#{contactBean.captchaChallenge}" styleClass="hidden captchaChallenge" required="true"></ice:inputText>
-                        <ice:inputText id="captcha" value="#{contactBean.captchaText}" styleClass="hidden captchaText" required="true" >
-                            <f:validator validatorId="captchaValidator" />
-                            <f:attribute name="challengeId" value="captchaChallenge" />
-                        </ice:inputText>
-                        
-                        
-                        <div id="recaptcha_div"></div>
-                        
-                        <ice:message for="captcha" />
-                    
                     </td></tr>
                     <tr><td>
                         <br />
                         <div class="blue-button">
-                            <ice:commandLink value="Send" actionListener="#{contactBean.sendMessage}" onclick="populateCaptchaFields();"/>
+                        	<ice:commandLink value="Send" actionListener="#{contactBean.sendMessage}" onclick="populateCaptchaFields();"/>
                         </div>
-                        &amp;nbsp;
-                        &amp;nbsp;
+                        &#160;
+                        &#160;
                         <div class="blue-button">
                             <a href="javascript:;" type="button" onclick="jQuery('#contactForm').toggle();" id="contactFormCancel" >Cancel</a>
                         </div>
@@ -89,4 +93,5 @@
     <ice:messages globalOnly="true" />
     </div>
     </ice:portlet>
+    </h:body>
 </f:view>
