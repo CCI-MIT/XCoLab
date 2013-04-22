@@ -8,10 +8,6 @@
 		<phase-listener>org.climatecollaboratorium.navigation.NavigationPhaseListener</phase-listener>
 	</lifecycle>
      -->
-	<application>
-		<view-handler>com.icesoft.faces.facelets.D2DFaceletViewHandler</view-handler>
-	</application>
-	<factory/>
 	<managed-bean>
 		<managed-bean-name>edit</managed-bean-name>
 		<managed-bean-class>com.liferay.util.bridges.jsf.common.PortletPreferencesManagedBean</managed-bean-class>

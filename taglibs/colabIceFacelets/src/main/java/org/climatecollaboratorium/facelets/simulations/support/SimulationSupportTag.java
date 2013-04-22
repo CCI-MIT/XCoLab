@@ -5,18 +5,18 @@ import java.io.IOException;
 import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.FaceletException;
+import javax.faces.view.facelets.TagAttribute;
+import javax.faces.view.facelets.TagConfig;
+import javax.faces.view.facelets.TagHandler;
 
 import org.climatecollaboratorium.facelets.simulations.SimulationBean;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.FaceletException;
-import com.sun.facelets.tag.TagAttribute;
-import com.sun.facelets.tag.TagConfig;
-import com.sun.facelets.tag.TagHandler;
 
-public class SimulationSupportTag extends TagHandler{
+public class SimulationSupportTag extends TagHandler {
     private final TagAttribute simulationBeanParam;
     private final TagAttribute simulationIdParam;
     private final TagAttribute scenarioIdParam;
