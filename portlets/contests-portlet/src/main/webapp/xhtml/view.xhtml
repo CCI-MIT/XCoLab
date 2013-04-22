@@ -6,12 +6,16 @@
   -->
 <f:view
     xmlns:f="http://java.sun.com/jsf/core"
+	xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ice="http://www.icesoft.com/icefaces/component"
     xmlns:liferay-faces="http://liferay.com/tld/faces"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     >
+    
+    <h:head />
+    <h:body>
     <ice:portlet>
         <h2>Featured contests <span><a href="/web/guest/plans">see all contests</a></span></h2>
         <ui:repeat value="#{contestsBean.contests}" var="contest">
@@ -38,6 +42,7 @@
             </div> <!-- /contestbox -->
         </ui:repeat>
     </ice:portlet>
+    </h:body>
 </f:view>         
 
 
