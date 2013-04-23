@@ -31,7 +31,7 @@
                 </f:facet>
                 <a href="javascript:;" class="showContent" id="message_#{message.messageId}">#{message.subject}</a>
                 <div class="msgContent hidden"> 
-                    <p>#{message.filteredContent}</p>
+                    <p><ice:outputText value="#{message.filteredContent}" escape="false" /></p>
                     <div class="floatRight">
                     <div class="blue-button">
                         <ice:commandLink actionListener="#{messagingBean.toggleSendMessage}" value="Reply" onclick="jQuery('.messagingContainer').block();" >
@@ -93,7 +93,7 @@
            
                 </td>     
                 <td class="paginatorControls">
-                    <ice:dataPaginator rendered="true" for="messagesTable" paginator="true" paginatorMaxPages="5" styleClass="comm_controls" style="display: inline;"> 
+                    <ice:dataPaginator rendered="true" for="messagesTable" paginator="#{true}" paginatorMaxPages="#{5}" styleClass="comm_controls" style="display: inline;"> 
                         <f:facet name="first" rendered="true">
                             <ice:panelGroup >First</ice:panelGroup>
                         </f:facet>

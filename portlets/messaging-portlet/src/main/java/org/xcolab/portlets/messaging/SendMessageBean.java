@@ -61,6 +61,10 @@ public class SendMessageBean {
         messagingBean.toggleSendMessage((MessageBean) null);
     }
     
+    public void testAction(ActionEvent e) {
+        System.out.println("test");
+    }
+    
     public void init() {
         content = "";
         subject = "";

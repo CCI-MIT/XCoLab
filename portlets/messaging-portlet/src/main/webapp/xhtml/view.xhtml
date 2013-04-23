@@ -7,7 +7,8 @@
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     >
-    <ice:portlet>
+  <h:head />
+  <h:body>
         <div id="bread" class="pro">
             <a href="/web/guest/community">Community</a>
             <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />
@@ -19,7 +20,12 @@
         </div>
   
         <div class="clear"></div>
-        <ui:include src="./#{messagingBean.sendingMessage ? 'sendMessage' : 'messages'}.xhtml" />
+        <f:subview rendered="#{messagingBean.sendingMessage}">
+        	<ui:include src="./sendMessage.xhtml" />
+        </f:subview>
+        <f:subview rendered="#{not messagingBean.sendingMessage}">
+        	<ui:include src="./messages.xhtml" />
+        </f:subview>
         <br /><br /><br /><br /><br />
-    </ice:portlet>
+  </h:body>
 </f:view>

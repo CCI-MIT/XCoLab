@@ -7,6 +7,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
+import javax.mail.internet.AddressException;
 
 import org.xcolab.portlets.messaging.utils.DataPage;
 import org.xcolab.portlets.messaging.utils.PagedListDataModel;
@@ -20,6 +21,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.model.User;
+import com.liferay.util.mail.MailEngineException;
 
 public class MessagingBean {
     private User user;
@@ -212,6 +214,14 @@ public class MessagingBean {
 
     public Long getMessageToShow() {
         return messageToShow;
+    }
+    
+    public void send(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
+        sendMessageBean.send(e);
+    }
+    
+    public void cancel(ActionEvent e) throws PortalException, SystemException {
+        sendMessageBean.cancel(e);
     }
 
 }
