@@ -33,6 +33,7 @@
                 <ui:param name="showCategory" value="#{true}" />
                 <ui:param name="dataBean" value="#{discussionBean}" />
             </ui:decorate>
+            
             <ice:panelGroup rendered="#{fn:length(discussionBean.threads) ne 0}">
             <ui:decorate template="./paginator.xhtml">
                 <ui:param name="paginatorFor" value="threadsList"/>

@@ -1,367 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
-	<display-name>discussions-portlet</display-name>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+
+	<!-- Set the JSF 2 PROJECT_STAGE to Development so that the JSF implementation will do the following at runtime: -->
+	<!-- 1. Log more verbose messages. -->
+	<!-- 2. Render tips and/or warnings in the view markup. -->
+	<!-- 3. Cause the default ExceptionHandler to display a developer-friendly error page. -->
 	<context-param>
-		<param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
-		<param-value>true</param-value>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+	<!-- Instruct Mojarra to utilize JBoss-EL instead of the EL implementation provided by the servlet container. -->
+	<context-param>
+		<param-name>com.sun.faces.expressionFactory</param-name>
+		<param-value>org.jboss.el.ExpressionFactoryImpl</param-value>
+	</context-param><context-param>
+		<param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
+		<param-value>*.xhtml</param-value>
 	</context-param>
 	<context-param>
-		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-		<param-value>.xhtml</param-value>
+       	<param-name>org.icefaces.compressResources</param-name>
+      	<param-value>false</param-value>
 	</context-param>
-	<context-param>
-		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-		<param-value>server</param-value>
-	</context-param>
-	<context-param>
-		<param-name>facelets.DEVELOPMENT</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.connectionTimeout</param-name>
-		<param-value>60000</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.heartbeatInterval</param-name>
-		<param-value>10000</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.heartbeatTimeout</param-name>
-		<param-value>5000</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.verifyObjects</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.validateXml</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.compressResources</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.delegateNonIface</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.hiddenPortletAttributes</param-name>
-		<param-value>THEME_DISPLAY</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.uploadDirectory</param-name>
-		<param-value>C:\Uploads</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.uploadDirectoryAbsolute</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.uploadMaxFileSize</param-name>
-		<param-value>10485760</param-value>
-	</context-param>
-	<filter>
-		<filter-name>Cache Filter - Resource</filter-name>
-		<filter-class>com.liferay.portal.kernel.servlet.PortalClassLoaderFilter</filter-class>
-		<init-param>
-			<param-name>filter-class</param-name>
-			<param-value>com.liferay.portal.servlet.filters.cache.CacheFilter</param-value>
-		</init-param>
-		<init-param>
-			<param-name>pattern</param-name>
-			<param-value>2</param-value>
-		</init-param>
-	</filter>
-	<filter>
-		<filter-name>Cache Filter - Resource CSS JSP</filter-name>
-		<filter-class>com.liferay.portal.kernel.servlet.PortalClassLoaderFilter</filter-class>
-		<init-param>
-			<param-name>filter-class</param-name>
-			<param-value>com.liferay.portal.servlet.filters.cache.CacheFilter</param-value>
-		</init-param>
-		<init-param>
-			<param-name>url-regex-pattern</param-name>
-			<param-value>.+/css\.jsp</param-value>
-		</init-param>
-		<init-param>
-			<param-name>pattern</param-name>
-			<param-value>2</param-value>
-		</init-param>
-	</filter>
-	<filter>
-		<filter-name>Header Filter</filter-name>
-		<filter-class>com.liferay.portal.kernel.servlet.PortalClassLoaderFilter</filter-class>
-		<init-param>
-			<param-name>filter-class</param-name>
-			<param-value>com.liferay.portal.servlet.filters.header.HeaderFilter</param-value>
-		</init-param>
-		<init-param>
-			<param-name>Cache-Control</param-name>
-			<param-value>max-age=315360000, public</param-value>
-		</init-param>
-		<init-param>
-			<param-name>Expires</param-name>
-			<param-value>315360000</param-value>
-		</init-param>
-	</filter>
-	<filter>
-		<filter-name>Header Filter - CSS JSP</filter-name>
-		<filter-class>com.liferay.portal.kernel.servlet.PortalClassLoaderFilter</filter-class>
-		<init-param>
-			<param-name>filter-class</param-name>
-			<param-value>com.liferay.portal.servlet.filters.header.HeaderFilter</param-value>
-		</init-param>
-		<init-param>
-			<param-name>url-regex-pattern</param-name>
-			<param-value>.+/css\.jsp</param-value>
-		</init-param>
-		<init-param>
-			<param-name>Cache-Control</param-name>
-			<param-value>max-age=315360000, public</param-value>
-		</init-param>
-		<init-param>
-			<param-name>Expires</param-name>
-			<param-value>315360000</param-value>
-		</init-param>
-	</filter>
-	<filter>
-		<filter-name>GZip Filter</filter-name>
-		<filter-class>com.liferay.portal.kernel.servlet.PortalClassLoaderFilter</filter-class>
-		<init-param>
-			<param-name>filter-class</param-name>
-			<param-value>com.liferay.portal.servlet.filters.gzip.GZipFilter</param-value>
-		</init-param>
-	</filter>
-	<filter>
-		<filter-name>Minifier Filter</filter-name>
-		<filter-class>com.liferay.portal.kernel.servlet.PortalClassLoaderFilter</filter-class>
-		<init-param>
-			<param-name>filter-class</param-name>
-			<param-value>com.liferay.portal.servlet.filters.minifier.MinifierFilter</param-value>
-		</init-param>
-	</filter>
-	<filter>
-		<filter-name>Minifier Filter - CSS JSP</filter-name>
-		<filter-class>com.liferay.portal.kernel.servlet.PortalClassLoaderFilter</filter-class>
-		<init-param>
-			<param-name>filter-class</param-name>
-			<param-value>com.liferay.portal.servlet.filters.minifier.MinifierFilter</param-value>
-		</init-param>
-		<init-param>
-			<param-name>url-regex-pattern</param-name>
-			<param-value>.+/css\.jsp</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>Cache Filter - Resource</filter-name>
-		<url-pattern>*.css</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Cache Filter - Resource</filter-name>
-		<url-pattern>*.html</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Cache Filter - Resource</filter-name>
-		<url-pattern>*.js</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Cache Filter - Resource CSS JSP</filter-name>
-		<url-pattern>*.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Header Filter</filter-name>
-		<url-pattern>*.css</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Header Filter</filter-name>
-		<url-pattern>*.gif</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Header Filter</filter-name>
-		<url-pattern>*.html</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Header Filter</filter-name>
-		<url-pattern>*.ico</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Header Filter</filter-name>
-		<url-pattern>*.jpg</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Header Filter</filter-name>
-		<url-pattern>*.js</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Header Filter</filter-name>
-		<url-pattern>*.png</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Header Filter - CSS JSP</filter-name>
-		<url-pattern>*.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>GZip Filter</filter-name>
-		<url-pattern>*.css</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>GZip Filter</filter-name>
-		<url-pattern>*.html</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>GZip Filter</filter-name>
-		<url-pattern>*.js</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>GZip Filter</filter-name>
-		<url-pattern>*.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Minifier Filter</filter-name>
-		<url-pattern>*.css</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Minifier Filter</filter-name>
-		<url-pattern>*.js</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>Minifier Filter - CSS JSP</filter-name>
-		<url-pattern>*.jsp</url-pattern>
-	</filter-mapping>
+	<!-- Guarantee order of startup listeners (JSF implementation must be specified before the bridge). -->
 	<listener>
-		<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>com.liferay.portal.kernel.servlet.PortletContextListener</listener-class>
+		<listener-class>com.liferay.faces.bridge.servlet.BridgeSessionListener</listener-class>
 	</listener>
-	<servlet>
-		<servlet-name>Blocking Servlet</servlet-name>
-		<servlet-class>com.icesoft.faces.webapp.xmlhttp.BlockingServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet>
-		<servlet-name>File Upload Servlet</servlet-name>
-		<servlet-class>com.icesoft.faces.component.inputfile.FileUploadServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet>
-		<servlet-name>Persistent Faces Servlet</servlet-name>
-		<servlet-class>com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+	<!-- Although the FacesServlet will not be invoked by any portlet requests, it is required to initialize JSF. -->
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
-	</servlet>
+	</servlet>    
 	<servlet>
-		<servlet-name>discussions</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
-		<init-param>
-			<param-name>portlet-class</param-name>
-			<param-value>com.icesoft.faces.webapp.http.portlet.MainPortlet</param-value>
-		</init-param>
-		<load-on-startup>0</load-on-startup>
-	</servlet>
-	<servlet>
-		<servlet-name>discussionsportlet</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
-		<init-param>
-			<param-name>portlet-class</param-name>
-			<param-value>com.icesoft.faces.webapp.http.portlet.MainPortlet</param-value>
-		</init-param>
-		<load-on-startup>0</load-on-startup>
-	</servlet>
-	<servlet>
-		<servlet-name>Captcha Servlet</servlet-name>
-		<servlet-class>org.climatecollaboratorium.contact.CaptchaServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Blocking Servlet</servlet-name>
-		<url-pattern>/block/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>File Upload Servlet</servlet-name>
-		<url-pattern>/uploadHtml</url-pattern>
-	</servlet-mapping>
+        <servlet-name>Resource Servlet</servlet-name>
+        <servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Resource Servlet</servlet-name>
+        <url-pattern>/xmlhttp/*</url-pattern>
+    </servlet-mapping>
+	<!-- MyFaces will not initialize unless a servlet-mapping to the Faces Servlet is present. -->
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.faces</url-pattern>
+		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>/faces/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Persistent Faces Servlet</servlet-name>
-		<url-pattern>*.iface</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Persistent Faces Servlet</servlet-name>
-		<url-pattern>/xmlhttp/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>discussions</servlet-name>
-		<url-pattern>/discussions-portlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>discussions</servlet-name>
-		<url-pattern>/discussions/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>discussionsportlet</servlet-name>
-		<url-pattern>/discussionsportlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Captcha Servlet</servlet-name>
-		<url-pattern>/captcha/*</url-pattern>
-	</servlet-mapping>
-	<session-config>
-		<session-timeout>480</session-timeout>
-	</session-config>
-	<jsp-config>
-		<taglib>
-			<taglib-uri>http://java.sun.com/portlet_2_0</taglib-uri>
-			<taglib-location>/WEB-INF/tld/liferay-portlet.tld</taglib-location>
-		</taglib>
-		<taglib>
-			<taglib-uri>http://liferay.com/tld/portlet</taglib-uri>
-			<taglib-location>/WEB-INF/tld/liferay-portlet-ext.tld</taglib-location>
-		</taglib>
-		<taglib>
-			<taglib-uri>http://liferay.com/tld/security</taglib-uri>
-			<taglib-location>/WEB-INF/tld/liferay-security.tld</taglib-location>
-		</taglib>
-		<taglib>
-			<taglib-uri>http://liferay.com/tld/theme</taglib-uri>
-			<taglib-location>/WEB-INF/tld/liferay-theme.tld</taglib-location>
-		</taglib>
-		<taglib>
-			<taglib-uri>http://liferay.com/tld/ui</taglib-uri>
-			<taglib-location>/WEB-INF/tld/liferay-ui.tld</taglib-location>
-		</taglib>
-		<taglib>
-			<taglib-uri>http://liferay.com/tld/util</taglib-uri>
-			<taglib-location>/WEB-INF/tld/liferay-util.tld</taglib-location>
-		</taglib>
-	</jsp-config>
-	<resource-ref>
-		<res-ref-name>mail/MailSession</res-ref-name>
-		<res-type>javax.mail.Session</res-type>
-		<res-auth>Container</res-auth>
-	</resource-ref>
+	
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/icefaces/*</url-pattern>
+    </servlet-mapping>
+	<!-- Prevent direct access to Facelet view XHTML by the userAgent (browser). -->
 	<security-constraint>
 		<web-resource-collection>
-			<web-resource-name>Page Sources</web-resource-name>
+			<web-resource-name>Facelet View XHTML</web-resource-name>
 			<url-pattern>*.xhtml</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
@@ -371,4 +69,8 @@
 	<security-role>
 		<role-name>nobody</role-name>
 	</security-role>
+		<session-config>
+		<session-timeout>15</session-timeout>
+    </session-config>
+	
 </web-app>

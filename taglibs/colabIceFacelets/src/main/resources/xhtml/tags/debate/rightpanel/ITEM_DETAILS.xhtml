@@ -22,8 +22,8 @@
             <ice:panelSeries var="comment" value="#{debateItem.comments}">
                 <div class="position_comment">
                     <strong>
-                        by &amp;nbsp;<collab:userLinkSimple userId="#{comment.author.userId}" text="#{comment.author.screenName}" />
-                        on &amp;nbsp;
+                        by &#160;<collab:userLinkSimple userId="#{comment.author.userId}" text="#{comment.author.screenName}" />
+                        on &#160;
                         <ice:outputText value="#{comment.updated}">
                             <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
                         </ice:outputText>

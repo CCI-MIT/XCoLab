@@ -91,13 +91,13 @@
 		
 		<dependency>
 			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces-xcolab</artifactId>
-			<version>1.8.2</version>
+			<artifactId>icefaces</artifactId>
+			<version>1.8.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.icefaces</groupId>
 			<artifactId>icefaces-comps</artifactId>
-			<version>1.8.2</version>
+			<version>1.8.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.icefaces</groupId>

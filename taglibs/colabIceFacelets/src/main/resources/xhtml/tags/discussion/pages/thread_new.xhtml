@@ -35,9 +35,9 @@
                     <img src="/climatecolab-theme/images/share.png" width="24" height="24" alt="Share" class="icon_share" />
                     Share
                 </a>
-                &amp;nbsp;
-                &amp;nbsp;
-                &amp;nbsp;
+                &#160;
+                &#160;
+                &#160;
         
             <ice:commandLink actionListener="#{discussionBean.subscribe}"  styleClass="subscribeLinkSmall"
                 rendered="#{discussionBean.pageType == 'DISCUSSIONS' or discussionBean.pageType == 'CATEGORY' or discussionBean.pageType == 'THREAD'}"
@@ -123,7 +123,7 @@
                         <ice:commandButton actionListener="#{message.removeFlag}" value="Remove an expert review flag" rendered='#{discussionBean.permissions.canAdminMessages and message.expertReview}' >
                             <f:attribute name="flagType" value="EXPERT_REVIEW" />
                         </ice:commandButton>
-                        &amp;nbsp;
+                        &#160;
                     </div>
                     <div class="clear"></div>
                     
@@ -163,7 +163,7 @@
     <div class="clearfix"></div>
     <f:subview rendered="#{not discussionBean.userLoggedIn}">
     <div class="logInOrRegister">
-      <h2 style="text-align: center; margin-top: 10px;"><span>To comment, reply or recommend please &amp;nbsp;<a href="javascript:" onclick="deferUntilLogin();">Log In</a> or &amp;nbsp;<a href="/web/guest/loginregister" >Create An Account.</a></span></h2>
+      <h2 style="text-align: center; margin-top: 10px;"><span>To comment, reply or recommend please &#160;<a href="javascript:" onclick="deferUntilLogin();">Log In</a> or &#160;<a href="/web/guest/loginregister" >Create An Account.</a></span></h2>
     </div>
     <script>
         jQuery('.openregnew').click(function() {

@@ -7,7 +7,7 @@
         <ice:panelGroup styleClass="question_item-wrap #{position == debateBean.currentItem.item ? 'activeSlide' : ''}">
             <div class="question_item top">
                 <div class="question_position-wrap">
-                    <div class="question_position"><ice:outputText value="#{position.debateSummary}" /> &amp;nbsp; <span>#{position.votesPercent}% votes</span></div>
+                    <div class="question_position"><ice:outputText value="#{position.debateSummary}" /> &#160; <span>#{position.votesPercent}% votes</span></div>
                     <f:subview rendered="#{position.commentsCount > 0}">
                         <div class="comments_count"><span></span> #{position.commentsCount}</div>
                     </f:subview>

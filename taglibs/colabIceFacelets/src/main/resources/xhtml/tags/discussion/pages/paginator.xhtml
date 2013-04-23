@@ -26,12 +26,12 @@
                 </f:facet>
                 <f:facet name="previous" rendered="true">
                     <ice:panelGroup>
-                        &amp;nbsp;prev &lt;&lt; &amp;nbsp;
+                        &#160;prev &lt;&lt; &#160;
                     </ice:panelGroup>
                 </f:facet>
                 <f:facet name="next">
                     <ice:panelGroup>
-                        &amp;nbsp;&gt;&gt; next&amp;nbsp;
+                        &#160;&gt;&gt; next&#160;
                     </ice:panelGroup>
                 </f:facet>
             </ice:dataPaginator>
@@ -43,29 +43,8 @@
             <table style="float: right;">
             
                 <tr>
-                <!-- 
-                    <td class="oldestNewestPager">
-                        <ice:commandLink disabled="#{not containerBean.byNewest}" actionListener="#{containerBean.resort}">
-                            Oldest
-                        </ice:commandLink>
-                        <span class="vdiv">|</span>
-                        <ice:commandLink disabled="#{containerBean.byNewest}" actionListener="#{containerBean.resort}">
-                            Newest
-                        </ice:commandLink>
-                    </td>
-                    <td> 
-                        <ice:dataPaginator for="#{paginatorFor}" rowsCountVar="rowsCount" displayedRowsCountVar="displayedRowsCountVar" 
-                                firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex" pageCountVar="pageCount" 
-                                pageIndexVar="pageIndex" >
-                            <ice:outputFormat value="Page {0} of {1}" styleClass="page" escape="false">
-                                <f:param value="#{pageIndex}" />
-                                <f:param value="#{pageCount}" />
-                            </ice:outputFormat>
-                        </ice:dataPaginator>
-                </td>     
-                    -->
                 <td class="paginatorControls">
-                    <ice:dataPaginator rendered="true" for="#{paginatorFor}" paginator="true" paginatorMaxPages="5" styleClass="comm_controls" style="display: inline;"> 
+                    <ice:dataPaginator rendered="true" for="#{paginatorFor}" paginator="#{true}" paginatorMaxPages="#{5}" styleClass="comm_controls" style="display: inline;"> 
                         <f:facet name="first" rendered="true">
                             <ice:panelGroup >First</ice:panelGroup>
                         </f:facet>

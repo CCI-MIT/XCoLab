@@ -34,9 +34,9 @@
                     <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
                     Share
             </a>
-            &amp;nbsp;
-            &amp;nbsp;
-            &amp;nbsp;
+            &#160;
+            &#160;
+            &#160;
         
             <ice:commandLink actionListener="#{discussionBean.subscribe}" onclick='if(!deferUntilLogin()) return false;' rendered="#{not discussionBean.subscribed}">
                 <img src="/climatecolab-theme/images/icon_star-small.gif" class="spc" />
@@ -46,9 +46,9 @@
                 <img src="/climatecolab-theme/images/unsubscribe_small.png" class="spc" />
                 Unsubscribe 
             </ice:commandLink>
-            &amp;nbsp;
-            &amp;nbsp;
-            &amp;nbsp;
+            &#160;
+            &#160;
+            &#160;
         
             <ice:commandLink actionListener="#{discussionBean.commentsThread.revertMessages}" value="Oldest" rendered="#{not discussionBean.commentsThread.oldestFirst}" />
             #{discussionBean.commentsThread.oldestFirst ? "Oldest" : ""}

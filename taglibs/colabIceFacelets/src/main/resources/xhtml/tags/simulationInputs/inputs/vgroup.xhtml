@@ -17,7 +17,7 @@
         <tr class="#{(status.index + 1) % 2 == 0 ? 'even' : 'odd'}">
             <!--  colspan takes 1 col for first input and 2 cols for each following inputs -->
             <td class="first" colspan="#{fn:length(input.displayItems)}">
-                    <ice:outputText value="#{input.oryginalName}" />&amp;nbsp;
+                    <ice:outputText value="#{input.oryginalName}" />&#160;
                     <img alt="question" src="/climatecolab-theme/images/qustion_icon.png" class='input-info-trigger'/>
 
                 <div class="popup-info-box hidden">

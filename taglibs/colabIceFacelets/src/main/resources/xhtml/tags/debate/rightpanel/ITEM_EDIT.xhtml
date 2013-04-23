@@ -67,7 +67,7 @@
                     ARGUMENT
                 </f:subview> TEXT</td>
                 <td class="arg_info"><f:subview rendered="#{editBean.editing}">
-                        by &amp;nbsp; <collab:userLinkSimple userId="#{editBean.historyItemAuthor.userId}" text="#{editBean.historyItemAuthor.screenName}" />
+                        by &#160; <collab:userLinkSimple userId="#{editBean.historyItemAuthor.userId}" text="#{editBean.historyItemAuthor.screenName}" />
                     <ice:outputText value="#{editBean.historyItemDate}">
                         <f:convertDateTime pattern="MM/dd/yy hh:mm a" />
                     </ice:outputText>
@@ -96,7 +96,7 @@
         </div>
         <div class="clear" />
 
-        <div style="text-align: right;"><a href="javascript:;" onclick="jQuery('#addLinkForm, #addLinkToogle').toggle();">Cancel</a> &amp;nbsp; <a href="javascript:;" onclick="addLink();">Add</a></div>
+        <div style="text-align: right;"><a href="javascript:;" onclick="jQuery('#addLinkForm, #addLinkToogle').toggle();">Cancel</a> &#160; <a href="javascript:;" onclick="addLink();">Add</a></div>
 
         </div>
 

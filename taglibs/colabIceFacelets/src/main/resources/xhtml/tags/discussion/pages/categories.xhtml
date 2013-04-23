@@ -52,13 +52,13 @@
                     </div>
                     <div class="meta">
                     <div class="floatLeft">
-                        Started by &amp;nbsp;<a href="/web/guest/members?userId=#{category.author.userId}">#{category.author.screenName}</a>
-                        :: Discussions &amp;nbsp;<strong>#{category.threadsCount}</strong>
+                        Started by &#160;<a href="/web/guest/members?userId=#{category.author.userId}">#{category.author.screenName}</a>
+                        :: Discussions &#160;<strong>#{category.threadsCount}</strong>
                     </div>
                     
                     <ice:panelGroup styleClass="floatRight" rendered="#{category.threadsCount > 0}">
-                        Last response by &amp;nbsp;<a href="/web/guest/members?userId=#{category.lastActivityAuthor.userId}">#{category.lastActivityAuthor.screenName}</a> 
-                        :: Last active &amp;nbsp;
+                        Last response by &#160;<a href="/web/guest/members?userId=#{category.lastActivityAuthor.userId}">#{category.lastActivityAuthor.screenName}</a> 
+                        :: Last active &#160;
                         <strong>#{category.lastActivityDate} ago</strong>
                     </ice:panelGroup>
                     <div class="clear"></div>
