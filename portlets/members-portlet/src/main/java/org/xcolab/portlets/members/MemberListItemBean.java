@@ -1,6 +1,7 @@
 package org.xcolab.portlets.members;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,8 +10,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class MemberListItemBean {
     private MemberCategory category;
@@ -48,11 +47,12 @@ public class MemberListItemBean {
 
         if (userDoc.getValues("memberCategory").length > 0) {
             try {
-            	String[] categoriesStr = userDoc.getValues("memberCategory");
+                
             	MemberCategory currentCat = MemberCategory.MEMBER;
             	category = MemberCategory.MEMBER;
+            	
             	for (String categoryStr: userDoc.getValues("memberCategory")) {
-            		currentCat = MemberCategory.valueOf(categoryStr);
+            		currentCat = MemberCategory.valueOf(categoryStr.toUpperCase());
             		if (currentCat.ordinal() > category.ordinal()) {
             			category = currentCat;
             		}

@@ -59,8 +59,6 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortletKeys;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
-
 /**
  * @author Raymond Augé
  * @author Zsigmond Rab
