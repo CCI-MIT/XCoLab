@@ -7,6 +7,8 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     >
+  <h:head />
+  <h:body>
     <ice:portlet>
         <ice:panelGroup styleClass="hidden">
             <script type="text/javascript">
@@ -17,7 +19,7 @@
     <collab:navigationManager />
     <h1 class="spn">Search 
         <f:subview rendered="#{not empty searchBean.searchPhrase}">
-            <span>&amp;nbsp;Results for "#{searchBean.searchPhrase}"</span>
+            <span>&#160;Results for "#{searchBean.searchPhrase}"</span>
         </f:subview>
     </h1>
     
@@ -38,16 +40,16 @@
     
     <ice:panelSeries var="item" value="#{searchBean.data}" id="searchResults" rows="20" rowClasses="odd,even" styleClass="searchTable" >
     
-      <div class="result #{item.odd ? 'blu' : ''}">
-        <div class="result_title"><a href="#{item.url}">#{item.title}</a></div>
+      <ice:panelGroup styleClass="result #{item.odd ? 'blu' : ''}">
+        <ice:panelGroup styleClass="result_title"><a href="#{item.url}"><ice:outputText value="#{item.title}" escape="false" /></a></ice:panelGroup>
         <div class="result_locale">
             <ice:outputText value="#{item.itemType.printName}" />
         </div>
-        <div class="clear"></div>
+        <ice:panelGroup styleClass="clear"></ice:panelGroup>
         <p>
-            #{item.content}
+            <ice:outputText value="#{item.content}" escape="false" />
         </p>
-      </div>
+      </ice:panelGroup>
     
     </ice:panelSeries>
     <ice:panelGroup styleClass="pager" rendered="#{searchBean.data.rowCount > 0}">
@@ -65,7 +67,7 @@
                         
                 </td>     
                 <td class="paginatorControls">
-                    <ice:dataPaginator rendered="true" for="searchResults" paginator="true" paginatorMaxPages="5" styleClass="comm_controls" style="display: inline;" binding="#{searchBean.paginator1}"> 
+                    <ice:dataPaginator rendered="true" for="searchResults" paginator="#{true}" paginatorMaxPages="#{5}" styleClass="comm_controls" style="display: inline;" binding="#{searchBean.paginator1}"> 
                         <f:facet name="first" rendered="true">
                             <ice:panelGroup >First</ice:panelGroup>
                         </f:facet>
@@ -89,7 +91,7 @@
     
     
     
-    <p>&amp;nbsp;</p>
+    <p>&#160;</p>
     
     </div> <!-- /main -->
     
@@ -123,4 +125,5 @@
     
     
     </ice:portlet>
+  </h:body>
 </f:view>
