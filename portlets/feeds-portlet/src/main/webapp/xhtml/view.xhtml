@@ -6,6 +6,8 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     >
+  <h:head />
+  <h:body>
     <ice:portlet>
         <f:subview rendered="#{preferences.feedTitle ne ''}">
         <h2 class="feedTitle">#{preferences.feedTitle}
@@ -27,4 +29,5 @@
             <ui:include src="./feeds/recentlyJoinedMembers.xhtml" />
         </f:subview>
     </ice:portlet>
+  </h:body>
 </f:view>

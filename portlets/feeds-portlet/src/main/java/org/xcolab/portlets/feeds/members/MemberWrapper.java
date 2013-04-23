@@ -4,7 +4,10 @@ import java.util.Date;
 
 import org.xcolab.portlets.feeds.Helper;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
@@ -37,7 +40,7 @@ public class MemberWrapper {
         lastActivityDate = new Date(activity.getCreateDate());
     }
     
-    public MemberWrapper(SocialActivity activity) {
+    public MemberWrapper(SocialActivity activity) throws PortalException, SystemException {
         this.activity = activity;
         if (activity != null) {
             SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, Helper.getThemeDisplay());
@@ -45,8 +48,10 @@ public class MemberWrapper {
             if (lastActivityBody == null || lastActivityBody.trim().length() == 0) {
                 lastActivityBody = entry != null ? entry.getTitle() : null;
             }
+            
         }
         lastActivityDate = new Date(activity.getCreateDate());
+        user = UserLocalServiceUtil.getUser(activity.getUserId());
     }
 
 
