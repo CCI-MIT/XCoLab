@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<f:view xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:liferay-faces="http://liferay.com/tld/faces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<h:head />
+	<h:body>
+		<ice:portlet>
+		mainpage
+		<ui:include src="./page/#{balloonBean.page}_page.xhtml">
+				<ui:param value="#{balloonBean}" name="#{balloonBean}" />
+			</ui:include>
+		</ice:portlet>
+	</h:body>
+</f:view>

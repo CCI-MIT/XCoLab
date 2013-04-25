@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:collab="http://climatecollaboratorium.org/facelets"
+	xmlns:sharedcollab="http://climatecollaboratorium.org/components">
+
+	<ice:panelGroup rendered="#{balloonBean.redirectUserToGetURL}">
+REDIRECT ME
+</ice:panelGroup>
+
+	GET: <ice:outputText value="${balloonBean.display}" />
+	<div id="redballoon">
+		<ice:form id="contact">
+			<p>Help find the person who will write the proposal that wins the
+				Climate CoLab Grand Prize!</p>
+
+			<p>If someone you refer wins the Grand Prize, you’ll get a share
+				of the $2,000 finders’ fee. Of if someone you refer refers someone
+				who refers someone… who wins, you’ll still get a (smaller) share.</p>
+
+			To refer people in a way that we can keep track of, please enter your
+			email address here:
+			<ice:message for="email" />
+			<ice:inputText value="#{balloonBean.email}" id="email"
+				required="true" styleClass="text">
+				<f:validator validatorId="emailValidator" />
+			</ice:inputText>
+
+			<ice:messages globalOnly="true" />
+
+			<p>
+				<ice:commandLink value="request personal URL"
+					actionListener="#{balloonBean.requestURL}" />
+			</p>
+		</ice:form>
+	</div>
+</f:view>
