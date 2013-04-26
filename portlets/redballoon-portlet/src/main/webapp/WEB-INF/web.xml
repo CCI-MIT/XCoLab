@@ -24,6 +24,12 @@
 		<param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
 		<param-value>*.xhtml</param-value>
 	</context-param>
+	<context-param>
+		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+
 	<!-- Guarantee order of startup listeners (JSF implementation must be specified 
 		before the bridge). -->
 	<listener>

@@ -1,5 +1,7 @@
 package org.xcolab.portlets.redballoon;
 
+import java.io.Serializable;
+
 import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +11,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 
-public class BalloonBean {
+public class BalloonBean implements Serializable {
+	/**
+	 * 
+	 */ 
+	private static final long serialVersionUID = 1L;
+	
 	private String email = "";
 	private boolean redirectUserToGetURL = false;
 	private View forceNextPage = null;
@@ -23,7 +30,7 @@ public class BalloonBean {
 	 * @author pdeboer
 	 * 
 	 */
-	private enum View {
+	public enum View {
 		ABOUT_REFERRAL, ABOUT_COLAB, SHARE
 	}
 
@@ -51,12 +58,12 @@ public class BalloonBean {
 	 */
 	public BalloonBean(boolean skipInit) {
 		setCookie = false;
-		
+
 		if (!skipInit) {
 			init();
 		}
 	}
-	
+
 	/**
 	 * @return the cookie
 	 */
@@ -65,16 +72,18 @@ public class BalloonBean {
 	}
 
 	private void init() {
-		email = getEmailOfCurrentUser();
 		httpReq = PortalUtil.getOriginalServletRequest(PortalUtil
 				.getHttpServletRequest(Helper.getPortletRequest()));
 
 		cookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
+		email = (cookie != null && cookie.getEmail() != null) ? cookie
+				.getEmail() : getEmailOfCurrentUser();
+
 		String GETParamURL = httpReq.getParameter("url");
 
 		if (GETParamURL != null) {
-			cookie = new BalloonCookie();
+			cookie = new BalloonCookie(cookie);
 			cookie.setUuid(GETParamURL);
 
 			setCookie = true;
@@ -119,6 +128,21 @@ public class BalloonBean {
 	public void requestURL(ActionEvent e) throws AddressException,
 			SystemException, PortalException, MailEngineException {
 		System.out.println("I was executed!");
+
+		/**
+		 * store email in cookie
+		 */
+		cookie = new BalloonCookie(cookie);
+		cookie.setEmail(email);
+		setCookie = true;
+
 		redirectUserToGetURL = true;
+		forceNextPage = View.ABOUT_REFERRAL;
 	}
+
+	public void aboutColabToAboutReferral(ActionEvent e) {
+		System.out.println("change sites");
+		forceNextPage = View.ABOUT_REFERRAL;
+	}
+
 }

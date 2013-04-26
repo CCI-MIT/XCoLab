@@ -3,11 +3,14 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:collab="http://climatecollaboratorium.org/facelets"
 	xmlns:sharedcollab="http://climatecollaboratorium.org/components">
 
 	<div id="redballoon">
-		SHARE LINK
+		<div id="shareDiv">
+			<ice:inputText value="#{balloonBean.cookie.uuid}" id="uuid"
+				styleClass="text"/> copy to clipboard 
+			<p>share on fb / share on twitter</p>
+		</div>
 
 		<ice:messages globalOnly="true" />
 	</div>

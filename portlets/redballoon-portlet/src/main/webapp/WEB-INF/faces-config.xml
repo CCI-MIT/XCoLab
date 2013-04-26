@@ -40,7 +40,7 @@
 	<managed-bean>
 		<managed-bean-name>balloonBean</managed-bean-name>
 		<managed-bean-class>org.xcolab.portlets.redballoon.BalloonBean</managed-bean-class>
-		<managed-bean-scope>view</managed-bean-scope>
+		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<validator>
 		<validator-id>emailValidator</validator-id>
