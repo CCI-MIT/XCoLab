@@ -155,7 +155,7 @@ public class Helper {
         HttpServletRequest request = (HttpServletRequest) ((HttpServletRequestWrapper) context.getExternalContext()
                 .getRequestMap().get(REQUEST_PARAM_NAME)).getRequest();
 
-        Map<String, String> requestParams = request.getParameterMap();
+        Map<String, String[]> requestParams = request.getParameterMap();
         for (String key : requestParams.keySet()) {
             if (isUrlParameterKey(key)) {
                 Object valueObj = requestParams.get(key);

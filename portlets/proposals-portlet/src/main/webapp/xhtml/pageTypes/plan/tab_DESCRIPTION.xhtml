@@ -29,7 +29,7 @@
                     
                     <ice:column>
                         <em>
-                          by&amp;nbsp; <collab:userLinkSimple userId="#{historyItem.updateAuthor.userId}" text="#{historyItem.updateAuthor.screenName}"/>
+                          by&#160; <collab:userLinkSimple userId="#{historyItem.updateAuthor.userId}" text="#{historyItem.updateAuthor.screenName}"/>
                         </em>
                         
                     </ice:column>
@@ -48,13 +48,13 @@
   <div class="div1"></div>
   <h2>Description</h2>
   <f:subview rendered="#{not proposal.plan.hasSections}">
-    #{proposal.plan.description}
+    <ice:outputText value="#{proposal.plan.description}" escape="false" />
   </f:subview>
   <f:subview rendered="#{proposal.plan.hasSections}">
     <ice:panelSeries var="section" value="#{proposal.plan.sections}">
         <h3>#{section.definition.title}</h3>
         <p>
-            #{section.section.content}
+            <ice:outputText value="#{section.section.content}" escape="false" />
         </p>
         <f:subview rendered="#{not section.last}">
             <div class="div2"></div>

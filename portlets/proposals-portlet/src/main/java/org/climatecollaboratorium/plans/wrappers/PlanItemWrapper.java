@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans.wrappers;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,10 +26,12 @@ import org.climatecollaboratorium.plans.PlansPermissionsBean;
 import org.climatecollaboratorium.plans.activity.PlanActivityKeys;
 import org.climatecollaboratorium.plans.events.PlanUpdatedEvent;
 import org.climatecollaboratorium.plans.utils.ImageUtils;
+import org.icefaces.ace.component.fileentry.FileEntry;
+import org.icefaces.ace.component.fileentry.FileEntryEvent;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
 
 import com.ext.portlet.NoSuchPlanPositionsException;
 import com.ext.portlet.PlanStatus;
-import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.PlanAttribute;
 import com.ext.portlet.model.PlanDescription;
@@ -47,7 +50,6 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
-import com.icesoft.faces.component.inputfile.InputFile;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -1007,22 +1009,26 @@ public class PlanItemWrapper {
     }
 
 
-    public void uploadImage(ActionEvent e) throws IOException, SystemException, PortalException {
-        InputFile inputFile = (InputFile) e.getSource();
-        if (inputFile.getStatus() == InputFile.INVALID) {
-            // fileErrorMessage = "Provided file isn't a valid image.";
-            _log.error("There was an error when uploading file", inputFile.getFileInfo().getException());
-            return;
-        }
+    public void uploadImage(FileEntryEvent e) throws IOException, SystemException, PortalException {
+        FileEntry fe = (FileEntry) e.getComponent();
+        FileEntryResults results = fe.getResults();
+        File uploadedFile = null;
+        for (FileEntryResults.FileInfo i : results.getFiles()) {
+            if (i.isSaved()) {
 
-        if (!inputFile.getFileInfo().getContentType().startsWith("image")) {
-            // fileErrorMessage = "Provided file isn't a valid image.";
-            _log.error("There was an error when uploading file", inputFile.getFileInfo().getException());
-            return;
+                uploadedFile = i.getFile();
+                if (uploadedFile == null) {
+                    _log.error("There was an error when uploading file " + i.getFileName());
+                    return;
+                }
+            } else {
+                _log.error("There was an error when uploading file " + i.getFileName());
+                return;
+            }
         }
-
-        ImageUtils.resizeAndCropImage(inputFile.getFile(), 150, 150);
-        newImage = ImageLocalServiceUtil.getImage(inputFile.getFile());
+        
+        ImageUtils.resizeAndCropImage(uploadedFile, 150, 150);
+        newImage = ImageLocalServiceUtil.getImage(uploadedFile);
 
         newImage.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
         ImageLocalServiceUtil.addImage(newImage);

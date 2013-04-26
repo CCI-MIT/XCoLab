@@ -131,7 +131,9 @@ Collab.nav = new function() {
 
 	function forceNavigation() {
 		jQuery(".navigationManagerForm .navigationToken").val(createToken());
+		// make sure that actionurl is set properly
 		// below is ugly hack, but without it webkit based browsers don't work
+		
 		setTimeout(function() {
 				jQuery(".navigationManagerForm .submit").click();
 			}, 0);

@@ -123,6 +123,7 @@ public class NavigationBean {
                 try {
                     switch (pageType) {
                         case PLAN_DETAILS:
+                            //vent.setResultName("contest");
                             planBean.init(event);
                             break;
                         case CONTEST_PROPOSALS:

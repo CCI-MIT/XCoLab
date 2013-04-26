@@ -53,7 +53,7 @@
 <div class="contest-detail">
     <div class="heading">#{contest.contest.name}</div>
     <div class="description">
-        <p>#{contest.contest.description}</p>
+        <p><ice:outputText value="#{contest.contest.description}" escape="false" /></p>
         <f:subview rendered="#{contest.contest.hasFocusArea}">
         <table style="width:auto;"><tr>
 	            <f:subview rendered="#{not empty contest.contest.what}">
@@ -89,24 +89,25 @@
     <div class="moreinfo">
     <table>
     <tr>
-        <f:subview rendered="#{fn:length(contest.contest.teamMembers) gt 0}">
+        <f:subview rendered="#{fn:length(contest.contest.teamMembers) gt 0 and not empty contest.contest.teamRoles}">
         <td nowrap="nowrap">
-            <ice:panelSeries styleClass="advisors" var="teamRole" value="#{contest.contest.teamRoles}">
+            <ui:repeat styleClass="advisors" var="teamRole" value="#{contest.contest.contestTeamMembersByRole}">
                 <div class="contestTeamRole">
-            	   <f:subview rendered="#{fn:length(contest.contest.teamRoleUsers[teamRole]) eq 1}">
-            		  <div style="width:53px;display:inline-block;">#{teamRole}</div>
+            	   <f:subview rendered="#{fn:length(teamRole.users) eq 1}">
+            		  <div style="width:53px;display:inline-block;">#{teamRole.roleName}</div>
             	   </f:subview>
-            	   <f:subview rendered="#{fn:length(contest.contest.teamRoleUsers[teamRole]) gt 1}">
-            		  <div style="width:53px;display:inline-block;">#{teamRole}s</div>
+            	   <f:subview rendered="#{fn:length(teamRole.users) gt 1}">
+            		  <div style="width:53px;display:inline-block;">#{teamRole.roleName}s</div>
             	   </f:subview>
-            	   <ice:panelSeries style="display: inline;" var="teamRoleUser" value="#{contest.contest.teamRoleUsers[teamRole]}" varStatus="status">
+            	   
+            	   <ui:repeat style="display: inline;" var="teamRoleUser" value="#{teamRole.users}" varStatus="status">
                 	   <collab:userPortrait screenName="#{teamRoleUser.screenName }" portraitId="#{teamRoleUser.portraitId}" width="30" height="30" />
                 	   <collab:userLinkSimple userId="#{teamRoleUser.userId}" text="#{teamRoleUser.fullName}" />
-            	   </ice:panelSeries>
+            	   </ui:repeat>
             	</div>
             	
             
-            </ice:panelSeries>
+            </ui:repeat>
             </td>
         </f:subview>
         <td width="100%" style="text-align:center;">
@@ -165,7 +166,7 @@
                 </ui:include>
                 <div class="tooltip">click to sort by name<div class="tt-arrow"></div></div>
             </div>
-             /&amp;nbsp;
+             /&#160;
             
             <div style="display: inline-block">
                 <ice:commandLink actionListener="#{plansIndex.updateSortColumn}" value="Author(s)">

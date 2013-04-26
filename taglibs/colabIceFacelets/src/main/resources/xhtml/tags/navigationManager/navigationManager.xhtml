@@ -6,12 +6,9 @@
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     xmlns:liferay-faces="http://liferay.com/tld/faces">
     <ice:panelGroup styleClass="navigationManagerForm hidden">
-        <ice:form>
+        <ice:form styleClass="navigationForm">
             <ice:inputText value="#{navigationManagerBean.navigationToken}" styleClass="navigationToken" />
             <ice:commandButton value="Submit" styleClass="submit" action="#{navigationManagerBean.navigate}" />
-        </ice:form>
-        <ice:form>
-            <ice:commandButton value="Submit" styleClass="submitLrPing" action="#{navigationManagerBean.ping}" />
         </ice:form>
 	<ice:panelGroup>
         <script type="text/javascript">

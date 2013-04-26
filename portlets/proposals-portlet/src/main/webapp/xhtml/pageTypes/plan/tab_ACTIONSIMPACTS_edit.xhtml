@@ -34,8 +34,8 @@
     
     <ice:panelGroup styleClass="actionsImpactsContainer">
         <ice:panelGroup styleClass="versionInfo" rendered="#{not planBean.plan.simulationLatestVersion}">
-            Viewing version from &amp;nbsp; <strong><ice:outputText
-                value="#{planBean.plan.simulationVersionDate}"/></strong> by &amp;nbsp;
+            Viewing version from &#160; <strong><ice:outputText
+                value="#{planBean.plan.simulationVersionDate}"/></strong> by &#160;
             <a href="/web/guest/members?userId=#{planBean.plan.simulationVersionAuthor.userId}">
                 <strong><ice:outputText value="#{planBean.plan.simulationVersionAuthor.screenName}"/></strong>
             </a>
@@ -96,7 +96,7 @@
                     <div class="gray-button"><ice:commandLink value="DISCARD changes" actionListener="#{proposal.toggleEditing}" /></div>
                 </div>
                 <div class="admin-right">
-                    <p>&amp;nbsp;</p>
+                    <p>&#160;</p>
                 </div>
             </div>
         </div>

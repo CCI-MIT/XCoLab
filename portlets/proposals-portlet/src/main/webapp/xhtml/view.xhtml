@@ -1,13 +1,17 @@
 <?xml version="1.0"?>
 <f:view 
+	xmlns="http://www.w3.org/1999/xhtml"
     xmlns:f="http://java.sun.com/jsf/core" 
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     xmlns:liferay-faces="http://liferay.com/tld/faces"
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     xmlns:h="http://java.sun.com/jsf/html"  >
+  <h:head />
+  <h:body>
+    <ice:portlet>
     
-<ice:portlet>
+    <script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js" ><!-- --></script>
     <collab:navigationManager />
     <ui:include src="./mainView.xhtml">
         <ui:param value="#{navigation.contestBean}" name="contest" />
@@ -49,5 +53,6 @@
             <ice:commandButton value="" styleClass="deferVoteCommit" actionListener="#{navigation.deferVotingTo}" />
          </ice:form>     
     </div>
-</ice:portlet>
+	</ice:portlet>
+  </h:body>
 </f:view>

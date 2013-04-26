@@ -34,9 +34,10 @@ public class NavigationManagerBean {
     public String navigate() {
         token++;
         Map<String, Map<String, String>> tokenMap = decodeToken(navigationToken);
-        eventBus.fireEvent(new NavigationEvent(tokenMap));
+        NavigationEvent e = new NavigationEvent(tokenMap);
+        eventBus.fireEvent(e);
         lastTokenMap = tokenMap;
-        return null;
+        return e.getResultName();
     }
     
     private Map<String, Map<String, String>> decodeToken(String token) {

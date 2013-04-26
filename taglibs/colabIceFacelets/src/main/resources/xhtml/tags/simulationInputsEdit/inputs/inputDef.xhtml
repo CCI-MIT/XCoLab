@@ -5,15 +5,15 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:liferay-faces="http://liferay.com/tld/faces">
     <div class="control_definition">
-        <f:subview id="individualInput"  rendered="#{input.displayItemType == 'INDIVIDUAL'}">
+        <f:subview rendered="#{input.displayItemType == 'INDIVIDUAL'}">
             <ui:include src="./individual.xhtml" />
         </f:subview>
         
-        <f:subview id="groupInput"  rendered="#{input.displayItemType == 'GROUP' and input.groupType == 'HORIZONTAL'}">
+        <f:subview rendered="#{input.displayItemType == 'GROUP' and input.groupType == 'HORIZONTAL'}">
             <ui:include src="./hgroup.xhtml" />
         </f:subview>
         
-        <f:subview id="groupInput"  rendered="#{input.displayItemType == 'GROUP' and input.groupType == 'VERTICAL'}">
+        <f:subview rendered="#{input.displayItemType == 'GROUP' and input.groupType == 'VERTICAL'}">
             <ui:include src="./vgroup.xhtml" />
         </f:subview>
         

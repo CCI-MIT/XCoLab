@@ -16,7 +16,7 @@
                         </span>
                         <div class="tooltip">
                             <f:subview rendered="#{not empty phase.phaseStatusDescription}">
-                                #{phase.phaseStatusDescription}&amp;nbsp;
+                                <ice:outputText value="#{phase.phaseStatusDescription}" escape="false" />
                             </f:subview>
                             <f:subview rendered="#{not empty phase.startDate}"> 
                                 <ice:outputText value="#{phase.startDate}"  nospan="true">

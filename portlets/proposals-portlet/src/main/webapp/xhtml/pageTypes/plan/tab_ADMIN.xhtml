@@ -84,37 +84,6 @@
                 </div>
             </div>
         </ice:panelGroup>
-        <!-- 
-        <ice:panelGroup rendered="#{permissions.canAdminAll}">
-            <div class="addpropbox blue">
-                <strong>Scrapbook</strong>
-            
-                  <div>
-                    <f:subview rendered="#{planBean.plan.scrapbook}">
-                        <div class="blue-button">
-                            <ice:commandLink actionListener="#{planBean.plan.toggleScrapbook}">
-                                <span>REMOVE</span> scrapbook mark
-                            </ice:commandLink>
-                        </div>
-                    </f:subview>
-                    <f:subview rendered="#{not planBean.plan.scrapbook}">
-                        <div class="blue-button">
-                            <ice:commandLink actionListener="#{planBean.plan.toggleScrapbook}">
-                                <span>MARK</span> proposal as a scrapbook
-                            </ice:commandLink>
-                        </div>
-                    </f:subview>
-                
-                </div>
-                    <br />
-          
-            <strong>Scrapbook hover text</strong>
-            <div>
-                  <ice:inputText value="#{planBean.plan.scrapbookText}" partialSubmit="true" /> 
-            </div>
-          </div>
-        </ice:panelGroup>
-         -->
         
         <ice:panelGroup rendered="#{permissions.canAdminAll}">
             <div class="addpropbox blue">

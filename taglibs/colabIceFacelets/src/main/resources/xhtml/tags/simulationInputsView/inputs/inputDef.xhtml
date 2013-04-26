@@ -5,11 +5,11 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:liferay-faces="http://liferay.com/tld/faces">
     <div class="actInputDef">
-        <f:subview id="individualInput"  rendered="#{input.displayItemType == 'INDIVIDUAL'}">
+        <f:subview rendered="#{input.displayItemType == 'INDIVIDUAL'}">
             <ui:include src="./individual.xhtml" />
         </f:subview>
     
-        <f:subview id="groupInput"  rendered="#{input.displayItemType == 'GROUP'}">
+        <f:subview rendered="#{input.displayItemType == 'GROUP'}">
             <ui:include src="./group.xhtml" />
         </f:subview>
         

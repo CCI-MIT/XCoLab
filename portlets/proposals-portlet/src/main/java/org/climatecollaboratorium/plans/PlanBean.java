@@ -395,7 +395,9 @@ public class PlanBean {
     
     
     public List<PlanTabWrapper> getAvailableTabs() throws PortalException, SystemException {
+        
         if (availableTabs == null) {
+            if (getPlan() == null) return null;
             availableTabs = new ArrayList<PlanTabWrapper>();
             
             availableTabs.add(new PlanTabWrapper(planItem, PlanTab.DESCRIPTION));

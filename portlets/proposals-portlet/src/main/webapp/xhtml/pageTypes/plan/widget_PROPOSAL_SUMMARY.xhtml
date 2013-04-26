@@ -51,13 +51,13 @@
             </div>
              <f:subview rendered="#{planBean.plan.subscribed}">
                 <div class="info subscribe" style="float:left;">
-                    <ice:commandLink actionListener="#{planBean.plan.subscribe}" onclick="if(!deferUntilLogin()) return false;" ><img src="/climatecolab-theme/images/unsubscribe.png" />&amp;nbsp; Unsubscribe</ice:commandLink>
+                    <ice:commandLink actionListener="#{planBean.plan.subscribe}" onclick="if(!deferUntilLogin()) return false;" ><img src="/climatecolab-theme/images/unsubscribe.png" />&#160; Unsubscribe</ice:commandLink>
                 </div>
             </f:subview>
         
             <f:subview rendered="#{not planBean.plan.subscribed}">
                 <div class="info subscribe" style="float:left;">
-                    <ice:commandLink actionListener="#{planBean.plan.subscribe}" onclick="if(!deferUntilLogin()) return false;" ><img src="/climatecolab-theme/images/icon_star.png" />&amp;nbsp; Subscribe</ice:commandLink>
+                    <ice:commandLink actionListener="#{planBean.plan.subscribe}" onclick="if(!deferUntilLogin()) return false;" ><img src="/climatecolab-theme/images/icon_star.png" />&#160; Subscribe</ice:commandLink>
                 </div>
             </f:subview>
             
@@ -79,13 +79,13 @@
 
         <div class="prop-settings">
             <f:subview rendered="#{proposal.plan.open}">
-                <strong>Public Proposal:</strong> Anyone will be able to edit this proposal.&amp;nbsp;
+                <strong>Public Proposal:</strong> Anyone will be able to edit this proposal.&#160;
                 <f:subview rendered="#{permissions.canAdmin}">
                     <a href="javascript:;" onclick="Collab.nav.navigateAddParams('plans', {tab: 'admin'}); return false;">Change settings</a>
                 </f:subview>
             </f:subview>
             <f:subview rendered="#{not proposal.plan.open}">
-                <strong>Team Proposal:</strong> Only team members will be able to edit this proposal.&amp;nbsp;
+                <strong>Team Proposal:</strong> Only team members will be able to edit this proposal.&#160;
                 <f:subview rendered="#{permissions.canAdmin}">
                     <a href="javascript:;" onclick="Collab.nav.navigateAddParams('plans', {tab: 'admin'}); return false;">Change settings</a>
                 </f:subview>
@@ -94,7 +94,7 @@
 
         <div class="prop-avatar">
             <collab:userPortrait screenName="#{empty proposal.plan.team ? proposal.plan.author.screenName : ''}" portraitId="#{proposal.plan.author.portraitId}" width="42" height="42" />
-            By:&amp;nbsp;
+            By:&#160;
                 <f:subview rendered="#{empty proposal.plan.team}">
                     <collab:userLinkSimple userId="#{proposal.plan.author.userId}" text="#{proposal.plan.author.screenName}" />
                 </f:subview>

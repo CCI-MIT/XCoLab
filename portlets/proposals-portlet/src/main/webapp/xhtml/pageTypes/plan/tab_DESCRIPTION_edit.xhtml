@@ -3,8 +3,9 @@
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     xmlns:ice="http://www.icesoft.com/icefaces/component"
     xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
     xmlns:addthis="http://www.addthis.com/help/api-spec" >
-    <script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js" ><!-- --></script>
     <ice:panelGroup rendered="#{planBean.leaveThisPlan}">
         <script type="text/javascript">
             var location = window.location.toString();
@@ -16,11 +17,18 @@
 
     <div class="headline addprop">
         Please complete your proposal based on the template below. 
-        If you have input on the template, please send it in a&amp;nbsp;<a href="/web/guest/feedback" target="_blank">feedback message</a>.  
-        To save your proposal, you must agree to the&amp;nbsp;<a href="/web/guest/resources/-/wiki/Main/2012+contest+rules" target="_blank">Contest rules</a> 
-        and&amp;nbsp;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
+        If you have input on the template, please send it in a&#160;<a href="/web/guest/feedback" target="_blank">feedback message</a>.  
+        To save your proposal, you must agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/2012+contest+rules" target="_blank">Contest rules</a> 
+        and&#160;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
     </div> <!-- /headline -->
 
+    <div class="fileUploadContainer">
+    <h:form>
+		<ace:fileEntry id="profileImage" fileEntryListener="#{plan.plan.uploadImage}" styleClass="filepc fileUpload" autoUpload="true" >
+			<ice:outputStyle href="/css/main.css" />
+		</ace:fileEntry><br />
+    </h:form>
+    </div>
     <ice:form styleClass="addpropform">
     <div class="prop-left" id="addpropform">
         <ice:panelGroup styleClass="addpropbox q1">
@@ -38,7 +46,7 @@
                 </ice:inputText>
                 <div class="clearfix"></div>
          		<ice:message style="color: red;" id="proposalNameError" for="proposalName"/>
-                <div class="inputLimitContainer"><span class="limit_characterCount"></span>/&amp;nbsp;<span class="limit_charactersMax">80</span> characters</div>
+                <div class="inputLimitContainer"><span class="limit_characterCount"></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
                 <div style="display: none">
                     <textarea class="originalValue">#{plan.plan.originalName}</textarea>
                 </div>
@@ -54,7 +62,7 @@
             <div class="addprophelp">If you'd like to have your proposal appear under a team name, insert it here. Otherwise, the proposal will appear under the user name of its owner.</div>
             <div class="addpropInputContainer">
                 <ice:inputText value="#{proposal.plan.team}" />
-                <div class="inputLimitContainer"><span class="limit_characterCount"></span>/&amp;nbsp;<span class="limit_charactersMax">20</span> characters</div>
+                <div class="inputLimitContainer"><span class="limit_characterCount"></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
                 <div style="display: none">
                     <textarea class="originalValue">#{plan.plan.originalTeam}</textarea>
                 </div>
@@ -76,16 +84,8 @@
                     </div>
                             
                     <div id="uploadWidget">
-                        <ice:inputFile actionListener="#{proposal.plan.uploadImage}" styleClass="filepc" title="#{proposal.plan.image}" autoUpload="true" value="#{proposal.plan.image}">
-                            <ice:outputStyle href="/css/proposals.css" />
-                        </ice:inputFile><br />
                     </div>
                     
-                    <ice:commandLink styleClass="hidden signalPictureUploaded" actionListener="#{proposal.plan.signalPictureUploaded}" />
-                    
-                    <script type="text/javascript">
-                        monitorUploadFrame();
-                    </script>
             </ice:panelGroup>
         </ice:panelGroup>
 
@@ -99,7 +99,7 @@
             <div class="addpropInputContainer">
                 <ice:inputTextarea value="#{proposal.plan.pitch}" cols="50" rows="7" style="display: inline; resize: none;" styleClass="proposalPitchInput"/>
                 <div class="inputLimitContainer">
-                    <span class="limit_characterCount"></span>/&amp;nbsp;<span class="limit_charactersMax">140</span> characters
+                    <span class="limit_characterCount"></span>/&#160;<span class="limit_charactersMax">140</span> characters
                 </div>
                 <div style="display: none">
                     <textarea class="originalValue">#{plan.plan.originalAbstract}</textarea>
@@ -138,7 +138,7 @@
                         <ice:inputTextarea value="#{section.section.content}" cols="54" rows="7" styleClass="rte" style="display: block;"/>
                         <f:subview rendered="#{section.definition.characterLimit gt 0}">
                             <div class="inputLimitContainer">
-                                <span class="limit_characterCount"></span>/&amp;nbsp;<span class="limit_charactersMax">#{section.definition.characterLimit}</span> characters
+                                <span class="limit_characterCount"></span>/&#160;<span class="limit_charactersMax">#{section.definition.characterLimit}</span> characters
                             </div>
                         </f:subview>
                         <div style="display: none">
@@ -329,9 +329,7 @@
                     });*/
                     
                     //jQuery(this).parent().mouseenter(function() { jQuery(this).addClass("mousein"); }).mouseleave( function() { jQuery(this).removeClass("mousein"); } );
-                    var editorOptions = {
-                    		customConfig : '/proposals-portlet/js/ckeditor_config.js'
-                    };
+
                     var refreshEditor = false;
                     var maxSteps = 10;
                     while (thiz.attr("id") in CKEDITOR.instances &amp;&amp; maxSteps > 0) {
@@ -347,7 +345,7 @@
                     	}
                     }
                     
-                    var editor = CKEDITOR.replace(thiz.attr("id"), editorOptions);
+                    var editor = CKEDITOR.replace(thiz.attr("id"));
                     
                     thiz.get(0)["ckeditor"] = editor;
                     editor.updatedCharCount = false;
@@ -431,7 +429,7 @@
 <div id="acceptTosPopup" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none; ">
 <div class="popup-wrap p1" id="acceptTosPopup">
  <div class="popup">
-  <h4>By saving your proposal you are entering the Climate CoLab contest and agree to the&amp;nbsp;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>&amp;nbsp;and Contest Rules.</h4>
+  <h4>By saving your proposal you are entering the Climate CoLab contest and agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>&#160;and Contest Rules.</h4>
   <h5>CONTEST RULES:</h5>
   <div class="terms">
     #{preferences.defaultDescription}
@@ -473,7 +471,7 @@
                     <div class="gray-button"><ice:commandLink value="DISCARD changes" actionListener="#{proposal.toggleEditing}" /></div>
                 </div>
                 <div class="admin-right">
-                    <p>&amp;nbsp;</p>
+                    <p>&#160;</p>
                 </div>
             </div>
         </div>
@@ -491,4 +489,15 @@
         
     
         </ice:form>
+        
+    <script>
+    	$(".fileUpload").change(function() {
+    		$(this).parents("form").submit();
+    	});
+		var containerOffset = jQuery("#uploadWidget").offset();
+
+		jQuery(".fileUpload").offset(containerOffset);
+    	
+    	
+    </script>
  </f:view>

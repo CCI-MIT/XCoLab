@@ -2,6 +2,7 @@ package org.climatecollaboratorium.plans.utils;
 
 import java.util.Map;
 
+import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 
 import org.climatecollaboratorium.plans.Helper;
@@ -35,11 +36,14 @@ public class PlansFriendlyURLMapper extends BaseFriendlyURLMapper {
                 friendlyURLPathSB.append(contestId);
 
                 portletURL.addParameterIncludedInPath("contestId");
+                portletURL.setParameter("p_p_mode", "view_contest");
+                
             }
             if (Validator.isNotNull(planId)) {
                 friendlyURLPathSB.append("planId/");
                 friendlyURLPathSB.append(planId);
                 portletURL.addParameterIncludedInPath("planId");
+                portletURL.setParameter("p_p_mode", "view_proposal");
             }
 
             friendlyURLPath = friendlyURLPathSB.toString();
@@ -76,6 +80,7 @@ public class PlansFriendlyURLMapper extends BaseFriendlyURLMapper {
             params.put(Helper.getUrlParameterKey(key), new String[] { value });
             addParameter(params, key, value);
         }
+        addParameter(params, "p_p_mode", "view_contest");
     }
 
     public void populateParams(String friendlyURLPath, Map<String, String[]> parameterMap,

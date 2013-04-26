@@ -81,6 +81,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
    
 
     public Variable getVariable() {
+        if (getScenario() == null || getMetaData() == null) return null; 
         return ModelUIFactory.getVariableForMetaData(getScenario(),getMetaData(),false);
     }
 

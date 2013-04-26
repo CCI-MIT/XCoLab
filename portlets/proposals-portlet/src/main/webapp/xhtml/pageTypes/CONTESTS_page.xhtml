@@ -63,7 +63,7 @@
  <div class="filter" style="position: relative;">
     <input type="text" value="#{contests.filterString}" placeholder="Filter contests" onchange="Collab.nav.navigateAddParams('plans', {contestFilter: this.value}); return false;" />
     <f:subview rendered="#{not empty contests.filterString}">
-        <a href="javascript:;" onclick="Collab.nav.navigateAddParams('plans', {contestFilter: ''}); return false;" id="contestsFilterClear">&amp;nbsp;</a>
+        <a href="javascript:;" onclick="Collab.nav.navigateAddParams('plans', {contestFilter: ''}); return false;" id="contestsFilterClear">&#160;</a>
     </f:subview>
  </div>
     </ice:form><br />
@@ -72,7 +72,7 @@
         <ice:form>
             <div id="archivedContestsMarkerContainer">
                 <img src="/climatecolab-theme/images/contests-archive.png" />
-                <strong>Archived:</strong>You are currently viewing archived contests.&amp;nbsp; <a href="/web/guest/plans" >Back to active contests</a>
+                <strong>Archived:</strong>You are currently viewing archived contests.&#160; <a href="/web/guest/plans" >Back to active contests</a>
             </div>
         </ice:form>
         
@@ -84,7 +84,7 @@
   <div id="suggestContestPopupContainer" >
     <div class="popup-wrap p1" id="suggestContestPopup">
         <div class="popup">
-            <h4>Please review the &amp;nbsp;<a href='/web/guest/resources/-/wiki/Main/Guidelines+for+suggesting+new+contests' target='_blank'>new contest guidelines</a> and the enter your suggestion below. A message will be sent to the CoLab staff and they will follow up with you soon.</h4>
+            <h4>Please review the &#160;<a href='/web/guest/resources/-/wiki/Main/Guidelines+for+suggesting+new+contests' target='_blank'>new contest guidelines</a> and the enter your suggestion below. A message will be sent to the CoLab staff and they will follow up with you soon.</h4>
             <div id="suggestContestPopupContent" class="lrContentPlaceholder lfr-column ">
                 <div>
                     <ice:inputTextarea value="#{contests.newContestSuggestion}" style="display: block; width: 100%; height: 80px;"/>

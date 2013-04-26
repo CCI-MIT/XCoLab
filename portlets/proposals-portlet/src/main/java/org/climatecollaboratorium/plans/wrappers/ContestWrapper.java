@@ -57,6 +57,7 @@ public class ContestWrapper {
 
 	private Map<String, List<User>> teamRoleUsersMap = new TreeMap<String, List<User>>();
 	private CreatePlanBean createPlanBean;
+	private List<ContestTeamRoleBean> contestTeamMembersByRole = new ArrayList<ContestTeamRoleBean>();
 
 	public ContestWrapper(Contest contest) throws SystemException,
 			PortalException {
@@ -103,6 +104,8 @@ public class ContestWrapper {
 		// reverse list to have active phase as the first one
 		Collections.reverse(activeOrPastPhases);
 		createPlanBean = new CreatePlanBean(this);
+		
+		
 
 		for (ContestTeamMember ctm : ContestLocalServiceUtil
 				.getTeamMembers(contest)) {
@@ -112,6 +115,10 @@ public class ContestWrapper {
 				teamRoleUsersMap.put(ctm.getRole(), roleUsers);
 			}
 			roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+		}
+		
+		for (String role: teamRoleUsersMap.keySet()) {
+		    contestTeamMembersByRole.add(new ContestTeamRoleBean(role, teamRoleUsersMap.get(role)));
 		}
 	}
 
@@ -450,11 +457,15 @@ public class ContestWrapper {
 		return teamRoleUsersMap;
 	}
 
-	public Set<String> getTeamRoles() {
-		return teamRoleUsersMap.keySet();
+	public List<String> getTeamRoles() {
+		return new ArrayList<String>(teamRoleUsersMap.keySet());
 	}
 
 	public String getFlagTooltip() {
 		return contest.getFlagTooltip();
+	}
+	
+	public List<ContestTeamRoleBean> getContestTeamMembersByRole() {
+	    return contestTeamMembersByRole;
 	}
 }

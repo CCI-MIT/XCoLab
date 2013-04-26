@@ -19,29 +19,29 @@
     </f:subview>
     
     <ice:panelSeries var="singleProposal" value="#{plansList}">
-        <div class="propbox #{singleProposal.featured ? 'featured' : ''}">
+        <ice:panelGroup styleClass="propbox #{singleProposal.featured ? 'featured' : ''}">
           <f:subview rendered="#{singleProposal.ribbon != null and singleProposal.ribbon > 0}">
-            <div class="ribbonPlaceholder">
+            <ice:panelGroup styleClass="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
                     <br />
                     <img src="/climatecolab-theme/images/icon-prize.png" />
                 </span>
-                <div class="tooltip">
-                    #{singleProposal.ribbonText}
-                </div>
-            </div>
+                <ice:panelGroup styleClass="tooltip">
+                    <ice:outputText value="#{singleProposal.ribbonText}" escape="false" />
+                </ice:panelGroup>
+            </ice:panelGroup>
             </f:subview>
-            <div class="row1">
-                <div class="title-author">
+            <ice:panelGroup styleClass="row1">
+                <ice:panelGroup styleClass="title-author">
                     <h4>
                         <f:subview rendered="#{not empty singleProposal.tags}">
-                            <div style="display: inline; display: inline-block;">
+                            <ice:panelGroup style="display: inline; display: inline-block;">
                                 <span class="fieldWithTooltip">#{singleProposal.tags}:</span>
-                                <div class="tooltip">
-                                    #{singleProposal.tagsHover}
-                                    <div class="tt-arrow"></div>
-                                </div>
-                            </div>
+                                <ice:panelGroup styleClass="tooltip">
+                                    <ice:outputText escape="false" value="#{singleProposal.tagsHover}" />
+                                    <ice:panelGroup styleClass="tt-arrow"></ice:panelGroup>
+                                </ice:panelGroup>
+                            </ice:panelGroup>
                                 
                         </f:subview>
                         <!-- 
@@ -60,7 +60,7 @@
                         <f:subview rendered="#{singleProposal.ribbon != null and singleProposal.ribbon > 0}">
                             <div class="tooltips" style="display: inline-block;">
                                 <div>
-                                    <a href="javascript:;" class="ribbon-hover planRibbon ribbon_#{singleProposal.ribbon}">&amp;nbsp;</a>
+                                    <a href="javascript:;" class="ribbon-hover planRibbon ribbon_#{singleProposal.ribbon}">&#160;</a>
                                     <div class="tooltip">
                                         #{singleProposal.ribbonText}
                                     </div>
@@ -71,7 +71,7 @@
                         
                         <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.name}" escape="true" />
                         
-                        /&amp;nbsp;
+                        /&#160;
                         <f:subview rendered="#{empty singleProposal.team}">
                             <collab:userLinkSimple userId="#{singleProposal.author.userId}" text="#{singleProposal.author.screenName}" />
                         </f:subview>
@@ -79,30 +79,30 @@
                             #{singleProposal.team}
                         </f:subview>
                     </h4>
-                    <div class="clear" ></div>
-                </div>
-                <div class="thumbbox">
+                    <ice:panelGroup styleClass="clear" ></ice:panelGroup>
+                </ice:panelGroup>
+                <ice:panelGroup styleClass="thumbbox">
                     <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.supportersCount}" hashString="plans%3Dtab%3ATEAM"/>
-                </div>
-                <div class="commbox">
+                </ice:panelGroup>
+                <ice:panelGroup styleClass="commbox">
                     <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.commentsCount}" hashString="plans%3Dtab%3ACOMMENTS" />
-                </div>
-                <div class="modbox">
+                </ice:panelGroup>
+                <ice:panelGroup styleClass="modbox">
                     <ice:outputText value="#{singleProposal.lastModifiedDate}" >
                         <f:convertDateTime locale="en_US" type="date" dateStyle="short" timeZone="America/New_York" />
                     </ice:outputText>
-                </div>
-                <div class="conbox">
+                </ice:panelGroup>
+                <ice:panelGroup styleClass="conbox">
                     <f:subview rendered="#{singleProposal.open}">
                         anyone
                     </f:subview>
                     <f:subview rendered="#{not singleProposal.open}">
                         team only
                     </f:subview>
-                </div>
-            </div>
-            <div class="row2">#{singleProposal.pitch}</div>
-        </div> <!-- /proposal -->
+                </ice:panelGroup>
+            </ice:panelGroup>
+            <ice:panelGroup styleClass="row2">#{singleProposal.pitch}</ice:panelGroup>
+        </ice:panelGroup> <!-- /proposal -->
     </ice:panelSeries>
     
     <script type="text/javascript">

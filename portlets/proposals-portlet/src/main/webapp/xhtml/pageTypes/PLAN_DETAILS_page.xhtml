@@ -67,12 +67,12 @@
                     </div>
                     <f:subview rendered="#{not planBean.plan.viewingLatest}">
                         <div class="lastedited">
-                            Currently viewing version from #{planBean.plan.updated} by&amp;nbsp;
+                            Currently viewing version from #{planBean.plan.updated} by&#160;
                             <collab:userLinkSimple userId="#{planBean.plan.updateAuthorId}" text="#{planBean.plan.updateAuthorScreenName}" />
                         </div> 
                         <div class="edit-prop-butts">
-                            &amp;nbsp;
-                            &amp;nbsp;
+                            &#160;
+                            &#160;
                             <f:subview styleClass="edit-prop-butts" rendered="#{permissions.canEdit}">
                                 <ice:commandLink value="Revert" actionListener="#{planBean.plan.revertTo}" />
                             </f:subview>
@@ -80,7 +80,7 @@
                         </div>
                     
                     </f:subview>
-                    <!-- <div class="lastedited">Last edited 5 days ago by <a href="javascript:;">&amp;nbsp;beachbabe-in-fl</a></div>-->
+                    <!-- <div class="lastedited">Last edited 5 days ago by <a href="javascript:;">&#160;beachbabe-in-fl</a></div>-->
                 </ice:form>
             </div>
         </div>
@@ -88,7 +88,29 @@
  
 
 <div id="content">
-    <ui:include src="./plan/tab_#{proposal.currentTab}#{proposal.editing and proposal.currentTab.editable ? '_edit' : '' }.xhtml" />
+	<f:subview rendered="#{proposal.currentTab == 'DESCRIPTION' and not proposal.editing}">
+		<ui:include src="./plan/tab_DESCRIPTION.xhtml" />
+	</f:subview>
+	<f:subview rendered="#{proposal.currentTab == 'DESCRIPTION' and proposal.editing}">
+		<ui:include src="./plan/tab_DESCRIPTION_edit.xhtml" />
+	</f:subview>
+	<f:subview rendered="#{proposal.currentTab == 'ACTIONSIMPACTS' and not proposal.editing}">
+		<ui:include src="./plan/tab_ACTIONSIMPACTS.xhtml" />
+	</f:subview>
+	<f:subview rendered="#{proposal.currentTab == 'ACTIONSIMPACTS' and proposal.editing}">
+		<ui:include src="./plan/tab_ACTIONSIMPACTS_edit.xhtml" />
+	</f:subview>
+	<f:subview rendered="#{proposal.currentTab == 'COMMENTS'}">
+		<ui:include src="./plan/tab_COMMENTS.xhtml" />
+	</f:subview>
+	<f:subview rendered="#{proposal.currentTab == 'ADMIN'}">
+		<ui:include src="./plan/tab_ADMIN.xhtml" />
+	</f:subview>
+	<f:subview rendered="#{proposal.currentTab == 'TEAM'}">
+		<ui:include src="./plan/tab_TEAM.xhtml" />
+	</f:subview>
+	
+	
 </div>
  
 </f:view>

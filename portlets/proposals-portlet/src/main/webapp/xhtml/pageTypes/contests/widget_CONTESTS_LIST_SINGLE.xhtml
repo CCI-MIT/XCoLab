@@ -16,7 +16,7 @@
         <ice:column style="width: 366px;">
             <div style="position: relative;">
                 <f:subview rendered="#{not empty singleContest.flagText}">
-                    <span class="#{not empty singleContest.flagTooltip ? 'fieldWithTooltip' : ''}">#{singleContest.flagText}:&amp;nbsp;</span>
+                    <span class="#{not empty singleContest.flagTooltip ? 'fieldWithTooltip' : ''}">#{singleContest.flagText}:&#160;</span>
                     <f:subview rendered="#{not empty singleContest.flagTooltip}">
                         <div class="tooltip">#{singleContest.flagTooltip}<div class="tt-arrow"></div></div>
                     </f:subview>

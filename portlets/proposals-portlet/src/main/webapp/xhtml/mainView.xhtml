@@ -13,5 +13,23 @@
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     xmlns:h="http://java.sun.com/jsf/html"  >
     
-    <ui:include src="./pageTypes/#{pageType}_page.xhtml" />
+    <f:subview rendered="#{pageType == 'CONTESTS'}">
+    	<ui:include src="./pageTypes/CONTESTS_page.xhtml" />
+    </f:subview>
+    <f:subview rendered="#{pageType == 'CONTEST_PROPOSALS'}">
+    	<ui:include src="./pageTypes/CONTEST_PROPOSALS_page.xhtml" />
+    </f:subview>
+    <f:subview rendered="#{pageType == 'CONTEST_DISCUSSION'}">
+    	<ui:include src="./pageTypes/CONTEST_DISCUSSION_page.xhtml" />
+    </f:subview>
+    <f:subview rendered="#{pageType == 'PLAN_DETAILS'}">
+    	<ui:include src="./pageTypes/PLAN_DETAILS_page.xhtml" />
+    </f:subview>
+    <!-- 
+    <f:subview rendered="#{pageType == 'CONTEST_MODEL'}">
+    	<ui:include src="./pageTypes/CONTEST_MODEL_page.xhtml" />
+    </f:subview>
+    
+    
+     -->
 </f:view>

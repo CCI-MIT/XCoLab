@@ -9,6 +9,7 @@ import org.climatecollaboratorium.events.Event;
 public class NavigationEvent implements Event {
     
     private Map<String, Map<String, String>> parameters = new HashMap<String, Map<String,String>>();
+    private String resultName;
     
     public NavigationEvent(Map<String, Map<String, String>> sourcesAndParameters) {
         parameters = sourcesAndParameters;
@@ -24,6 +25,14 @@ public class NavigationEvent implements Event {
     
     public Set<String> getSources() {
         return parameters.keySet();
+    }
+
+    public String getResultName() {
+        return resultName;
+    }
+
+    public void setResultName(String resultName) {
+        this.resultName = resultName;
     }
     
     
