@@ -7,9 +7,14 @@
 	<h:head />
 	<h:body>
 		<ice:portlet>
-		mainpage
-		<ui:include src="./page/#{balloonBean.page}_page.xhtml">
-				<ui:param value="#{balloonBean}" name="#{balloonBean}" />
+			<ice:panelGroup rendered="#{balloonBean.setCookie}">
+				<script type="text/javascript">
+				var expDate =  new Date ( new Date().getTime() + (3*30*24*1000*60*60) );
+				document.cookie = "#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="+expDate.toUTCString();
+				</script>
+			</ice:panelGroup>
+			<ui:include src="./page/#{balloonBean.page}_PAGE.xhtml">
+				<ui:param value="#{balloonBean}" name="balloonBean" />
 			</ui:include>
 		</ice:portlet>
 	</h:body>

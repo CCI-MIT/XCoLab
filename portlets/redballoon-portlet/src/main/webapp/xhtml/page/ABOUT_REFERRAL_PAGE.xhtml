@@ -7,10 +7,9 @@
 	xmlns:sharedcollab="http://climatecollaboratorium.org/components">
 
 	<ice:panelGroup rendered="#{balloonBean.redirectUserToGetURL}">
-REDIRECT ME
-</ice:panelGroup>
+	REDIRECT ME
+	</ice:panelGroup>
 
-	GET: <ice:outputText value="${balloonBean.display}" />
 	<div id="redballoon">
 		<ice:form id="contact">
 			<p>Help find the person who will write the proposal that wins the
@@ -29,7 +28,6 @@ REDIRECT ME
 			</ice:inputText>
 
 			<ice:messages globalOnly="true" />
-
 			<p>
 				<ice:commandLink value="request personal URL"
 					actionListener="#{balloonBean.requestURL}" />
