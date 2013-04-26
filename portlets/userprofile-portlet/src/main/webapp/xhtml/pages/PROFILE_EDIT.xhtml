@@ -5,7 +5,15 @@
     xmlns:h="http://java.sun.com/jsf/html"  
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
     >
+    <div class="fileUploadContainer">
+    <h:form>
+		<ace:fileEntry id="profileImage" fileEntryListener="#{currentUser.uploadPortrait}" styleClass="filepc fileUpload" autoUpload="true" >
+			<ice:outputStyle href="/css/main.css" />
+		</ace:fileEntry><br />
+    </h:form>
+    </div>
    <ice:form>
                     
     <script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js" ><!-- --></script>
@@ -43,17 +51,7 @@
                     </tr>
                 </table>
                 
-            <ice:panelGroup styleClass="profile_upload"> 
-                    <ice:inputFile id="profileImage" actionListener="#{currentUser.uploadPortrait}" styleClass="filepc" autoUpload="true" >
-                        <ice:outputStyle href="/css/main.css" />
-                    </ice:inputFile><br />
-                    
-                    <ice:commandLink styleClass="hidden signalPictureUploaded" actionListener="#{currentUser.signalPictureUploaded}" />
-                    <script type="text/javascript">
-                        
-                        monitorUploadFrame();
-                    </script>
-                    
+            <ice:panelGroup styleClass="profile_upload">
                     
               <!-- 
               <input name="filepc" type="file" size="30" id="filepc" onchange="document.getElementById('fakefilepc').value = this.value;"/>
@@ -192,4 +190,15 @@
 
     </div> <!-- /right_col3 -->
      </ice:form>
+     
+    <script>
+    	$(".fileUpload").change(function() {
+    		$(this).parents("form").submit();
+    	});
+		var containerOffset = jQuery(".profile_upload").offset();
+
+		jQuery(".fileUpload").offset(containerOffset);
+    	
+    	
+    </script>
 </f:view>

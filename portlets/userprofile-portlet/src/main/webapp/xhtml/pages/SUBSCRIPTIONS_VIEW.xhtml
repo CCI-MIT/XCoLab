@@ -26,7 +26,7 @@
       <ice:dataTable var="activity" value="#{userprofileBean.subscribedActivities}" id="activitiesTable" styleClass="colab" rowClasses='nt,t' rows="50">
         <ice:column style="width: 585px">
             <f:facet name="header">Activity</f:facet>
-            #{activity.body}
+            <ice:outputText value="#{activity.body}" escape="false" />
         </ice:column>
         
         <ice:column style="width: 140px">
@@ -53,7 +53,7 @@
                         </ice:dataPaginator>
                 </td>     
                 <td class="paginatorControls">
-                    <ice:dataPaginator rendered="true" for="activitiesTable" paginator="true" paginatorMaxPages="5" styleClass="comm_controls" style="display: inline;"> 
+                    <ice:dataPaginator rendered="true" for="activitiesTable" paginator="#{true}" paginatorMaxPages="#{5}" styleClass="comm_controls" style="display: inline;"> 
                         <f:facet name="first" rendered="true">
                             <ice:panelGroup >First</ice:panelGroup>
                         </f:facet>

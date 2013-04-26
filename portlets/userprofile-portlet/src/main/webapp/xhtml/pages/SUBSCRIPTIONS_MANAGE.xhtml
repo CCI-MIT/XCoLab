@@ -33,7 +33,8 @@
             <f:facet name="header">
                 Subject
             </f:facet>
-            <ice:selectBooleanCheckbox value="#{subscription.selected}" styleClass="subscriptionSelect"/> #{subscription.name}
+            <ice:selectBooleanCheckbox value="#{subscription.selected}" styleClass="subscriptionSelect"/> 
+            &#160;<ice:outputText value="#{subscription.name}" escape="false" />
         </ice:column>
         <ice:column style="width: 100px">
             <f:facet name="header">

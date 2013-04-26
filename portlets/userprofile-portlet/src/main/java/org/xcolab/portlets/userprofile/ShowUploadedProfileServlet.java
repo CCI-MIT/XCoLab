@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 public class ShowUploadedProfileServlet extends HttpServlet {
-    private final static File UPLOAD_DIR = new File("/tmp");
+    public final static File UPLOAD_DIR = new File("/tmp");
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         process(request, response);

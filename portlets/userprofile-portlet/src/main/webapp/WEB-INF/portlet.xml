@@ -9,14 +9,14 @@
 	<portlet>
 		<portlet-name>userprofile-portlet</portlet-name>
 		<display-name>userprofile-portlet</display-name>
-		<portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
 		<init-param>
-			<name>com.icesoft.faces.VIEW</name>
-			<value>/xhtml/view.iface</value>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/xhtml/view.xhtml</value>
 		</init-param>
 		<init-param>
-			<name>com.icesoft.faces.EDIT</name>
-			<value>/xhtml/edit.iface</value>
+			<name>javax.portlet.faces.defaultViewId.edit</name>
+			<value>/xhtml/edit.xhtml</value>
 		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>

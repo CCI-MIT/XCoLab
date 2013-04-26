@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.userprofile.UserWrapper;
 import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
 
@@ -35,7 +36,7 @@ public class UserPasswordValidator implements Validator {
         errorMsg.setSeverity(FacesMessage.SEVERITY_ERROR);
         boolean isError = false;
         
-        if (type.equals("current")) {
+        if (type.equals("current") && ! StringUtils.isBlank(value.toString())) {
             try {
                 if (! PwdEncryptor.encrypt(value.toString()).equals(currentUser.getPassword())) {
                     isError = true;
@@ -51,13 +52,14 @@ public class UserPasswordValidator implements Validator {
             }
         }
         else if (type.equals("new")) {
-            if ( value.toString().trim().length() < 6) {
+            if (! StringUtils.isBlank(value.toString()) && value.toString().trim().length() < 6) {
                 errorMsg.setDetail("Password needs to have at least 6 characters");
                 errorMsg.setSummary("Password needs to have at least 6 characters");
                 isError = true;
             }
         }
         else if (type.equals("newRetype")) {
+            if (! StringUtils.isBlank(value.toString())) {
                 if (! value.equals(newPassword)) {
                     errorMsg.setDetail("Passwords don't match");
                     errorMsg.setSummary("Passwords don't match");
@@ -69,6 +71,7 @@ public class UserPasswordValidator implements Validator {
                     isError = true;
                 }
             }
+        }
             
         
         if (isError) {

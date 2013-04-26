@@ -167,7 +167,7 @@
 		<ice:dataTable styleClass="colab" value="#{currentUser.activities}"
 			rowClasses="t,nt" var="activity">
 			<ice:column>
-                #{activity.body}
+				<ice:outputText value="#{activity.body}" escape="false" />
             </ice:column>
 			<ice:column style="text-align: right;">
 				<ice:outputText value="#{activity.createdDate}">
@@ -196,7 +196,7 @@
 
 			<ice:panelSeries rendered="#{not empty userprofileBean.messages}"
 				var="message" value="#{userprofileBean.messages}">
-				<div class="comm_rightcol-time">
+				<ice:panelGroup styleClass="comm_rightcol-time">
 					<ice:outputText value="Today" rendered="#{message.daysAgo == 0}" />
 					<ice:outputText value="Yesterday"
 						rendered="#{message.daysAgo == 1}" />
@@ -206,13 +206,13 @@
 						<f:convertDateTime pattern="hh:mm a" locale="en_US"
 							timeZone="America/New_York" />
 					</ice:outputText>
-				</div>
-				<p>
+				</ice:panelGroup>
+				<ice:panelGroup styleClass="activityBody">
 					<collab:userLinkSimple text="#{message.from.screenName}"
 						userId="#{message.from.userId}" />
-					sent you a message:&amp;nbsp; <a
+					sent you a message:&#160; <a
 						href="/web/guest/messaging?p_p_id=#{userprofileBean.messagingPortletId}&amp;messageId=#{message.messageId}">#{message.subject}</a>
-				</p>
+				</ice:panelGroup>
 			</ice:panelSeries>
 
 			<div class="rounded_button brn">
@@ -236,28 +236,29 @@
 					value="#{userprofileBean.subscribedActivities}"
 					rendered="#{not empty userprofileBean.subscribedActivities}"
 					rows="5">
-					<div class="comm_rightcol-time">
-						<ice:outputText value="Today" rendered="#{activity.daysAgo == 0}" />
+					<ice:panelGroup styleClass="comm_rightcol-time">
+						<ice:outputText value="Today" rendered="#{activity.daysAgo == 0}" nospan='true'/>
 						<ice:outputText value="Yesterday"
-							rendered="#{activity.daysAgo == 1}" />
+							rendered="#{activity.daysAgo == 1}" nospan='true'/>
 						<ice:outputText value="#{activity.daysAgo} days ago"
-							rendered="#{activity.daysAgo > 1}" />
-						<ice:outputText value="#{activity.createdDate}">
+							rendered="#{activity.daysAgo > 1}" nospan='true' />
+							&#160;
+						<ice:outputText value="#{activity.createdDate}" nospan='true'>
 							<f:convertDateTime pattern="hh:mm a" locale="en_US"
 								timeZone="America/New_York" />
 						</ice:outputText>
-					</div>
-					<p>#{activity.body}</p>
+					</ice:panelGroup>
+					<ice:outputText value="#{activity.body}" escape="false" styleClass="activityBody"/>
 				</ice:panelSeries>
-				<div class="rounded_button brn">
+				<ice:panelGroup styleClass="rounded_button brn">
 					<a href="./#{currentUser.userId}/page/subscriptionsManage">MANAGE</a>
-				</div>
-				<div class="rounded_button brn">
+				</ice:panelGroup>
+				<ice:panelGroup styleClass="rounded_button brn">
 					<f:subview
 						rendered="#{not empty userprofileBean.subscribedActivities}">
 						<a href="./#{currentUser.userId}/page/subscriptions">SEE ALL</a>
 					</f:subview>
-				</div>
+				</ice:panelGroup>
 			</ice:form>
 		</div>
 
@@ -274,22 +275,22 @@
 				<h4>Send #{currentUser.realName} a message</h4>
 				<ice:panelGroup>
 					<ice:form>
-						<div>
+						<ice:panelGroup>
 							<p>
-								<strong>Subject:</strong> &amp;nbsp; <span class="error hidden">
+								<strong>Subject:</strong> &#160; <span class="error hidden">
 									* value required</span><br />
 								<ice:inputText styleClass="popuplogin_input sendMessage_subject"
 									value="#{userprofileBean.messageSubject}" />
 							</p>
 							<p>
-								<strong>Message:</strong> &amp;nbsp; <span class="error hidden">
+								<strong>Message:</strong> &#160; <span class="error hidden">
 									* value required</span><br />
 								<ice:inputTextarea value="#{userprofileBean.messageText}"
 									styleClass="sendMessage_message" />
 							</p>
 
-						</div>
-						<div class="btns">
+						</ice:panelGroup>
+						<ice:panelGroup styleClass="btns">
 							<div class="blue-button">
 								<ice:commandLink styleClass="popuplogin_submit" value="Send"
 									onclick="if (sendMessageFormValid()) { lockSendMessageForm(); } else { return false; }"
@@ -299,7 +300,7 @@
 								<a href="javascript:;"
 									onclick="clearSendMessageForm(); hideSendMessagForm(); return false;">Cancel</a>
 							</div>
-						</div>
+						</ice:panelGroup>
 					</ice:form>
 
 				</ice:panelGroup>

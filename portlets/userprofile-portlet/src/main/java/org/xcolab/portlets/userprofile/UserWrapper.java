@@ -10,10 +10,16 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
+import org.icefaces.ace.component.fileentry.FileEntry;
+import org.icefaces.ace.component.fileentry.FileEntryEvent;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.apache.commons.io.IOUtils;
 import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
 
 import com.ext.portlet.community.CommunityConstants;
@@ -21,7 +27,6 @@ import com.ext.portlet.model.PlanFan;
 import com.ext.portlet.service.PlanFanLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
-import com.icesoft.faces.component.inputfile.InputFile;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -181,24 +186,42 @@ public class UserWrapper {
 		return name;
 	}
 
-	public void uploadPortrait(ActionEvent e) throws IOException {
-		InputFile inputFile = (InputFile) e.getSource();
-		if (inputFile.getStatus() == InputFile.INVALID) {
-			fileErrorMessage = "Provided file isn't a valid image.";
-			_log.error("There was an error when uploading file", inputFile
-					.getFileInfo().getException());
-			return;
-		}
+	public void uploadPortrait(FileEntryEvent e) throws IOException {
+	    FileEntry fe = (FileEntry) e.getComponent();
+        FileEntryResults results = fe.getResults();
+        File uploadedFile = null;
+        for (FileEntryResults.FileInfo i : results.getFiles()) {
+            if (i.isSaved()) {
 
-		if (!inputFile.getFileInfo().getContentType().startsWith("image")) {
-			fileErrorMessage = "Provided file isn't a valid image.";
-			_log.error("There was an error when uploading file", inputFile
-					.getFileInfo().getException());
-			return;
-		}
-		fileErrorMessage = null;
-		resizeAndCropImage(inputFile.getFile());
-		newUserProfile = inputFile.getFile();
+                uploadedFile = i.getFile();
+                if (uploadedFile == null) {
+                    fileErrorMessage = "Provided file isn't a valid image.";
+                    _log.error("There was an error when uploading file " + i.getFileName());
+                    return;
+                }
+                
+                File tmpFile = new File(ShowUploadedProfileServlet.UPLOAD_DIR, Math.abs(new Random().nextLong()) + "_" + i.getFileName());
+                tmpFile.createNewFile();
+                FileUtils.copyFile(uploadedFile, tmpFile);
+                uploadedFile = tmpFile;
+                //IOUtils.copy
+            } else {
+                fileErrorMessage = "Provided file isn't a valid image.";
+                _log.error("There was an error when uploading file " + i.getFileName());
+                return;
+            }
+        }
+        fileErrorMessage = null;
+        try {
+            resizeAndCropImage(uploadedFile);
+        }
+        catch (IOException ex) {
+            fileErrorMessage = "Provided file isn't a valid image.";
+            _log.error("There was an error when uploading file " + uploadedFile.getName(), ex);
+            return;
+            
+        }
+		newUserProfile = uploadedFile;
 	}
 
 	public void setLastName(String lastName) {

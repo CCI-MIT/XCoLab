@@ -6,14 +6,39 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     >
+  <h:head />
+  <h:body>
     <ice:portlet>
-        <ui:include src="./pages/#{userprofileBean.pageType}.xhtml">
-            <ui:param value="#{userprofileBean.currentUser}" name="currentUser" />
-            <ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
-        </ui:include>
-        
-        <!-- 
-        <ui:include src="./#{userprofileBean.initialized ? 'userProfileDetails' : 'noSuchUser'}#{userprofileBean.editing ? '_editing' : ''}.xhtml" >
-         -->
+    	<f:subview rendered="#{userprofileBean.pageType == 'PROFILE_DETAILS'}">
+    		<ui:include src="./pages/PROFILE_DETAILS.xhtml" >
+            	<ui:param value="#{userprofileBean.currentUser}" name="currentUser" />
+            	<ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
+        	</ui:include>
+    	</f:subview>
+    	<f:subview rendered="#{userprofileBean.pageType == 'PROFILE_EDIT'}">
+    		<ui:include src="./pages/PROFILE_EDIT.xhtml" >
+            	<ui:param value="#{userprofileBean.currentUser}" name="currentUser" />
+            	<ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
+        	</ui:include>
+    	</f:subview>
+    	<f:subview rendered="#{userprofileBean.pageType == 'PROFILE_NOT_INITIALIZED'}">
+    		<ui:include src="./pages/PROFILE_NOT_INITIALIZED.xhtml" >
+            	<ui:param value="#{userprofileBean.currentUser}" name="currentUser" />
+            	<ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
+        	</ui:include>
+    	</f:subview>
+    	<f:subview rendered="#{userprofileBean.pageType == 'SUBSCRIPTIONS_MANAGE'}">
+    		<ui:include src="./pages/SUBSCRIPTIONS_MANAGE.xhtml" >
+            	<ui:param value="#{userprofileBean.currentUser}" name="currentUser" />
+            	<ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
+        	</ui:include>
+    	</f:subview>
+    	<f:subview rendered="#{userprofileBean.pageType == 'SUBSCRIPTIONS_VIEW'}">
+    		<ui:include src="./pages/SUBSCRIPTIONS_VIEW.xhtml" >
+            	<ui:param value="#{userprofileBean.currentUser}" name="currentUser" />
+            	<ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
+        	</ui:include>
+    	</f:subview>
     </ice:portlet>
+  </h:body>
 </f:view>
