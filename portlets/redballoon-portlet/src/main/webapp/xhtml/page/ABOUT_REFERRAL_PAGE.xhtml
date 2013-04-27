@@ -2,6 +2,7 @@
 <f:view xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:ace="http://www.icesoft.com/icefaces/components"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<ice:panelGroup rendered="#{balloonBean.redirectUserToGetURL}">
@@ -9,7 +10,6 @@
 	</ice:panelGroup>
 
 	<div id="redballoon">
-		<ice:form id="contact">
 			<p>Help find the person who will write the proposal that wins the
 				Climate CoLab Grand Prize!</p>
 
@@ -28,8 +28,7 @@
 			<ice:messages globalOnly="true" />
 			<p>
 				<ice:commandLink value="request personal URL"
-					actionListener="#{balloonBean.requestURL}" />
+					actionListener="#{balloonBean.requestURL}" id="theotherlink" />
 			</p>
-		</ice:form>
 	</div>
 </f:view>

@@ -19,7 +19,7 @@ public class BalloonBean implements Serializable {
 	
 	private String email = "";
 	private boolean redirectUserToGetURL = false;
-	private View forceNextPage = null;
+	private View forceNextPage;
 	private BalloonCookie cookie;
 	private HttpServletRequest httpReq;
 	private boolean setCookie = false;
@@ -127,7 +127,6 @@ public class BalloonBean implements Serializable {
 
 	public void requestURL(ActionEvent e) throws AddressException,
 			SystemException, PortalException, MailEngineException {
-		System.out.println("I was executed!");
 
 		/**
 		 * store email in cookie

@@ -36,5 +36,14 @@ public class BalloonCookieTest {
 		Assert.assertEquals("uuid", bc.getUuid());
 		Assert.assertEquals("email", bc.getEmail());
 	}
+	
+	@Test
+	public void testCookieDecodeCorrectNoMail() {
+		Cookie[] testCookies = new Cookie[] { new Cookie("something", "bla"),
+				new Cookie(BalloonCookie.COOKIE_NAME, "uuid") };
+		BalloonCookie bc = BalloonCookie.fromCookieArray(testCookies);
+		Assert.assertNotNull(bc);
+		Assert.assertEquals("uuid", bc.getUuid());
+	}
 
 }

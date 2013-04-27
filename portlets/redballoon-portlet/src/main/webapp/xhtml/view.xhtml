@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<f:view xmlns:f="http://java.sun.com/jsf/core"
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:liferay-faces="http://liferay.com/tld/faces"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -7,33 +8,29 @@
 	<h:head />
 	<h:body>
 		<ice:portlet>
-			<ice:panelGroup rendered="#{balloonBean.setCookie}">
-				<script type="text/javascript">
-					var expDate = new Date(new Date().getTime()
-							+ (3 * 30 * 24 * 1000 * 60 * 60));
-					document.cookie = "#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="
-							+ expDate.toUTCString();
-				</script>
-			</ice:panelGroup>
-			<ui:include src="./page/#{balloonBean.page}_PAGE.xhtml">
-				<ui:param value="#{balloonBean}" name="balloonBean" />
-			</ui:include>
+			<ice:form id="myform">
+				<ice:panelGroup rendered="#{balloonBean.setCookie}">
+					<script type="text/javascript">
+						var expDate = new Date(new Date().getTime()
+								+ (3 * 30 * 24 * 1000 * 60 * 60));
+						document.cookie = "#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="
+								+ expDate.toUTCString();
+					</script>
+				</ice:panelGroup>
+				<!-- 			<ui:include src="./page/#{balloonBean.page}_PAGE.xhtml"> -->
+				<!-- 				<ui:param value="#{balloonBean}" name="balloonBean" /> -->
+				<!-- 			</ui:include> -->
 
-			<!-- 			<f:subview rendered="#{balloonBean.page eq 'ABOUT_COLAB'}"> -->
-			<!-- 				<ui:include src="./page/ABOUT_COLAB_PAGE.xhtml"> -->
-			<!-- 					<ui:param value="#{balloonBean}" name="balloonBean" /> -->
-			<!-- 				</ui:include> -->
-			<!-- 			</f:subview> -->
-			<!-- 			<f:subview rendered="#{balloonBean.page eq 'ABOUT_REFERRAL'}"> -->
-			<!-- 				<ui:include src="./page/ABOUT_REFERRAL_PAGE.xhtml"> -->
-			<!-- 					<ui:param value="#{balloonBean}" name="balloonBean" /> -->
-			<!-- 				</ui:include> -->
-			<!-- 			</f:subview> -->
-			<!-- 			<f:subview rendered="#{balloonBean.page eq 'SHARE'}"> -->
-			<!-- 				<ui:include src="./page/SHARE_PAGE.xhtml"> -->
-			<!-- 					<ui:param value="#{balloonBean}" name="balloonBean" /> -->
-			<!-- 				</ui:include> -->
-			<!-- 			</f:subview> -->
+				<f:subview rendered="#{balloonBean.page == 'ABOUT_COLAB'}">
+					<ui:include src="./page/ABOUT_COLAB_PAGE.xhtml" />
+				</f:subview>
+				<f:subview rendered="#{balloonBean.page == 'ABOUT_REFERRAL'}">
+					<ui:include src="./page/ABOUT_REFERRAL_PAGE.xhtml" />
+				</f:subview>
+				<f:subview rendered="#{balloonBean.page == 'SHARE'}">
+					<ui:include src="./page/SHARE_PAGE.xhtml" />
+				</f:subview>
+			</ice:form>
 		</ice:portlet>
 	</h:body>
 </f:view>

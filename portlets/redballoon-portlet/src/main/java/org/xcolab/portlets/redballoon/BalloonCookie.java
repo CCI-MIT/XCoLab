@@ -72,11 +72,11 @@ public class BalloonCookie implements Serializable {
 			if (c.getName().equals(COOKIE_NAME)) {
 				BalloonCookie bc = new BalloonCookie();
 				String[] vals = c.getValue().split("\\\\");
-				if (vals.length > 0)
+				if (vals.length > 0) {
 					bc.uuid = vals[0];
-				if (vals.length == 2) {
-
-					bc.email = vals[1];
+					if (vals.length == 2) {
+						bc.email = vals[1];
+					}
 					return bc;
 				}
 			}
