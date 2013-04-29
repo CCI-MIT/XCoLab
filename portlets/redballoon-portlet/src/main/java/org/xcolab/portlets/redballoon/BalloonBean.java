@@ -137,10 +137,13 @@ public class BalloonBean implements Serializable {
 
 		redirectUserToGetURL = true;
 		forceNextPage = View.ABOUT_REFERRAL;
+	
 	}
 
-	public void aboutColabToAboutReferral(ActionEvent e) {
+	public String aboutColabToAboutReferral(ActionEvent e) {
 		System.out.println("change sites");
 		forceNextPage = View.ABOUT_REFERRAL;
+		
+		return "toReferralPage";
 	}
 }

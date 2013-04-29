@@ -27,16 +27,13 @@
 						<ui:param value="#{balloonBean}" name="balloonBean" />
 					</ui:include>
 				</f:subview>
-				<f:subview rendered="#{balloonBean.page == 'ABOUT_REFERRAL'}">
-					<ui:include src="./page/ABOUT_REFERRAL_PAGE.xhtml">
-						<ui:param value="#{balloonBean}" name="balloonBean" />
-					</ui:include>
-				</f:subview>
 				<f:subview rendered="#{balloonBean.page == 'SHARE'}">
 					<ui:include src="./page/SHARE_PAGE.xhtml">
 						<ui:param value="#{balloonBean}" name="balloonBean" />
 					</ui:include>
 				</f:subview>
+				<ice:commandLink value="share with friends"
+		actionListener="#{balloonBean.aboutColabToAboutReferral}" />
 			</h:form>
 		</ice:portlet>
 	</h:body>
