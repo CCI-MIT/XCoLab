@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
-<f:view xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
 	xmlns:ace="http://www.icesoft.com/icefaces/components"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+cookie? #{balloonBean.setCookie}
 
 	<ice:panelGroup rendered="#{balloonBean.redirectUserToGetURL}">
 	REDIRECT ME
@@ -19,16 +22,15 @@
 
 			To refer people in a way that we can keep track of, please enter your
 			email address here:
-			<ice:message for="email" />
-			<ice:inputText value="#{balloonBean.email}" id="email"
+			<h:message for="email" />
+			<h:inputText value="#{balloonBean.email}" id="email"
 				required="true" styleClass="text">
 				<f:validator validatorId="emailValidator" />
-			</ice:inputText>
+			</h:inputText>
 
-			<ice:messages globalOnly="true" />
 			<p>
-				<ice:commandLink value="request personal URL"
-					actionListener="#{balloonBean.requestURL}" id="theotherlink" />
+				<h:commandLink value="request personal URL"
+					actionListener="#{balloonBean.requestURL}" />
 			</p>
 	</div>
-</f:view>
+</ui:composition>

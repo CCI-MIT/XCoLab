@@ -143,8 +143,4 @@ public class BalloonBean implements Serializable {
 		System.out.println("change sites");
 		forceNextPage = View.ABOUT_REFERRAL;
 	}
-
-	public void postRenderView() {
-		setCookie = false;
-	}
 }
