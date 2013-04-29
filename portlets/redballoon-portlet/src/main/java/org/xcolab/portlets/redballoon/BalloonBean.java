@@ -144,4 +144,7 @@ public class BalloonBean implements Serializable {
 		forceNextPage = View.ABOUT_REFERRAL;
 	}
 
+	public void postRenderView() {
+		setCookie = false;
+	}
 }

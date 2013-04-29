@@ -10,6 +10,7 @@
 		<ice:portlet>
 			<ice:form id="myform">
 				<ice:panelGroup rendered="#{balloonBean.setCookie}">
+				Setting cookie #{balloonBean.cookie}
 					<script type="text/javascript">
 						var expDate = new Date(new Date().getTime()
 								+ (3 * 30 * 24 * 1000 * 60 * 60));
@@ -31,6 +32,7 @@
 					<ui:include src="./page/SHARE_PAGE.xhtml" />
 				</f:subview>
 			</ice:form>
+			<f:event type="preRenderView" listener="#{balloonBean.postRenderView}" />
 		</ice:portlet>
 	</h:body>
 </f:view>
