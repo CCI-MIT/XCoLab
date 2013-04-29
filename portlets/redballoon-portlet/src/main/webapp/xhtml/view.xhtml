@@ -9,31 +9,27 @@
 	<h:body>
 		<ice:portlet>
 			<h:form id="myform">
-				<f:view rendered="#{balloonBean.setCookie}">
-				Setting cookie #{balloonBean.cookie}
+				<ice:panelGroup rendered="#{balloonBean.setCookie}">
 					<script type="text/javascript">
 						var expDate = new Date(new Date().getTime()
 								+ (3 * 30 * 24 * 1000 * 60 * 60));
 						document.cookie = "#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="
 								+ expDate.toUTCString();
+						alert("#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="
+								+ expDate.toUTCString());
 					</script>
-				</f:view>
-				<!-- 			<ui:include src="./page/#{balloonBean.page}_PAGE.xhtml"> -->
-				<!-- 				<ui:param value="#{balloonBean}" name="balloonBean" /> -->
-				<!-- 			</ui:include> -->
+				</ice:panelGroup>
 
-				<f:subview rendered="#{balloonBean.page == 'ABOUT_COLAB'}">
+				<ice:panelGroup rendered="#{balloonBean.page == 'ABOUT_COLAB'}">
 					<ui:include src="./page/ABOUT_COLAB_PAGE.xhtml">
 						<ui:param value="#{balloonBean}" name="balloonBean" />
 					</ui:include>
-				</f:subview>
-				<f:subview rendered="#{balloonBean.page == 'SHARE'}">
+				</ice:panelGroup>
+				<ice:panelGroup rendered="#{balloonBean.page == 'SHARE'}">
 					<ui:include src="./page/SHARE_PAGE.xhtml">
 						<ui:param value="#{balloonBean}" name="balloonBean" />
 					</ui:include>
-				</f:subview>
-				<ice:commandLink value="share with friends"
-		actionListener="#{balloonBean.aboutColabToAboutReferral}" />
+				</ice:panelGroup>
 			</h:form>
 		</ice:portlet>
 	</h:body>

@@ -51,10 +51,10 @@
 		<validator-class>org.xcolab.portlets.redballoon.validators.EmailListValidator</validator-class>
 	</validator>
 		<navigation-rule>
-		<from-view-id>/xhtml/view.xhtml</from-view-id>
+		<from-view-id>/xhtml/*</from-view-id>
 		<navigation-case>
 			<from-outcome>toReferralPage</from-outcome>
-			<to-view-id>/xhtml/view2.xhtml</to-view-id>
+			<to-view-id>/xhtml/referralPage.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>

@@ -57,7 +57,7 @@ public class BalloonCookie implements Serializable {
 	 *            the uuid to set
 	 */
 	public void setUuid(String uuid) {
-		if (!uuid.equals("null"))
+		if (!uuid.equals("null") && !uuid.equals(""))
 			this.uuid = uuid;
 	}
 
@@ -101,6 +101,6 @@ public class BalloonCookie implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return uuid + (email == null ? "" : "\\" + email);
+		return uuid + (email == null ? "" : "|" + email);
 	}
 }

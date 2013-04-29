@@ -14,15 +14,14 @@ import com.liferay.util.mail.MailEngineException;
 public class BalloonBean implements Serializable {
 	/**
 	 * 
-	 */ 
+	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String email = "";
 	private boolean redirectUserToGetURL = false;
 	private View forceNextPage;
 	private BalloonCookie cookie;
 	private HttpServletRequest httpReq;
-	private boolean setCookie = false;
 
 	/**
 	 * views
@@ -38,9 +37,9 @@ public class BalloonBean implements Serializable {
 	 * @return the page
 	 */
 	public String getPage() {
-		if (forceNextPage != null) {
-			return forceNextPage.toString();
-		} else if (cookie != null && cookie.getUuid() != null) {
+		if (cookie != null
+				&& cookie.getEmail() != null
+				&& (cookie.getUuid() != null || httpReq.getParameter("url") != null)) {
 			return View.SHARE.toString();
 		} else {
 			return View.ABOUT_COLAB.toString();
@@ -57,8 +56,6 @@ public class BalloonBean implements Serializable {
 	 * @param skipInit
 	 */
 	public BalloonBean(boolean skipInit) {
-		setCookie = false;
-
 		if (!skipInit) {
 			init();
 		}
@@ -76,7 +73,7 @@ public class BalloonBean implements Serializable {
 				.getHttpServletRequest(Helper.getPortletRequest()));
 
 		cookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
-
+		System.out.println("curcookie: " + cookie);
 		email = (cookie != null && cookie.getEmail() != null) ? cookie
 				.getEmail() : getEmailOfCurrentUser();
 
@@ -85,9 +82,9 @@ public class BalloonBean implements Serializable {
 		if (GETParamURL != null) {
 			cookie = new BalloonCookie(cookie);
 			cookie.setUuid(GETParamURL);
-
-			setCookie = true;
 		}
+
+		System.out.println("newcookie: " + cookie);
 	}
 
 	/**
@@ -122,7 +119,9 @@ public class BalloonBean implements Serializable {
 	 * @return the setCookie
 	 */
 	public boolean isSetCookie() {
-		return setCookie;
+		System.out.println("got asked whether to set cookie");
+		return (cookie != null && (cookie.getEmail() != null || cookie
+				.getUuid() != null));
 	}
 
 	public void requestURL(ActionEvent e) throws AddressException,
@@ -133,17 +132,16 @@ public class BalloonBean implements Serializable {
 		 */
 		cookie = new BalloonCookie(cookie);
 		cookie.setEmail(email);
-		setCookie = true;
 
 		redirectUserToGetURL = true;
 		forceNextPage = View.ABOUT_REFERRAL;
-	
+
 	}
 
 	public String aboutColabToAboutReferral(ActionEvent e) {
 		System.out.println("change sites");
 		forceNextPage = View.ABOUT_REFERRAL;
-		
+
 		return "toReferralPage";
 	}
 }
