@@ -30,7 +30,6 @@
 		<header-portlet-javascript>/../html/js/jquery/jqplot.barRenderer.min.js</header-portlet-javascript>
 		<header-portlet-javascript>/../html/js/jquery/jqplot.canvasTextRenderer.min.js</header-portlet-javascript>
 		<header-portlet-javascript>/../html/js/jquery/jqplot.canvasAxisLabelRenderer.min.js</header-portlet-javascript>
-		<header-portlet-javascript>/../html/js/jquery/jquery-ui-1.7.2.custom.js</header-portlet-javascript>
 		<header-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</header-portlet-javascript>
 		<header-portlet-javascript>/xmlhttp/js/simulation/model-inputs-render.js</header-portlet-javascript>
 	</portlet>
