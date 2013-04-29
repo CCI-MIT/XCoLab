@@ -213,15 +213,11 @@ public class ContestWrapper {
 	}
 
 	public String getLogo() throws PortalException, SystemException {
-		System.out.println(ImageLocalServiceUtil.getDefaultSpacer());
-
 		return Helper.getThemeDisplay().getPathImage()
 				+ ContestLocalServiceUtil.getLogoPath(contest);
 	}
 
 	public String getSponsorLogo() throws PortalException, SystemException {
-		System.out.println(ImageLocalServiceUtil.getDefaultSpacer());
-
 		return Helper.getThemeDisplay().getPathImage()
 				+ ContestLocalServiceUtil.getSponsorLogoPath(contest);
 	}

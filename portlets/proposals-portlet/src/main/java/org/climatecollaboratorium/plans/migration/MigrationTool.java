@@ -502,8 +502,6 @@ public class MigrationTool {
 
             if (occurrences > 0) {
                 pagesCount++;
-                System.out.println(pagesCount + ": " + page.getTitle() + "\t" + page.isHead() + "\toccurrences: "
-                        + occurrences + "\toccurrencesUppercase: " + occurrencesUppercase);
             }
 
             String content = replaceUnwantedStrings(page.getContent());

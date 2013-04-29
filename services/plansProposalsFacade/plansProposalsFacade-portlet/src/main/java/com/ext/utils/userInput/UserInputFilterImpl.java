@@ -11,7 +11,6 @@ public class UserInputFilterImpl implements UserInputFilter {
     private AntiSamy as;
     
     public UserInputFilterImpl() {
-        System.out.println("hej ho");
     }
     
     public void setPolicyFactory(com.ext.utils.userInput.PolicyFct policyFactoryBean) throws Exception {

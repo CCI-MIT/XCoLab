@@ -424,10 +424,6 @@ public class PlanLocalServiceHelper {
                     if (userSettings != null) {
                         setPlansFilterPositionsIds(userSettings);
                     }
-
-                //} catch (NoSuchPlansUserSettingsException e) {
-                 //   System.out.print(e);
-                //}
             }
 
             if (userSettings == null || user.isDefaultUser()) {

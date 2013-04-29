@@ -514,7 +514,6 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
         sql = addFilterPositionsAndSorting(sql, planUserSettings, sortColumn, sortDirection);
         sql = addAttributes(sql, planUserSettings);
         _log.info("Query: "+sql);
-        //System.out.println("Query "+sql);
         SQLQuery query = session.createSQLQuery(sql);
 
         query.addEntity("PlanItem", PlanItemImpl.class);

@@ -1031,7 +1031,6 @@ public class PlanItemWrapper {
 
 
     public void signalPictureUploaded(ActionEvent e) {
-        System.out.println("signal picture upload");
         // do nothing, this method will be called thanks to javascript and will
         // cause parent page to detect a file upload in an iframe
     }

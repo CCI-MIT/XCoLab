@@ -178,6 +178,7 @@ public class PlanBean {
         if (planId != null && planId > 0) {
 
             planItem = PlanItemLocalServiceUtil.getPlan(planId);
+            if (planItem == null) return;
             modelBean = new PlanModelBean(planItem, this);
             plan = new PlanItemWrapper(planItem, this, permissions);
             plan.setEventBus(eventBus);
