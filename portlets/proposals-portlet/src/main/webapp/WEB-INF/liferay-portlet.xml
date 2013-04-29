@@ -32,6 +32,7 @@
 		<header-portlet-javascript>/../html/js/jquery/jqplot.canvasAxisLabelRenderer.min.js</header-portlet-javascript>
 		<header-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</header-portlet-javascript>
 		<header-portlet-javascript>/xmlhttp/js/simulation/model-inputs-render.js</header-portlet-javascript>
+
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

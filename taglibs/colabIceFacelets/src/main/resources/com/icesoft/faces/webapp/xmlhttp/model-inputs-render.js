@@ -212,7 +212,7 @@ function showSliders() {
 		
 
 		try {		
-			slider.slider('destroy');
+			slider.slider('destroy'); 
 		}
 		catch (e) {}
 		
