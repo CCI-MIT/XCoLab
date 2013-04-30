@@ -13,14 +13,14 @@
     height: 200px;
 }
 
-#myform div.share {
+div.share {
 	width:500px;
 	margin-left:auto;
 	margin-right:auto;
 	height:300px;
 }
 
-#myform div.share div {
+div.share div {
 	width:100%;
 	text-align: left;
 }
