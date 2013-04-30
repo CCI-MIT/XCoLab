@@ -3,7 +3,7 @@
 }
 
 .redballoon .text {
-    width: 65%;
+    width: 300px;
     font-size: 14px;
     line-height: 24px;
 }
@@ -11,6 +11,18 @@
 .redballoon .longtext {
     width: 65%;
     height: 200px;
+}
+
+#myform div.share {
+	width:500px;
+	margin-left:auto;
+	margin-right:auto;
+	height:300px;
+}
+
+#myform div.share div {
+	width:100%;
+	text-align: left;
 }
 
 .redballoon label {
@@ -55,6 +67,8 @@
 .redballoonPreferences .even td {
 	background: #ddd;
 }
+
+
 
 .redballoonPreferences .even td,
 .redballoonPreferences .odd td {

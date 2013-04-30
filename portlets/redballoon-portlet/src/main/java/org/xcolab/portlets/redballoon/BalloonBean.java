@@ -25,7 +25,6 @@ public class BalloonBean implements Serializable {
 
     private String email = "";
     private boolean redirectUserToGetURL = false;
-    private View forceNextPage;
     private BalloonCookie cookie;
     private HttpServletRequest httpReq;
     private View page = View.ABOUT_COLAB;
@@ -150,8 +149,6 @@ public class BalloonBean implements Serializable {
         cookie.setEmail(email);
 
         redirectUserToGetURL = true;
-        forceNextPage = View.ABOUT_REFERRAL;
-
     }
     
     public void toggleReferralPage(ActionEvent e) {
