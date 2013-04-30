@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,11 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.expando.model.ExpandoColumn;
+import com.liferay.portlet.expando.model.ExpandoColumnConstants;
+import com.liferay.portlet.expando.model.ExpandoTable;
+import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 //import javax.validation.Validator;
@@ -124,6 +130,7 @@ public class MainViewController {
 			ActionResponse response, @Valid CreateUserBean newAccountBean,
 			BindingResult result,
 			@RequestParam(required = false) String redirect) {
+        HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 		addRecaptchaPropertiesToModel(model);
 
 		if (!result.hasErrors()) {
@@ -137,6 +144,8 @@ public class MainViewController {
 							.getInstance(User.class.getName(), request);
 					ThemeDisplay themeDisplay = (ThemeDisplay) request
 							.getAttribute(WebKeys.THEME_DISPLAY);
+					
+					BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
 					User user = UserServiceUtil.addUserWithWorkflow(
 							DEFAULT_COMPANY_ID, false,
@@ -166,6 +175,26 @@ public class MainViewController {
 								CommunityConstants.EXPANDO,
 								CommunityConstants.COUNTRY, user.getUserId(),
 								newAccountBean.getCountry());
+					}
+					
+					if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
+					    // add user id to expando table to track his registration
+					    ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(User.class.getName(),
+		                        CommunityConstants.EXPANDO);
+					    ExpandoColumn redBalloonColumn = null;
+					    try {
+					        redBalloonColumn = ExpandoColumnLocalServiceUtil.getColumn(table.getTableId(), CommunityConstants.RED_BALLOON);
+					    }
+					    catch (Exception e) {
+					        // create column
+					    }
+					    if (redBalloonColumn == null) {
+                            redBalloonColumn = ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(), 
+                                    CommunityConstants.RED_BALLOON, ExpandoColumnConstants.STRING);
+					    }
+					    
+					    ExpandoValueLocalServiceUtil.addValue(User.class.getName(), CommunityConstants.EXPANDO, 
+					            CommunityConstants.RED_BALLOON, user.getUserId(), balloonCookie.getUuid());
 					}
 
 					if (newAccountBean.getImageId() != null

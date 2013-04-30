@@ -40,6 +40,8 @@ public class CommunityConstants {
     public static String COUNTRY = "country";
     public static String COUNTRY_PREF = "country_pref";
 
+    public static String RED_BALLOON = "redBalloon";
+
     public static final String PLANFAN_PAGER_START = "planfan_pagerStart";
     public static final String PLANFAN_PAGER_MAX = "planfan_pagerMax";
     public static final int PLANFAN_PAGER_MAX_NUMBER = 10;

@@ -67,7 +67,6 @@ public class BalloonBean implements Serializable {
         httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(Helper.getPortletRequest()));
 
         cookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
-        System.out.println("curcookie: " + cookie);
         email = (cookie != null && cookie.getEmail() != null) ? cookie.getEmail() : getEmailOfCurrentUser();
 
         String GETParamURL = httpReq.getParameter("url");
