@@ -167,6 +167,13 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.xcolab.services</groupId>
+			<artifactId>plansProposalsFacade-portlet-service</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 
 	<repositories>

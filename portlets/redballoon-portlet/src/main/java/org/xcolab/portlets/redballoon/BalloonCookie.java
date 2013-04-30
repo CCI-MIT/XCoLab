@@ -21,6 +21,7 @@ public class BalloonCookie implements Serializable {
 	 */
 	private String email;
 	private String uuid;
+    private String url;
 
 	public static final String COOKIE_NAME = "climatecolabBalloonCookie";
 
@@ -34,6 +35,7 @@ public class BalloonCookie implements Serializable {
 		if (bc != null) {
 			setEmail(bc.email);
 			setUuid(bc.uuid);
+			setUrl(bc.getUrl());
 		}
 	}
 
@@ -57,8 +59,11 @@ public class BalloonCookie implements Serializable {
 	 *            the uuid to set
 	 */
 	public void setUuid(String uuid) {
-		if (!uuid.equals("null") && !uuid.equals(""))
+		if (uuid != null && !uuid.equals("null") && !uuid.equals(""))
 			this.uuid = uuid;
+		else {
+		    uuid = "";
+		}
 	}
 
 	/**
@@ -72,11 +77,14 @@ public class BalloonCookie implements Serializable {
 		for (Cookie c : cookies) {
 			if (c.getName().equals(COOKIE_NAME)) {
 				BalloonCookie bc = new BalloonCookie();
-				String[] vals = c.getValue().split("\\\\");
+				String[] vals = c.getValue().split("|");
 				if (vals.length > 0) {
 					bc.uuid = vals[0];
-					if (vals.length == 2) {
-						bc.email = vals[1];
+					if (vals.length > 1) {
+						bc.url = vals[1];
+					}
+					if (vals.length == 3) {
+					    bc.email = vals[2];
 					}
 					return bc;
 				}
@@ -101,6 +109,14 @@ public class BalloonCookie implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return uuid + (email == null ? "" : "|" + email);
+		return uuid + (email == null ? "" : "|" + email) + (url == null ? "" : "|" + url);
 	}
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

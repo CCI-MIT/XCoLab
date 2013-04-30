@@ -2,18 +2,32 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:collab="http://climatecollaboratorium.org/facelets"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<h1>Want to help figure out what we should do about climate
 		change?</h1>
 
 	<h2>Know someone who does?</h2>
+	<p>
+		The MIT Climate CoLab is a site where people from all over the world can create
+		proposals on what should be done about climate change. The CoLab is currently
+		hosting contests in 18 different topics on everything from 
+		
+		<collab:contestLink contestId="#{balloonBean.contests[0].contestPK}" text="#{balloonBean.contests[0].contestShortName}" />
+		
+		to
+		
+		<collab:contestLink contestId="#{balloonBean.contests[1].contestPK}" text="#{balloonBean.contests[1].contestShortName}" />, and the creators of the
+		best proposals will be invited to present their ideas at a conference at MIT this fall.
+		The creators of the top ranked proposal will also receive a Grand Prize of $10,000! 
+	</p>
 
-The MIT Climate CoLab is a site where people from all over the world can create proposals on what should be done about climate change.  The CoLab is currently hosting contests in 18 different topics on everything from building efficiency to scaling renewable energy technology in emerging economies, and the creators of the best proposals will be invited to present their ideas at a conference at MIT this fall.  
-The creators of the top ranked proposal will also receive a Grand Prize of $10,000! 
-
-<ice:commandLink value="HERE" action="toReferralPage" /> to let other people know about the contest.  If someone you refer (directly or indirectly) wins the Grand Prize, you’ll win a share of the $2,000 “finder’s fee” prize!  <ice:commandLink
-		value="see here for more details" action="toReferralPage" />
+	<p>
+		Click <ice:commandLink value="HERE" actionListener="#{balloonBean.toggleReferralPage}" /> to let other people know about the contest.  
+		If someone you refer (directly or indirectly) wins the Grand Prize, you’ll win a share of the $2,000 
+		“finder’s fee” prize!  <ice:commandLink value="see here for more details" actionListener="#{balloonBean.toggleReferralPage}" />
+	</p>
 
 
 </ui:composition>

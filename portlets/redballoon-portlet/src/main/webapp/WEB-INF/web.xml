@@ -32,6 +32,10 @@
 		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	<context-param>
+       	<param-name>org.icefaces.compressResources</param-name>
+      	<param-value>false</param-value>
+	</context-param>
 
 
 	<!-- Guarantee order of startup listeners (JSF implementation must be specified 
@@ -49,11 +53,21 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+        <servlet-name>Resource Servlet</servlet-name>
+        <servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Resource Servlet</servlet-name>
+        <url-pattern>/xmlhttp/*</url-pattern>
+    </servlet-mapping>
 	<!-- MyFaces will not initialize unless a servlet-mapping to the Faces Servlet 
 		is present. -->
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<!-- Prevent direct access to Facelet view XHTML by the userAgent (browser). -->
 	<security-constraint>
