@@ -14,10 +14,11 @@
 }
 
 div.share {
-	width:450px;
+	width:500px;
+	height:80px;
 	margin-left:auto;
 	margin-right:auto;
-	height:80px;
+	margin-bottom:30px;
 }
 
 div.share div {
