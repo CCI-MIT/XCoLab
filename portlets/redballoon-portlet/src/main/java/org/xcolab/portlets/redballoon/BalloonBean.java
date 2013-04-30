@@ -71,16 +71,13 @@ public class BalloonBean implements Serializable {
         email = (cookie != null && cookie.getEmail() != null) ? cookie.getEmail() : getEmailOfCurrentUser();
 
         String GETParamURL = httpReq.getParameter("url");
-
         if (GETParamURL != null) {
-            cookie = new BalloonCookie(cookie);
             cookie.setUrl(GETParamURL);
         }
 
-        String GETParamID = httpReq.getParameter("id");
+        String GETParamID = httpReq.getParameter("user");
 
         if (GETParamID != null) {
-            cookie = new BalloonCookie(cookie);
             cookie.setUuid(GETParamID);
         }
         
@@ -141,8 +138,7 @@ public class BalloonBean implements Serializable {
      * @return the setCookie
      */
     public boolean isSetCookie() {
-        System.out.println("got asked whether to set cookie");
-        return (cookie != null && (cookie.getEmail() != null || cookie.getUuid() != null || cookie.getUrl() != null));
+        return cookie != null && (StringUtils.isNotBlank(cookie.getUuid()) || StringUtils.isNotBlank(cookie.getUrl()));
     }
 
     public void requestURL(ActionEvent e) throws AddressException, SystemException, PortalException,

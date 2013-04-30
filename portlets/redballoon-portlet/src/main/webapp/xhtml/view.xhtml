@@ -29,7 +29,10 @@
 				</ice:panelGroup>
 				
 				<ice:panelGroup rendered="#{balloonBean.redirectUserToGetURL}">
-					REDIRECT ME
+					<script>
+						window.location = "http://www.impactree.org/climatecolab?email=" + escape('#{balloonBean.email}');
+
+					</script>
 				</ice:panelGroup>
 			</h:form>
 		</ice:portlet>
