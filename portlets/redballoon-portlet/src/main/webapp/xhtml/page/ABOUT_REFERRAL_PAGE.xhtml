@@ -2,72 +2,99 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
-    xmlns:collab="http://climatecollaboratorium.org/facelets"
+	xmlns:collab="http://climatecollaboratorium.org/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:addthis="http://www.addthis.com/help/api-spec"
+	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	<h1>Help find the person who will write the proposal that wins the MIT Climate CoLab Grand Prize!</h1>
-	
+	<h1>Help find the person who will write the proposal that wins the
+		MIT Climate CoLab Grand Prize!</h1>
+
 	<p>
-		If you refer someone (directly or indirectly) who wins the $10,000 Climate CoLab
-		Grand Prize, you’ll get a share of the $2,000 finders’ fee!
+		If you refer someone (directly or indirectly) who wins the <a
+			href="/community/-/blogs/-10-000-grand-prize-at-nov-2013-conference"
+			target="_blank">$10,000 Climate CoLab Grand Prize</a>, you’ll get a
+		share of the $2,000 finders’ fee!
 	</p>
 	<p>
-		Here’s how it works: We’re giving $1000 to the person who invites the winner of
-		the $10,000 Climate CoLab Grand Prize, $500 to whoever invited the inviter, $250
-		to whoever invited them, and so on… (see here for more details). It might play out like this:
-		Alice enters her e-mail address below and we give her a unique invite link like 
-		http://CoLabRedBalloon.mit.edu/alice. Alice then e-mails her link to Bob, who also enters
-		his e-mail address below so that we can give him a unique invite link like 
-		http://CoLabRedBalloon.mit.edu/bob, which he then posts to Facebook. Bob’s friend Carol
-		sees the link, signs up to get her unique link, http://CoLabRedBalloon.mit.edu/carol,
-		which she then posts to Twitter. Carol’s follower Dave then sees the link, signs up
-		for the CoLab and creates (or helps to create) the best-ranked proposal, winning
-		him the $10,000 Climate CoLab Grand Prize. Once that happens we send Carol
-		$1000 for inviting Dave, Bob gets $500 for inviting Carol, and Alice gets $250 for
-		inviting Bob.
+		Here’s how it works: We’re giving $1000 to the person who invites the
+		winner of the <a
+			href="/community/-/blogs/-10-000-grand-prize-at-nov-2013-conference"
+			target="_blank">Grand Prize of $10,000</a>, $500 to whoever invited
+		the inviter, $250 to whoever invited them, and so on... It might play
+		out like this: Alice enters her e-mail address below and we give her a
+		unique invite link like <a href="#">http://CoLabRedBalloon.mit.edu/alice</a>.
+		Alice then e-mails her link to Bob, who also enters his e-mail address
+		below so that we can give him a unique invite link like <a href="#">http://CoLabRedBalloon.mit.edu/bob</a>,
+		which he then posts to Facebook. Bob’s friend Carol sees the link,
+		signs up to get her unique link, <a href="#">http://CoLabRedBalloon.mit.edu/carol</a>,
+		which she then posts to Twitter. Carol’s follower Dave then sees the
+		link, signs up for the CoLab and creates (or helps to create) the
+		best-ranked proposal, winning him the <a
+			href="/community/-/blogs/-10-000-grand-prize-at-nov-2013-conference"
+			target="_blank">Grand Prize of $10,000</a>. Once that happens we send
+		Carol $1000 for inviting Dave, Bob gets $500 for inviting Carol, and
+		Alice gets $250 for inviting Bob.
 	</p>
 	<f:subview rendered="#{not balloonBean.showShareWidgets}">
-		<p>
-			So that we can pay you if you win a portion of the finders’ fee, and to provide you
-			with a unique link to share, please enter your e-mail address:
-		</p>			
-			
-			<h:message for="email" />
-			<h:inputText value="#{balloonBean.email}" id="email" required="true" styleClass="text">
-				<f:validator validatorId="emailValidator" />
-			</h:inputText> <br/>
-			<h:commandLink value="request personal URL"	actionListener="#{balloonBean.requestURL}" />
+		<p>So that we can pay you if you win a portion of the finders’
+			fee, and to provide you with a unique link to share, please enter
+			your e-mail address:</p>
+
+		<h:message for="email" />
+		<h:inputText value="#{balloonBean.email}" id="email" required="true"
+			styleClass="text">
+			<f:validator validatorId="emailValidator" />
+		</h:inputText>
+		<br />
+		<h:commandLink value="request personal URL"
+			actionListener="#{balloonBean.requestURL}" />
 	</f:subview>
 	<f:subview rendered="#{ balloonBean.showShareWidgets}">
 		<div class="share">
 			<ice:inputText value="#{balloonBean.shareUrl}" styleClass="text" />
-			<a href="javascript:;" id="copyButton" data-clipboard-text="#{balloonBean.shareUrl}">Copy to clipboard</a>
-			
-			
-			<div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareLink">
-				<a class="addthis_button_facebook" id="addThisButton1" addthis:title="Join the ClimateColab" addthis:description="#{balloonBean.shareUrl}"></a>
-				<a class="addthis_button_twitter" id="addThisButton2" addthis:title="Join the ClimateColab" addthis:description="#{balloonBean.shareUrl}"></a>
-        	</div>
-        	<div class="clear"></div>
-    	</div>
-    	<script type="text/javascript">
-                if (typeof(addthis) != 'undefined') {
-                    addthis.toolbox("#shareLink");
-                }
-                $(function() {initZeroClipboard() });
-            </script>
+			<a href="javascript:;" id="copyButton"
+				data-clipboard-text="#{balloonBean.shareUrl}">Copy to clipboard</a>
+
+
+			<div
+				class="addthis_toolbox addthis_default_style addthis_32x32_style"
+				id="shareLink">
+				<a class="addthis_button_facebook" id="addThisButton1"
+					addthis:title="Join the ClimateColab"
+					addthis:description="#{balloonBean.shareUrl}"></a> <a
+					class="addthis_button_twitter" id="addThisButton2"
+					addthis:title="Join the ClimateColab"
+					addthis:description="#{balloonBean.shareUrl}"></a>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<script type="text/javascript">
+			if (typeof (addthis) != 'undefined') {
+				addthis.toolbox("#shareLink");
+			}
+			$(function() {
+				initZeroClipboard()
+			});
+		</script>
 		<p>
-			Once you receive a link above (with a unique code for you), use it to tell your friends
-			and family about the CoLab contest. Remember: If your sharing eventually leads to
-			the Grand Prize winner, even if you don’t know them or anyone they know, you’ll
-			still win some of the $2,000, so share widely!
+			Once you receive a link above (with a unique code for you), use it to
+			tell your friends and family about the CoLab contest. Remember: If
+			your sharing eventually leads to the <a
+				href="/community/-/blogs/-10-000-grand-prize-at-nov-2013-conference"
+				target="_blank">Grand Prize</a> winner, even if you don’t know them
+			or anyone they know, you’ll still win some of the $2,000, so share
+			widely!
 		</p>
 		<p>
-			Be sure to also check out our partner <a href="http://www.impacttree.org">ImpacTree</a>, where giving is social!
+			This finders’ fee prize was inspired by the <a
+				href="http://en.wikipedia.org/wiki/DARPA_Network_Challenge"
+				target="_blank">MIT Red Balloon Challenge</a> Team and is proudly
+			powered by <a href="http://www.impacttree.org">ImpacTree</a>, where
+			giving is social!
 		</p>
 		<p class="center" style="text-align: center;">
-			<a href="http://www.impacttree.org"><img src="https://www.impactree.org/site_media/img/logo_small.png" /></a>
+			<a href="http://www.impacttree.org" target="_blank"><img
+				src="https://www.impactree.org/site_media/img/logo_small.png" /></a>
 		</p>
 	</f:subview>
 
