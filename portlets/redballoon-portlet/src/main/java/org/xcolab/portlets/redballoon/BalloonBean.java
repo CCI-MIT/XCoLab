@@ -18,145 +18,158 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 
 public class BalloonBean implements Serializable {
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private String email = "";
-    private boolean redirectUserToGetURL = false;
-    private BalloonCookie cookie;
-    private HttpServletRequest httpReq;
-    private View page = View.ABOUT_COLAB;
-    private boolean showShareWidgets;
+	private String email = "";
+	private boolean redirectUserToGetURL = false;
+	private BalloonCookie cookie;
+	private HttpServletRequest httpReq;
+	private View page = View.ABOUT_COLAB;
+	private boolean showShareWidgets;
+	private List<Contest> contests;
 
-    /**
-     * views
-     * 
-     * @author pdeboer
-     * 
-     */
-    public enum View {
-        ABOUT_REFERRAL, ABOUT_COLAB;
-    }
+	/**
+	 * views
+	 * 
+	 * @author pdeboer
+	 * 
+	 */
+	public enum View {
+		ABOUT_REFERRAL, ABOUT_COLAB;
+	}
 
-    /**
-     * @return the page
-     */
-    public View getPage() {
-        return page;
-    }
+	/**
+	 * @return the page
+	 */
+	public View getPage() {
+		return page;
+	}
 
-    public BalloonBean() {
-        this(false);
-    }
+	public BalloonBean() throws SystemException {
+		this(false);
+	}
 
-    /**
-     * if testing, set skipinit to true
-     * 
-     * @param skipInit
-     */
-    public BalloonBean(boolean skipInit) {
-        if (!skipInit) {
-            init();
-        }
-    }
+	/**
+	 * if testing, set skipinit to true
+	 * 
+	 * @param skipInit
+	 * @throws SystemException
+	 */
+	public BalloonBean(boolean skipInit) throws SystemException {
+		if (!skipInit) {
+			init();
+		}
+	}
 
-    private void init() {
-        httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(Helper.getPortletRequest()));
+	private void init() throws SystemException {
+		httpReq = PortalUtil.getOriginalServletRequest(PortalUtil
+				.getHttpServletRequest(Helper.getPortletRequest()));
 
-        cookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
-        email = (cookie != null && cookie.getEmail() != null) ? cookie.getEmail() : getEmailOfCurrentUser();
+		cookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
+		email = (cookie != null && cookie.getEmail() != null) ? cookie
+				.getEmail() : getEmailOfCurrentUser();
 
-        String GETParamURL = httpReq.getParameter("url");
-        if (GETParamURL != null) {
-            cookie.setUrl(GETParamURL);
-        }
+		String GETParamURL = httpReq.getParameter("url");
+		if (GETParamURL != null) {
+			cookie.setUrl(GETParamURL);
+		}
 
-        String GETParamID = httpReq.getParameter("user");
+		String GETParamID = httpReq.getParameter("user");
 
-        if (GETParamID != null) {
-            cookie.setUuid(GETParamID);
-        }
-        
-        if (StringUtils.isNotBlank(GETParamURL) || (cookie != null && StringUtils.isNotBlank(cookie.getUrl()))) {
-            page = View.ABOUT_REFERRAL;
-        } else {
-            page = View.ABOUT_COLAB;
-        }
-        showShareWidgets = cookie != null && StringUtils.isNotBlank(cookie.getUrl());
-    }
-    
-    public boolean getShowShareWidgets() {
-        return showShareWidgets;
-    }
+		if (GETParamID != null) {
+			cookie.setUuid(GETParamID);
+		}
 
-    public List<Contest> getContests() throws SystemException {
-        List<Contest> contests = ContestLocalServiceUtil.findByActiveFlag(true, 0);
-        Collections.shuffle(contests);
-        return contests;
-    }
+		if (StringUtils.isNotBlank(GETParamURL)
+				|| (cookie != null && StringUtils.isNotBlank(cookie.getUrl()))) {
+			page = View.ABOUT_REFERRAL;
+		} else {
+			page = View.ABOUT_COLAB;
+		}
+		showShareWidgets = cookie != null
+				&& StringUtils.isNotBlank(cookie.getUrl());
 
-    /**
-     * @return the cookie
-     */
-    public BalloonCookie getCookie() {
-        return cookie;
-    }
+		contests = ContestLocalServiceUtil.findByActiveFlag(true, 0);
+		Collections.shuffle(contests);
+	}
 
-    /**
-     * @return the redirectUserToGetURL
-     */
-    public boolean isRedirectUserToGetURL() {
-        return redirectUserToGetURL;
-    }
+	public boolean getShowShareWidgets() {
+		return showShareWidgets;
+	}
 
-    /**
-     * gets email of user which is currently logged in.
-     * 
-     * @return "" if not logged in
-     */
-    private String getEmailOfCurrentUser() {
-        try {
-            return Helper.getLiferayUserEmail();
-        } catch (Exception e) {
-            return "";
-        }
-    }
+	public List<Contest> getContests() {
+		return contests;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	/**
+	 * @return the cookie
+	 */
+	public BalloonCookie getCookie() {
+		return cookie;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	/**
+	 * @return the redirectUserToGetURL
+	 */
+	public boolean isRedirectUserToGetURL() {
+		return redirectUserToGetURL;
+	}
 
-    /**
-     * @return the setCookie
-     */
-    public boolean isSetCookie() {
-        return cookie != null && (StringUtils.isNotBlank(cookie.getUuid()) || StringUtils.isNotBlank(cookie.getUrl()));
-    }
+	/**
+	 * gets email of user which is currently logged in.
+	 * 
+	 * @return "" if not logged in
+	 */
+	private String getEmailOfCurrentUser() {
+		try {
+			return Helper.getLiferayUserEmail();
+		} catch (Exception e) {
+			return "";
+		}
+	}
 
-    public void requestURL(ActionEvent e) throws AddressException, SystemException, PortalException,
-            MailEngineException {
+	public String getEmail() {
+		return email;
+	}
 
-        /**
-         * store email in cookie
-         */
-        cookie = new BalloonCookie(cookie);
-        cookie.setEmail(email);
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-        redirectUserToGetURL = true;
-    }
-    
-    public void toggleReferralPage(ActionEvent e) {
-        page = View.ABOUT_REFERRAL;
-    }
-    
-    public String getShareUrl() {
-        return cookie.getUrl();
-    }
+	/**
+	 * @return the setCookie
+	 */
+	public boolean isSetCookie() {
+		return cookie != null
+				&& (StringUtils.isNotBlank(cookie.getUuid()) || StringUtils
+						.isNotBlank(cookie.getUrl()));
+	}
+
+	public void requestURL(ActionEvent e) throws AddressException,
+			SystemException, PortalException, MailEngineException {
+
+		/**
+		 * store email in cookie
+		 */
+		cookie = new BalloonCookie(cookie);
+		cookie.setEmail(email);
+
+		redirectUserToGetURL = true;
+	}
+
+	public void toggleReferralPage(ActionEvent e) {
+		page = View.ABOUT_REFERRAL;
+	}
+	
+	public void showColabPage(ActionEvent e) {
+		page = View.ABOUT_COLAB;
+	}
+
+	public String getShareUrl() {
+		return cookie.getUrl();
+	}
 
 }
