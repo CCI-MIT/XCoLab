@@ -10,11 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.expando.model.ExpandoColumn;
+import com.liferay.portlet.expando.model.ExpandoColumnConstants;
+import com.liferay.portlet.expando.model.ExpandoTable;
+import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 
 public class BalloonBean implements Serializable {
@@ -25,7 +33,7 @@ public class BalloonBean implements Serializable {
 
 	private String email = "";
 	private boolean redirectUserToGetURL = false;
-	private BalloonCookie cookie;
+	private BalloonCookie balloonCookie;
 	private HttpServletRequest httpReq;
 	private View page = View.ABOUT_COLAB;
 	private boolean showShareWidgets;
@@ -48,7 +56,7 @@ public class BalloonBean implements Serializable {
 		return page;
 	}
 
-	public BalloonBean() throws SystemException {
+	public BalloonBean() throws Exception {
 		this(false);
 	}
 
@@ -58,42 +66,81 @@ public class BalloonBean implements Serializable {
 	 * @param skipInit
 	 * @throws SystemException
 	 */
-	public BalloonBean(boolean skipInit) throws SystemException {
+	public BalloonBean(boolean skipInit) throws Exception {
 		if (!skipInit) {
 			init();
 		}
 	}
 
-	private void init() throws SystemException {
+	private void init() throws Exception {
 		httpReq = PortalUtil.getOriginalServletRequest(PortalUtil
 				.getHttpServletRequest(Helper.getPortletRequest()));
 
-		cookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
-		email = (cookie != null && cookie.getEmail() != null) ? cookie
+		balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
+		email = (balloonCookie != null && balloonCookie.getEmail() != null) ? balloonCookie
 				.getEmail() : getEmailOfCurrentUser();
 
 		String GETParamURL = httpReq.getParameter("url");
 		if (GETParamURL != null) {
-			cookie.setUrl(GETParamURL);
+			balloonCookie.setUrl(GETParamURL);
 		}
 
 		String GETParamID = httpReq.getParameter("user");
 
 		if (GETParamID != null) {
-			cookie.setUuid(GETParamID);
+			balloonCookie.setUuid(GETParamID);
 		}
 
 		if (StringUtils.isNotBlank(GETParamURL)
-				|| (cookie != null && StringUtils.isNotBlank(cookie.getUrl()))) {
+				|| (balloonCookie != null && StringUtils
+						.isNotBlank(balloonCookie.getUrl()))) {
 			page = View.ABOUT_REFERRAL;
 		} else {
 			page = View.ABOUT_COLAB;
 		}
-		showShareWidgets = cookie != null
-				&& StringUtils.isNotBlank(cookie.getUrl());
+		showShareWidgets = balloonCookie != null
+				&& StringUtils.isNotBlank(balloonCookie.getUrl());
 
 		contests = ContestLocalServiceUtil.findByActiveFlag(true, 0);
 		Collections.shuffle(contests);
+
+		ensureSignedInUserHasExpandoValue();
+	}
+
+	public void ensureSignedInUserHasExpandoValue() throws Exception {
+		//check if logged in
+		try {
+			if(Long.parseLong(Helper.getLiferayUserId()) < 1) {
+				return;
+			}
+		}catch(Exception e){
+			return;
+		}
+		
+		//set user id in expando
+		if (balloonCookie != null
+				&& StringUtils.isNotBlank(balloonCookie.getUuid())) {
+			// add user id to expando table to track his registration
+			ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(
+					User.class.getName(), CommunityConstants.EXPANDO);
+			ExpandoColumn redBalloonColumn = null;
+			try {
+				redBalloonColumn = ExpandoColumnLocalServiceUtil.getColumn(
+						table.getTableId(), CommunityConstants.RED_BALLOON);
+			} catch (Exception e) {
+				// create column
+			}
+			if (redBalloonColumn == null) {
+				redBalloonColumn = ExpandoColumnLocalServiceUtil.addColumn(
+						table.getTableId(), CommunityConstants.RED_BALLOON,
+						ExpandoColumnConstants.STRING);
+			}
+
+			ExpandoValueLocalServiceUtil.addValue(User.class.getName(),
+					CommunityConstants.EXPANDO, CommunityConstants.RED_BALLOON,
+					Long.parseLong(Helper.getLiferayUserId()),
+					balloonCookie.getUuid());
+		}
 	}
 
 	public boolean getShowShareWidgets() {
@@ -108,7 +155,7 @@ public class BalloonBean implements Serializable {
 	 * @return the cookie
 	 */
 	public BalloonCookie getCookie() {
-		return cookie;
+		return balloonCookie;
 	}
 
 	/**
@@ -143,9 +190,9 @@ public class BalloonBean implements Serializable {
 	 * @return the setCookie
 	 */
 	public boolean isSetCookie() {
-		return cookie != null
-				&& (StringUtils.isNotBlank(cookie.getUuid()) || StringUtils
-						.isNotBlank(cookie.getUrl()));
+		return balloonCookie != null
+				&& (StringUtils.isNotBlank(balloonCookie.getUuid()) || StringUtils
+						.isNotBlank(balloonCookie.getUrl()));
 	}
 
 	public void requestURL(ActionEvent e) throws AddressException,
@@ -154,8 +201,8 @@ public class BalloonBean implements Serializable {
 		/**
 		 * store email in cookie
 		 */
-		cookie = new BalloonCookie(cookie);
-		cookie.setEmail(email);
+		balloonCookie = new BalloonCookie(balloonCookie);
+		balloonCookie.setEmail(email);
 
 		redirectUserToGetURL = true;
 	}
@@ -163,13 +210,13 @@ public class BalloonBean implements Serializable {
 	public void toggleReferralPage(ActionEvent e) {
 		page = View.ABOUT_REFERRAL;
 	}
-	
+
 	public void showColabPage(ActionEvent e) {
 		page = View.ABOUT_COLAB;
 	}
 
 	public String getShareUrl() {
-		return cookie.getUrl();
+		return balloonCookie.getUrl();
 	}
 
 }
