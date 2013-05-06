@@ -11,7 +11,9 @@
 	font-size: 14px;
 	line-height: 24px;
 }
-
+.portlet-msg-error {
+	padding-left:10px;
+}
 .reg_errors {
 	margin-top: 20px;
 }
