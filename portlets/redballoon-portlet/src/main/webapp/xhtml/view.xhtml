@@ -38,6 +38,16 @@
 					</ice:panelGroup>
 				</h:form>
 			</div>
+			<script type="text/javascript">
+				function showBalloonPopup(target) {
+					var targetElement = document.getElementById(target);
+					if(targetElement.style.display == '') {
+						targetElement.style.display="none";
+					}else{
+						targetElement.style.display="";
+					}
+				}
+			</script>
 		</ice:portlet>
 	</h:body>
 </f:view>
