@@ -32,6 +32,7 @@ public class BalloonBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String email = "";
+	private boolean checkBoxActive = false;
 	private boolean redirectUserToGetURL = false;
 	private BalloonCookie balloonCookie;
 	private HttpServletRequest httpReq;
@@ -217,6 +218,14 @@ public class BalloonBean implements Serializable {
 
 	public String getShareUrl() {
 		return balloonCookie.getUrl();
+	}
+
+	public boolean isCheckBoxActive() {
+		return checkBoxActive;
+	}
+
+	public void setCheckBoxActive(boolean checkBoxActive) {
+		this.checkBoxActive = checkBoxActive;
 	}
 
 }
