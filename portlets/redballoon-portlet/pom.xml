@@ -8,10 +8,15 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.xcolab.portlets</groupId>
-	<artifactId>loginregister-portlet</artifactId>
+	<artifactId>redballoon-portlet</artifactId>
 	<packaging>war</packaging>
-	<name>loginregister-portlet Portlet</name>
+	<name>redballoon-portlet Portlet</name>
 	<version>1.0-SNAPSHOT</version>
+
+	<properties>
+		<icefaces.version>3.2.0</icefaces.version>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -55,12 +60,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+
 			<groupId>javax.portlet</groupId>
 			<artifactId>portlet-api</artifactId>
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-el</artifactId>
@@ -72,6 +83,38 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.icefaces</groupId>
+			<artifactId>icefaces</artifactId>
+			<version>${icefaces.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.icefaces</groupId>
+			<artifactId>icefaces-ace</artifactId>
+			<version>${icefaces.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.icefaces</groupId>
+			<artifactId>icefaces-compat</artifactId>
+			<version>${icefaces.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.liferay.faces</groupId>
+			<artifactId>liferay-faces-bridge-impl</artifactId>
+			<version>3.1.1-ga2</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.icefaces</groupId> <artifactId>icefaces-xcolab</artifactId> 
+			<version>1.8.2</version> </dependency> <dependency> <groupId>org.icefaces</groupId> 
+			<artifactId>icefaces-comps</artifactId> <version>1.8.2</version> </dependency> 
+			<dependency> <groupId>org.icefaces</groupId> <artifactId>icefaces-facelets</artifactId> 
+			<version>1.8.2</version> </dependency> -->
+		<dependency>
+			<groupId>org.icefaces</groupId>
+			<artifactId>icefaces</artifactId>
+			<version>3.2.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -80,23 +123,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
-
-		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.3</version>
-		</dependency>
-
-
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -104,15 +134,38 @@
 			<version>2.4</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc-portlet</artifactId>
-			<version>${spring.version}</version>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.xcolab.taglibs</groupId>
+			<artifactId>sharedColabIceFacelets</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.icefaces</groupId>
+					<artifactId>icefaces-xcolab</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.icefaces</groupId>
+					<artifactId>icefaces-comps</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.icefaces</groupId>
+					<artifactId>icefaces-facelets</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -126,51 +179,9 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-
-		<dependency>
-			<groupId>org.xcolab.taglibs</groupId>
-			<artifactId>sharedColabIceFacelets</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces-ace</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces-compat</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.liferay.faces</groupId>
-					<artifactId>liferay-faces-bridge-impl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>4.3.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>1.0.0.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
+		
 	</dependencies>
+
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
@@ -183,8 +194,4 @@
 			<url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
 		</repository>
 	</repositories>
-	<properties>
-		<spring.version>3.2.0.RELEASE</spring.version>
-	</properties>
-
 </project>
