@@ -43,9 +43,9 @@ public class LandingpageFilter implements Filter {
             if (m.find()) {
                 Long landingPageId = Long.parseLong(m.group(1));
                 LandingPage lp = LandingPageLocalServiceUtil.getLandingPage(landingPageId);
-            
+                
                 request.getSession().setAttribute("user_from_landing_page", "/landingpage/" + lp.getId() + "/" + lp.getBaseUrl());
-                response.sendRedirect(lp.getTargetUrl());
+                response.sendRedirect(lp.getTargetUrl() + ( request.getQueryString() != null ? "?" + request.getQueryString() : ""));
             }
             else {
                 _log.error("Invalid landing page requested, should be in format /landingpage/LANDINGPAGE_ID/name");
