@@ -42,14 +42,6 @@
 		<managed-bean-class>org.xcolab.portlets.redballoon.BalloonBean</managed-bean-class>
 		<managed-bean-scope>view</managed-bean-scope>
 	</managed-bean>
-	<validator>
-		<validator-id>emailValidator</validator-id>
-		<validator-class>org.xcolab.portlets.redballoon.validators.EmailValidator</validator-class>
-	</validator>
-	<validator>
-		<validator-id>emailListValidator</validator-id>
-		<validator-class>org.xcolab.portlets.redballoon.validators.EmailListValidator</validator-class>
-	</validator>
 		<navigation-rule>
 		<from-view-id>/xhtml/*</from-view-id>
 		<navigation-case>

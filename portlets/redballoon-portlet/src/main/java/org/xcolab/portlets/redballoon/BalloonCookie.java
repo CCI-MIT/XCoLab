@@ -77,6 +77,7 @@ public class BalloonCookie implements Serializable {
     }
 
     public static BalloonCookie fromCookieArray(Cookie[] cookies) {
+    	if(cookies == null) return new BalloonCookie();
         for (Cookie c : cookies) {
             if (c.getName().equals(COOKIE_NAME)) {
                 BalloonCookie bc = new BalloonCookie();

@@ -9,32 +9,45 @@
 	<h:head />
 	<h:body>
 		<ice:portlet>
-			<h:form id="myform">
-				<ice:panelGroup rendered="#{balloonBean.setCookie}">
-					<script type="text/javascript">
-						var expDate = new Date(new Date().getTime()
-								+ (3 * 30 * 24 * 1000 * 60 * 60));
-						document.cookie = "#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="
-								+ expDate.toUTCString();
-						console.log("#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="
-								+ expDate.toUTCString());
-					</script>
-				</ice:panelGroup>
+			<div class="redballoon">
+				<h:form id="myform">
+					<ice:panelGroup rendered="#{balloonBean.setCookie}">
+						<script type="text/javascript">
+							var expDate = new Date(new Date().getTime()
+									+ (3 * 30 * 24 * 1000 * 60 * 60));
+							document.cookie = "#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="
+									+ expDate.toUTCString();
+							console
+									.log("#{balloonBean.cookie.cookieName}=#{balloonBean.cookie};expires="
+											+ expDate.toUTCString());
+						</script>
+					</ice:panelGroup>
 
-				<ice:panelGroup rendered="#{balloonBean.page == 'ABOUT_COLAB'}">
-					<ui:include src="./page/ABOUT_COLAB_PAGE.xhtml" />
-				</ice:panelGroup>
-				<ice:panelGroup rendered="#{balloonBean.page == 'ABOUT_REFERRAL'}">
-					<ui:include src="./page/ABOUT_REFERRAL_PAGE.xhtml" />
-				</ice:panelGroup>
-				
-				<ice:panelGroup rendered="#{balloonBean.redirectUserToGetURL}">
-					<script>
-						window.location = "http://www.impactree.org/climatecolab?email=" + escape('#{balloonBean.email}');
+					<ice:panelGroup rendered="#{balloonBean.page == 'ABOUT_COLAB'}">
+						<ui:include src="./page/ABOUT_COLAB_PAGE.xhtml" />
+					</ice:panelGroup>
+					<ice:panelGroup rendered="#{balloonBean.page == 'ABOUT_REFERRAL'}">
+						<ui:include src="./page/ABOUT_REFERRAL_PAGE.xhtml" />
+					</ice:panelGroup>
 
-					</script>
-				</ice:panelGroup>
-			</h:form>
+					<ice:panelGroup rendered="#{balloonBean.redirectUserToGetURL}">
+						<script>
+							window.location = "http://www.impactree.org/climatecolab?email="
+									+ escape('#{balloonBean.email}');
+						</script>
+					</ice:panelGroup>
+				</h:form>
+			</div>
+			<script type="text/javascript">
+				function showBalloonPopup(target) {
+					var targetElement = document.getElementById(target);
+					if(targetElement.style.display == '') {
+						targetElement.style.display="none";
+					}else{
+						targetElement.style.display="";
+					}
+				}
+			</script>
 		</ice:portlet>
 	</h:body>
 </f:view>

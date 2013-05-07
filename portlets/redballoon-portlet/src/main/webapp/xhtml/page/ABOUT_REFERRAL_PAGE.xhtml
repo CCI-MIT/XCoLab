@@ -2,75 +2,213 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
-    xmlns:collab="http://climatecollaboratorium.org/facelets"
+	xmlns:collab="http://climatecollaboratorium.org/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:addthis="http://www.addthis.com/help/api-spec"
+	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	<h1>Help find the person who will write the proposal that wins the MIT Climate CoLab Grand Prize!</h1>
-	
+	<h1>Help find the person who will write the proposal that wins the
+		MIT Climate CoLab Grand Prize!</h1>
+
+
 	<p>
-		If you refer someone (directly or indirectly) who wins the $10,000 Climate CoLab
-		Grand Prize, you’ll get a share of the $2,000 finders’ fee!
+		Here’s how it works: We’re giving $1000 to the person who invites the
+		winner of the <a
+			href="http://climatecolab.org/community/-/blogs/-10-000-grand-prize-at-nov-2013-conference"
+			target="_blank">Grand Prize of $10,000</a>, $500 to whoever invited
+		the inviter, $250 to whoever invited them, and so on...
 	</p>
 	<p>
-		Here’s how it works: We’re giving $1000 to the person who invites the winner of
-		the $10,000 Climate CoLab Grand Prize, $500 to whoever invited the inviter, $250
-		to whoever invited them, and so on… (see here for more details). It might play out like this:
-		Alice enters her e-mail address below and we give her a unique invite link like 
-		http://CoLabRedBalloon.mit.edu/alice. Alice then e-mails her link to Bob, who also enters
-		his e-mail address below so that we can give him a unique invite link like 
-		http://CoLabRedBalloon.mit.edu/bob, which he then posts to Facebook. Bob’s friend Carol
-		sees the link, signs up to get her unique link, http://CoLabRedBalloon.mit.edu/carol,
-		which she then posts to Twitter. Carol’s follower Dave then sees the link, signs up
-		for the CoLab and creates (or helps to create) the best-ranked proposal, winning
-		him the $10,000 Climate CoLab Grand Prize. Once that happens we send Carol
-		$1000 for inviting Dave, Bob gets $500 for inviting Carol, and Alice gets $250 for
-		inviting Bob.
+
+		It might play out like this: Alice enters her e-mail address below and
+		we give her a unique invite link like
+		http://climatecolab.impactree.org/?user=1. Alice then e-mails her link
+		to Bob, who also enters his e-mail address below so that we can give
+		him a unique invite link like
+		http://climatecolab.impactree.org/?user=2, which he then posts to
+		Facebook. Bob’s friend Carol sees the link, signs up to get her unique
+		link, http://climatecolab.impactree.org/?user=3, which she then posts
+		to Twitter. Carol’s follower Dave then sees the link, signs up for the
+		CoLab and creates (or helps to create) the best-ranked proposal,
+		winning him the <a
+			href="http://climatecolab.org/community/-/blogs/-10-000-grand-prize-at-nov-2013-conference"
+			target="_blank">Grand Prize of $10,000</a>. Once that happens we send
+		Carol <strong>$1000</strong> for inviting Dave, Bob gets <strong>$500</strong>
+		for inviting Carol, and Alice gets <strong>$250</strong> for inviting
+		Bob.
 	</p>
 	<f:subview rendered="#{not balloonBean.showShareWidgets}">
 		<p>
-			So that we can pay you if you win a portion of the finders’ fee, and to provide you
-			with a unique link to share, please enter your e-mail address:
-		</p>			
-			
-			<h:message for="email" />
-			<h:inputText value="#{balloonBean.email}" id="email" required="true" styleClass="text">
-				<f:validator validatorId="emailValidator" />
-			</h:inputText>
-			<h:commandLink value="request personal URL"	actionListener="#{balloonBean.requestURL}" />
-		<p>	
-			Why do you need this?
+			Because we intend to analyze the sequence of referrals to learn about
+			the spread of information in social networks, you must first review
+			and agree to the consent form for this research study <a
+				href="javascript:showBalloonPopup('colabpopup');">HERE</a> before
+			participating.
 		</p>
+		<p>
+		<div class="reg_errors">
+			<h:message for="checkBoxActive" errorClass="alert alert-error" />
+		</div>
+		<ice:selectBooleanCheckbox id="checkBoxActive" required="true"
+			value="#{balloonBean.checkBoxActive}">
+			<f:validator validatorId="RequiredCheckboxValidator" />
+		</ice:selectBooleanCheckbox>
+			I have read and agree to the <a
+			href="javascript:showBalloonPopup('colabpopup');">Consent Form</a>.
+		</p>
+		<p>
+			Once you have reviewed and agreed to the <a
+				href="javascript:showBalloonPopup('colabpopup');">Consent Form</a>,
+			enter your e-mail address below so that we can pay you if you win a
+			portion of the finder’s fee and so that we can provide you with a
+			unique link to share:
+		</p>
+		<div class="reg_errors">
+			<h:message for="email" errorClass="alert alert-error" />
+		</div>
+		<ice:inputText value="#{balloonBean.email}" id="email"
+			styleClass="text" required="true"
+			requiredMessage="Please enter your e-Mail address" label="email">
+			<f:validator validatorId="EmailValidator" />
+		</ice:inputText>
+
+		<div class="blue-button">
+			<h:commandLink value="request personal URL"
+				actionListener="#{balloonBean.requestURL}" />
+		</div>
+		<div class="clear"></div>
+		<p></p>
 	</f:subview>
 	<f:subview rendered="#{ balloonBean.showShareWidgets}">
-		<div class="share" style="text-align: center;">
-			<ice:inputText value="#{balloonBean.shareUrl}" /><br />
-			<a href="javascript:;" id="copyButton" data-clipboard-text="#{balloonBean.shareUrl}">Copy to clipboard</a>
-			<div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareLink" style="">
-				<a class="addthis_button_facebook" id="addThisButton1" addthis:title="Join the ClimateColab" addthis:description="#{balloonBean.shareUrl}"></a>
-				<a class="addthis_button_twitter" id="addThisButton2" addthis:title="Join the ClimateColab" addthis:description="#{balloonBean.shareUrl}"></a>
-        	</div>
-        	<div class="clear"></div>
-    	</div>
-    	<script type="text/javascript">
-                if (typeof(addthis) != 'undefined') {
-                    addthis.toolbox("#shareLink");
-                }
-                $(function() {initZeroClipboard() });
-            </script>
-		<p>
-			Once you receive a link above (with a unique code for you), use it to tell your friends
-			and family about the CoLab contest. Remember: If your sharing eventually leads to
-			the Grand Prize winner, even if you don’t know them or anyone they know, you’ll
-			still win some of the $2,000, so share widely!
-		</p>
-		<p>
-			Be sure to also check out our partner <a href="http://www.impacttree.org">ImpacTree</a>, where giving is social!
-		</p>
-		<p class="center" style="text-align: center;">
-			<a href="http://www.impacttree.org"><img src="https://www.impactree.org/site_media/img/logo_small.png" /></a>
-		</p>
+		<div class="share">
+			<ice:inputText value="#{balloonBean.shareUrl}" styleClass="text" />
+			<div class="blue-button">
+				<a href="javascript:;" id="copyButton"
+					data-clipboard-text="#{balloonBean.shareUrl}">Copy to clipboard</a>
+			</div>
+
+			<div
+				class="addthis_toolbox addthis_default_style addthis_32x32_style"
+				id="shareLink">
+				<a class="addthis_button_facebook" id="addThisButton1"
+					addthis:title="Join the ClimateColab"
+					addthis:url="#{balloonBean.shareUrl}/f"></a> <a
+					class="addthis_button_twitter" id="addThisButton2"
+					addthis:title="Join the ClimateColab"
+					addthis:url="#{balloonBean.shareUrl}/t"></a>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<script type="text/javascript">
+			if (typeof (addthis) != 'undefined') {
+				addthis.toolbox("#shareLink");
+			}
+			$(function() {
+				initZeroClipboard()
+			});
+		</script>
+
 	</f:subview>
+	<p>
+		Once you receive a link above (with a unique code for you), use it to
+		tell your friends and family about the CoLab contest. Remember: If
+		your sharing eventually leads to the winner of the <a
+			href="http://climatecolab.org/community/-/blogs/-10-000-grand-prize-at-nov-2013-conference"
+			target="_blank">Grand Prize of $10,000</a>, even if you don’t know
+		them or anyone they know, you’ll still win some of the $2,000, so
+		share widely!
+	</p>
+	<p>
+		This finders’ fee prize was inspired by the <a
+			href="http://en.wikipedia.org/wiki/DARPA_Network_Challenge"
+			target="_blank">MIT Red Balloon Challenge</a> Team and is proudly
+		powered by <a href="http://www.impacttree.org" target="_blank">ImpacTree</a>,
+		where donating to causes is social too!
+	</p>
+	<p class="center" style="text-align: center;">
+		<a href="http://www.impacttree.org" target="_blank"><img
+			src="http://www.impactree.org/site_media/img/calculator/logo.png"
+			width="250" /></a>
+	</p>
+	<p>
+	<div class="blue-button">
+		<h:commandLink value="back to overview" immediate="true"
+			actionListener="#{balloonBean.showColabPage}" />
+	</div>
+	</p>
+
+	<div id="colabpopup" class="balloonpopup" style="display: none;">
+		<p>
+			<a href="javascript:showBalloonPopup('colabpopup');">close me</a>
+		</p>
+		<div style="width: 100%; height: 450px; overflow: auto;">
+			<h2>CONSENT TO PARTICIPATE IN CLIMATE COLAB REFERRAL PRIZE STUDY</h2>
+			<p>We are asking you to participate in a research study conducted
+				by Thomas Malone from the Center for Collective Intelligence at the
+				Massachusetts Institute of Technology (M.I.T.). The purpose of the
+				study is to better understand how community referrals work in online
+				social networks. We are also interested in analyzing the impact of
+				community referrals in relation to subsequent activity on the
+				Climate CoLab site, and more generally how to design and grow online
+				communities. You should read the information below before deciding
+				whether or not to participate in this study.</p>
+			<h3>Study participation</h3>
+			<ul>
+				<li>Participation in this study is voluntary.</li>
+				<li>If you are under 18 years old, you will need your parent or
+					legal guardian to agree to these terms on your behalf.</li>
+				<li>Any information that is obtained in connection with this
+					study and that can be identified with you will remain confidential
+					and will be disclosed only with your permission or as required by
+					law.</li>
+				<li>You will not be compensated for participation in this
+					study, unless you are a winner of the finder’s fee prize.</li>
+				<li>If you feel you have been treated unfairly, or you have
+					questions regarding your rights as a research subject, you may
+					contact the Chairman of the Committee on the Use of Humans and
+					Experimental Subjects, M.I.T., Room E52-143b, 77 Massachusetts
+					Ave., Cambridge, MA, 02139, phone 1-617-253-6787.</li>
+			</ul>
+
+			<h3>Finders’ Fee Rules and Prizes</h3>
+			<ul>
+				<li>You are not eligible to receive part of the finders’ fee
+					unless you agree to participate in the study.</li>
+				<li>You are not eligible to receive part of the finders’ fee in
+					any location where it is prohibited by law. It is your
+					responsibility to check with your local laws to make sure that this
+					activity does not violate any applicable law or ordinance, and to
+					make sure that you are eligible to participate.</li>
+				<li>Before receiving your portion of the finders’ fee, you may
+					need to provide appropriate tax identification numbers (such as, in
+					the US, your social security number).</li>
+				<li>$1,000 will be awarded to anyone who refers the winner of
+					the Grand Prize to the Climate CoLab using a unique link that we
+					have generated for that person. Similarly, $500 will be awarded to
+					anyone who directly refers the referrer, $250 will be awarded to
+					anyone who refers the referrer of the referrer, and so on. The
+					smallest prize awarded will be to the referrer that is 10 degrees
+					of separation from the Grand Prize winner, who will be awarded
+					$1.95.</li>
+				<li>If there are multiple authors of the Grand Prize winning
+					proposal, the finders’ fee prize will go to the referrers (direct
+					and indirect) of the first person to join the proposal team who was
+					referred by someone participating in the Finders’ Fee study. If no
+					one on the winning proposal team was referred by anyone
+					participating in the Finder’s Fee study, then no finders’ fee
+					prizes will be awarded.</li>
+				<li>If any of the $2,000 finders’ fee prize is unclaimed, or if
+					there is no winner, the remaining money will go to support further
+					efforts of the Climate CoLab.</li>
+				<li>These rules for the Finders’ Fee Prize are subject to
+					change by the Climate CoLab team, if in the judgment of the Climate
+					CoLab team such changes are warranted.</li>
+			</ul>
+		</div>
+		<p>
+			<a href="javascript:showBalloonPopup('colabpopup');">close me</a>
+		</p>
+
+	</div>
 
 
 </ui:composition>
