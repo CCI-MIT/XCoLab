@@ -126,7 +126,7 @@ public class BalloonBean implements Serializable {
 
 		InternetAddress addressFrom = new InternetAddress(FROM_ADDRESS);
 
-		String[] receipients = new String[] { balloonCookie.getEmail() };
+		String[] receipients = new String[] { email };
 		InternetAddress[] addressTo = new InternetAddress[receipients.length];
 		for (int i = 0; i < receipients.length; i++) {
 			addressTo[i] = new InternetAddress(receipients[i]);
