@@ -42,6 +42,9 @@
     <script type="text/javascript" src="$javascript_folder/moth_init_script.js?tt=$themeTimestamp"></script>
     <!-- AddThis Button END -->
     
+    <!-- Pinterest META -->
+    <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
+    
 </head>
 
 
