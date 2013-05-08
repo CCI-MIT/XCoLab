@@ -124,10 +124,12 @@ public class BalloonBean implements Serializable {
 
 	private void sendNotificationEmail() throws AddressException,
 			MailEngineException {
-
+		System.out.println("sending mail");
 		PortletSession session = Helper.getPortletRequest().getPortletSession();
-		if (session.getAttributeMap().containsKey(EMAIL_SENT))
+		if (session.getAttributeMap().containsKey(EMAIL_SENT)) {
+			System.out.println("mail already sent");
 			return;
+		}
 		String messageSubject = EMAIL_SUBJECT;
 		String messageBody = EMAIL_BODY.replaceAll("URL_PLACEHOLDER",
 				balloonCookie.getUrl());
@@ -142,9 +144,10 @@ public class BalloonBean implements Serializable {
 
 		InternetAddress replyTo[] = { new InternetAddress(FROM_ADDRESS) };
 
+		System.out.println("just before sending");
 		MailEngine.send(addressFrom, addressTo, null, null, null,
 				messageSubject, messageBody, false, replyTo, null, null);
-
+		System.out.println("sent");
 		session.setAttribute(EMAIL_SENT, true);
 
 	}
