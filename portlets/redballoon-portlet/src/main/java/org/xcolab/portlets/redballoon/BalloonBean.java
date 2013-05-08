@@ -146,7 +146,7 @@ public class BalloonBean implements Serializable {
 
 		System.out.println("just before sending");
 		MailEngine.send(addressFrom, addressTo, null, null, null,
-				messageSubject, messageBody, false, replyTo, null, null);
+				messageSubject, messageBody, true, replyTo, null, null);
 		System.out.println("sent");
 		session.setAttribute(EMAIL_SENT, true);
 
