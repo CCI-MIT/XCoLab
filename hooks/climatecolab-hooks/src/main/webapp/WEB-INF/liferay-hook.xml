@@ -19,6 +19,10 @@
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.landingpage.LandingpageFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
+		<servlet-filter-name>SessionPingFilter</servlet-filter-name>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.sessionping.SessionPingFilter</servlet-filter-impl>
+	</servlet-filter>
+	<servlet-filter>
                 <servlet-filter-name>URL Rewrite Filter</servlet-filter-name>
                 <servlet-filter-impl>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</servlet-filter-impl>
                 <init-param>
@@ -45,6 +49,10 @@
 	<servlet-filter-mapping>
 		<servlet-filter-name>Landingpage</servlet-filter-name>
 		<url-pattern>/landingpage/*</url-pattern>
+	</servlet-filter-mapping>
+	<servlet-filter-mapping>
+		<servlet-filter-name>SessionPingFilter</servlet-filter-name>
+		<url-pattern>/sessionping</url-pattern>
 	</servlet-filter-mapping>
     
 	

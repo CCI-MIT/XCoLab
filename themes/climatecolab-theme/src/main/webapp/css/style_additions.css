@@ -1182,3 +1182,8 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 .hashlink { 
 	display: none;
 }
+
+/* hide network connection lost message */
+.liferay-faces-bridge-body > iframe, .ice-status-indicator {
+	display: none;
+}

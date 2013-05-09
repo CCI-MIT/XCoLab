@@ -529,3 +529,45 @@ function updateShareThisUrls(selector) {
 		self.attr('addthis:url', window.document.location.protocol + "//" + window.document.location.host + '?redirect_to=' + escape(currentUrl));
 	});
 }
+
+
+/** Monitor connection lost **/
+
+	function doRemoveIcefacesNetworkConnectionErrorInfo() {
+   		$(".liferay-faces-bridge-body").attr("style", "");
+   		$(".liferay-faces-bridge-body > iframe").remove();
+   		$(".ice-status-indicator").remove();
+   	}
+
+   	function doShowConnectionLostWarningMessage() {
+   		var banner = new Liferay.Notice({type: "warning", closeText: false, content: 'Warning! Due to inactivity, your session has expired. Please save your work before refreshing page.', toggleText: false});
+   		banner.show();
+   	}
+   	
+   	function showConnectionErrorMessage() {
+   		console.log("showConnectionLostWarningMessage");
+   		doRemoveIcefacesNetworkConnectionErrorInfo();
+   		setTimeout(doRemoveIcefacesNetworkConnectionErrorInfo, 100);
+   		doShowConnectionLostWarningMessage();
+   	}
+   	
+   	jQuery(function() {
+   		
+   		if (ice) {
+   			console.log("monitoring connections");
+   			ice.onSessionExpiry(showConnectionErrorMessage);
+   			ice.onServerError(showConnectionErrorMessage);
+   			ice.onNetworkError(showConnectionErrorMessage);
+   			ice.onBlockingConnectionLost(showConnectionErrorMessage);
+   			ice.onBlockingConnectionServerError(showConnectionErrorMessage);
+   		}
+   	});
+   	
+   	/* sessionping */
+   	jQuery(function() {
+   		setInterval(function() {
+   			jQuery.ajax("/sessionping");
+   		}, 15000);
+   		
+   	});
+   	
