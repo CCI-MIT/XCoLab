@@ -20,7 +20,7 @@
                                        escaped='false'
                                        rendered="#{not planBean.plan.planMember and not planBean.membershipBean.requesting and not planBean.plan.hasRequestedMembership }"
                                        onclick="if(!deferUntilLogin()) return false;">
-                    #{planBean.plan.open?'&lt;span&gt;JOIN&lt;/span&gt; this team':'&lt;span&gt;REQUEST&lt;/span&gt; membership'}
+                    #{planBean.plan.open?'JOIN this team':'REQUEST membership'}
                 </ice:commandLink>
                 </div>
         </div>
