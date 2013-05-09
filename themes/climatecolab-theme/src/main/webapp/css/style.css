@@ -344,7 +344,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .newslinks a.readmore:hover {border-bottom:1px solid #000;}
 
 .facebook {background:url(../images/icon-facebook.png) no-repeat; float:left; width:81px; height:17px; padding:1px 0 0 25px;}
-.pinterest {background:url(../images/icon-pinterest.png) no-repeat; float:left; height:17px; padding:1px 20px 0 25px;}
+.pinterest {background:url(../images/icon-pinterest.png) no-repeat; float:left; height:17px; padding:1px 0 0 25px;margin-left:17px;}
 .twitter {background:url(../images/icon-twitter.png) no-repeat; float:left; height:17px; padding:1px 0 0 25px;}
 
 
