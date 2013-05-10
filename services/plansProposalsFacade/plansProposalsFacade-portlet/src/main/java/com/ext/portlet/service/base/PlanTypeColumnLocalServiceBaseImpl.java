@@ -3,6 +3,8 @@ package com.ext.portlet.service.base;
 import com.ext.portlet.model.PlanTypeColumn;
 import com.ext.portlet.service.ActivitySubscriptionLocalService;
 import com.ext.portlet.service.ActivitySubscriptionService;
+import com.ext.portlet.service.BalloonStatsEntryLocalService;
+import com.ext.portlet.service.BalloonStatsEntryService;
 import com.ext.portlet.service.ContestDebateLocalService;
 import com.ext.portlet.service.ContestDebateService;
 import com.ext.portlet.service.ContestLocalService;
@@ -124,6 +126,7 @@ import com.ext.portlet.service.PlansFilterService;
 import com.ext.portlet.service.PlansUserSettingsLocalService;
 import com.ext.portlet.service.PlansUserSettingsService;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
+import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
@@ -237,6 +240,12 @@ public abstract class PlanTypeColumnLocalServiceBaseImpl
     protected ActivitySubscriptionService activitySubscriptionService;
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+    @BeanReference(type = BalloonStatsEntryLocalService.class)
+    protected BalloonStatsEntryLocalService balloonStatsEntryLocalService;
+    @BeanReference(type = BalloonStatsEntryService.class)
+    protected BalloonStatsEntryService balloonStatsEntryService;
+    @BeanReference(type = BalloonStatsEntryPersistence.class)
+    protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = ContestLocalService.class)
     protected ContestLocalService contestLocalService;
     @BeanReference(type = ContestService.class)
@@ -918,6 +927,63 @@ public abstract class PlanTypeColumnLocalServiceBaseImpl
     public void setActivitySubscriptionPersistence(
         ActivitySubscriptionPersistence activitySubscriptionPersistence) {
         this.activitySubscriptionPersistence = activitySubscriptionPersistence;
+    }
+
+    /**
+     * Returns the balloon stats entry local service.
+     *
+     * @return the balloon stats entry local service
+     */
+    public BalloonStatsEntryLocalService getBalloonStatsEntryLocalService() {
+        return balloonStatsEntryLocalService;
+    }
+
+    /**
+     * Sets the balloon stats entry local service.
+     *
+     * @param balloonStatsEntryLocalService the balloon stats entry local service
+     */
+    public void setBalloonStatsEntryLocalService(
+        BalloonStatsEntryLocalService balloonStatsEntryLocalService) {
+        this.balloonStatsEntryLocalService = balloonStatsEntryLocalService;
+    }
+
+    /**
+     * Returns the balloon stats entry remote service.
+     *
+     * @return the balloon stats entry remote service
+     */
+    public BalloonStatsEntryService getBalloonStatsEntryService() {
+        return balloonStatsEntryService;
+    }
+
+    /**
+     * Sets the balloon stats entry remote service.
+     *
+     * @param balloonStatsEntryService the balloon stats entry remote service
+     */
+    public void setBalloonStatsEntryService(
+        BalloonStatsEntryService balloonStatsEntryService) {
+        this.balloonStatsEntryService = balloonStatsEntryService;
+    }
+
+    /**
+     * Returns the balloon stats entry persistence.
+     *
+     * @return the balloon stats entry persistence
+     */
+    public BalloonStatsEntryPersistence getBalloonStatsEntryPersistence() {
+        return balloonStatsEntryPersistence;
+    }
+
+    /**
+     * Sets the balloon stats entry persistence.
+     *
+     * @param balloonStatsEntryPersistence the balloon stats entry persistence
+     */
+    public void setBalloonStatsEntryPersistence(
+        BalloonStatsEntryPersistence balloonStatsEntryPersistence) {
+        this.balloonStatsEntryPersistence = balloonStatsEntryPersistence;
     }
 
     /**

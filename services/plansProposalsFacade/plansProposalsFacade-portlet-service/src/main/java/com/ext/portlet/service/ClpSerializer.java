@@ -1,6 +1,7 @@
 package com.ext.portlet.service;
 
 import com.ext.portlet.model.ActivitySubscriptionClp;
+import com.ext.portlet.model.BalloonStatsEntryClp;
 import com.ext.portlet.model.ContestClp;
 import com.ext.portlet.model.ContestDebateClp;
 import com.ext.portlet.model.ContestPhaseClp;
@@ -147,6 +148,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ActivitySubscriptionClp.class.getName())) {
             return translateInputActivitySubscription(oldModel);
+        }
+
+        if (oldModelClassName.equals(BalloonStatsEntryClp.class.getName())) {
+            return translateInputBalloonStatsEntry(oldModel);
         }
 
         if (oldModelClassName.equals(ContestClp.class.getName())) {
@@ -481,6 +486,82 @@ public class ClpSerializer {
                 Date value7 = oldCplModel.getModifiedDate();
 
                 method7.invoke(newModel, value7);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputBalloonStatsEntry(BaseModel<?> oldModel) {
+        BalloonStatsEntryClp oldCplModel = (BalloonStatsEntryClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.BalloonStatsEntryImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setFirstContestId",
+                        new Class[] { Long.TYPE });
+
+                Long value1 = new Long(oldCplModel.getFirstContestId());
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setSecondContestId",
+                        new Class[] { Long.TYPE });
+
+                Long value2 = new Long(oldCplModel.getSecondContestId());
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setChoosenContest",
+                        new Class[] { Integer.TYPE });
+
+                Integer value3 = new Integer(oldCplModel.getChoosenContest());
+
+                method3.invoke(newModel, value3);
+
+                Method method4 = newModelClass.getMethod("setCookie",
+                        new Class[] { String.class });
+
+                String value4 = oldCplModel.getCookie();
+
+                method4.invoke(newModel, value4);
+
+                Method method5 = newModelClass.getMethod("setIp",
+                        new Class[] { String.class });
+
+                String value5 = oldCplModel.getIp();
+
+                method5.invoke(newModel, value5);
+
+                Method method6 = newModelClass.getMethod("setExtraData",
+                        new Class[] { String.class });
+
+                String value6 = oldCplModel.getExtraData();
+
+                method6.invoke(newModel, value6);
 
                 return newModel;
             } catch (Exception e) {
@@ -4781,6 +4862,11 @@ public class ClpSerializer {
             return translateOutputActivitySubscription(oldModel);
         }
 
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.BalloonStatsEntryImpl")) {
+            return translateOutputBalloonStatsEntry(oldModel);
+        }
+
         if (oldModelClassName.equals("com.ext.portlet.model.impl.ContestImpl")) {
             return translateOutputContest(oldModel);
         }
@@ -5160,6 +5246,76 @@ public class ClpSerializer {
                 Date value7 = (Date) method7.invoke(oldModel, (Object[]) null);
 
                 newModel.setModifiedDate(value7);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputBalloonStatsEntry(BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                BalloonStatsEntryClp newModel = new BalloonStatsEntryClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setId(value0);
+
+                Method method1 = oldModelClass.getMethod("getFirstContestId");
+
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setFirstContestId(value1);
+
+                Method method2 = oldModelClass.getMethod("getSecondContestId");
+
+                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
+
+                newModel.setSecondContestId(value2);
+
+                Method method3 = oldModelClass.getMethod("getChoosenContest");
+
+                Integer value3 = (Integer) method3.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setChoosenContest(value3);
+
+                Method method4 = oldModelClass.getMethod("getCookie");
+
+                String value4 = (String) method4.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setCookie(value4);
+
+                Method method5 = oldModelClass.getMethod("getIp");
+
+                String value5 = (String) method5.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setIp(value5);
+
+                Method method6 = oldModelClass.getMethod("getExtraData");
+
+                String value6 = (String) method6.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setExtraData(value6);
 
                 return newModel;
             } catch (Exception e) {

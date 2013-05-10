@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.community.CommunityConstants;
+import com.ext.portlet.model.BalloonStatsEntry;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -42,6 +44,7 @@ public class BalloonBean implements Serializable {
 	private View page = View.ABOUT_COLAB;
 	private boolean showShareWidgets;
 	private List<Contest> contests;
+    private BalloonStatsEntry statsEntry;
 
     private final static String EMAIL_SUBJECT = "Help find the winner of MIT's Climate CoLab Grand Prize!";
     private final static String EMAIL_BODY = "<p>Here is your unique link, which you can use to tell your friends and family about the MIT Climate CoLab contest:</p>\n\n<p><a href=\"URL_PLACEHOLDER\">URL_PLACEHOLDER</a></p>\n<a href=\"http://www.facebook.com/share.php?u=URL_PLACEHOLDER\" title=\"Facebook\" href=\"#\"><img src=\"http://inventas-it.ch/mit/fb.png\" height=\"30\" border=\"0\" /></a> <a href=\"http://twitter.com/share?url=URL_PLACEHOLDER&text=ClimateColab\"><img src=\"http://inventas-it.ch/mit/twitter.png\" height=\"33\" border=\"0\" /></a>\n\n<p>Remember: If your sharing eventually leads to the winner of the $10,000 Grand Prize, you\'ll win some of the $2,000 referral prize, even if that person is up to 10 degrees of separation from you!</p>\n\n<p>For your convenience, we\'ve included a blurb about the contest below for you to send to your friends, but you can spread the word any way you\'d like (just remember to include your unique link, so you can win the referral prize!)</p>\n\n<p><strong>MIT\'s Climate CoLab: Your ideas can help combat climate change, and you might win $10,000</strong></p>\n\n<br/><p>At MIT\u2019s Climate CoLab you can work with people from all over the world to develop ideas for what we can actually do about climate change.</p>\n \n<p>If you submit one of the winning ideas, you\u2019ll be able to present it to the media, government officials, business executives, and scientists at an MIT conference on November 6-7, where a grand prize of $10,000 will be awarded.</p>\n\n \n<p>Even if you don\u2019t have new ideas yourself, you can help improve other people\u2019s ideas and support the ones you find most promising.  And that\'s not all: If you refer one of your friends or colleagues to the contest via Facebook, Twitter or e-mail, and one of them\u2014or a friend of a friend, or friend of a friend of a friend, etc.\u2014wins the Grand Prize, you\u2019ll receive a share of a $2,000 referral prize!</p>\n \n<p>Current contests address low-carbon energy, building efficiency, adaptation, geoengineering, and many other topics. Entries are due May 31.</p>";
@@ -119,6 +122,16 @@ public class BalloonBean implements Serializable {
 		contests = ContestLocalServiceUtil.findByActiveFlag(true, 0);
 		Collections.shuffle(contests);
 
+
+        statsEntry = BalloonStatsEntryLocalServiceUtil.createBalloonStatsEntry(0);
+        statsEntry.setFirstContestId(contests.get(0).getContestPK());
+        statsEntry.setSecondContestId(contests.get(1).getContestPK());
+        statsEntry.setCookie(balloonCookie.toString());
+        statsEntry.setIp(httpReq.getRemoteAddr());
+        //statsEntry.setChoosenContest(0);
+        
+        statsEntry = BalloonStatsEntryLocalServiceUtil.store(statsEntry);
+        
 		ensureSignedInUserHasExpandoValue();
 	}
 
@@ -273,5 +286,13 @@ public class BalloonBean implements Serializable {
 	public void setCheckBoxActive(boolean checkBoxActive) {
 		this.checkBoxActive = checkBoxActive;
 	}
+
+    public BalloonStatsEntry getStatsEntry() {
+        return statsEntry;
+    }
+
+    public void setStatsEntry(BalloonStatsEntry statsEntry) {
+        this.statsEntry = statsEntry;
+    }
 
 }

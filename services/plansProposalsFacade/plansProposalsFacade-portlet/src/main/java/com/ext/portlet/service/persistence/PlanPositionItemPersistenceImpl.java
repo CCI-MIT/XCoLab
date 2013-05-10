@@ -5,6 +5,7 @@ import com.ext.portlet.model.PlanPositionItem;
 import com.ext.portlet.model.impl.PlanPositionItemImpl;
 import com.ext.portlet.model.impl.PlanPositionItemModelImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
+import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
@@ -190,6 +191,8 @@ public class PlanPositionItemPersistenceImpl extends BasePersistenceImpl<PlanPos
 
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+    @BeanReference(type = BalloonStatsEntryPersistence.class)
+    protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = ContestPersistence.class)
     protected ContestPersistence contestPersistence;
     @BeanReference(type = ContestDebatePersistence.class)

@@ -5,6 +5,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.impl.ContestImpl;
 import com.ext.portlet.model.impl.ContestModelImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
+import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
@@ -263,6 +264,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+    @BeanReference(type = BalloonStatsEntryPersistence.class)
+    protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = ContestPersistence.class)
     protected ContestPersistence contestPersistence;
     @BeanReference(type = ContestDebatePersistence.class)

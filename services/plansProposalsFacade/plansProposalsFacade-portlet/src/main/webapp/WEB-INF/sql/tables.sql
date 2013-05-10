@@ -9,6 +9,16 @@ create table xcolab_ActivitySubscription (
 	modifiedDate DATE null
 );
 
+create table xcolab_BalloonStatsEntry (
+	id_ LONG not null primary key,
+	firstContestId LONG,
+	secondContestId LONG,
+	choosenContest INTEGER,
+	cookie VARCHAR(256) null,
+	ip VARCHAR(75) null,
+	extraData VARCHAR(256) null
+);
+
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
 	ContestName VARCHAR(2048) null,

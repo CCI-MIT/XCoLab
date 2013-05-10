@@ -5,6 +5,7 @@ import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.impl.FocusAreaOntologyTermImpl;
 import com.ext.portlet.model.impl.FocusAreaOntologyTermModelImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
+import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
@@ -189,6 +190,8 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+    @BeanReference(type = BalloonStatsEntryPersistence.class)
+    protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = ContestPersistence.class)
     protected ContestPersistence contestPersistence;
     @BeanReference(type = ContestDebatePersistence.class)

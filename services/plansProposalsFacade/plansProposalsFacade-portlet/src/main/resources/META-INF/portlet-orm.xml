@@ -27,6 +27,21 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.BalloonStatsEntryModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="firstContestId" />
+			<basic name="secondContestId" />
+			<basic name="choosenContest" />
+			<basic name="cookie" />
+			<basic name="ip" />
+			<basic name="extraData" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestModelImpl">
 		<attributes>
 			<id name="ContestPK" />
@@ -905,6 +920,10 @@
 	</mapped-superclass>
 	<entity class="com.ext.portlet.model.impl.ActivitySubscriptionImpl" name="ActivitySubscription">
 		<table name="xcolab_ActivitySubscription" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.BalloonStatsEntryImpl" name="BalloonStatsEntry">
+		<table name="xcolab_BalloonStatsEntry" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestImpl" name="Contest">

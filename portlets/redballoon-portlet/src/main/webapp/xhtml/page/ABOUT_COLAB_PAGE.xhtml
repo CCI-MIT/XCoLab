@@ -34,15 +34,15 @@
 				<p>
 					The CoLab is currently hosting contests in 18 different topics on
 					everything from
-					<collab:contestLink
-						contestId="#{balloonBean.contests[0].contestPK}"
-						text="#{balloonBean.contests[0].contestShortName}" />
+					<a href="/balloonStats?contestId=#{balloonBean.contests[0].contestPK}&amp;statsId=#{balloonBean.statsEntry.id}">
+						#{balloonBean.contests[0].contestShortName}
+					</a>
 
 					to
-
-					<collab:contestLink
-						contestId="#{balloonBean.contests[1].contestPK}"
-						text="#{balloonBean.contests[1].contestShortName}" />
+ 
+					<a href="/balloonStats?contestId=#{balloonBean.contests[1].contestPK}&amp;statsId=#{balloonBean.statsEntry.id}">
+						#{balloonBean.contests[1].contestShortName}
+					</a>
 					, and the creators of the best proposals will be invited to present
 					their ideas at a <a
 						href=" http://climatecolab.org/web/guest/conference2013">conference

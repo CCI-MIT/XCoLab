@@ -23,6 +23,15 @@
 		<property name="service" ref="com.ext.portlet.service.ActivitySubscriptionService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.ActivitySubscriptionPersistence" class="com.ext.portlet.service.persistence.ActivitySubscriptionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.BalloonStatsEntryLocalService" class="com.ext.portlet.service.impl.BalloonStatsEntryLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil" class="com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.BalloonStatsEntryLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.BalloonStatsEntryService" class="com.ext.portlet.service.impl.BalloonStatsEntryServiceImpl" />
+	<bean id="com.ext.portlet.service.BalloonStatsEntryServiceUtil" class="com.ext.portlet.service.BalloonStatsEntryServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.BalloonStatsEntryService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.BalloonStatsEntryPersistence" class="com.ext.portlet.service.persistence.BalloonStatsEntryPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestLocalService" class="com.ext.portlet.service.impl.ContestLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestLocalServiceUtil" class="com.ext.portlet.service.ContestLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.ContestLocalService" />

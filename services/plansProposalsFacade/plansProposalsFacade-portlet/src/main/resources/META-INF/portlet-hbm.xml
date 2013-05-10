@@ -3,6 +3,7 @@
 
 <hibernate-mapping default-lazy="false" auto-import="false">
 	<import class="com.ext.portlet.model.ActivitySubscription" />
+	<import class="com.ext.portlet.model.BalloonStatsEntry" />
 	<import class="com.ext.portlet.model.Contest" />
 	<import class="com.ext.portlet.model.ContestDebate" />
 	<import class="com.ext.portlet.model.ContestPhase" />
@@ -75,6 +76,18 @@
 		<property name="receiverId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.BalloonStatsEntryImpl" table="xcolab_BalloonStatsEntry">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="firstContestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="secondContestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="choosenContest" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="cookie" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="ip" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="extraData" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestImpl" table="xcolab_Contest">
 		<cache usage="read-write" />
