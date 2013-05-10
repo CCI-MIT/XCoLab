@@ -172,11 +172,7 @@ public class CreatePlanBean {
 
     // redirection should occur only once
     public boolean isNavigateToPlan() {
-        if (navigateToPlan) {
-            navigateToPlan = false;
-            return true;
-        }
-        return false;
+        return navigateToPlan;
     }
 
     public void setNavigateToPlan(boolean navigateToPlan) {
