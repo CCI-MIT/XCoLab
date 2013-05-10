@@ -467,6 +467,7 @@ public class MigrationTool {
         for (PlanItem basePlan : PlanItemLocalServiceUtil.getPlans()) {
             PlanItemLocalServiceUtil.updateAttribute(basePlan, Attribute.IS_PLAN_OPEN.name());
             PlanItemLocalServiceUtil.updateAttribute(basePlan, Attribute.SUPPORTERS.name());
+	    PlanItemLocalServiceUtil.setAttribute(basePlan, Attribute.SUPPORTERS.name(), String.valueOf(PlanItemLocalServiceUtil.getFans(basePlan).size()));
         }
         FacesMessage fm = new FacesMessage();
         fm.setSeverity(FacesMessage.SEVERITY_INFO);

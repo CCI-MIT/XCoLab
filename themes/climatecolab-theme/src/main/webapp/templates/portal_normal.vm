@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="$css_folder/autoSuggest.css" type="text/css" />
     <link rel="stylesheet" href="$css_folder/ui.dynatree.css" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <script type="text/javascript" src="http://use.typekit.com/zdq3gry.js?kisc"></script>
+    <script type="text/javascript" src="http://use.typekit.com/bmu2xym.js?akisc"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <!--[if IE]>
         <script type="text/javascript" src="$javascript_folder/excanvas.js"></script>
@@ -41,6 +41,9 @@
     <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=climatecolab"></script>
     <script type="text/javascript" src="$javascript_folder/moth_init_script.js?tt=$themeTimestamp"></script>
     <!-- AddThis Button END -->
+    
+    <!-- Pinterest META -->
+    <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
     
 </head>
 
