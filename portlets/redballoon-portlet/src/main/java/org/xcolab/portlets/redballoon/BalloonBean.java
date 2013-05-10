@@ -39,7 +39,6 @@ public class BalloonBean implements Serializable {
 	private boolean redirectUserToGetURL = false;
 	private BalloonCookie balloonCookie;
 	private HttpServletRequest httpReq;
-	private View page = View.ABOUT_COLAB;
 	private boolean showShareWidgets;
 	private List<Contest> contests;
 
@@ -53,22 +52,6 @@ public class BalloonBean implements Serializable {
     private final static String USER_EMAIL = BalloonBean.class.getName()
             + "USER_EMAIL";
     
-	/**
-	 * views
-	 * 
-	 * @author pdeboer
-	 * 
-	 */
-	public enum View {
-		ABOUT_REFERRAL, ABOUT_COLAB;
-	}
-
-	/**
-	 * @return the page
-	 */
-	public View getPage() {
-		return page;
-	}
 
 	public BalloonBean() throws Exception {
 		this(false);
@@ -106,13 +89,6 @@ public class BalloonBean implements Serializable {
 			balloonCookie.setUuid(GETParamID);
 		}
 
-		if (StringUtils.isNotBlank(GETParamURL)
-				|| (balloonCookie != null && StringUtils
-						.isNotBlank(balloonCookie.getUrl()))) {
-			page = View.ABOUT_REFERRAL;
-		} else {
-			page = View.ABOUT_COLAB;
-		}
 		showShareWidgets = balloonCookie != null
 				&& StringUtils.isNotBlank(balloonCookie.getUrl());
 
@@ -253,15 +229,7 @@ public class BalloonBean implements Serializable {
 
 		redirectUserToGetURL = true;
 	}
-
-	public void toggleReferralPage(ActionEvent e) {
-		page = View.ABOUT_REFERRAL;
-	}
-
-	public void showColabPage(ActionEvent e) {
-		page = View.ABOUT_COLAB;
-	}
-
+	
 	public String getShareUrl() {
 		return balloonCookie.getUrl();
 	}

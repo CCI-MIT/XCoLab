@@ -23,12 +23,7 @@
 						</script>
 					</ice:panelGroup>
 
-					<ice:panelGroup rendered="#{balloonBean.page == 'ABOUT_COLAB'}">
-						<ui:include src="./page/ABOUT_COLAB_PAGE.xhtml" />
-					</ice:panelGroup>
-					<ice:panelGroup rendered="#{balloonBean.page == 'ABOUT_REFERRAL'}">
-						<ui:include src="./page/ABOUT_REFERRAL_PAGE.xhtml" />
-					</ice:panelGroup>
+					<ui:include src="./page/ABOUT_REFERRAL_PAGE.xhtml" />
 
 					<ice:panelGroup rendered="#{balloonBean.redirectUserToGetURL}">
 						<script>
@@ -41,10 +36,10 @@
 			<script type="text/javascript">
 				function showBalloonPopup(target) {
 					var targetElement = document.getElementById(target);
-					if(targetElement.style.display == '') {
-						targetElement.style.display="none";
-					}else{
-						targetElement.style.display="";
+					if (targetElement.style.display == '') {
+						targetElement.style.display = "none";
+					} else {
+						targetElement.style.display = "";
 					}
 				}
 			</script>
