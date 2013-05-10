@@ -19,6 +19,14 @@
 		<param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
 		<param-value>*.xhtml</param-value>
 	</context-param>
+	<context-param>
+ 		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
+ 		<param-value>true</param-value>
+ 	</context-param>
+	<context-param>
+       	<param-name>org.icefaces.compressResources</param-name>
+      	<param-value>false</param-value>
+	</context-param>
 	<!-- Guarantee order of startup listeners (JSF implementation must be specified before the bridge). -->
 	<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
