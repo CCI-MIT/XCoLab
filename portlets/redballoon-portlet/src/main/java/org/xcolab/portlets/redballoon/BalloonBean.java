@@ -137,7 +137,6 @@ public class BalloonBean implements Serializable {
 		} catch (Exception e) {
 			return;
 		}
-		System.out.println("was able to determine user id");
 
 		// set user id in expando
 		if (balloonCookie != null
@@ -149,7 +148,6 @@ public class BalloonBean implements Serializable {
 			try {
 				redBalloonColumn = ExpandoColumnLocalServiceUtil.getColumn(
 						table.getTableId(), CommunityConstants.RED_BALLOON);
-				System.out.println("got column");
 			} catch (Exception e) {
 				// create column
 			}
@@ -157,7 +155,6 @@ public class BalloonBean implements Serializable {
 				redBalloonColumn = ExpandoColumnLocalServiceUtil.addColumn(
 						table.getTableId(), CommunityConstants.RED_BALLOON,
 						ExpandoColumnConstants.STRING);
-				System.out.println("created column");
 			}
 
 			ExpandoValueLocalServiceUtil.addValue(User.class.getName(),
