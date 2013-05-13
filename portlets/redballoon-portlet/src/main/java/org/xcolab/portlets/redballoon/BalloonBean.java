@@ -113,7 +113,11 @@ public class BalloonBean implements Serializable {
 
 		String mailAdr = session.getAttribute(USER_EMAIL) == null ? balloonCookie.getEmail()
 				: session.getAttribute(USER_EMAIL).toString();
-
+		
+		System.out.println("adr: "+mailAdr);
+		
+		if(mailAdr == null || mailAdr.equals("")) return;
+		
 		String[] receipients = new String[] { mailAdr };
 		InternetAddress[] addressTo = new InternetAddress[receipients.length];
 		for (int i = 0; i < receipients.length; i++) {
