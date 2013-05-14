@@ -8,11 +8,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<h1>Want to help figure out what we should do about climate
 		change?</h1>
-
-	<h1>Know someone who does? How about someone who knows someone who
-		does?</h1>
-	<h1>You can win either way!</h1>
-
+	<f:subview rendered="#{balloonBean.showButton}">
+		<h1>Know someone who does? How about someone who knows someone
+			who does?</h1>
+		<h1>You can win either way!</h1>
+	</f:subview>
 	<p>
 		The <a href="/">MIT Climate CoLab</a> is a site where people from all
 		over the world can create proposals on what should be done about
