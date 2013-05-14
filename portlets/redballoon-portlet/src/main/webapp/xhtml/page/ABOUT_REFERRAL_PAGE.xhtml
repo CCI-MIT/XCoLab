@@ -6,20 +6,24 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	<f:subview rendered="#{balloonBean.showButton}">
-		<h1>Want to help figure out what we should do about climate
-			change?</h1>
-		<h1>Know someone who does? How about someone who knows someone
-			who does?</h1>
-		<h1>You can win either way!</h1>
-	</f:subview>
-	<f:subview rendered="#{not balloonBean.showButton}">
-		<h2>Want to help figure out what we should do about climate
-			change, or know someone who does?</h2>
-		<p>
-			<strong>How about someone who knows someone who does?</strong>
-		</p>
-	</f:subview>
+	<table width="100%">
+		<tr>
+			<td><f:subview rendered="#{balloonBean.showButton}">
+					<h1>Want to help figure out what we should do about climate
+						change?</h1>
+					<h1>Know someone who does? How about someone who knows someone
+						who does?</h1>
+					<h1>You can win either way!</h1>
+				</f:subview> <f:subview rendered="#{not balloonBean.showButton}">
+					<h2>Want to help figure out what we should do about climate
+						change, or know someone who does?</h2>
+					<p>
+						<strong>How about someone who knows someone who does?</strong>
+					</p>
+				</f:subview></td>
+			<td><img src="http://cci.mit.edu/images/logo_MIT-CCI.gif" /></td>
+		</tr>
+	</table>
 	<p>
 		The <a href="/">MIT Climate CoLab</a> is a site where people from all
 		over the world can create proposals on what should be done about
