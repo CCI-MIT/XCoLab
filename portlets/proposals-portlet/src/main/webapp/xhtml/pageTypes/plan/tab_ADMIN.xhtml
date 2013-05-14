@@ -104,21 +104,21 @@
           </div>
         </ice:panelGroup>
         
+	  <f:subview rendered="#{permissions.canAdmin and not planBean.plan.deleted}">
         <ice:panelGroup rendered="#{permissions.planOwner}" styleClass="addpropbox">
             <strong>Owner actions</strong>
             
             <div>
-                <f:subview rendered="#{permissions.canAdmin and not planBean.plan.deleted}">
                 	<div class="blue-button">
                     	<ice:commandLink actionListener="#{planBean.plan.delete}" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; }">
                     	    DELETE plan
                     	</ice:commandLink>
                     </div>
-                </f:subview>
             </div>
         </ice:panelGroup>
-    
-    </div>
+    	</f:subview>
+      </div>
+      
     
     
     <div class="admin_right">

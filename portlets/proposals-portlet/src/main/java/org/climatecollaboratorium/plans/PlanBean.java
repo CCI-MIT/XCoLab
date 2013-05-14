@@ -406,7 +406,7 @@ public class PlanBean {
             }
             availableTabs.add(new PlanTabWrapper(planItem, PlanTab.TEAM));
             availableTabs.add(new PlanTabWrapper(planItem, PlanTab.COMMENTS));
-            if (permissions.getCanAdmin()) {
+            if (permissions.getCanAdmin() && ! planItem.getState().equals("DELETED")) {
                 availableTabs.add(new PlanTabWrapper(planItem, PlanTab.ADMIN));
             }
         }
