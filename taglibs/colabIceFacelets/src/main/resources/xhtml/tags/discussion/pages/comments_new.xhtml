@@ -70,39 +70,49 @@
         </ice:column>
         
         <ice:column styleClass="#{message.expertReview ? 'expertReview' : ''}">
-            <ice:panelGroup rendered="#{not message.editing}">
-                    <div class="content">
-                        <ice:outputText value="#{message.filteredDescription}" escape="false" />
+        	<ice:panelGroup styleClass="messageBody">
+        		<div class="displayView">
+            		<div class="content">
+						<ice:outputText value="#{message.filteredDescription}" escape="false" />
+                	</div>
+                	<div class="commentsActions">
+						<button class="toggleEditView">Edit</button>
+                    	<ice:commandButton actionListener="#{message.delete}" value="Delete" rendered='#{discussionBean.permissions.canAdminMessages}'/>
+                    	<ice:commandButton actionListener="#{message.addFlag}" value="Mark as an expert review" rendered='#{discussionBean.permissions.canAdminMessages and not message.expertReview}' >
+                        	<f:attribute name="flagType" value="EXPERT_REVIEW" />
+                    	</ice:commandButton>
+                    	<ice:commandButton actionListener="#{message.removeFlag}" value="Remove an expert review flag" rendered='#{discussionBean.permissions.canAdminMessages and message.expertReview}' >
+                        	<f:attribute name="flagType" value="EXPERT_REVIEW" />
+                    	</ice:commandButton>
                     </div>
-                    <div class="commentsActions">
-                        <ice:commandButton actionListener="#{message.toggleEdit}" value="Edit" rendered='#{discussionBean.permissions.canAdminMessages}'/>
-                        <ice:commandButton actionListener="#{message.delete}" value="Delete" rendered='#{discussionBean.permissions.canAdminMessages}'/>
-                        <ice:commandButton actionListener="#{message.addFlag}" value="Mark as an expert review" rendered='#{discussionBean.permissions.canAdminMessages and not message.expertReview}' >
-                            <f:attribute name="flagType" value="EXPERT_REVIEW" />
-                        </ice:commandButton>
-                        <ice:commandButton actionListener="#{message.removeFlag}" value="Remove an expert review flag" rendered='#{discussionBean.permissions.canAdminMessages and message.expertReview}' >
-                            <f:attribute name="flagType" value="EXPERT_REVIEW" />
-                        </ice:commandButton>
-                        
-                    </div>
-                    <div class="clear"></div>
-                    
-            </ice:panelGroup>
-            <ice:panelGroup rendered="#{message.editing}" styleClass="newMessageForm">
-                <ice:outputLabel for="messageTitle" value="Title: " /><br />
-                <ice:inputText id="messageTitle" value="#{message.title}" styleClass="title text edit"/>
-                <ice:message for="messageTitle" />
-                <br />
-                <ice:outputLabel for="messageContent" value="Message: " /><br />
-                <ice:inputTextarea id="messageContent"  value="#{message.description}" styleClass="description text edit"/>
-            <ice:message for="messageContent" /><br />
+                </div>
+                <div class="clear"></div>
+                <div class="editView newMessageForm" style="display: none;">
+                	<ice:outputLabel for="messageTitle" value="Title: " /><br />
+                	<ice:inputText id="messageTitle" value="#{message.title}" styleClass="title text edit" style="display: none;"/>
+                	<ice:message for="messageTitle" />
+                	<br />
+                	<ice:outputLabel for="messageContent" value="Message: " /><br />
+                	<ice:inputTextarea id="messageContent"  value="#{message.description}" styleClass="description text edit"/>
+            		<ice:message for="messageContent" /><br />
         
-                <ice:commandButton actionListener="#{message.updateMessage}" value="Save" />
-                <ice:commandButton actionListener="#{message.toggleEdit}" value="Cancel" />
+                	<ice:commandButton actionListener="#{message.updateMessage}" value="Save" />
+                	<button class="toggleEditView">Cancel</button>
+               	</div>
             </ice:panelGroup>
         
         </ice:column>
     </ice:dataTable>
+    <script>
+    	
+    	if (! window['comments_toggle_initialized']) {
+    		jQuery(document).on("click", ".messageBody .toggleEditView", function() {
+    			jQuery(this).parents(".messageBody").find(".editView , .displayView").toggle();
+    			return false;
+    		});
+    		window['comments_toggle_initialized'] = true;
+    	}
+    </script>
     <ice:panelGroup styleClass="addcomment" rendered="#{discussionBean.permissions.canAddComment}">
     <script type="text/javascript">
         window.disableAddComment = function() {

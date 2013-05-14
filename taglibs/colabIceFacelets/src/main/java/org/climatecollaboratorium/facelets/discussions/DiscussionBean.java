@@ -500,6 +500,9 @@ public class DiscussionBean {
     
     public void comentsThreadDeleted() throws PortalException, SystemException {
         discussion = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
+        discussion.setCommentsThread(0);
+        DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(discussion);
+        
         commentsThread = new MessageWrapper(this);
     }
     
