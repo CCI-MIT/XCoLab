@@ -165,6 +165,8 @@ function expandDynatree() {
     		});
     		linkSpan.replaceWith(linkAnchor);
     	});
+	
+	return false;
 }
 
 function removeMSWordChars(str) {
@@ -553,7 +555,7 @@ function updateShareThisUrls(selector) {
    	
    	jQuery(function() {
    		
-   		if (ice) {
+   		if (window['ice']) {
    			console.log("monitoring connections");
    			ice.onSessionExpiry(showConnectionErrorMessage);
    			ice.onServerError(showConnectionErrorMessage);
