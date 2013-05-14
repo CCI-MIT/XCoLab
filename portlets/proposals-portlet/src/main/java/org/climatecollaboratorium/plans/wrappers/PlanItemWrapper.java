@@ -546,7 +546,7 @@ public class PlanItemWrapper {
     }
 
     public boolean getDeleted() {
-        return deleted;
+        return deleted | "DELETED".equals(wrapped.getState());
     }
 
     public void setDescriptionSet(boolean descriptionSet) {

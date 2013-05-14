@@ -108,11 +108,13 @@
             <strong>Owner actions</strong>
             
             <div>
-                <div class="blue-button">
-                    <ice:commandLink rendered="#{permissions.canAdmin}"  actionListener="#{planBean.plan.delete}" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; }">
-                        DELETE plan
-                    </ice:commandLink>
-                </div>
+                <f:subview rendered="#{permissions.canAdmin and not planBean.plan.deleted}">
+                	<div class="blue-button">
+                    	<ice:commandLink actionListener="#{planBean.plan.delete}" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; }">
+                    	    DELETE plan
+                    	</ice:commandLink>
+                    </div>
+                </f:subview>
             </div>
         </ice:panelGroup>
     
@@ -203,7 +205,7 @@
    <!--  if plan has been deleted, redirect user to plansIndex -->
     
     <f:subview rendered="#{planBean.plan.deleted}">    
-        <script language="javascript">
+        <script>
             Collab.nav.navigate("plans", {});
         </script>
     
