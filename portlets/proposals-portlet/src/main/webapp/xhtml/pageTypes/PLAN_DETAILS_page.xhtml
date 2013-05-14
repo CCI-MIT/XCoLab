@@ -58,7 +58,7 @@
                 <ice:form>
                     <div class="edit-prop-butts">
                         <ice:commandLink value="Edit" actionListener="#{planBean.toggleEditing}" 
-                                rendered="#{permissions.canEdit and plan.currentTab.editable and not plan.editing}" 
+                                rendered="#{permissions.canEdit and plan.currentTab.editable and not plan.editing and not planBean.plan.deleted}" 
                                 styleClass="#{planBean.plan.viewingLatest ? '' : 'disabled'}" 
                                 disabled="#{not planBean.plan.viewingLatest}" />
                         <f:subview rendered="#{ proposal.currentTab.hasHistory}">
