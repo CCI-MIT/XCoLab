@@ -5,6 +5,7 @@
 	<portlet>
 		<portlet-name>contactform-portlet</portlet-name>
 		<instanceable>true</instanceable>
+		<private-session-attributes>false</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 	</portlet>
 	<role-mapper>

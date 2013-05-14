@@ -53,7 +53,15 @@
     	<servlet-name>Show uploaded profile</servlet-name>
     	<servlet-class>org.xcolab.portlets.userprofile.ShowUploadedProfileServlet</servlet-class>
     </servlet>
-
+	<servlet>
+		<servlet-name>PortletServlet</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/userprofile-portlet/*</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>Show uploaded profile</servlet-name>
 		<url-pattern>/showUploadedImg</url-pattern>

@@ -5,6 +5,7 @@
 	<portlet>
 		<portlet-name>contactform-wicket-portlet</portlet-name>
 		<instanceable>true</instanceable>
+		<private-session-attributes>false</private-session-attributes>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

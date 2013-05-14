@@ -29,7 +29,15 @@
     	<servlet-name>Email List Servlet</servlet-name>
     	<servlet-class>com.ext.utils.EmailListServlet</servlet-class>
     </servlet> 
-    
+	
+	<servlet>
+		<servlet-name>PortletServlet</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/plansProposalsFacade-portlet/*</url-pattern>
+	</servlet-mapping>
     
     <servlet-mapping>
         <servlet-name>JSON Servlet</servlet-name>

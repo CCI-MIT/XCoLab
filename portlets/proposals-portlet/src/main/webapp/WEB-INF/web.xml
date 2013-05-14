@@ -49,6 +49,14 @@
         <servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+	<servlet>
+		<servlet-name>PortletServlet</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/proposals-portlet/*</url-pattern>
+	</servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>Resource Servlet</servlet-name>
@@ -78,7 +86,7 @@
 		<role-name>nobody</role-name>
 	</security-role>
 		<session-config>
-		<session-timeout>15</session-timeout>
+		<session-timeout>1</session-timeout>
     </session-config>
 	
 </web-app>

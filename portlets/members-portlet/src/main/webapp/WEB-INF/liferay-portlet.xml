@@ -6,6 +6,7 @@
 		<portlet-name>members-portlet</portlet-name>
 		<indexer-class>org.xcolab.portlets.members.search.UserIndexer</indexer-class>
 		<instanceable>true</instanceable>
+		<private-session-attributes>false</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</header-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>

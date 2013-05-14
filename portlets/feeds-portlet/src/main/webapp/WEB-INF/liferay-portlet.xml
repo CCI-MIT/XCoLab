@@ -6,6 +6,7 @@
 		<portlet-name>feeds-portlet</portlet-name>
         <friendly-url-mapper-class>org.xcolab.portlets.feeds.activities.utils.FeedsFriendlyURLMapper</friendly-url-mapper-class>
 		<instanceable>true</instanceable>
+		<private-session-attributes>false</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 	</portlet>
 	<role-mapper>

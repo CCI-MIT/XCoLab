@@ -5,7 +5,15 @@
 	<servlet>
         <servlet-name>ViewRendererServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.ViewRendererServlet</servlet-class>
-    </servlet>
+    </servlet>	
+    <servlet>
+		<servlet-name>PortletServlet</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/loginregister-portlet/*</url-pattern>
+	</servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>ViewRendererServlet</servlet-name>

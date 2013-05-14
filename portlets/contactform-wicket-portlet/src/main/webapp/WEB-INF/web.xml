@@ -232,6 +232,15 @@
 		<servlet-name>Captcha Servlet</servlet-name>
 		<servlet-class>org.xcolab.portlets.contactform-wicket.CaptchaServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>PortletServlet</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/contactform-wicket-portlet/*</url-pattern>
+	</servlet-mapping>
 
 <!-- 	<servlet-mapping> -->
 <!-- 		<servlet-name>contactform-wicket</servlet-name> -->

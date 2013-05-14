@@ -565,11 +565,3 @@ function updateShareThisUrls(selector) {
    		}
    	});
    	
-   	/* sessionping */
-   	jQuery(function() {
-   		setInterval(function() {
-   			jQuery.ajax("/sessionping");
-   		}, 15000);
-   		
-   	});
-   	
