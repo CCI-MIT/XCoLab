@@ -81,6 +81,9 @@
                         <f:subview rendered="#{not empty proposal.plan.image}">
                             <img src="#{proposal.plan.image}" width="50px" height="50px" id="" />
                         </f:subview>
+                        <f:subview rendered="#{empty proposal.plan.image}">
+                            <img src="#{proposal.plan.image}" width="50px" height="50px" id="" style="display: none;"/>
+                        </f:subview>
                         <ice:inputText value="#{proposal.plan.newImageId}" style="display: none;" styleClass="newImageId" />
                     </div>
                             
@@ -512,7 +515,7 @@
 						
 						if (response.success) {
 							jQuery("#proposalImage img").attr("src",
-									"/image/contest?img_id=" + response.imageId);
+									"/image/contest?img_id=" + response.imageId).show();
 							jQuery(".newImageId", "#proposalImage").val(response.imageId);
 						}
 						else {
