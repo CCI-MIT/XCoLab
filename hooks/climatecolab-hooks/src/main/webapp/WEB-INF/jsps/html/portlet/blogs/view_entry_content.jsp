@@ -232,7 +232,7 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 			<div class="entry-footer">
 				<div class="entry-author">
 					<liferay-ui:message key="written-by" /> 
-					<a href="http://localhost:8080/web/guest/member/-/member/userId/<%= entry.getUserId() %>"><%= HtmlUtil.escape(PortalUtil.getUserName(entry.getUserId(), entry.getUserName())) %></a>
+					<a href="/web/guest/member/-/member/userId/<%= entry.getUserId() %>"><%= HtmlUtil.escape(PortalUtil.getUserName(entry.getUserId(), entry.getUserName())) %></a>
 					
 				</div>
 
