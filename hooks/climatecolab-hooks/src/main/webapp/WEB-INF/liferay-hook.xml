@@ -27,6 +27,10 @@
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.balloon.BalloonStatsFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
+		<servlet-filter-name>FileUploadFilter</servlet-filter-name>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.FileUploadFilter</servlet-filter-impl>
+	</servlet-filter>
+	<servlet-filter>
                 <servlet-filter-name>URL Rewrite Filter</servlet-filter-name>
                 <servlet-filter-impl>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</servlet-filter-impl>
                 <init-param>
@@ -62,6 +66,11 @@
     <servlet-filter-mapping>
     	<servlet-filter-name>BalloonStatsFilter</servlet-filter-name>
     	<url-pattern>/balloonStats</url-pattern>
+    </servlet-filter-mapping>
+    
+    <servlet-filter-mapping>
+    	<servlet-filter-name>FileUploadFilter</servlet-filter-name>
+    	<url-pattern>/fileUpload</url-pattern>
     </servlet-filter-mapping>
 	
 </hook>

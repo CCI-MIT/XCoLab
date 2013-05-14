@@ -23,11 +23,10 @@
     </div> <!-- /headline -->
 
     <div class="fileUploadContainer">
-    <h:form>
-		<ace:fileEntry id="profileImage" fileEntryListener="#{plan.plan.uploadImage}" styleClass="filepc fileUpload" autoUpload="true" >
-			<ice:outputStyle href="/css/main.css" />
-		</ace:fileEntry><br />
-    </h:form>
+	<form action="/fileUpload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" class="fileUpload" id="fileUploadForm">
+		<input type="file" name="file" id="fileUploadInput" />
+	</form>
+	
     </div>
     <ice:form styleClass="addpropform">
     <div class="prop-left" id="addpropform">
@@ -76,15 +75,18 @@
                 <span><strong>Proposal image</strong><br />
                 <em>optional</em></span>
             </label>
+            
             <ice:panelGroup styleClass="upload proposalImageUpload">
-                    <div class="uploadbox">
+                    <div class="uploadbox" id="proposalImage">
                         <f:subview rendered="#{not empty proposal.plan.image}">
-                            <img src="#{proposal.plan.image}" width="50px" height="50px"/>
+                            <img src="#{proposal.plan.image}" width="50px" height="50px" id="" />
                         </f:subview>
+                        <ice:inputText value="#{proposal.plan.newImageId}" style="display: none;" styleClass="newImageId" />
                     </div>
                             
                     <div id="uploadWidget">
                     </div>
+                    <div class="clear"><!--  --></div>
                     
             </ice:panelGroup>
         </ice:panelGroup>
@@ -491,13 +493,38 @@
         </ice:form>
         
     <script>
-    	$(".fileUpload").change(function() {
-    		$(this).parents("form").submit();
-    	});
-		var containerOffset = jQuery("#uploadWidget").offset();
-
-		jQuery(".fileUpload").offset(containerOffset);
-    	
     	
     </script>
+	<iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" 	style="display: none;">
+			<!-- comment -->
+	</iframe>
+	<script type="text/javascript">
+			jQuery("#fileUploadInput").change(function() {
+				jQuery(".proposalImageUpload .portlet-msg-error").remove();
+				jQuery("#fileUploadForm").submit();
+				jQuery("#proposalImage").block();
+
+			});
+			jQuery("#fileUploadFrame").load(
+					function() {
+						var response = eval("(" + jQuery(this).contents().text() + ")");
+						jQuery("#proposalImage").unblock();
+						
+						if (response.success) {
+							jQuery("#proposalImage img").attr("src",
+									"/image/contest?img_id=" + response.imageId);
+							jQuery(".newImageId", "#proposalImage").val(response.imageId);
+						}
+						else {
+							jQuery(".proposalImageUpload").append("&lt;div class='portlet-msg-error'&gt;" + response.message + "&lt;/div&gt;");
+						}
+
+			});
+			
+
+			var containerOffset = jQuery("#uploadWidget").offset();
+
+			jQuery("#fileUploadInput").offset(containerOffset);
+	    	
+		</script>
  </f:view>

@@ -95,6 +95,7 @@ public class PlanItemWrapper {
     private EventBus eventBus;
     private Map<String, String> planAttributes;
     private boolean subscribed;
+    private Long newImageId;
 
     private final static String[] regionsDevelopedArr = { "United States", "European Union",
             "Russia/Former Soviet Union", "OECD Asia", "Canada" };
@@ -977,8 +978,8 @@ public class PlanItemWrapper {
                 eventBus.fireEvent(new PlanUpdatedEvent(wrapped));
                 // planBean.refreshIndex();
             }
-            if (newImage != null) {
-                PlanItemLocalServiceUtil.setImage(wrapped, newImage.getImageId(), Helper.getLiferayUser().getUserId());
+            if (newImageId != null) {
+                PlanItemLocalServiceUtil.setImage(wrapped, newImageId, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.CHANGE_IMAGE.id(), null, 0);
             }
@@ -1101,6 +1102,14 @@ public class PlanItemWrapper {
     
     public void goToCurrent(ActionEvent e) throws PortalException, SystemException {
         planBean.refresh();
+    }
+
+    public Long getNewImageId() {
+        return newImageId;
+    }
+
+    public void setNewImageId(Long newImageId) {
+        this.newImageId = newImageId;
     }
 
     public static class Tuple {
