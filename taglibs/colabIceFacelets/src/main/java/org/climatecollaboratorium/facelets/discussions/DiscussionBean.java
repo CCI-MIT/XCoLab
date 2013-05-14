@@ -113,6 +113,7 @@ public class DiscussionBean {
 
             categories = null;
             threads = null;
+            commentsThread = null;
 
             updatePageType();
             
