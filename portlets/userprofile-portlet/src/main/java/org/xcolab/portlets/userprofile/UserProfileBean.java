@@ -159,11 +159,6 @@ public class UserProfileBean {
     }
     
     public boolean getMessageSent() {
-        if (messageSent) {
-            /* return message sent only once */
-            messageSent = false;
-            return true;
-        }
         return messageSent;
     }
     
