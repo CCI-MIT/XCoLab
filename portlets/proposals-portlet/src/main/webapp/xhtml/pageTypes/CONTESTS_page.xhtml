@@ -61,7 +61,20 @@
   <div class="divider"></div> 
   <div class="show"><a href="javascript:;" onclick="if(!deferUntilLogin()) return false; jQuery('#suggestContestPopupContainer').show();">Suggest a new contest</a></div> 
  <div class="filter" style="position: relative;">
-    <input type="text" value="#{contests.filterString}" placeholder="Filter contests" onchange="Collab.nav.navigateAddParams('plans', {contestFilter: this.value}); return false;" />
+    <input type="text" id="contestFilterInput" value="#{contests.filterString}" placeholder="Filter contests" />
+    <script>
+    	function filterContests() {
+    		Collab.nav.navigateAddParams('plans', {contestFilter: jQuery("#contestFilterInput").val()}); return false;
+    	}
+    
+    	jQuery("#contestFilterInput").change(filterContests).keypress(function (e) {
+    		if (e.keyCode == 13) {
+    			filterContests();
+    			return false;
+    		}
+    	});
+    	
+    </script>
     <f:subview rendered="#{not empty contests.filterString}">
         <a href="javascript:;" onclick="Collab.nav.navigateAddParams('plans', {contestFilter: ''}); return false;" id="contestsFilterClear">&#160;</a>
     </f:subview>
