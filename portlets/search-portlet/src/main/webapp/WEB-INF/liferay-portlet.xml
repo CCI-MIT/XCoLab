@@ -7,7 +7,7 @@
 		<icon>/icon.png</icon>
 		<indexer-class>org.xcolab.portlets.search.Indexer</indexer-class>
 		<instanceable>false</instanceable>
-		<private-session-attributes>false</private-session-attributes>
+		<private-session-attributes>true</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</header-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>

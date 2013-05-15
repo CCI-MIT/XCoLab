@@ -5,7 +5,6 @@
 	<portlet>
 		<portlet-name>messaging-portlet</portlet-name>
 		<instanceable>false</instanceable>
-		<private-session-attributes>false</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-css>/css/autoSuggest.css</header-portlet-css>
 		<header-portlet-javascript>/js/jquery.autoSuggest.js</header-portlet-javascript>

@@ -7,7 +7,6 @@
 		<indexer-class>org.xcolab.portlets.contests.Indexer</indexer-class>
 		<social-activity-interpreter-class>org.xcolab.portlets.contests.activities.ContestsFeedEntry</social-activity-interpreter-class>
 		<instanceable>true</instanceable>
-		<private-session-attributes>false</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>

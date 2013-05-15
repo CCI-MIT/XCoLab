@@ -7,7 +7,7 @@
 		<icon>/icon.png</icon>
 		<friendly-url-mapper-class>org.xcolab.portlets.userprofile.utils.UserprofileFriendlyURLMapper</friendly-url-mapper-class>
 		<instanceable>true</instanceable>
-		<private-session-attributes>false</private-session-attributes>
+		<private-session-attributes>true</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-javascript>/js/main.js</header-portlet-javascript>
 	</portlet>

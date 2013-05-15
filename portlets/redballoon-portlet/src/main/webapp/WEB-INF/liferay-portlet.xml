@@ -5,7 +5,7 @@
 	<portlet>
 		<portlet-name>redballoon-portlet</portlet-name>
 		<instanceable>true</instanceable>
-		<private-session-attributes>false</private-session-attributes>
+		<private-session-attributes>true</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/ZeroClipboard.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>

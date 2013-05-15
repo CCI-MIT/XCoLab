@@ -18,7 +18,7 @@
 		<friendly-url-mapper-class>org.climatecollaboratorium.plans.utils.PlansFriendlyURLMapper</friendly-url-mapper-class>
 		<social-activity-interpreter-class>org.climatecollaboratorium.plans.activity.PlansActivityFeedEntry</social-activity-interpreter-class>
 		<instanceable>false</instanceable>
-		<private-session-attributes>false</private-session-attributes>
+		<private-session-attributes>true</private-session-attributes>
 		<ajaxable>false</ajaxable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-css>/css/proposals.css</header-portlet-css>
