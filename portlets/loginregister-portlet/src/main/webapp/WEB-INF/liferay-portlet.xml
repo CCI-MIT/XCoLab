@@ -5,7 +5,7 @@
 	<portlet>
 		<portlet-name>loginregister-portlet</portlet-name>
         <instanceable>false</instanceable>
-        <private-session-attributes>true</private-session-attributes>
+        <private-session-attributes>false</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>
