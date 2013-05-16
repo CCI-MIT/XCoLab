@@ -61,11 +61,19 @@
     
     <servlet>
 		<servlet-name>PortletServlet</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<servlet-class>org.xcolab.utils.PortletServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
 		<url-pattern>/redballoon-portlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/redballoonportlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/redballoon/*</url-pattern>
 	</servlet-mapping>
 
     <servlet-mapping>

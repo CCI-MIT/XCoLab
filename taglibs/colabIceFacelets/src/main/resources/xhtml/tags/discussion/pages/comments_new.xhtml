@@ -76,7 +76,9 @@
 						<ice:outputText value="#{message.filteredDescription}" escape="false" />
                 	</div>
                 	<div class="commentsActions">
-						<button class="toggleEditView">Edit</button>
+                		<f:subview rendered='#{discussionBean.permissions.canAdminMessages}'>
+							<button class="toggleEditView">Edit</button>
+						</f:subview>
                     	<ice:commandButton actionListener="#{message.delete}" value="Delete" rendered='#{discussionBean.permissions.canAdminMessages}'/>
                     	<ice:commandButton actionListener="#{message.addFlag}" value="Mark as an expert review" rendered='#{discussionBean.permissions.canAdminMessages and not message.expertReview}' >
                         	<f:attribute name="flagType" value="EXPERT_REVIEW" />
@@ -87,18 +89,20 @@
                     </div>
                 </div>
                 <div class="clear"></div>
-                <div class="editView newMessageForm" style="display: none;">
-                	<ice:outputLabel for="messageTitle" value="Title: " /><br />
-                	<ice:inputText id="messageTitle" value="#{message.title}" styleClass="title text edit" style="display: none;"/>
-                	<ice:message for="messageTitle" />
-                	<br />
-                	<ice:outputLabel for="messageContent" value="Message: " /><br />
-                	<ice:inputTextarea id="messageContent"  value="#{message.description}" styleClass="description text edit"/>
-            		<ice:message for="messageContent" /><br />
+				<f:subview rendered='#{discussionBean.permissions.canAdminMessages}'>
+                	<div class="editView newMessageForm" style="display: none;">
+                		<ice:outputLabel for="messageTitle" value="Title: " /><br />
+	                	<ice:inputText id="messageTitle" value="#{message.title}" styleClass="title text edit" style="display: none;"/>
+    	            	<ice:message for="messageTitle" />
+        	        	<br />
+            	    	<ice:outputLabel for="messageContent" value="Message: " /><br />
+                		<ice:inputTextarea id="messageContent"  value="#{message.description}" styleClass="description text edit"/>
+            			<ice:message for="messageContent" /><br />
         
-                	<ice:commandButton actionListener="#{message.updateMessage}" value="Save" />
-                	<button class="toggleEditView">Cancel</button>
-               	</div>
+	                	<ice:commandButton actionListener="#{message.updateMessage}" value="Save" />
+    	            	<button class="toggleEditView">Cancel</button>
+        	       	</div>
+				</f:subview>
             </ice:panelGroup>
         
         </ice:column>

@@ -55,11 +55,19 @@
     </servlet>
 	<servlet>
 		<servlet-name>PortletServlet</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<servlet-class>org.xcolab.utils.PortletServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
 		<url-pattern>/userprofile-portlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/userprofileportlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/userprofile/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

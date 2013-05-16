@@ -25,11 +25,14 @@
 	</context-param>
 	<context-param>
  		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
- 		<param-value>true</param-value>
+ 		<param-value>false</param-value>
  	</context-param>
 	<context-param>
 		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
 		<param-value>true</param-value>
+	</context-param><context-param>
+		<param-name>com.icesoft.faces.heartbeatInterval</param-name>
+		<param-value>1000</param-value>
 	</context-param>
 	<!-- Guarantee order of startup listeners (JSF implementation must be specified before the bridge). -->
 	<listener>
@@ -51,12 +54,22 @@
     </servlet>
 	<servlet>
 		<servlet-name>PortletServlet</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<servlet-class>org.xcolab.utils.PortletServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
 		<url-pattern>/proposals-portlet/*</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/proposals/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/proposalsportlet/*</url-pattern>
+	</servlet-mapping>
+	
+	
 
     <servlet-mapping>
         <servlet-name>Resource Servlet</servlet-name>

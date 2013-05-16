@@ -41,11 +41,19 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet><servlet>
 		<servlet-name>PortletServlet</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<servlet-class>org.xcolab.utils.PortletServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
 		<url-pattern>/contests-portlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/contestsportlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortletServlet</servlet-name>
+		<url-pattern>/contests/*</url-pattern>
 	</servlet-mapping>
 	<!-- MyFaces will not initialize unless a servlet-mapping to the Faces Servlet is present. -->
 	<servlet-mapping>

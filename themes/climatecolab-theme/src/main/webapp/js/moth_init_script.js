@@ -565,3 +565,10 @@ function updateShareThisUrls(selector) {
    		}
    	});
    	
+   	jQuery(function() {
+   		if (! Liferay.Session) {
+   			setInterval(function() {
+   				jQuery.ajax("/c/portal/extend_session");
+   			}, 15000);
+   		}
+   	});
