@@ -43,9 +43,8 @@
                 <div id="add">
                     <h3><ice:outputLabel for="messageTitle">Message</ice:outputLabel></h3>
                 </div>
-                <ice:inputTextarea id="messageContent" value="#{discussionBean.newThread.description}" styleClass="profile_about" /><br />
+                <ice:inputTextarea id="messageContent" value="#{discussionBean.newThread.description}" styleClass="profile_about"  style="width: 660px; height: 100px;" /><br />
                 <ice:message for="messageContent" />
-                <!-- <ice:commandButton actionListener="#{discussionBean.currentThread.newMessage.addMessageToThread}" styleClass="comm_butt" />-->
                 <div class="blue-button">
                     <ice:commandLink value="Add" actionListener="#{discussionBean.newThread.save}" />
                 </div>    

@@ -382,10 +382,6 @@ public class MessageWrapper {
     }
 
     public boolean isGoTo() {
-        if (goTo) {
-            goTo = false;
-            return true;
-        }
         return goTo;
     }
     
