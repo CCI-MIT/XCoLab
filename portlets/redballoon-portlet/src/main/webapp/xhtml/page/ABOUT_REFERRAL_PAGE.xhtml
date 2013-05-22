@@ -15,10 +15,11 @@
 						who does?</h1>
 					<h1>You can win either way!</h1>
 				</f:subview> <f:subview rendered="#{not balloonBean.showButton}">
-					<h2 style="padding-bottom:20px;">Want to help figure out what we should do about climate
-						change, or know someone who does?</h2>
-						<p style="padding-bottom:10px;padding-left:20px;">
-						<strong>...How about someone who knows someone who knows someone who does?</strong>
+					<h2 style="padding-bottom: 20px;">Want to help figure out what
+						we should do about climate change, or know someone who does?</h2>
+					<p style="padding-bottom: 10px; padding-left: 20px;">
+						<strong>...How about someone who knows someone who knows
+							someone who does?</strong>
 					</p>
 				</f:subview></td>
 			<td><img src="http://cci.mit.edu/images/logo_MIT-CCI.gif" /></td>
@@ -135,18 +136,14 @@
 				<a href="javascript:;" id="copyButton"
 					data-clipboard-text="#{balloonBean.shareUrl}">Copy to clipboard</a>
 			</div>
-
-			<div
-				class="addthis_toolbox addthis_default_style addthis_32x32_style"
-				id="shareLink">
-				<a class="addthis_button_facebook" id="addThisButton1"
-					addthis:title="Join the ClimateColab"
-					addthis:url="#{balloonBean.shareUrl}/f"></a> <a
-					class="addthis_button_twitter" id="addThisButton2"
-					addthis:title="Join the ClimateColab"
-					addthis:url="#{balloonBean.shareUrl}/t"></a>
+			<div>
+				<a
+					href="http://www.facebook.com/share.php?u=#{balloonBean.shareUrl}"
+					title="Facebook"> <img src="http://inventas-it.ch/mit/fb.png"
+					height="30" border="0" /></a> <a
+					href="http://twitter.com/share?url=#{balloonBean.shareUrl}&amp;text=ClimateColab"><img
+					src="http://inventas-it.ch/mit/twitter.png" height="33" border="0" /></a>
 			</div>
-			<div class="clear"></div>
 		</div>
 		<script type="text/javascript">
 			if (typeof (addthis) != 'undefined') {
