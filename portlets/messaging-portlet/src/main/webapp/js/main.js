@@ -99,8 +99,11 @@ function initSendMessageForm(users, usersMapParam, preFill) {
 
 function updateReceipients() {
     var receipients = [];
+    
     jQuery(".as-selections li").each(function() {
-        receipients.push(usersMap[jQuery(this).text().substring(1)]);
+    	var thizText = jQuery(this).text().substring(1);
+    	if (jQuery.trim(thizText).length > 0) 
+    		receipients.push(usersMap[jQuery(this).text().substring(1)]);
     });
     receipients.sort();
     jQuery(".messageReceipientsInput").val(receipients);
