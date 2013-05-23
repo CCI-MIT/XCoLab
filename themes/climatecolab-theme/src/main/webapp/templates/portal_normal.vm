@@ -22,8 +22,8 @@
 	
     <link type="text/css" rel="stylesheet" href="$css_folder/jquery/jquery.css?tt=$themeTimestamp" media="all"/>
 	
-	<meta property="og:image" content="http://climatecolab.org/climatecolab-theme/images/logo-climate-colab.png" />
-	<link rel="image_src"  type="image/jpeg"   href="http://climatecolab.org/climatecolab-theme/images/logo-climate-colab.png" />
+	<meta property="og:image" content="http://inventas-it.ch/ClimateColabLogo.png" />
+	<link rel="image_src"  type="image/png"   href="http://inventas-it.ch/ClimateColabLogo.png" />
 	
     <link rel="stylesheet" href="$css_folder/jquery.jqplot.min.css?tt=$themeTimestamp" type="text/css"/>
     <link rel="stylesheet" href="$css_folder/style.css" type="text/css" />
