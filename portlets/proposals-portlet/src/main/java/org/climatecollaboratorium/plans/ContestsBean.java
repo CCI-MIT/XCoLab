@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,8 +26,12 @@ import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 
-public class ContestsBean {
-    private List<ContestWrapper> contests = new ArrayList<ContestWrapper>();
+public class ContestsBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<ContestWrapper> contests = new ArrayList<ContestWrapper>();
     private List<ContestWrapper> contestsPart1;
     private List<ContestWrapper> contestsPart2;
     private List<ContestWrapper> contestsFeatured;

@@ -6,6 +6,7 @@
 
 package org.climatecollaboratorium.plans.wrappers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -43,7 +44,11 @@ import com.liferay.portal.model.User;
  * Created by IntelliJ IDEA. User: jintrone Date: Aug 6, 2010 Time: 2:53:38 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ContestWrapper {
+public class ContestWrapper implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Contest contest;
 	private List<ContestPhaseWrapper> phases = new ArrayList<ContestPhaseWrapper>();
 	private Map<Long, ContestPhaseWrapper> index = new HashMap<Long, ContestPhaseWrapper>();
@@ -212,8 +217,12 @@ public class ContestWrapper {
 	 * Created by IntelliJ IDEA. User: jintrone Date: Aug 17, 2010 Time:
 	 * 10:08:58 AM To change this template use File | Settings | File Templates.
 	 */
-	public class EditContestBean {
+	public class EditContestBean implements Serializable {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		String name;
 		String description;
 		String modelDescription;

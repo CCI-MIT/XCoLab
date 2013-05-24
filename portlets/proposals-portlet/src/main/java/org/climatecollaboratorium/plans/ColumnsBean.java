@@ -1,5 +1,7 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -9,8 +11,12 @@ import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class ColumnsBean {
-    private Columns wrapped;
+public class ColumnsBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Columns wrapped;
     private boolean visible;
     private PlansIndexBean plansIndexBean;
 

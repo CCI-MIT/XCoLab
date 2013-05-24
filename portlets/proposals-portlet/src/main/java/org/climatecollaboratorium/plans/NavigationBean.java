@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.plans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,18 +18,21 @@ import org.climatecollaboratorium.facelets.simulations.SimulationBean;
 import org.climatecollaboratorium.navigation.NavigationEvent;
 import org.climatecollaboratorium.plans.exceptions.BeanInitializationException;
 
-import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.util.PortalUtil;
 
-public class NavigationBean {
-    private PlanPageType pageType = PlanPageType.getDefaultPageType();
+public class NavigationBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private PlanPageType pageType = PlanPageType.getDefaultPageType();
     public final static String DEFERED_PLAN_VOTE_ID_PARAM = "deferrPlanVoteIDSessionParam";
     private PlanBean planBean;
     private PlansIndexBean plansIndexBean;

@@ -2,6 +2,7 @@ package org.climatecollaboratorium.plans.wrappers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -62,8 +63,13 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-public class PlanItemWrapper {
-    private PlanItem wrapped;
+public class PlanItemWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private PlanItem wrapped;
     private PlanBean planBean;
     /*
      * Description related variables
@@ -161,7 +167,7 @@ public class PlanItemWrapper {
         }
     }
 
-    public enum PlanMode {
+    public enum PlanMode implements Serializable {
         CLOSED("Team members only", false), OPEN("Anyone", true);
 
         String description;

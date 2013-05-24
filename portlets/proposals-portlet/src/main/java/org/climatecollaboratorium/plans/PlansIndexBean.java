@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,9 +44,14 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-public class PlansIndexBean {
+public class PlansIndexBean implements Serializable {
 
-    private List<Columns> columns;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private List<Columns> columns;
 
     private String sortColumn = "SUPPORTERS";
     private Columns defaultSortColumn;

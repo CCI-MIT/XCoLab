@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +30,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-public class CreatePlanBean {
+public class CreatePlanBean implements Serializable {
 
-    private static Log _log = LogFactoryUtil.getLog(CreatePlanBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static Log _log = LogFactoryUtil.getLog(CreatePlanBean.class);
 
     private PlansIndexBean plansIndexBean;
     private String name;

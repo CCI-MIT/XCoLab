@@ -6,6 +6,7 @@
 
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,7 +29,12 @@ import com.liferay.portal.model.User;
  * Time: 3:19:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class PlanHistoryWrapper<T> {
+public abstract class PlanHistoryWrapper<T> implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public abstract Date getUpdateDate();
     public abstract User getUpdateAuthor();
