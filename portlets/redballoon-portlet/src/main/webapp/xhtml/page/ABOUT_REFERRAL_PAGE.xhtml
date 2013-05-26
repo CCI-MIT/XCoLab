@@ -36,8 +36,10 @@
 		<collab:contestLink contestId="#{balloonBean.contests[1].contestPK}"
 			text="#{balloonBean.contests[1].contestShortName}" />
 		, and the creators of the best proposals will be invited to present
-		their ideas at a conference at MIT this fall. The creators of the top
-		ranked proposal will also share a <a
+		their ideas at a <a
+			href="http://climatecolab.org/web/guest/conference2013">conference
+			at MIT</a> this fall. The creators of the top ranked proposal will also
+		share a <a
 			href="http://climatecolab.org/community/-/blogs/-10-000-grand-prize-at-nov-2013-conference">Grand
 			Prize of $10,000</a>.
 	</p>
@@ -106,14 +108,13 @@
 		<div class="reg_errors">
 			<h:message for="email" errorClass="alert alert-error" />
 		</div>
-		<ice:inputText value="#{balloonBean.email}" id="email"
-			styleClass="text" required="true"
-			requiredMessage="Please enter your e-Mail address" label="email">
-			<f:validator validatorId="EmailValidator" />
-		</ice:inputText>
-
+			<ice:inputText value="#{balloonBean.email}" id="email"
+				styleClass="text" required="true"
+				requiredMessage="Please enter your e-Mail address" label="email">
+				<f:validator validatorId="EmailValidator" />
+			</ice:inputText>
 		<div class="blue-button">
-			<h:commandLink value="request personal URL"
+			<h:commandLink value="request personal link"
 				actionListener="#{balloonBean.requestURL}" />
 		</div>
 		<div class="clear"></div>
@@ -138,10 +139,10 @@
 			</div>
 			<div>
 				<a
-					href="http://www.facebook.com/share.php?u=#{balloonBean.shareUrl}"
+					href="http://www.facebook.com/share.php?u=#{balloonBean.shareUrl}/f"
 					title="Facebook"> <img src="http://inventas-it.ch/mit/fb.png"
 					height="30" border="0" /></a> <a
-					href="http://twitter.com/share?url=#{balloonBean.shareUrl}&amp;text=ClimateColab"><img
+					href="http://twitter.com/share?url=#{balloonBean.shareUrl}/t&amp;text=ClimateColab"><img
 					src="http://inventas-it.ch/mit/twitter.png" height="33" border="0" /></a>
 			</div>
 		</div>
