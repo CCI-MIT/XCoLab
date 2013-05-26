@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,12 @@ import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class ConfigureColumnsBean {
-    private PlansIndexBean plansIndexBean;
+public class ConfigureColumnsBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PlansIndexBean plansIndexBean;
     private List<ColumnsBean> availableColumns = new ArrayList<ColumnsBean>();
     private PlansUserSettings plansUserSettings;
 

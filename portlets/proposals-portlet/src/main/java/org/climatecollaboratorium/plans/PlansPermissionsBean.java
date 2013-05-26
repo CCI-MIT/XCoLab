@@ -1,5 +1,7 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
+
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.plans.PlanUserPermission;
@@ -10,7 +12,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 
-public class PlansPermissionsBean {
+public class PlansPermissionsBean implements Serializable {
 
     private final PermissionChecker permissionChecker;
     private final String portletId;

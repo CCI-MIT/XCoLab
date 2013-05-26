@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.plans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -33,8 +34,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
-public class PlanBean {
-    private PlanItemWrapper plan;
+public class PlanBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private PlanItemWrapper plan;
     private PlanItem planItem;
     private SimulationBean simulationBean = new SimulationBean();
     private PlanModelBean modelBean;

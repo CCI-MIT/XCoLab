@@ -6,6 +6,7 @@
 
 package org.climatecollaboratorium.plans.wrappers;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -31,8 +32,12 @@ import com.liferay.portal.kernel.exception.SystemException;
  * Time: 2:53:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ContestPhaseWrapper {
-    private ContestPhase phase;
+public class ContestPhaseWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ContestPhase phase;
     private ContestWrapper contestWrapper;
     private boolean last;
 

@@ -7,6 +7,7 @@
 package org.climatecollaboratorium.plans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,11 +36,16 @@ import edu.mit.cci.roma.client.Simulation;
  * Time: 11:28:02 AM
  * To change this template use File | Settings | File Templates.
  */
-public class PlanModelBean {
+public class PlanModelBean implements Serializable {
 
 
 
-    private PlanBean planBean;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private PlanBean planBean;
     private PlanItem planItem;
     private boolean editing = false;
     private ThemeDisplay td = Helper.getThemeDisplay();

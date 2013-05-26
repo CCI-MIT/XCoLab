@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.climatecollaboratorium.navigation.NavigationEvent;
@@ -8,8 +9,12 @@ import org.climatecollaboratorium.navigation.NavigationEvent;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-public class IssuesBean {
-    private Long debateId;
+public class IssuesBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long debateId;
     private Long itemId;
     
     private static final String DEBATE_ID_PARAM = "debateId";

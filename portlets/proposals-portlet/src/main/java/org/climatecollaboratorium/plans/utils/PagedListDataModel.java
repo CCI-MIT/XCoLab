@@ -1,9 +1,15 @@
 package org.climatecollaboratorium.plans.utils;
 
+import java.io.Serializable;
+
 import javax.faces.model.DataModel;
 
-public abstract class PagedListDataModel extends DataModel {
-    int pageSize;
+public abstract class PagedListDataModel extends DataModel implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	int pageSize;
     int rowIndex;
     DataPage page;
     // Triggers a fetch from the database

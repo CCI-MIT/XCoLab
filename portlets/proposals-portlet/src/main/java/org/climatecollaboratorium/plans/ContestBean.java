@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.plans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,9 +33,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import edu.mit.cci.roma.client.Simulation;
 
-public class ContestBean {
+public class ContestBean implements Serializable {
     
-    private ContestWrapper contest;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ContestWrapper contest;
     private boolean activeContest = true; 
     private ContestSubView subView = ContestSubView.PROPOSALS;
     private ContestPhaseWrapper currentPhase;
