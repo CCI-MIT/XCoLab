@@ -12,12 +12,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.ext.portlet.NoSuchPlanFanException;
 import com.ext.portlet.NoSuchPlanItemException;
 import com.ext.portlet.NoSuchPlanPositionsException;
 import com.ext.portlet.NoSuchPlanTeamHistoryException;
 import com.ext.portlet.NoSuchPlanVoteException;
 import com.ext.portlet.discussions.DiscussionActions;
+import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategory;
@@ -44,6 +47,7 @@ import com.ext.portlet.plans.PlanConstants.Attribute;
 import com.ext.portlet.plans.PlanTeamActions;
 import com.ext.portlet.plans.PlanUserPermission;
 import com.ext.portlet.plans.UpdateType;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
@@ -63,6 +67,10 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.base.PlanItemLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.Criterion;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -70,6 +78,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Image;
@@ -84,6 +93,7 @@ import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.GroupServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
@@ -230,13 +240,13 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         planItem.setState(EntityState.ACTIVE.name());
         planItem.setUpdateType(UpdateType.CREATED.name());
 
-        planItem = PlanItemLocalServiceUtil.addPlanItem(planItem);
 
         // create related entities, plan description, meta, model run
         PlanDescriptionLocalServiceUtil.createPlanDescription(planItem, name);
         PlanModelRunLocalServiceUtil.createPlanModelRun(planItem);
         PlanMetaLocalServiceUtil.createPlanMeta(planItem, planTypeId);
         PlanPositionsLocalServiceUtil.createPlanPositions(planItem);
+        planItem = PlanItemLocalServiceUtil.addPlanItem(planItem);
 
         // create community, Message Boards category
 
@@ -309,32 +319,89 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
                     + ContestPhaseLocalServiceUtil.getName(contestPhase));
         }
 
-        PlanItem plan = createPlan(ContestLocalServiceUtil.getPlanType(
-                ContestPhaseLocalServiceUtil.getContest(contestPhase)).getPlanTypeId(), authorId);
+        //PlanItem plan = createPlan(ContestLocalServiceUtil.getPlanType(
+        //        ContestPhaseLocalServiceUtil.getContest(contestPhase)).getPlanTypeId(), authorId);
+        
+        long planItemId = CounterLocalServiceUtil.increment(PlanItem.class.getName());
+        long planId = CounterLocalServiceUtil.increment(PlanItem.class.getName() + PLAN_ID_NAME_SUFFIX);
 
-        plan.setUpdated(basePlan.getUpdated());
-        store(plan);
+        String name = DEFAULT_UNTITLED_PLAN_STEM_NAME + planId;
+        PlanItem planItem = PlanItemLocalServiceUtil.createPlanItem(planItemId);
+        planItem.setPlanId(planId);
+        planItem.setVersion(0L);
+        planItem.setUpdated(new Date());
+        planItem.setUpdateAuthorId(authorId);
+        planItem.setState(EntityState.ACTIVE.name());
+        planItem.setUpdateType(UpdateType.CREATED.name());
 
-        getPlanMeta(plan).setContestPhase(contestPhase.getContestPhasePK());
-        getPlanMeta(plan).setModelId(getPlanMeta(basePlan).getModelId());
-        PlanMetaLocalServiceUtil.updatePlanMeta(getPlanMeta(plan));
-        PlanDescription description = PlanDescriptionLocalServiceUtil.getCurrentForPlan(plan);
-        PlanModelRun planModelRun = PlanModelRunLocalServiceUtil.getCurrentForPlan(plan);
-        PlanPositions planPositions = PlanPositionsLocalServiceUtil.getCurrentForPlan(plan);
 
-        initPlan(plan);
-
-        // copy description
+        // create related entities, plan description, meta, model run
+        PlanDescription description = PlanDescriptionLocalServiceUtil.createPlanDescription(planItem, name);
         description.setDescription(getDescription(basePlan));
         description.setName(getName(basePlan));
+        description.setPitch(getPitch(basePlan));
+        description.setImage(getImageId(basePlan));
         PlanDescriptionLocalServiceUtil.store(description);
+        
+
+        PlanModelRunLocalServiceUtil.createPlanModelRun(planItem);
+        PlanMeta planMeta = PlanMetaLocalServiceUtil.createPlanMeta(planItem, ContestPhaseLocalServiceUtil.getContest(contestPhase).getPlanTypeId());
+        planMeta.setContestPhase(contestPhase.getContestPhasePK());
+        planMeta.setModelId(getPlanMeta(basePlan).getModelId());
+        
+        PlanMetaLocalServiceUtil.updatePlanMeta(planMeta);
+        
+        PlanPositionsLocalServiceUtil.createPlanPositions(planItem);
+
+        // create community, Message Boards category
+
+        /* update/create all attributes */
+        // planItem.updateAllAttributes();
+        updateAttribute(planItem, Attribute.CREATOR.name());
+        updateAttribute(planItem, Attribute.NAME.name());
+        updateAttribute(planItem, Attribute.DESCRIPTION.name());
+        updateAttribute(planItem, Attribute.CREATE_DATE.name());
+        updateAttribute(planItem, Attribute.PUBLISH_DATE.name());
+        updateAttribute(planItem, Attribute.VOTES.name());
+        String team = getTeam(basePlan);
+        if (team != null) {
+            setAttribute(planItem, Attribute.TEAM, getTeam(basePlan));
+        }
+
+        updateAttribute(planItem, Attribute.SUPPORTERS.name());
+        updateAttribute(planItem, Attribute.IS_PLAN_OPEN.name());
+        updateAttribute(planItem, Attribute.SEEKING_ASSISTANCE.name());
+        updateAttribute(planItem, Attribute.STATUS.name());
+
+        planItem.setUpdated(basePlan.getUpdated());
+        planItem = PlanItemLocalServiceUtil.addPlanItem(planItem);
+
+        
+        //store(plan);
+
+        
+        //PlanDescription description = PlanDescriptionLocalServiceUtil.getCurrentForPlan(planItem);
+        PlanModelRun planModelRun = PlanModelRunLocalServiceUtil.getCurrentForPlan(planItem);
+        PlanPositions planPositions = PlanPositionsLocalServiceUtil.getCurrentForPlan(planItem);
+
+        initPlan(planItem);        
+        List<PlanSection> sections = getPlanSections(basePlan);
+        if (sections != null && ! sections.isEmpty()) {
+            for (PlanSection section: sections) {
+                PlanSectionDefinition def = PlanSectionLocalServiceUtil.getDefinition(section);
+                setSectionContent(planItem, def, section.getContent(), new ArrayList<Long>(), authorId);
+            }
+        }
+
+        // copy description
 
         // copy scenario id
         // check if there is a scenario with given ID
+        Long scenarioId = getScenarioId(basePlan);
         try {
-            if (getScenarioId(basePlan) != null
-                    && CollaboratoriumModelingService.repository().getScenario(getScenarioId(basePlan)) != null) {
-                planModelRun.setScenarioId(getScenarioId(basePlan));
+            if (scenarioId != null && scenarioId > 0
+                    && CollaboratoriumModelingService.repository().getScenario(scenarioId) != null) {
+                planModelRun.setScenarioId(scenarioId);
 
             }
         } catch (Throwable e) {
@@ -347,23 +414,23 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         PlanPositionsLocalServiceUtil.setPositionsIds(planPositions, getPositionsIds(basePlan));
         PlanPositionsLocalServiceUtil.store(planPositions);
 
-        if (getScenarioId(basePlan) != null) {
+        if (scenarioId != null && scenarioId > 0) {
             // update all attributes
-            updateAllAttributes(plan);
+            updateAllAttributes(planItem);
         }
         // update only attributes related to new values
-
-        updateAttribute(plan, Attribute.DESCRIPTION.name());
-        updateAttribute(plan, Attribute.NAME.name());
-        updateAttribute(plan, Attribute.POSITIONS.name());
-        updateAttribute(plan, Attribute.LAST_MOD_DATE.name());
-        updateAttribute(plan, Attribute.IS_PLAN_OPEN.name());
-        updateAttribute(plan, Attribute.SEEKING_ASSISTANCE.name());
-        updateAttribute(plan, Attribute.STATUS.name());
+ 
+        updateAttribute(planItem, Attribute.DESCRIPTION.name());
+        updateAttribute(planItem, Attribute.NAME.name());
+        updateAttribute(planItem, Attribute.POSITIONS.name());
+        updateAttribute(planItem, Attribute.LAST_MOD_DATE.name());
+        updateAttribute(planItem, Attribute.IS_PLAN_OPEN.name());
+        updateAttribute(planItem, Attribute.SEEKING_ASSISTANCE.name());
+        updateAttribute(planItem, Attribute.STATUS.name());
 
         if (getOpen(basePlan)) {
-            getPlanMeta(plan).setOpen(true);
-            PlanMetaLocalServiceUtil.store(getPlanMeta(plan));
+            getPlanMeta(planItem).setOpen(true);
+            PlanMetaLocalServiceUtil.store(getPlanMeta(planItem));
         }
 
         // set abstract and pitch
@@ -373,10 +440,10 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         for (Attribute attr : attributesToCopy) {
             PlanAttribute pa = getPlanAttribute(basePlan, attr.name());
             if (pa != null) {
-                setAttribute(plan, pa.getAttributeName(), pa.getAttributeValue());
+                setAttribute(planItem, pa.getAttributeName(), pa.getAttributeValue());
             }
         }
-        return plan;
+        return planItem;
     }
 
     private void initPlan(PlanItem plan) throws PortalException, SystemException {
@@ -404,7 +471,8 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         String groupName = getName(plan) + "_" + System.currentTimeMillis() + "_" + rand.nextLong();
         Group group = null;
         try {
-            group = GroupServiceUtil.addGroup(getName(plan), String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
+            group = GroupServiceUtil.addGroup(StringUtils.substring(groupName, 0, 80), String.format(DEFAULT_GROUP_DESCRIPTION, 
+                    StringUtils.substring(groupName, 0, 80)),
                     GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
         } catch (Exception e) {
             System.err.println("Got error " + e.getMessage());
@@ -1205,6 +1273,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
             }
             */
             latestVersion = PlanItemLocalServiceUtil.getPlan(pi.getPlanId());
+            latestVersion = latestVersion != null ? latestVersion : pi;
         } catch (NoSuchPlanItemException e) {
             // ignore
         }
@@ -1692,6 +1761,93 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
     
     public void setTagsOrder(PlanItem pi, int tagsOrder) throws SystemException {
         setAttribute(pi, Attribute.TAGS_ORDER, String.valueOf(tagsOrder));
+    }
+    
+    public void promotePlans(long sourcePhasePk,long destPhasePk) throws PortalException, SystemException {
+        ContestPhase sourcePhase = ContestPhaseLocalServiceUtil.getContestPhase(sourcePhasePk);
+        ContestPhase targetPhase = ContestPhaseLocalServiceUtil.getContestPhase(destPhasePk);
+        
+        if (ContestPhaseLocalServiceUtil.getContest(targetPhase).getPlanTypeId() != 
+                ContestPhaseLocalServiceUtil.getContest(sourcePhase).getPlanTypeId()) {
+            throw new PortalException("Phases are incompatible, can't promote");
+        }
+        else {
+            List<PlanItem> planCopyItems = new ArrayList<PlanItem>();
+            promotePlans(ContestPhaseLocalServiceUtil.getPlans(sourcePhase), destPhasePk);
+        }
+    }
+    
+    public void promotePlans(List<PlanItem> plansToBeCopied, long destPhasePk) throws PortalException, SystemException {
+        ContestPhase targetPhase = ContestPhaseLocalServiceUtil.getContestPhase(destPhasePk);
+        for (PlanItem plan: plansToBeCopied) {
+            if (plan.getVersion() < 2) {
+                continue;
+            }
+            PlanItem newPlan = createPlan(plan, targetPhase, getAuthorId(plan));
+            //newPlan.setName(plan.getName(), plan.getAuthorId());
+            
+            // copy fans
+            for (PlanFan planFan: getFans(plan)) {
+                addFan(newPlan, planFan.getUserId());
+            }
+            
+            // copy votes
+            for (PlanVote planVote: getPlanVotes(plan)) {
+                vote(newPlan, planVote.getUserId());
+            }
+            
+            
+            // copy entire discussions, comments migration
+            DiscussionCategoryGroup dcg = getDiscussionCategoryGroup(newPlan);
+            DiscussionCategoryGroupLocalServiceUtil.copyEverything(dcg, getDiscussionCategoryGroup(plan));
+            
+
+            // update plan version
+            newPlan.setVersion(2L);
+            PlanItemLocalServiceUtil.store(newPlan);
+
+            long[] userIds = UserLocalServiceUtil.getGroupUserIds(getPlanGroupId(plan));
+            UserLocalServiceUtil.addGroupUsers(getPlanGroupId(newPlan), userIds);
+            /*
+            if (addSemiFinalistRibbon) {
+                PlanItemLocalServiceUtil.setRibbon(plan, 1);
+                PlanItemLocalServiceUtil.setRibbonText(plan, planAdvancedText);
+            }
+            */
+            
+            // copy subscriptions for plan
+            DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
+            
+            ClassName cn = ClassNameLocalServiceUtil.getClassName(PlanItem.class.getName());
+            Criterion criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", cn.getClassNameId());
+            Criterion criterionClassPK = RestrictionsFactoryUtil.eq("classPK", plan.getPlanId());
+            query.add(RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK));
+            
+            for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
+                ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
+                
+                ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, newPlan.getPlanId(), 0, "", subscription.getReceiverId());
+            }
+            
+            // copy subscriptions for comments
+            query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
+            
+            cn = ClassNameLocalServiceUtil.getClassName(DiscussionCategoryGroup.class.getName());
+            criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", cn.getClassNameId());
+            criterionClassPK = RestrictionsFactoryUtil.eq("classPK", PlanItemLocalServiceUtil.getCategoryGroupId(plan));
+            query.add(RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK));
+            
+            for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
+                ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
+                
+                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
+                        PlanItemLocalServiceUtil.getCategoryGroupId(newPlan), 0, "", subscription.getReceiverId());
+            }
+            
+            
+        }
+        
+        
     }
 
     

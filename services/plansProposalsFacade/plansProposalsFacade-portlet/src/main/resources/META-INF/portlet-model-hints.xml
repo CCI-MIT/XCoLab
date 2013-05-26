@@ -83,6 +83,7 @@
 		<field name="ContestPhasePK" type="long" />
 		<field name="ContestPK" type="long" />
 		<field name="ContestPhaseType" type="long" />
+		<field name="contestPhaseAutopromote" type="String" />
 		<field name="ContestPhaseDescriptionOverride" type="String">
 			<hint name="max-length">4096</hint>
 		</field>

@@ -331,6 +331,18 @@ public class ContestPhaseLocalServiceUtil {
         return getService().getName(contestPhase);
     }
 
+    /**
+    * Method responsible for autopromotion of proposals between phases.
+    *
+    * @throws SystemException
+    * @throws PortalException
+    */
+    public static void autoPromoteProposals()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().autoPromoteProposals();
+    }
+
     public static void clearService() {
         _service = null;
     }

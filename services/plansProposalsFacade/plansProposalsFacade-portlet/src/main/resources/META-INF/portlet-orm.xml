@@ -96,6 +96,7 @@
 			<id name="ContestPhasePK" />
 			<basic name="ContestPK" />
 			<basic name="ContestPhaseType" />
+			<basic name="contestPhaseAutopromote" />
 			<basic name="ContestPhaseDescriptionOverride" />
 			<basic name="phaseActiveOverride" />
 			<basic name="phaseInactiveOverride" />

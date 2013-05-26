@@ -141,72 +141,7 @@ public class PlanCopyTool {
             }
         }
         
-        // create new plan in new contest phase
-        int count = 0;
-        for (PlanItem plan: plansToBeCopied) {
-            count++;
-            PlanItem newPlan = PlanItemLocalServiceUtil.createPlan(plan, targetPhase, PlanItemLocalServiceUtil.getAuthorId(plan));
-            //newPlan.setName(plan.getName(), plan.getAuthorId());
-            
-            // copy fans
-            for (PlanFan planFan: PlanItemLocalServiceUtil.getFans(plan)) {
-                PlanItemLocalServiceUtil.addFan(newPlan, planFan.getUserId());
-            }
-            
-            // copy votes
-            for (PlanVote planVote: PlanItemLocalServiceUtil.getPlanVotes(plan)) {
-                PlanItemLocalServiceUtil.vote(newPlan, planVote.getUserId());
-            }
-            
-            
-            // copy entire discussions, comments migration
-            DiscussionCategoryGroup dcg = PlanItemLocalServiceUtil.getDiscussionCategoryGroup(newPlan);
-            DiscussionCategoryGroupLocalServiceUtil.copyEverything(dcg, PlanItemLocalServiceUtil.getDiscussionCategoryGroup(plan));
-            
-
-            // update plan version
-            newPlan.setVersion(2L);
-            PlanItemLocalServiceUtil.store(newPlan);
-
-            long[] userIds = UserLocalServiceUtil.getGroupUserIds(PlanItemLocalServiceUtil.getPlanGroupId(plan));
-            UserLocalServiceUtil.addGroupUsers(PlanItemLocalServiceUtil.getPlanGroupId(newPlan), userIds);
-            
-            if (addSemiFinalistRibbon) {
-                PlanItemLocalServiceUtil.setRibbon(plan, 1);
-                PlanItemLocalServiceUtil.setRibbonText(plan, planAdvancedText);
-            }
-            
-            // copy subscriptions for plan
-            DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
-            
-            ClassName cn = ClassNameLocalServiceUtil.getClassName(PlanItem.class.getName());
-            Criterion criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", cn.getClassNameId());
-            Criterion criterionClassPK = RestrictionsFactoryUtil.eq("classPK", plan.getPlanId());
-            query.add(RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK));
-            
-            for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
-                ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
-                
-                ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, newPlan.getPlanId(), null, "", subscription.getReceiverId());
-            }
-            
-            // copy subscriptions for comments
-            query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
-            
-            cn = ClassNameLocalServiceUtil.getClassName(DiscussionCategoryGroup.class.getName());
-            criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", cn.getClassNameId());
-            criterionClassPK = RestrictionsFactoryUtil.eq("classPK", PlanItemLocalServiceUtil.getCategoryGroupId(plan));
-            query.add(RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK));
-            
-            for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
-                ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
-                
-                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, 
-                        PlanItemLocalServiceUtil.getCategoryGroupId(newPlan), null, "", subscription.getReceiverId());
-            }
-            
-            
-        }
+        PlanItemLocalServiceUtil.promotePlans(plansToBeCopied, targetContestPhase);
         
         
         ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plans copied", ""));

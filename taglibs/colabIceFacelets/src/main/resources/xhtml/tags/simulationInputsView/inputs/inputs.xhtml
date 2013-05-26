@@ -29,62 +29,6 @@
             
             
         </div>
-    
-    <!-- 
-                    <div class="tableContent">
-                        <ice:panelGroup styleClass="hidden" rendered="#{not disableInputs || (showEditArea and simulationBean.embeddedEditing)}" >
-                            <div class="simulationInputsStatus"></div>
-                        </ice:panelGroup>
-                        <ice:panelSeries value="#{simulationBean.display.nonTabs}" var="input" varStatus="status">
-                            <div  class="simulationInput #{status.index mod 2 == 0 ? 'even' : 'odd'}">
-                                <f:subview id="inputView" >
-                                    <ui:include src="./inputDef.xhtml" />
-                                </f:subview>
-                            </div>
-                        </ice:panelSeries>
-                        <ice:panelTabSet value="#{simulationBean.display.tabsWrapped}" var="input1" rendered="#{simulationBean.hasTabs}"  styleClass="modelInputsTabs">
-                            <ice:panelTab label="#{input1.oryginalName}" styleClass="inputTabStyle" onclick="convertTypedValuesToNumbers();">
-                               <ice:panelSeries value="#{input1.allItems}" var="input" varStatus="status">
-                                    <div  class="simulationInput #{status.index mod 2 == 0 ? 'even' : 'odd'}">
-                                        <f:subview id="inputView" >
-                                            <ui:include src="./inputDef.xhtml" />
-                                        </f:subview>
-                                    </div>
-                                <script type="text/javascript">
-                                    showSliders();
-                                </script>
-                               </ice:panelSeries>
-                                <ice:panelGroup>
-                                    <script language="javascript">
-                                       var disabled = #{disableInputs || false} || ! (!#{showEditArea || false} || #{showEditArea || false} &amp;&amp; #{simulationBean.embeddedEditing || false});
-                                        jQuery(".actions input").attr('disabled', disabled);
-                                        jQuery(".actions .slider").slider("option", "disabled", disabled);
-                                    </script>
-                                </ice:panelGroup>
-
-                            </ice:panelTab>
-                            
-                        </ice:panelTabSet>
-                        <ice:panelGroup styleClass="hidden">
-                            <div class="hidden">#{simulationBean.display}</div>
-                            <ice:panelGroup rendered="#{! rerenderOnCancel and  simulationBean.embeddedEditing}">
-                                
-                                <script type="text/javascript">
-                                    rerenderInputs();
-                                </script>
-                            </ice:panelGroup>
-                            <script type="text/javascript">
-                                showSliders();
-                            </script>
-                            
-                        </ice:panelGroup>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ice:panelGroup>
-</div>
--->
                         <ice:panelGroup styleClass="hidden">
                             <div class="hidden">#{simulationBean.display}</div>
             <script type="text/javascript">

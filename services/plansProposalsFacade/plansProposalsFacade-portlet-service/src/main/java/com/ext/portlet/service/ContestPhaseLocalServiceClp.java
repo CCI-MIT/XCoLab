@@ -36,6 +36,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     private MethodKey _getActivePhaseForContestMethodKey26;
     private MethodKey _getContestMethodKey27;
     private MethodKey _getNameMethodKey28;
+    private MethodKey _autoPromoteProposalsMethodKey29;
 
     public ContestPhaseLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -134,6 +135,9 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
 
         _getNameMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getName", com.ext.portlet.model.ContestPhase.class);
+
+        _autoPromoteProposalsMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
+                "autoPromoteProposals");
     }
 
     public com.ext.portlet.model.ContestPhase addContestPhase(
@@ -911,6 +915,31 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         }
 
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public void autoPromoteProposals()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_autoPromoteProposalsMethodKey29);
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

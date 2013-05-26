@@ -325,6 +325,18 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     /**
+    * Method responsible for autopromotion of proposals between phases.
+    *
+    * @throws SystemException
+    * @throws PortalException
+    */
+    public void autoPromoteProposals()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestPhaseLocalService.autoPromoteProposals();
+    }
+
+    /**
      * @deprecated Renamed to {@link #getWrappedService}
      */
     public ContestPhaseLocalService getWrappedContestPhaseLocalService() {

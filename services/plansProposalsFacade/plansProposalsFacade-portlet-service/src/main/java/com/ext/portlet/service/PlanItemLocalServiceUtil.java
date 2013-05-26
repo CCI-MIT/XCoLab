@@ -1069,6 +1069,20 @@ public class PlanItemLocalServiceUtil {
         getService().setTagsOrder(pi, tagsOrder);
     }
 
+    public static void promotePlans(long sourcePhasePk, long destPhasePk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().promotePlans(sourcePhasePk, destPhasePk);
+    }
+
+    public static void promotePlans(
+        java.util.List<com.ext.portlet.model.PlanItem> plansToBeCopied,
+        long destPhasePk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().promotePlans(plansToBeCopied, destPhasePk);
+    }
+
     public static void clearService() {
         _service = null;
     }

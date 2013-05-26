@@ -153,5 +153,32 @@ public class ContestPhaseLocalServiceImpl
    public String getName(ContestPhase contestPhase) throws PortalException, SystemException {
        return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getName();
    }
+   
+   /**
+    * Method responsible for autopromotion of proposals between phases. 
+    * 
+    * @throws SystemException
+    * @throws PortalException 
+    */
+   public void autoPromoteProposals() throws SystemException, PortalException {
+       Date now = new Date();
+       for (ContestPhase phase: contestPhasePersistence.findByPhaseAutopromote("PROMOTE")) {
+           if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && ! getPhaseActive(phase)) {
+               // we have a candidate for promotion, find next phase
+               
+               ContestPhase nextPhase = getNextContestPhase(phase);
+               
+               PlanItemLocalServiceUtil.promotePlans(phase.getContestPhasePK(), nextPhase.getContestPhasePK());
+               
+               // update phase for which promotion was done (mark it as "promotion done") 
+               phase.setContestPhaseAutopromote("PROMOTE_DONE");
+               updateContestPhase(phase);   
+           }
+       }
+       
+       
+   }
+   
+   
 
 }

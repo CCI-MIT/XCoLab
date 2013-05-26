@@ -153,7 +153,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
         }
         
         if (source.getCommentsThread() > 0) {
-            DiscussionMessage commentsThread = getCommentThread(dcg);
+            DiscussionMessage commentsThread = getCommentThread(source);
             DiscussionMessage newCommentsThread = addComment(dcg, commentsThread.getSubject(), commentsThread.getBody(), 
                     DiscussionMessageLocalServiceUtil.getAuthor(commentsThread));
             newCommentsThread.setLastActivityAuthorId(commentsThread.getLastActivityAuthorId());

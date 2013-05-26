@@ -82,6 +82,7 @@
         <column name="ContestPhasePK" type="long" primary="true" />
         <column name="ContestPK" type="long"/>
         <column name="ContestPhaseType" type="long" />
+        <column name="contestPhaseAutopromote" type="String" />
         <column name="ContestPhaseDescriptionOverride" type="String"/>
         <column name="phaseActiveOverride" type="boolean" />
         <column name="phaseInactiveOverride" type="boolean" />
@@ -112,6 +113,9 @@
         <finder name="PhaseInactiveOverride" return-type="Collection">
             <finder-column name="ContestPK" />
             <finder-column name="phaseInactiveOverride" />
+        </finder>
+        <finder name="PhaseAutopromote" return-type="Collection">
+            <finder-column name="contestPhaseAutopromote" />
         </finder>
       </entity>
       

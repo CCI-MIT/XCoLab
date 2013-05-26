@@ -22,6 +22,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
     public long ContestPhasePK;
     public long ContestPK;
     public long ContestPhaseType;
+    public String contestPhaseAutopromote;
     public String ContestPhaseDescriptionOverride;
     public boolean phaseActiveOverride;
     public boolean phaseInactiveOverride;
@@ -34,7 +35,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(27);
 
         sb.append("{ContestPhasePK=");
         sb.append(ContestPhasePK);
@@ -42,6 +43,8 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         sb.append(ContestPK);
         sb.append(", ContestPhaseType=");
         sb.append(ContestPhaseType);
+        sb.append(", contestPhaseAutopromote=");
+        sb.append(contestPhaseAutopromote);
         sb.append(", ContestPhaseDescriptionOverride=");
         sb.append(ContestPhaseDescriptionOverride);
         sb.append(", phaseActiveOverride=");
@@ -71,6 +74,12 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         contestPhaseImpl.setContestPhasePK(ContestPhasePK);
         contestPhaseImpl.setContestPK(ContestPK);
         contestPhaseImpl.setContestPhaseType(ContestPhaseType);
+
+        if (contestPhaseAutopromote == null) {
+            contestPhaseImpl.setContestPhaseAutopromote(StringPool.BLANK);
+        } else {
+            contestPhaseImpl.setContestPhaseAutopromote(contestPhaseAutopromote);
+        }
 
         if (ContestPhaseDescriptionOverride == null) {
             contestPhaseImpl.setContestPhaseDescriptionOverride(StringPool.BLANK);

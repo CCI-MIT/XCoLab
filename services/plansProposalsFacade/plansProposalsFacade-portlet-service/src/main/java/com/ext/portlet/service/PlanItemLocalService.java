@@ -835,4 +835,14 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
 
     public void setTagsOrder(com.ext.portlet.model.PlanItem pi, int tagsOrder)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void promotePlans(long sourcePhasePk, long destPhasePk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void promotePlans(
+        java.util.List<com.ext.portlet.model.PlanItem> plansToBeCopied,
+        long destPhasePk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

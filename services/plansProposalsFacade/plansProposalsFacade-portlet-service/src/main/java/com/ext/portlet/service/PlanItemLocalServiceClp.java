@@ -146,6 +146,8 @@ public class PlanItemLocalServiceClp implements PlanItemLocalService {
     private MethodKey _setTagsHoverMethodKey136;
     private MethodKey _getTagsOrderMethodKey137;
     private MethodKey _setTagsOrderMethodKey138;
+    private MethodKey _promotePlansMethodKey139;
+    private MethodKey _promotePlansMethodKey140;
 
     public PlanItemLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -646,6 +648,12 @@ public class PlanItemLocalServiceClp implements PlanItemLocalService {
 
         _setTagsOrderMethodKey138 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setTagsOrder", com.ext.portlet.model.PlanItem.class, int.class);
+
+        _promotePlansMethodKey139 = new MethodKey(_classLoaderProxy.getClassName(),
+                "promotePlans", long.class, long.class);
+
+        _promotePlansMethodKey140 = new MethodKey(_classLoaderProxy.getClassName(),
+                "promotePlans", java.util.List.class, long.class);
     }
 
     public com.ext.portlet.model.PlanItem addPlanItem(
@@ -4396,6 +4404,60 @@ public class PlanItemLocalServiceClp implements PlanItemLocalService {
         try {
             _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void promotePlans(long sourcePhasePk, long destPhasePk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_promotePlansMethodKey139,
+                sourcePhasePk, destPhasePk);
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    public void promotePlans(
+        java.util.List<com.ext.portlet.model.PlanItem> plansToBeCopied,
+        long destPhasePk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_promotePlansMethodKey140,
+                ClpSerializer.translateInput(plansToBeCopied), destPhasePk);
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }

@@ -1046,6 +1046,20 @@ public class PlanItemLocalServiceWrapper implements PlanItemLocalService,
         _planItemLocalService.setTagsOrder(pi, tagsOrder);
     }
 
+    public void promotePlans(long sourcePhasePk, long destPhasePk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _planItemLocalService.promotePlans(sourcePhasePk, destPhasePk);
+    }
+
+    public void promotePlans(
+        java.util.List<com.ext.portlet.model.PlanItem> plansToBeCopied,
+        long destPhasePk)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _planItemLocalService.promotePlans(plansToBeCopied, destPhasePk);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

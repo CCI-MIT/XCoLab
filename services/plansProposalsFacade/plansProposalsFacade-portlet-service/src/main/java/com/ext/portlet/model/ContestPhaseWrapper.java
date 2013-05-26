@@ -100,6 +100,25 @@ public class ContestPhaseWrapper implements ContestPhase,
     }
 
     /**
+    * Returns the contest phase autopromote of this contest phase.
+    *
+    * @return the contest phase autopromote of this contest phase
+    */
+    public java.lang.String getContestPhaseAutopromote() {
+        return _contestPhase.getContestPhaseAutopromote();
+    }
+
+    /**
+    * Sets the contest phase autopromote of this contest phase.
+    *
+    * @param contestPhaseAutopromote the contest phase autopromote of this contest phase
+    */
+    public void setContestPhaseAutopromote(
+        java.lang.String contestPhaseAutopromote) {
+        _contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
+    }
+
+    /**
     * Returns the contest phase description override of this contest phase.
     *
     * @return the contest phase description override of this contest phase

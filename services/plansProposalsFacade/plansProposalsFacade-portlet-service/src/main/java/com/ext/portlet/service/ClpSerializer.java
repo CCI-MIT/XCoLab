@@ -868,68 +868,75 @@ public class ClpSerializer {
 
                 method2.invoke(newModel, value2);
 
-                Method method3 = newModelClass.getMethod("setContestPhaseDescriptionOverride",
+                Method method3 = newModelClass.getMethod("setContestPhaseAutopromote",
                         new Class[] { String.class });
 
-                String value3 = oldCplModel.getContestPhaseDescriptionOverride();
+                String value3 = oldCplModel.getContestPhaseAutopromote();
 
                 method3.invoke(newModel, value3);
 
-                Method method4 = newModelClass.getMethod("setPhaseActiveOverride",
-                        new Class[] { Boolean.TYPE });
+                Method method4 = newModelClass.getMethod("setContestPhaseDescriptionOverride",
+                        new Class[] { String.class });
 
-                Boolean value4 = new Boolean(oldCplModel.getPhaseActiveOverride());
+                String value4 = oldCplModel.getContestPhaseDescriptionOverride();
 
                 method4.invoke(newModel, value4);
 
-                Method method5 = newModelClass.getMethod("setPhaseInactiveOverride",
+                Method method5 = newModelClass.getMethod("setPhaseActiveOverride",
                         new Class[] { Boolean.TYPE });
 
-                Boolean value5 = new Boolean(oldCplModel.getPhaseInactiveOverride());
+                Boolean value5 = new Boolean(oldCplModel.getPhaseActiveOverride());
 
                 method5.invoke(newModel, value5);
 
-                Method method6 = newModelClass.getMethod("setPhaseStartDate",
-                        new Class[] { Date.class });
+                Method method6 = newModelClass.getMethod("setPhaseInactiveOverride",
+                        new Class[] { Boolean.TYPE });
 
-                Date value6 = oldCplModel.getPhaseStartDate();
+                Boolean value6 = new Boolean(oldCplModel.getPhaseInactiveOverride());
 
                 method6.invoke(newModel, value6);
 
-                Method method7 = newModelClass.getMethod("setPhaseEndDate",
+                Method method7 = newModelClass.getMethod("setPhaseStartDate",
                         new Class[] { Date.class });
 
-                Date value7 = oldCplModel.getPhaseEndDate();
+                Date value7 = oldCplModel.getPhaseStartDate();
 
                 method7.invoke(newModel, value7);
 
-                Method method8 = newModelClass.getMethod("setNextStatus",
-                        new Class[] { String.class });
+                Method method8 = newModelClass.getMethod("setPhaseEndDate",
+                        new Class[] { Date.class });
 
-                String value8 = oldCplModel.getNextStatus();
+                Date value8 = oldCplModel.getPhaseEndDate();
 
                 method8.invoke(newModel, value8);
 
-                Method method9 = newModelClass.getMethod("setCreated",
-                        new Class[] { Date.class });
+                Method method9 = newModelClass.getMethod("setNextStatus",
+                        new Class[] { String.class });
 
-                Date value9 = oldCplModel.getCreated();
+                String value9 = oldCplModel.getNextStatus();
 
                 method9.invoke(newModel, value9);
 
-                Method method10 = newModelClass.getMethod("setUpdated",
+                Method method10 = newModelClass.getMethod("setCreated",
                         new Class[] { Date.class });
 
-                Date value10 = oldCplModel.getUpdated();
+                Date value10 = oldCplModel.getCreated();
 
                 method10.invoke(newModel, value10);
 
-                Method method11 = newModelClass.getMethod("setAuthorId",
-                        new Class[] { Long.TYPE });
+                Method method11 = newModelClass.getMethod("setUpdated",
+                        new Class[] { Date.class });
 
-                Long value11 = new Long(oldCplModel.getAuthorId());
+                Date value11 = oldCplModel.getUpdated();
 
                 method11.invoke(newModel, value11);
+
+                Method method12 = newModelClass.getMethod("setAuthorId",
+                        new Class[] { Long.TYPE });
+
+                Long value12 = new Long(oldCplModel.getAuthorId());
+
+                method12.invoke(newModel, value12);
 
                 return newModel;
             } catch (Exception e) {
@@ -5603,65 +5610,73 @@ public class ClpSerializer {
                 newModel.setContestPhaseType(value2);
 
                 Method method3 = oldModelClass.getMethod(
-                        "getContestPhaseDescriptionOverride");
+                        "getContestPhaseAutopromote");
 
                 String value3 = (String) method3.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setContestPhaseDescriptionOverride(value3);
+                newModel.setContestPhaseAutopromote(value3);
 
                 Method method4 = oldModelClass.getMethod(
-                        "getPhaseActiveOverride");
+                        "getContestPhaseDescriptionOverride");
 
-                Boolean value4 = (Boolean) method4.invoke(oldModel,
+                String value4 = (String) method4.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setPhaseActiveOverride(value4);
+                newModel.setContestPhaseDescriptionOverride(value4);
 
                 Method method5 = oldModelClass.getMethod(
-                        "getPhaseInactiveOverride");
+                        "getPhaseActiveOverride");
 
                 Boolean value5 = (Boolean) method5.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setPhaseInactiveOverride(value5);
+                newModel.setPhaseActiveOverride(value5);
 
-                Method method6 = oldModelClass.getMethod("getPhaseStartDate");
+                Method method6 = oldModelClass.getMethod(
+                        "getPhaseInactiveOverride");
 
-                Date value6 = (Date) method6.invoke(oldModel, (Object[]) null);
+                Boolean value6 = (Boolean) method6.invoke(oldModel,
+                        (Object[]) null);
 
-                newModel.setPhaseStartDate(value6);
+                newModel.setPhaseInactiveOverride(value6);
 
-                Method method7 = oldModelClass.getMethod("getPhaseEndDate");
+                Method method7 = oldModelClass.getMethod("getPhaseStartDate");
 
                 Date value7 = (Date) method7.invoke(oldModel, (Object[]) null);
 
-                newModel.setPhaseEndDate(value7);
+                newModel.setPhaseStartDate(value7);
 
-                Method method8 = oldModelClass.getMethod("getNextStatus");
+                Method method8 = oldModelClass.getMethod("getPhaseEndDate");
 
-                String value8 = (String) method8.invoke(oldModel,
+                Date value8 = (Date) method8.invoke(oldModel, (Object[]) null);
+
+                newModel.setPhaseEndDate(value8);
+
+                Method method9 = oldModelClass.getMethod("getNextStatus");
+
+                String value9 = (String) method9.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setNextStatus(value8);
+                newModel.setNextStatus(value9);
 
-                Method method9 = oldModelClass.getMethod("getCreated");
-
-                Date value9 = (Date) method9.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreated(value9);
-
-                Method method10 = oldModelClass.getMethod("getUpdated");
+                Method method10 = oldModelClass.getMethod("getCreated");
 
                 Date value10 = (Date) method10.invoke(oldModel, (Object[]) null);
 
-                newModel.setUpdated(value10);
+                newModel.setCreated(value10);
 
-                Method method11 = oldModelClass.getMethod("getAuthorId");
+                Method method11 = oldModelClass.getMethod("getUpdated");
 
-                Long value11 = (Long) method11.invoke(oldModel, (Object[]) null);
+                Date value11 = (Date) method11.invoke(oldModel, (Object[]) null);
 
-                newModel.setAuthorId(value11);
+                newModel.setUpdated(value11);
+
+                Method method12 = oldModelClass.getMethod("getAuthorId");
+
+                Long value12 = (Long) method12.invoke(oldModel, (Object[]) null);
+
+                newModel.setAuthorId(value12);
 
                 return newModel;
             } catch (Exception e) {

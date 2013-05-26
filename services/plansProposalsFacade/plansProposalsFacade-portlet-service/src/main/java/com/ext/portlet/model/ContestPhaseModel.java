@@ -88,6 +88,21 @@ public interface ContestPhaseModel extends BaseModel<ContestPhase> {
     public void setContestPhaseType(long ContestPhaseType);
 
     /**
+     * Returns the contest phase autopromote of this contest phase.
+     *
+     * @return the contest phase autopromote of this contest phase
+     */
+    @AutoEscape
+    public String getContestPhaseAutopromote();
+
+    /**
+     * Sets the contest phase autopromote of this contest phase.
+     *
+     * @param contestPhaseAutopromote the contest phase autopromote of this contest phase
+     */
+    public void setContestPhaseAutopromote(String contestPhaseAutopromote);
+
+    /**
      * Returns the contest phase description override of this contest phase.
      *
      * @return the contest phase description override of this contest phase

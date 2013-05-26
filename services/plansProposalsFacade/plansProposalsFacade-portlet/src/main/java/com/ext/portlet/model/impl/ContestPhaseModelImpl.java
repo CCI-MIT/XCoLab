@@ -52,6 +52,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "ContestPhasePK", Types.BIGINT },
             { "ContestPK", Types.BIGINT },
             { "ContestPhaseType", Types.BIGINT },
+            { "contestPhaseAutopromote", Types.VARCHAR },
             { "ContestPhaseDescriptionOverride", Types.VARCHAR },
             { "phaseActiveOverride", Types.BOOLEAN },
             { "phaseInactiveOverride", Types.BOOLEAN },
@@ -62,7 +63,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "updated", Types.TIMESTAMP },
             { "authorId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,contestPhaseAutopromote VARCHAR(75) null,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhase";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhase.PhaseStartDate ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhase.PhaseStartDate ASC";
@@ -81,8 +82,9 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     public static long CONTESTPK_COLUMN_BITMASK = 1L;
     public static long PHASEENDDATE_COLUMN_BITMASK = 2L;
     public static long PHASESTARTDATE_COLUMN_BITMASK = 4L;
-    public static long PHASEACTIVEOVERRIDE_COLUMN_BITMASK = 8L;
-    public static long PHASEINACTIVEOVERRIDE_COLUMN_BITMASK = 16L;
+    public static long CONTESTPHASEAUTOPROMOTE_COLUMN_BITMASK = 8L;
+    public static long PHASEACTIVEOVERRIDE_COLUMN_BITMASK = 16L;
+    public static long PHASEINACTIVEOVERRIDE_COLUMN_BITMASK = 32L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ContestPhase"));
     private static ClassLoader _classLoader = ContestPhase.class.getClassLoader();
@@ -94,6 +96,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     private long _originalContestPK;
     private boolean _setOriginalContestPK;
     private long _ContestPhaseType;
+    private String _contestPhaseAutopromote;
+    private String _originalContestPhaseAutopromote;
     private String _ContestPhaseDescriptionOverride;
     private boolean _phaseActiveOverride;
     private boolean _originalPhaseActiveOverride;
@@ -128,6 +132,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         model.setContestPhasePK(soapModel.getContestPhasePK());
         model.setContestPK(soapModel.getContestPK());
         model.setContestPhaseType(soapModel.getContestPhaseType());
+        model.setContestPhaseAutopromote(soapModel.getContestPhaseAutopromote());
         model.setContestPhaseDescriptionOverride(soapModel.getContestPhaseDescriptionOverride());
         model.setPhaseActiveOverride(soapModel.getPhaseActiveOverride());
         model.setPhaseInactiveOverride(soapModel.getPhaseInactiveOverride());
@@ -218,6 +223,29 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
     public void setContestPhaseType(long ContestPhaseType) {
         _ContestPhaseType = ContestPhaseType;
+    }
+
+    @JSON
+    public String getContestPhaseAutopromote() {
+        if (_contestPhaseAutopromote == null) {
+            return StringPool.BLANK;
+        } else {
+            return _contestPhaseAutopromote;
+        }
+    }
+
+    public void setContestPhaseAutopromote(String contestPhaseAutopromote) {
+        _columnBitmask |= CONTESTPHASEAUTOPROMOTE_COLUMN_BITMASK;
+
+        if (_originalContestPhaseAutopromote == null) {
+            _originalContestPhaseAutopromote = _contestPhaseAutopromote;
+        }
+
+        _contestPhaseAutopromote = contestPhaseAutopromote;
+    }
+
+    public String getOriginalContestPhaseAutopromote() {
+        return GetterUtil.getString(_originalContestPhaseAutopromote);
     }
 
     @JSON
@@ -399,6 +427,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         contestPhaseImpl.setContestPhasePK(getContestPhasePK());
         contestPhaseImpl.setContestPK(getContestPK());
         contestPhaseImpl.setContestPhaseType(getContestPhaseType());
+        contestPhaseImpl.setContestPhaseAutopromote(getContestPhaseAutopromote());
         contestPhaseImpl.setContestPhaseDescriptionOverride(getContestPhaseDescriptionOverride());
         contestPhaseImpl.setPhaseActiveOverride(getPhaseActiveOverride());
         contestPhaseImpl.setPhaseInactiveOverride(getPhaseInactiveOverride());
@@ -463,6 +492,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
         contestPhaseModelImpl._setOriginalContestPK = false;
 
+        contestPhaseModelImpl._originalContestPhaseAutopromote = contestPhaseModelImpl._contestPhaseAutopromote;
+
         contestPhaseModelImpl._originalPhaseActiveOverride = contestPhaseModelImpl._phaseActiveOverride;
 
         contestPhaseModelImpl._setOriginalPhaseActiveOverride = false;
@@ -487,6 +518,15 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         contestPhaseCacheModel.ContestPK = getContestPK();
 
         contestPhaseCacheModel.ContestPhaseType = getContestPhaseType();
+
+        contestPhaseCacheModel.contestPhaseAutopromote = getContestPhaseAutopromote();
+
+        String contestPhaseAutopromote = contestPhaseCacheModel.contestPhaseAutopromote;
+
+        if ((contestPhaseAutopromote != null) &&
+                (contestPhaseAutopromote.length() == 0)) {
+            contestPhaseCacheModel.contestPhaseAutopromote = null;
+        }
 
         contestPhaseCacheModel.ContestPhaseDescriptionOverride = getContestPhaseDescriptionOverride();
 
@@ -548,7 +588,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(27);
 
         sb.append("{ContestPhasePK=");
         sb.append(getContestPhasePK());
@@ -556,6 +596,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         sb.append(getContestPK());
         sb.append(", ContestPhaseType=");
         sb.append(getContestPhaseType());
+        sb.append(", contestPhaseAutopromote=");
+        sb.append(getContestPhaseAutopromote());
         sb.append(", ContestPhaseDescriptionOverride=");
         sb.append(getContestPhaseDescriptionOverride());
         sb.append(", phaseActiveOverride=");
@@ -580,7 +622,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(40);
+        StringBundler sb = new StringBundler(43);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhase");
@@ -597,6 +639,10 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         sb.append(
             "<column><column-name>ContestPhaseType</column-name><column-value><![CDATA[");
         sb.append(getContestPhaseType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestPhaseAutopromote</column-name><column-value><![CDATA[");
+        sb.append(getContestPhaseAutopromote());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestPhaseDescriptionOverride</column-name><column-value><![CDATA[");

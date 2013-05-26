@@ -58,6 +58,7 @@ create table xcolab_ContestPhase (
 	ContestPhasePK LONG not null primary key,
 	ContestPK LONG,
 	ContestPhaseType LONG,
+	contestPhaseAutopromote VARCHAR(75) null,
 	ContestPhaseDescriptionOverride TEXT null,
 	phaseActiveOverride BOOLEAN,
 	phaseInactiveOverride BOOLEAN,

@@ -624,6 +624,132 @@ public class ContestPhaseUtil {
     }
 
     /**
+    * Returns all the contest phases where contestPhaseAutopromote = &#63;.
+    *
+    * @param contestPhaseAutopromote the contest phase autopromote
+    * @return the matching contest phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestPhase> findByPhaseAutopromote(
+        java.lang.String contestPhaseAutopromote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPhaseAutopromote(contestPhaseAutopromote);
+    }
+
+    /**
+    * Returns a range of all the contest phases where contestPhaseAutopromote = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param contestPhaseAutopromote the contest phase autopromote
+    * @param start the lower bound of the range of contest phases
+    * @param end the upper bound of the range of contest phases (not inclusive)
+    * @return the range of matching contest phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestPhase> findByPhaseAutopromote(
+        java.lang.String contestPhaseAutopromote, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPhaseAutopromote(contestPhaseAutopromote, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the contest phases where contestPhaseAutopromote = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param contestPhaseAutopromote the contest phase autopromote
+    * @param start the lower bound of the range of contest phases
+    * @param end the upper bound of the range of contest phases (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contest phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestPhase> findByPhaseAutopromote(
+        java.lang.String contestPhaseAutopromote, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPhaseAutopromote(contestPhaseAutopromote, start, end,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the first contest phase in the ordered set where contestPhaseAutopromote = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param contestPhaseAutopromote the contest phase autopromote
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest phase
+    * @throws com.ext.portlet.NoSuchContestPhaseException if a matching contest phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestPhase findByPhaseAutopromote_First(
+        java.lang.String contestPhaseAutopromote,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPhaseAutopromote_First(contestPhaseAutopromote,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last contest phase in the ordered set where contestPhaseAutopromote = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param contestPhaseAutopromote the contest phase autopromote
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest phase
+    * @throws com.ext.portlet.NoSuchContestPhaseException if a matching contest phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestPhase findByPhaseAutopromote_Last(
+        java.lang.String contestPhaseAutopromote,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPhaseAutopromote_Last(contestPhaseAutopromote,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the contest phases before and after the current contest phase in the ordered set where contestPhaseAutopromote = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param ContestPhasePK the primary key of the current contest phase
+    * @param contestPhaseAutopromote the contest phase autopromote
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest phase
+    * @throws com.ext.portlet.NoSuchContestPhaseException if a contest phase with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestPhase[] findByPhaseAutopromote_PrevAndNext(
+        long ContestPhasePK, java.lang.String contestPhaseAutopromote,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPhaseAutopromote_PrevAndNext(ContestPhasePK,
+            contestPhaseAutopromote, orderByComparator);
+    }
+
+    /**
     * Returns all the contest phases.
     *
     * @return the contest phases
@@ -728,6 +854,18 @@ public class ContestPhaseUtil {
     }
 
     /**
+    * Removes all the contest phases where contestPhaseAutopromote = &#63; from the database.
+    *
+    * @param contestPhaseAutopromote the contest phase autopromote
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByPhaseAutopromote(
+        java.lang.String contestPhaseAutopromote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByPhaseAutopromote(contestPhaseAutopromote);
+    }
+
+    /**
     * Removes all the contest phases from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -795,6 +933,19 @@ public class ContestPhaseUtil {
         return getPersistence()
                    .countByPhaseInactiveOverride(ContestPK,
             phaseInactiveOverride);
+    }
+
+    /**
+    * Returns the number of contest phases where contestPhaseAutopromote = &#63;.
+    *
+    * @param contestPhaseAutopromote the contest phase autopromote
+    * @return the number of matching contest phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByPhaseAutopromote(
+        java.lang.String contestPhaseAutopromote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByPhaseAutopromote(contestPhaseAutopromote);
     }
 
     /**

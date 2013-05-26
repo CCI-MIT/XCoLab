@@ -20,6 +20,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     private long _ContestPhasePK;
     private long _ContestPK;
     private long _ContestPhaseType;
+    private String _contestPhaseAutopromote;
     private String _ContestPhaseDescriptionOverride;
     private boolean _phaseActiveOverride;
     private boolean _phaseInactiveOverride;
@@ -79,6 +80,14 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
     public void setContestPhaseType(long ContestPhaseType) {
         _ContestPhaseType = ContestPhaseType;
+    }
+
+    public String getContestPhaseAutopromote() {
+        return _contestPhaseAutopromote;
+    }
+
+    public void setContestPhaseAutopromote(String contestPhaseAutopromote) {
+        _contestPhaseAutopromote = contestPhaseAutopromote;
     }
 
     public String getContestPhaseDescriptionOverride() {
@@ -183,6 +192,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         clone.setContestPhasePK(getContestPhasePK());
         clone.setContestPK(getContestPK());
         clone.setContestPhaseType(getContestPhaseType());
+        clone.setContestPhaseAutopromote(getContestPhaseAutopromote());
         clone.setContestPhaseDescriptionOverride(getContestPhaseDescriptionOverride());
         clone.setPhaseActiveOverride(getPhaseActiveOverride());
         clone.setPhaseInactiveOverride(getPhaseInactiveOverride());
@@ -239,7 +249,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(27);
 
         sb.append("{ContestPhasePK=");
         sb.append(getContestPhasePK());
@@ -247,6 +257,8 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(getContestPK());
         sb.append(", ContestPhaseType=");
         sb.append(getContestPhaseType());
+        sb.append(", contestPhaseAutopromote=");
+        sb.append(getContestPhaseAutopromote());
         sb.append(", ContestPhaseDescriptionOverride=");
         sb.append(getContestPhaseDescriptionOverride());
         sb.append(", phaseActiveOverride=");
@@ -271,7 +283,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(40);
+        StringBundler sb = new StringBundler(43);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhase");
@@ -288,6 +300,10 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(
             "<column><column-name>ContestPhaseType</column-name><column-value><![CDATA[");
         sb.append(getContestPhaseType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestPhaseAutopromote</column-name><column-value><![CDATA[");
+        sb.append(getContestPhaseAutopromote());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestPhaseDescriptionOverride</column-name><column-value><![CDATA[");

@@ -571,4 +571,7 @@ function updateShareThisUrls(selector) {
    				jQuery.ajax("/c/portal/extend_session");
    			}, 15000);
    		}
+   		else {
+   			Liferay.Session._stopTimer();
+   		}
    	});
