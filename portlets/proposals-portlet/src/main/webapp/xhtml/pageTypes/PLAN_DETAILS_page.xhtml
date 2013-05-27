@@ -37,11 +37,12 @@
                 <ul>
                     <ui:repeat value="#{proposal.availableTabs}" var="tabWrapper">
                         <li class="#{proposal.currentTab == tabWrapper.tab ? 'c' : ''}">
-                            <ice:commandLink value="#{tabWrapper.displayName}" onclick="Collab.nav.navigateAddParams('plans', {tab: '#{tabWrapper.tab}'}); return false;" >
+                        	<a href="/web/guest/plans/-/plans/contestId/#{contest.contestId}/planId/#{proposal.plan.planId}/tab/#{tabWrapper.tab}">
+                            	#{tabWrapper.displayName}
                                 <f:subview rendered="#{tabWrapper.hasActivityCount}">
                                     <div>#{tabWrapper.activityCount}</div>
                                 </f:subview>
-                            </ice:commandLink>
+                            </a>
                         </li>
                     </ui:repeat>
                 </ul>

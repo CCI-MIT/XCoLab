@@ -95,7 +95,8 @@ public class PlanBean implements Serializable {
             try {
                 planId = Long.parseLong(planIdStr);
                 refresh();
-                selectedTabIndex = getDefaultTab();
+                setTabForName(params.get("tab"));
+                //selectedTabIndex = getDefaultTab();
             } catch (NumberFormatException e) {
                 throw new BeanInitializationException("Can't parse plan id", e);
             }
@@ -114,19 +115,7 @@ public class PlanBean implements Serializable {
         }
 
         if (parameters.containsKey("tab")) {
-            try {
-                Integer tmp = tabNameIndexMap.get(parameters.get("tab"));
-                selectedTabIndex = tmp != null ? tmp : getDefaultTab();
-                currentTab = PlanTab.valueOf(parameters.get("tab").toUpperCase());
-                if (currentTab == PlanTab.ADMIN) {
-                    if (! permissions.getCanAdmin()) {
-                        currentTab = PlanTab.DESCRIPTION;
-                    }
-                }
-            }
-            catch (Exception e) {
-                _log.error("Can't parse tab number: " + parameters.get("tab"), e);
-            }
+            setTabForName(parameters.get("tab"));
         } else {
             // default tab if no tab is set
             selectedTabIndex = getDefaultTab();
@@ -154,6 +143,23 @@ public class PlanBean implements Serializable {
             if (simulationBean != null && simulationBean.isEditing()) {
                 simulationBean.edit(null);
             }
+        }
+    }
+    
+    private void setTabForName(String name) {
+
+        try {
+            Integer tmp = tabNameIndexMap.get(name);
+            selectedTabIndex = tmp != null ? tmp : getDefaultTab();
+            currentTab = PlanTab.valueOf(name.toUpperCase());
+            if (currentTab == PlanTab.ADMIN) {
+                if (! permissions.getCanAdmin()) {
+                    currentTab = PlanTab.DESCRIPTION;
+                }
+            }
+        }
+        catch (Exception e) {
+            _log.error("Can't parse tab number: " + name);
         }
     }
 
