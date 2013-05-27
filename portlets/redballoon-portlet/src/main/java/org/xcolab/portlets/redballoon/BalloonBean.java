@@ -67,17 +67,24 @@ public class BalloonBean implements Serializable {
 			init();
 		}
 	}
-	
+
 	public boolean isShowButton() {
-		if(balloonCookie != null && !StringUtils.isEmpty(balloonCookie.getUuid())) {
+		if (balloonCookie != null
+				&& !StringUtils.isEmpty(balloonCookie.getUuid())) {
 			try {
 				Integer userid = Integer.parseInt(balloonCookie.getUuid());
 				return userid % 2 == 0;
-			}catch(Exception e){
-				
+			} catch (Exception e) {
+
 			}
 		}
 		return false;
+	}
+	
+	private final String enterEmailString = "Enter your e-Mail address here";
+	
+	public String getEnterEmailString() {
+		return enterEmailString;
 	}
 
 	private void init() throws Exception {
@@ -87,6 +94,8 @@ public class BalloonBean implements Serializable {
 		balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 		email = (balloonCookie != null && balloonCookie.getEmail() != null) ? balloonCookie
 				.getEmail() : getEmailOfCurrentUser();
+		if (StringUtils.isBlank(email))
+			email = enterEmailString;
 
 		String GETParamURL = httpReq.getParameter("url");
 		if (GETParamURL != null) {
@@ -123,12 +132,14 @@ public class BalloonBean implements Serializable {
 
 		InternetAddress addressFrom = new InternetAddress(FROM_ADDRESS);
 
-		String mailAdr = session.getAttribute(USER_EMAIL) == null ? balloonCookie.getEmail()
-				: session.getAttribute(USER_EMAIL).toString();
-		if(StringUtils.isBlank(mailAdr)) mailAdr = email;
-		
-		if(StringUtils.isBlank(mailAdr)) return;
-		
+		String mailAdr = session.getAttribute(USER_EMAIL) == null ? balloonCookie
+				.getEmail() : session.getAttribute(USER_EMAIL).toString();
+		if (StringUtils.isBlank(mailAdr))
+			mailAdr = email;
+
+		if (StringUtils.isBlank(mailAdr))
+			return;
+
 		String[] receipients = new String[] { mailAdr };
 		InternetAddress[] addressTo = new InternetAddress[receipients.length];
 		for (int i = 0; i < receipients.length; i++) {

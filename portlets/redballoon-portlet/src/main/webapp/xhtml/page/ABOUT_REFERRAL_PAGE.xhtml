@@ -108,11 +108,33 @@
 		<div class="reg_errors">
 			<h:message for="email" errorClass="alert alert-error" />
 		</div>
+		<script type="text/javascript">
+		// <![CDATA[
+			function emailHintText(el, isFocussing) {
+				if(isFocussing && el.value == "#{balloonBean.enterEmailString}") {
+					el.value = "";
+					el.className = "text";
+				}else if(!isFocussing && el.value == "") {
+					el.value = "#{balloonBean.enterEmailString}";
+					el.className = "text textInitial";
+				}
+			}
+			//  ]]>
+		</script>
+		<f:subview rendered="#{balloonBean.email eq balloonBean.enterEmailString}">
 			<ice:inputText value="#{balloonBean.email}" id="email"
-				styleClass="text" required="true"
+				styleClass="text textInitial" required="true" onclick="emailHintText(this,true);" onblur="emailHintText(this,false);" 
 				requiredMessage="Please enter your e-Mail address" label="email">
 				<f:validator validatorId="EmailValidator" />
 			</ice:inputText>
+		</f:subview>
+		<f:subview rendered="#{balloonBean.email ne balloonBean.enterEmailString}">
+			<ice:inputText value="#{balloonBean.email}" id="email"
+				styleClass="text" required="true"  onclick="emailHintText(this,true);" onblur="emailHintText(this,false);"
+				requiredMessage="Please enter your e-Mail address" label="email">
+				<f:validator validatorId="EmailValidator" />
+			</ice:inputText>
+		</f:subview>
 		<div class="blue-button">
 			<h:commandLink value="request personal link"
 				actionListener="#{balloonBean.requestURL}" />
