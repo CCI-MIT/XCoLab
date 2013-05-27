@@ -45,7 +45,7 @@ public class PlanItemLocalServiceClp implements PlanItemLocalService {
     private MethodKey _findPlansForFocusAreaMethodKey35;
     private MethodKey _findPlansForOntologyTermsMethodKey36;
     private MethodKey _findPlansForOntologyTermsMethodKey37;
-    private MethodKey _countPlansByContestMethodKey38;
+    private MethodKey _countPlansByContestPhaseMethodKey38;
     private MethodKey _getPlansByContestMethodKey39;
     private MethodKey _planDeletedMethodKey40;
     private MethodKey _getDescriptionMethodKey41;
@@ -291,8 +291,9 @@ public class PlanItemLocalServiceClp implements PlanItemLocalService {
         _findPlansForOntologyTermsMethodKey37 = new MethodKey(_classLoaderProxy.getClassName(),
                 "findPlansForOntologyTerms", java.util.List.class);
 
-        _countPlansByContestMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
-                "countPlansByContest", java.lang.Long.class);
+        _countPlansByContestPhaseMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
+                "countPlansByContestPhase",
+                com.ext.portlet.model.ContestPhase.class);
 
         _getPlansByContestMethodKey39 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPlansByContest", java.lang.Long.class);
@@ -1715,13 +1716,14 @@ public class PlanItemLocalServiceClp implements PlanItemLocalService {
         return (java.util.List<com.ext.portlet.model.PlanItem>) ClpSerializer.translateOutput(returnObj);
     }
 
-    public long countPlansByContest(java.lang.Long contestId)
+    public long countPlansByContestPhase(
+        com.ext.portlet.model.ContestPhase phase)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_countPlansByContestMethodKey38,
-                ClpSerializer.translateInput(contestId));
+        MethodHandler methodHandler = new MethodHandler(_countPlansByContestPhaseMethodKey38,
+                ClpSerializer.translateInput(phase));
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

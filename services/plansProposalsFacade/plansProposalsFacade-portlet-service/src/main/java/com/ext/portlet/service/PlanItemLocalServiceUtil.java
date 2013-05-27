@@ -404,10 +404,11 @@ public class PlanItemLocalServiceUtil {
         return getService().findPlansForOntologyTerms(terms);
     }
 
-    public static long countPlansByContest(java.lang.Long contestId)
+    public static long countPlansByContestPhase(
+        com.ext.portlet.model.ContestPhase phase)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().countPlansByContest(contestId);
+        return getService().countPlansByContestPhase(phase);
     }
 
     public static java.util.List<com.ext.portlet.model.PlanItem> getPlansByContest(

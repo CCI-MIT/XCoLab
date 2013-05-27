@@ -15,6 +15,7 @@ import com.ext.portlet.model.PlanVote;
 import com.ext.portlet.model.PlansUserSettings;
 import com.ext.portlet.model.impl.PlanItemImpl;
 import com.ext.portlet.model.impl.PlanItemModelImpl;
+import com.ext.portlet.plans.EntityState;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.PlanConstants.Columns;
 import com.ext.portlet.plans.PlanConstants.Property;
@@ -42,7 +43,6 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
     public static final String FINDER_CLASS_NAME_ENTITY = PlanItemImpl.class.getName();
     public static final String FINDER_CLASS_NAME_LIST = FINDER_CLASS_NAME_ENTITY + ".List";
     
-    
     private static final FinderPath FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID;
     private static final FinderPath FINDER_PATH_COUNT_BY_CONTEST_PHASE_ID;
     static {
@@ -51,8 +51,9 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
                 "fetchByContestPhaseId", new String[] {Long.class.getName()});
         
         FINDER_PATH_COUNT_BY_CONTEST_PHASE_ID = new FinderPath(PlanItemModelImpl.ENTITY_CACHE_ENABLED,
-                PlanItemModelImpl.FINDER_CACHE_ENABLED, PlanItemImpl.class, FINDER_CLASS_NAME_LIST, 
+                PlanItemModelImpl.FINDER_CACHE_ENABLED, Long.class, FINDER_CLASS_NAME_LIST, 
                 "countByContestPhaseId", new String[] {Long.class.getName()});
+        
     }
     
     
@@ -397,9 +398,8 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
     public List<PlanItem> getPlansForPhase(Long phaseId) {
         Object[] args = new Object[] { phaseId };
         
-        List<PlanItem> planItems = null;
-        //(List<PlanItem>) 
-         //        FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args, this);
+        List<PlanItem> planItems = (List<PlanItem>) 
+                 FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args, this);
 
         if (planItems == null) {
 
@@ -411,7 +411,7 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
             query.setLong(0, phaseId);
             planItems = (List<PlanItem>) QueryUtil.list(query,getDialect(),0,Integer.MAX_VALUE);
             
-            //FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args, planItems);
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args, planItems);
         }
         return planItems;
      }
@@ -951,4 +951,21 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
         FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTEST_PHASE_ID, args);
     }
     
+    public long countPlansByContestPhase(Long phaseId) {
+        Object[] args = new Object[] { phaseId };
+        Long count = (Long) 
+                 FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONTEST_PHASE_ID, args, this);
+        if (count == null) {
+            count = 0L;
+            for (PlanItem plan: getPlansForPhase(phaseId)) {
+                if (plan.getVersion() > 1 && !plan.getState().equals(EntityState.DELETED.name())) {
+                    count++;
+                }
+            }
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONTEST_PHASE_ID, args, count);
+        }
+        return count;
+        
+    }
 }

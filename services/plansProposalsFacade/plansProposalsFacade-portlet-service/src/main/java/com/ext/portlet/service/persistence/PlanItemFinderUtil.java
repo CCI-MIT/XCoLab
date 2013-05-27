@@ -78,6 +78,10 @@ public class PlanItemFinderUtil {
         getFinder().clearPhaseCache(contestPhasePk);
     }
 
+    public static long countPlansByContestPhase(java.lang.Long phaseId) {
+        return getFinder().countPlansByContestPhase(phaseId);
+    }
+
     public static PlanItemFinder getFinder() {
         if (_finder == null) {
             _finder = (PlanItemFinder) PortletBeanLocatorUtil.locate(com.ext.portlet.service.ClpSerializer.getServletContextName(),

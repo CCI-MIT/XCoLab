@@ -8,25 +8,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
-import com.ext.portlet.model.ActivitySubscription;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.PlanFan;
 import com.ext.portlet.model.PlanItem;
-import com.ext.portlet.model.PlanVote;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.Criterion;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.ClassName;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 public class PlanCopyTool {
     private Long sourceContestPhase;
@@ -40,9 +29,12 @@ public class PlanCopyTool {
     
     public PlanCopyTool() throws PortalException, SystemException {
         availableContestPhases.add(new SelectItem(-1, "-- Select --"));
-        for (ContestPhase phase: ContestPhaseLocalServiceUtil.getContestPhases(0, Integer.MAX_VALUE)) {
-            availableContestPhases.add(new SelectItem(phase.getContestPhasePK(), 
-                    ContestPhaseLocalServiceUtil.getContest(phase).getContestShortName() + ": " + ContestPhaseLocalServiceUtil.getName(phase)));
+        for (Contest contest: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+            for (ContestPhase phase: ContestLocalServiceUtil.getPhases(contest)) {
+                availableContestPhases.add(
+                        new SelectItem(phase.getContestPhasePK(),
+                                ContestPhaseLocalServiceUtil.getContest(phase).getContestShortName() + ": " + ContestPhaseLocalServiceUtil.getName(phase)));
+            }
         }
     }
 
@@ -139,7 +131,7 @@ public class PlanCopyTool {
             if (item.isSelected()) {
                 plansToBeCopied.add(item.getPlan());
             }
-        }
+        }   
         
         PlanItemLocalServiceUtil.promotePlans(plansToBeCopied, targetContestPhase);
         

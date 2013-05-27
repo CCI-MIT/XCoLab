@@ -163,7 +163,6 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
      */
 
     public PlanItem createPlan(ContestPhase phase, Long authorId) throws SystemException, PortalException {
-        planItemFinder.clearPhaseCache(phase.getContestPhasePK());
         
         long planItemId = CounterLocalServiceUtil.increment(PlanItem.class.getName());
         long planId = CounterLocalServiceUtil.increment(PlanItem.class.getName() + PLAN_ID_NAME_SUFFIX);
@@ -215,6 +214,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         updateAttribute(planItem, Attribute.STATUS.name());
 
         // populate fields with default values
+        planItemFinder.clearPhaseCache(phase.getContestPhasePK());
         return planItem;
     }
 
@@ -312,7 +312,6 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
     public PlanItem createPlan(PlanItem basePlan, ContestPhase contestPhase, Long authorId) throws SystemException,
             PortalException {
-        planItemFinder.clearPhaseCache(contestPhase.getContestPhasePK());
         long type = getPlanTypeId(basePlan);
         if (ContestLocalServiceUtil.getPlanType(ContestPhaseLocalServiceUtil.getContest(contestPhase)).getPlanTypeId() != type) {
             _log.error("Cannot create plan of type " + type + " for contest phase "
@@ -443,6 +442,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
                 setAttribute(planItem, pa.getAttributeName(), pa.getAttributeValue());
             }
         }
+        planItemFinder.clearPhaseCache(contestPhase.getContestPhasePK());
         return planItem;
     }
 
@@ -543,6 +543,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         planMeta.setCategoryGroupId(categoryGroup.getId());
         planMeta.setPlanGroupId(group.getGroupId());
         PlanMetaLocalServiceUtil.store(planMeta);
+        
     }
 
     public List<PlanItem> getPlans() throws SystemException {
@@ -844,17 +845,8 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         return findPlansForOntologyTerms(new OntologyTerm[] {term});
     }
     
-    public long countPlansByContest(Long contestId) throws SystemException, PortalException {
-        List<ContestPhase> phases = ContestPhaseLocalServiceUtil.getPhasesForContest(ContestLocalServiceUtil.getContest(contestId));
-        long counter = 0;
-        for (ContestPhase phase: phases) {
-            for (PlanItem plan: planItemFinder.getPlansForPhase(phase.getContestPhasePK())) {
-                if (plan.getVersion() > 1 && !plan.getState().equals(EntityState.DELETED.name())) {
-                    counter++;
-                }
-            }
-        }
-        return counter;
+    public long countPlansByContestPhase(ContestPhase phase) throws SystemException, PortalException {
+       return planItemFinder.countPlansByContestPhase(phase.getContestPhasePK());
     }
     
     public List<PlanItem> getPlansByContest(Long contestId) throws SystemException, PortalException {
@@ -1290,6 +1282,16 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         store(pi);
         
         setAttribute(pi, PlanConstants.Attribute.LAST_MOD_DATE, String.valueOf(pi.getUpdated()));
+
+        try {
+            ContestPhase phase = getContestPhase(latestVersion);
+            if (phase != null) {
+                planItemFinder.clearPhaseCache(phase.getContestPhasePK());
+            }
+        }
+        catch (PortalException e) {
+            _log.error(e, e);
+        }
         
         return pi;
     }

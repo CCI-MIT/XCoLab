@@ -42,4 +42,6 @@ public interface PlanItemFinder {
         java.lang.Long planId);
 
     public void clearPhaseCache(java.lang.Long contestPhasePk);
+
+    public long countPlansByContestPhase(java.lang.Long phaseId);
 }

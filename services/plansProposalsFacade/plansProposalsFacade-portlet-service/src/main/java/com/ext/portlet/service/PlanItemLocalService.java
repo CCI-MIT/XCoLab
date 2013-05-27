@@ -338,7 +338,8 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
         throws com.ext.portlet.NoSuchPlanItemException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public long countPlansByContest(java.lang.Long contestId)
+    public long countPlansByContestPhase(
+        com.ext.portlet.model.ContestPhase phase)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

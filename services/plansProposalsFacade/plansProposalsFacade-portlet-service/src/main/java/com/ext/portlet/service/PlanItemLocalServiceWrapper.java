@@ -395,10 +395,11 @@ public class PlanItemLocalServiceWrapper implements PlanItemLocalService,
         return _planItemLocalService.findPlansForOntologyTerms(terms);
     }
 
-    public long countPlansByContest(java.lang.Long contestId)
+    public long countPlansByContestPhase(
+        com.ext.portlet.model.ContestPhase phase)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _planItemLocalService.countPlansByContest(contestId);
+        return _planItemLocalService.countPlansByContestPhase(phase);
     }
 
     public java.util.List<com.ext.portlet.model.PlanItem> getPlansByContest(
