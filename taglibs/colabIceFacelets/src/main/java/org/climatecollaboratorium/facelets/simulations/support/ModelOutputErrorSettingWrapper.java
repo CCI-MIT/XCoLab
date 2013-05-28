@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.facelets.simulations.support;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.faces.event.ActionEvent;
 
@@ -15,8 +16,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import edu.mit.cci.roma.client.TupleStatus;
 
-public class ModelOutputErrorSettingWrapper {
-    private ModelOutputDisplayItem item;
+public class ModelOutputErrorSettingWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ModelOutputDisplayItem item;
     private TupleStatus status;
     private SimulationBean bean;
     private ErrorPolicy policy;

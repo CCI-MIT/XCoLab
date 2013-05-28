@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.facelets.simulations.support;
 
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.ext.portlet.models.ui.*;
@@ -10,8 +11,12 @@ import edu.mit.cci.roma.client.MetaData;
 
 
 
-public class ModelInputDisplayItemWrapper {
-    protected ModelInputDisplayItem wrappedItem;
+public class ModelInputDisplayItemWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected ModelInputDisplayItem wrappedItem;
     private Double value;
 
 
