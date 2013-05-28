@@ -1,6 +1,7 @@
 package org.xcolab.portlets.feeds.activities;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,9 +21,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 
-public class PaginatedActivitiesBean extends DataSource {
+public class PaginatedActivitiesBean extends DataSource implements Serializable {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
      * Max query to handle the bug with no activity body - sufficiently high number that we're very likely to get enough
      * non-null entres to meet the feedSize param
      */

@@ -1,6 +1,7 @@
 package org.xcolab.portlets.feeds;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +14,13 @@ import javax.portlet.ValidatorException;
 
 import com.liferay.portal.model.User;
 
-public class FeedsPreferences {
+public class FeedsPreferences implements Serializable {
 
-    private int feedSize;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int feedSize;
     private FeedType feedType;
     private String feedTitle;
 

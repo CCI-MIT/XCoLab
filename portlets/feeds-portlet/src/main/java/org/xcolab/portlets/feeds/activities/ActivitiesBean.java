@@ -1,5 +1,6 @@
 package org.xcolab.portlets.feeds.activities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,9 +18,13 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 
-public class ActivitiesBean {
+public class ActivitiesBean implements Serializable {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
      * Max query to handle the bug with no activity body - sufficiently high number that we're very likely to get enough
      * non-null entres to meet the feedSize param
      */

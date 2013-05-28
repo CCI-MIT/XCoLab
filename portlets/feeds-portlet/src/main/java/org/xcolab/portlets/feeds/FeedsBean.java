@@ -1,12 +1,18 @@
 package org.xcolab.portlets.feeds;
 
+import java.io.Serializable;
+
 import org.xcolab.portlets.feeds.activities.ActivitiesBean;
 import org.xcolab.portlets.feeds.activities.PaginatedActivitiesBean;
 import org.xcolab.portlets.feeds.members.MembersBean;
 
 
-public class FeedsBean {
-    private ActivitiesBean activitiesBean;
+public class FeedsBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ActivitiesBean activitiesBean;
     private MembersBean membersBean;
     private FeedsPreferences preferences;
     private PaginatedActivitiesBean paginatedActivitiesBean;

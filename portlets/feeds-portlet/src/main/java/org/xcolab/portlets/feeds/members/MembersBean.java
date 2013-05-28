@@ -1,5 +1,6 @@
 package org.xcolab.portlets.feeds.members;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,8 +23,12 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-public class MembersBean {
-    private List<MemberWrapper> mostActiveUsers;
+public class MembersBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<MemberWrapper> mostActiveUsers;
     private List<MemberWrapper> recentlyJoinedUsers;
     private ArrayList<MemberWrapper> recentlyActiveUsers;
     private int feedSize;
