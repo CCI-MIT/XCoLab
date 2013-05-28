@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.facelets.simulations;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,9 +42,13 @@ import edu.mit.cci.roma.client.Variable;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 
-public class SimulationBean {
+public class SimulationBean implements Serializable {
 
-    private Long lastInitSimulationId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long lastInitSimulationId;
     private Long lastInitScenarioId;
     private Simulation simulation;
     private Scenario scenario;

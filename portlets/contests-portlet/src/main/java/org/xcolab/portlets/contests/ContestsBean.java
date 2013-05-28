@@ -1,5 +1,6 @@
 package org.xcolab.portlets.contests;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +10,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 
-public class ContestsBean {
+public class ContestsBean implements Serializable {
     
-    public List<ContestWrapper> getContests() throws SystemException, PortalException {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public List<ContestWrapper> getContests() throws SystemException, PortalException {
         List<ContestWrapper> ret = new ArrayList<>();
         
         for (Contest contest: ContestLocalServiceUtil.findByActiveFlagText(true, "Featured")) {

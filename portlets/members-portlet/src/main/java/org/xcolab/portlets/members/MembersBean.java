@@ -1,5 +1,6 @@
 package org.xcolab.portlets.members;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +35,13 @@ import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 
-public class MembersBean {
+public class MembersBean implements Serializable {
     
-    private int startFrom = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int startFrom = 0;
     private int RESULTS_PER_PAGE = 25;
     private final static long DEFAULT_COMPANY_ID = 10112L;
     private MembersListColumns sortColumn = MembersListColumns.ACTIVITY;

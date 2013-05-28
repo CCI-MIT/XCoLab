@@ -1,5 +1,7 @@
 package org.xcolab.portlets.loginregister;
 
+import java.io.Serializable;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -10,7 +12,12 @@ import org.xcolab.utils.validation.ValidScreenName;
 @CompareStrings(propertyNames = { "password", "retypePassword" })
 @UniqueScreenNameAndEmail(emailProperty = "email", screenNameProperty = "screenName")
 @ValidScreenName(screenNameProperty = "screenName")
-public class CreateUserBean {
+public class CreateUserBean implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@NotBlank
 	private String screenName;

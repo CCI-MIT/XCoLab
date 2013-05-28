@@ -1,6 +1,8 @@
 package org.xcolab.portlets.contests;
 
 
+import java.io.Serializable;
+
 import javax.faces.event.ActionEvent;
 
 import com.ext.portlet.model.Contest;
@@ -15,8 +17,12 @@ import com.liferay.portal.kernel.exception.SystemException;
  * Time: 2:53:38 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ContestWrapper {
-    private Contest contest;
+public class ContestWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Contest contest;
     private String debatesIdsStr = null;
     
     public boolean flag;

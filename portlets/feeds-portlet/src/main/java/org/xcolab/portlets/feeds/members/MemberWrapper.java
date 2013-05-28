@@ -1,5 +1,6 @@
 package org.xcolab.portlets.feeds.members;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.xcolab.portlets.feeds.Helper;
@@ -13,8 +14,12 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.ocpsoft.pretty.time.PrettyTime;
 
-public class MemberWrapper {
-    private User user;
+public class MemberWrapper implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private User user;
     private int activitiesCount;
     private SocialActivity activity;
     private String lastActivityBody;

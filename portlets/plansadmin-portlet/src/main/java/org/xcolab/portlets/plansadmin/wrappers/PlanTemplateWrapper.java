@@ -1,5 +1,6 @@
 package org.xcolab.portlets.plansadmin.wrappers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,12 @@ import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class PlanTemplateWrapper {
-    private PlanTemplate template;
+public class PlanTemplateWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PlanTemplate template;
     private PlanSectionDefinition newSection = null;
 
     public PlanTemplateWrapper(PlanTemplate template) throws PortalException, SystemException {

@@ -1,5 +1,6 @@
 package org.xcolab.portlets.members;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
@@ -11,7 +12,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-public class MemberListItemBean {
+public class MemberListItemBean implements Serializable {
     private MemberCategory category;
     private String realName;
     private int activityCount;

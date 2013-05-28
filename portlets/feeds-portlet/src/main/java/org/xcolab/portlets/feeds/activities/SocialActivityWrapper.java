@@ -1,5 +1,6 @@
 package org.xcolab.portlets.feeds.activities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +15,12 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.ocpsoft.pretty.time.PrettyTime;
 
-public class SocialActivityWrapper {
-    private SocialActivity activity;
+public class SocialActivityWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private SocialActivity activity;
     private SocialActivityFeedEntry activityFeedEntry;
     private int daysBetween;
     private boolean indicateNewDate;

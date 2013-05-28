@@ -1,5 +1,6 @@
 package org.xcolab.portlets.plansadmin;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +12,12 @@ import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class PlanSectionDefinitionsAdmin {
-    private PlanSectionDefinitionWrapper edited;
+public class PlanSectionDefinitionsAdmin implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PlanSectionDefinitionWrapper edited;
     
     public List<PlanSectionDefinitionWrapper> getSectionDefinitions() throws SystemException {
         List<PlanSectionDefinitionWrapper> ret = new ArrayList<PlanSectionDefinitionWrapper>();

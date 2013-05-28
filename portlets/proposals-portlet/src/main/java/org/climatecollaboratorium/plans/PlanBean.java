@@ -498,8 +498,12 @@ public class PlanBean implements Serializable {
         
     }
     
-    public class PlanTabWrapper {
-        private final PlanItem plan;
+    public class PlanTabWrapper implements Serializable {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private final PlanItem plan;
         private final PlanTab tab;
         
         public PlanTabWrapper(PlanItem plan, PlanTab tab) {

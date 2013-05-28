@@ -1,5 +1,7 @@
 package org.climatecollaboratorium.plans.wrappers;
 
+import java.io.Serializable;
+
 import javax.faces.event.ActionEvent;
 
 import org.climatecollaboratorium.plans.Helper;
@@ -13,8 +15,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
-public class PlanMember {
-    private PlanItem plan;
+public class PlanMember implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PlanItem plan;
     private User user;
     private PlanUserPermission planUserPermission;
     private boolean member;

@@ -7,6 +7,7 @@
 package com.ext.portlet.models.ui;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import com.ext.portlet.model.ModelInputItem;
 import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
@@ -23,9 +24,13 @@ import edu.mit.cci.roma.client.Variable;
  * @author: jintrone
  * @date: May 25, 2010
  */
-public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem {
+public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem implements Serializable {
 
-    ModelInputWidgetType type = ModelInputWidgetType.TEXT_FIELD;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	ModelInputWidgetType type = ModelInputWidgetType.TEXT_FIELD;
     ModelInputItem item;
 
 

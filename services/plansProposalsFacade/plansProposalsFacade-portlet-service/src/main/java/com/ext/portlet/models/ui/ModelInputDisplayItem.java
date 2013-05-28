@@ -6,6 +6,8 @@
 
 package com.ext.portlet.models.ui;
 
+import java.io.Serializable;
+
 import com.liferay.portal.kernel.exception.SystemException;
 
 import edu.mit.cci.roma.client.MetaData;
@@ -18,9 +20,13 @@ import edu.mit.cci.roma.client.Simulation;
  * @author: jintrone
  * @date: May 24, 2010
  */
-public abstract class ModelInputDisplayItem extends ModelDisplayItem {
+public abstract class ModelInputDisplayItem extends ModelDisplayItem implements Serializable {
 
-    private MetaData md;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private MetaData md;
 
     public ModelInputDisplayItem(Simulation sim, MetaData md) {
       super(sim);

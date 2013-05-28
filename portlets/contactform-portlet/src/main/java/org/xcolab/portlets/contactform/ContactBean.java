@@ -1,5 +1,7 @@
 package org.xcolab.portlets.contactform;
 
+import java.io.Serializable;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -13,7 +15,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 
-public class ContactBean {
+public class ContactBean implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String email;
 	private String message;

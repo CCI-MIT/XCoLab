@@ -7,6 +7,7 @@
 package com.ext.portlet.models.ui;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,7 +37,7 @@ import edu.mit.cci.roma.client.Simulation;
  * @author: jintrone
  * @date: May 24, 2010
  */
-public class ModelInputGroupDisplayItem extends ModelInputDisplayItem {
+public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements Serializable {
 
     private static Log _log = LogFactoryUtil.getLog(ModelInputGroupDisplayItem.class);
 

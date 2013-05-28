@@ -2,6 +2,7 @@ package org.climatecollaboratorium.facelets.simulations.support;
 
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import com.ext.portlet.models.ui.ModelInputGroupDisplayItem;
 import com.ext.portlet.models.ui.ModelInputIndividualDisplayItem;
 import com.ext.portlet.models.ui.ModelOutputDisplayItem;
 
-public class ModelDisplayWrapper {
+public class ModelDisplayWrapper implements Serializable {
     private ModelDisplay wrapped;
     private SimulationBean simulationBean;
     private List<ModelInputDisplayItemWrapper> wrappedInputs = new ArrayList<ModelInputDisplayItemWrapper>();

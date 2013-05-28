@@ -1,8 +1,15 @@
 package org.xcolab.portlets.plansadmin;
 
-public class PlansAdminBean {
+import java.io.Serializable;
+
+public class PlansAdminBean implements Serializable {
     
-    public String testNav() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public String testNav() {
         return "sayHello";
     }
 

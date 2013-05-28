@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.facelets.discussions.support;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,8 +33,12 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-public class MessageWrapper {
-    private String title;
+public class MessageWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String title;
     private String description;
     private DiscussionMessage wrapped;
     private CategoryWrapper category;

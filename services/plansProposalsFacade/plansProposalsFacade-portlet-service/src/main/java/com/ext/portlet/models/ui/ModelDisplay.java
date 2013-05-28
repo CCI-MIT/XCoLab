@@ -7,6 +7,7 @@
 package com.ext.portlet.models.ui;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,9 +28,13 @@ import edu.mit.cci.roma.client.Simulation;
  * @author: jintrone
  * @date: May 24, 2010
  */
-public class ModelDisplay {
+public class ModelDisplay implements Serializable {
 
-    List<ModelInputDisplayItem> inputs;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	List<ModelInputDisplayItem> inputs;
     List<ModelOutputDisplayItem> outputs;
 
 

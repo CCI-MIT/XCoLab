@@ -1,6 +1,7 @@
 package org.xcolab.portlets.contactform;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -11,9 +12,13 @@ import javax.portlet.ValidatorException;
 
 import com.liferay.portal.model.User;
 
-public class ContactPreferences {
+public class ContactPreferences implements Serializable {
 
-    private String receipients;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String receipients;
     private String messageFormat;
     private String messageSubject;
     private String expandLinkText;

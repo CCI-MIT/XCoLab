@@ -1,5 +1,7 @@
 package com.ext.portlet.model;
 
+import java.io.Serializable;
+
 import com.liferay.portal.model.PersistedModel;
 
 /**
@@ -11,7 +13,7 @@ import com.liferay.portal.model.PersistedModel;
  * @see com.ext.portlet.model.impl.BalloonStatsEntryModelImpl
  * @generated
  */
-public interface BalloonStatsEntry extends BalloonStatsEntryModel, PersistedModel {
+public interface BalloonStatsEntry extends BalloonStatsEntryModel, PersistedModel, Serializable {
     /*
      * NOTE FOR DEVELOPERS:
      *

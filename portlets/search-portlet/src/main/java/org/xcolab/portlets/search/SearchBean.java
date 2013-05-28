@@ -1,6 +1,7 @@
 package org.xcolab.portlets.search;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -33,8 +34,12 @@ import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.StringQueryImpl;
 
-public class SearchBean extends DataSource {
-    private String searchPhrase = "";
+public class SearchBean extends DataSource implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String searchPhrase = "";
     private final static int RESULTS_PER_PAGE = 50;
     private int startFrom = 0;
     private int length = 0;

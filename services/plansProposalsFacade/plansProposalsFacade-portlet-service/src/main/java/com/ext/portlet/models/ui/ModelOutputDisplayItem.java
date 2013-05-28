@@ -6,6 +6,8 @@
 
 package com.ext.portlet.models.ui;
 
+import java.io.Serializable;
+
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Tuple;
 import edu.mit.cci.roma.client.TupleStatus;
@@ -19,9 +21,14 @@ import edu.mit.cci.roma.client.Variable;
  * @author: jintrone
  * @date: May 25, 2010
  */
-public abstract class ModelOutputDisplayItem extends ModelDisplayItem {
+public abstract class ModelOutputDisplayItem extends ModelDisplayItem implements Serializable {
 
-    public ModelOutputDisplayItem(Simulation s) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ModelOutputDisplayItem(Simulation s) {
         super(s);
     }
     

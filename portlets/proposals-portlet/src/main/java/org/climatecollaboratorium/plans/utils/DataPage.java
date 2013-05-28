@@ -1,9 +1,14 @@
 package org.climatecollaboratorium.plans.utils;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DataPage {
-    private int datasetSize;
+public class DataPage implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int datasetSize;
     private int startRow;
     private List data;
 

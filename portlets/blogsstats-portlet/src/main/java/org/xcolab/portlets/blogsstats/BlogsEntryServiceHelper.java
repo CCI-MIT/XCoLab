@@ -1,5 +1,6 @@
 package org.xcolab.portlets.blogsstats;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +16,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
 
-public class BlogsEntryServiceHelper {
+public class BlogsEntryServiceHelper implements Serializable {
     
     private final static String F_DISPLAY_DATE = "displayDate";
     private final static String F_GROUP_ID = "groupId";

@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.facelets.discussions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,8 +36,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-public class DiscussionBean {
-    protected static final DiscussionPageType DEFAULT_PAGE_TYPE = DiscussionPageType.DISCUSSIONS;
+public class DiscussionBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected static final DiscussionPageType DEFAULT_PAGE_TYPE = DiscussionPageType.DISCUSSIONS;
     private Long discussionId;
     private Long categoryId;
     private Long threadId;

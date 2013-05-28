@@ -1,7 +1,13 @@
 package org.climatecollaboratorium.events;
 
-public class HandlerRegistration {
-    private Class<? extends Event> eventType;
+import java.io.Serializable;
+
+public class HandlerRegistration implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Class<? extends Event> eventType;
     private EventHandler handler;
     private EventBus eventBus;
     

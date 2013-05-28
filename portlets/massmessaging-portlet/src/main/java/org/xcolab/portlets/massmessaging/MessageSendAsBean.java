@@ -1,7 +1,13 @@
 package org.xcolab.portlets.massmessaging;
 
-public class MessageSendAsBean {
-    private String name;
+import java.io.Serializable;
+
+public class MessageSendAsBean implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String name;
     private String host;
     private int port;
     private String password;
