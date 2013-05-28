@@ -1,5 +1,6 @@
 package org.xcolab.portlets.userprofile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,12 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.util.mail.MailEngineException;
 
-public class UserProfileBean {
-    private UserWrapper currentUser; 
+public class UserProfileBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private UserWrapper currentUser; 
     private User wrappedUser;
     private final static String USER_ID_PARAM = "userId";
     private final static Log _log = LogFactoryUtil.getLog(UserProfileBean.class);

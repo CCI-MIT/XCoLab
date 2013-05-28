@@ -1,5 +1,6 @@
 package org.xcolab.portlets.userprofile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,9 +13,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-public class MessageBean {
+public class MessageBean implements Serializable {
     
-    private Message message;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Message message;
     private boolean selected;
     private List<User> receipients = new ArrayList<User>();
 

@@ -1,14 +1,19 @@
 package org.xcolab.portlets.userprofile;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 
-public class UserActivityBean {
+public class UserActivityBean implements Serializable {
     
-    private SocialActivity activity;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private SocialActivity activity;
     private SocialActivityFeedEntry activityFeedEntry;
     private String body;
     
