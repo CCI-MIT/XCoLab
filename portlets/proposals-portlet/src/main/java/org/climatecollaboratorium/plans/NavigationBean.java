@@ -41,7 +41,7 @@ public class NavigationBean implements Serializable {
     private IssuesBean issuesBean;
     private CreatePlanBean createPlanBean;
     private ContestsBean contestsBean;
-    private SimulationBean externalSimulationBean;
+    private transient SimulationBean externalSimulationBean;
     
     private EventBus eventBus;
     

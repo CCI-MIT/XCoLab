@@ -66,7 +66,7 @@ public class PlanBean implements Serializable {
     // this is ver bad solution, we should use event bus for communication
     // between beans instead of direct references
     private PlansIndexBean plansIndexBean;
-    private org.climatecollaboratorium.facelets.simulations.SimulationBean externalSimulationBean;
+    private transient org.climatecollaboratorium.facelets.simulations.SimulationBean externalSimulationBean;
     private NavigationEvent lastNavEvent;
     private List<PlanTabWrapper> availableTabs;
     private PlanTab currentTab = PlanTab.DESCRIPTION;
