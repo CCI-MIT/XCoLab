@@ -574,9 +574,13 @@ public class PlansIndexBean implements Serializable {
         return updateErrorNotes;
     }
 
-    public static class TestTab {
+    public static class TestTab implements Serializable {
 
-        String label;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		String label;
 
         public TestTab(String label) {
             this.label = label;
