@@ -40,7 +40,7 @@ public class BalloonBean implements Serializable {
 	private boolean checkBoxActive = false;
 	private boolean redirectUserToGetURL = false;
 	private BalloonCookie balloonCookie;
-	private HttpServletRequest httpReq;
+	private transient HttpServletRequest httpReq;
 	private boolean showShareWidgets;
 	private List<Contest> contests;
     private BalloonStatsEntry statsEntry;
