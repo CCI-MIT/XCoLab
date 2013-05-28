@@ -1,12 +1,17 @@
 package org.climatecollaboratorium.plans.wrappers;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.liferay.portal.model.User;
 
-public class ContestTeamRoleBean {
+public class ContestTeamRoleBean implements Serializable {
     
-    private String roleName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String roleName;
     private List<User> users;
     
     
