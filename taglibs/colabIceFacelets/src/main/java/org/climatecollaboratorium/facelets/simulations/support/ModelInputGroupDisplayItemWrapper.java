@@ -3,6 +3,7 @@ package org.climatecollaboratorium.facelets.simulations.support;
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +20,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import edu.mit.cci.roma.client.MetaData;
 
-public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrapper {
-    private boolean editing;
+public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrapper implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private boolean editing;
     private MetaData md;
     private SimulationBean simulationBean;
     private String name = "";
