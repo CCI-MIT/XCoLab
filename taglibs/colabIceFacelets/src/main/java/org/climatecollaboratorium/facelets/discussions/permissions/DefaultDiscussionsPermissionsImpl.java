@@ -1,5 +1,7 @@
 package org.climatecollaboratorium.facelets.discussions.permissions;
 
+import java.io.Serializable;
+
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.utils.Helper;
 
@@ -11,9 +13,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
 
-public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions {
+public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions, Serializable {
     
-    private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
     private static final int RESOURCE_SCOPE = 1;
     private static final Long companyId = Helper.getThemeDisplay().getCompanyId();
     private Long groupId;
