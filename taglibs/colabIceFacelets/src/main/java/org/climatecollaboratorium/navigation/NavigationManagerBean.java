@@ -1,12 +1,17 @@
 package org.climatecollaboratorium.navigation;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.climatecollaboratorium.events.EventBus;
 
-public class NavigationManagerBean {
-    private String navigationToken;
+public class NavigationManagerBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String navigationToken;
     private EventBus eventBus;
     private boolean sendUnchanged;
     private Map<String, Map<String, String>> lastTokenMap = new HashMap<String, Map<String,String>>();
