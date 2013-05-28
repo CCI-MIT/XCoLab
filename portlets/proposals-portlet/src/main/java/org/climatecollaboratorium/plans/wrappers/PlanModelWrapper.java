@@ -7,6 +7,7 @@
 package org.climatecollaboratorium.plans.wrappers;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -21,9 +22,13 @@ import edu.mit.cci.roma.client.model.impl.ClientSimulation;
  * Time: 5:05:55 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PlanModelWrapper {
+public class PlanModelWrapper implements Serializable {
 
-    static String DEFAULT_DESCRIPTION = "The Basic Disaggregation model uses three regions for emissions and global indicators for land use";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	static String DEFAULT_DESCRIPTION = "The Basic Disaggregation model uses three regions for emissions and global indicators for land use";
     static String DEFAULT_NAME="Basic Model";
 
     Simulation coreModel;

@@ -85,7 +85,7 @@ public class PlanItemWrapper implements Serializable {
     /*
      * Model runs
      */
-    private List<PlanModelRun> planModelRuns = new ArrayList<PlanModelRun>();
+    private transient List<PlanModelRun> planModelRuns = new ArrayList<PlanModelRun>();
     private List<PlanHistoryWrapper> planModelRunAllItems = new ArrayList<PlanHistoryWrapper>();
     private PlanHistoryWrapper<PlanModelRun> planModelRunHistoryItem;
     private Long scenarioId;

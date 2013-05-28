@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.ext.portlet.model.PlanItem;
@@ -9,7 +10,11 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
-public class PlanHistoryItem {
+public class PlanHistoryItem implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PlanItem plan;
 	private String updateType;
 	private User updateAuthor;
