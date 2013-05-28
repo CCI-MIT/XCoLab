@@ -1,5 +1,6 @@
 package org.xcolab.portlets.messaging;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,8 +18,12 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 
-public class SendMessageBean {
-    private List<User> users;
+public class SendMessageBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<User> users;
     private String receipients;
     private String subject;
     private String content;

@@ -1,6 +1,7 @@
 package org.xcolab.portlets.messaging;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,12 @@ import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.model.User;
 import com.liferay.util.mail.MailEngineException;
 
-public class MessagingBean {
-    private User user;
+public class MessagingBean implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private User user;
     private DataModel onePageDataModel;
     private MessageType messageType = MessageType.INBOX;
     private int pageSize = 25;
