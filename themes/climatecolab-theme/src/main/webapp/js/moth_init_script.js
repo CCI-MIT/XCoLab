@@ -567,9 +567,9 @@ function updateShareThisUrls(selector) {
    	
    	jQuery(function() {
    		if (! Liferay.Session) {
-   			setInterval(function() {
-   				jQuery.ajax("/c/portal/extend_session");
-   			}, 15000);
+//   			setInterval(function() {
+//   				jQuery.ajax("/c/portal/extend_session");
+//   			}, 15000);
    		}
    		else {
    			Liferay.Session._stopTimer();
