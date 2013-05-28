@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans.wrappers;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +30,14 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-public class PlanIndexItemWrapper {
+public class PlanIndexItemWrapper implements Serializable {
 
-    private static Logger log = Logger.getLogger(PlanIndexItemWrapper.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static Logger log = Logger.getLogger(PlanIndexItemWrapper.class);
 
     private PlanItem wrapped;
     private Map<Columns, Object> columnValues;
