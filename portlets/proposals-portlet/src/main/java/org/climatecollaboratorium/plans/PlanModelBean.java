@@ -50,7 +50,7 @@ public class PlanModelBean implements Serializable {
     private boolean editing = false;
     private ThemeDisplay td = Helper.getThemeDisplay();
 
-    private Map<Long,PlanModelWrapper> availableMap = new HashMap<Long,PlanModelWrapper>();
+    private transient Map<Long,PlanModelWrapper> availableMap = new HashMap<Long,PlanModelWrapper>();
 
 
 
