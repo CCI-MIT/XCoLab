@@ -36,11 +36,11 @@ public class ContestsBean implements Serializable {
     private List<ContestWrapper> contestsPart2;
     private List<ContestWrapper> contestsFeatured;
     private List<ContestWrapper> contestsNormal;
-    private TreeMap<Tuple, List<ContestWrapper>> contestsSplitted = new TreeMap<Tuple, List<ContestWrapper>>(new Comparator<Tuple>() {
-        public int compare(Tuple o1, Tuple o2) {
-            return ((Integer) o1.getObject(0)) - ((Integer) (o2.getObject(0)));
-        }
-    });
+//    private TreeMap<Tuple, List<ContestWrapper>> contestsSplitted = new TreeMap<Tuple, List<ContestWrapper>>(new Comparator<Tuple>() {
+//        public int compare(Tuple o1, Tuple o2) {
+//            return ((Integer) o1.getObject(0)) - ((Integer) (o2.getObject(0)));
+//        }
+//    });
     private EventBus eventBus;
     private ViewType viewType = ViewType.GRID;
     private String filterString;

@@ -246,7 +246,7 @@ public class ContestBean implements Serializable {
 		}
 	}
 
-	public enum ContestState implements Serializable {
+	public enum ContestState {
 		NOT_STARTED, ACTIVE, ENDED
 	};
 }

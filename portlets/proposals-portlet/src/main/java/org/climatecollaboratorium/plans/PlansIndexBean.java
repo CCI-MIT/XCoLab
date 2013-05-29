@@ -34,7 +34,6 @@ import com.ext.portlet.model.PlansUserSettings;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.plans.PlanConstants.Attribute;
 import com.ext.portlet.plans.PlanConstants.Columns;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
