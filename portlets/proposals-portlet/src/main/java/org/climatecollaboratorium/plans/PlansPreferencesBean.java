@@ -1,6 +1,7 @@
 package org.climatecollaboratorium.plans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +20,13 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class PlansPreferencesBean {
+public class PlansPreferencesBean implements Serializable {
 
-    private Long[] questionsArray = new Long[0];
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long[] questionsArray = new Long[0];
     private final static String DEFAULT_DESCRIPTION_PREFERENCE = "DEFAULT_DESCRIPTION";
     private final static String CONTEST_MAX_PROPOSALS_PREFERENCE_PREFIX = "CONTEST_MAX_PROPOSALS";
     private final static int DEFAULT_MAX_PROPOSALS = 10;

@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -22,7 +21,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 
