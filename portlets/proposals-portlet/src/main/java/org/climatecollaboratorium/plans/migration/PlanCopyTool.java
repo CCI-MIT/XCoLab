@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans.migration;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,12 @@ import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class PlanCopyTool {
-    private Long sourceContestPhase;
+public class PlanCopyTool implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long sourceContestPhase;
     private Long targetContestPhase;
     private List<SelectItem> availableContestPhases = new ArrayList<SelectItem>();
     private boolean readyForCopy;

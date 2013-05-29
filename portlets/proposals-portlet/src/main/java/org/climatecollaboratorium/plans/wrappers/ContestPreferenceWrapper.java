@@ -1,10 +1,16 @@
 package org.climatecollaboratorium.plans.wrappers;
 
+import java.io.Serializable;
+
 import com.ext.portlet.model.Contest;
 
-public class ContestPreferenceWrapper {
+public class ContestPreferenceWrapper implements Serializable {
 
-    private Contest contest;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Contest contest;
     private int maxProposalsCount;
     
     public ContestPreferenceWrapper(Contest contest, int maxProposalsCount) {

@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans.migration;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -52,8 +53,13 @@ import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Variable;
 
-public class MigrationTool {
-    private static Logger _log = Logger.getLogger(MigrationTool.class);
+public class MigrationTool implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static Logger _log = Logger.getLogger(MigrationTool.class);
 
     private long generalGroup = 701L;
     private long ADMIN = 10144L;

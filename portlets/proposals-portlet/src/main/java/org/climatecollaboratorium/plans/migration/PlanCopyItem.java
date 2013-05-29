@@ -1,12 +1,18 @@
 package org.climatecollaboratorium.plans.migration;
 
+import java.io.Serializable;
+
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class PlanCopyItem {
+public class PlanCopyItem implements Serializable {
     
-    private PlanItem plan;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PlanItem plan;
     private boolean selected;
     
     public PlanCopyItem(PlanItem plan) {
