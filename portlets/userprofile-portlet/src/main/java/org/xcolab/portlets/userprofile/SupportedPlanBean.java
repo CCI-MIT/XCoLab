@@ -1,5 +1,6 @@
 package org.xcolab.portlets.userprofile;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.ext.portlet.NoSuchPlanItemException;
@@ -9,9 +10,13 @@ import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class SupportedPlanBean {
+public class SupportedPlanBean implements Serializable {
     
-    private PlanFan supportedPlanInfo;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private PlanFan supportedPlanInfo;
     private PlanItem supportedPlan;
     
     public SupportedPlanBean(PlanFan supportedPlanInfo) throws NoSuchPlanItemException, SystemException {
