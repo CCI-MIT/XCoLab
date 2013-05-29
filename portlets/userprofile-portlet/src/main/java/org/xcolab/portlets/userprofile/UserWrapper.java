@@ -20,7 +20,6 @@ import org.apache.commons.io.FileUtils;
 import org.icefaces.ace.component.fileentry.FileEntry;
 import org.icefaces.ace.component.fileentry.FileEntryEvent;
 import org.icefaces.ace.component.fileentry.FileEntryResults;
-import org.icefaces.apache.commons.io.IOUtils;
 import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
 
 import com.ext.portlet.community.CommunityConstants;
