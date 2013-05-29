@@ -1,5 +1,6 @@
 package org.xcolab.portlets.models.suggest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -19,9 +20,14 @@ import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
-public class SupportBean {
+public class SupportBean implements Serializable {
     
-    public List<SelectItem> getInputWidgets() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public List<SelectItem> getInputWidgets() {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         
         for(ModelInputWidgetType type: ModelInputWidgetType.values()) {

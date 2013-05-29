@@ -1,5 +1,6 @@
 package org.xcolab.portlets.models.suggest;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.xcolab.portlets.models.SimulationDetailsBean;
@@ -13,8 +14,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import edu.mit.cci.roma.client.MetaData;
 
-public class ModelInputDisplayItemWrapper {
-    protected ModelInputDisplayItem wrappedItem;
+public class ModelInputDisplayItemWrapper implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected transient ModelInputDisplayItem wrappedItem;
     private Double value;
 
 

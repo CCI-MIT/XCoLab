@@ -17,11 +17,15 @@ import com.ext.portlet.models.ui.ModelInputIndividualDisplayItem;
 import com.ext.portlet.models.ui.ModelOutputDisplayItem;
 
 public class ModelDisplayWrapper implements Serializable {
-    private ModelDisplay wrapped;
-    private SimulationBean simulationBean;
-    private List<ModelInputDisplayItemWrapper> wrappedInputs = new ArrayList<ModelInputDisplayItemWrapper>();
-    private List<ModelInputGroupDisplayItemWrapper> wrappedTabs = new ArrayList<ModelInputGroupDisplayItemWrapper>();
-    private List<ModelInputDisplayItemWrapper> wrappedNonTabs = new ArrayList<ModelInputDisplayItemWrapper>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private transient ModelDisplay wrapped;
+    private transient SimulationBean simulationBean;
+    private transient List<ModelInputDisplayItemWrapper> wrappedInputs = new ArrayList<ModelInputDisplayItemWrapper>();
+    private transient List<ModelInputGroupDisplayItemWrapper> wrappedTabs = new ArrayList<ModelInputGroupDisplayItemWrapper>();
+    private transient List<ModelInputDisplayItemWrapper> wrappedNonTabs = new ArrayList<ModelInputDisplayItemWrapper>();
     
     public ModelDisplayWrapper(ModelDisplay wrapped, SimulationBean simulationBean, Map<Long, Object> values) {
         this.wrapped = wrapped;

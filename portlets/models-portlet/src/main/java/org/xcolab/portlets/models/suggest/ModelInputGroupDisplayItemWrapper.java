@@ -21,12 +21,12 @@ import edu.mit.cci.roma.client.MetaData;
 public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrapper {
     private boolean editing;
     private MetaData md;
-    private SimulationDetailsBean simulationBean;
+    private transient SimulationDetailsBean simulationBean;
     private String name = "";
     private String description = "";
     private String oryginalName = "";
     private String oryginalDescription = "";
-    private ModelInputGroupDisplayItem groupItem;
+    private transient ModelInputGroupDisplayItem groupItem;
     private List<ModelInputDisplayItemWrapper> wrappedItems = new ArrayList<ModelInputDisplayItemWrapper>();
 
 

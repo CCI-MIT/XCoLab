@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.facelets.simulations.support;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,14 @@ import com.ext.portlet.models.ui.ModelInputGroupDisplayItem;
 import com.ext.portlet.models.ui.ModelInputIndividualDisplayItem;
 import com.ext.portlet.models.ui.ModelInputWidgetType;
 
-public class SupportBean {
+public class SupportBean implements Serializable {
     
-    public List<SelectItem> getInputWidgets() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public List<SelectItem> getInputWidgets() {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         
         for(ModelInputWidgetType type: ModelInputWidgetType.values()) {

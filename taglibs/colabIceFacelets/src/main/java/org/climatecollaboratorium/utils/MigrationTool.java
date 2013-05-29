@@ -2,6 +2,7 @@ package org.climatecollaboratorium.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,8 +40,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-public class MigrationTool {
-    private String scenarioMapping;
+public class MigrationTool implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String scenarioMapping;
     private String simulationMapping;
     private String variableMapping;
     private final static Log _log = LogFactoryUtil.getLog(MigrationTool.class);

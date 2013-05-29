@@ -27,11 +27,11 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
 	private static final long serialVersionUID = 1L;
 	private boolean editing;
     private MetaData md;
-    private SimulationBean simulationBean;
+    private transient SimulationBean simulationBean;
     private String name = "";
     private String description = "";
-    private ModelInputGroupDisplayItem groupItem;
-    private List<ModelInputDisplayItemWrapper> wrappedItems = new ArrayList<ModelInputDisplayItemWrapper>();
+    private transient ModelInputGroupDisplayItem groupItem;
+    private transient List<ModelInputDisplayItemWrapper> wrappedItems = new ArrayList<ModelInputDisplayItemWrapper>();
 
 
     public ModelInputGroupDisplayItemWrapper(ModelInputGroupDisplayItem groupItem, SimulationBean bean, Map<Long, Object> inputsValues) {

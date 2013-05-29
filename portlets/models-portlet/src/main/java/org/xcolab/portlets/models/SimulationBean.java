@@ -52,7 +52,7 @@ import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 
 
-public class SimulationBean implements JSEventHandler {
+public class SimulationBean implements JSEventHandler  {
 
     private Simulation simulation;
     private Scenario scenario;

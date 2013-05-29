@@ -50,15 +50,15 @@ public class SimulationBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long lastInitSimulationId;
     private Long lastInitScenarioId;
-    private Simulation simulation;
-    private Scenario scenario;
+    private transient Simulation simulation;
+    private transient Scenario scenario;
     private boolean editing;
     private String description;
-    private ModelDisplayWrapper display;
+    private transient ModelDisplayWrapper display;
     private boolean embeddedEditing;
     private boolean firstRun = false;
-    private Map<ModelInputDisplayItem, ModelInputDisplayItemWrapper> wrappedInputs = new HashMap<ModelInputDisplayItem, ModelInputDisplayItemWrapper>();
-    private List<ModelOutputErrorSettingWrapper> outputErrorSettingWrappers = new ArrayList<ModelOutputErrorSettingWrapper>();
+    private transient Map<ModelInputDisplayItem, ModelInputDisplayItemWrapper> wrappedInputs = new HashMap<ModelInputDisplayItem, ModelInputDisplayItemWrapper>();
+    private transient List<ModelOutputErrorSettingWrapper> outputErrorSettingWrappers = new ArrayList<ModelOutputErrorSettingWrapper>();
     
     private EventBus eventBus;
     private final static Log _log = LogFactoryUtil.getLog(SimulationBean.class);
@@ -74,9 +74,9 @@ public class SimulationBean implements Serializable {
         this.embeddedEditing = embeddedEditing;
     }
 
-    private Map<Long, Object> inputsValues = new HashMap<Long, Object>();
+    private transient Map<Long, Object> inputsValues = new HashMap<Long, Object>();
     private boolean scenarioSaved;
-    private ModelInputGroupDisplayItemWrapper newGroupWrapper;
+    private transient ModelInputGroupDisplayItemWrapper newGroupWrapper;
 
     public Simulation getSimulation() {
         return simulation;

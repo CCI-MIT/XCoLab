@@ -7,6 +7,7 @@
 package org.xcolab.portlets.models;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,16 +50,20 @@ import edu.mit.cci.roma.client.TupleStatus;
 import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 
-public class SimulationDetailsBean {
+public class SimulationDetailsBean implements Serializable {
 
-    private Long modelId;
-    private Simulation simulation;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long modelId;
+    private transient Simulation simulation;
     private int selectedTab;
     private String description;
-    private ModelDisplayWrapper display;
-    private ModelInputGroupDisplayItemWrapper newGroupWrapper;
-    private List<ModelOutputErrorSettingWrapper> outputErrorSettingWrappers = new ArrayList<ModelOutputErrorSettingWrapper>();
-    private Map<ModelInputDisplayItem, ModelInputDisplayItemWrapper> wrappedInputs = new HashMap<ModelInputDisplayItem, ModelInputDisplayItemWrapper>();
+    private transient ModelDisplayWrapper display;
+    private transient ModelInputGroupDisplayItemWrapper newGroupWrapper;
+    private transient List<ModelOutputErrorSettingWrapper> outputErrorSettingWrappers = new ArrayList<ModelOutputErrorSettingWrapper>();
+    private transient Map<ModelInputDisplayItem, ModelInputDisplayItemWrapper> wrappedInputs = new HashMap<ModelInputDisplayItem, ModelInputDisplayItemWrapper>();
 
     private final static Map<String, Integer> tabNameNumberMap = new HashMap<String, Integer>();
     static {

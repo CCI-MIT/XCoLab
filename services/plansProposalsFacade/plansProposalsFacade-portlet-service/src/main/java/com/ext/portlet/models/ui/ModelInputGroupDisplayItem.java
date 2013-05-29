@@ -39,8 +39,12 @@ import edu.mit.cci.roma.client.Simulation;
  */
 public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements Serializable {
 
-    private static Log _log = LogFactoryUtil.getLog(ModelInputGroupDisplayItem.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	private static Log _log = LogFactoryUtil.getLog(ModelInputGroupDisplayItem.class);
 
     ModelInputGroup group;
 
@@ -48,7 +52,6 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     List<ModelInputDisplayItem> items = new ArrayList<ModelInputDisplayItem>();
     List<ModelInputGroupDisplayItem> groups = new ArrayList<ModelInputGroupDisplayItem>();
     Set<MetaData> knownmd = new HashSet<MetaData>();
-
     /**
      * Public constructor requires an existing backed dao. Generally, clients
      * will not call this directly, and the factory will take care of instantiating groups
