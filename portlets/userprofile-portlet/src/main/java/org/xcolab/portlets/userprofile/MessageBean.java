@@ -21,7 +21,7 @@ public class MessageBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Message message;
     private boolean selected;
-    private List<User> receipients = new ArrayList<User>();
+    private transient List<User> receipients = new ArrayList<User>();
 
     public MessageBean(Message message) throws PortalException, SystemException {
         this.message = message;

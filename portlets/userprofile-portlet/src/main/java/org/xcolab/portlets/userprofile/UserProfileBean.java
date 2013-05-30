@@ -29,8 +29,8 @@ public class UserProfileBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private UserWrapper currentUser; 
-    private User wrappedUser;
+	private transient UserWrapper currentUser; 
+    private transient User wrappedUser;
     private final static String USER_ID_PARAM = "userId";
     private final static Log _log = LogFactoryUtil.getLog(UserProfileBean.class);
     private static final String PAGE_PARAM = "page";
