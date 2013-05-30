@@ -11,6 +11,11 @@
 	font-size: 14px;
 	line-height: 24px;
 }
+
+.redballoon .textInitial {
+	color:#ccc;
+}
+
 .portlet-msg-error {
 	background-image:none !important;
 }
