@@ -219,7 +219,11 @@ public class MainViewController {
 					LoginUtil.logUserIn(request, response,
 							newAccountBean.getScreenName(),
 							newAccountBean.getPassword());
+					
+					httpReq.getSession().setAttribute("collab_user_has_registered", true);
 
+					request.getPortletSession().setAttribute("collab_user_has_registered", true);
+					PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
 					if (redirect != null) {
 						response.sendRedirect(redirect);
 					} else {
