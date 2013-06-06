@@ -170,8 +170,12 @@ public class SearchBean extends DataSource implements Serializable {
         return new DataPage(totalNumberCustomers,startRow,items);
     }
 
-    private class LocalDataModel extends PagedListDataModel {
-    	private boolean resetPager = true;
+    private class LocalDataModel extends PagedListDataModel implements Serializable {
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private boolean resetPager = true;
         public LocalDataModel(int pageSize) {
             super(pageSize);
         }

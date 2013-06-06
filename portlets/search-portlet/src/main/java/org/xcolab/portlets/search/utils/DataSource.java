@@ -19,6 +19,9 @@ public abstract class DataSource {
         sortColumnName = defaultSortColumn;
         sortAscending = isDefaultAscending(defaultSortColumn);
     }
+    
+    protected DataSource() {
+	}
 
     /**
      * Is the default sortColumnName direction for the given column "sortAscending" ?
