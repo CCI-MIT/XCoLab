@@ -1,5 +1,6 @@
 package org.climatecollaboratorium.plans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,11 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 
-public class PlanMembershipRequest {
+public class PlanMembershipRequest implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MembershipRequest request;
 	private User user;
 	private String response;
