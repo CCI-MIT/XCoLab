@@ -34,7 +34,6 @@ public class PlanMembershipRequest implements Serializable {
 	private PlansPermissionsBean permissions;
 	private boolean approve = true;
 	private PlanBean planBean;
-	private ThemeDisplay td = Helper.getThemeDisplay();
 
 	public PlanMembershipRequest(MembershipRequest request, PlanItem plan,
 			PlanBean planBean, PlansPermissionsBean permissions)
@@ -80,6 +79,7 @@ public class PlanMembershipRequest implements Serializable {
 
 	public void update(ActionEvent e) throws PortalException, SystemException,
 			AddressException, NumberFormatException, MailEngineException {
+		ThemeDisplay td = Helper.getThemeDisplay();
 		if (permissions.getCanAdmin()) {
 			String responseStr = response == null
 					|| response.trim().length() == 0 ? "no comments" : response;

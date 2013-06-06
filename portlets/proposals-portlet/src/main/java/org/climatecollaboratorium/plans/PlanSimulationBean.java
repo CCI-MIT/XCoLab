@@ -23,7 +23,6 @@ public class PlanSimulationBean {
     private PlanItem plan;
     private PlanBean planBean;
     private boolean editing;
-    private ThemeDisplay td = Helper.getThemeDisplay();
 
     public PlanSimulationBean(PlanItem plan, PlanBean planBean) {
         this.plan = plan;
@@ -32,6 +31,7 @@ public class PlanSimulationBean {
 
     public void update(ActionEvent e) throws SystemException, PortalException {
         if (Helper.isUserLoggedIn()) {
+        	ThemeDisplay td = Helper.getThemeDisplay();
             PlanItemLocalServiceUtil.setScenarioId(plan, scenario, Helper.getLiferayUser().getUserId());
 
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),

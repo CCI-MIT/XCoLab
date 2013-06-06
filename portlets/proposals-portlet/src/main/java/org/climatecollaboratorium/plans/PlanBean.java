@@ -52,7 +52,6 @@ public class PlanBean implements Serializable {
     private PlansPermissionsBean permissions;
     private EventBus eventBus;
     private List<HandlerRegistration> handlerRegistrations = new ArrayList<HandlerRegistration>();
-    private static ThemeDisplay td = Helper.getThemeDisplay();
     private int selectedTabIndex = 0;
     private Long planId = -1L;
     private DiscussionBean commentsBean = new DiscussionBean();

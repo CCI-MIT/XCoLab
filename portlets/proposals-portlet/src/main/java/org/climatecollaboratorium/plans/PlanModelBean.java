@@ -48,7 +48,6 @@ public class PlanModelBean implements Serializable {
 	private PlanBean planBean;
     private PlanItem planItem;
     private boolean editing = false;
-    private ThemeDisplay td = Helper.getThemeDisplay();
 
     private transient Map<Long,PlanModelWrapper> availableMap = new HashMap<Long,PlanModelWrapper>();
 
@@ -144,6 +143,7 @@ public class PlanModelBean implements Serializable {
     public void submit(ActionEvent e) {
         currentItem = selectedItem;
         try {
+        	ThemeDisplay td = Helper.getThemeDisplay();
             PlanItemLocalServiceUtil.setModelId(planItem, getCurrentModel().getCoreModel().getId(),td.getUserId());
         } catch (PortalException e1) {
             e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

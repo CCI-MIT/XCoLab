@@ -46,7 +46,6 @@ public class CreatePlanBean implements Serializable {
     private boolean navigateToPlan;
     private PlansPreferencesBean preferences;
     private EventBus eventBus;
-    private ThemeDisplay td = Helper.getThemeDisplay();
 
     private ContestWrapper contestWrapper;
     
@@ -138,6 +137,7 @@ public class CreatePlanBean implements Serializable {
                 PlanItemLocalServiceUtil.setOpen(planItem, false);
             } 
             
+            ThemeDisplay td = Helper.getThemeDisplay();
             //add activity to log
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                     PlanItem.class.getName(), planItem.getPlanId(), PlanActivityKeys.ADD_PLAN.id(), null, 0);

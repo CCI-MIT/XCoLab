@@ -35,7 +35,6 @@ public class SimulationBean implements Serializable {
     private PlanItem plan;
     private PlanBean planBean;
     private boolean editing;
-    private ThemeDisplay td = Helper.getThemeDisplay();
     private EventBus eventBus;
     private boolean saved;
     private List<HandlerRegistration> eventHandlers = new ArrayList<HandlerRegistration>();
@@ -70,7 +69,7 @@ public class SimulationBean implements Serializable {
                             return;
                         }
                         PlanItemLocalServiceUtil.setScenarioId(plan, arg0.getScenario().getId(), Helper.getLiferayUser().getUserId());
-
+                        ThemeDisplay td = Helper.getThemeDisplay();
                         SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                                 PlanItem.class.getName(), plan.getPlanId(), PlanActivityKeys.EDIT_SCENARIO.id(),null, 0);
                         editing = false;

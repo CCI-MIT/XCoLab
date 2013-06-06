@@ -93,7 +93,6 @@ public class PlanItemWrapper implements Serializable {
     private PlansPermissionsBean permissions;
     private boolean descriptionSet;
 
-    private ThemeDisplay td = Helper.getThemeDisplay();
     private boolean deleted;
 
     private static String[] EMPTY_ARRAY = new String[] {};
@@ -313,6 +312,7 @@ public class PlanItemWrapper implements Serializable {
         if (Helper.isUserLoggedIn()) {
             String savedDescription = UserInputFilterUtil.filterHtml(description);
             if (savedDescription != null) {
+            	ThemeDisplay td = Helper.getThemeDisplay();
                 PlanItemLocalServiceUtil.setDescription(wrapped, savedDescription, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_DESCRIPTION.id(), null, 0);
@@ -334,6 +334,7 @@ public class PlanItemWrapper implements Serializable {
                     return;
 
                 }
+                ThemeDisplay td = Helper.getThemeDisplay();
                 PlanItemLocalServiceUtil.setName(wrapped, name, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_NAME.id(), null, 0);
@@ -365,6 +366,7 @@ public class PlanItemWrapper implements Serializable {
                 // ignored as this is a normal case
             }
             PlanItemLocalServiceUtil.vote(wrapped, Helper.getLiferayUser().getUserId());
+            ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
                     wrapped.getPlanId(), activityKey.id(), null, 0);
 
@@ -377,6 +379,7 @@ public class PlanItemWrapper implements Serializable {
 
     public void unvote(ActionEvent e) throws PortalException, SystemException {
         if (Helper.isUserLoggedIn()) {
+        	ThemeDisplay td = Helper.getThemeDisplay();
             PlanItemLocalServiceUtil.unvote(wrapped, Helper.getLiferayUser().getUserId());
 
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
@@ -520,7 +523,7 @@ public class PlanItemWrapper implements Serializable {
     public void publish(ActionEvent e) throws PortalException, SystemException {
         if (permissions.getCanAdmin()) {
             PlanItemLocalServiceUtil.publish(wrapped, Helper.getLiferayUser().getUserId());
-
+            ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
                     wrapped.getPlanId(), PlanActivityKeys.PUBLISH_UPDATES.id(), null, 0);
         }
@@ -529,7 +532,7 @@ public class PlanItemWrapper implements Serializable {
     public void delete(ActionEvent e) throws SystemException, PortalException {
         if (permissions.getCanAdmin()) {
             PlanItemLocalServiceUtil.delete(wrapped, Helper.getLiferayUser().getUserId());
-
+            ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
                     wrapped.getPlanId(), PlanActivityKeys.REMOVE_PLAN.id(), null, 0);
             this.deleted = true;
@@ -635,7 +638,7 @@ public class PlanItemWrapper implements Serializable {
     public void becomeAFan(ActionEvent e) throws SystemException, PortalException {
         if (Helper.isUserLoggedIn()) {
             PlanItemLocalServiceUtil.addFan(wrapped, Helper.getLiferayUser().getUserId());
-
+            ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
                     wrapped.getPlanId(), PlanActivityKeys.BECOME_A_SUPPORTER.id(), null, 0);
             subscribed = true;
@@ -646,7 +649,7 @@ public class PlanItemWrapper implements Serializable {
     public void unfan(ActionEvent e) throws SystemException, PortalException {
         if (Helper.isUserLoggedIn()) {
             PlanItemLocalServiceUtil.removeFan(wrapped, Helper.getLiferayUser().getUserId());
-
+            ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
                     wrapped.getPlanId(), PlanActivityKeys.STOPPED_BEEING_A_SUPPORTER.id(), null, 0);
             subscribed = false;
@@ -971,7 +974,7 @@ public class PlanItemWrapper implements Serializable {
             }
 
             if (name != null && !name.trim().equals(PlanItemLocalServiceUtil.getName(wrapped).trim())) {
-
+            	ThemeDisplay td = Helper.getThemeDisplay();
                 PlanItemLocalServiceUtil.setName(wrapped, name, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_NAME.id(), null, 0);
@@ -985,6 +988,7 @@ public class PlanItemWrapper implements Serializable {
                 // planBean.refreshIndex();
             }
             if (newImageId != null) {
+            	ThemeDisplay td = Helper.getThemeDisplay();
                 PlanItemLocalServiceUtil.setImage(wrapped, newImageId, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.CHANGE_IMAGE.id(), null, 0);
@@ -1006,6 +1010,7 @@ public class PlanItemWrapper implements Serializable {
                 descriptionChanged = true;
             }
             if (descriptionChanged) {
+            	ThemeDisplay td = Helper.getThemeDisplay();
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_DESCRIPTION.id(), null, 0);
             }

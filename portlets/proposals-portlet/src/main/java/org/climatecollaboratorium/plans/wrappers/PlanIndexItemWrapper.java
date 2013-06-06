@@ -42,7 +42,6 @@ public class PlanIndexItemWrapper implements Serializable {
     private PlanItem wrapped;
     private Map<Columns, Object> columnValues;
     private PlansIndexBean plansIndexBean;
-    private ThemeDisplay td = Helper.getThemeDisplay();
 
     public PlanIndexItemWrapper(PlanItem wrapped, PlansIndexBean plansIndexBean)
             throws SystemException, PortalException {
@@ -119,7 +118,7 @@ public class PlanIndexItemWrapper implements Serializable {
                 }
                 PlanItemLocalServiceUtil.vote(wrapped, Helper.getLiferayUser().getUserId());
             }
-
+            ThemeDisplay td = Helper.getThemeDisplay();
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(NavigationBean.DEFERED_PLAN_VOTE_ID_PARAM);
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
                 wrapped.getPlanId(), activityKey.id(), null, 0);
