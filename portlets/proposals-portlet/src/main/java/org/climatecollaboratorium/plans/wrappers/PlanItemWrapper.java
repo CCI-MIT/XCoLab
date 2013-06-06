@@ -1118,8 +1118,12 @@ public class PlanItemWrapper implements Serializable {
         this.newImageId = newImageId;
     }
 
-    public static class Tuple {
-        private Object first;
+    public static class Tuple implements Serializable {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private Object first;
         private Object second;
 
         public Object getFirst() {
