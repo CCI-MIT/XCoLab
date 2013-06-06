@@ -21,7 +21,6 @@ public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions
 	private static final long serialVersionUID = 1L;
 	private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
     private static final int RESOURCE_SCOPE = 1;
-    private static final Long companyId = Helper.getThemeDisplay().getCompanyId();
     private Long groupId;
     private String primKey;
     private static Log _log = LogFactoryUtil.getLog(DefaultDiscussionsPermissionsImpl.class);
@@ -83,7 +82,6 @@ public class DefaultDiscussionsPermissionsImpl implements DiscussionsPermissions
 
     private PermissionChecker permCheck() {
         groupId = discussionBean.getOwningGroupId();
-        PermissionChecker permCheck = Helper.getPermissionChecker();
         return Helper.getPermissionChecker();
     }
 
