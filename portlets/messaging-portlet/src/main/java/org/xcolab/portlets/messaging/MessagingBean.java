@@ -120,6 +120,7 @@ public class MessagingBean implements Serializable {
         public DataPage fetchPage(int startRow, int pageSize) {
             // call enclosing managed bean method to fetch the data
             try {
+            	System.out.println("user: "+user+" type: "+messageType);
                 return getDataPage(startRow, pageSize);
             }
             catch (Exception e) {
