@@ -32,7 +32,8 @@ public class DiscussionsPermissionsConfig implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String RESOURCE_NAME = DiscussionCategoryGroup.class.getName();
-    private static final Long companyId = Helper.getThemeDisplay().getCompanyId();
+  //  private static final Long companyId = Helper.getThemeDisplay().getCompanyId();
+	private static Long companyId;
     private Resource resource = null;
     private String primKey;
     private List<PermissionItem> permissionItems;
@@ -47,6 +48,7 @@ public class DiscussionsPermissionsConfig implements Serializable {
         groupId = discussionBean.getOwningGroupId();
         primKey = groupId.toString();
         this.discussionBean = discussionBean;
+        long companyId = Helper.getThemeDisplay().getCompanyId();
         
         try {
             resource = ResourceLocalServiceUtil.getResource(companyId, RESOURCE_NAME, scope, primKey);
