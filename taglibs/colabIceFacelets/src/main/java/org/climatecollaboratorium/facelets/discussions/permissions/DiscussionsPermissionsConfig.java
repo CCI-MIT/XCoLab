@@ -68,12 +68,14 @@ public class DiscussionsPermissionsConfig implements Serializable {
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		_log.info("writing discussion permissions");
+		System.out.println("writing discussion permissions");
 		out.defaultWriteObject();
 	}
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		_log.info("reading discussion permissions");
+		System.out.println("reading discussion permissions");
 		in.defaultReadObject();
 	}
 
