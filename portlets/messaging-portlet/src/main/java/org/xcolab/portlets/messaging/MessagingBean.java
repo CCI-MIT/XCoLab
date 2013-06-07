@@ -107,8 +107,13 @@ public class MessagingBean implements Serializable {
         return new DataPage(messagesCount, startRow, items);
     }
 
-    private class LocalDataModel extends PagedListDataModel {
-        public LocalDataModel(int pageSize) {
+    private class LocalDataModel extends PagedListDataModel implements Serializable {
+        /**
+		 * test comment
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public LocalDataModel(int pageSize) {
             super(pageSize);
         }
 
