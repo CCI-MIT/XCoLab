@@ -21,12 +21,12 @@ public class MessageBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Message message;
     private boolean selected;
-    private transient List<User> receipients = new ArrayList<User>();
+    private List<User> recipients = new ArrayList<User>();
 
     public MessageBean(Message message) throws PortalException, SystemException {
         this.message = message;
         for (MessageRecipientStatus receipient: MessageLocalServiceUtil.getRecipients(message)) {
-            receipients.add(UserLocalServiceUtil.getUser(receipient.getUserId()));
+            recipients.add(UserLocalServiceUtil.getUser(receipient.getUserId()));
         }
     }
     
@@ -67,7 +67,7 @@ public class MessageBean implements Serializable {
     }
     
     public List<User> getTo() {
-        return receipients;
+        return recipients;
     }
     
     public Long getMessageId() {
