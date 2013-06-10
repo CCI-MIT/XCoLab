@@ -30,7 +30,7 @@ public class MessagingBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private User user;
-	private DataModel onePageDataModel;
+	private transient DataModel onePageDataModel;
 	private MessageType messageType = MessageType.INBOX;
 	private int pageSize = 25;
 	private static final Log _log = LogFactoryUtil.getLog(MessagingBean.class);
@@ -114,16 +114,9 @@ public class MessagingBean implements Serializable {
 		return new DataPage(messagesCount, startRow, items);
 	}
 
-	private class LocalDataModel extends PagedListDataModel implements
+	public class LocalDataModel extends PagedListDataModel implements
 			Serializable {
-		/**
-		 * test comment
-		 */
 		private static final long serialVersionUID = 1L;
-
-		public LocalDataModel() {
-			super(-1);
-		}
 
 		public LocalDataModel(int pageSize) {
 			super(pageSize);
