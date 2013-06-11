@@ -9,7 +9,6 @@ import javax.faces.validator.ValidatorException;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.messaging.utils.MessageLimitManager;
 
-import com.icesoft.faces.context.BridgeFacesContext;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
