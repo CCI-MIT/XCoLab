@@ -7,10 +7,12 @@ import org.xcolab.utils.PropertiesUtils;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.Message;
+import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -63,6 +65,7 @@ public class MessageLimitManager {
         // get messagesLimit from expando table (if exists)
         Integer messagesLimit = ExpandoValueLocalServiceUtil.getData(companyId, User.class.getName(), CommunityConstants.EXPANDO,
                 MESSAGES_LIMIT_COLUMN, user.getUserId(), -1);
+        
         if (messagesLimit < 0) {
             // limit not defined in expando table, fetch it from properties file
             messagesLimit = Integer.parseInt(PropertiesUtils.get("messages.dailyLimitPerUser"));
@@ -81,10 +84,14 @@ public class MessageLimitManager {
             Calendar c = Calendar.getInstance();
             c.add(Calendar.DATE, -1);
             
-            DynamicQuery messagesCountQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
-            messagesCountQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
-            messagesCountQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
-            long count = MessageLocalServiceUtil.dynamicQueryCount(messagesCountQuery);
+            DynamicQuery messagesQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
+            messagesQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
+            messagesQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
+            
+            DynamicQuery messageRecipientsQuery = DynamicQueryFactoryUtil.forClass(MessageRecipientStatus.class, portletClassLoader);
+            messageRecipientsQuery.add(PropertyFactoryUtil.forName("messageId").in(messagesQuery.setProjection(ProjectionFactoryUtil.property("messageId"))));
+            
+            long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
             
             if (messagesLimit < count + messagesToSend) {
                 

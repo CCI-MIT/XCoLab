@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.messaging.utils.MessageLimitManager;
 
 import com.icesoft.faces.context.BridgeFacesContext;
@@ -25,9 +26,13 @@ public class MessagesLimitValidator implements Validator {
     @Override
     public void validate(FacesContext arg0, UIComponent arg1, Object arg2) throws ValidatorException {
         try {
-            String[] recipientIds =  ((String) arg2).split(" ");
+            String[] recipientIds =  ((String) arg2).split(",");
+            int count = 0;
+            for (String recipientId: recipientIds) {
+                if (StringUtils.isNotBlank(recipientId)) count ++;
+            }
             
-            if (! MessageLimitManager.canSendMessages(recipientIds.length)) { 
+            if (! MessageLimitManager.canSendMessages(count)) { 
                 FacesMessage message = new FacesMessage("Messages limit has been exceeded, if you want to send more messages, please contact the administrators");
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(message);
