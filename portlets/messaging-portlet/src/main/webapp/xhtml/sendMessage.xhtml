@@ -1,18 +1,29 @@
 <?xml version="1.0"?>
-<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:liferay-faces="http://liferay.com/tld/faces" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:ice="http://www.icesoft.com/icefaces/component">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:f="http://java.sun.com/jsf/core" xmlns:liferay-faces="http://liferay.com/tld/faces" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:ice="http://www.icesoft.com/icefaces/component">
   <div class="messagingContainer">
     <br />
   	<script type="text/javascript" src="/html/portlet/ext/js/jquery.validate.pack.js"></script>
     <div class="main_long sendMessage">
     <div id="ComposeMessage">
+    	<ice:panelGroup>
+			<script>
+				#{sendMessageBean.unblockScreen}
+				unblockForm();
+        	</script>
+        </ice:panelGroup>
         <ice:form styleClass="composeMessageForm">
+        	<div class="errorsContainer">
+        		<ice:messages errorClass="error_message" />
+        	</div>
           <table border="0" cellpadding="0" cellspacing="0" class="colab">
                 <tr>
                     <td class="b" width="60px">To:</td>
                     <td>
                         <input id="userSelectorInput" type="text" class="profile_input messageReceipients" /> 
                         <!-- <input type="hidden" class="messageReceipientsInput" />-->
-                        <ice:inputText styleClass="hidden messageReceipientsInput" value="#{sendMessageBean.receipients}"/>
+                        <ice:inputText styleClass="hidden messageReceipientsInput" value="#{sendMessageBean.receipients}">
+                        	<f:validator validatorId="messagesLimitValidator" />
+                        </ice:inputText>
                         <!-- <input type="hidden" class="required profile_input"  />-->
                         <div id="please_choose_from_list" style="display: none; color: red; font-weight: bold;">Please choose value from list</div>
                     </td>
@@ -20,7 +31,8 @@
                 <tr>
                     <td class="b">Subject:</td>
                     <td>
-                        <ice:inputText styleClass="required profile_input subject" value="#{sendMessageBean.subject}"/><br />
+                        <ice:inputText styleClass="required profile_input subject" value="#{sendMessageBean.subject}" />
+                       	<br />
                     </td>
                 </tr>
                 <tr>
@@ -39,7 +51,7 @@
                 <ice:commandLink value="SEND" actionListener="#{sendMessageBean.send}" styleClass="sendMessageLink hidden"/>
                 
                 <div class="blue-button">
-                    <ice:commandLink value="Cancel" actionListener="#{sendMessageBean.cancel}"  />
+                    <ice:commandLink value="Cancel" actionListener="#{sendMessageBean.cancel}"  immediate="true" />
                 </div>
             </div>
         </ice:form>

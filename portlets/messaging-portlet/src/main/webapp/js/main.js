@@ -32,12 +32,14 @@ function showMessageByElem(elem, highlight) {
 function showMessageById(id) {
 	showMessageByElem(document.getElementById(id), true);
 }
-
+var initialized = false;
 function initShowMessage() {
-    jQuery(".showContent").unbind("click");
-    jQuery(".showContent").click(function() {
+    if (initialized) return;
+    
+    jQuery(document).on("click", ".showContent", function() {
     	showMessageByElem(this);
     });
+    initialized = true;
 }
 
 
@@ -97,8 +99,11 @@ function initSendMessageForm(users, usersMapParam, preFill) {
 
 function updateReceipients() {
     var receipients = [];
+    
     jQuery(".as-selections li").each(function() {
-        receipients.push(usersMap[jQuery(this).text().substring(1)]);
+    	var thizText = jQuery(this).text().substring(1);
+    	if (jQuery.trim(thizText).length > 0) 
+    		receipients.push(usersMap[jQuery(this).text().substring(1)]);
     });
     receipients.sort();
     jQuery(".messageReceipientsInput").val(receipients);
@@ -107,6 +112,7 @@ function updateReceipients() {
 function sendMessage() {
     if (jQuery(".composeMessageForm").valid() && receipientsValid()) {
     	jQuery("#ComposeMessage").block();
+    	jQuery(".iceMsgsError").remove();
         jQuery(".sendMessageLink").click();
     }
 }
@@ -125,4 +131,8 @@ function receipientsValid() {
 jQuery(document).ready(function() {
     initShowMessage();
 });
+function unblockForm() {
+	jQuery("#ComposeMessage").unblock();
+}
+
         

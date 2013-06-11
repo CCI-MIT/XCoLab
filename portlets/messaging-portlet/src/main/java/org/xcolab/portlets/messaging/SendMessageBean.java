@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
@@ -110,6 +111,11 @@ public class SendMessageBean {
     
     public MessageBean getReplyMessage() {
         return replyMessage;
+    }
+    
+    // to force screen unblocking
+    public int getUnblockScreen() {
+        return new Random().nextInt();
     }
     
 }

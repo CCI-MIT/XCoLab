@@ -94,3 +94,8 @@ h2.feedTitle {
 	display: block;
 	float:none;
 }
+
+#content .errorsContainer li {
+	list-style: none;
+	background: none;
+}
