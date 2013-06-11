@@ -51,4 +51,9 @@
 			<value>#{messagingBean}</value>
 		</managed-property>
 	</managed-bean>
+	
+	<validator>
+		<validator-id>messagesLimitValidator</validator-id>
+		<validator-class>org.xcolab.portlets.messaging.validators.MessagesLimitValidator</validator-class>
+	</validator>
 </faces-config>

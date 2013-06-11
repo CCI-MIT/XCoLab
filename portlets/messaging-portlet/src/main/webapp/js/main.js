@@ -112,6 +112,7 @@ function updateReceipients() {
 function sendMessage() {
     if (jQuery(".composeMessageForm").valid() && receipientsValid()) {
     	jQuery("#ComposeMessage").block();
+    	jQuery(".iceMsgsError").remove();
         jQuery(".sendMessageLink").click();
     }
 }
@@ -130,4 +131,8 @@ function receipientsValid() {
 jQuery(document).ready(function() {
     initShowMessage();
 });
+function unblockForm() {
+	jQuery("#ComposeMessage").unblock();
+}
+
         
