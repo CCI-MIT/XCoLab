@@ -23,4 +23,5 @@
     <f:subview rendered="#{not (fn:contains(fn:toLowerCase(unit), 'percent') or fn:contains(fn:toLowerCase(unit), '%')) and fn:contains(dataType, 'java.lang.Double')}">
         <ice:outputText value="#{value}"  styleClass="val"/>
     </f:subview>
+    <ice:outputText value=" " />
 </f:view>
