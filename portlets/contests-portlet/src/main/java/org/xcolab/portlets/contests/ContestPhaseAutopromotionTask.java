@@ -17,7 +17,7 @@ public class ContestPhaseAutopromotionTask implements MessageListener, Serializa
 	 */
 	private static final long serialVersionUID = 1L;
 	private Log _log = LogFactoryUtil.getLog(ContestPhaseAutopromotionTask.class);
-	private static Boolean working = false;
+	private static Boolean working = new Boolean(false);
 
     @Override
     public void receive(Message message) throws MessageListenerException {
@@ -27,7 +27,7 @@ public class ContestPhaseAutopromotionTask implements MessageListener, Serializa
             working = true;
             try {
                 ContestPhaseLocalServiceUtil.autoPromoteProposals();
-            } catch (PortalException | SystemException e) {
+            } catch (Throwable e) {
                 _log.error(e, e);
             }
             working = false;
