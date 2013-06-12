@@ -114,21 +114,21 @@ public class FileUploadFilter implements Filter {
 		BufferedImage cropedImage = img.getSubimage(cropX, cropY, cropSize,
 				cropSize);
 
-		int imgType = BufferedImage.TYPE_3BYTE_BGR;
+		int imgType = BufferedImage.TYPE_4BYTE_ABGR;
 		if (img.getType() != BufferedImage.TYPE_CUSTOM) {
 			imgType = img.getType();
 		}
 
 		BufferedImage dimg = new BufferedImage(newW, newH, imgType);
 		Graphics2D g = dimg.createGraphics();
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		//g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+		//		RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g.drawImage(cropedImage, 0, 0, newW, newH, 0, 0, cropSize, cropSize,
 				null);
 		g.dispose();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ImageIO.write(dimg, "jpg", bos);
+		ImageIO.write(dimg, "png", bos);
 		return bos.toByteArray();
 	}
 

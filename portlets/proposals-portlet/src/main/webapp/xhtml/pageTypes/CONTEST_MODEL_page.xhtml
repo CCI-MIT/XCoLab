@@ -16,7 +16,7 @@
                     <h2><collab:contestLink contestId="#{contest.contest.contestId}" text=" #{contest.contest.shortName} " /></h2>
                     <div class="clear"></div>
                     <h1>
-                        <strong>Model:</strong> #{contest.contest.contestModelDescription}
+                        <strong>Model:</strong> <ice:outputText value="#{contest.contest.contestModelDescription}" escape="false" />
                     </h1>
                 </div>
             </div>

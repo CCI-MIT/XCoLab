@@ -8,7 +8,7 @@
 
     <ice:panelSeries value="#{input.displayItemsWrapped}" var="individualInput" varStatus="status">
         <f:subview rendered="#{status.first}">
-            <span class="input_def_header">#{input.oryginalName}</span><br />
+            <ice:outputText styleClass="input_def_header" value="#{input.oryginalName}" /><br />
         </f:subview>
         <ui:include src="./outputValue.xhtml">
             <ui:param value="#{individualInput.value}" name="value" />

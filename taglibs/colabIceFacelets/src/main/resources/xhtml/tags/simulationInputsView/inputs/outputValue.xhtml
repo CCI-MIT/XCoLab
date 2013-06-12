@@ -5,25 +5,23 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:liferay-faces="http://liferay.com/tld/faces"
         xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-<span class="modelInputValue">
+
     <f:subview rendered="#{showLabel and fn:contains(label, 'Start Year')}">
-        <br />
+        <ice:outputText value="&lt;br /&gt;" escape="false" />
     </f:subview>
-    <ice:outputText value="#{label}" rendered="#{showLabel}" styleClass="input_def_inner_label"/>
-    <span class="val">
+    <ice:outputText value="#{label}" rendered="#{showLabel}" styleClass="input_def_inner_label"/><ice:outputText value=" " />
     <f:subview rendered="#{fn:contains(fn:toLowerCase(unit), 'percent') or fn:contains(fn:toLowerCase(unit), '%')}">
-        <ice:outputText value="#{value / 100}">
+        <ice:outputText value="#{value / 100}"  styleClass="val">
             <f:convertNumber type="percent"/>
         </ice:outputText>
     </f:subview>
     <f:subview rendered="#{fn:contains(dataType, 'java.lang.Integer')}">
-        <ice:outputText value="#{value}">
+        <ice:outputText value="#{value}"  styleClass="val">
            <f:convertNumber integerOnly="true" pattern="#"/>
         </ice:outputText>
     </f:subview>
     <f:subview rendered="#{not (fn:contains(fn:toLowerCase(unit), 'percent') or fn:contains(fn:toLowerCase(unit), '%')) and fn:contains(dataType, 'java.lang.Double')}">
-        <ice:outputText value="#{value}"/>
+        <ice:outputText value="#{value}"  styleClass="val"/>
     </f:subview>
-    </span>
-</span>
+    <ice:outputText value=" " />
 </f:view>
