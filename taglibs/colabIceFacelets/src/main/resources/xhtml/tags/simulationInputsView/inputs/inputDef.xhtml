@@ -4,7 +4,7 @@
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:liferay-faces="http://liferay.com/tld/faces">
-    <div class="actInputDef">
+    <ice:panelGroup styleClass="actInputDef">
         <f:subview rendered="#{input.displayItemType == 'INDIVIDUAL'}">
             <ui:include src="./individual.xhtml" />
         </f:subview>
@@ -13,22 +13,22 @@
             <ui:include src="./group.xhtml" />
         </f:subview>
         
-        <div class="act_tooltip" style="display: none;">
-            <div class="act_tt-wrap">
-                <div class="act_tt-txt">
+        <ice:panelGroup styleClass="act_tooltip" style="display: none;">
+            <ice:panelGroup styleClass="act_tt-wrap">
+                <ice:panelGroup styleClass="act_tt-txt">
                     <f:subview  rendered="#{input.displayItemType == 'INDIVIDUAL'}">
-                        #{input.description}
+                        <ice:outputText value="#{input.description}" escape="false" />
                     </f:subview>
     
                     <f:subview rendered="#{input.displayItemType == 'GROUP'}">
-                        #{input.oryginalDescription}
+                        <ice:outputText value="#{input.oryginalDescription}" escape="false" />
                     </f:subview>
                     
-                </div>
-            </div>
-            <div class="act_tt-bot"></div>
-        </div>
-    </div>
+                </ice:panelGroup>
+            </ice:panelGroup>
+            <ice:panelGroup styleClass="act_tt-bot"></ice:panelGroup>
+        </ice:panelGroup>
+    </ice:panelGroup>
 
 
 </f:view>

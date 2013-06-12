@@ -22,6 +22,9 @@
     <f:subview rendered="#{pageType == 'CONTEST_DISCUSSION'}">
     	<ui:include src="./pageTypes/CONTEST_DISCUSSION_page.xhtml" />
     </f:subview>
+    <f:subview rendered="#{pageType == 'CONTEST_MODEL'}">
+    	<ui:include src="./pageTypes/CONTEST_MODEL_page.xhtml" />
+    </f:subview>
     <f:subview rendered="#{pageType == 'PLAN_DETAILS'}">
     	<ui:include src="./pageTypes/PLAN_DETAILS_page.xhtml" />
     </f:subview>

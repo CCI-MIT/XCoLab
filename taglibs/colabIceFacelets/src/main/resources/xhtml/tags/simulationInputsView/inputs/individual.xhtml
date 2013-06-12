@@ -5,7 +5,7 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
         xmlns:fn="http://java.sun.com/jsp/jstl/functions"
     xmlns:liferay-faces="http://liferay.com/tld/faces">
-    <span class="input_def_header"><ice:outputText value="#{input.metaData.labels[0]}" /></span><br />
+    <ice:outputText value="#{input.metaData.labels[0]}" styleClass="input_def_header" /><br />
     <ui:include src="./outputValue.xhtml"> 
             <ui:param value="#{input.value}" name="value" />
             <ui:param value="#{input.metaData.units[0]}" name="unit" />
