@@ -17,6 +17,7 @@
 		<portlet:param name="isRegistering" value="true" />
 		<portlet:param name="redirect" value="${redirect}" />
 	</portlet:actionURL>
+	<h1>hej ho</h1>
 	<div class="popupreg_form">
 		<div class="popupreg_head">
 			<h1>Join the CoLab</h1>
@@ -40,7 +41,7 @@
 		<form:form action="${createAccountURL }" commandName="createUserBean"
 			id="registrationForm">
 			<input type="hidden" name="action" value="add" />
-			<div class="reg_errors"></div>
+			<div class="reg_errors"><!--  --></div>
 			<form:errors cssClass="alert alert-error" />
 			<table class="reg">
 				<tr>
@@ -48,7 +49,7 @@
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
 					<td><form:input cssClass="popupreg_input" path="screenName" /><br />
-						<div class="reg_errors">
+						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="screenName" />
 						</div></td>
 
@@ -64,7 +65,7 @@
 							</c:otherwise>
 						</c:choose>
 
-						<div id="uploadImageContainer"></div></td>
+						<div id="uploadImageContainer"><!--  --></div></td>
 
 				</tr>
 				<tr>
@@ -72,7 +73,7 @@
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
 					<td><form:input cssClass="popupreg_input" path="email" />
-						<div class="reg_errors">
+						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="email" />
 						</div></td>
 				</tr>
@@ -82,7 +83,7 @@
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
 					<td><form:input cssClass="popupreg_input" path="firstName" />
-						<div class="reg_errors">
+						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="firstName" />
 						</div></td>
 				</tr>
@@ -92,7 +93,7 @@
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
 					<td><form:input cssClass="popupreg_input" path="lastName" />
-						<div class="reg_errors">
+						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="lastName" />
 						</div></td>
 				</tr>
@@ -102,7 +103,7 @@
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
 					<td><form:password cssClass="popupreg_input" path="password" />
-						<div class="reg_errors">
+						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="password" />
 						</div></td>
 				</tr>
@@ -114,13 +115,13 @@
 						align="texttop" /></th>
 					<td><form:password cssClass="popupreg_input"
 							path="retypePassword" />
-						<div class="reg_errors">
+						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="retypePassword" />
 						</div></td>
 
 					<th class="second">Country</th>
 					<td><form:input cssClass="popupreg_input" path="country" />
-						<div class="reg_errors">
+						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="country" />
 						</div></td>
 				</tr>
@@ -129,7 +130,7 @@
 					<th>Short Bio</th>
 					<td colspan="3"><form:textarea
 							cssClass="ckeditor shortBioContent" path="shortBio" />
-						<div class="reg_errors">
+						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="shortBio" />
 						</div></td>
 				</tr>
@@ -138,63 +139,47 @@
 					<th nowrap="nowrap">Retype the words <img
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
-					<td colspan="3"><script type="text/javascript">
-						var RecaptchaOptions = {
-							lang : 'en'
-						};
-					</script> <script type="text/javascript"
-							src="${recaptchaUrlScript}${recaptchaKeyPublic}">
-						//
-					</script>
-						<noscript>
-							<iframe src="${recaptchaUrlNoscript}" height="300" width="500"
-								frameborder="0">
-								<!--  -->
-							</iframe>
-							<br />
-							<textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
-							<input type="hidden" name="recaptcha_response_field"
-								value="manual_challenge" />
-						</noscript></td>
+					<td colspan="3">
+						<script type="text/javascript">
+							var RecaptchaOptions = {
+								lang : 'en'
+							};
+						</script> 
+						<script type="text/javascript" src="${recaptchaUrlScript}${recaptchaKeyPublic}"><!-- --></script>
+					</td>
 				</tr>
 
 				<tr>
 					<th nowrap="nowrap">Terms of use</th>
 					<td class="popupreg_terms-right" colspan="3">By registering
-						for this site, you agree to abide<br /> by the <a
-						href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of
-							Use</a>
+						for this site, you agree to abide<br /> by the 
+						<a href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of Use</a>
 					</td>
 				</tr>
 				<tr>
 					<th></th>
 					<td colspan="3">
 						<div class="blue-button">
-							<a href="javascript:;"
-								onclick="pageTracker._trackPageview('/user/registerSubmit');updateTextarea();jQuery('#registrationForm').submit();">CREATE
+							<a href="javascript:;" onclick="pageTracker._trackPageview('/user/registerSubmit');updateTextarea();jQuery('#registrationForm').submit();">CREATE
 								account</a>
 						</div>
 					</td>
 				</tr>
 			</table>
-			<script>
-				function updateTextarea() {
-					for ( var instance in CKEDITOR.instances) {
-						CKEDITOR.instances[instance].updateElement();
-					}
-				}
-				updateTextarea();
-			</script>
 			<div class="clearfix">
 				<!--  -->
 			</div>
 
 			<form:hidden id="userRegistrationImageId" path="imageId" />
 		</form:form>
-		<script type="text/javascript"
-			src="/html/js/editor/ckeditor/ckeditor.js">
-		<!-- -->
-			
+		<script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js"><!-- --></script>
+		<script>
+			function updateTextarea() {
+				for ( var instance in CKEDITOR.instances) {
+					CKEDITOR.instances[instance].updateElement();
+				}
+			}
+			updateTextarea();
 		</script>
 
 
@@ -223,11 +208,21 @@
 
 					});
 
-			jQuery(function() {
-				var containerOffset = jQuery("#uploadImageContainer").offset();
+			function updateUploadBtnOffset() {
+				var container = jQuery("#uploadImageContainer");
+				var containerOffset = container.offset();
+				
 
 				jQuery("#portraitUploadInput").offset(containerOffset);
+				
+			}
+			jQuery(function() {
+				updateUploadBtnOffset();
+				$(window).resize(updateUploadBtnOffset);
+				
 			});
+			
+			
 		</script>
 
 
