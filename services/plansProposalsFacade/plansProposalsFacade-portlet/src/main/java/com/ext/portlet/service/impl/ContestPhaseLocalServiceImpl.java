@@ -174,6 +174,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 // we have a candidate for promotion, find next phase
                 try {
+                    _log.info("promoting phase " + phase.getContestPhasePK());
                     ContestPhase nextPhase = getNextContestPhase(phase);
                     PlanItemLocalServiceUtil.promotePlans(phase.getContestPhasePK(), nextPhase.getContestPhasePK());
 
@@ -181,6 +182,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     // "promotion done")
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
+                    _log.info("done promoting phase " + phase.getContestPhasePK());
                 } catch (SystemException | PortalException e ) {
                     _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
                     continue;

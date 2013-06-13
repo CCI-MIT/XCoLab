@@ -358,7 +358,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         // planItem.updateAllAttributes();
         updateAttribute(planItem, Attribute.CREATOR.name());
         updateAttribute(planItem, Attribute.NAME.name());
-        updateAttribute(planItem, Attribute.DESCRIPTION.name());
+        //updateAttribute(planItem, Attribute.DESCRIPTION.name());
         updateAttribute(planItem, Attribute.CREATE_DATE.name());
         updateAttribute(planItem, Attribute.PUBLISH_DATE.name());
         updateAttribute(planItem, Attribute.VOTES.name());
@@ -419,7 +419,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         }
         // update only attributes related to new values
  
-        updateAttribute(planItem, Attribute.DESCRIPTION.name());
+        //updateAttribute(planItem, Attribute.DESCRIPTION.name());
         updateAttribute(planItem, Attribute.NAME.name());
         updateAttribute(planItem, Attribute.POSITIONS.name());
         updateAttribute(planItem, Attribute.LAST_MOD_DATE.name());
@@ -468,7 +468,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
         // add timestamp and random long value to plan name when setting group
         // name
         Random rand = new Random();
-        String groupName = getName(plan) + "_" + System.currentTimeMillis() + "_" + rand.nextLong();
+        String groupName = rand.nextLong() + "_" + System.currentTimeMillis() + "_" + getName(plan); 
         Group group = null;
         try {
             group = GroupServiceUtil.addGroup(StringUtils.substring(groupName, 0, 80), String.format(DEFAULT_GROUP_DESCRIPTION, 
@@ -1806,6 +1806,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
             // update plan version
             newPlan.setVersion(2L);
+            newPlan.setUpdated(plan.getUpdated());
             PlanItemLocalServiceUtil.store(newPlan);
 
             long[] userIds = UserLocalServiceUtil.getGroupUserIds(getPlanGroupId(plan));
