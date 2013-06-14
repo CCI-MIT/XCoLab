@@ -73,6 +73,15 @@
             #{member.planUserPermission.description}
         
         </ice:column>
+	<ice:column rendered="#{ permissions.canAdminAll }">
+		<ice:commandLink actionListener="#{member.remove}" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; }">
+                            Remove
+                        </ice:commandLink>
+		
+	</ice:column>
+
+
+
     </ice:dataTable></ice:form>
 
 <ice:form>
