@@ -17,7 +17,6 @@
 		<portlet:param name="isRegistering" value="true" />
 		<portlet:param name="redirect" value="${redirect}" />
 	</portlet:actionURL>
-	<h1>hej ho</h1>
 	<div class="popupreg_form">
 		<div class="popupreg_head">
 			<h1>Join the CoLab</h1>
@@ -196,15 +195,19 @@
 			});
 			jQuery("#fileUploadFrame").load(
 					function() {
-						var response = eval("("
-								+ jQuery(this).contents().text() + ")");
+						try {
+							var response = eval("("
+									+ jQuery(this).contents().text() + ")");
 
-						console.log(response);
-						jQuery("#userPortrait").attr("src",
-								"/image/contest?img_id=" + response.imageId);
-						jQuery("#userPortrait").unblock();
-						jQuery("#userRegistrationImageId")
-								.val(response.imageId);
+							jQuery("#userPortrait").attr("src",
+									"/image/contest?img_id=" + response.imageId);
+							jQuery("#userPortrait").unblock();
+							jQuery("#userRegistrationImageId")
+									.val(response.imageId);
+						}
+						catch (e) {
+							// ignore
+						}
 
 					});
 
