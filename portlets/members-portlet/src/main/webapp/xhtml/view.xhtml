@@ -38,6 +38,13 @@
 					name below to open their profile and then selecting "Send message."
 				</div>
 			</div>
+			<ice:panelGroup rendered="#{membersBean.categoryFilter == 'STAFF'}">
+				<p>The Climate CoLab staff includes researchers affiliated with
+					the <a href="http://cci.mit.edu" target="_blank">MIT Center for Collective Intelligence</a>. Members of the staff
+					work together to develop a long-term vision for the CoLab and
+					oversee its day-to-day operations.</p>
+			</ice:panelGroup>
+
 			<!-- HELP DIVS -->
 			<ice:panelGroup rendered="#{membersBean.categoryFilter == 'EXPERT'}">
 				<p>
