@@ -3,8 +3,10 @@ package org.climatecollaboratorium.plans;
 import java.io.Serializable;
 
 import com.ext.portlet.contests.ContestStatus;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.plans.PlanUserPermission;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -111,9 +113,10 @@ public class PlansPermissionsBean implements Serializable {
         if (plan!=null) {
             // use group id from plans community
             planGroupId = PlanItemLocalServiceUtil.getPlanGroupId(plan);
+            ContestPhase phase = PlanItemLocalServiceUtil.getContestPhase(plan);
             String status = 
-                    ContestPhaseTypeLocalServiceUtil.getContestPhaseType(PlanItemLocalServiceUtil.getContestPhase(plan).getContestPhaseType()).getStatus();
-            planIsEditable = ContestStatus.valueOf(status).isCanEdit();
+                    ContestPhaseTypeLocalServiceUtil.getContestPhaseType(phase.getContestPhaseType()).getStatus();
+            planIsEditable = ContestStatus.valueOf(status).isCanEdit() && ContestPhaseLocalServiceUtil.getPhaseActive(phase);
             updatePlanUserPermission();
         }
     }
