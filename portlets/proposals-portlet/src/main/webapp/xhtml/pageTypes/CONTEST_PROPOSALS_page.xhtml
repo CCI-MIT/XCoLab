@@ -139,7 +139,7 @@
  <div class="headline subhead">
     <h2><span>#{contest.contest.plansIndex.plansCount}</span> proposals</h2>
     <div class="right">
-        <f:subview rendered="#{contest.contestState == 'ACTIVE' and plansIndex.contestPhase.status == 'OPEN_FOR_SUBMISSION'}">
+        <f:subview rendered="#{contest.contestState == 'ACTIVE' and plansIndex.contestPhase.status == 'OPEN_FOR_SUBMISSION' and plansIndex.contestPhase.active}">
             <ice:form>
                 <div class="blue-button">
                     <ice:commandLink onclick="if(!deferUntilLogin()) return false; Collab.nav.block();"
