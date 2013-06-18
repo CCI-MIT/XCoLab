@@ -22,6 +22,7 @@ import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -97,6 +98,9 @@ public class LoginController {
             redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
             
         }
+
+        SessionErrors.clear(request);
+        SessionMessages.clear(request);
         
         response.sendRedirect(redirect);
     }

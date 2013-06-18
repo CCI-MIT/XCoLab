@@ -27,6 +27,7 @@ import com.ext.portlet.community.CommunityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -239,7 +240,9 @@ public class MainViewController {
 			}
 		} else {
 			response.setRenderParameter("error", "true");
-		}
+		}        
+        SessionErrors.clear(request);
+        SessionMessages.clear(request);
 	}
 
 	private void addRecaptchaPropertiesToModel(Model model) {

@@ -18,9 +18,11 @@
     <script type="text/javascript" src="$javascript_folder/jquery.dynatree.min.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/jquery.blockUI.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/jquery.cookie.js?tt=$themeTimestamp"></script>
+    <script type="text/javascript" src="$javascript_folder/jquery.jgrowl.min.js?tt=$themeTimestamp"></script>
 	$theme.include($top_head_include)
 	
     <link type="text/css" rel="stylesheet" href="$css_folder/jquery/jquery.css?tt=$themeTimestamp" media="all"/>
+    <link type="text/css" rel="stylesheet" href="$css_folder/jquery.jgrowl.css?tt=$themeTimestamp" media="all"/>
 	
 	<meta property="og:image" content="http://climatecolab.org/climatecolab-theme/images/ClimateColabLogo_big.png" />
 	<link rel="image_src"  type="image/png"   href="http://climatecolab.org/climatecolab-theme/images/ClimateColabLogo_big.png" />
@@ -226,6 +228,16 @@ $theme.include($top_messages_include)
 
     #parse ("$full_templates_path/sign_in_popup.vm")
     #parse ("$full_templates_path/jsadditions.vm")
+    
+#if ($request.getSession().getAttribute('xcolab_global_messages'))
+	<script type="text/javascript">
+		#foreach ($message in $request.getSession().getAttribute('xcolab_global_messages'))
+			jQuery.jGrowl('$message.message', { sticky: true, theme: 'iphone', themeState: 'none' });
+		#end
+	</script>
+	// remove attribute to prevent displaying messages on other pages 
+	$request.getSession().removeAttribute('xcolab_global_messages');
+#end
 
 </body>
 

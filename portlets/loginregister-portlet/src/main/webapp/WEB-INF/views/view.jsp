@@ -198,7 +198,7 @@
 						try {
 							var response = eval("("
 									+ jQuery(this).contents().text() + ")");
-
+							
 							jQuery("#userPortrait").attr("src",
 									"/image/contest?img_id=" + response.imageId);
 							jQuery("#userPortrait").unblock();

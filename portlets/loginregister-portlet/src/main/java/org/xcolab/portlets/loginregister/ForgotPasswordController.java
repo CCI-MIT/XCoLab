@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.xcolab.utils.GlobalMessagesUtil;
 
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
@@ -24,6 +25,7 @@ import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
@@ -127,6 +129,12 @@ public class ForgotPasswordController {
             redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
             
         }
+        else {
+            GlobalMessagesUtil.addMessage("A password retrieval message has been sent, please check your email", request);
+        }
+        
+        SessionErrors.clear(request);
+        SessionMessages.clear(request);
         
         response.sendRedirect(redirect);
     }
