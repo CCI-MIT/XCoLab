@@ -223,7 +223,7 @@
 								width="16" height="16" />&#160; <ice:commandLink
 									actionListener="#{membersBean.updateCategoryFilter}"
 									value="Members"
-									onclick="Collab.nav.navigateAddParams('members', {filter: 'MEMBER'}); return false;">
+									onclick="Collab.nav.navigateAddParams('members', {filter: 'MEMBER'}); document.location.reload(true); return false;">
 									<f:attribute name="category" value="MEMBER" />
 								</ice:commandLink>
 							</li>
@@ -232,7 +232,7 @@
 								width="16" height="16" />&#160; <ice:commandLink
 									actionListener="#{membersBean.updateCategoryFilter}"
 									value="Fellows"
-									onclick="Collab.nav.navigateAddParams('members', {filter: 'FELLOW'}); return false;">
+									onclick="Collab.nav.navigateAddParams('members', {filter: 'FELLOW'}); document.location.reload(true); return false;">
 									<f:attribute name="category" value="FELLOW" />
 								</ice:commandLink>
 							</li>
@@ -241,7 +241,7 @@
 								width="16" height="16" />&#160; <ice:commandLink
 									actionListener="#{membersBean.updateCategoryFilter}"
 									value="Advisors"
-									onclick="Collab.nav.navigateAddParams('members', {filter: 'ADVISOR'}); return false;">
+									onclick="Collab.nav.navigateAddParams('members', {filter: 'ADVISOR'}); document.location.reload(true);  return false;">
 									<f:attribute name="category" value="ADVISOR" />
 								</ice:commandLink>
 							</li>
@@ -250,7 +250,7 @@
 								width="16" height="16" />&#160; <ice:commandLink
 									actionListener="#{membersBean.updateCategoryFilter}"
 									value="Experts"
-									onclick="Collab.nav.navigateAddParams('members', {filter: 'EXPERT'}); return false;">
+									onclick="Collab.nav.navigateAddParams('members', {filter: 'EXPERT'}); document.location.reload(true);  return false;">
 									<f:attribute name="category" value="EXPERT" />
 								</ice:commandLink>
 							</li>
@@ -259,7 +259,7 @@
 								width="16" height="16" />&#160; <ice:commandLink
 									actionListener="#{membersBean.updateCategoryFilter}"
 									value="Staff"
-									onclick="Collab.nav.navigateAddParams('members', {filter: 'STAFF'}); return false;">
+									onclick="Collab.nav.navigateAddParams('members', {filter: 'STAFF'}); document.location.reload(true); return false;">
 									<f:attribute name="category" value="STAFF" />
 								</ice:commandLink>
 							</li>
@@ -268,7 +268,7 @@
 								<ice:commandLink
 									actionListener="#{membersBean.updateCategoryFilter}"
 									value="All"
-									onclick="Collab.nav.navigateAddParams('members', {filter: 'ALL'}); return false;">
+									onclick="Collab.nav.navigateAddParams('members', {filter: 'ALL'}); document.location.reload(true);  return false;">
 									<f:attribute name="category" value="ALL" />
 								</ice:commandLink>
 							</li>
