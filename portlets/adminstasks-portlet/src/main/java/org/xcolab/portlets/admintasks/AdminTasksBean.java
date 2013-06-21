@@ -1,17 +1,17 @@
 package org.xcolab.portlets.admintasks;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.PlanAttribute;
-import com.ext.portlet.model.PlanDescription;
+import com.ext.portlet.model.PlanFan;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanSection;
-import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
@@ -182,6 +182,11 @@ public class AdminTasksBean {
     	return null;
     }
     
+    
+    public String syncSupporters() throws SystemException, PortalException {
+        new SyncProposalSupportersBetweenPhasesTask().syncSupporters();
+        return null;
+    }
     
     
 }
