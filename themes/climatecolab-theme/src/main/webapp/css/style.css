@@ -322,7 +322,7 @@ position: absolute;
 .topshade {height:9px; background: url(../images/topshade.png) repeat-x; position:relative; z-index:5;}
 .earth {background:url(../images/homespot-earth.jpg) no-repeat 500px top; width:100%; min-height:336px; position:relative; top:-9px;}
 .homespot-left {float:left; width:530px; padding-left:10px; color:#404041; position:relative; font-size:16px;}
-.social {font-size:14px; width:380px; position:absolute; left:585px; bottom:0;}
+.social {font-size:14px; width:458px; position:absolute; left:507px; bottom:0;}
 
 .homespot-left h1 {font-size:35px; margin:20px 0 10px 0;}
 a.learn, a.get {height:33px; padding-top:11px; margin-right:11px; display:inline-block; font-size:16px; font-weight:700; text-transform:uppercase; color:#fff;}
@@ -347,6 +347,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .twitter {background:url(../images/icon-twitter.png) no-repeat; float:left; height:17px; padding:1px 0 0 25px;}
 .reddit {background:url(../images/icon-reddit.png) no-repeat; float:left; height:17px; padding:0px 0 0 25px;margin-left:17px;}
 .pinterest {background:url(../images/icon-pinterest.png) no-repeat; float:left; height:17px; padding:1px 0 0 25px;margin-left:17px;}
+.linkedin {background:url(../images/icon-linkedin.png) no-repeat; float:left; height:17px; padding:1px 0 0 25px;margin-left:17px;}
 
 
 /* columns ------------- */
