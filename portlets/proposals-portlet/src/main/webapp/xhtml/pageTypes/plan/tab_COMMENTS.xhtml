@@ -1,14 +1,25 @@
 <?xml version="1.0"?>
-<f:view xmlns="http://www.w3.org/1999/xhtml" 
-    xmlns:ice="http://www.icesoft.com/icefaces/component" 
-    xmlns:f="http://java.sun.com/jsf/core" 
-    xmlns:liferay-faces="http://liferay.com/tld/faces"
-    xmlns:collab="http://climatecollaboratorium.org/facelets"
-    xmlns:ui="http://java.sun.com/jsf/facelets" 
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-    
-    <ice:form>
-        <collab:comments discussionId="#{planBean.plan.categoryGroupId}" groupId="#{planBean.plan.groupId}" comments="true" />
-    </ice:form>
-    
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:liferay-faces="http://liferay.com/tld/faces"
+	xmlns:collab="http://climatecollaboratorium.org/facelets"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<ice:form>
+		<collab:comments discussionId="#{planBean.plan.categoryGroupId}"
+			groupId="#{planBean.plan.groupId}" comments="true" />
+	</ice:form>
+
+	<ice:panelGroup
+		rendered="#{plan.contestPhase ne contest.currentPhase.phaseId}">
+		
+		<script type="text/javascript">
+			var comment = document.getElementById('thecomment');
+			if(comment.hasOwnProperty('style')) {
+				comment.style.display = 'none';
+			}
+		</script>
+	</ice:panelGroup>
 </f:view>

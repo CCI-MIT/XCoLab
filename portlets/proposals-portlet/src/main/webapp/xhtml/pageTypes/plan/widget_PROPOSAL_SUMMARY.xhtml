@@ -34,9 +34,9 @@
                     <div class="votebox-bottom">
                         <img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
                         <span>#{planBean.plan.planFansCount}</span> supporters 
-                        <ice:commandLink actionListener="#{plan.plan.becomeAFan}" rendered="#{!votingPhase and not plan.plan.userAFan}" 
+                        <ice:commandLink actionListener="#{plan.plan.becomeAFan}" rendered="#{!votingPhase and not plan.plan.userAFan and plan.contestPhase eq contest.currentPhase.phaseId}" 
                                 onclick="if(!deferUntilLogin()) return false;">Support proposal</ice:commandLink>
-                        <ice:commandLink actionListener="#{plan.plan.unfan}" rendered="#{!votingPhase and plan.plan.userAFan}">
+                        <ice:commandLink actionListener="#{plan.plan.unfan}" rendered="#{!votingPhase and plan.plan.userAFan and plan.contestPhase eq contest.currentPhase.phaseId}">
                             Retract support</ice:commandLink>
                     </div>
                 </div> <!-- /votebox -->
@@ -49,13 +49,13 @@
                 <a class="addthis_button_twitter" id="addThisButton2" addthis:title="#{proposal.plan.name}" addthis:description="#{proposal.plan.pitch}"></a>
                 <a class="addthis_button_email" id="addThisButton3" addthis:title="#{proposal.plan.name}" addthis:description="#{proposal.plan.pitch}"></a>
             </div>
-             <f:subview rendered="#{planBean.plan.subscribed}">
+             <f:subview rendered="#{planBean.plan.subscribed and plan.contestPhase eq contest.currentPhase.phaseId}">
                 <div class="info subscribe" style="float:left;">
                     <ice:commandLink actionListener="#{planBean.plan.subscribe}" onclick="if(!deferUntilLogin()) return false;" ><img src="/climatecolab-theme/images/unsubscribe.png" />&#160; Unsubscribe</ice:commandLink>
                 </div>
             </f:subview>
         
-            <f:subview rendered="#{not planBean.plan.subscribed}">
+            <f:subview rendered="#{not planBean.plan.subscribed and plan.contestPhase eq contest.currentPhase.phaseId}">
                 <div class="info subscribe" style="float:left;">
                     <ice:commandLink actionListener="#{planBean.plan.subscribe}" onclick="if(!deferUntilLogin()) return false;" ><img src="/climatecolab-theme/images/icon_star.png" />&#160; Subscribe</ice:commandLink>
                 </div>

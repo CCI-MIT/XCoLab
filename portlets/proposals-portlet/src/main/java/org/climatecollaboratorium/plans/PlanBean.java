@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 
 public class PlanBean implements Serializable {
 	/**
@@ -103,6 +102,16 @@ public class PlanBean implements Serializable {
 			}
 		}
 
+	}
+	
+	public long getContestPhase() {
+		try {
+			return PlanItemLocalServiceUtil.getPlanMeta(planItem).getContestPhase();
+		} catch (SystemException e) {
+			e.printStackTrace();
+		}
+		
+		return 0L;
 	}
 
 	public void init(NavigationEvent event) throws SystemException,
