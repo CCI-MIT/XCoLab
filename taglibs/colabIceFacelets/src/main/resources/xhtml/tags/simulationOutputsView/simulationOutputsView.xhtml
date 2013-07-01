@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+
+Displays read only view of model or scenario results (outputs). 
+on the right).
+
+ -->
 <f:view xmlns="http://www.w3.org/1999/xhtml" 
     xmlns:f="http://java.sun.com/jsf/core" 
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
@@ -10,12 +16,12 @@
     </collab:simulationSupport>
             
     <ice:panelGroup rendered="#{simulationBean.scenario != null}">
-        <div class="hidden">
+        <ice:panelGroup styleClass="hidden">
             #{simulationBean.scenario}
             <span id="firstRun">#{simulationBean.firstRun}</span>
             <script type="text/javascript">
                 renderModelOutputs();
             </script>
-        </div>
+        </ice:panelGroup>
     </ice:panelGroup>
 </f:view>

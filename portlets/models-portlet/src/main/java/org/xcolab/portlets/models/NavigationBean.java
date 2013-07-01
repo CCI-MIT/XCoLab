@@ -29,7 +29,7 @@ public class NavigationBean {
 
     private String currentPage = INDEX_PAGE;
 
-    private BreadcrumbBean breadcrumbBean;
+    private BreadcrumbBean breadcrumbBean = new BreadcrumbBean();
     private Simulation selectedSimulation;
     private Scenario selectedScenario;
     private String page = null;
@@ -45,10 +45,13 @@ public class NavigationBean {
     private SimulationDetailsBean simulationDetailsBean = new SimulationDetailsBean();
     
     public NavigationBean() {
+        updateBreadcrumb();
+        
     }
 
     public BreadcrumbBean getBreadcrumbBean() {
         return breadcrumbBean;
+        
     }
 
     public void setBreadcrumbBean(BreadcrumbBean breadcrumbBean){

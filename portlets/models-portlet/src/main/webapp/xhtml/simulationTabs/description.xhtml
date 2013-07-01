@@ -12,12 +12,24 @@
     xmlns:liferay-faces="http://liferay.com/tld/faces">
 
     <ice:panelGroup styleClass="modelDescription" rendered="#{not simulationDetailsBean.tabEditing}">
-        <p>#{simulationDetailsBean.description}</p>
+        <p><ice:outputText value="#{simulationDetailsBean.description}" escape="false" /></p>
     </ice:panelGroup>
     
     <ice:panelGroup styleClass="modelDescription" rendered="#{simulationDetailsBean.tabEditing}">
-        <ice:inputRichText value="#{simulationDetailsBean.description}"   saveOnSubmit="true" skin="office2003" height="500px"  />
-        <ice:commandButton value="Submit" actionListener="#{simulationDetailsBean.updateSimulation}" />
+        <p><ice:outputText value="#{simulationDetailsBean.description}" escape="false" /></p>
+        <ice:inputTextarea value="#{simulationDetailsBean.description}" styleClass="profile_about ckeditor"  />
+        
+        <ice:commandButton value="Submit" actionListener="#{simulationDetailsBean.updateSimulation}"  onclick="updateTextarea();" />
+        
+        <script>
+        	function updateTextarea() {
+        		for (var instance in CKEDITOR.instances) {
+        			CKEDITOR.instances[instance].updateElement();
+        		}
+        	}
+      
+        	CKEDITOR.replaceAll();
+        </script>
     </ice:panelGroup>
     
 </f:view>

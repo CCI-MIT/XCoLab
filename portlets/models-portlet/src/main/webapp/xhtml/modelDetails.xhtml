@@ -2,6 +2,7 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:ui="http://java.sun.com/jsf/facelets"
+    	xmlns:collab="http://climatecollaboratorium.org/facelets"
         xmlns:liferay-faces="http://liferay.com/tld/faces">
 
     
@@ -9,6 +10,7 @@
 
     <ice:form>
         <div class="simulationActions">
+       
             <ice:commandButton value="Edit" actionListener="#{simulationDetailsBean.toggleEdit}"
                                rendered="#{(not simulationDetailsBean.tabEditing) and permissions.canEditModel}"/>
         </div>
@@ -27,17 +29,13 @@
                     <ui:include src="simulationTabs/expertEvaluation.xhtml"/>
                 </f:subview>
             </ice:panelTab>
-            <ice:panelTab label="Positions"
-                          onclick="Collab.nav.navigate('models', {modelId: #{simulationDetailsBean.modelId}, tab: 'positions'}); return false">
-                <f:subview id="positions">
-                    <ui:include src="simulationTabs/positions.xhtml"/>
-                </f:subview>
-            </ice:panelTab>
             <ice:panelTab label="Actions &amp; Impacts"
                           onclick="Collab.nav.navigate('models', {modelId: #{simulationDetailsBean.modelId}, tab: 'actionsImpacts'}); return false">
-                <f:subview id="actionsimpacts">
-                    <ui:include src="simulationTabs/actionsimpacts.xhtml"/>
-                </f:subview>
+                <ice:panelGroup styleClass="actionsImpacts">
+        			<f:subview id="actionsimpacts">
+                    	<ui:include src="simulationTabs/actionsimpacts.xhtml"/>
+                	</f:subview>
+        		</ice:panelGroup>
             </ice:panelTab>
 
         </ice:panelTabSet>

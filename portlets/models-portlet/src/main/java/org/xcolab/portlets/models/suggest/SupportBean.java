@@ -2,6 +2,7 @@ package org.xcolab.portlets.models.suggest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -17,8 +18,6 @@ import com.ext.portlet.models.ui.ModelInputWidgetType;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 public class SupportBean implements Serializable {
     

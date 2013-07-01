@@ -5,20 +5,19 @@
  */
 
 
-
-
-
-//setTimeout(function() { log.toggle(); }, 1000);
 var debug = true;
 var inputValues = {};
+// default tab that should be opened if nothing else was choosen
+
 var currentTab = "CO2 Concentration";
+
 /* This is ugly, it selects tab on outputs tab, but it should be rather a parameter in database */
 var defaultItems = {"CO2 Concentration": true, "Total": true};
+
 
 function renderModelInputs(event) {
 	showSliders();
 }
-
 
 function modelRunSuccessful(event) {
 	renderModelOutputs();
@@ -26,9 +25,9 @@ function modelRunSuccessful(event) {
 
 function disableInputs(disableInputs, editbuttonvisible,embedded) {
     if (disableInputs || !editbuttonvisible || (editbuttonvisible && embedded)) {
-    jQuery(".actions input").attr('disabled', disabled);
-    jQuery(".actions .slider").slider("option", "disabled", disabled);
-        }
+    	jQuery(".actions input").attr('disabled', disabled);
+    	jQuery(".actions .slider").slider("option", "disabled", disabled);
+    }
 }
 
 

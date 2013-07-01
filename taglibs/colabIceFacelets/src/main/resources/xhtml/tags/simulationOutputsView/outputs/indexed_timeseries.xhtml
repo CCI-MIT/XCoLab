@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Outputs all of the outputs values so that they can be used to plot the chart. It also outputs a container tag for a 
+chart (it will be used by rendering logic. 
+
+ -->
 <f:view xmlns="http://www.w3.org/1999/xhtml" 
     xmlns:f="http://java.sun.com/jsf/core" 
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:liferay-faces="http://liferay.com/tld/faces"
     xmlns:jstl="http://java.sun.com/jsp/jstl/functions" >
+    
  
 <ice:panelGroup styleClass="outputDef" rendered="#{output.chartType == 'TIME_SERIES'}">
     <div id="indexedOutput_#{output.uniqueId}">
@@ -51,21 +57,6 @@
                 <ul class="chartMessagePlaceholder" style="display: none"></ul>
             </div>
             <div id="output_chart_#{output.seriesVariables[0].id}" class="chartPlaceholder"></div>
-        </div>
-    </div>
-</ice:panelGroup>
-                   
-<ice:panelGroup rendered="#{output.chartType == 'FREE'}" style="display: none" styleClass="physicalImpact">
-    <div class="title"><a href="javascript:;" rel="physicalImpact_#{output.seriesVariables[1].metaData.id}">#{output.name}</a></div>
-    <div  class="content">
-        <div id="physicalImpact_#{output.seriesVariables[1].metaData.id}" class="tabContent">
-            <dl>
-                <dt><strong>#{output.seriesVariables[0].metaData.labels[1]} impacts at °C #{output.seriesVariables[0].value[0].values[0]}</strong></dt>
-                <dd><p>#{output.seriesVariables[0].value[0].values[1]}</p></dd>
-    
-                <dt><strong>#{output.seriesVariables[1].metaData.labels[1]} impacts at °C #{output.seriesVariables[1].value[0].values[0]}</strong></dt>
-                <dd><p>#{output.seriesVariables[1].value[0].values[1]}</p></dd>
-            </dl>
         </div>
     </div>
 </ice:panelGroup>

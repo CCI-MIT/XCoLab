@@ -69,8 +69,7 @@ public class SimulationDetailsBean implements Serializable {
     static {
         tabNameNumberMap.put("description", 0);
         tabNameNumberMap.put("expertEval", 1);
-        tabNameNumberMap.put("positions", 2);
-        tabNameNumberMap.put("actionsImpacts", 3);
+        tabNameNumberMap.put("actionsImpacts", 2);
     }
 
     private final static Map<Integer, Boolean> tabEditEnabled = new HashMap<Integer, Boolean>();

@@ -210,8 +210,12 @@ function showSliders() {
 		}
 		var slider = jQuery(this).find(".slider");
 		
-		
-		slider.slider('destroy');
+		try {
+			slider.slider('destroy');
+		}
+		catch (e) {
+			// ignore
+		}
 		
 
 		slider.addClass('sliderInit');

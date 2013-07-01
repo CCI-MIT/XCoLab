@@ -10,12 +10,12 @@
     xmlns:f="http://java.sun.com/jsf/core" 
     xmlns:liferay-faces="http://liferay.com/tld/faces">
     <h2 class="modelIndexLink">
-        <ice:panelSeries value="#{navigation.breadcrumbBean.items}" var="item" varStatus="status">
-            <f:subview rendered="#{item.link != null}">
-                <a href="#{item.link}">#{item.name}</a> 
+        <ice:panelSeries value="#{navigation.breadcrumbBean.items}" var="breadcrumbItem" varStatus="status">
+            <f:subview rendered="#{not empty breadcrumbItem.link}">
+                <a href="#{breadcrumbItem.link}">#{breadcrumbItem.name}</a> 
             </f:subview>
-            <f:subview rendered="#{item.link == null}">
-                #{item.name}
+            <f:subview rendered="#{empty breadcrumbItem.link}">
+                #{breadcrumbItem.name}
             </f:subview>
             <ice:outputText value="&gt;" rendered="#{not status.last}" />
         </ice:panelSeries>

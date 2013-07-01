@@ -4,7 +4,11 @@
   ~ or the license.txt file included in this distribution for the full text of the license.
   -->
 
-<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+  <h:head />
+  <h:body>
 	<ice:portlet>
 		<ice:form>
 			<ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css" />
@@ -38,4 +42,5 @@
 			</ice:panelTabSet>
 		</ice:form>
 	</ice:portlet>
+	</h:body>
 </f:view>
