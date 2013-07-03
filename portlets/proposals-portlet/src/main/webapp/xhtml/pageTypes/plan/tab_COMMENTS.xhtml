@@ -7,6 +7,18 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
+
+	<f:subview rendered="#{not proposal.plan.lastInGroup}">
+		<h3 style="margin-top: 20px; margin-bottom: 20px;">
+			The most recent version of this proposal is in a later contest phase.
+			<!--  to the Contest Phase
+					'#{proposal.plan.promotedContestPhaseName}'. -->
+			Click <a
+				href="/web/guest/plans/-/plans/contestId/#{contest.contestId}/planId/#{proposal.plan.lastIdInGroup}">
+				here</a> to see it.
+		</h3>
+	</f:subview>
+
 	<ice:form>
 		<collab:comments discussionId="#{planBean.plan.categoryGroupId}"
 			groupId="#{planBean.plan.groupId}" comments="true" />
@@ -14,10 +26,10 @@
 
 	<ice:panelGroup
 		rendered="#{plan.contestPhase ne contest.currentPhase.phaseId}">
-		
+
 		<script type="text/javascript">
 			var comment = document.getElementById('thecomment');
-			if(comment.hasOwnProperty('style')) {
+			if (comment.hasOwnProperty('style')) {
 				comment.style.display = 'none';
 			}
 		</script>

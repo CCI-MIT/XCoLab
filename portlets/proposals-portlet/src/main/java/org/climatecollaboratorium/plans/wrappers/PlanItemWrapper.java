@@ -33,17 +33,20 @@ import org.icefaces.ace.component.fileentry.FileEntryResults;
 
 import com.ext.portlet.NoSuchPlanPositionsException;
 import com.ext.portlet.PlanStatus;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.PlanAttribute;
 import com.ext.portlet.model.PlanDescription;
 import com.ext.portlet.model.PlanFan;
 import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanMeta;
 import com.ext.portlet.model.PlanModelRun;
 import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.model.PlanType;
 import com.ext.portlet.plans.PlanConstants;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
@@ -1134,6 +1137,13 @@ public class PlanItemWrapper implements Serializable {
     public boolean isLastInGroup() throws NoSuchModelException, SystemException {
         List<Long> plansInGroup = getPlansInGroup();
         return plansInGroup.get(plansInGroup.size()-1).equals(wrapped.getPlanId());
+    }
+    
+    public String getPromotedContestPhaseName() throws SystemException, PortalException{
+    	PlanItem pi = PlanItemLocalServiceUtil.getPlanItem(getLastIdInGroup());
+    	ContestPhase cp = PlanItemLocalServiceUtil.getContestPhase(pi);
+    	String name = ContestPhaseLocalServiceUtil.getName(cp);
+    	return name;
     }
     
     public Long getLastIdInGroup() throws NoSuchModelException, SystemException {

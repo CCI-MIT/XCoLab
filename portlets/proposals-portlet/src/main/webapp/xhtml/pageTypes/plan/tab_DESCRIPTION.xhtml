@@ -13,7 +13,6 @@
 		</script>
 	</ice:panelGroup>
 
-
 	<ice:panelGroup styleClass="prop-left">
 		<style type="text/css">
 		/*
@@ -75,6 +74,18 @@
 		</ice:form>
 
 
+			<f:subview rendered="#{not proposal.plan.lastInGroup}">
+				<h3 style="margin-top: 20px; margin-bottom: 20px;">
+					The most recent version of this proposal is in a later contest
+					phase.
+					<!--  to the Contest Phase
+					'#{proposal.plan.promotedContestPhaseName}'. -->
+					Click <a
+						href="/web/guest/plans/-/plans/contestId/#{contest.contestId}/planId/#{proposal.plan.lastIdInGroup}">
+						here</a> to see it.
+				</h3>
+			</f:subview>
+			
 
 		<h2>Pitch</h2>
 		<p class="intro">#{proposal.plan.pitch}</p>
