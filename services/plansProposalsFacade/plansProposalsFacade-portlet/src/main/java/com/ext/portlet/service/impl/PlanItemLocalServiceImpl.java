@@ -59,6 +59,7 @@ import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
 import com.ext.portlet.service.PlanDescriptionLocalServiceUtil;
 import com.ext.portlet.service.PlanFanLocalServiceUtil;
+import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanMetaLocalServiceUtil;
 import com.ext.portlet.service.PlanModelRunLocalServiceUtil;
@@ -2101,6 +2102,9 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 						PlanItemLocalServiceUtil.getCategoryGroupId(newPlan),
 						0, "", subscription.getReceiverId());
 			}
+			
+			// add new plan to the same group
+			PlanItemGroupLocalServiceUtil.addToGroup(plan.getPlanId(), newPlan.getPlanId());
 
 		}
 
