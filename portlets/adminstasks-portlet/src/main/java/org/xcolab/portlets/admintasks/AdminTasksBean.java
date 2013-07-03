@@ -1,23 +1,31 @@
 package org.xcolab.portlets.admintasks;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.PlanFan;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
+import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.NoSuchResourceException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Permission;
 import com.liferay.portal.model.Resource;
@@ -33,6 +41,7 @@ import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
 public class AdminTasksBean {
+    private Log _log = LogFactoryUtil.getLog(SyncProposalSupportersBetweenPhasesTask.class);
   
     
     public String populateFirstEmptySectionWithDescription() throws SystemException, PortalException {
@@ -186,6 +195,69 @@ public class AdminTasksBean {
     public String syncSupporters() throws SystemException, PortalException {
         new SyncProposalSupportersBetweenPhasesTask().syncSupporters();
         return null;
+    }
+    
+    public String populatePlanItemPhaseMapping() throws PortalException, SystemException {
+        
+        _log.info("Syncing supporters");
+        
+        Map<String, Set<Long>> plansToMap = new HashMap<String, Set<Long>>();
+        
+        _log.info("fetching plans and their fans");
+        for (PlanItem plan: PlanItemLocalServiceUtil.getPlans()) {
+            Contest contest = PlanItemLocalServiceUtil.getContest(plan);
+            
+            String key = contest.getContestPK() + "_" + PlanItemLocalServiceUtil.getName(plan).trim(); 
+            
+            Set<Long> plans = plansToMap.get(key);
+            if (plans == null) {
+                // use tree set to enforce natural ordering on plan ids
+                plans = new TreeSet<Long>();
+                plansToMap.put(key, plans);
+            }
+            plans.add(plan.getPlanId());
+        }
+        
+        for (Map.Entry<String, Set<Long>> entry: plansToMap.entrySet()) {
+            if (entry.getValue().size() > 1) {
+                // we have two or more elements in a group, we should add them
+                Long[] planIds = entry.getValue().toArray(new Long[] {});
+                for (Long planId: planIds) {
+                    // add each plan to a group
+                    PlanItemGroupLocalServiceUtil.addToGroup(planIds[0], planId);
+                }
+            }
+        }
+        
+        return null;
+        
+    }
+    
+    public void checkForPlanGroupOrphans() throws SystemException, NoSuchModelException, PortalException {
+        boolean orphanFound = false;
+        _log.info("Looking for orphans");
+        for (Contest contest: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+            if (!ContestLocalServiceUtil.isActive(contest)) continue;
+            ContestPhase activePhase = ContestLocalServiceUtil.getActivePhase(contest);
+            
+            _log.info("   checking phase: " + activePhase.getContestPhasePK());
+            
+            for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(activePhase)) {
+                if (PlanItemGroupLocalServiceUtil.getPlansInGroup(plan.getPlanId()).size() != 2) {
+                    _log.error("Plan should belong to a group with 2 elements " + plan.getPlanId());
+                }
+            }
+        }
+        FacesMessage fm = new FacesMessage();
+        if (! orphanFound) {
+            fm.setSeverity(FacesMessage.SEVERITY_INFO);
+            fm.setSummary("No orphans found");
+        }
+        else {
+            fm.setSeverity(FacesMessage.SEVERITY_ERROR);
+            fm.setSummary("Orphans found, check logs");   
+        }
+        FacesContext.getCurrentInstance().addMessage(null, fm);
     }
     
     

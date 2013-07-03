@@ -626,6 +626,14 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.PlanItemGroupModelImpl">
+		<attributes>
+			<id name="planId" />
+			<basic name="groupId" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.PlanMetaModelImpl">
 		<attributes>
 			<id name="id">
@@ -1085,6 +1093,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.PlanItemImpl" name="PlanItem">
 		<table name="xcolab_PlanItem" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.PlanItemGroupImpl" name="PlanItemGroup">
+		<table name="xcolab_PlanItemGroup" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.PlanMetaImpl" name="PlanMeta">

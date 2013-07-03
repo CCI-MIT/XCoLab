@@ -44,6 +44,7 @@
 	<import class="com.ext.portlet.model.PlanDescription" />
 	<import class="com.ext.portlet.model.PlanFan" />
 	<import class="com.ext.portlet.model.PlanItem" />
+	<import class="com.ext.portlet.model.PlanItemGroup" />
 	<import class="com.ext.portlet.model.PlanMeta" />
 	<import class="com.ext.portlet.model.PlanModelRun" />
 	<import class="com.ext.portlet.model.PlanPosition" />
@@ -540,6 +541,13 @@
 		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="updateType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.PlanItemGroupImpl" table="xcolab_PlanItemGroup">
+		<cache usage="read-write" />
+		<id name="planId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.PlanMetaImpl" table="xcolab_PlanMeta">
 		<cache usage="read-write" />

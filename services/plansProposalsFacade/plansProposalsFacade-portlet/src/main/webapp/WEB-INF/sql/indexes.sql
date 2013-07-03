@@ -105,6 +105,8 @@ create index IX_208A9DF4 on xcolab_PlanFan (userId);
 
 create index IX_B269B130 on xcolab_PlanItem (planId);
 
+create index IX_F22CBD37 on xcolab_PlanItemGroup (groupId);
+
 create index IX_B8E3C5A2 on xcolab_PlanMeta (planId);
 
 create index IX_B093827F on xcolab_PlanModelRun (planId);

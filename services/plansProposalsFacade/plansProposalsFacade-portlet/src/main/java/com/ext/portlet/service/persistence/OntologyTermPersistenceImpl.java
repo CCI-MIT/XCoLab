@@ -45,6 +45,7 @@ import com.ext.portlet.service.persistence.PlanAttributePersistence;
 import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
 import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
 import com.ext.portlet.service.persistence.PlanFanPersistence;
+import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
 import com.ext.portlet.service.persistence.PlanItemPersistence;
 import com.ext.portlet.service.persistence.PlanMetaPersistence;
 import com.ext.portlet.service.persistence.PlanModelRunPersistence;
@@ -332,6 +333,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     protected PlanFanPersistence planFanPersistence;
     @BeanReference(type = PlanItemPersistence.class)
     protected PlanItemPersistence planItemPersistence;
+    @BeanReference(type = PlanItemGroupPersistence.class)
+    protected PlanItemGroupPersistence planItemGroupPersistence;
     @BeanReference(type = PlanMetaPersistence.class)
     protected PlanMetaPersistence planMetaPersistence;
     @BeanReference(type = PlanModelRunPersistence.class)

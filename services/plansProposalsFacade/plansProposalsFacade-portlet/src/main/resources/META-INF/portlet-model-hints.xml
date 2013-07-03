@@ -496,6 +496,10 @@
 		<field name="updateType" type="String" />
 		<field name="version" type="long" />
 	</model>
+	<model name="com.ext.portlet.model.PlanItemGroup">
+		<field name="planId" type="long" />
+		<field name="groupId" type="long" />
+	</model>
 	<model name="com.ext.portlet.model.PlanMeta">
 		<field name="id" type="long" />
 		<field name="planId" type="long" />

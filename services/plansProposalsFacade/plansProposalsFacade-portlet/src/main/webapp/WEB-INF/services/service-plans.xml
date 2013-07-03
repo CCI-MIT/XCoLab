@@ -245,6 +245,15 @@
         </finder>
     </entity>
     
+    <entity name="PlanItemGroup" local-service="true">
+    	<column name="planId" type="long" primary="true" />
+    	<column name="groupId" type="long" />
+    	
+        <finder name="GroupId" return-type="Collection" db-index="true">
+            <finder-column name="groupId" />
+        </finder>
+    </entity>
+    
     <entity name="PlanDescription" local-service="true">
         <column name="id" type="long" primary="true" />
         <column name="planId" type="long" />

@@ -392,6 +392,16 @@ create table xcolab_PlanItem (
 	version LONG
 );
 
+create table xcolab_PlanItemGroup (
+	planId LONG not null primary key,
+	groupId LONG
+);
+
+create table xcolab_PlanItemPhaseMap (
+	id_ LONG not null primary key,
+	planId LONG
+);
+
 create table xcolab_PlanMeta (
 	id_ LONG not null primary key,
 	planId LONG,

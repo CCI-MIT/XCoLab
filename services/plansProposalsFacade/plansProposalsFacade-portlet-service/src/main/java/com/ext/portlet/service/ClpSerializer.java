@@ -42,6 +42,7 @@ import com.ext.portlet.model.PlanColumnSettingsClp;
 import com.ext.portlet.model.PlanDescriptionClp;
 import com.ext.portlet.model.PlanFanClp;
 import com.ext.portlet.model.PlanItemClp;
+import com.ext.portlet.model.PlanItemGroupClp;
 import com.ext.portlet.model.PlanMetaClp;
 import com.ext.portlet.model.PlanModelRunClp;
 import com.ext.portlet.model.PlanPositionClp;
@@ -317,6 +318,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(PlanItemClp.class.getName())) {
             return translateInputPlanItem(oldModel);
+        }
+
+        if (oldModelClassName.equals(PlanItemGroupClp.class.getName())) {
+            return translateInputPlanItemGroup(oldModel);
         }
 
         if (oldModelClassName.equals(PlanMetaClp.class.getName())) {
@@ -3431,6 +3436,47 @@ public class ClpSerializer {
         return oldModel;
     }
 
+    public static Object translateInputPlanItemGroup(BaseModel<?> oldModel) {
+        PlanItemGroupClp oldCplModel = (PlanItemGroupClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.PlanItemGroupImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setPlanId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getPlanId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setGroupId",
+                        new Class[] { Long.TYPE });
+
+                Long value1 = new Long(oldCplModel.getGroupId());
+
+                method1.invoke(newModel, value1);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
     public static Object translateInputPlanMeta(BaseModel<?> oldModel) {
         PlanMetaClp oldCplModel = (PlanMetaClp) oldModel;
 
@@ -5066,6 +5112,11 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals("com.ext.portlet.model.impl.PlanItemImpl")) {
             return translateOutputPlanItem(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanItemGroupImpl")) {
+            return translateOutputPlanItemGroup(oldModel);
         }
 
         if (oldModelClassName.equals("com.ext.portlet.model.impl.PlanMetaImpl")) {
@@ -7961,6 +8012,42 @@ public class ClpSerializer {
                 Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
 
                 newModel.setVersion(value6);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputPlanItemGroup(BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                PlanItemGroupClp newModel = new PlanItemGroupClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getPlanId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setPlanId(value0);
+
+                Method method1 = oldModelClass.getMethod("getGroupId");
+
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setGroupId(value1);
 
                 return newModel;
             } catch (Exception e) {

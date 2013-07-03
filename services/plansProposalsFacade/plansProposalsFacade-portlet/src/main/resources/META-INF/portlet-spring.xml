@@ -393,6 +393,15 @@
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.PlanItemPersistence" class="com.ext.portlet.service.persistence.PlanItemPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.persistence.PlanItemFinder" class="com.ext.portlet.service.persistence.PlanItemFinderImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PlanItemGroupLocalService" class="com.ext.portlet.service.impl.PlanItemGroupLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanItemGroupLocalServiceUtil" class="com.ext.portlet.service.PlanItemGroupLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanItemGroupLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.PlanItemGroupService" class="com.ext.portlet.service.impl.PlanItemGroupServiceImpl" />
+	<bean id="com.ext.portlet.service.PlanItemGroupServiceUtil" class="com.ext.portlet.service.PlanItemGroupServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.PlanItemGroupService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.PlanItemGroupPersistence" class="com.ext.portlet.service.persistence.PlanItemGroupPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.PlanMetaLocalService" class="com.ext.portlet.service.impl.PlanMetaLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.PlanMetaLocalServiceUtil" class="com.ext.portlet.service.PlanMetaLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.PlanMetaLocalService" />

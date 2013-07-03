@@ -83,6 +83,8 @@ import com.ext.portlet.service.PlanDescriptionLocalService;
 import com.ext.portlet.service.PlanDescriptionService;
 import com.ext.portlet.service.PlanFanLocalService;
 import com.ext.portlet.service.PlanFanService;
+import com.ext.portlet.service.PlanItemGroupLocalService;
+import com.ext.portlet.service.PlanItemGroupService;
 import com.ext.portlet.service.PlanItemLocalService;
 import com.ext.portlet.service.PlanItemService;
 import com.ext.portlet.service.PlanMetaLocalService;
@@ -167,6 +169,7 @@ import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
 import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
 import com.ext.portlet.service.persistence.PlanFanPersistence;
 import com.ext.portlet.service.persistence.PlanItemFinder;
+import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
 import com.ext.portlet.service.persistence.PlanItemPersistence;
 import com.ext.portlet.service.persistence.PlanMetaPersistence;
 import com.ext.portlet.service.persistence.PlanModelRunPersistence;
@@ -474,6 +477,12 @@ public abstract class ModelDiscussionServiceBaseImpl extends PrincipalBean
     protected PlanItemPersistence planItemPersistence;
     @BeanReference(type = PlanItemFinder.class)
     protected PlanItemFinder planItemFinder;
+    @BeanReference(type = PlanItemGroupLocalService.class)
+    protected PlanItemGroupLocalService planItemGroupLocalService;
+    @BeanReference(type = PlanItemGroupService.class)
+    protected PlanItemGroupService planItemGroupService;
+    @BeanReference(type = PlanItemGroupPersistence.class)
+    protected PlanItemGroupPersistence planItemGroupPersistence;
     @BeanReference(type = PlanMetaLocalService.class)
     protected PlanMetaLocalService planMetaLocalService;
     @BeanReference(type = PlanMetaService.class)
@@ -3010,6 +3019,63 @@ public abstract class ModelDiscussionServiceBaseImpl extends PrincipalBean
      */
     public void setPlanItemFinder(PlanItemFinder planItemFinder) {
         this.planItemFinder = planItemFinder;
+    }
+
+    /**
+     * Returns the plan item group local service.
+     *
+     * @return the plan item group local service
+     */
+    public PlanItemGroupLocalService getPlanItemGroupLocalService() {
+        return planItemGroupLocalService;
+    }
+
+    /**
+     * Sets the plan item group local service.
+     *
+     * @param planItemGroupLocalService the plan item group local service
+     */
+    public void setPlanItemGroupLocalService(
+        PlanItemGroupLocalService planItemGroupLocalService) {
+        this.planItemGroupLocalService = planItemGroupLocalService;
+    }
+
+    /**
+     * Returns the plan item group remote service.
+     *
+     * @return the plan item group remote service
+     */
+    public PlanItemGroupService getPlanItemGroupService() {
+        return planItemGroupService;
+    }
+
+    /**
+     * Sets the plan item group remote service.
+     *
+     * @param planItemGroupService the plan item group remote service
+     */
+    public void setPlanItemGroupService(
+        PlanItemGroupService planItemGroupService) {
+        this.planItemGroupService = planItemGroupService;
+    }
+
+    /**
+     * Returns the plan item group persistence.
+     *
+     * @return the plan item group persistence
+     */
+    public PlanItemGroupPersistence getPlanItemGroupPersistence() {
+        return planItemGroupPersistence;
+    }
+
+    /**
+     * Sets the plan item group persistence.
+     *
+     * @param planItemGroupPersistence the plan item group persistence
+     */
+    public void setPlanItemGroupPersistence(
+        PlanItemGroupPersistence planItemGroupPersistence) {
+        this.planItemGroupPersistence = planItemGroupPersistence;
     }
 
     /**

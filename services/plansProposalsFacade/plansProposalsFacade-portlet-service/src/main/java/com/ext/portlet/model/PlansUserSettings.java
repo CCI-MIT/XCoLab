@@ -1,7 +1,5 @@
 package com.ext.portlet.model;
 
-import java.io.Serializable;
-
 import com.liferay.portal.model.PersistedModel;
 
 /**
@@ -13,7 +11,7 @@ import com.liferay.portal.model.PersistedModel;
  * @see com.ext.portlet.model.impl.PlansUserSettingsModelImpl
  * @generated
  */
-public interface PlansUserSettings extends PlansUserSettingsModel, PersistedModel, Serializable {
+public interface PlansUserSettings extends PlansUserSettingsModel, PersistedModel {
     /*
      * NOTE FOR DEVELOPERS:
      *
