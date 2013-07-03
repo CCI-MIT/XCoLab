@@ -1136,7 +1136,7 @@ public class PlanItemWrapper implements Serializable {
         return plansInGroup.get(plansInGroup.size()-1).equals(wrapped.getPlanId());
     }
     
-    public Long getLastInGroup() throws NoSuchModelException, SystemException {
+    public Long getLastIdInGroup() throws NoSuchModelException, SystemException {
         List<Long> plansInGroup = getPlansInGroup();
         return plansInGroup.get(plansInGroup.size()-1);
     }

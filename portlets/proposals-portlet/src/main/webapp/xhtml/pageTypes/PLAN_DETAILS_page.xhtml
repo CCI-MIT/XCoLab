@@ -34,7 +34,7 @@
         </div> <!-- /headline -->
         <f:subview rendered="#{not proposal.plan.lastInGroup}">
         	<h3>You're viewing old version of this proposal, go to 
-        		<a href="/web/guest/plans/-/plans/contestId/#{contest.contestId}/planId/#{proposal.plan.lastInGroup}">latest one</a>
+        		<a href="/web/guest/plans/-/plans/contestId/#{contest.contestId}/planId/#{proposal.plan.lastIdInGroup}">latest one</a>
         	</h3>
         </f:subview>
         <div class="prop-tabs">
