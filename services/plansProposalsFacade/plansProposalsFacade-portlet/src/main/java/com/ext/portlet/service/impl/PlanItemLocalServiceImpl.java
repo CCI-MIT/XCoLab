@@ -1938,6 +1938,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
 		PlanTemplate tmpl = getPlanTemplate(pi);
 		for (PlanSection section : oldSections) {
+			if(section.isNew()) continue; //do not bother with locked sections
 			PlanSectionLocalServiceUtil.createForPlanFrom(pi, section, true);
 		}
 

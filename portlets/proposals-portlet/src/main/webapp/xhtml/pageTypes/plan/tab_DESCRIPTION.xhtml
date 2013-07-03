@@ -1,73 +1,109 @@
-<f:view 
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:collab="http://climatecollaboratorium.org/facelets"
-    xmlns:ice="http://www.icesoft.com/icefaces/component"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:addthis="http://www.addthis.com/help/api-spec" >
-        <ice:panelGroup rendered="#{planBean.leaveThisPlan}">
-            <script type="text/javascript">
-                var location = window.location.toString();
-                location = location.substring(0, location.indexOf("/planId"));
-                
-                window.location = location;
-            </script>
-        </ice:panelGroup>
-        
-        
-<ice:panelGroup styleClass="prop-left">
+<f:view xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:collab="http://climatecollaboratorium.org/facelets"
+	xmlns:ace="http://www.icefaces.org/icefaces/components"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:addthis="http://www.addthis.com/help/api-spec">
+	<ice:panelGroup rendered="#{planBean.leaveThisPlan}">
+		<script type="text/javascript">
+			var location = window.location.toString();
+			location = location.substring(0, location.indexOf("/planId"));
 
-    <ice:form>
-            <div class="versionsContainer hidden">
-            <div class="versions">
-                <ice:dataTable value="#{planBean.plan.allDescriptionVersions}" rows="20" var="historyItem" styleClass="historyTable" rowClasses="odd,even">
-                    <ice:column style="width: 400px;">
-                        <ice:commandLink onclick="showAlertIfInEdit('Changing version will remove all changes that have been done, are you sure?'); triggerVersionsContainerVisibility();"
-                                value="#{historyItem.updateDateFormatted}" actionListener="#{planBean.plan.selectDescriptionVersion}">
-                            <f:attribute name="item" value="#{historyItem}"/>
-                        </ice:commandLink>
-                    </ice:column>
-                    
-                    <ice:column>
-                        <em>
-                          by&#160; <collab:userLinkSimple userId="#{historyItem.updateAuthor.userId}" text="#{historyItem.updateAuthor.screenName}"/>
-                        </em>
-                        
-                    </ice:column>
-                </ice:dataTable>
-
-            </div>
-        </div>
-        </ice:form>
+			window.location = location;
+		</script>
+	</ice:panelGroup>
 
 
+	<ice:panelGroup styleClass="prop-left">
+		<style type="text/css">
+		/*
+				inplace stylesheet is preferred over jquery CSS. 
+		*/
+		.ui-widget-content a {
+			color: #30a3fb;
+		}
+		
+		.historyTable * {
+			border: 0px !important;
+			text-align: left !important;
+			font-size: 15px !important;
+		}
+		
+		.historyTable .ui-datatable-even td {
+			background-color: #f1f1e9;
+		}
+		
+		.historyTable .ui-datatable-odd td {
+			background-color: #fff;
+		}
+		
+		.ui-datatable table {
+			width: auto;
+		}
+		
+		.ui-widget-header {
+			background: none;
+		}
+		</style>
+		<ice:form>
+			<div class="versionsContainer hidden">
+				<div class="versions">
+					<ace:dataTable id="historyTable"
+						value="#{planBean.plan.allDescriptionVersions}" rows="20"
+						paginator="true" paginatorPosition="bottom" var="historyItem"
+						styleClass="historyTable" rowClasses="odd,even">
+						<ace:column style="width: 400px;">
+							<ice:commandLink
+								onclick="showAlertIfInEdit('Changing version will remove all changes that have been done, are you sure?'); triggerVersionsContainerVisibility();"
+								value="#{historyItem.updateDateFormatted}"
+								actionListener="#{planBean.plan.selectDescriptionVersion}">
+								<f:attribute name="item" value="#{historyItem}" />
+							</ice:commandLink>
+						</ace:column>
 
-  <h2>Pitch</h2>
-  <p class="intro">#{proposal.plan.pitch}</p>
-  
-  
-  <div class="div1"></div>
-  <h2>Description</h2>
-  <f:subview rendered="#{not proposal.plan.hasSections}">
-    <ice:outputText value="#{proposal.plan.description}" escape="false" />
-  </f:subview>
-  <f:subview rendered="#{proposal.plan.hasSections}">
-    <ice:panelSeries var="section" value="#{proposal.plan.sections}">
-        <h3>#{section.definition.title}</h3>
-        <p>
-            <ice:outputText value="#{section.section.content}" escape="false" />
-        </p>
-        <f:subview rendered="#{not section.last}">
-            <div class="div2"></div>
-        </f:subview>
-        
-    
-    </ice:panelSeries>
-  
-  </f:subview>
+						<ace:column>
+							<em> by&#160; <collab:userLinkSimple
+									userId="#{historyItem.updateAuthor.userId}"
+									text="#{historyItem.updateAuthor.screenName}" />
+							</em>
 
- </ice:panelGroup> <!-- /prop-left -->
- <ice:form>
-    <ui:include src="./widget_PROPOSAL_SUMMARY.xhtml" />
- </ice:form>
- 
- </f:view>
+						</ace:column>
+					</ace:dataTable>
+
+				</div>
+			</div>
+		</ice:form>
+
+
+
+		<h2>Pitch</h2>
+		<p class="intro">#{proposal.plan.pitch}</p>
+
+
+		<div class="div1"></div>
+		<h2>Description</h2>
+		<f:subview rendered="#{not proposal.plan.hasSections}">
+			<ice:outputText value="#{proposal.plan.description}" escape="false" />
+		</f:subview>
+		<f:subview rendered="#{proposal.plan.hasSections}">
+			<ice:panelSeries var="section" value="#{proposal.plan.sections}">
+				<h3>#{section.definition.title}</h3>
+				<p>
+					<ice:outputText value="#{section.section.content}" escape="false" />
+				</p>
+				<f:subview rendered="#{not section.last}">
+					<div class="div2"></div>
+				</f:subview>
+
+
+			</ice:panelSeries>
+
+		</f:subview>
+
+	</ice:panelGroup>
+	<!-- /prop-left -->
+	<ice:form>
+		<ui:include src="./widget_PROPOSAL_SUMMARY.xhtml" />
+	</ice:form>
+
+</f:view>
