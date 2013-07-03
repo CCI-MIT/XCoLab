@@ -107,7 +107,13 @@ public class PlanItemGroupLocalServiceImpl extends PlanItemGroupLocalServiceBase
      */
     public List<Long> getPlansInGroup(Long planId) throws NoSuchModelException, SystemException {
         // check if there is a group for given planid
-        PlanItemGroup group = planItemGroupPersistence.findByPrimaryKey(planId);
+        PlanItemGroup group = null;
+        try {
+            group = planItemGroupPersistence.findByPrimaryKey(planId);
+        }
+        catch (PortalException e) {
+            // ignore
+        }
         if (group == null) {
             // plan doesn't belong to any group, return list with only given
             // plan id
