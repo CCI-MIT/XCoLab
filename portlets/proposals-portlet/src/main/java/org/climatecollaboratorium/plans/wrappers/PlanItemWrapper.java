@@ -46,12 +46,14 @@ import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
+import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -1111,6 +1113,7 @@ public class PlanItemWrapper implements Serializable {
         }
     }
     
+    
     public void goToCurrent(ActionEvent e) throws PortalException, SystemException {
         planBean.refresh();
     }
@@ -1122,6 +1125,22 @@ public class PlanItemWrapper implements Serializable {
     public void setNewImageId(Long newImageId) {
         this.newImageId = newImageId;
     }
+    
+
+    public List<Long> getPlansInGroup() throws NoSuchModelException, SystemException {
+        return PlanItemGroupLocalServiceUtil.getPlansInGroup(wrapped.getPlanId());
+    }
+    
+    public boolean isLastInGroup() throws NoSuchModelException, SystemException {
+        List<Long> plansInGroup = getPlansInGroup();
+        return plansInGroup.get(plansInGroup.size()-1).equals(wrapped.getPlanId());
+    }
+    
+    public Long getLastInGroup() throws NoSuchModelException, SystemException {
+        List<Long> plansInGroup = getPlansInGroup();
+        return plansInGroup.get(plansInGroup.size()-1);
+    }
+    
 
     public static class Tuple implements Serializable {
         /**
