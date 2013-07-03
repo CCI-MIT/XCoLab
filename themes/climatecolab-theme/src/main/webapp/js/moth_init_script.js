@@ -547,7 +547,6 @@ function updateShareThisUrls(selector) {
    	}
    	
    	function showConnectionErrorMessage() {
-   		console.log("showConnectionLostWarningMessage");
    		doRemoveIcefacesNetworkConnectionErrorInfo();
    		setTimeout(doRemoveIcefacesNetworkConnectionErrorInfo, 100);
    		doShowConnectionLostWarningMessage();
@@ -556,7 +555,6 @@ function updateShareThisUrls(selector) {
    	jQuery(function() {
    		
    		if (window['ice']) {
-   			console.log("monitoring connections");
    			ice.onSessionExpiry(showConnectionErrorMessage);
    			ice.onServerError(showConnectionErrorMessage);
    			ice.onNetworkError(showConnectionErrorMessage);
