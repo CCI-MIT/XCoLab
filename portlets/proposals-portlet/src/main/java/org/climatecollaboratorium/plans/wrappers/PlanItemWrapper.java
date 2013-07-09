@@ -1140,7 +1140,7 @@ public class PlanItemWrapper implements Serializable {
     }
     
     public String getPromotedContestPhaseName() throws SystemException, PortalException{
-    	PlanItem pi = PlanItemLocalServiceUtil.getPlanItem(getLastIdInGroup());
+    	PlanItem pi = PlanItemLocalServiceUtil.getPlan(getLastIdInGroup());
     	ContestPhase cp = PlanItemLocalServiceUtil.getContestPhase(pi);
     	String name = ContestPhaseLocalServiceUtil.getName(cp);
     	return name;
