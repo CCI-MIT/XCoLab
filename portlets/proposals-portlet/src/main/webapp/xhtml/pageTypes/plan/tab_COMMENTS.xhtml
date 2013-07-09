@@ -25,7 +25,7 @@
 	</ice:form>
 
 	<ice:panelGroup
-		rendered="#{plan.contestPhase ne contest.currentPhase.phaseId}">
+		rendered="#{not proposal.plan.lastInGroup}">
 
 		<script type="text/javascript">
 			var comment = document.getElementById('thecomment');
@@ -35,3 +35,4 @@
 		</script>
 	</ice:panelGroup>
 </f:view>
+
