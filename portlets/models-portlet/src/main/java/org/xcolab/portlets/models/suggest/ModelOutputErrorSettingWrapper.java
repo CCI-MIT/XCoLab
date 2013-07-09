@@ -53,7 +53,7 @@ public class ModelOutputErrorSettingWrapper {
     }
     
     public void setPolicy(String policy) {
-        if (policy.trim().equals("")) {
+        if (policy == null || policy.trim().equals("")) {
             this.policy = null;
         } 
         else {

@@ -227,7 +227,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     }
 
     public List<ModelInputGroupDisplayItem> getChildGroups() {
-       Collections.sort(groups);
+        Collections.sort(groups);
         return groups;
     }
 
@@ -291,14 +291,20 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      * @throws SystemException
      * @throws IOException 
      */
-    public static ModelInputGroupDisplayItem create(Simulation s, String name, String description, ModelInputGroupType type) throws SystemException, IOException {
+    public static ModelInputGroupDisplayItem create(Simulation s, String name, String description, 
+            ModelInputGroupType type, Long parentGroupPK) throws SystemException, IOException {
         Long pk = CounterLocalServiceUtil.increment(ModelInputGroup.class.getName());
         ModelInputGroup group = ModelInputGroupLocalServiceUtil.createModelInputGroup(pk);
         group.setName(name);
         group.setDescription(description);
         group.setModelId(s.getId());
         group.setGroupType(type.name());
-        ModelInputGroupLocalServiceUtil.updateModelInputGroup(group);
+        
+        if (parentGroupPK != null && parentGroupPK > 0) {
+            group.setParentGroupPK(parentGroupPK);
+        }
+        
+        ModelInputGroupLocalServiceUtil.addModelInputGroup(group);
 
         return new ModelInputGroupDisplayItem(group);
 
@@ -311,13 +317,17 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      * @throws IOException 
      *
      */
-    public static ModelInputGroupDisplayItem create(Simulation s, MetaData md, ModelInputGroupType type) throws SystemException, IOException {
+    public static ModelInputGroupDisplayItem create(Simulation s, MetaData md, ModelInputGroupType type, Long parentGroupPK) throws SystemException, IOException {
         Long pk = CounterLocalServiceUtil.increment(ModelInputGroup.class.getName());
         ModelInputGroup group = ModelInputGroupLocalServiceUtil.createModelInputGroup(pk);
         group.setModelId(s.getId());
         group.setNameAndDescriptionMetaDataId(md.getId());
         group.setGroupType(type.name());
+        if (parentGroupPK != null && parentGroupPK > 0) {
+            group.setParentGroupPK(parentGroupPK);
+        }
         ModelInputGroupLocalServiceUtil.updateModelInputGroup(group);
+        
         return new ModelInputGroupDisplayItem(group);
     }
     
@@ -377,5 +387,13 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     public void setMetaData(MetaData md) throws SystemException {
         group.setNameAndDescriptionMetaDataId(md == null ? null : md.getId());
         ModelInputGroupLocalServiceUtil.updateModelInputGroup(group);
+    }
+    
+    public Long getParentGroupId() {
+        return group.getParentGroupPK();
+    }
+    
+    public void setParentGroupId(Long groupId) throws SystemException, PortalException, IOException {
+        setParent(new ModelInputGroupDisplayItem(ModelInputGroupLocalServiceUtil.getModelInputGroup(groupId)));
     }
 }

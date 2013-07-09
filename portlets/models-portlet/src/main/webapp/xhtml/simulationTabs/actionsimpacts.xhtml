@@ -20,19 +20,14 @@
 
     <ice:panelGroup rendered="#{simulationDetailsBean.tabEditing}">
         <ice:panelTabSet>
+            <ice:panelTab label="Inputs configuration">
+                <f:subview>
+                    <ui:include src="../simulationEdit/inputsConfiguration.xhtml" />
+                </f:subview>
+            </ice:panelTab>
             <ice:panelTab label="Inputs widgets">
                 <f:subview>
                     <ui:include src="../simulationEdit/inputsWidgets.xhtml" />
-                </f:subview>
-            </ice:panelTab>
-            <ice:panelTab label="Input groups">
-                <f:subview>
-                    <ui:include src="../simulationEdit/inputGroups.xhtml" />
-                </f:subview>
-            </ice:panelTab>
-            <ice:panelTab label="Inputs order">
-                <f:subview>
-                    <ui:include src="../simulationEdit/inputsOrder.xhtml" />
                 </f:subview>
             </ice:panelTab>
             <ice:panelTab label="Outputs settings">

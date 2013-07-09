@@ -27,6 +27,7 @@ public class ModelDisplayWrapper implements Serializable {
 	private transient List<ModelInputDisplayItemWrapper> wrappedNonTabs = new ArrayList<ModelInputDisplayItemWrapper>();
 	private transient List<ModelInputDisplayItemWrapper> individualInputs = new ArrayList<ModelInputDisplayItemWrapper>();
 	private transient List<ModelInputDisplayItemWrapper> inputsWithGroups = new ArrayList<ModelInputDisplayItemWrapper>();
+    private transient List<ModelInputDisplayItemWrapper> unassociatedInputs = new ArrayList<ModelInputDisplayItemWrapper>();
 
 	public ModelDisplayWrapper(ModelDisplay wrapped,
 			SimulationDetailsBean simulationBean, Map<Long, Object> values) {
@@ -53,7 +54,11 @@ public class ModelDisplayWrapper implements Serializable {
 		for (ModelInputDisplayItemWrapper item : wrappedInputs) {
 			if (item != null && item.getMetaData() != null) {
 				inputsDefined.add(item.getMetaData().getId());
+				if (item.getGroupId() <= 0) {
+				    unassociatedInputs.add(item);
+				}
 			}
+			
 		}
 		for (ModelInputDisplayItem item : wrapped.getAllIndividualInputs()) {
 			if (!inputsDefined.contains(item.getMetaData().getId())) {
@@ -118,7 +123,7 @@ public class ModelDisplayWrapper implements Serializable {
 	}
 
 	public boolean hasTabs() {
-		return wrapped.getTabs().size() > 0;
+		return wrappedTabs.size() > 0;
 	}
 
 	public List<ModelInputDisplayItem> getOryginalInputs() {
@@ -132,5 +137,9 @@ public class ModelDisplayWrapper implements Serializable {
 	public List<ModelInputDisplayItemWrapper> getWrappedInputs() {
 		return wrappedInputs;
 	}
+
+    public List<ModelInputDisplayItemWrapper> getUnassociatedInputs() {
+        return unassociatedInputs;
+    }
 
 }

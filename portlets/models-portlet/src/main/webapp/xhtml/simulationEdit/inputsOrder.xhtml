@@ -9,18 +9,18 @@
 
  <div class='simulationInputsOrder'>
     <ice:panelSeries value="#{simulationDetailsBean.display.inputs}" var="input" styleClass="inputOrderDef">
-        <li class="input-#{input.metaData.id} singleInputOrderDef">
+        <ice:panelGroup styleClass="input-#{input.metaData.id} singleInputOrderDef">
              <ice:outputText value="#{input.name}" styleClass="name"/> <ice:inputText value="#{input.order}" styleClass="order hidden" />
              <ice:panelGroup rendered="#{input.displayItemType == 'GROUP'}">
-                <ul class="subInputsOrder">
-                </ul> 
+                <ice:panelGroup styleClass="subInputsOrder">
+                </ice:panelGroup> 
                 <ice:panelSeries  value="#{input.displayItems}" var="individualInput" styleClass="subInptusOrderItems">
-                    <li>
+                    <ice:panelGroup>
                         <ice:outputText value="#{individualInput.name}" styleClass="name"/> <ice:inputText value="#{individualInput.order}" styleClass="order hidden" />
-                    </li> 
+                    </ice:panelGroup> 
                 </ice:panelSeries>
              </ice:panelGroup> 
-        </li>
+        </ice:panelGroup>
     </ice:panelSeries>
 </div>
 <ice:commandButton value="Update" actionListener="#{simulationDetailsBean.updateInputs}" styleClass="inputsWidgetsUpdate"/>

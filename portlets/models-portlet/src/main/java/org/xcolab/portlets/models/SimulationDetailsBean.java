@@ -60,10 +60,12 @@ public class SimulationDetailsBean implements Serializable {
     private transient Simulation simulation;
     private int selectedTab;
     private String description;
+    private InputsConfigurationBean inputsConfiguration;
     private transient ModelDisplayWrapper display;
     private transient ModelInputGroupDisplayItemWrapper newGroupWrapper;
     private transient List<ModelOutputErrorSettingWrapper> outputErrorSettingWrappers = new ArrayList<ModelOutputErrorSettingWrapper>();
     private transient Map<ModelInputDisplayItem, ModelInputDisplayItemWrapper> wrappedInputs = new HashMap<ModelInputDisplayItem, ModelInputDisplayItemWrapper>();
+
 
     private final static Map<String, Integer> tabNameNumberMap = new HashMap<String, Integer>();
     static {
@@ -86,6 +88,7 @@ public class SimulationDetailsBean implements Serializable {
         selectedTab = 0;
         display = new ModelDisplayWrapper(ModelUIFactory.getInstance().getDisplay(simulation), this,
                 new HashMap<Long, Object>());
+        inputsConfiguration = new InputsConfigurationBean(display, this);
         newGroupWrapper = new ModelInputGroupDisplayItemWrapper(this);
 
         wrappedInputs.clear();
@@ -306,5 +309,11 @@ public class SimulationDetailsBean implements Serializable {
             }
         }
     }
+
+    public InputsConfigurationBean getInputsConfiguration() {
+        return inputsConfiguration;
+    }
+
+    
 
 }

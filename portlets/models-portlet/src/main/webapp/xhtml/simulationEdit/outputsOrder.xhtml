@@ -7,39 +7,22 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:jstl="http://java.sun.com/jsp/jstl/functions" >
     
- <div class='orderContainer'>
-    <ul class="orderList">
+ <ice:panelGroup styleClass='orderContainer'>
+    <ice:panelGroup styleClass="orderList">
         <ui:repeat value="#{simulationDetailsBean.display.outputs}" var="output">
             <li class="orderItem orderListItem">Output: #{output.name} <ice:inputText value="#{output.order}" styleClass="hidden" />
                 <f:subview rendered="#{output.displayItemType == 'INDEXED'}">
-                    <ul class="orderSubList">
+                    <ice:panelGroup styleClass="orderSubList">
                         <ui:repeat value="#{output.series}" var="serie">
-                            <li class="orderItem orderSubListItem">Serie: #{serie.name} <ice:inputText value="#{serie.order}" styleClass="hidden" /></li>
+                            <ice:panelGroup styleClass="orderItem orderSubListItem">Serie: #{serie.name} <ice:inputText value="#{serie.order}" styleClass="hidden" /></ice:panelGroup>
                         </ui:repeat>
-                    </ul>    
+                    </ice:panelGroup>  
                 </f:subview>
             </li>
         </ui:repeat>
     
-    </ul>
-    <!-- 
-    <ice:panelSeries value="#{simulationDetailsBean.display.outputs}" var="output" styleClass="outputOrderDef">
-        <li class="output-#{output.metaData.id} singleOutputOrderDef">
-             <ice:outputText value="#{output.name}" styleClass="name"/> <ice:inputText value="#{output.order}" styleClass="order hidden" />
-             
-             <ice:panelGroup rendered="#{output.displayItemType == 'INDEXED'}">
-                <ul class="subOutputsOrder">
-                </ul> 
-                <ice:panelSeries  value="#{output.series}" var="serie" styleClass="subInptusOrderItems">
-                    <li>
-                        <ice:outputText value="#{individualInput.name}" styleClass="name"/> <ice:inputText value="#{individualInput.order}" styleClass="order hidden" />
-                    </li> 
-                </ice:panelSeries>
-             </ice:panelGroup>
-        </li>
-    </ice:panelSeries>
-     -->
-</div>
+    </ice:panelGroup>
+</ice:panelGroup>
 <ice:commandButton value="Update" actionListener="#{simulationDetailsBean.updateInputs}" styleClass="inputsWidgetsUpdate"/>
 
 

@@ -27,7 +27,11 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
     private String oryginalName = "";
     private String oryginalDescription = "";
     private transient ModelInputGroupDisplayItem groupItem;
+    private transient ModelInputGroupDisplayItemWrapper newGroupItem;
     private List<ModelInputDisplayItemWrapper> wrappedItems = new ArrayList<ModelInputDisplayItemWrapper>();
+    private List<ModelInputDisplayItemWrapper> inputs = new ArrayList<>();
+    private com.ext.portlet.models.ModelInputGroupType groupType = ModelInputGroupType.HORIZONTAL;
+    private Long newParentGroupId;
 
 
     public ModelInputGroupDisplayItemWrapper(ModelInputGroupDisplayItem groupItem, SimulationDetailsBean bean, Map<Long, Object> inputsValues) {
@@ -38,15 +42,17 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
         description = groupItem.getDescription();
         oryginalDescription = groupItem.getOriginalDescription();
         oryginalName = groupItem.getOriginalName();
-
+        
         for (ModelInputDisplayItem item: groupItem.getAllItems()) {
             wrappedItems.add(ModelInputDisplayItemWrapper.getInputWrapper(item, bean, inputsValues));
         }
+        
     }
     
     public ModelInputGroupDisplayItemWrapper(SimulationDetailsBean bean) {
         super(null, null);
         this.simulationBean = bean;
+        this.wrappedItems = bean.getDisplay().getInputs();
     }
     
     
@@ -59,10 +65,10 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
             // adding
             ModelInputGroupDisplayItem createdItem = null;
             if (md != null) {
-                createdItem = ModelInputGroupDisplayItem.create(simulationBean.getSimulation(), md, ModelInputGroupType.HORIZONTAL);
+                createdItem = ModelInputGroupDisplayItem.create(simulationBean.getSimulation(), md, groupType, newParentGroupId);
             }
             else {
-                createdItem = ModelInputGroupDisplayItem.create(simulationBean.getSimulation(), oryginalName, oryginalDescription, ModelInputGroupType.HORIZONTAL);
+                createdItem = ModelInputGroupDisplayItem.create(simulationBean.getSimulation(), name, description, groupType, newParentGroupId);
             }
 
             int maxOrder = Integer.MIN_VALUE;
@@ -76,7 +82,9 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
         else {
             groupItem.setDescription(description);
             groupItem.setName(name);
-            groupItem.setMetaData(md);
+            if (md != null) {
+                groupItem.setMetaData(md);
+            }
         }
         editing = false;
         simulationBean.refresh();
@@ -123,6 +131,10 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
         } 
     }
     
+    public boolean isPersistent() {
+        return groupItem != null && groupItem.getGroupId() > 0;
+    }
+    
     public String getName() {
         return name;
     }
@@ -158,7 +170,10 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
     
     public List<ModelInputDisplayItemWrapper> getAllItems() {
         return wrappedItems;
-        
+    }
+    
+    public List<ModelInputDisplayItemWrapper> getInputs() {
+        return wrappedItems;
     }
     
     protected boolean hasValue() {
@@ -184,6 +199,32 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
 
     public void setOryginalDescription(String oryginalDescription) {
         this.oryginalDescription = oryginalDescription;
+    }
+
+    public Long getParentGroupId() {
+        return groupItem != null ? groupItem.getParentGroupId() : null;
+    }
+
+    public void setParentGroupId(Long groupId) throws SystemException, PortalException, IOException {
+        newParentGroupId = groupId;
+        if (groupId != null && groupId > 0 && groupItem != null) {
+            groupItem.setParentGroupId(groupId);
+        }
+    }
+
+    public com.ext.portlet.models.ModelInputGroupType getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(com.ext.portlet.models.ModelInputGroupType groupType) {
+        this.groupType = groupType;
+    }
+
+    public ModelInputGroupDisplayItemWrapper getNewGroupItem() {
+        if (newGroupItem == null) {
+            newGroupItem = new ModelInputGroupDisplayItemWrapper(simulationBean);
+        }
+        return newGroupItem;
     }
 
 }

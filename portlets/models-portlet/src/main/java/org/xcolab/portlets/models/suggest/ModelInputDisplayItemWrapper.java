@@ -117,5 +117,4 @@ public class ModelInputDisplayItemWrapper implements Serializable{
     public void setOrder(int order) throws SystemException {
         wrappedItem.setOrder(order);
     }
-
 }

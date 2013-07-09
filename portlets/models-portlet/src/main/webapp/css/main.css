@@ -673,3 +673,28 @@ table.icePnlTbSet > tbody:first-child > tr:first-child table {
 .actionsImpacts {
 	background: #fff;
 }
+
+.inputsDropTarget {
+	background: #f00;
+	min-height: 10px;
+}
+
+.dropTarget {
+	border: 1px solid #f0f000;
+	background: #fafa99;
+	padding: 10px;
+}
+
+.dropTarget .dropTarget {
+	border: 1px solid #00e0e0;
+	background: #99f5f5;
+	padding: 10px;
+}
+
+.actionButtons {
+	float: right;
+}
+
+.groupAddFormContainer, .groupEditFormContainer, .tabAddFormContainer {
+	display: none;
+}
