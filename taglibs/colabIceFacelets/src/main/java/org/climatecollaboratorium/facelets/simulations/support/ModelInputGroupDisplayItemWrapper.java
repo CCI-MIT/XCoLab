@@ -59,10 +59,10 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
             // adding
             ModelInputGroupDisplayItem createdItem = null;
             if (md != null) {
-                createdItem = ModelInputGroupDisplayItem.create(simulationBean.getSimulation(), md, groupItem.getGroupType());
+                createdItem = ModelInputGroupDisplayItem.create(simulationBean.getSimulation(), md, groupItem.getGroupType(), null);
             }
             else {
-                createdItem = ModelInputGroupDisplayItem.create(simulationBean.getSimulation(), name, description, groupItem.getGroupType());
+                createdItem = ModelInputGroupDisplayItem.create(simulationBean.getSimulation(), name, description, groupItem.getGroupType(), null);
             }
 
             int maxOrder = Integer.MIN_VALUE;

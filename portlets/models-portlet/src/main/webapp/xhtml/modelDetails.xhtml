@@ -13,6 +13,8 @@
        
             <ice:commandButton value="Edit" actionListener="#{simulationDetailsBean.toggleEdit}"
                                rendered="#{(not simulationDetailsBean.tabEditing) and permissions.canEditModel}"/>
+            <ice:commandButton value="Disable editing" actionListener="#{simulationDetailsBean.toggleEdit}"
+                               rendered="#{(simulationDetailsBean.tabEditing) and permissions.canEditModel}"/>
         </div>
 
         <div class="clear"></div>

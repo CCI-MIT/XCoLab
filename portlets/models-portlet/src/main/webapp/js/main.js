@@ -115,6 +115,7 @@ function initInputsConfig() {
 			console.log("updating group id", groupId);
 			$(this).find(".parentGroupId").val(groupId);
 		});
+		$(".submitChangesButton").click();
 	}
 	
 	function updateOrder() {
@@ -122,6 +123,7 @@ function initInputsConfig() {
 		$(".inputOrder").each(function() {
 			$(this).val(order++);
 		});
+		$("submitChangesButton").click();
 	}
 	
 	

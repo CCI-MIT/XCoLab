@@ -1231,9 +1231,10 @@ function showHideTips() {
 }
 
 function showInputs(id, trigger) {
-	jQuery("#" + id).show();
-	jQuery(".simulationInputsSet[id!='" + id + "']").hide();
+	console.log("show inputs", id, trigger);
+	jQuery(".simulationInputsSet").hide();
+	jQuery("." + id).show();
 	jQuery(".simulationInputsSetTrigger").removeClass('c');
-	jQuery("#" + trigger).addClass('c');
+	jQuery("." + trigger).addClass('c');
 	
 }
