@@ -52,7 +52,7 @@ public class ModelInputGroupDisplayItemWrapper extends ModelInputDisplayItemWrap
     public ModelInputGroupDisplayItemWrapper(SimulationDetailsBean bean) {
         super(null, null);
         this.simulationBean = bean;
-        this.wrappedItems = bean.getDisplay().getInputs();
+        this.wrappedItems = bean.getDisplay().getInputsWithGroups();
     }
     
     

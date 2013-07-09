@@ -10,10 +10,6 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     
     
-    <f:subview rendered="#{not simulationDetailsBean.inputsConfiguration.hasTabs}">
-    	<ice:commandButton value="Create tab" />
-    </f:subview>
-    
 		<div class='actionButtons'> 
     		<button class="addTabToggle">Add tab</button>
     	</div>
@@ -26,11 +22,14 @@
     		</ui:include>
     	</div>
 	<div id="inputTabs">
-		<ul>
-			<ui:repeat var="inputsTab" value="#{simulationDetailsBean.inputsConfiguration.inputsTabs}">
-				<li><a href="#inputTab-#{inputsTab.groupId}">#{inputsTab.name}</a></li>
-			</ui:repeat>
-		</ul>
+	
+    	<f:subview rendered="#{simulationDetailsBean.inputsConfiguration.hasTabs}">
+			<ul>
+				<ui:repeat var="inputsTab" value="#{simulationDetailsBean.inputsConfiguration.inputsTabs}">
+					<li><a href="#inputTab-#{inputsTab.groupId}">#{inputsTab.name}</a></li>
+				</ui:repeat>
+			</ul>
+		</f:subview>
 		<ui:repeat var="inputTab" value="#{simulationDetailsBean.inputsConfiguration.inputsTabs}">
 			<div id="inputTab-#{inputTab.groupId}">
 				<ui:include src="inputs/tabEdit.xhtml" />
@@ -38,8 +37,8 @@
 		</ui:repeat>
     </div>
 
-    
-                <h4>Other inputs</h4>
+    <f:subview rendered="#{simulationDetailsBean.inputsConfiguration.hasTabs}">
+                <h4>All inputs</h4>
                 <div class="availableGroupItems ui-widget-content ui-corner-all inputsDropTarget" title="#{input.groupId}">
                     <ui:repeat value="#{simulationDetailsBean.inputsConfiguration.unassociatedItems}" var="item">
                         <f:subview rendered="#{item.displayItemType == 'INDIVIDUAL'}">
@@ -50,7 +49,7 @@
                     </ui:repeat>
                     <div class="individualInputPlaceholder"></div>
                 </div>
-                    
+	</f:subview>
     <div id="availableInputs" title="Choose input to add">
 	</div>
     
