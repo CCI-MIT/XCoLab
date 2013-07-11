@@ -9,23 +9,30 @@ import java.util.TreeSet;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.NoSuchResourceException;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Permission;
 import com.liferay.portal.model.Resource;
@@ -33,10 +40,13 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.ResourceLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portlet.social.model.SocialActivity;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
@@ -258,6 +268,44 @@ public class AdminTasksBean {
             fm.setSummary("Orphans found, check logs");   
         }
         FacesContext.getCurrentInstance().addMessage(null, fm);
+    }
+    
+    public void addMissingCommentsSocialActivities() throws SystemException, PortalException {
+
+       /* ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(servletContextName, name))(MESSAGE_ENTITY_CLASS_LOADER_CONTEXT, 
+                "portletClassLoader");
+        */
+        ClassName cn = ClassNameLocalServiceUtil.getClassName(DiscussionCategoryGroup.class.getName());
+        
+        for (DiscussionCategoryGroup dcg: DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroups(0,  10000)) {
+            if (dcg.getCommentsThread() <= 0) continue;
+            DiscussionMessage message = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(dcg);
+            
+            DynamicQuery activityQuery = DynamicQueryFactoryUtil.forClass(SocialActivity.class);//, portletClassLoader);
+
+//            ActivityUtil.getExtraDataForIds(wrapped.getCategoryGroupId(), getThreadId(wrapped), wrapped.getMessageId()), 0);
+            
+            activityQuery.add(PropertyFactoryUtil.forName("userId").eq(message.getAuthorId()));
+            activityQuery.add(PropertyFactoryUtil.forName("classNameId").eq(cn.getClassNameId()));
+            activityQuery.add(PropertyFactoryUtil.forName("classPK").eq(dcg.getId()));
+            activityQuery.add(PropertyFactoryUtil.forName("createDate").gt(message.getCreateDate().getTime()));
+            activityQuery.add(PropertyFactoryUtil.forName("createDate").lt(message.getCreateDate().getTime() + 10000));
+
+            
+            
+            List<SocialActivity> activities = SocialActivityLocalServiceUtil.dynamicQuery(activityQuery);
+            if (activities.isEmpty()) {
+                System.out.println("---\tNo activity for discussion " + dcg.getId());
+
+                SocialActivityLocalServiceUtil.addUniqueActivity(message.getAuthorId(), 10136L,
+                        DiscussionCategoryGroup.class.getName(), dcg.getId(), 
+                        4, 
+                        ActivityUtil.getExtraDataForIds(dcg.getId(), message.getMessageId(), message.getMessageId()), 0);
+            }
+            else {
+                System.out.println("+++\tActivity for discussion found " + dcg.getId());
+            }
+        }
     }
     
     

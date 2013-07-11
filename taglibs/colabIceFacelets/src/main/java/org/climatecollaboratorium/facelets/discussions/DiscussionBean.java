@@ -539,7 +539,7 @@ public class DiscussionBean implements Serializable {
     }
 
     public void commentAdded(MessageWrapper messageWrapper) throws SystemException {
-        if (commentsThread.isNewMsg()) {
+        if (commentsThread == null || commentsThread.isNewMsg()) {
             commentsThread = messageWrapper;
             messageWrapper.setTitle(messageWrapper.getTitle() + " " + 1);
         }

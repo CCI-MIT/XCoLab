@@ -38,6 +38,7 @@ public class SocialActivityWrapper implements Serializable {
             activityFeedEntry = SocialActivityInterpreterLocalServiceUtil.interpret(activity,
                 Helper.getThemeDisplay());
         } catch(Exception e) {
+            e.printStackTrace();
             //ignore
         }
         
