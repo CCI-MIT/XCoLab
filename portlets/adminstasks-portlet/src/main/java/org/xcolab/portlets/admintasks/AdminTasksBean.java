@@ -1,6 +1,8 @@
 package org.xcolab.portlets.admintasks;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +29,7 @@ import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.NoSuchResourceException;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -49,6 +52,8 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 public class AdminTasksBean {
     private Log _log = LogFactoryUtil.getLog(SyncProposalSupportersBetweenPhasesTask.class);
@@ -276,10 +281,41 @@ public class AdminTasksBean {
                 "portletClassLoader");
         */
         ClassName cn = ClassNameLocalServiceUtil.getClassName(DiscussionCategoryGroup.class.getName());
+
+        Set<String> discussionNamesToIgnore = new HashSet<String>();
+        List<DiscussionCategoryGroup> dcgs = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroups(0,  10000);
+        Collections.sort(dcgs, new Comparator<DiscussionCategoryGroup>() {
+
+            public int compare(DiscussionCategoryGroup o1, DiscussionCategoryGroup o2) {
+                if (o1.getCommentsThread() <= 0) {
+                    if (o2.getCommentsThread() <= 0) return (int) ( o1.getId() - o2.getId());
+                    return 1;
+                }
+                if (o2.getCommentsThread() <= 0) {
+                    return -1;
+                }
+                try {
+                    DiscussionMessage o1m = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(o1);
+                    DiscussionMessage o2m = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(o2);
+                    if (o1m.getCreateDate().before(o2m.getCreateDate())) return -1;
+                    else if (o2m.getCreateDate().before(o1m.getCreateDate())) return 1;
+                    return 0;
+                    
+                }
+                catch (Exception e) {
+                    // ignore
+                }
+                return 0;
+            }
+        });
         
-        for (DiscussionCategoryGroup dcg: DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroups(0,  10000)) {
+        Collections.reverse(dcgs);
+        for (DiscussionCategoryGroup dcg: dcgs) {
             if (dcg.getCommentsThread() <= 0) continue;
             DiscussionMessage message = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(dcg);
+            
+            if (discussionNamesToIgnore.contains(message.getSubject().trim())) continue;
+            discussionNamesToIgnore.add(message.getSubject().trim());
             
             DynamicQuery activityQuery = DynamicQueryFactoryUtil.forClass(SocialActivity.class);//, portletClassLoader);
 
@@ -290,14 +326,15 @@ public class AdminTasksBean {
             activityQuery.add(PropertyFactoryUtil.forName("classPK").eq(dcg.getId()));
             activityQuery.add(PropertyFactoryUtil.forName("createDate").gt(message.getCreateDate().getTime()));
             activityQuery.add(PropertyFactoryUtil.forName("createDate").lt(message.getCreateDate().getTime() + 10000));
-
             
+            activityQuery.addOrder(OrderFactoryUtil.desc("createDate"));
+
             
             List<SocialActivity> activities = SocialActivityLocalServiceUtil.dynamicQuery(activityQuery);
             if (activities.isEmpty()) {
                 System.out.println("---\tNo activity for discussion " + dcg.getId());
 
-                SocialActivityLocalServiceUtil.addUniqueActivity(message.getAuthorId(), 10136L,
+                SocialActivityLocalServiceUtil.addUniqueActivity(message.getAuthorId(), 10136L, message.getCreateDate(),
                         DiscussionCategoryGroup.class.getName(), dcg.getId(), 
                         4, 
                         ActivityUtil.getExtraDataForIds(dcg.getId(), message.getMessageId(), message.getMessageId()), 0);
