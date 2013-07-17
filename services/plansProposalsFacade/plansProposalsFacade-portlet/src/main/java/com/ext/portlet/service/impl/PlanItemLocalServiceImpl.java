@@ -2044,9 +2044,9 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 					getDiscussionCategoryGroup(plan));
 
 			// update plan version
-			newPlan.setVersion(2L);
-			newPlan.setUpdated(plan.getUpdated());
-			PlanItemLocalServiceUtil.store(newPlan);
+			//newPlan.setVersion(2L);
+			//newPlan.setUpdated(plan.getUpdated());
+			//PlanItemLocalServiceUtil.store(newPlan);
 
 			long[] userIds = UserLocalServiceUtil
 					.getGroupUserIds(getPlanGroupId(plan));
