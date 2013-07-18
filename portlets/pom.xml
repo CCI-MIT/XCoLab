@@ -18,6 +18,7 @@
   <modules>
     <module>proposals-portlet</module>
     <module>discussions-portlet</module>
+      <module>adminstasks-portlet</module>
     <module>contactform-portlet</module>
 	 <module>contactform-wicket-portlet</module>
     <module>members-portlet</module>
@@ -26,7 +27,8 @@
     <module>search-portlet</module>
     <module>feeds-portlet</module>
     <module>messaging-portlet</module>
-    <module>ontology-portlet</module>
+      <module>ontology-portlet</module>
+      <module>redballoon-portlet</module>
     <module>models-portlet</module>
     <module>plansadmin-portlet</module>
     <module>loginregister-portlet</module>
