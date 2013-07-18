@@ -86,7 +86,7 @@ public class PlanItemGroupLocalServiceImpl extends PlanItemGroupLocalServiceBase
             fromPlanGroup = createPlanItemGroup(fromPlanId);
             fromPlanGroup.setGroupId(toPlanGroup.getGroupId());
             addPlanItemGroup(fromPlanGroup);
-        } else {
+        } else if (toPlanGroup == null ){
             // fromPlanId already belongs to a group, take group id from
             // toPlanGroup
             toPlanGroup = createPlanItemGroup(toPlanId);

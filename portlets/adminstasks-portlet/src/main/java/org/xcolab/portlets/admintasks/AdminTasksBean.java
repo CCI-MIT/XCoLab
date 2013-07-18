@@ -19,6 +19,7 @@ import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanSection;
+import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
@@ -35,6 +36,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Permission;
@@ -218,7 +220,7 @@ public class AdminTasksBean {
         
         Map<String, Set<Long>> plansToMap = new HashMap<String, Set<Long>>();
         
-        _log.info("fetching plans and their fans");
+        _log.info("fetching plans");
         for (PlanItem plan: PlanItemLocalServiceUtil.getPlans()) {
             Contest contest = PlanItemLocalServiceUtil.getContest(plan);
             
@@ -234,6 +236,7 @@ public class AdminTasksBean {
         }
         
         for (Map.Entry<String, Set<Long>> entry: plansToMap.entrySet()) {
+            
             if (entry.getValue().size() > 1) {
                 // we have two or more elements in a group, we should add them
                 Long[] planIds = entry.getValue().toArray(new Long[] {});
@@ -260,6 +263,7 @@ public class AdminTasksBean {
             for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(activePhase)) {
                 if (PlanItemGroupLocalServiceUtil.getPlansInGroup(plan.getPlanId()).size() != 2) {
                     _log.error("Plan should belong to a group with 2 elements " + plan.getPlanId());
+                    orphanFound = true;
                 }
             }
         }
@@ -342,6 +346,37 @@ public class AdminTasksBean {
             else {
                 System.out.println("+++\tActivity for discussion found " + dcg.getId());
             }
+        }
+    }
+    
+    public void synchronizeSections() throws SystemException, PortalException {
+        Integer[] ids = new Integer[] { 40223,40205,40207,1314911,1314988,1315032,1315112,1315124,1315412,1315611,1315633,1315655,1315712,1316011,1316044,1316148,1316236,1316312,1316348,1316812,1316836,1316848,1316924,1317420,1317431,1322211,1322222,1322233,1322305,1322317,1322329,1322341,1322353,1322364,1322375,1322386,1322397,1322408,1322419,1322430,1322442,1322454,1322465,1322476,1322487,1322498,1322509,1322520,1322531,1322542,1322553,1322564,1322575,1322586,1322597,1322608,1322619,1322630,1322641,1322652,1322663,1323112,1323124,1323136,1323148,1323160,1323172 };
+        
+        for (Integer id: ids) {
+            PlanItem pi = PlanItemLocalServiceUtil.fetchPlanItem(id.longValue());
+            
+            List<Long> plans = PlanItemGroupLocalServiceUtil.getPlansInGroup(pi.getPlanId());
+            
+            if (plans.size() < 2) continue;
+            PlanItem sourcePi = PlanItemLocalServiceUtil.getPlan(plans.get(plans.size() - 2));
+                    
+            List<PlanSection> sections = PlanItemLocalServiceUtil.getPlanSections(sourcePi);
+            if (sections != null && !sections.isEmpty()) {
+                for (PlanSection section : sections) {
+                    PlanSectionDefinition def = PlanSectionLocalServiceUtil
+                            .getDefinition(section);
+                    
+                    PlanSection targetSection = PlanSectionLocalServiceUtil.getCurrentForPlanSectionDef(pi, def);
+                    if (targetSection.getContent() == null || targetSection.getContent().trim().length() == 0) {
+                        targetSection.setContent(section.getContent());
+                    
+                        PlanSectionLocalServiceUtil.updatePlanSection(targetSection);
+                    }
+                }
+            }
+            
+                    
+            
         }
     }
     

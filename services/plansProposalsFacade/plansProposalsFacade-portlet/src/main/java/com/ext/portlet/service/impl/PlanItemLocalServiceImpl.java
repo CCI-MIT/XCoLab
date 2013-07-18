@@ -2025,6 +2025,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 			if (plan.getVersion() < 2) {
 				continue;
 			}
+			plan = planItemFinder.findLatestVersion(plan.getPlanId());
 			PlanItem newPlan = createPlan(plan, targetPhase, getAuthorId(plan));
 			// newPlan.setName(plan.getName(), plan.getAuthorId());
 
