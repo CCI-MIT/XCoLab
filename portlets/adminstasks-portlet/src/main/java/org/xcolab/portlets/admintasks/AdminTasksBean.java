@@ -374,10 +374,38 @@ public class AdminTasksBean {
                     }
                 }
             }
-            
-                    
-            
         }
+    }
+    
+    public void findToSmallGroups() throws SystemException, PortalException {
+        Integer[] contestIds = new Integer[] {23,16,15,30,24,17,26,14,25,19,11,7,18,22,13,21,10,20};
+        
+        boolean toSmallGroupFound = false;
+        for (Contest contest: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+            if (!ContestLocalServiceUtil.isActive(contest)) continue;
+            ContestPhase activePhase = ContestLocalServiceUtil.getActivePhase(contest);
+            
+            _log.info("********   checking phase: " + activePhase.getContestPhasePK() + "\tplans to check: " + ContestPhaseLocalServiceUtil.getPlans(activePhase).size() + "\texpectedGroupSize: " + (ContestPhaseLocalServiceUtil.getPreviousPhases(activePhase).size() + 1));
+            //ContestPhaseLocalServiceUtil.getPreviousPhases(activePhase)
+            
+            for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(activePhase)) {
+                System.out.println(plan.getPlanId());
+                if (PlanItemGroupLocalServiceUtil.getPlansInGroup(plan.getPlanId()).size() != ContestPhaseLocalServiceUtil.getPreviousPhases(activePhase).size()+1) {
+                    _log.error("\tPlan should belong to a group with " + (ContestPhaseLocalServiceUtil.getPreviousPhases(activePhase).size()+1) + " elements " + plan.getPlanId() + "\tsize: " + PlanItemGroupLocalServiceUtil.getPlansInGroup(plan.getPlanId()).size());
+                    toSmallGroupFound = true;
+                }
+            }
+        }
+        FacesMessage fm = new FacesMessage();
+        if (! toSmallGroupFound) {
+            fm.setSeverity(FacesMessage.SEVERITY_INFO);
+            fm.setSummary("No to small groups found");
+        }
+        else {
+            fm.setSeverity(FacesMessage.SEVERITY_ERROR);
+            fm.setSummary("Orphans found, check logs");   
+        }
+        FacesContext.getCurrentInstance().addMessage(null, fm);
     }
     
     
