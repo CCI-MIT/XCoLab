@@ -11,8 +11,10 @@ import javax.mail.internet.AddressException;
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Message;
+import com.ext.portlet.model.MessagingIgnoredRecipients;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -47,6 +49,8 @@ public class UserProfileBean implements Serializable {
     private UserSubscriptionsBean subscriptionsBean;
     private String messagingPortletId;
     private boolean messageSent;
+
+    private boolean displayEMailErrorMessage = false;
     
     public UserProfileBean() {
         Map<String, String> parameters = Helper.getUrlParametersMap();
@@ -96,7 +100,20 @@ public class UserProfileBean implements Serializable {
             }
             
         }
-        
+
+        try {
+            //display message if user is in the ignored recipients list
+            MessagingIgnoredRecipients r = MessagingIgnoredRecipientsLocalServiceUtil.findByEmail(wrappedUser.getDisplayEmailAddress());
+            if(r.getUserId() == 0) {
+                displayEMailErrorMessage = true;
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    public boolean isDisplayEMailErrorMessage() {
+        return displayEMailErrorMessage;
     }
     
     public boolean isInitialized() {

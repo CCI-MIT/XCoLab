@@ -16,6 +16,7 @@
 	
 	
   <modules>
+      <module>colabIceFacelets</module>
   </modules>
 
 </project>

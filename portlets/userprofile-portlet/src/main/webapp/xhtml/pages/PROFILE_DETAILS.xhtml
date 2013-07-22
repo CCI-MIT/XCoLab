@@ -102,13 +102,13 @@
 				</table>
 				<div class="memdiv"></div>
 				<table border="0" cellpadding="0" cellspacing="0"
-					class="colab members otherInfo">
+					class="colab members otherInfo" style="width:100%;">
 					<tr>
-						<td class="b">Screen Name</td>
+						<td class="b" nowrap="nowrap">Screen Name</td>
 						<td>#{currentUser.screenName}</td>
 					</tr>
 					<tr>
-						<td class="b">Member Since</td>
+						<td class="b" nowrap="nowrap">Member Since</td>
 						<td><ice:outputText value="#{currentUser.joinDate}">
 								<f:convertDateTime pattern="MM/dd/yy" locale="en_US"
 									timeZone="America/New_York" />
@@ -117,7 +117,12 @@
 					<f:subview rendered="#{userprofileBean.viewingOwnProfile}">
 						<tr>
 							<td class="b">Email</td>
-							<td><a href="mailto:#{currentUser.email}">#{currentUser.email}</a></td>
+							<td>
+                                <a href="mailto:#{currentUser.email}">#{currentUser.email}</a>
+                                <f:subview rendered="#{userprofileBean.displayEMailErrorMessage}">
+                                    <span class="iceMsgError portlet-msg-error Error form_error_messageError">Please update your email address. Only votes from members with valid email addresses will be counted. </span>
+                                </f:subview>
+                            </td>
 						</tr>
 					</f:subview>
 					<f:subview rendered="#{not empty currentUser.country}">
