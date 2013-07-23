@@ -81,13 +81,11 @@
                     </h4>
                     <ice:panelGroup styleClass="clear" ></ice:panelGroup>
                 </ice:panelGroup>
-                <ice:panelGroup styleClass="thumbbox">
-	                <f:subview rendered="#{contest.currentPhase.canVote}">
-    	            	<collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.votesCount}" />
-    	           	</f:subview>
-                	<f:subview rendered="#{not contest.currentPhase.canVote}">
-                	    <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.supportersCount}" hashString="plans%3Dtab%3ATEAM"/>
-                	</f:subview>
+                <ice:panelGroup styleClass="voteboxsmall" rendered="#{contest.currentPhase.canVote}">
+    	            <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.votesCount}" />
+    	        </ice:panelGroup>
+    	        <ice:panelGroup styleClass="thumbbox" rendered="#{not contest.currentPhase.canVote}">
+                	<collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.supportersCount}" hashString="plans%3Dtab%3ATEAM"/>
                 </ice:panelGroup>
                 <ice:panelGroup styleClass="commbox">
                     <collab:planLink planId="#{singleProposal.planId}" contestId="#{singleProposal.contestId}" text="#{singleProposal.commentsCount}" hashString="plans%3Dtab%3ACOMMENTS" />
