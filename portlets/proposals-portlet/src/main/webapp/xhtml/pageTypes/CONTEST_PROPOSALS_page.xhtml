@@ -218,38 +218,36 @@
 						</div>
 					</div>
 				</div>
-				<div class="votes">
-					<f:subview rendered="#{not contest.currentPhase.canVote}">
-						<ice:commandLink actionListener="#{plansIndex.updateSortColumn}"
-							value=" ">
-							<f:attribute name="sortColumn" value="SUPPORTERS" />
-						</ice:commandLink>
-						<ui:include src="./contests/widget_SORT_ARROW.xhtml">
-							<ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
-							<ui:param name="currentColumn" value="SUPPORTERS" />
-							<ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
-						</ui:include>
-						<div class="tooltip">
-							click to sort by<br />number of supporters
-							<div class="tt-arrow"></div>
-						</div>
-					</f:subview>
-					<f:subview rendered="#{contest.currentPhase.canVote}">
-						<ice:commandLink actionListener="#{plansIndex.updateSortColumn}"
-							value=" ">
-							<f:attribute name="sortColumn" value="VOTES" />
-						</ice:commandLink>
-						<ui:include src="./contests/widget_SORT_ARROW.xhtml">
-							<ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
-							<ui:param name="currentColumn" value="VOTES" />
-							<ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
-						</ui:include>
-						<div class="tooltip">
-							click to sort by<br />number of votes
-							<div class="tt-arrow"></div>
-						</div>
-					</f:subview>
-				</div>
+				<ice:panelGroup styleClass="thumbs" rendered="#{not contest.currentPhase.canVote}">
+					<ice:commandLink actionListener="#{plansIndex.updateSortColumn}"
+						value=" ">
+						<f:attribute name="sortColumn" value="SUPPORTERS" />
+					</ice:commandLink>
+					<ui:include src="./contests/widget_SORT_ARROW.xhtml">
+						<ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+						<ui:param name="currentColumn" value="SUPPORTERS" />
+						<ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+					</ui:include>
+					<div class="tooltip">
+						click to sort by<br />number of supporters
+						<div class="tt-arrow"></div>
+					</div>
+				</ice:panelGroup>
+				<ice:panelGroup styleClass="votes" rendered="#{contest.currentPhase.canVote}">
+					<ice:commandLink actionListener="#{plansIndex.updateSortColumn}"
+						value=" ">
+						<f:attribute name="sortColumn" value="VOTES" />
+					</ice:commandLink>
+					<ui:include src="./contests/widget_SORT_ARROW.xhtml">
+						<ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+						<ui:param name="currentColumn" value="VOTES" />
+						<ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+					</ui:include>
+					<div class="tooltip">
+						click to sort by<br />number of votes
+						<div class="tt-arrow"></div>
+					</div>
+				</ice:panelGroup>
 				<div class="propcomm">
 					<ice:commandLink actionListener="#{plansIndex.updateSortColumn}"
 						value=" ">
