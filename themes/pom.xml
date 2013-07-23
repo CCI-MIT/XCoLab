@@ -16,6 +16,7 @@
 	
 	
   <modules>
+      <module>climatecolab-theme</module>
   </modules>
 
 </project>
