@@ -251,8 +251,10 @@ public class PlanItemGroupLocalServiceUtil {
     /**
     * Adds given plans to a group, creates one if none exists.
     *
-    * @param fromPlanId source plan id
-    * @param toPlanId destination plan id
+    * @param fromPlanId
+    source plan id
+    * @param toPlanId
+    destination plan id
     * @return created PlanItemPhaseMap
     * @throws SystemException
     * @throws NoSuchModelException
@@ -267,9 +269,10 @@ public class PlanItemGroupLocalServiceUtil {
     /**
     * Returns list of planIds that belong to the same group as given planId.
     *
-    * @param planId plan id for which other group members should be returned
-    * @return list of plan ids that belong to the same group (can be a single element array if plan doesn't belong
-    to a group)
+    * @param planId
+    plan id for which other group members should be returned
+    * @return list of plan ids that belong to the same group (can be a single
+    element array if plan doesn't belong to a group)
     * @throws NoSuchModelException
     * @throws SystemException
     */

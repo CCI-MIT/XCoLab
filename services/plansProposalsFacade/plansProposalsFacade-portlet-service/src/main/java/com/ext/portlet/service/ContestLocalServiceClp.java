@@ -51,8 +51,9 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private MethodKey _getDiscussionCategoryGroupMethodKey41;
     private MethodKey _getCommentsCountMethodKey42;
     private MethodKey _getProposalsCommentsCountMethodKey43;
-    private MethodKey _getTotalCommentsMethodKey44;
-    private MethodKey _getTeamMembersMethodKey45;
+    private MethodKey _getVotesCountMethodKey44;
+    private MethodKey _getTotalCommentsMethodKey45;
+    private MethodKey _getTeamMembersMethodKey46;
 
     public ContestLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -201,10 +202,13 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _getProposalsCommentsCountMethodKey43 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getProposalsCommentsCount", com.ext.portlet.model.Contest.class);
 
-        _getTotalCommentsMethodKey44 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getVotesCountMethodKey44 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getVotesCount", com.ext.portlet.model.Contest.class);
+
+        _getTotalCommentsMethodKey45 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getTotalComments", com.ext.portlet.model.Contest.class);
 
-        _getTeamMembersMethodKey45 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getTeamMembersMethodKey46 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getTeamMembers", com.ext.portlet.model.Contest.class);
     }
 
@@ -1407,12 +1411,42 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Long) returnObj).longValue();
     }
 
+    public long getVotesCount(com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getVotesCountMethodKey44,
+                ClpSerializer.translateInput(contest));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
     public long getTotalComments(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getTotalCommentsMethodKey44,
+        MethodHandler methodHandler = new MethodHandler(_getTotalCommentsMethodKey45,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -1442,7 +1476,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getTeamMembersMethodKey45,
+        MethodHandler methodHandler = new MethodHandler(_getTeamMembersMethodKey46,
                 ClpSerializer.translateInput(contest));
 
         try {

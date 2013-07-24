@@ -268,6 +268,7 @@ public class ModelUIFactory {
     public static Variable getVariableForMetaData(Scenario s, MetaData md, boolean isInput) {
         Variable result = null;
         for (Variable var : (isInput ? s.getInputSet() : s.getOutputSet())) {
+            System.out.println("ids: " + md.getId() + " ==? " + var.getMetaData().getId() + " equals = " + var.getMetaData().equals(md));
             if (var.getMetaData().equals(md)) {
                 result = var;
                 break;

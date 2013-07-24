@@ -366,6 +366,15 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return proposalsCommentsCount;
     }
     
+    public long getVotesCount(Contest contest) throws SystemException, PortalException {
+        long commentsCount = 0;
+        for (PlanItem pi: PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
+            commentsCount += PlanItemLocalServiceUtil.getVotes(pi);
+        }
+        
+        return commentsCount;
+    }
+    
     public long getTotalComments(Contest contest) throws PortalException, SystemException {
         return getCommentsCount(contest) + getProposalsCommentsCount(contest);
     }
