@@ -41,9 +41,9 @@ public class SimulationSupportTag extends TagHandler {
         Long scenarioId = (Long) scenarioIdParam.getValueExpression(ctx, Long.class).getValue(ctx);
         Long simulationId = (Long) simulationIdParam.getValueExpression(ctx, Long.class).getValue(ctx);
         Boolean edit = editActionsParam != null ? (Boolean) editActionsParam.getObject(ctx, Boolean.class) : false;
-        //System.out.println("simulationId: " + simulationId);
-        //System.out.println("scenarioId: " + scenarioId);
         try {
+            if (scenarioId > 0 && simulationId > 0 && !edit) 
+                simulationBean.reset();
             simulationBean.init(simulationId, scenarioId, edit);
         } catch (Exception e) {
             _log.error("Can't initialize simulationBean with parameters - simulationId " + 

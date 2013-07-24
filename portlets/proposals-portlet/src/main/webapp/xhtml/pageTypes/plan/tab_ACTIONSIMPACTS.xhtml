@@ -5,6 +5,7 @@
     xmlns:liferay-faces="http://liferay.com/tld/faces"
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <ice:form>
     
@@ -71,9 +72,10 @@
             </a>
         </ice:panelGroup>
         <ice:panelGroup styleClass="inputsAndOutputsWidget" rendered="#{planBean.plan.selectedModel != null}">
-            
+            <c:if test="#{not proposal.editing}">
                 <collab:simulationView simulationId="#{planBean.plan.selectedModel}" showEditButton="#{permissions.canEdit}"
-                                   scenarioId="#{planBean.plan.planModelRunScenarioId}" rendered="#{not simulationBean.embeddedEditing}"/>
+                                   scenarioId="#{planBean.plan.planModelRunScenarioId}" rendered="#{not simulationBean.embeddedEditing}" editActions="false"/>
+			</c:if>
         </ice:panelGroup>
         
             
