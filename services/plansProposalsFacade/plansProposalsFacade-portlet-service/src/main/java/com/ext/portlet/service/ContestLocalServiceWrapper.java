@@ -414,6 +414,12 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getProposalsCommentsCount(contest);
     }
 
+    public long getVotesCount(com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getVotesCount(contest);
+    }
+
     public long getTotalComments(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

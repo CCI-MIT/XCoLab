@@ -97,6 +97,12 @@ public class PlanIndexItemWrapper implements Serializable {
         }
         return voted;
     }
+    
+    public String getVotesCount() throws PortalException, SystemException {
+        PlanAttribute attr = PlanItemLocalServiceUtil.getPlanAttribute(wrapped, PlanConstants.Attribute.VOTES.name());
+        
+        return attr == null ? "0" : attr.getAttributeValue();
+    }
 
     public void vote(ActionEvent e) throws PortalException, SystemException {
         PlanActivityKeys activityKey = PlanActivityKeys.VOTE_FOR_PLAN;

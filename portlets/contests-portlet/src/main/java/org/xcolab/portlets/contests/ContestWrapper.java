@@ -5,8 +5,12 @@ import java.io.Serializable;
 
 import javax.faces.event.ActionEvent;
 
+import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -114,4 +118,17 @@ public class ContestWrapper implements Serializable {
         return ContestLocalServiceUtil.getTotalComments(contest);
     }
     
+    public boolean getContestInVotingPhase() throws SystemException, PortalException {
+        ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
+
+        String status = ContestPhaseLocalServiceUtil.getContestStatusStr(phase);
+        if (status != null) {
+            return ContestStatus.valueOf(status).isCanVote();
+        }
+        return false;
+    }
+    
+    public long getVotesCount() throws PortalException, SystemException {
+        return ContestLocalServiceUtil.getVotesCount(contest);
+    }
 }

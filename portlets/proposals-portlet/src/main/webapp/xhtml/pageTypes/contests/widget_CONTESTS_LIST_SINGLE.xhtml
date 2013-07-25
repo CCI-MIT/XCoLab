@@ -26,7 +26,12 @@
             </div>
         </ice:column>
         <ice:column style="width: 31px" styleClass="g">#{singleContest.proposalsCount}</ice:column>
-        <ice:column style="width: 35px" >#{singleContest.commentsCount}</ice:column>
+        <ice:column style="width: 35px" >
+        	<ice:panelGroup>
+        		<ice:outputText value="#{singleContest.commentsCount}"  rendered="#{not singleContest.activePhase.canVote}" />
+        		<ice:outputText value="#{singleContest.votesCount}" rendered="#{singleContest.activePhase.canVote}" />
+        	</ice:panelGroup>
+        </ice:column>
         <ice:column style="width: 153px" styleClass="g">
             <ui:include src="./widget_WHAT_WHERE_WHO.xhtml">
                 <ui:param name="whatWhoWhere" value="#{singleContest.what}" />

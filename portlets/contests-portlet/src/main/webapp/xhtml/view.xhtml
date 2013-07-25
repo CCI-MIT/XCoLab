@@ -35,8 +35,9 @@
                     <h3><a href="/web/guest/plans/-/plans/contestId/${contest.primaryKey}">#{contest.contestShortName}</a></h3>
                     #{contest.contestName}
                     <div class="count">
-                        <div class="prop"><strong>#{contest.proposalsCount}</strong> proposals</div>
-                        <div class="comm"><strong>#{contest.totalComments}</strong> comments</div>
+                        <ice:panelGroup styleClass="prop"><strong>#{contest.proposalsCount}</strong> proposals</ice:panelGroup>
+                        <ice:panelGroup styleClass="comm" rendered="#{not contest.contestInVotingPhase}"><strong>#{contest.totalComments}</strong> comments</ice:panelGroup>
+                        <ice:panelGroup styleClass="comm" rendered="#{contest.contestInVotingPhase}"><strong>#{contest.votesCount}</strong> votes</ice:panelGroup>
                     </div>
                 </div>
             </div> <!-- /contestbox -->

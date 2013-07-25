@@ -23,7 +23,8 @@
                 #{singleContest.name}
                 <ice:panelGroup styleClass="count">
                     <ice:panelGroup styleClass="prop"><strong>#{singleContest.proposalsCount}</strong> proposals</ice:panelGroup>
-                    <ice:panelGroup styleClass="comm"><strong>#{singleContest.commentsCount}</strong> comments</ice:panelGroup>
+                    <ice:panelGroup styleClass="comm" rendered="#{singleContest.activePhase.canVote}"><strong>#{singleContest.votesCount}</strong> votes</ice:panelGroup>
+                    <ice:panelGroup styleClass="comm" rendered="#{not singleContest.activePhase.canVote}"><strong>#{singleContest.commentsCount}</strong> comments</ice:panelGroup>
                 </ice:panelGroup>
             </ice:panelGroup>
             <f:subview rendered="#{not empty singleContest.flag}">

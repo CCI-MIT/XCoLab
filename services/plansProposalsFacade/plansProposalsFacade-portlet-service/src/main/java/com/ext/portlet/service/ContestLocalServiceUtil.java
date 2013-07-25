@@ -424,6 +424,12 @@ public class ContestLocalServiceUtil {
         return getService().getProposalsCommentsCount(contest);
     }
 
+    public static long getVotesCount(com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getVotesCount(contest);
+    }
+
     public static long getTotalComments(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

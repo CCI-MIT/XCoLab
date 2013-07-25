@@ -218,7 +218,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="thumbs">
+				<ice:panelGroup styleClass="thumbs" rendered="#{not contest.currentPhase.canVote}">
 					<ice:commandLink actionListener="#{plansIndex.updateSortColumn}"
 						value=" ">
 						<f:attribute name="sortColumn" value="SUPPORTERS" />
@@ -232,7 +232,22 @@
 						click to sort by<br />number of supporters
 						<div class="tt-arrow"></div>
 					</div>
-				</div>
+				</ice:panelGroup>
+				<ice:panelGroup styleClass="votes" rendered="#{contest.currentPhase.canVote}">
+					<ice:commandLink actionListener="#{plansIndex.updateSortColumn}"
+						value=" ">
+						<f:attribute name="sortColumn" value="VOTES" />
+					</ice:commandLink>
+					<ui:include src="./contests/widget_SORT_ARROW.xhtml">
+						<ui:param name="sortColumn" value="#{plansIndex.sortColumn}" />
+						<ui:param name="currentColumn" value="VOTES" />
+						<ui:param name="sortAscending" value="#{plansIndex.sortAscending}" />
+					</ui:include>
+					<div class="tooltip">
+						click to sort by<br />number of votes
+						<div class="tt-arrow"></div>
+					</div>
+				</ice:panelGroup>
 				<div class="propcomm">
 					<ice:commandLink actionListener="#{plansIndex.updateSortColumn}"
 						value=" ">

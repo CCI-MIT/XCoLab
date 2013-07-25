@@ -288,6 +288,9 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .thumbs {float:left; width:67px; height:37px; position: relative;}
 .blueheaderbar .thumbs .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .thumbs a {background:url(../images/icon-proposal-thumb.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
+.blueheaderbar .votes {float:left; width:67px; height:37px; position: relative;}
+.blueheaderbar .votes .sort-arrow {position: absolute; top: 15px;}
+.blueheaderbar .votes a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
 .blueheaderbar .propcomm {float:left; width:65px; height:37px; position: relative;}
 .blueheaderbar .propcomm .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .propcomm a {background:url(../images/icon-list-comment.png) no-repeat 0 8px; width:24px; height:37px; display:inline-block;}
@@ -613,9 +616,10 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .propbox.featured .title-author {float:left; width:602px;  margin-top:12px;}
 .propbox h4 {float:left; display:inline; font-weight:700; color:#404040;}
 .propbox h4 span {color:#000;}
-.thumbbox, .commbox {float:left; width:30px; height:22px; font-weight:700; color:#000; padding:4px 0 0 31px; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;}
+.thumbbox, .commbox, .voteboxsmall {float:left; width:30px; height:22px; font-weight:700; color:#000; padding:4px 0 0 31px; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;}
 .thumbbox {background:url(../images/icon-proposal-support.png) no-repeat 11px 5px #f2f1e9; margin-right:6px;}
 .commbox {background:url(../images/icon-proposal-comments.png) no-repeat 11px 5px #f2f1e9; margin-right:18px;}
+.voteboxsmall {background:url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px #f2f1e9; margin-right:6px;}
 .modbox {float:left; width:81px; padding-top:4px;}
 .conbox {float:left; width:99px; padding-top:4px;}
 .propbox.featured h4 {/*height:23px;*/}

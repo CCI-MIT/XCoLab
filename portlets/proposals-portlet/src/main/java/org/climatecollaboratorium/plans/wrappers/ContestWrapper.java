@@ -407,6 +407,15 @@ public class ContestWrapper implements Serializable {
 	    }
 	    return commentsCount;
 	}
+	
+	private Long votesCount = null;
+	public long getVotesCount() throws PortalException, SystemException {
+	    if (votesCount == null) {
+	        votesCount = ContestLocalServiceUtil.getVotesCount(contest);
+	    }
+	    return votesCount;
+	}
+	        
 
 	public String getResourcesUrl() {
 		return contest.getResourcesUrl();

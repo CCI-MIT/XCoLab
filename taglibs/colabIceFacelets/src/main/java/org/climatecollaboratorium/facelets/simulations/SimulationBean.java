@@ -91,10 +91,12 @@ public class SimulationBean implements Serializable {
     }
 
     public void setSimulation(Simulation simulation) throws SystemException, IllegalUIConfigurationException, IOException {
+        
         if (simulation == null) {
             this.simulation = null;
             return;
         }
+        if (this.simulation != null && simulation.getId() == this.simulation.getId()) return;
 
         this.simulation = simulation;
         scenario = null;
@@ -106,11 +108,15 @@ public class SimulationBean implements Serializable {
     }
 
     public void setScenario(Scenario scenario) throws SystemException, IllegalUIConfigurationException, IOException {
+        
+        
         if (scenario == null) {
             this.simulation = null;
             this.scenario = null;
             return;
         }
+        // don't use older scenario when new one is available
+        if (this.scenario != null && scenario.getId() < this.scenario.getId()) return;
 
         this.scenario = scenario;
         this.simulation = scenario.getSimulation();
@@ -275,12 +281,6 @@ public class SimulationBean implements Serializable {
     public void updateDisplay(boolean reuseInputs) throws SystemException, IllegalUIConfigurationException, IOException {
         List<ModelInputDisplayItemWrapper> oldDisplayInputs = new ArrayList<ModelInputDisplayItemWrapper>();
         if (display != null) {
-            /*
-            System.out.println("Old display: " + String.valueOf(display.hashCode()));
-            for (ModelInputDisplayItemWrapper input: display.getWrappedInputs() ) {
-                System.out.println("\t" + input.getName() + ": " + String.valueOf(input.hashCode()));
-            }
-            */
             oldDisplayInputs = display.getWrappedInputs();
         }
         if (scenario == null && simulation == null) {
@@ -296,15 +296,6 @@ public class SimulationBean implements Serializable {
         if (reuseInputs) {
             display.reuseInputs(oldDisplayInputs);
         }
-
-        /*
-         
-         System.out.println("New display: " + String.valueOf(display.hashCode()));
-         
-        for (ModelInputDisplayItemWrapper input: display.getWrappedInputs() ) {
-            System.out.println("\t" + input.getName() + ": " + String.valueOf(input.hashCode()));
-        }
-        */
         
         wrappedInputs.clear();
         
@@ -367,6 +358,13 @@ public class SimulationBean implements Serializable {
     
     public List<ModelOutputErrorSettingWrapper> getOutputErrorSettingWrappers() {
         return outputErrorSettingWrappers;
+    }
+    
+    public void reset() {
+        lastInitSimulationId = 0L;
+        lastInitScenarioId = 0L;
+        simulation = null;
+        scenario = null;
     }
     
 
