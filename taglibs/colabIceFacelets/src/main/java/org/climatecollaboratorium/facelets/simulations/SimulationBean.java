@@ -281,12 +281,6 @@ public class SimulationBean implements Serializable {
     public void updateDisplay(boolean reuseInputs) throws SystemException, IllegalUIConfigurationException, IOException {
         List<ModelInputDisplayItemWrapper> oldDisplayInputs = new ArrayList<ModelInputDisplayItemWrapper>();
         if (display != null) {
-            /*
-            System.out.println("Old display: " + String.valueOf(display.hashCode()));
-            for (ModelInputDisplayItemWrapper input: display.getWrappedInputs() ) {
-                System.out.println("\t" + input.getName() + ": " + String.valueOf(input.hashCode()));
-            }
-            */
             oldDisplayInputs = display.getWrappedInputs();
         }
         if (scenario == null && simulation == null) {
@@ -302,15 +296,6 @@ public class SimulationBean implements Serializable {
         if (reuseInputs) {
             display.reuseInputs(oldDisplayInputs);
         }
-
-        /*
-         
-         System.out.println("New display: " + String.valueOf(display.hashCode()));
-         
-        for (ModelInputDisplayItemWrapper input: display.getWrappedInputs() ) {
-            System.out.println("\t" + input.getName() + ": " + String.valueOf(input.hashCode()));
-        }
-        */
         
         wrappedInputs.clear();
         
