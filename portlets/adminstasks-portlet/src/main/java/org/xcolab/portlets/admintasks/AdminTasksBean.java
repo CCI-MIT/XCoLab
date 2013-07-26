@@ -1,5 +1,6 @@
 package org.xcolab.portlets.admintasks;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,14 +19,17 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanItemGroup;
 import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.NoSuchResourceException;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -36,7 +40,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Permission;
@@ -406,6 +409,178 @@ public class AdminTasksBean {
             fm.setSummary("Orphans found, check logs");   
         }
         FacesContext.getCurrentInstance().addMessage(null, fm);
+    }
+    
+    public void synchronizeComments() throws SystemException, PortalException {
+        Set<Long> groupsProcessed = new HashSet<Long>();
+        
+        for (PlanItemGroup group: PlanItemGroupLocalServiceUtil.getPlanItemGroups(0, Integer.MAX_VALUE)) {
+            if (groupsProcessed.contains(group.getGroupId())) continue;
+            groupsProcessed.add(group.getGroupId());
+            
+            List<PlanItem> plans = new ArrayList<PlanItem>();
+            List<DiscussionCategoryGroup> discussions = new ArrayList<DiscussionCategoryGroup>();
+            for (Long planId: PlanItemGroupLocalServiceUtil.getPlansInGroup(group.getPlanId())) {
+                PlanItem plan = PlanItemLocalServiceUtil.getPlan(planId);
+                plans.add(plan);
+                discussions.add(PlanItemLocalServiceUtil.getDiscussionCategoryGroup(plan));
+            }
+            System.out.println("Working on group: " + PlanItemGroupLocalServiceUtil.getPlansInGroup(group.getPlanId()));
+            
+
+            Map<String, DiscussionMessage> allMessagesMap = new HashMap<String, DiscussionMessage>();
+            
+            
+            for (DiscussionCategoryGroup discussion: discussions) {
+                DiscussionMessage commentsThread = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion);
+                if (commentsThread == null) continue;
+                allMessagesMap.put(commentsThread.getBody(), commentsThread);
+                for (DiscussionMessage msg: DiscussionMessageLocalServiceUtil.getThreadMessages(commentsThread)) {
+                    allMessagesMap.put(msg.getBody(), msg);    
+                }
+            }
+            
+            // sort all comments by publication date
+            List<DiscussionMessage> messages = new ArrayList<DiscussionMessage>(allMessagesMap.values());
+            
+            Collections.sort(messages, new Comparator<DiscussionMessage>() {
+
+                public int compare(DiscussionMessage o1, DiscussionMessage o2) {
+                    return o1.getCreateDate().compareTo(o2.getCreateDate());
+                }
+            });
+            
+            if (messages.isEmpty()) {
+                // nothing to synchronize
+                continue;
+            }
+            for (DiscussionCategoryGroup discussion: discussions) {
+                for (DiscussionMessage message: messages) {
+                    DiscussionMessage commentsThread = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion);
+                    boolean found = false;
+                    if (commentsThread != null ) {
+                        // check if current discussion doesn't contain message already
+                        for (DiscussionMessage msg: DiscussionMessageLocalServiceUtil.getThreadMessages(commentsThread)) {
+                            if (message.getBody().equals(msg.getBody())) found = true;
+                        }
+                        
+                    }
+                    if (found || (commentsThread != null && commentsThread.getBody().equals(message.getBody()))) {
+                        // there is such message in the thread, do nothing
+                        continue;
+                    }
+                    
+                    // message doesn't exist in the thread create it
+                    DiscussionMessage newMessage = (DiscussionMessage) message.clone();
+                    
+                    newMessage.setPk(CounterLocalServiceUtil.increment(DiscussionMessage.class.getName()));
+                    newMessage.setMessageId(CounterLocalServiceUtil.increment(DiscussionMessage.class.getName() + ".discussion"));
+                    
+                    newMessage.setCategoryGroupId(discussion.getId());
+                    newMessage.setNew(true);
+                    
+                    if (commentsThread == null) {
+                        // new message opens a thread
+                        newMessage.setThreadId(0);
+                        discussion.setCommentsThread(newMessage.getMessageId());  
+                        DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(discussion);   
+                    }
+                    else {
+                        // we had a thread, decide with to do with new message, it should either go into the thread, or become
+                        // the first message in the thread
+                        if (newMessage.getCreateDate().before(commentsThread.getCreateDate())) {
+                            // newly created message should be the first message in the thread
+                            // all messages should be updated to reflect new thread parent
+                            newMessage.setThreadId(0);
+                            discussion.setCommentsThread(newMessage.getMessageId());  
+                            DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(discussion);   
+                            commentsThread.setThreadId(newMessage.getMessageId());
+                            DiscussionMessageLocalServiceUtil.updateDiscussionMessage(commentsThread);
+                            
+                            for (DiscussionMessage threadMessage: DiscussionMessageLocalServiceUtil.getThreadMessages(commentsThread)) {
+                                threadMessage.setThreadId(newMessage.getMessageId());
+                                DiscussionMessageLocalServiceUtil.updateDiscussionMessage(threadMessage);
+                            }
+                            
+                        }
+                        else {
+                            // message will go inside the thread, no need to update other messages
+                            newMessage.setThreadId(commentsThread.getMessageId());
+                        }
+                    }
+                    System.out.println("copied message: " + newMessage);
+                    DiscussionMessageLocalServiceUtil.addDiscussionMessage(newMessage);
+                    
+                    
+                }
+            }
+            
+            /*
+            
+            for (DiscussionCategoryGroup discussion: discussions) {
+                DiscussionMessage commentsThread = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion);
+                for (DiscussionCategoryGroup secondDiscussion: discussions) {
+                    System.out.println(">>>> From discussion: " + discussion);
+                    System.out.println(">>>> To discussion: " + secondDiscussion);
+                    if (secondDiscussion.getId() == discussion.getId()) continue;
+
+                    if (commentsThread == null) {
+                        System.out.println("comments thread jest null....");
+                        continue;
+                    }
+                    for (DiscussionMessage msg: DiscussionMessageLocalServiceUtil.getThreadMessages(commentsThread)) {
+                        // check if such message is in child comments thread
+
+                        DiscussionMessage secondCommentsThread = 
+                                DiscussionCategoryGroupLocalServiceUtil.getCommentThread(secondDiscussion);
+                        
+                        boolean found = false;
+                        if (secondCommentsThread != null) {
+                            for (DiscussionMessage msg2: DiscussionMessageLocalServiceUtil.getThreadMessages(secondCommentsThread)) {
+                                if (msg2.getBody().trim().equals(msg.getBody().trim())) {
+                                    found = true;
+                                }
+                            }
+                        }
+                        else {
+                            System.out.println("second comments is null");
+                        }
+                        if (found) continue;
+                        
+                        System.out.println("Should copy message: " + msg);
+                        
+                        DiscussionMessage newMessage = (DiscussionMessage) msg.clone();
+                        
+                        newMessage.setPk(CounterLocalServiceUtil.increment(DiscussionMessage.class.getName()));
+                        newMessage.setMessageId(CounterLocalServiceUtil.increment(DiscussionMessage.class.getName() + ".discussion"));
+                        
+                        newMessage.setCategoryGroupId(secondDiscussion.getId());
+                        newMessage.setNew(true);
+
+                        if (secondCommentsThread == null) {
+                            System.out.println(" ** creating new thread");
+                            // if there was no comments thread available, add one
+                            newMessage.setThreadId(0);
+                            secondDiscussion.setCommentsThread(newMessage.getMessageId());  
+                            DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(secondDiscussion);
+                        }
+                        else {
+                            // we had a thread, add new message to it
+                            
+                            newMessage.setThreadId(secondCommentsThread.getMessageId());
+                        }
+                        System.out.println("copied message: " + newMessage);
+                        DiscussionMessageLocalServiceUtil.addDiscussionMessage(newMessage);
+                        
+                        // clone msg and add it to secondCommentsThread
+                        //DiscussionMessage clonedMsg = msg.clone();
+                    }
+                    
+                }
+            }
+            */
+        }
+        
     }
     
     
