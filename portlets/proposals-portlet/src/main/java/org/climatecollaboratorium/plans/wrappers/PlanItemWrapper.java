@@ -70,11 +70,11 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 public class PlanItemWrapper implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private PlanItem wrapped;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    private PlanItem wrapped;
     private PlanBean planBean;
     /*
      * Description related variables
@@ -100,19 +100,19 @@ public class PlanItemWrapper implements Serializable {
 
     private boolean deleted;
 
-    private static String[] EMPTY_ARRAY = new String[] {};
+    private static String[] EMPTY_ARRAY = new String[]{};
 
     private EventBus eventBus;
     private Map<String, String> planAttributes;
     private boolean subscribed;
     private Long newImageId;
 
-    private final static String[] regionsDevelopedArr = { "United States", "European Union",
-            "Russia/Former Soviet Union", "OECD Asia", "Canada" };
-    private final static String[] regionsRapidlyDevelopingArr = { "China", "India", "Brazil", "South Africa", "Mexico",
-            "Rapidly developing Asia", };
-    private final static String[] regionsOtherDevelopingArr = { "Middle East", "Latin America", "Africa",
-            "Other developing Asia" };
+    private final static String[] regionsDevelopedArr = {"United States", "European Union",
+            "Russia/Former Soviet Union", "OECD Asia", "Canada"};
+    private final static String[] regionsRapidlyDevelopingArr = {"China", "India", "Brazil", "South Africa", "Mexico",
+            "Rapidly developing Asia",};
+    private final static String[] regionsOtherDevelopingArr = {"Middle East", "Latin America", "Africa",
+            "Other developing Asia"};
 
     private final static Set<String> regionsDeveloped = new HashSet<String>(Arrays.asList(regionsDevelopedArr));
     private final static Set<String> regionsRapidlyDeveloping = new HashSet<String>(
@@ -197,20 +197,22 @@ public class PlanItemWrapper implements Serializable {
         public static PlanMode getMode(PlanItem item) throws SystemException {
             return PlanItemLocalServiceUtil.getOpen(item) ? OPEN : CLOSED;
         }
-    };
+    }
 
-    private static SelectItem[] openOrClosed = new SelectItem[] {
+    ;
+
+    private static SelectItem[] openOrClosed = new SelectItem[]{
             new SelectItem(PlanMode.OPEN.name(), PlanMode.OPEN.getDescription()),
-            new SelectItem(PlanMode.CLOSED.name(), PlanMode.CLOSED.getDescription()) };
+            new SelectItem(PlanMode.CLOSED.name(), PlanMode.CLOSED.getDescription())};
 
-    private static SelectItem[] draftOrSubmitted = new SelectItem[] {
+    private static SelectItem[] draftOrSubmitted = new SelectItem[]{
             new SelectItem(PlanStatusSelection.DRAFT.name(), PlanStatusSelection.DRAFT.getDescription()),
-            new SelectItem(PlanStatusSelection.SUBMITTED.name(), PlanStatusSelection.SUBMITTED.getDescription()) };
+            new SelectItem(PlanStatusSelection.SUBMITTED.name(), PlanStatusSelection.SUBMITTED.getDescription())};
 
-    private static SelectItem[] askForHelp = new SelectItem[] { new SelectItem("help",
-            "Invite others to help with this proposal (displays an indicator in the proposal index)") };
+    private static SelectItem[] askForHelp = new SelectItem[]{new SelectItem("help",
+            "Invite others to help with this proposal (displays an indicator in the proposal index)")};
 
-    private static String[] statusValue = new String[] { askForHelp[0].getValue().toString() };
+    private static String[] statusValue = new String[]{askForHelp[0].getValue().toString()};
 
     private boolean helpStatus = false;
 
@@ -317,7 +319,7 @@ public class PlanItemWrapper implements Serializable {
         if (Helper.isUserLoggedIn()) {
             String savedDescription = UserInputFilterUtil.filterHtml(description);
             if (savedDescription != null) {
-            	ThemeDisplay td = Helper.getThemeDisplay();
+                ThemeDisplay td = Helper.getThemeDisplay();
                 PlanItemLocalServiceUtil.setDescription(wrapped, savedDescription, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_DESCRIPTION.id(), null, 0);
@@ -361,7 +363,7 @@ public class PlanItemWrapper implements Serializable {
         if (Helper.isUserLoggedIn()) {
             PlanActivityKeys activityKey = PlanActivityKeys.VOTE_FOR_PLAN;
             try {
-                if (PlanVoteLocalServiceUtil.getPlanVote(Helper.getLiferayUser().getUserId(), 
+                if (PlanVoteLocalServiceUtil.getPlanVote(Helper.getLiferayUser().getUserId(),
                         PlanItemLocalServiceUtil.getContest(wrapped).getContestPK()) != null) {
                     activityKey = PlanActivityKeys.SWICTH_VOTE_FOR_PLAN;
                 }
@@ -384,7 +386,7 @@ public class PlanItemWrapper implements Serializable {
 
     public void unvote(ActionEvent e) throws PortalException, SystemException {
         if (Helper.isUserLoggedIn()) {
-        	ThemeDisplay td = Helper.getThemeDisplay();
+            ThemeDisplay td = Helper.getThemeDisplay();
             PlanItemLocalServiceUtil.unvote(wrapped, Helper.getLiferayUser().getUserId());
 
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(), PlanItem.class.getName(),
@@ -409,13 +411,13 @@ public class PlanItemWrapper implements Serializable {
                         PlanItem.class, wrapped.getPlanId(), 0, "");
 
                 ActivitySubscriptionLocalServiceUtil.deleteSubscription(Helper.getLiferayUser().getUserId(),
-                        DiscussionCategoryGroup.class, PlanItemLocalServiceUtil.getCategoryGroupId(wrapped), 
+                        DiscussionCategoryGroup.class, PlanItemLocalServiceUtil.getCategoryGroupId(wrapped),
                         0, "");
             } else {
                 ActivitySubscriptionLocalServiceUtil.addSubscription(PlanItem.class, wrapped.getPlanId(), 0, "",
                         Helper.getLiferayUser().getUserId());
 
-                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, PlanItemLocalServiceUtil.getCategoryGroupId(wrapped), 
+                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, PlanItemLocalServiceUtil.getCategoryGroupId(wrapped),
                         0, "", Helper.getLiferayUser().getUserId());
             }
             ActivitySubscriptionLocalServiceUtil.isSubscribed(Helper.getLiferayUser().getUserId(), PlanItem.class,
@@ -590,15 +592,15 @@ public class PlanItemWrapper implements Serializable {
     public Long getGroupId() throws SystemException {
         return PlanItemLocalServiceUtil.getPlanGroupId(wrapped);
     }
-    
+
     public Date getUpdated() throws SystemException {
         return wrapped.getUpdated();
     }
-    
+
     public Long getUpdateAuthorId() throws SystemException {
         return wrapped.getUpdateAuthorId();
     }
-    
+
     public String getUpdateAuthorScreenName() throws SystemException, PortalException {
         return PlanItemLocalServiceUtil.getUpdateAuthor(wrapped).getScreenName();
     }
@@ -608,7 +610,7 @@ public class PlanItemWrapper implements Serializable {
     }
 
     public List<PlanFan> getPlanFansHalf1() throws SystemException {
-        return PlanItemLocalServiceUtil.getFans(wrapped).subList(0, 
+        return PlanItemLocalServiceUtil.getFans(wrapped).subList(0,
                 PlanItemLocalServiceUtil.getFans(wrapped).size() / 2 + PlanItemLocalServiceUtil.getFans(wrapped).size() % 2);
     }
 
@@ -802,7 +804,7 @@ public class PlanItemWrapper implements Serializable {
     }
 
     public boolean getHasModel() throws PortalException, SystemException {
-        return PlanItemLocalServiceUtil.getPlanType(wrapped).getDefaultModelId() != 0L && 
+        return PlanItemLocalServiceUtil.getPlanType(wrapped).getDefaultModelId() != 0L &&
                 PlanItemLocalServiceUtil.getPlanType(wrapped).getDefaultModelId() > 0L;
     }
 
@@ -817,9 +819,7 @@ public class PlanItemWrapper implements Serializable {
                 return "Developed";
             } else if (regionsRapidlyDeveloping.contains(region)) {
                 return "Rapidly Developing";
-            }
-
-            else if (regionsOtherDeveloping.contains(region)) {
+            } else if (regionsOtherDeveloping.contains(region)) {
                 return "Other Developing";
             }
         }
@@ -907,7 +907,7 @@ public class PlanItemWrapper implements Serializable {
             for (PlanSection ps : PlanItemLocalServiceUtil.getPlanSections(wrapped)) {
                 sections.add(new PlanSectionWrapper(ps, this, false));
             }
-            sections.get(sections.size()-1).setLast(true);
+            sections.get(sections.size() - 1).setLast(true);
         }
         return sections;
     }
@@ -920,28 +920,28 @@ public class PlanItemWrapper implements Serializable {
     public void setScrapbookText(String scrapboxText) throws SystemException {
         PlanItemLocalServiceUtil.setAttribute(wrapped, PlanConstants.Attribute.SCRAPBOOK_HOVER.name(), scrapboxText);
     }
-    
+
     public String getTags() throws SystemException {
         return PlanItemLocalServiceUtil.getTags(wrapped);
     }
-    
+
     public String getTagsHover() throws SystemException {
         return PlanItemLocalServiceUtil.getTagsHover(wrapped);
     }
-    
-    public int getTagsOrder() throws SystemException  {
+
+    public int getTagsOrder() throws SystemException {
         return PlanItemLocalServiceUtil.getTagsOrder(wrapped);
     }
-    
-    public void setTagsOrder(int order) throws SystemException  {
+
+    public void setTagsOrder(int order) throws SystemException {
         PlanItemLocalServiceUtil.setTagsOrder(wrapped, order);
     }
-    
+
 
     public void setTags(String tags) throws SystemException {
         PlanItemLocalServiceUtil.setAttribute(wrapped, PlanConstants.Attribute.TAGS.name(), tags);
     }
-    
+
     public void setTagsHover(String tagsHover) throws SystemException {
         PlanItemLocalServiceUtil.setAttribute(wrapped, PlanConstants.Attribute.TAGS_HOVER.name(), tagsHover);
     }
@@ -968,18 +968,18 @@ public class PlanItemWrapper implements Serializable {
                 }
             }
 
-            boolean descriptionChanged = false; 
-            if (description != null && (PlanItemLocalServiceUtil.getDescription(wrapped) == null || 
+            boolean descriptionChanged = false;
+            if (description != null && (PlanItemLocalServiceUtil.getDescription(wrapped) == null ||
                     !description.trim().equals(PlanItemLocalServiceUtil.getDescription(wrapped).trim()))) {
                 String savedDescription = UserInputFilterUtil.filterHtml(description);
-                
+
                 PlanItemLocalServiceUtil.setDescription(wrapped, savedDescription, Helper.getLiferayUser().getUserId());
                 descriptionChanged = true;
                 eventBus.fireEvent(new PlanUpdatedEvent(wrapped));
             }
 
             if (name != null && !name.trim().equals(PlanItemLocalServiceUtil.getName(wrapped).trim())) {
-            	ThemeDisplay td = Helper.getThemeDisplay();
+                ThemeDisplay td = Helper.getThemeDisplay();
                 PlanItemLocalServiceUtil.setName(wrapped, name, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_NAME.id(), null, 0);
@@ -993,7 +993,7 @@ public class PlanItemWrapper implements Serializable {
                 // planBean.refreshIndex();
             }
             if (newImageId != null) {
-            	ThemeDisplay td = Helper.getThemeDisplay();
+                ThemeDisplay td = Helper.getThemeDisplay();
                 PlanItemLocalServiceUtil.setImage(wrapped, newImageId, Helper.getLiferayUser().getUserId());
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.CHANGE_IMAGE.id(), null, 0);
@@ -1009,13 +1009,13 @@ public class PlanItemWrapper implements Serializable {
                 PlanItemLocalServiceUtil.setTeam(wrapped, newTeam);
             }
 
-            if (newAbstract != null && (PlanItemLocalServiceUtil.getPitch(wrapped) == null || 
-                    ! PlanItemLocalServiceUtil.getPitch(wrapped).trim().equals(newAbstract.trim()))) {
+            if (newAbstract != null && (PlanItemLocalServiceUtil.getPitch(wrapped) == null ||
+                    !PlanItemLocalServiceUtil.getPitch(wrapped).trim().equals(newAbstract.trim()))) {
                 PlanItemLocalServiceUtil.setPitch(wrapped, newAbstract, Helper.getLiferayUser().getUserId());
                 descriptionChanged = true;
             }
             if (descriptionChanged) {
-            	ThemeDisplay td = Helper.getThemeDisplay();
+                ThemeDisplay td = Helper.getThemeDisplay();
                 SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                         PlanItem.class.getName(), wrapped.getPlanId(), PlanActivityKeys.EDIT_DESCRIPTION.id(), null, 0);
             }
@@ -1043,7 +1043,7 @@ public class PlanItemWrapper implements Serializable {
                 return;
             }
         }
-        
+
         ImageUtils.resizeAndCropImage(uploadedFile, 150, 150);
         newImage = ImageLocalServiceUtil.getImage(uploadedFile);
 
@@ -1105,18 +1105,18 @@ public class PlanItemWrapper implements Serializable {
     public boolean isViewingLatest() {
         return viewingLatest;
     }
-    
+
 
     public void revertTo(ActionEvent e) throws PortalException, SystemException {
         if (Helper.isUserLoggedIn()) {
             PlanItemLocalServiceUtil.revertTo(wrapped, Helper.getLiferayUser().getUserId());
             planBean.toggleEditing(e);
             planBean.refresh();
-            
+
         }
     }
-    
-    
+
+
     public void goToCurrent(ActionEvent e) throws PortalException, SystemException {
         planBean.refresh();
     }
@@ -1128,36 +1128,51 @@ public class PlanItemWrapper implements Serializable {
     public void setNewImageId(Long newImageId) {
         this.newImageId = newImageId;
     }
-    
+
 
     public List<Long> getPlansInGroup() throws NoSuchModelException, SystemException {
         return PlanItemGroupLocalServiceUtil.getPlansInGroup(wrapped.getPlanId());
     }
-    
+
+    /**
+     * checks if proposal is most recent in group that hasn't been deleted yet
+     * @return
+     * @throws NoSuchModelException
+     * @throws SystemException
+     */
     public boolean isLastInGroup() throws NoSuchModelException, SystemException {
         List<Long> plansInGroup = getPlansInGroup();
-        return plansInGroup.get(plansInGroup.size()-1).equals(wrapped.getPlanId());
+        for(int i=1;i<=plansInGroup.size();i++) {
+            Long lastPlanInGroup = plansInGroup.get(plansInGroup.size() - i);
+            if(lastPlanInGroup.equals(wrapped.getPlanId()) && !checkPlanDeleted(lastPlanInGroup)) return true;
+            else if(!checkPlanDeleted(lastPlanInGroup)) return false;
+        }
+        return false;
     }
-    
-    public String getPromotedContestPhaseName() throws SystemException, PortalException{
-    	PlanItem pi = PlanItemLocalServiceUtil.getPlan(getLastIdInGroup());
-    	ContestPhase cp = PlanItemLocalServiceUtil.getContestPhase(pi);
-    	String name = ContestPhaseLocalServiceUtil.getName(cp);
-    	return name;
+
+    private boolean checkPlanDeleted(Long planId) throws NoSuchModelException, SystemException {
+        return "DELETED".equals(PlanItemLocalServiceUtil.getPlan(planId).getState());
     }
-    
+
+    public String getPromotedContestPhaseName() throws SystemException, PortalException {
+        PlanItem pi = PlanItemLocalServiceUtil.getPlan(getLastIdInGroup());
+        ContestPhase cp = PlanItemLocalServiceUtil.getContestPhase(pi);
+        String name = ContestPhaseLocalServiceUtil.getName(cp);
+        return name;
+    }
+
     public Long getLastIdInGroup() throws NoSuchModelException, SystemException {
         List<Long> plansInGroup = getPlansInGroup();
-        return plansInGroup.get(plansInGroup.size()-1);
+        return plansInGroup.get(plansInGroup.size() - 1);
     }
-    
+
 
     public static class Tuple implements Serializable {
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		private Object first;
+         *
+         */
+        private static final long serialVersionUID = 1L;
+        private Object first;
         private Object second;
 
         public Object getFirst() {
@@ -1185,6 +1200,6 @@ public class PlanItemWrapper implements Serializable {
 
         }
     }
-    
+
 
 }
