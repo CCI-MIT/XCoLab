@@ -278,7 +278,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             return null;
         
             try {
-                DiscussionMessage c = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
+                DiscussionMessage c = DiscussionMessageLocalServiceUtil.getMessageByMessageId(messageId);
                 return c;
             } catch (PortalException e) {
                 _log.error("Can't reindex message " + obj, e);
