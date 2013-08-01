@@ -41,9 +41,17 @@
 					</f:subview>
 				</f:subview>
 			</f:subview>
-
 		</div>
-		<!-- /headline -->
+        <!-- /headline -->
+
+        <div style="
+    margin-bottom: 10px;
+    font-size: 17px;
+">To vote, click on the proposal title and then select "<b style="
+    color: #e36f0f;
+">Vote for proposal</b>".</div>
+
+
 		<div class="blueheaderbar">
 			<div class="contestbar">
 				<ui:include src="./contests/widget_CONTEST_PHASES.xhtml" />
@@ -156,8 +164,6 @@
 			</div>
 		</div>
 
-
-
 		<div class="headline subhead">
 			<h2>
 				<span>#{contest.contest.plansIndex.plansCount}</span> proposals
@@ -178,6 +184,7 @@
 			</div>
 		</div>
 		<!-- /headline.subhead -->
+
 
 		<ice:form>
 			<div class="blueheaderbar tooltips">

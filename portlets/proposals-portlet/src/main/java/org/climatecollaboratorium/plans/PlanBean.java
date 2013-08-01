@@ -71,7 +71,6 @@ public class PlanBean implements Serializable {
 	private boolean leaveThisPlan = false;
 
 	static {
-
 		tabNameIndexMap.put("admin", tabNameIndexMap.size());
 		tabNameIndexMap.put("description", tabNameIndexMap.size());
 		tabNameIndexMap.put("actionsimpacts", tabNameIndexMap.size());
