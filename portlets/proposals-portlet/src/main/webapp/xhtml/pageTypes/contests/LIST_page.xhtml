@@ -41,18 +41,35 @@
                 <ui:param name="sortAscending" value="#{contests.sortAscending}" />
              </ui:include>
         </div>
-        
-        <div class="comment">
-            <ice:commandLink actionListener="#{contests.changeSortColumn}" value=" " >
-                <f:attribute name="sortColumn" value="COMMENTS" />
-            </ice:commandLink>
-            <div class="tooltip">click to sort by number of comments<div class="tt-arrow"></div></div>
-            <ui:include src="./widget_SORT_ARROW.xhtml">
-                <ui:param name="sortColumn" value="#{contests.sortColumn}" />
-                <ui:param name="currentColumn" value="COMMENTS" />
-                <ui:param name="sortAscending" value="#{contests.sortAscending}" />
-             </ui:include>
-        </div>
+        <f:subview rendered="#{not contests.contests[0].activePhase.canVote}">
+            <div class="comment">
+                <ice:commandLink actionListener="#{contests.changeSortColumn}" value=" " >
+                    <f:attribute name="sortColumn" value="COMMENTS" />
+                </ice:commandLink>
+                <div class="tooltip">click to sort by number of comments<div class="tt-arrow"></div></div>
+                <ui:include src="./widget_SORT_ARROW.xhtml">
+                    <ui:param name="sortColumn" value="#{contests.sortColumn}" />
+                    <ui:param name="currentColumn" value="COMMENTS" />
+                    <ui:param name="sortAscending" value="#{contests.sortAscending}" />
+                </ui:include>
+            </div>
+        </f:subview>
+
+        <f:subview rendered="#{contests.contests[0].activePhase.canVote}">
+            <div class="voteslist">
+                <ice:commandLink actionListener="#{contests.changeSortColumn}" value=" " >
+                    <f:attribute name="sortColumn" value="COMMENTS" />
+                </ice:commandLink>
+                <div class="tooltip">click to sort by number of comments<div class="tt-arrow"></div></div>
+                <ui:include src="./widget_SORT_ARROW.xhtml">
+                    <ui:param name="sortColumn" value="#{contests.sortColumn}" />
+                    <ui:param name="currentColumn" value="COMMENTS" />
+                    <ui:param name="sortAscending" value="#{contests.sortAscending}" />
+                </ui:include>
+            </div>
+        </f:subview>
+
+
         <div class="what">
             <ice:commandLink actionListener="#{contests.changeSortColumn}" value="What" >
                 <f:attribute name="sortColumn" value="WHAT" />

@@ -273,8 +273,11 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .proposal .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .proposal a {background:url(../images/icon-list-proposals.png) no-repeat 9px 7px; width:33px; height:37px; display:inline-block;}
 .blueheaderbar .comment {float:left; width:55px; height:37px; position: relative;}
-.blueheaderbar .comment .sort-arrow {position: absolute; top: 15px;} 
+.blueheaderbar .comment .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .comment a {background:url(../images/icon-list-comment.png) no-repeat 9px 8px; width:33px; height:37px; display:inline-block;}
+.blueheaderbar .voteslist {float:left; width:55px; height:37px; position: relative;}
+.blueheaderbar .voteslist .sort-arrow {position: absolute; top: 15px;}
+.blueheaderbar .voteslist a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
 .blueheaderbar .what {float:left; width:168px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
 .blueheaderbar .what a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
 .blueheaderbar .where {float:left;  width:160px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
