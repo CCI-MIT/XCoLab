@@ -82,12 +82,14 @@
     </ice:form><br />
  </div> <!-- /headline -->
 
+    <f:subview rendered="#{contests.showActiveOnly}">
     <div style="
     margin-bottom: 10px;
     font-size: 17px;
 ">To vote, first select a contest, then click on the proposal title and select   <b style="
     color: #e36f0f;
 ">Vote for proposal</b></div>
+</f:subview>
 
     <f:subview value="Show active contests" actionListener="#{contests.toggleActiveInactive}" rendered="#{not contests.showActiveOnly}">
         <ice:form>
