@@ -15,7 +15,9 @@ import java.util.Random;
 
 import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
+import javax.mail.internet.InternetAddress;
 
+import com.liferay.util.mail.MailEngine;
 import org.apache.commons.io.FileUtils;
 import org.icefaces.ace.component.fileentry.FileEntry;
 import org.icefaces.ace.component.fileentry.FileEntryEvent;
@@ -238,6 +240,8 @@ public class UserWrapper implements Serializable {
 
 	public void persistChanges() throws Exception {
 		boolean changed = false;
+        boolean eMailChanged = false;
+
 		if (!user.getScreenName().equals(screenName)) {
 			user.setScreenName(screenName);
 			changed = true;
@@ -245,6 +249,7 @@ public class UserWrapper implements Serializable {
 		if (!user.getEmailAddress().equals(email)) {
 			user.setEmailAddress(email);
 			changed = true;
+            eMailChanged = true;
 		}
 		if (!user.getFirstName().equals(firstName)) {
 			user.setFirstName(firstName);
@@ -287,6 +292,29 @@ public class UserWrapper implements Serializable {
 
 		if (changed) {
 			UserLocalServiceUtil.updateUser(user);
+
+            if(eMailChanged) {
+                String messageSubject = "Your email address on the Climate CoLab has been updated";
+                String messageBody = "Dear "+firstName+",\n" +
+                        "\n" +
+                        "This is an automated message to confirm that you recently updated your email address on the Climate CoLab website.\n" +
+                        "\n" +
+                        "Your username:  "+screenName+"\n" +
+                        "Your updated email address: "+email+"\n" +
+                        "\n" +
+                        "You can login with your username at www.climatecolab.org.  If you have any questions or need additional help, simply reply to this message.\n" +
+                        "\n" +
+                        "Thank you for engaging on the Climate CoLab!\n";
+
+                InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
+
+                InternetAddress[] addressTo =  {new InternetAddress(email)};
+
+                InternetAddress replyTo[] = { addressFrom };
+
+                MailEngine.send(addressFrom, addressTo, null, null, null,
+                        messageSubject, messageBody, false, replyTo, null, null);
+            }
 		}
 
 		if (newUserProfile != null) {
