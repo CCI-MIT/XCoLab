@@ -4,6 +4,7 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>loginregister-portlet</portlet-name>
+        <social-activity-interpreter-class>org.xcolab.portlets.loginregister.activity.LoginRegisterFeedEntry</social-activity-interpreter-class>
         <instanceable>false</instanceable>
         <private-session-attributes>false</private-session-attributes>
 		<header-portlet-css>/css/main.css</header-portlet-css>

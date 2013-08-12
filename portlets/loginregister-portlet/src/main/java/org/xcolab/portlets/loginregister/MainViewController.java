@@ -20,6 +20,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
 import org.xcolab.utils.PropertiesUtils;
 import org.xcolab.utils.ReCaptchaUtils;
 
@@ -49,6 +50,7 @@ import com.liferay.portlet.expando.model.ExpandoTable;
 import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 //import javax.validation.Validator;
 
@@ -222,6 +224,10 @@ public class MainViewController {
 							newAccountBean.getPassword());
 					
 					httpReq.getSession().setAttribute("collab_user_has_registered", true);
+					
+
+		            SocialActivityLocalServiceUtil.addActivity(user.getUserId(), themeDisplay.getScopeGroupId(), User.class.getName(),
+		                    user.getUserId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
 
 					request.getPortletSession().setAttribute("collab_user_has_registered", true);
 					PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);

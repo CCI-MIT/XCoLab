@@ -61,12 +61,21 @@ public class LoginController {
 
         User user = null;
         try {
-            LoginUtil.logUserIn(request, response, request.getParameter("login"), request.getParameter("password"));
+            String login = request.getParameter("login");
+            if (! StringUtils.isBlank(login) && login.contains("@")) {
+                // search for user by email and after that take his/her screen name for logging in
+                user = UserLocalServiceUtil.getUserByEmailAddress(companyId, login);
+                
+                if (user != null) {
+                    login = user.getScreenName();
+                }
+            }
+            
+            LoginUtil.logUserIn(request, response, login, request.getParameter("password"));
 
-
-            String username = request.getParameter("login");
-
-            user = UserLocalServiceUtil.getUserByScreenName(companyId, username);
+            if (user == null) {
+                user = UserLocalServiceUtil.getUserByScreenName(companyId, login);
+            }
 
         } catch (Exception e) {
             if (e instanceof AuthException) {
