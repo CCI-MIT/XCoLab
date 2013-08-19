@@ -141,12 +141,12 @@
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
 					<td colspan="3">
-						<script type="text/javascript">
-							var RecaptchaOptions = {
-								lang : 'en'
-							};
-						</script> 
-						<script type="text/javascript" src="${recaptchaUrlScript}${recaptchaKeyPublic}"><!-- --></script>
+						<portlet:resourceURL var="getCaptchaImage" id="ajaxHandler"/>
+						<img src="${getCaptchaImage }" style="margin-bottom: 10px;"/><br />
+						<form:input cssClass="popupreg_input" path="captchaText" />
+						<div class="reg_errors"><!--  -->
+							<form:errors cssClass="alert alert-error" path="captchaText" />
+						</div>
 					</td>
 				</tr>
 

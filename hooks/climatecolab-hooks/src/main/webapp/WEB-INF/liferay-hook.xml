@@ -31,6 +31,10 @@
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.FileUploadFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
+		<servlet-filter-name>CaptchaFilter</servlet-filter-name>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.captcha.CaptchaFilter</servlet-filter-impl>
+	</servlet-filter>
+	<servlet-filter>
                 <servlet-filter-name>URL Rewrite Filter</servlet-filter-name>
                 <servlet-filter-impl>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</servlet-filter-impl>
                 <init-param>
@@ -72,5 +76,9 @@
     	<servlet-filter-name>FileUploadFilter</servlet-filter-name>
     	<url-pattern>/fileUpload</url-pattern>
     </servlet-filter-mapping>
+	<servlet-filter-mapping>
+		<servlet-filter-name>CaptchaFilter</servlet-filter-name>
+		<url-pattern>/*/captcha</url-pattern>
+	</servlet-filter-mapping>
 	
 </hook>
