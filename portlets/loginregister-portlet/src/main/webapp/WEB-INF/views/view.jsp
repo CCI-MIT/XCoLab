@@ -137,7 +137,7 @@
 				</tr>
 
 				<tr>
-					<th nowrap="nowrap">Retype the words <img
+					<th nowrap="nowrap">Retype the numbers <img
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
 					<td colspan="3">
