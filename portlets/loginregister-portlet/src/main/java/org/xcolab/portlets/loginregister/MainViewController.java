@@ -64,9 +64,6 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 @RequestMapping("view")
 public class MainViewController {
 
-	private final static String RECAPTCHA_KEY_PUBLIC = "captcha.engine.recaptcha.key.public";
-	private final static String RECAPTCHA_URL_SCRIPT = "captcha.engine.recaptcha.url.script";
-	private final static String RECAPTCHA_URL_NOSCRIPT = "captcha.engine.recaptcha.url.noscript";
 	private long DEFAULT_COMPANY_ID = 10112L;
 
 	@Autowired
@@ -75,13 +72,13 @@ public class MainViewController {
 	@Autowired
 	private MessageSource messageSource;
 
-	@InitBinder("createUserBean")
+	@InitBinder("contactBean")
 	public void initBinder(WebDataBinder binder) {
 		binder.setValidator(validator);
 	}
 
 	/**
-	 * Main view displayed when user enters page with loginregister portlet
+	 * Main view displayed for contactform
 	 * 
 	 * @param request
 	 * @param response
@@ -116,7 +113,6 @@ public class MainViewController {
 		} else {
 			model.addAttribute("createUserBean", new CreateUserBean());
 			model.addAttribute("redirect", HtmlUtil.escape(redirect));
-			addRecaptchaPropertiesToModel(model);
 		}
 		return "view";
 	}
@@ -148,7 +144,6 @@ public class MainViewController {
 			BindingResult result,
 			@RequestParam(required = false) String redirect) {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
-		addRecaptchaPropertiesToModel(model);
 
 		
 		if (!result.hasErrors()) {
@@ -279,13 +274,5 @@ public class MainViewController {
 	    CaptchaUtil.serveImage(request, response);
 	}
 
-	private void addRecaptchaPropertiesToModel(Model model) {
-		model.addAttribute("recaptchaUrlScript",
-				PropertiesUtils.get(RECAPTCHA_URL_SCRIPT));
-		model.addAttribute("recaptchaUrlNoscript",
-				PropertiesUtils.get(RECAPTCHA_URL_NOSCRIPT));
-		model.addAttribute("recaptchaKeyPublic",
-				PropertiesUtils.get(RECAPTCHA_KEY_PUBLIC));
-	}
 
 }

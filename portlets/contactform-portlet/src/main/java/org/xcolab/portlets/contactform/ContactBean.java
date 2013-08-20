@@ -2,166 +2,56 @@ package org.xcolab.portlets.contactform;
 
 import java.io.Serializable;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.utils.PropertiesUtils;
+public class ContactBean  implements Serializable {
+    private static final long serialVersionUID = -6456025417093073280L;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
+    @NotBlank
+    private String name;
 
-public class ContactBean implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String name;
-	private String email;
-	private String message;
-	private int requestCount;
-	private boolean expanded;
-	private int tryNumber;
-	private final String captchaScriptURL;
-	private final String captchaNoScriptURL;
-	private final String captchaPublicKey;
-	private final String fromAddress;
+    @NotBlank
+    @Email(regexp = "(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")
+    private String email;
+    
+    @NotBlank
+    private String message;
+    
+    @NotBlank
+    private String captchaText;
 
-	private ContactPreferences contactPreferences;
-	private String captchaText;
-	private String captchaChallenge;
+    public String getName() {
+        return name;
+    }
 
-	public ContactBean() {
-		captchaScriptURL = PropertiesUtils
-				.get("captcha.engine.recaptcha.url.script");
-		captchaNoScriptURL = PropertiesUtils
-				.get("captcha.engine.recaptcha.url.noscript");
-		captchaPublicKey = PropertiesUtils
-				.get("captcha.engine.recaptcha.key.public");
-		fromAddress = PropertiesUtils.get("contact.form.from.email");
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setMessage(String message) {
+        this.message = message; 
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getCaptchaText() {
+        return captchaText;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setCaptchaText(String captchaText) {
-		this.captchaText = captchaText;
-	}
-
-	public String getCaptchaText() {
-		return captchaText;
-	}
-
-	public void sendMessage(ActionEvent e) throws AddressException,
-			SystemException, PortalException, MailEngineException {
-		String messageSubject = applyFilters(contactPreferences
-				.getMessageSubject());
-		String messageBody = applyFilters(contactPreferences.getMessageFormat());
-
-		InternetAddress addressFrom = new InternetAddress(fromAddress);
-
-		String[] receipients = contactPreferences.getReceipientsArray();
-		InternetAddress[] addressTo = new InternetAddress[receipients.length];
-		for (int i = 0; i < receipients.length; i++) {
-			addressTo[i] = new InternetAddress(receipients[i]);
-		}
-
-		InternetAddress replyTo[] = { new InternetAddress(email) };
-
-		MailEngine.send(addressFrom, addressTo, null, null, null,
-				messageSubject, messageBody, false, replyTo, null, null);
-		toggleExpanded(e);
-
-		FacesMessage fm = new FacesMessage();
-		fm.setSummary("Message has been sent.");
-		fm.setSeverity(FacesMessage.SEVERITY_INFO);
-		FacesContext.getCurrentInstance().addMessage(null, fm);
-	}
-
-	private String applyFilters(String msg) {
-		msg = msg.replaceAll("USER_NAME", name);
-		msg = msg.replaceAll("USER_EMAIL", email);
-		msg = msg.replaceAll("USER_MESSAGE", message);
-		return msg;
-	}
-
-	public int getRequestCount() {
-		return requestCount++;
-	}
-
-	public void setExpanded(boolean expanded) {
-		this.expanded = expanded;
-	}
-
-	public boolean isExpanded() {
-		return expanded;
-	}
-
-	public void toggleExpanded(ActionEvent e) {
-		expanded = !expanded;
-
-		captchaText = "";
-		captchaChallenge = "";
-		name = "";
-		message = "";
-		email = "";
-	}
-
-	public String getExpandFormMessage() {
-		return contactPreferences.getExpandLinkText();
-	}
-
-	public void setContactPreferences(ContactPreferences contactPreferences) {
-		this.contactPreferences = contactPreferences;
-	}
-
-	public String getCaptchaScriptURL() {
-		return captchaScriptURL;
-	}
-
-	public String getCaptchaNoScriptURL() {
-		return captchaNoScriptURL;
-	}
-
-	public String getCaptchaPublicKey() {
-		return captchaPublicKey;
-	}
-
-	public void setCaptchaChallenge(String captchaChallenge) {
-		this.captchaChallenge = captchaChallenge;
-	}
-
-	public String getCaptchaChallenge() {
-		return captchaChallenge;
-	}
-
-	public int getTryNumber() {
-		return tryNumber++;
-	}
-
+    public void setCaptchaText(String captchaText) {
+        this.captchaText = captchaText;
+    }
+    
+    
 }

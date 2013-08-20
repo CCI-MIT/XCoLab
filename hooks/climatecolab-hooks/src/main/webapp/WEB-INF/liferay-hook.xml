@@ -78,7 +78,7 @@
     </servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>CaptchaFilter</servlet-filter-name>
-		<url-pattern>/*/captcha</url-pattern>
+		<url-pattern>/captchaFilter</url-pattern>
 	</servlet-filter-mapping>
 	
 </hook>

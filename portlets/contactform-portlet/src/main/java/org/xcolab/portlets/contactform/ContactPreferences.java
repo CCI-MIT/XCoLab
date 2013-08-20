@@ -1,17 +1,17 @@
 package org.xcolab.portlets.contactform;
 
 import java.io.IOException;
+
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
 
-import com.liferay.portal.model.User;
+import org.springframework.stereotype.Component;
 
+import com.liferay.portal.model.User;
+@Component
 public class ContactPreferences implements Serializable {
 
     /**
@@ -41,13 +41,12 @@ public class ContactPreferences implements Serializable {
     }
     
     public ContactPreferences() {
-        PortletPreferences prefs = Helper.getPortletPrefs();
+        //PortletPreferences prefs = Helper.getPortletPrefs();
         
-        messageFormat = prefs.getValue(MESSAGE_FORMAT_PREF, defaultMessageFormat);
-        messageSubject = prefs.getValue(MESSAGE_SUBJECT_PREF, defaultMessageSubject);
-        expandLinkText = prefs.getValue(EXPAND_LINK_TEXT_PREF, defaultExpandLinkText);
-        receipients = prefs.getValue(RECEIPIENTS_PREF, defaultReceipients);
-        
+        messageFormat = defaultMessageFormat;
+        messageSubject = defaultMessageSubject;
+        expandLinkText = defaultExpandLinkText;
+        receipients = defaultReceipients;
         
     }
 
@@ -111,22 +110,22 @@ public class ContactPreferences implements Serializable {
     }
     
     public String submit() throws ReadOnlyException, ValidatorException, IOException {
-        
+        /*
         PortletPreferences prefs = Helper.getPortletPrefs();
         prefs.setValue(MESSAGE_FORMAT_PREF, messageFormat);
-        prefs.setValue(MESSAGE_SUBJECT_PREF, messageSubject);
-        prefs.setValue(EXPAND_LINK_TEXT_PREF, expandLinkText);
-        prefs.setValue(RECEIPIENTS_PREF, receipients);
-
-        prefs.store();
-            
-        
+        prefs.setValue(MESSAGE_SUBJECT_PREF, me
         FacesMessage fm = new FacesMessage();
         fm.setSummary("Settings saved successfully");
         fm.setSeverity(FacesMessage.SEVERITY_INFO);
 
         FacesContext fc = FacesContext.getCurrentInstance();
-        fc.addMessage(null, fm);
+        fc.addMessage(null, fm);ssageSubject);
+        prefs.setValue(EXPAND_LINK_TEXT_PREF, expandLinkText);
+        prefs.setValue(RECEIPIENTS_PREF, receipients);
+
+        prefs.store();
+            
+        */
         
         return null;
     }
