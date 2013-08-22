@@ -33,6 +33,7 @@ public class SendMessageBean implements Serializable {
     private MessagingBean messagingBean;
     private MessageBean replyMessage;
     
+    
     public SendMessageBean() throws SystemException {
         users = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
         Collections.sort(users, new Comparator<User>() {
@@ -52,19 +53,23 @@ public class SendMessageBean implements Serializable {
         
         Map<Long, User> usersMap = new HashMap<Long, User>();
         List<Long> receipientIds = new ArrayList<Long>();
-        if (!MessageLimitManager.canSendMessages(receipientIds.size())) {
-            return;
-        }
-        
-        for (String receipientId: receipients.split(",")) {
-            if (! receipientId.trim().equals("")) {
-                receipientIds.add(Long.parseLong(receipientId));
+        Long userId = Helper.getLiferayUser().getUserId();
+        Long mutex = MessageLimitManager.getMutex(userId);
+        synchronized (mutex) {
+            if (!MessageLimitManager.canSendMessages(receipientIds.size())) {
+                return;
             }
-        }
-        MessageUtil.sendMessage(subject, content, Helper.getLiferayUser().getUserId(), 
-                Helper.getLiferayUser().getUserId(), receipientIds, null);
         
-        messagingBean.messageSent();
+            for (String receipientId: receipients.split(",")) {
+                if (! receipientId.trim().equals("")) {
+                    receipientIds.add(Long.parseLong(receipientId));
+                }
+            }
+            MessageUtil.sendMessage(subject, content, userId, 
+                    Helper.getLiferayUser().getUserId(), receipientIds, null);
+        
+            messagingBean.messageSent();
+        }
         
     }
     
@@ -131,5 +136,5 @@ public class SendMessageBean implements Serializable {
     public int getUnblockScreen() {
         return new Random().nextInt();
     }
-    
+
 }

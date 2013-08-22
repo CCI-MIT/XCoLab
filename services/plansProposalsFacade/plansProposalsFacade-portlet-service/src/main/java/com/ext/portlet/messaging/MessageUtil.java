@@ -156,6 +156,7 @@ public class MessageUtil {
             prefs.setEmailOnActivity(true);
             MessagingUserPreferencesLocalServiceUtil.addMessagingUserPreferences(prefs);
         }
+        
         return prefs;
     }
 

@@ -1,6 +1,8 @@
 package org.xcolab.portlets.messaging.utils;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.climatecollaboratorium.utils.Helper;
 import org.xcolab.utils.PropertiesUtils;
@@ -37,69 +39,92 @@ public class MessageLimitManager {
 
     private static final String MESSAGE_ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
+    private static Map<Long, Long> mutexes = new HashMap<>();
+
     /**
-     * Method responsible for checking if user is allowed to send given number of messages.
+     * Method responsible for checking if user is allowed to send given number
+     * of messages.
      * 
-     * @param messagesToSend number of messages that user wants to send
+     * @param messagesToSend
+     *            number of messages that user wants to send
      * @return
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
+     * @throws PortalException
+     *             in case of LR error
+     * @throws SystemException
+     *             in case of LR error
      */
     public static boolean canSendMessages(int messagesToSend) throws PortalException, SystemException {
-        User user = Helper.getLiferayUser();
 
-        // ensure that expando column has been created
-        ExpandoColumn column = null;
-        try {
-            column = ExpandoColumnLocalServiceUtil.getColumn(companyId, User.class.getName(),
-                    CommunityConstants.EXPANDO, MESSAGES_LIMIT_COLUMN);
-        } catch (SystemException e) {
-        }
-        if (column == null) {
-            
-            ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(companyId, User.class.getName(),
-                    CommunityConstants.EXPANDO);
-            ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(), MESSAGES_LIMIT_COLUMN,
-                    ExpandoColumnConstants.INTEGER);
-        }
-        // get messagesLimit from expando table (if exists)
-        Integer messagesLimit = ExpandoValueLocalServiceUtil.getData(companyId, User.class.getName(), CommunityConstants.EXPANDO,
-                MESSAGES_LIMIT_COLUMN, user.getUserId(), -1);
-        
-        if (messagesLimit < 0) {
-            // limit not defined in expando table, fetch it from properties file
-            messagesLimit = Integer.parseInt(PropertiesUtils.get("messages.dailyLimitPerUser"));
-        }
-        if (messagesLimit == 0) {
-            // limit is set to 0, user can send as many messages as he wants
+        User user = Helper.getLiferayUser();
+        // synchronize on senderId
+        Long mutex = getMutex(user.getUserId());
+
+        synchronized (mutex) {
+
+            // ensure that expando column has been created
+            ExpandoColumn column = null;
+            try {
+                column = ExpandoColumnLocalServiceUtil.getColumn(companyId, User.class.getName(),
+                        CommunityConstants.EXPANDO, MESSAGES_LIMIT_COLUMN);
+            } catch (SystemException e) {
+            }
+            if (column == null) {
+
+                ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(companyId, User.class.getName(),
+                        CommunityConstants.EXPANDO);
+                ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(), MESSAGES_LIMIT_COLUMN,
+                        ExpandoColumnConstants.INTEGER);
+            }
+            // get messagesLimit from expando table (if exists)
+            Integer messagesLimit = ExpandoValueLocalServiceUtil.getData(companyId, User.class.getName(),
+                    CommunityConstants.EXPANDO, MESSAGES_LIMIT_COLUMN, user.getUserId(), -1);
+
+            if (messagesLimit < 0) {
+                // limit not defined in expando table, fetch it from properties
+                // file
+                messagesLimit = Integer.parseInt(PropertiesUtils.get("messages.dailyLimitPerUser"));
+            }
+            if (messagesLimit == 0) {
+                // limit is set to 0, user can send as many messages as he wants
+                return true;
+            } else {
+                // count messages that user has already sent today
+
+                ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+                        MESSAGE_ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
+
+                Calendar c = Calendar.getInstance();
+                c.add(Calendar.DATE, -1);
+
+                DynamicQuery messagesQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
+                messagesQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
+                messagesQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
+
+                DynamicQuery messageRecipientsQuery = DynamicQueryFactoryUtil.forClass(MessageRecipientStatus.class,
+                        portletClassLoader);
+                messageRecipientsQuery.add(PropertyFactoryUtil.forName("messageId").in(
+                        messagesQuery.setProjection(ProjectionFactoryUtil.property("messageId"))));
+
+                long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
+
+                if (messagesLimit < count + messagesToSend) {
+
+                    // limit exceeded, throw exception
+                    return false;
+                }
+            }
+
             return true;
         }
-        else {
-            // count messages that user has already sent today
-            
-            
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(MESSAGE_ENTITY_CLASS_LOADER_CONTEXT, 
-                    "portletClassLoader");
-            
-            Calendar c = Calendar.getInstance();
-            c.add(Calendar.DATE, -1);
-            
-            DynamicQuery messagesQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
-            messagesQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
-            messagesQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
-            
-            DynamicQuery messageRecipientsQuery = DynamicQueryFactoryUtil.forClass(MessageRecipientStatus.class, portletClassLoader);
-            messageRecipientsQuery.add(PropertyFactoryUtil.forName("messageId").in(messagesQuery.setProjection(ProjectionFactoryUtil.property("messageId"))));
-            
-            long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
-            
-            if (messagesLimit < count + messagesToSend) {
-                
-                // limit exceeded, throw exception
-                return false;
-            }
+    }
+
+    public static synchronized Long getMutex(Long senderId) {
+        Long mutex = mutexes.get(senderId);
+        if (mutex == null) {
+            mutex = senderId;
+            mutexes.put(mutex, mutex);
         }
-        return true;
+        return mutex;
     }
 
 }
