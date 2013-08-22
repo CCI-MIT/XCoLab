@@ -50,6 +50,8 @@ public class CreateUserBean implements Serializable{
 
 	private String imageId;
 
+    private String captchaText;
+
 	/**
 	 * @return the imageId
 	 */
@@ -159,4 +161,12 @@ public class CreateUserBean implements Serializable{
 				+ retypePassword + ", recaptcha_response_field="
 				+ recaptcha_response_field + "]";
 	}
+
+    public String getCaptchaText() {
+        return captchaText;
+    }
+
+    public void setCaptchaText(String captchaText) {
+        this.captchaText = captchaText;
+    }
 }

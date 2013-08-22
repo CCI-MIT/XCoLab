@@ -1,9 +1,13 @@
 package org.xcolab.portlets.loginregister;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
@@ -20,11 +24,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
 import org.xcolab.utils.PropertiesUtils;
-import org.xcolab.utils.ReCaptchaUtils;
 
 import com.ext.portlet.community.CommunityConstants;
+import com.liferay.portal.kernel.captcha.CaptchaException;
+import com.liferay.portal.kernel.captcha.CaptchaUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -58,9 +64,6 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 @RequestMapping("view")
 public class MainViewController {
 
-	private final static String RECAPTCHA_KEY_PUBLIC = "captcha.engine.recaptcha.key.public";
-	private final static String RECAPTCHA_URL_SCRIPT = "captcha.engine.recaptcha.url.script";
-	private final static String RECAPTCHA_URL_NOSCRIPT = "captcha.engine.recaptcha.url.noscript";
 	private long DEFAULT_COMPANY_ID = 10112L;
 
 	@Autowired
@@ -69,13 +72,13 @@ public class MainViewController {
 	@Autowired
 	private MessageSource messageSource;
 
-	@InitBinder("createUserBean")
+	@InitBinder("contactBean")
 	public void initBinder(WebDataBinder binder) {
 		binder.setValidator(validator);
 	}
 
 	/**
-	 * Main view displayed when user enters page with loginregister portlet
+	 * Main view displayed for contactform
 	 * 
 	 * @param request
 	 * @param response
@@ -110,10 +113,17 @@ public class MainViewController {
 		} else {
 			model.addAttribute("createUserBean", new CreateUserBean());
 			model.addAttribute("redirect", HtmlUtil.escape(redirect));
-			addRecaptchaPropertiesToModel(model);
 		}
 		return "view";
 	}
+	
+
+    @RequestMapping(params = "captcha=true")
+    public String getCaptchaImage(PortletRequest request, PortletResponse response) throws IOException {
+        CaptchaUtil.serveImage(request, response);
+        
+        return null;
+    }
 
 	@RequestMapping(params = "error=true")
 	public String registerError(PortletRequest request, Model model,
@@ -121,7 +131,7 @@ public class MainViewController {
 			@RequestParam(required = false) String redirect) {
 		if (request.getParameter("recaptchaError") != null) {
 			result.addError(new ObjectError("createUserBean",
-					"Invalid words in recaptcha field"));
+					"Invalid words in captcha field"));
 		}
 		model.addAttribute("redirect", HtmlUtil.escape(redirect));
 
@@ -134,10 +144,17 @@ public class MainViewController {
 			BindingResult result,
 			@RequestParam(required = false) String redirect) {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
-		addRecaptchaPropertiesToModel(model);
 
+		
 		if (!result.hasErrors()) {
-			if (!ReCaptchaUtils.validateCaptcha(request)) {
+		    boolean captchaValid = true;
+		    try {
+		        CaptchaUtil.check(request);
+		    }
+		    catch (CaptchaException e) {
+                captchaValid = false;
+            }
+			if (!captchaValid) {
 				SessionErrors.clear(request);
 				response.setRenderParameter("error", "true");
 				response.setRenderParameter("recaptchaError", "true");
@@ -250,14 +267,12 @@ public class MainViewController {
         SessionErrors.clear(request);
         SessionMessages.clear(request);
 	}
-
-	private void addRecaptchaPropertiesToModel(Model model) {
-		model.addAttribute("recaptchaUrlScript",
-				PropertiesUtils.get(RECAPTCHA_URL_SCRIPT));
-		model.addAttribute("recaptchaUrlNoscript",
-				PropertiesUtils.get(RECAPTCHA_URL_NOSCRIPT));
-		model.addAttribute("recaptchaKeyPublic",
-				PropertiesUtils.get(RECAPTCHA_KEY_PUBLIC));
+	
+	@ResourceMapping
+	public void captchaHandler(ResourceRequest request, ResourceResponse response) throws IOException {
+	    
+	    CaptchaUtil.serveImage(request, response);
 	}
+
 
 }

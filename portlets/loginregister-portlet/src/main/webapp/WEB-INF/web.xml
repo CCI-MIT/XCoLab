@@ -7,14 +7,14 @@
         <servlet-class>org.springframework.web.servlet.ViewRendererServlet</servlet-class>
     </servlet>	
     <servlet>
-		<servlet-name>PortletServlet</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<servlet-name>CaptchaServlet</servlet-name>
+		<servlet-class>org.xcolab.utils.CaptchaServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/loginregister-portlet/*</url-pattern>
+		<servlet-name>CaptchaServlet</servlet-name>
+		<url-pattern>/captcha</url-pattern>
 	</servlet-mapping>
-
+	
     <servlet-mapping>
         <servlet-name>ViewRendererServlet</servlet-name>
         <url-pattern>/WEB-INF/servlet/view</url-pattern>

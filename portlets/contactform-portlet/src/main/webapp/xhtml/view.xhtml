@@ -47,10 +47,16 @@
                     
                     </td></tr>
                 
-                    <tr><td class="contactLabel"><ice:outputLabel value="Captcha" /></td></tr>
+                    <tr><td class="contactLabel">
+                    	<ice:outputLabel value="Captcha" />
+                    	<img src="/captchaFilter" />
+                    
+                    
+                    
+                    </td></tr>
                     <tr><td>
                         <ice:inputText id="captchaChallenge" value="#{contactBean.captchaChallenge}" styleClass="hidden captchaChallenge" required="true"></ice:inputText>
-                        <ice:inputText id="captcha" value="#{contactBean.captchaText}" styleClass="hidden captchaText" required="true" >
+                        <ice:inputText id="captcha" value="#{contactBean.captchaText}" styleClass="captchaTexta" required="true" >
                             <f:attribute name="challengeId" value="captchaChallenge" />
                             <f:validator validatorId="captchaValidator" />
                             
@@ -67,7 +73,7 @@
                             try {
                             jQuery(document).ready(function() {
                                 initRecaptcha();
-                                console.log(initRecaptcha);
+                                //console.log(initRecaptcha);
 
                             });
                             }
