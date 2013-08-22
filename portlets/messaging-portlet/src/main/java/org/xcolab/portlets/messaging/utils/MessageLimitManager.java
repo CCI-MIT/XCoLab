@@ -27,9 +27,8 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 /**
  * Class responsible for handling verification if user is allowed to send
  * messages or maybe daily limit has been reached.
- * 
+ *
  * @author janusz
- * 
  */
 public class MessageLimitManager {
     private static final long companyId = 10112L;
@@ -39,7 +38,7 @@ public class MessageLimitManager {
 
     /**
      * Method responsible for checking if user is allowed to send given number of messages.
-     * 
+     *
      * @param messagesToSend number of messages that user wants to send
      * @return
      * @throws PortalException in case of LR error
@@ -56,7 +55,7 @@ public class MessageLimitManager {
         } catch (SystemException e) {
         }
         if (column == null) {
-            
+
             ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(companyId, User.class.getName(),
                     CommunityConstants.EXPANDO);
             ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(), MESSAGES_LIMIT_COLUMN,
@@ -65,39 +64,31 @@ public class MessageLimitManager {
         // get messagesLimit from expando table (if exists)
         Integer messagesLimit = ExpandoValueLocalServiceUtil.getData(companyId, User.class.getName(), CommunityConstants.EXPANDO,
                 MESSAGES_LIMIT_COLUMN, user.getUserId(), -1);
-        
+
         if (messagesLimit < 0) {
             // limit not defined in expando table, fetch it from properties file
             messagesLimit = Integer.parseInt(PropertiesUtils.get("messages.dailyLimitPerUser"));
         }
-        if (messagesLimit == 0) {
-            // limit is set to 0, user can send as many messages as he wants
-            return true;
-        }
-        else {
-            // count messages that user has already sent today
-            
-            
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(MESSAGE_ENTITY_CLASS_LOADER_CONTEXT, 
-                    "portletClassLoader");
-            
-            Calendar c = Calendar.getInstance();
-            c.add(Calendar.DATE, -1);
-            
-            DynamicQuery messagesQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
-            messagesQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
-            messagesQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
-            
-            DynamicQuery messageRecipientsQuery = DynamicQueryFactoryUtil.forClass(MessageRecipientStatus.class, portletClassLoader);
-            messageRecipientsQuery.add(PropertyFactoryUtil.forName("messageId").in(messagesQuery.setProjection(ProjectionFactoryUtil.property("messageId"))));
-            
-            long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
-            
-            if (messagesLimit < count + messagesToSend) {
-                
-                // limit exceeded, throw exception
-                return false;
-            }
+
+        // count messages that user has already sent today
+        ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(MESSAGE_ENTITY_CLASS_LOADER_CONTEXT,
+                "portletClassLoader");
+
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1);
+
+        DynamicQuery messagesQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
+        messagesQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
+        messagesQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
+
+        DynamicQuery messageRecipientsQuery = DynamicQueryFactoryUtil.forClass(MessageRecipientStatus.class, portletClassLoader);
+        messageRecipientsQuery.add(PropertyFactoryUtil.forName("messageId").in(messagesQuery.setProjection(ProjectionFactoryUtil.property("messageId"))));
+
+        long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
+
+        if (messagesLimit < count + messagesToSend) {
+            // limit exceeded, throw exception
+            return false;
         }
         return true;
     }
