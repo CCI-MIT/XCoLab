@@ -72,7 +72,7 @@ public class MainViewController {
 	@Autowired
 	private MessageSource messageSource;
 
-	@InitBinder("contactBean")
+    @InitBinder("createUserBean")
 	public void initBinder(WebDataBinder binder) {
 		binder.setValidator(validator);
 	}
@@ -133,6 +133,9 @@ public class MainViewController {
 			result.addError(new ObjectError("createUserBean",
 					"Invalid words in captcha field"));
 		}
+		
+		System.out.println(result.hasErrors());
+		System.out.println(result.getAllErrors());
 		model.addAttribute("redirect", HtmlUtil.escape(redirect));
 
 		return "view";
