@@ -12,6 +12,8 @@ import java.util.Random;
 import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
 
+import org.xcolab.portlets.messaging.utils.MessageLimitManager;
+
 import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -50,6 +52,9 @@ public class SendMessageBean implements Serializable {
         
         Map<Long, User> usersMap = new HashMap<Long, User>();
         List<Long> receipientIds = new ArrayList<Long>();
+        if (!MessageLimitManager.canSendMessages(receipientIds.size())) {
+            return;
+        }
         
         for (String receipientId: receipients.split(",")) {
             if (! receipientId.trim().equals("")) {
