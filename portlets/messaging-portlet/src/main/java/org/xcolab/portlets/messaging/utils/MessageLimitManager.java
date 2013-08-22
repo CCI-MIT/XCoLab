@@ -31,7 +31,6 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
  * messages or maybe daily limit has been reached.
  * 
  * @author janusz
- * 
  */
 public class MessageLimitManager {
     private static final long companyId = 10112L;
@@ -84,34 +83,30 @@ public class MessageLimitManager {
                 // file
                 messagesLimit = Integer.parseInt(PropertiesUtils.get("messages.dailyLimitPerUser"));
             }
-            if (messagesLimit == 0) {
-                // limit is set to 0, user can send as many messages as he wants
-                return true;
-            } else {
-                // count messages that user has already sent today
 
-                ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
-                        MESSAGE_ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
+            // count messages that user has already sent today
 
-                Calendar c = Calendar.getInstance();
-                c.add(Calendar.DATE, -1);
+            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+                    MESSAGE_ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
 
-                DynamicQuery messagesQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
-                messagesQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
-                messagesQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DATE, -1);
 
-                DynamicQuery messageRecipientsQuery = DynamicQueryFactoryUtil.forClass(MessageRecipientStatus.class,
-                        portletClassLoader);
-                messageRecipientsQuery.add(PropertyFactoryUtil.forName("messageId").in(
-                        messagesQuery.setProjection(ProjectionFactoryUtil.property("messageId"))));
+            DynamicQuery messagesQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
+            messagesQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
+            messagesQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
 
-                long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
+            DynamicQuery messageRecipientsQuery = DynamicQueryFactoryUtil.forClass(MessageRecipientStatus.class,
+                    portletClassLoader);
+            messageRecipientsQuery.add(PropertyFactoryUtil.forName("messageId").in(
+                    messagesQuery.setProjection(ProjectionFactoryUtil.property("messageId"))));
 
-                if (messagesLimit < count + messagesToSend) {
+            long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
 
-                    // limit exceeded, throw exception
-                    return false;
-                }
+            if (messagesLimit < count + messagesToSend) {
+
+                // limit exceeded, throw exception
+                return false;
             }
 
             return true;
