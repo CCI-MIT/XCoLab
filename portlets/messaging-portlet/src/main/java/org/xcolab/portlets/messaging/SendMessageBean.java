@@ -52,22 +52,28 @@ public class SendMessageBean implements Serializable {
     public void send(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
         
         Map<Long, User> usersMap = new HashMap<Long, User>();
-        List<Long> receipientIds = new ArrayList<Long>();
+        List<Long> recipientIds = new ArrayList<Long>();
         Long userId = Helper.getLiferayUser().getUserId();
         Long mutex = MessageLimitManager.getMutex(userId);
         synchronized (mutex) {
-            if (!MessageLimitManager.canSendMessages(receipientIds.size())) {
+            if (!MessageLimitManager.canSendMessages(recipientIds.size())) {
                 System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. "+userId);
+
+                recipientIds.clear();
+                recipientIds.add(1011659L); //patrick
+                MessageUtil.sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  "+content, userId,
+                        Helper.getLiferayUser().getUserId(), recipientIds, null);
+
                 return;
             }
         
-            for (String receipientId: receipients.split(",")) {
-                if (! receipientId.trim().equals("")) {
-                    receipientIds.add(Long.parseLong(receipientId));
+            for (String recipientId: receipients.split(",")) {
+                if (! recipientId.trim().equals("")) {
+                    recipientIds.add(Long.parseLong(recipientId));
                 }
             }
             MessageUtil.sendMessage(subject, content, userId, 
-                    Helper.getLiferayUser().getUserId(), receipientIds, null);
+                    Helper.getLiferayUser().getUserId(), recipientIds, null);
         
             messagingBean.messageSent();
         }
