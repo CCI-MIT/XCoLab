@@ -57,6 +57,7 @@ public class SendMessageBean implements Serializable {
         Long mutex = MessageLimitManager.getMutex(userId);
         synchronized (mutex) {
             if (!MessageLimitManager.canSendMessages(receipientIds.size())) {
+                System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. "+userId);
                 return;
             }
         
