@@ -5,6 +5,8 @@ import java.util.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.DiscussionActions;
@@ -75,14 +77,19 @@ public class AdminTasksBean {
 
         UserAccountGenerator userAccountGenerator = new UserAccountGenerator();
         String screenname = userAccountGenerator.generateUsername(firstName, lastName);
-        System.out.println(screenname);
-
-        PortletRequest o = (PortletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
         ServiceContext serviceContext = ServiceContextFactory
-                .getInstance(User.class.getName(), o);
+                .getInstance(getRequest());
 
         User user = UserServiceUtil.addUserWithWorkflow(companyId, true, null, null, false, screenname, "asdgasdg"+screenname+"@asdf.lk", 0, "", Locale.ENGLISH, firstName, "", lastName, 0, 0, true, 1, 1, 1970, "", new long[]{}, new long[]{}, new long[]{}, new long[]{}, true, null);
+    }
+
+    private final static String REQUEST_PARAM_NAME = "com.liferay.portal.kernel.servlet.PortletServletRequest";
+
+    public static HttpServletRequest getRequest() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return (HttpServletRequest) ((HttpServletRequestWrapper) context.getExternalContext()
+                .getRequestMap().get(REQUEST_PARAM_NAME)).getRequest();
     }
 
     private final long defaultCompanyId = 10112L;
