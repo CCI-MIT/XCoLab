@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+<f:view
+    xmlns:f="http://java.sun.com/jsf/core"
+	xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:liferay-faces="http://liferay.com/tld/faces"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:collab="http://climatecollaboratorium.org/facelets"
+    >
+    
+    <h:head />
+    <h:body>
+    <ice:portlet>
+        <h2>Featured contests <span><a href="/web/guest/plans">see all contests</a></span></h2>
+        <ui:repeat value="#{contestsBean.contests}" var="contest">
+        
+            <div class="contestbox">
+                <div class="img-wrap">
+                    <a href="/web/guest/plans/-/plans/contestId/${contest.primaryKey}">
+                        <f:subview rendered="#{not empty contest.logoPath}">
+                            <img src="#{contestsBean.themeDisplay.pathImage}#{contest.logoPath}" width="151" height="151" alt="#{contest.contestShortName}" />
+                        </f:subview>
+                        <f:subview rendered="#{empty contest.logoPath}">
+                            <img src="/climatecolab-theme/images/blank.gif" width="151" height="151" alt="#{contest.contestShortName}" style="border: 1px solid #bbb;"/>
+                        </f:subview>
+                    </a>
+                </div>
+                <div class="text-wrap">
+                    <h3><a href="/web/guest/plans/-/plans/contestId/${contest.primaryKey}">#{contest.contestShortName}</a></h3>
+                    #{contest.contestName}
+                    <div class="count">
+                        <ice:panelGroup styleClass="prop"><strong>#{contest.proposalsCount}</strong> proposals</ice:panelGroup>
+                        <ice:panelGroup styleClass="comm" rendered="#{not contest.contestInVotingPhase}"><strong>#{contest.totalComments}</strong> comments</ice:panelGroup>
+                        <ice:panelGroup styleClass="comm" rendered="#{contest.contestInVotingPhase}"><strong>#{contest.votesCount}</strong> votes</ice:panelGroup>
+                    </div>
+                </div>
+            </div> <!-- /contestbox -->
+        </ui:repeat>
+    </ice:portlet>
+    </h:body>
+</f:view>         
+
+

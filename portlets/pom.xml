@@ -35,5 +35,6 @@
     <module>massmessaging-portlet</module>
     <module>blogsstats-portlet</module>
     <module>landingpage-portlet</module>
+      <module>randomproposals-portlet</module>
   </modules>
 </project>
