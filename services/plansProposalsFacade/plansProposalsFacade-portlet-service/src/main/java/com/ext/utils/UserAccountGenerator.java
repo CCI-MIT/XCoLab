@@ -13,12 +13,16 @@ public class UserAccountGenerator {
     private static final long companyId = 10112L;
 
     public String generateUsername(String firstname, String lastname) throws SystemException {
-        UserNameGenerator[] userNameGenerators = {new FirstLetterFullSecond(firstname, lastname), new BothFull(firstname, lastname), new BothFull(lastname, firstname)};
+        UserNameGenerator[] userNameGenerators = {
+                new FirstLetterFullSecond(firstname, lastname),
+                new BothFull(firstname, lastname),
+                new BothFull(lastname, firstname)};
 
-        for(int i=1;i<1000;i++) {
-            for(UserNameGenerator ug : userNameGenerators) {
-                String cur = ug.get() + ((i<2)?"":i);
-                if(checkUsernameAvailable(cur )) {
+        for (int i = 1; i < 1000; i++) {
+            for (UserNameGenerator ug : userNameGenerators) {
+                String cur = ug.get() + ((i < 2) ? "" : i);
+                cur = cur.toLowerCase().replaceAll("[^a-z0-9.-_]",""); //remove disallowed chars
+                if (checkUsernameAvailable(cur)) {
                     return cur;
                 }
             }
@@ -49,7 +53,7 @@ public class UserAccountGenerator {
 
         @Override
         public String get() {
-            return p1.substring(0,1)+p2;
+            return p1.substring(0, 1) + p2;
         }
     }
 
@@ -63,7 +67,7 @@ public class UserAccountGenerator {
 
         @Override
         public String get() {
-            return p1+p2;
+            return p1 + p2;
         }
     }
 }

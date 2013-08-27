@@ -1,16 +1,10 @@
 package org.xcolab.portlets.admintasks;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.portlet.PortletRequest;
 
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.DiscussionActions;
@@ -29,6 +23,7 @@ import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
+import com.ext.utils.UserAccountGenerator;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.NoSuchResourceException;
@@ -40,19 +35,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.ClassName;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Permission;
-import com.liferay.portal.model.Resource;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.RoleConstants;
+import com.liferay.portal.model.*;
 import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.PermissionLocalServiceUtil;
-import com.liferay.portal.service.ResourceLocalServiceUtil;
-import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.service.*;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
@@ -83,8 +68,21 @@ public class AdminTasksBean {
         return null;
     }
 
+    private static final long companyId = 10112L;
+
     public void generateUseraccounts() throws SystemException, PortalException {
         String firstName = "Patrick", lastName="de Boer";
+
+        UserAccountGenerator userAccountGenerator = new UserAccountGenerator();
+        String screenname = userAccountGenerator.generateUsername(firstName, lastName);
+        System.out.println(screenname);
+
+        PortletRequest o = (PortletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+        ServiceContext serviceContext = ServiceContextFactory
+                .getInstance(User.class.getName(), o);
+
+        User user = UserServiceUtil.addUserWithWorkflow(companyId, true, null, null, false, screenname, "asdgasdg"+screenname+"@asdf.lk", 0, "", Locale.ENGLISH, firstName, "", lastName, 0, 0, true, 1, 1, 1970, "", new long[]{}, new long[]{}, new long[]{}, new long[]{}, true, null);
     }
 
     private final long defaultCompanyId = 10112L;
