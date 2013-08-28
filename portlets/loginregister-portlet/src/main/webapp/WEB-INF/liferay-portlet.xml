@@ -1,29 +1,44 @@
 <?xml version="1.0"?>
-<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
-
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN"
+        "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
 <liferay-portlet-app>
-	<portlet>
-		<portlet-name>loginregister-portlet</portlet-name>
-        <social-activity-interpreter-class>org.xcolab.portlets.loginregister.activity.LoginRegisterFeedEntry</social-activity-interpreter-class>
+    <portlet>
+        <portlet-name>loginregister-portlet</portlet-name>
+        <scheduler-entry>
+            <scheduler-description>
+                this scheduler should periodically fetch the list of conference attenders and create a colab account for
+                them
+            </scheduler-description>
+            <scheduler-event-listener-class>org.xcolab.portlets.loginregister.conference.AutoRegisterConferencePeople
+            </scheduler-event-listener-class>
+            <trigger>
+                <simple>
+                    <simple-trigger-value>1</simple-trigger-value>
+                    <time-unit>minute</time-unit>
+                </simple>
+            </trigger>
+        </scheduler-entry>
+        <social-activity-interpreter-class>org.xcolab.portlets.loginregister.activity.LoginRegisterFeedEntry
+        </social-activity-interpreter-class>
         <instanceable>false</instanceable>
         <private-session-attributes>false</private-session-attributes>
-		<header-portlet-css>/css/main.css</header-portlet-css>
-		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
-	</portlet>
-	<role-mapper>
-		<role-name>administrator</role-name>
-		<role-link>Administrator</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>guest</role-name>
-		<role-link>Guest</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>power-user</role-name>
-		<role-link>Power User</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>user</role-name>
-		<role-link>User</role-link>
-	</role-mapper>
+        <header-portlet-css>/css/main.css</header-portlet-css>
+        <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
+    </portlet>
+    <role-mapper>
+        <role-name>administrator</role-name>
+        <role-link>Administrator</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>guest</role-name>
+        <role-link>Guest</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>power-user</role-name>
+        <role-link>Power User</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>user</role-name>
+        <role-link>User</role-link>
+    </role-mapper>
 </liferay-portlet-app>
