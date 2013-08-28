@@ -3,8 +3,10 @@ package com.ext.portlet.service.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.mail.internet.AddressException;
@@ -17,6 +19,7 @@ import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.base.ActivitySubscriptionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionUtil;
+import com.ext.utils.NotificationUnregisterUtils;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -255,22 +258,34 @@ public class ActivitySubscriptionLocalServiceImpl
 
                 messageTemplate = messageTemplate.replaceAll("\"/web/guest", "\"http://climatecolab.org/web/guest")
                         .replaceAll("'/web/guest", "'http://climatecolab.org/web/guest").replaceAll("\n", "\n<br />");
+                
+                
                 Set<User> receipients = new HashSet<User>();
-
+                Map<Long, ActivitySubscription> subscriptionsPerUser = new HashMap<>();
+                
                 for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
                     ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
 
                     if (subscription.getReceiverId() == activity.getUserId()) {
                         continue;
                     }
-                    receipients.add(UserLocalServiceUtil.getUser(subscription.getReceiverId()));
+                    User user = UserLocalServiceUtil.getUser(subscription.getReceiverId());
+                    receipients.add(user);
+                    // map users to subscriptions for unregistration links
+                    subscriptionsPerUser.put(user.getUserId(), subscription);
                 }
                 for (User receipient : receipients) {
-
+                    
                     if (MessageUtil.getMessagingPreferences(receipient.getUserId()).getEmailOnActivity()) {
                         InternetAddress toEmail = new InternetAddress(receipient.getEmailAddress());
                         String message = messageTemplate
                                 .replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(receipient));
+                        
+                        // add link to unsubscribe
+                        message += 
+                                "<br /><br /><a href='" + 
+                                NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(receipient.getUserId())) + 
+                                "'>If you don't want to receive emails from this thread in the future, click here to unsubscribe.</a>";
                         MailEngine.send(fromEmail, toEmail, subject, message, true);
                     }
 

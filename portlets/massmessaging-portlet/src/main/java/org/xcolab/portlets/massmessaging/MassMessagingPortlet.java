@@ -40,6 +40,7 @@ import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.portlet.service.MessagingMessageLocalServiceUtil;
 import com.ext.portlet.service.MessagingMessageRecipientLocalServiceUtil;
 import com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil;
+import com.ext.utils.NotificationUnregisterUtils;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.log.Log;
@@ -376,21 +377,33 @@ public class MassMessagingPortlet extends MVCPortlet {
         
         for(MessagingMessageRecipient rec: recipients) {
             InternetAddress to = new InternetAddress(rec.getEmailAddress());
+            String messageBodyText = body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId()));
+            if (rec.getUserId() > 0) {
+                User user = UserLocalServiceUtil.getUser(rec.getUserId());
+                messageBodyText += 
+                    "<br /><br /><a href='" + 
+                    NotificationUnregisterUtils.getUnregisterLink(user) + 
+                    "'>Click here if you don't want to receive climatecolab newsletter</a>";
+            }
             if (StringUtils.isNotBlank(sendAs)) {
                 
                 MimeMessage msg = new MimeMessage(session);
+                
                 msg.setFrom(from);
                 msg.setSubject(subject);
                 msg.setSentDate(new Date());
                 msg.setReplyTo(new Address[] { replyToAddr });
-                msg.setContent(body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId())), "text/html; charset=utf-8");
+
+                
+                
+                msg.setContent(messageBodyText, "text/html; charset=utf-8");
                 msg.setRecipient(RecipientType.TO, to);
                 
                 t.sendMessage(msg, new Address[] {to});
                 
             }
             else {
-                MailEngine.send(from, to, subject, body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId())), true);
+                MailEngine.send(from, to, subject, messageBodyText, true);
             }
         }
         
