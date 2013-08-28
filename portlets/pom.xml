@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>org.xcolab</groupId>
         <artifactId>xcolab-parent</artifactId>
@@ -7,34 +8,34 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.xcolab.portlets</groupId>
-	<artifactId>xcolab-portlets</artifactId>
-	<packaging>pom</packaging>
-	<name>xcolab-portlets portlets parent pom</name>
-	<version>1.0-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.xcolab.portlets</groupId>
+    <artifactId>xcolab-portlets</artifactId>
+    <packaging>pom</packaging>
+    <name>xcolab-portlets portlets parent pom</name>
+    <version>1.0-SNAPSHOT</version>
 
 
-  <modules>
-    <module>proposals-portlet</module>
-    <module>discussions-portlet</module>
-      <module>adminstasks-portlet</module>
-    <module>contactform-portlet</module>
-	 <module>contactform-wicket-portlet</module>
-    <module>members-portlet</module>
-    <module>userprofile-portlet</module>
-    <module>contests-portlet</module>
-    <module>search-portlet</module>
-    <module>feeds-portlet</module>
-    <module>messaging-portlet</module>
-      <module>ontology-portlet</module>
-      <module>redballoon-portlet</module>
-    <module>models-portlet</module>
-    <module>plansadmin-portlet</module>
-    <module>loginregister-portlet</module>
-    <module>massmessaging-portlet</module>
-    <module>blogsstats-portlet</module>
-    <module>landingpage-portlet</module>
-      <module>randomproposals-portlet</module>
-  </modules>
+    <modules>
+        <module>proposals-portlet</module>
+        <module>discussions-portlet</module>
+        <module>adminstasks-portlet</module>
+        <module>contactform-portlet</module>
+        <module>contactform-wicket-portlet</module>
+        <module>members-portlet</module>
+        <module>userprofile-portlet</module>
+        <module>contests-portlet</module>
+        <module>search-portlet</module>
+        <module>feeds-portlet</module>
+        <module>messaging-portlet</module>
+        <module>ontology-portlet</module>
+        <module>redballoon-portlet</module>
+        <module>models-portlet</module>
+        <module>plansadmin-portlet</module>
+        <module>loginregister-portlet</module>
+        <module>massmessaging-portlet</module>
+        <module>blogsstats-portlet</module>
+        <module>landingpage-portlet</module>
+        <module>randomproposals-portlet</module>
+    </modules>
 </project>

@@ -3,6 +3,6 @@
 
 <display>
 	<category name="category.xcolab">
-		<portlet id="contests-portlet" />
+		<portlet id="randomproposals-portlet" />
 	</category>
 </display>

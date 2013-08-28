@@ -3,7 +3,7 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>contests-portlet</portlet-name>
+		<portlet-name>randomproposals-portlet</portlet-name>
 		<indexer-class>org.xcolab.portlets.contests.Indexer</indexer-class>
 		<scheduler-entry>
 			<scheduler-event-listener-class>org.xcolab.portlets.contests.ContestPhaseAutopromotionTask</scheduler-event-listener-class>

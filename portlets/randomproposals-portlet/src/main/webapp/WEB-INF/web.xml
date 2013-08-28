@@ -45,7 +45,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/contests-portlet/*</url-pattern>
+		<url-pattern>/randomproposals-portlet/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
