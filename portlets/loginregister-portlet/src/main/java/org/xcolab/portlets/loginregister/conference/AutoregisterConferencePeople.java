@@ -95,14 +95,14 @@ public class AutoregisterConferencePeople implements MessageListener {
         ExpandoTable table = null;
         try {
             table = ExpandoTableLocalServiceUtil.getTable(LoginController.companyId, User.class.getName(),
-                    CommunityConstants.CONFERENCE2013);
+                    CommunityConstants.EXPANDO);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //create table
         if(table == null) {
             System.out.println("creating expando table");
-            table = ExpandoTableLocalServiceUtil.addTable(LoginController.companyId, User.class.getName(), CommunityConstants.CONFERENCE2013);
+            table = ExpandoTableLocalServiceUtil.addTable(LoginController.companyId, User.class.getName(), CommunityConstants.EXPANDO);
         }
 
         ExpandoColumn conferenceExpando = null;
@@ -119,7 +119,7 @@ public class AutoregisterConferencePeople implements MessageListener {
                     CommunityConstants.CONFERENCE2013, ExpandoColumnConstants.STRING);
         }
 
-        ExpandoValueLocalServiceUtil.addValue(User.class.getName(), CommunityConstants.EXPANDO,
+        ExpandoValueLocalServiceUtil.addValue(LoginController.companyId, User.class.getName(), CommunityConstants.EXPANDO,
                 CommunityConstants.CONFERENCE2013, u.getUserId(), "1");
     }
 
