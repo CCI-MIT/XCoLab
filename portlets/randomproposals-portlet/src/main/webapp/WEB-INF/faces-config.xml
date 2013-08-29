@@ -38,8 +38,17 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>contestsBean</managed-bean-name>
-		<managed-bean-class>org.xcolab.portlets.contests.ContestsBean</managed-bean-class>
+		<managed-bean-name>randomProposalsBean</managed-bean-name>
+		<managed-bean-class>org.xcolab.portlets.randomproposals.RandomProposalsBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>preferencesBean</property-name>
+			<value>#{preferencesBean}</value>
+		</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>preferencesBean</managed-bean-name>
+		<managed-bean-class>org.xcolab.portlets.randomproposals.PreferencesBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 </faces-config>

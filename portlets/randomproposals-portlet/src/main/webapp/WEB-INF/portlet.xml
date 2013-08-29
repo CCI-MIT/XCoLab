@@ -23,9 +23,9 @@
 			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT Contests (ICE)</title>
-			<short-title>contests</short-title>
-			<keywords>contests</keywords>
+			<title>MIT Random Proposals</title>
+			<short-title>randomproposals</short-title>
+			<keywords>randomproposals</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>

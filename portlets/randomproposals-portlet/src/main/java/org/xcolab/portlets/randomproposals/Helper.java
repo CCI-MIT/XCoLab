@@ -1,9 +1,11 @@
-package org.xcolab.portlets.contests;
+package org.xcolab.portlets.randomproposals;
 
 import java.util.Map;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -34,4 +36,13 @@ public class Helper {
         }
         return null;
     }
+
+    public static PortletPreferences getPortletPrefs() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        PortletRequest pReq = (PortletRequest) ec.getRequest();
+        PortletPreferences prefs = pReq.getPreferences();
+        return prefs;
+    }
+
 }
