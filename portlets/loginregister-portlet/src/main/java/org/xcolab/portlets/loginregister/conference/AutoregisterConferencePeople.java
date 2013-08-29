@@ -104,7 +104,7 @@ public class AutoregisterConferencePeople implements MessageListener {
         // create column
         if (conferenceExpando == null) {
             conferenceExpando = ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(),
-                    CommunityConstants.RED_BALLOON, ExpandoColumnConstants.STRING);
+                    CommunityConstants.CONFERENCE2013, ExpandoColumnConstants.STRING);
         }
 
         ExpandoValueLocalServiceUtil.addValue(User.class.getName(), CommunityConstants.EXPANDO,
