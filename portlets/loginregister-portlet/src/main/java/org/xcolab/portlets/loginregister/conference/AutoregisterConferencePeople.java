@@ -92,8 +92,19 @@ public class AutoregisterConferencePeople implements MessageListener {
     }
 
     private void setConferenceAttendingExpando(User u) throws SystemException, PortalException {
-        ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(User.class.getName(),
-                CommunityConstants.EXPANDO);
+        ExpandoTable table = null;
+        try {
+            table = ExpandoTableLocalServiceUtil.getTable(User.class.getName(),
+                    CommunityConstants.EXPANDO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //create table
+        if(table == null) {
+            System.out.println("creating expando table");
+            table = ExpandoTableLocalServiceUtil.addTable(LoginController.companyId,User.class.getName(), CommunityConstants.EXPANDO);
+        }
+
         ExpandoColumn conferenceExpando = null;
         try {
             conferenceExpando = ExpandoColumnLocalServiceUtil.getColumn(table.getTableId(), CommunityConstants.CONFERENCE2013);
@@ -103,6 +114,7 @@ public class AutoregisterConferencePeople implements MessageListener {
         }
         // create column
         if (conferenceExpando == null) {
+            System.out.println("creating expando column");
             conferenceExpando = ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(),
                     CommunityConstants.CONFERENCE2013, ExpandoColumnConstants.STRING);
         }
