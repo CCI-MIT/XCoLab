@@ -9,7 +9,7 @@
                 this scheduler should periodically fetch the list of conference attenders and create a colab account for
                 them
             </scheduler-description>
-            <scheduler-event-listener-class>org.xcolab.portlets.loginregister.conference.AutoRegisterConferencePeople
+            <scheduler-event-listener-class>org.xcolab.portlets.loginregister.conference.AutoregisterConferencePeople
             </scheduler-event-listener-class>
             <trigger>
                 <simple>

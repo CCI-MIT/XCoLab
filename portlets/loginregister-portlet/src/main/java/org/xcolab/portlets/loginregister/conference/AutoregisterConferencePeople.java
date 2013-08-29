@@ -35,7 +35,7 @@ import java.util.Locale;
  * @author pdeboer
  *         First created on 8/28/13 at 12:01 PM
  */
-public class AutoRegisterConferencePeople implements MessageListener {
+public class AutoregisterConferencePeople implements MessageListener {
     @Override
     public void receive(Message message) throws MessageListenerException {
         //use separate thread in order to limit the effect of assigning Admin rights to ThreadLocal PermissionChecker
