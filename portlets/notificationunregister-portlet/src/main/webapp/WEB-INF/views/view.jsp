@@ -20,4 +20,5 @@
 			Your address has been excluded from our newsletter recipients.
 		</c:otherwise>
 	</c:choose>
+	</h2>
 </jsp:root>
