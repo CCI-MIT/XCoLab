@@ -1,5 +1,6 @@
 package org.xcolab.portlets.loginregister.conference;
 
+import com.ext.portlet.community.CommunityConstants;
 import com.ext.utils.UserAccountGenerator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -17,6 +18,12 @@ import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.*;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.expando.model.ExpandoColumn;
+import com.liferay.portlet.expando.model.ExpandoColumnConstants;
+import com.liferay.portlet.expando.model.ExpandoTable;
+import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -75,11 +82,33 @@ public class AutoregisterConferencePeople implements MessageListener {
 
                 User user = UserServiceUtil.addUserWithWorkflow(LoginController.companyId, true, null, null, false, screenName, email, 0, "", Locale.ENGLISH, u.getFirstName(), "", u.getLastName(), 0, 0, true, 1, 1, 1970, "", new long[]{}, new long[]{}, new long[]{}, new long[]{}, true, ctx);
 
+                setConferenceAttendingExpando(user);
+
                 System.out.println("automatically registered user " + screenName + ": " + user);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setConferenceAttendingExpando(User u) throws SystemException, PortalException {
+        ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(User.class.getName(),
+                CommunityConstants.EXPANDO);
+        ExpandoColumn conferenceExpando = null;
+        try {
+            conferenceExpando = ExpandoColumnLocalServiceUtil.getColumn(table.getTableId(), CommunityConstants.CONFERENCE2013);
+        }
+        catch (Exception e) {
+
+        }
+        // create column
+        if (conferenceExpando == null) {
+            conferenceExpando = ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(),
+                    CommunityConstants.RED_BALLOON, ExpandoColumnConstants.STRING);
+        }
+
+        ExpandoValueLocalServiceUtil.addValue(User.class.getName(), CommunityConstants.EXPANDO,
+                CommunityConstants.CONFERENCE2013, u.getUserId(), "1");
     }
 
     private boolean emailExists(String email) {
