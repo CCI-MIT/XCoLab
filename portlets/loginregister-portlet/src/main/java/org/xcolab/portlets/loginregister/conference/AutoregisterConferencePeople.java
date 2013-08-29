@@ -1,0 +1,116 @@
+package org.xcolab.portlets.loginregister.conference;
+
+import com.ext.utils.UserAccountGenerator;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.messaging.MessageListenerException;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.DefaultScreenNameGenerator;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.security.auth.ScreenNameGenerator;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.service.*;
+import com.liferay.portal.theme.ThemeDisplay;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.xcolab.portlets.loginregister.LoginController;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * @author pdeboer
+ *         First created on 8/28/13 at 12:01 PM
+ */
+public class AutoRegisterConferencePeople implements MessageListener {
+    @Override
+    public void receive(Message message) throws MessageListenerException {
+        //use separate thread in order to limit the effect of assigning Admin rights to ThreadLocal PermissionChecker
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    List<ConferenceUser> users = getConferenceUsers();
+                    for (ConferenceUser u : users) {
+                        registerUser(u);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    private void registerUser(ConferenceUser u) {
+        try {
+            String email = u.geteMail();
+            if (emailExists(email)) email = u.getSecondaryEmail();
+            if (!emailExists(email)) {
+                UserAccountGenerator userAccountGenerator = new UserAccountGenerator();
+                String screenName = userAccountGenerator.generateUsername(u.getFirstName(), u.getLastName());
+
+                Role adminRole = RoleLocalServiceUtil.getRole(LoginController.companyId, "Administrator");
+                List<User> adminUsers = UserLocalServiceUtil.getRoleUsers(adminRole.getRoleId());
+
+                PrincipalThreadLocal.setName(adminUsers.get(0).getUserId());
+                PermissionChecker permissionChecker = PermissionCheckerFactoryUtil.create(adminUsers.get(0), true);
+                PermissionThreadLocal.setPermissionChecker(permissionChecker);
+
+                // ServiceContext ctx = ServiceContextFactory.getInstance(User.class + "", null);
+                ServiceContext ctx = new ServiceContext();
+                ctx.setAttribute("anonymousUser", true);
+
+                User user = UserServiceUtil.addUserWithWorkflow(LoginController.companyId, true, null, null, false, screenName, email, 0, "", Locale.ENGLISH, u.getFirstName(), "", u.getLastName(), 0, 0, true, 1, 1, 1970, "", new long[]{}, new long[]{}, new long[]{}, new long[]{}, true, ctx);
+
+                System.out.println("automatically registered user " + screenName + ": " + user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean emailExists(String email) {
+        try {
+            UserLocalServiceUtil.getUserByEmailAddress(LoginController.companyId, email);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private List<ConferenceUser> getConferenceUsers() throws IOException {
+        HttpClient client = new HttpClient();
+        GetMethod method = new GetMethod("https://classic.regonline.com/activereports/smartLink.aspx?eventid=WThQT9uce5k=&crid=1056641");
+
+        client.executeMethod(method);
+
+        Workbook wb = new HSSFWorkbook(method.getResponseBodyAsStream());
+        Sheet sheet = wb.getSheetAt(0);
+
+        List<ConferenceUser> users = new LinkedList<>();
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) continue; //skip header
+            try {
+                users.add(new ConferenceUser(row));
+            } catch (Exception e) {
+            }
+        }
+
+        method.releaseConnection();
+        return users;
+    }
+
+}
