@@ -120,6 +120,7 @@ public class ContestWrapper implements Serializable {
     
     public boolean getContestInVotingPhase() throws SystemException, PortalException {
         ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
+        if (phase == null) return false;
 
         String status = ContestPhaseLocalServiceUtil.getContestStatusStr(phase);
         if (status != null) {
