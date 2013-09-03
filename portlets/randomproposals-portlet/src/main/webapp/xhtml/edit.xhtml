@@ -17,8 +17,11 @@
     <h:head />
     <h:body>
     	<ice:portlet>
-    		<h1>Choose contest phases from which to pick proposals.</h1><br />
     		<ice:form>
+	    		<h1>Enter comma separated list of flag filters (empty if none)</h1><br />
+    			<ice:inputText value="#{preferencesBean.flagFiltersStr}" />
+    		
+    			<h1>Choose contest phases from which to pick proposals.</h1><br />	
     			<ice:selectManyListbox style="height: 100%;" value="#{preferencesBean.selectedPhases}">
     				<f:selectItems value="#{preferencesBean.contestPhases}" />
     			</ice:selectManyListbox>

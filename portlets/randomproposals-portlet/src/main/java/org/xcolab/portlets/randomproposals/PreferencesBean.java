@@ -24,11 +24,16 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 public class PreferencesBean {
     private Long[] selectedPhases;
+    private Long[] flagFilters;
+    private String flagFiltersStr;
     private String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";
+    private String FLAG_FILTER_PREFERENCE = "FLAG_FILTERS";
     
     public PreferencesBean() {
         PortletPreferences prefs = Helper.getPortletPrefs();
         selectedPhases = convertStringsToLongs(prefs.getValue(SELECTED_PHASES_PREFERENCE, "").split(","));
+        flagFiltersStr = prefs.getValue(FLAG_FILTER_PREFERENCE, "");
+        flagFilters = convertStringsToLongs(flagFiltersStr.split(","));
         
     }
     
@@ -37,6 +42,7 @@ public class PreferencesBean {
         FacesMessage fm = new FacesMessage();
         
         prefs.setValue(SELECTED_PHASES_PREFERENCE, StringUtils.join(convertLongsToStrings(selectedPhases), ","));
+        prefs.setValue(FLAG_FILTER_PREFERENCE, flagFiltersStr);
 
         prefs.store();
         
@@ -106,4 +112,30 @@ public class PreferencesBean {
         }
         return arrayStr;
     }
+
+    public Long[] getFlagFilters() {
+        return flagFilters;
+    }
+
+    public void setFlagFilters(Long[] flagFilters) {
+        this.flagFilters = flagFilters;
+    }
+
+    public String getFlagFiltersStr() {
+        return flagFiltersStr;
+    }
+
+    public void setFlagFiltersStr(String flagFiltersStr) {
+        // check if flag filters are correct
+        if (StringUtils.isNotBlank(flagFiltersStr)) {
+            // parse all values to check if they are valid ints
+            for (String tmp: flagFiltersStr.split(",")) {
+                Integer.parseInt(tmp);
+            }
+        }
+        // if we reach this point then there was no parse exception, we can proceed
+        this.flagFiltersStr = flagFiltersStr;
+    }
+    
+    
 }
