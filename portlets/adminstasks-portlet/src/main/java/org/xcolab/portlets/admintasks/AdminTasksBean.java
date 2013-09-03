@@ -72,18 +72,6 @@ public class AdminTasksBean {
 
     private static final long companyId = 10112L;
 
-    public void generateUseraccounts() throws SystemException, PortalException {
-        String firstName = "Patrick", lastName="de Boer";
-
-        UserAccountGenerator userAccountGenerator = new UserAccountGenerator();
-        String screenname = userAccountGenerator.generateUsername(firstName, lastName);
-
-        ServiceContext serviceContext = ServiceContextFactory
-                .getInstance(getRequest());
-
-        User user = UserServiceUtil.addUserWithWorkflow(companyId, true, null, null, false, screenname, "asdgasdg"+screenname+"@asdf.lk", 0, "", Locale.ENGLISH, firstName, "", lastName, 0, 0, true, 1, 1, 1970, "", new long[]{}, new long[]{}, new long[]{}, new long[]{}, true, null);
-    }
-
     private final static String REQUEST_PARAM_NAME = "com.liferay.portal.kernel.servlet.PortletServletRequest";
 
     public static HttpServletRequest getRequest() {

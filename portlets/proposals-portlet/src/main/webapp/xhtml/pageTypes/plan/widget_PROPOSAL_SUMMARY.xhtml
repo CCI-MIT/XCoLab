@@ -14,6 +14,7 @@
                             <div class="vote">
                                 <img src="/climatecolab-theme/images/icon-proposal-vote.png" width="22" height="18" alt="Vote" /> 
                                 <span>#{proposal.plan.votes}</span> votes
+                                <f:subview rendered="#{plan.plan.lastInGroup}">
                                 <div class="blue-button">
                                     <ice:commandLink styleClass="voteForPlanTrigger_#{plan.plan.planId}"  actionListener="#{plan.plan.vote}"
                                             rendered="#{votingPhase and not plan.plan.votedOn}" 
@@ -25,6 +26,7 @@
                                         RETRACT vote
                                     </ice:commandLink>
                                 </div>
+                                </f:subview>
                             <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per contest</p>
                             </div>
                             <div class="question"><a href="javascript:;"> 

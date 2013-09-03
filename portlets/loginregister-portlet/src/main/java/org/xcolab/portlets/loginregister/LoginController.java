@@ -36,7 +36,7 @@ import com.liferay.portal.util.PortalUtil;
 @Controller
 @RequestMapping(value = "view", params = "isLoggingIn=true")
 public class LoginController {
-    private static final long companyId = 10112L;
+    public static final long companyId = 10112L;
 
     @ActionMapping
     public void doLogin(ActionRequest request, ActionResponse response) throws IOException {

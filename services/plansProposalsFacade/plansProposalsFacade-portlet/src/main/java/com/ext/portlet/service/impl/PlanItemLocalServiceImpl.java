@@ -2034,10 +2034,10 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 				addFan(newPlan, planFan.getUserId());
 			}
 
-			// copy votes
+/*			// copy votes
 			for (PlanVote planVote : getPlanVotes(plan)) {
 				vote(newPlan, planVote.getUserId());
-			}
+			}*/
 
 			// copy entire discussions, comments migration
 			DiscussionCategoryGroup dcg = getDiscussionCategoryGroup(newPlan);
