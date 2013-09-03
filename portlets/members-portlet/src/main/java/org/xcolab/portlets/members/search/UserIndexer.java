@@ -58,6 +58,7 @@ import com.liferay.portal.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortletKeys;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 /**
  * @author Raymond Augé
@@ -253,6 +254,7 @@ public class UserIndexer extends BaseIndexer {
 		document.addKeyword("teamIds", user.getTeamIds());
 		document.addKeyword("userGroupIds", user.getUserGroupIds());
 		document.addDate("joinDate", user.getCreateDate());
+		document.addNumber("activities", SocialActivityLocalServiceUtil.getUserActivitiesCount(user.getUserId()));
 		document.addKeyword("memberCategory", getUserCategories(user));
         document.addKeyword("realName", new DefaultFullNameGenerator().getFullName(
                 user.getFirstName(),  user.getMiddleName(),  user.getLastName()));

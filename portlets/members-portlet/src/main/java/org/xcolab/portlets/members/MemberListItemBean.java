@@ -21,7 +21,8 @@ public class MemberListItemBean implements Serializable {
     
     public MemberListItemBean(Document userDoc) throws SystemException, NumberFormatException, PortalException, ParseException {
         userId = Long.parseLong(userDoc.get("userId"));
-        activityCount = SocialActivityLocalServiceUtil.getUserActivitiesCount(userId);
+        //activityCount = SocialActivityLocalServiceUtil.getUserActivitiesCount(userId);
+        activityCount = Integer.parseInt(userDoc.get("activities"));
         realName = userDoc.get("realName");
         String screenName = userDoc.get("screenName");
         String firstName = userDoc.get("firstName");
@@ -42,7 +43,7 @@ public class MemberListItemBean implements Serializable {
         }
         
         joinDate = new Date(0);
-        if (userDoc.get("joinDate") != null) {
+        if (! StringUtils.isBlank(userDoc.get("joinDate"))) {
             joinDate = userDoc.getDate("joinDate");
         }
 
