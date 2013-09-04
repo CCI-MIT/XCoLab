@@ -76,16 +76,13 @@ public class UserProfileBean implements Serializable {
             catch (PortalException e) {
                 _log.error("Can't load user with id " + parameters.get(USER_ID_PARAM), e);
             }
-            
         }
         
         if (parameters.containsKey(PAGE_PARAM)) {
             if (PAGE_PARAM_SUBSCRIPTIONS.equals(parameters.get(PAGE_PARAM)))
                 pageType = PageType.SUBSCRIPTIONS_VIEW;
-            
         }
-        
-        
+
         if (wrappedUser != null && 
                 Helper.isUserLoggedIn() && 
                 wrappedUser.getUserId() == Helper.getLiferayUser().getUserId()) {

@@ -88,7 +88,11 @@
 					</tr>
 					<tr>
 						<td class="memname">#{currentUser.realName}</td>
-						<td class="r btm"><ice:form>
+						<td class="r btm">
+                            <f:subview rendered="#{currentUser.attendsConference}">
+                                <a href="/web/guest/conference2013" class="attendingConference">Attends MIT Conference 2013</a>
+                            </f:subview>
+                            <ice:form>
 								<f:subview rendered="#{userprofileBean.viewingOwnProfile}">
 									<a href="./#{currentUser.userId}/page/edit">Manage profile
 										and settings &gt;&gt;</a>

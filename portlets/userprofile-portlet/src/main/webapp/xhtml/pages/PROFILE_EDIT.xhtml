@@ -126,17 +126,17 @@
                 <ice:message for="newPasswordInput" styleClass="form_error_message"/>
             </td>
         </tr>
-        <tr>
-            <td class="b m">New password retype</td>
-            <td>
-                <ice:inputSecret  id="newPasswordRetypeInput" styleClass="profile_input" value="#{currentUser.newPasswordRetype}" >
-                    <f:attribute name="currentUser" value="#{currentUser}"/>
-                    <f:attribute name="type" value="newRetype" />
-                    <f:validator validatorId="userPasswordValidator"/>
-                </ice:inputSecret><br />
-                <ice:message for="newPasswordRetypeInput" styleClass="form_error_message"/>
-            </td>
-        </tr>
+          <tr>
+              <td class="b m">New password retype</td>
+              <td>
+                  <ice:inputSecret  id="newPasswordRetypeInput" styleClass="profile_input" value="#{currentUser.newPasswordRetype}" >
+                      <f:attribute name="currentUser" value="#{currentUser}"/>
+                      <f:attribute name="type" value="newRetype" />
+                      <f:validator validatorId="userPasswordValidator"/>
+                  </ice:inputSecret><br />
+                  <ice:message for="newPasswordRetypeInput" styleClass="form_error_message"/>
+              </td>
+          </tr>
       </table>
 
       <div class="profile_about-head">About me</div>
