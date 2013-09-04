@@ -128,7 +128,7 @@ public class AutoregisterConferencePeople implements MessageListener {
     }
 
     private boolean emailExists(String email) {
-        return getUserByEmail(email) == null;
+        return getUserByEmail(email) != null;
     }
 
     private User getUserByEmail(String email) {
