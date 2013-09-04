@@ -126,6 +126,44 @@ public class AdminTasksBean {
         return null;
     }
 
+    public String copyProp() throws SystemException, PortalException {
+        Map<Long, Long[]> map = new HashMap<Long, Long[]>();
+        map.put(30L, new Long[]{1301810L,
+                1301809L,
+                1301808L,
+                1301807L,
+                1301806L,
+                1301805L,
+                1301803L,
+                1301802L,
+                1301801L,
+                1301815L,
+                1301814L,
+                1301813L,
+                1301811L});
+
+        for (Map.Entry<Long, Long[]> e : map.entrySet()) {
+            Contest c = ContestLocalServiceUtil.getContest(e.getKey());
+            ContestPhase target = null;
+            for(ContestPhase ph : ContestLocalServiceUtil.getPhases(c)) {
+                if(ph.getPhaseEndDate() == null) {
+                    target = ph;
+                    break;
+                }
+            }
+
+            List<PlanItem> toBeCopied = new LinkedList<PlanItem>();
+
+            for (Long srcProposal : e.getValue()) {
+                toBeCopied.add(PlanItemLocalServiceUtil.getPlan(srcProposal));
+            }
+
+            PlanItemLocalServiceUtil.promotePlans(toBeCopied, target.getContestPhasePK());
+        }
+
+        return null;
+    }
+
     public String fixContestsDiscussionPermissions() throws SystemException, PortalException {
         for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
             try {
