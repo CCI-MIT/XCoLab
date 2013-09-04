@@ -127,6 +127,7 @@ public class AdminTasksBean {
     }
 
     public String copyProp() throws SystemException, PortalException {
+        //key=contestID, value=All proposals to be copied
         Map<Long, Long[]> map = new HashMap<Long, Long[]>();
         map.put(30L, new Long[]{1301810L,
                 1301809L,
@@ -143,6 +144,7 @@ public class AdminTasksBean {
                 1301811L});
 
         for (Map.Entry<Long, Long[]> e : map.entrySet()) {
+            // get target contestphase
             Contest c = ContestLocalServiceUtil.getContest(e.getKey());
             ContestPhase target = null;
             for(ContestPhase ph : ContestLocalServiceUtil.getPhases(c)) {
@@ -152,12 +154,13 @@ public class AdminTasksBean {
                 }
             }
 
+            //find planItems for plans to be copied
             List<PlanItem> toBeCopied = new LinkedList<PlanItem>();
-
             for (Long srcProposal : e.getValue()) {
                 toBeCopied.add(PlanItemLocalServiceUtil.getPlan(srcProposal));
             }
 
+            //copy
             PlanItemLocalServiceUtil.promotePlans(toBeCopied, target.getContestPhasePK());
         }
 
