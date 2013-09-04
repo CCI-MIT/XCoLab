@@ -9,8 +9,10 @@ import java.util.Date;
 *         First created on 8/28/13 at 5:24 PM
 */
 class ConferenceUser {
-    private String lastName, firstName, middleName, eMail, secondaryEmail;
-    Date regDate;
+    private static final String YES = "Yes";
+    private String lastName, firstName, middleName, eMail, secondaryEmail, colabEmail;
+    private Date regDate;
+    private Boolean isMember, joinColab;
 
     ConferenceUser(Row row) {
         lastName = row.getCell(1).getStringCellValue();
@@ -19,6 +21,9 @@ class ConferenceUser {
         eMail = row.getCell(4).getStringCellValue();
         secondaryEmail = row.getCell(5).getStringCellValue();
 //            regDate = row.getCell(6).getDateCellValue();
+        isMember = YES.equals(row.getCell(7).getStringCellValue());
+        colabEmail = row.getCell(8).getStringCellValue();
+        joinColab = YES.equals(row.getCell(9).getStringCellValue());
     }
 
     public String getLastName() {
@@ -43,5 +48,17 @@ class ConferenceUser {
 
     public Date getRegDate() {
         return regDate;
+    }
+
+    String getColabEmail() {
+        return colabEmail;
+    }
+
+    Boolean getMember() {
+        return isMember;
+    }
+
+    Boolean getJoinColab() {
+        return joinColab;
     }
 }

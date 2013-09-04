@@ -52,7 +52,11 @@ public class AutoregisterConferencePeople implements MessageListener {
                 try {
                     List<ConferenceUser> users = getConferenceUsers();
                     for (ConferenceUser u : users) {
-                        registerUser(u);
+                        if (!u.getMember() && u.getJoinColab()) {
+                            registerUser(u);
+                        } else if (u.getColabEmail() != null && !u.getColabEmail().equals("")) {
+                            setConferenceAttendingExpando(getUserByEmail(u.getColabEmail()));
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -92,6 +96,7 @@ public class AutoregisterConferencePeople implements MessageListener {
     }
 
     private void setConferenceAttendingExpando(User u) throws SystemException, PortalException {
+        if (u == null) return;
         ExpandoTable table = null;
         try {
             table = ExpandoTableLocalServiceUtil.getTable(LoginController.companyId, User.class.getName(),
@@ -100,7 +105,7 @@ public class AutoregisterConferencePeople implements MessageListener {
             e.printStackTrace();
         }
         //create table
-        if(table == null) {
+        if (table == null) {
             System.out.println("creating expando table");
             table = ExpandoTableLocalServiceUtil.addTable(LoginController.companyId, User.class.getName(), CommunityConstants.EXPANDO);
         }
@@ -108,8 +113,7 @@ public class AutoregisterConferencePeople implements MessageListener {
         ExpandoColumn conferenceExpando = null;
         try {
             conferenceExpando = ExpandoColumnLocalServiceUtil.getColumn(table.getTableId(), CommunityConstants.CONFERENCE2013);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
         }
         // create column
@@ -124,11 +128,14 @@ public class AutoregisterConferencePeople implements MessageListener {
     }
 
     private boolean emailExists(String email) {
+        return getUserByEmail(email) == null;
+    }
+
+    private User getUserByEmail(String email) {
         try {
-            UserLocalServiceUtil.getUserByEmailAddress(LoginController.companyId, email);
-            return true;
+            return UserLocalServiceUtil.getUserByEmailAddress(LoginController.companyId, email);
         } catch (Exception e) {
-            return false;
+            return null;
         }
     }
 
@@ -145,7 +152,8 @@ public class AutoregisterConferencePeople implements MessageListener {
         for (Row row : sheet) {
             if (row.getRowNum() == 0) continue; //skip header
             try {
-                users.add(new ConferenceUser(row));
+                ConferenceUser u = new ConferenceUser(row);
+                users.add(u);
             } catch (Exception e) {
             }
         }
