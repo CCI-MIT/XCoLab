@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -26,9 +27,26 @@ public class RandomProposalsBean {
         
         Long[] selectedPhases = preferencesBean.getSelectedPhases();
         if (selectedPhases == null) return null;
-        
-        for (Long contestPhasePk: selectedPhases) {
-            availablePlans.addAll(ContestPhaseLocalServiceUtil.getPlans(ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePk)));
+        Long[] flagFilters = preferencesBean.getFlagFilters();
+
+        if (flagFilters == null || flagFilters.length == 0) {
+            for (Long contestPhasePk: selectedPhases) {
+                    availablePlans.addAll(ContestPhaseLocalServiceUtil.getPlans(ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePk)));
+                }
+        }
+        else {
+            for (Long contestPhasePk: selectedPhases) {
+                for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePk))) {
+                    Integer ribbon = PlanItemLocalServiceUtil.getRibbon(plan);
+                    if (ribbon == null) continue;
+                    for (Long flag: flagFilters) {
+                        if (ribbon == flag.intValue()) {
+                            availablePlans.add(plan);
+                            break;
+                        }
+                    }
+                }
+            }
         }
         
         Collections.shuffle(availablePlans);
