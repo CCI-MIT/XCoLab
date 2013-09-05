@@ -126,7 +126,7 @@ public class AdminTasksBean {
         return null;
     }
 
-    public String copyProp() throws SystemException, PortalException {
+    public String copyAllProposals() throws SystemException, PortalException {
         //key=contestID, value=All proposals to be copied
         Map<Long, Long[]> map = new HashMap<Long, Long[]>();
         map.put(30L, new Long[]{1301810L,
@@ -142,7 +142,381 @@ public class AdminTasksBean {
                 1301814L,
                 1301813L,
                 1301811L});
+        map.put(14L, new Long[]{1301942L,
+                1301957L,
+                1301955L,
+                1301953L,
+                1301952L,
+                1301951L,
+                1301950L,
+                1301949L,
+                1301948L,
+                1301946L,
+                1301944L,
+                1301943L});
+        map.put(25L, new Long[]{1302132L,
+                1302153L,
+                1302152L,
+                1302151L,
+                1302150L,
+                1302148L,
+                1302145L,
+                1302143L,
+                1302142L,
+                1302141L,
+                1302139L,
+                1302138L,
+                1302137L,
+                1302136L,
+                1302135L,
+                1302133L,
+                1302144L,
+                1302140L,
+                1302134L});
+        map.put(11L, new Long[]{
+                1301888L,
+                1301887L,
+                1301900L,
+                1301899L,
+                1301898L,
+                1301897L,
+                1301896L,
+                1301895L,
+                1301894L,
+                1301893L,
+                1301892L,
+                1301891L,
+                1301890L,
+                1301889L,
+                1301902L
+        });
+        map.put(23L, new Long[]{
+                1302118L,
+                1302117L,
+                1302125L,
+                1302124L,
+                1302123L,
+                1302120L,
+        });
+        map.put(24L, new Long[]{
+                1302126L,
+                1302131L,
+                1302130L,
+                1302127L,
+        });
+        map.put(26L, new Long[]{
+                1302173L,
+                1302155L,
+                1302174L,
+                1302172L,
+                1302171L,
+                1302169L,
+                1302168L,
+                1302167L,
+                1302166L,
+                1302165L,
+                1302164L,
+                1302163L,
+                1302162L,
+                1302160L,
+                1302158L,
+                1302156L,
+                1302159L,
+        });
+        map.put(19L, new Long[]{
+                1302028L,
+                1302026L,
+                1302025L,
+                1302024L,
+                1302022L,
+                1302020L,
+                1302016L,
+                1302014L,
+                1302013L,
+                1302012L
+        });
+        map.put(7L, new Long[]{
+                1301838L,
+                1301837L,
+                1301836L,
+                1301835L,
+                1301831L,
+                1301830L,
+                1301828L,
+                1301827L,
+                1301833L,
+                1301825L,
+                1301824L,
+                1301823L,
+                1301822L,
+                1301821L,
+                1301820L,
+                1301819L,
+                1301818L,
+                1301817L,
+                1301816L,
+                1301856L,
+                1301854L,
+                1301853L,
+                1301852L,
+                1301851L,
+                1301849L,
+                1301848L,
+                1301847L,
+                1301846L,
+                1301845L,
+                1301844L,
+                1301842L,
+                1301841L,
+                1301840L,
+                1301839L,
+                1301832L,
+                1301855L,
+        });
+        map.put(18L, new Long[]{1301988L,
+                1301987L,
+                1301986L,
+                1301985L,
+                1302010L,
+                1302009L,
+                1302008L,
+                1302007L,
+                1302006L,
+                1302004L,
+                1302003L,
+                1302000L,
+                1301999L,
+                1301998L,
+                1301997L,
+                1301996L,
+                1301995L,
+                1301994L,
+                1301993L,
+                1301992L,
+                1301991L,
+                1301990L,
+                1301989L,});
+        map.put(22L, new Long[]{
+                1302107L,
+                1302105L,
+                1302103L,
+                1302116L,
+                1302115L,
+                1302113L,
+                1302110L,
+                1302109L,
+                1302108L,
+                1302104L,
+        });
+        map.put(13L, new Long[]{1301926L,
+                1301925L,
+                1301924L,
+                1301923L,
+                1301922L,
+                1301921L,
+                1302015L,
+                1301920L,
+                1301919L,
+                1301918L,
+                1301917L,
+                1301915L,
+                1301904L,
+                1301916L,
+                1301914L,
+                1301913L,
+                1301912L,
+                1301911L,
+                1301910L,
+                1301909L,
+                1301908L,
+                1301907L,
+                1301906L,
+                1301905L,
+                1301941L,
+                1301940L,
+                1301939L,
+                1301938L,
+                1301937L,
+                1301936L,
+                1301935L,
+                1301933L,
+                1301932L,
+                1301931L,
+                1301930L,
+                1301929L,
+                1301928L,});
+        map.put(21L, new Long[]{1302076L,
+                1302075L,
+                1302074L,
+                1302073L,
+                1302072L,
+                1302070L,
+                1302069L,
+                1302068L,
+                1302067L,
+                1302066L,
+                1302065L,
+                1302064L,
+                1302102L,
+                1302101L,
+                1302099L,
+                1302098L,
+                1302097L,
+                1302096L,
+                1302095L,
+                1302093L,
+                1302092L,
+                1302091L,
+                1302090L,
+                1302089L,
+                1302087L,
+                1302086L,
+                1302085L,
+                1302084L,
+                1302083L,
+                1302082L,
+                1302081L,
+                1302080L,
+                1302079L,
+                1302077L,});
+        map.put(10L, new Long[]{
+                1301884L,
+                1301863L,
+                1301862L,
+                1301861L,
+                1301860L,
+                1301859L,
+                1301858L,
+                1301857L,
+                1301885L,
+                1301883L,
+                1301880L,
+                1301878L,
+                1301877L,
+                1301876L,
+                1301875L,
+                1301874L,
+                1301870L,
+                1301869L,
+                1301868L,
+                1301867L,
+                1301866L,
+                1301865L,
+                1301864L,
+                1301873L,
+                1301872L,
+                1301871L,
+        });
+        map.put(20L, new Long[]{
+                1302046L,
+                1302045L,
+                1302044L,
+                1302043L,
+                1302042L,
+                1302041L,
+                1302040L,
+                1302039L,
+                1302038L,
+                1302036L,
+                1302035L,
+                1302034L,
+                1302033L,
+                1302032L,
+                1302031L,
+                1302030L,
+                1302029L,
+                1302063L,
+                1302061L,
+                1302060L,
+                1302059L,
+                1302058L,
+                1302057L,
+                1302055L,
+                1302054L,
+                1302053L,
+                1302050L,
+                1302049L,
+                1302048L,
+                1302047L,
+        });
+        map.put(16L, new Long[]{
+                1301977L,
+                1301972L,
+                1301973L,
+                1301974L,
+                1301975L,
+                1301976L,
+                1301978L,
+                1301979L,
+                1301970L,
+                1301971L,
+        });
+        map.put(15L, new Long[]{
+                1301961L,
+                1301960L,
+                1301959L,
+                1301958L,
+                1301969L,
+                1301968L,
+                1301967L,
+                1301966L,
+                1301965L,
+                1301964L,
+                1301963L,
+                1301962L,
+        });
+        map.put(17L, new Long[]{
+                1301980L,
+                1301984L,
+                1301983L,
+                1301982L,
+                1301981L,
+        });
 
+
+        copyProposals(map);
+
+        return null;
+    }
+
+    public String copySemiFinalists() throws PortalException, SystemException {
+        Map<Long, Long[]> map = new HashMap<Long, Long[]>();
+        map.put(14L, new Long[]{1302202L,
+                1302201L});
+        map.put(25L, new Long[]{1303509L});
+        map.put(23L, new Long[]{1302905L,
+                1302901L});
+        map.put(26L, new Long[]{1303303L,
+                1303304L});
+        map.put(7L, new Long[]{1303005L});
+        map.put(18L, new Long[]{1302601L,
+                1302608L,
+                1302602L,
+                1302603L});
+        map.put(13L, new Long[]{1302804L,
+                1302803L,
+                1302801L,});
+        map.put(10L, new Long[]{1303706L,
+                1303702L,
+                1303701L});
+        map.put(16L, new Long[]{1303402L,
+                1303401L});
+        map.put(15L, new Long[]{1302302L,
+                1302301L});
+
+
+        copyProposals(map);
+
+        return null;
+    }
+
+    /**
+     *
+     * @param map key=contestId, values=proposals of that contest to be copied
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public void copyProposals(Map<Long, Long[]> map) throws SystemException, PortalException {
         for (Map.Entry<Long, Long[]> e : map.entrySet()) {
             // get target contestphase
             Contest c = ContestLocalServiceUtil.getContest(e.getKey());
@@ -163,8 +537,6 @@ public class AdminTasksBean {
             //copy
             PlanItemLocalServiceUtil.promotePlans(toBeCopied, target.getContestPhasePK());
         }
-
-        return null;
     }
 
     public String fixContestsDiscussionPermissions() throws SystemException, PortalException {
