@@ -541,10 +541,14 @@ public class AdminTasksBean {
     }
     
     public String upPlanAttributeIdCounter() throws SystemException {
-        CounterLocalServiceUtil.increment(PlanAttribute.class.getName(), 10000);
+        for (int i=0; i < 100; i++) {
+            CounterLocalServiceUtil.increment(PlanAttribute.class.getName(), 100);
+        }
         
         return null;
     }
+    
+    
 
     public String fixContestsDiscussionPermissions() throws SystemException, PortalException {
         for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
