@@ -14,6 +14,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
+import com.ext.portlet.model.PlanAttribute;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanItemGroup;
 import com.ext.portlet.model.PlanSection;
@@ -537,6 +538,12 @@ public class AdminTasksBean {
             //copy
             PlanItemLocalServiceUtil.promotePlans(toBeCopied, target.getContestPhasePK());
         }
+    }
+    
+    public String upPlanAttributeIdCounter() throws SystemException {
+        CounterLocalServiceUtil.increment(PlanAttribute.class.getName(), 10000);
+        
+        return null;
     }
 
     public String fixContestsDiscussionPermissions() throws SystemException, PortalException {
