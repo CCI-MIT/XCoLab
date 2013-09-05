@@ -181,7 +181,7 @@ public class DiscussionMessageLocalServiceImpl
 
            try {
                indexer.reindex(dMessage.getMessageId());
-           } catch (SearchException e) {
+           } catch (Exception e) {
                _log.error("Can't reindex message " + dMessage.getMessageId(), e);
            }
        }
