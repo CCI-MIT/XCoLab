@@ -44,13 +44,6 @@
 		</div>
         <!-- /headline -->
 
-        <div style="
-    margin-bottom: 10px;
-    font-size: 17px;
-">Voting has ended!  Winners will be announced soon.  Until then, click the contests below to review the finalists.
-</div>
-
-
 		<div class="blueheaderbar">
 			<div class="contestbar">
 				<ui:include src="./contests/widget_CONTEST_PHASES.xhtml" />
@@ -334,9 +327,5 @@
 			<ui:param name="showShadebar"
 				value="#{(fn:length(plansIndex.plansFeatured) eq 0) and (fn:length(plansIndex.plansWithProperName) eq 0)}" />
 		</ui:decorate>
-
-		<f:subview rendered="#{contest.currentPhase.active}">
-			<h3 style="margin-top: 20px; margin-bottom: 20px;">If you can't find a proposal you're looking for, click on "Proposal revisions" at the top of the screen to view finalists and "Finalist selection" to view all proposals.</h3>
-		</f:subview>
 	</div>
 </f:view>
