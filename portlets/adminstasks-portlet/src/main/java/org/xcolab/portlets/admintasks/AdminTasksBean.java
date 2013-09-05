@@ -14,6 +14,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
+import com.ext.portlet.model.PlanAttribute;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanItemGroup;
 import com.ext.portlet.model.PlanSection;
@@ -48,7 +49,7 @@ import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 import edu.emory.mathcs.backport.java.util.Collections;
 
 public class AdminTasksBean {
-    private Log _log = LogFactoryUtil.getLog(SyncProposalSupportersBetweenPhasesTask.class);
+    private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
 
 
     public String populateFirstEmptySectionWithDescription() throws SystemException, PortalException {
@@ -534,6 +535,98 @@ public class AdminTasksBean {
             PlanItemLocalServiceUtil.promotePlans(toBeCopied, target.getContestPhasePK());
         }
     }
+    
+    public String upPlanAttributeIdCounter() throws SystemException {
+        for (int i=0; i < 100; i++) {
+            CounterLocalServiceUtil.increment(PlanAttribute.class.getName(), 100);
+        }
+        
+        return null;
+    }
+    
+    
+    public String copyProposals() throws PortalException, SystemException {
+        long[] contestsToWorkWith = {30, 14, 25, 11, 23, 24, 26, 19, 7, 18, 22, 13, 21, 10, 20, 16, 15, 17};
+        _log.info("Copying proposals to completed phase");
+        for (long contestPk: contestsToWorkWith) {
+            _log.info("\tworking on contest " + contestPk);
+            Set<Long> groupsToIgnore = new HashSet<Long>();
+            List<PlanItem> plansToCopy = new ArrayList<PlanItem>();
+            
+            ContestPhase completedPhase = findPhaseForContest(contestPk, "Completed");
+            ContestPhase proposalRevisionsPhase = findPhaseForContest(contestPk, "Proposal revisions");
+            ContestPhase finalistSelectionPhase = findPhaseForContest(contestPk, "Finalist selection");
+
+            // first select all of the plans from completed phase and add their groups to "groupsToIgnore" as they shouldn't
+            // be copied from any of previous phases
+            _log.info("\t\tlooking for plan item groups of proposals already present in completed phase");
+            for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(completedPhase)) {
+                PlanItemGroup group = PlanItemGroupLocalServiceUtil.getPlanItemGroup(plan.getPlanId());
+                groupsToIgnore.add(group.getGroupId());
+            }
+            
+            _log.info("\t\tlooking for plans that haven't been already copied to completed phase (semi-finalists)");
+            // iterate over all plans in proposalRevisions phase and copy the ones that aren't already present in 
+            // completed phase
+            for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(proposalRevisionsPhase)) {
+                PlanItemGroup group = PlanItemGroupLocalServiceUtil.getPlanItemGroup(plan.getPlanId());
+                if (groupsToIgnore.contains(group.getGroupId())) continue;
+
+                groupsToIgnore.add(group.getGroupId());
+                plansToCopy.add(plan);
+            }
+            _log.info("\t\t\tfound: " + plansToCopy.size());
+            if (! plansToCopy.isEmpty()) {
+                // promote plans from 
+                PlanItemLocalServiceUtil.promotePlans(plansToCopy, completedPhase.getContestPhasePK());
+            }
+
+            _log.info("\t\tassigning semi finalist ribbons");
+            // iterate over all of proposals in the completedPhase and if proposal has no ribbon, assign it ribbon 3 
+            //with "Semi-Finalist" hover
+            for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(completedPhase)) {
+                Integer ribbon = PlanItemLocalServiceUtil.getRibbon(plan);
+                if (ribbon == null || ribbon <= 0) {
+                    PlanItemLocalServiceUtil.setRibbon(plan, 3);
+                    PlanItemLocalServiceUtil.setRibbonText(plan, "Semi-Finalist");
+                }
+            }
+            plansToCopy.clear();
+            
+            _log.info("\t\tlooking for proposals in finalist selection phase that haven't been already copied to completed phase");
+            // now copy all of the remaining proposals from finalistSelection phase
+            for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(finalistSelectionPhase)) {
+                PlanItemGroup group = PlanItemGroupLocalServiceUtil.getPlanItemGroup(plan.getPlanId());
+                if (groupsToIgnore.contains(group.getGroupId())) continue;
+                
+                plansToCopy.add(plan);
+            }
+            _log.info("\t\t\tfound: " + plansToCopy.size());
+            if (! plansToCopy.isEmpty()) {
+                // promote plans from 
+                PlanItemLocalServiceUtil.promotePlans(plansToCopy, completedPhase.getContestPhasePK());
+            }
+            _log.info("\t\tphase processed");
+            
+        }
+        
+
+        _log.info("Success!");
+        return null;
+        
+    }
+    
+    private ContestPhase findPhaseForContest(long contestPk, String contestPhaseName) throws PortalException, SystemException {
+        
+        for (ContestPhase cp: ContestLocalServiceUtil.getPhases(ContestLocalServiceUtil.getContest(contestPk))) {
+            if (ContestPhaseLocalServiceUtil.getName(cp).equals(contestPhaseName)) {
+                return cp;
+            }
+        }
+        throw new RuntimeException("Can't find phase: " + contestPhaseName + " in contest " + contestPk);
+    }
+    
+    
 
     public String fixContestsDiscussionPermissions() throws SystemException, PortalException {
         for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
