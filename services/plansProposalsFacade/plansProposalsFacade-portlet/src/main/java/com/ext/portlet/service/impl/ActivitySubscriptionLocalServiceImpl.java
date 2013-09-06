@@ -285,7 +285,7 @@ public class ActivitySubscriptionLocalServiceImpl
                         message += 
                                 "<br /><br /><a href='" + 
                                 NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(receipient.getUserId())) + 
-                                "'>If you don't want to receive emails from this thread in the future, click here to unsubscribe.</a>";
+                                "'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
                         MailEngine.send(fromEmail, toEmail, subject, message, true);
                     }
 

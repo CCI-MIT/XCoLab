@@ -383,7 +383,7 @@ public class MassMessagingPortlet extends MVCPortlet {
                 messageBodyText += 
                     "<br /><br /><a href='" + 
                     NotificationUnregisterUtils.getUnregisterLink(user) + 
-                    "'>Click here if you don't want to receive climatecolab newsletter</a>";
+                    "'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
             }
             if (StringUtils.isNotBlank(sendAs)) {
                 
