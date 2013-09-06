@@ -1418,6 +1418,12 @@ table.jqplot-table-legend {
 
 .contestTeamRole .contestTeamRoleName {
 	vertical-align: bottom;
+	width:70px; 
+}
+
+
+.contestTeamRole .contestTeamMembers {
+	width: 100%;
 }
 .contestTeamRole .contestTeamMember {
 	white-space: nowrap;
