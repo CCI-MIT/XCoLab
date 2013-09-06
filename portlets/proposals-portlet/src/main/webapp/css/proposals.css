@@ -1417,7 +1417,7 @@ table.jqplot-table-legend {
 }
 
 .contestTeamRole .contestTeamRoleName {
-	vertical-align: bottom;
+	padding-top: 15px;
 	width:70px; 
 }
 
