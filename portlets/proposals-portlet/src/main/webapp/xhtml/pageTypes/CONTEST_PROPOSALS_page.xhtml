@@ -110,27 +110,35 @@
 									var="teamRole"
 									value="#{contest.contest.contestTeamMembersByRole}">
 									<div class="contestTeamRole">
+										<table>
+									    <tr><td class="contestTeamRoleName">
 										<f:subview rendered="#{fn:length(teamRole.users) eq 1}">
 											<div style="width: 53px; display: inline-block;">#{teamRole.roleName}</div>
 										</f:subview>
 										<f:subview rendered="#{fn:length(teamRole.users) gt 1}">
 											<div style="width: 53px; display: inline-block;">#{teamRole.roleName}s</div>
 										</f:subview>
-
+										
+										</td>
+										<td class="contestTeamMembers">
 										<ui:repeat style="display: inline;" var="teamRoleUser"
 											value="#{teamRole.users}" varStatus="status">
+											<div class="contestTeamMember">
 											<collab:userPortrait screenName="#{teamRoleUser.screenName }"
 												portraitId="#{teamRoleUser.portraitId}" width="30"
 												height="30" />
 											<collab:userLinkSimple userId="#{teamRoleUser.userId}"
 												text="#{teamRoleUser.fullName}" />
+											</div>
 										</ui:repeat>
+										</td></tr>
+										</table>
 									</div>
 
 
 								</ui:repeat></td>
 						</f:subview>
-						<td width="100%" style="text-align: center;"><f:subview
+						<td style="text-align: center;"><f:subview
 								rendered="#{contest.contest.sponsorLogo ne '/image'}">
 								<div class="sponsorLogo">
 									<table>

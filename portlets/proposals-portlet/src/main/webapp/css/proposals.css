@@ -1410,3 +1410,22 @@ table.ribbonsAndPlanName td {
 table.jqplot-table-legend {
 	margin-top: 320px;
 }
+.contestTeamRole {
+	white-space: normal;
+	min-width: 435px;
+	max-width: 755px;
+}
+
+.contestTeamRole .contestTeamRoleName {
+	padding-top: 15px;
+	width:70px; 
+}
+
+
+.contestTeamRole .contestTeamMembers {
+	width: 100%;
+}
+.contestTeamRole .contestTeamMember {
+	white-space: nowrap;
+	float: left;
+}
