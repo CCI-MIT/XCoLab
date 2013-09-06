@@ -17,7 +17,7 @@
     <h:head />
     <h:body>
     <ice:portlet>
-        <h2>Featured winning proposals <span><a href="/web/guest/plans">see all proposals</a></span></h2>
+        <h2>#{randomProposalsBean.preferencesBean.title} <span><a href="/web/guest/plans">see all proposals</a></span></h2>
         <ui:repeat value="#{randomProposalsBean.proposals}" var="proposal">
         
             <div class="contestbox">

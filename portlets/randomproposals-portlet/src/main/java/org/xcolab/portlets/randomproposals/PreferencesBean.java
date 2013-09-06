@@ -28,11 +28,37 @@ public class PreferencesBean {
     private String flagFiltersStr;
     private String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";
     private String FLAG_FILTER_PREFERENCE = "FLAG_FILTERS";
-    
+    private String TITLE_PREFERENCE = "TITLE";
+    private String FEED_SIZE_PREFERENCE = "FEED_SIZE";
+    private String title;
+    private Integer feedSize;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getFeedSize() {
+        return feedSize;
+    }
+
+    public void setFeedSize(Integer feedSize) {
+        this.feedSize = feedSize;
+    }
+
     public PreferencesBean() {
         PortletPreferences prefs = Helper.getPortletPrefs();
         selectedPhases = convertStringsToLongs(prefs.getValue(SELECTED_PHASES_PREFERENCE, "").split(","));
         flagFiltersStr = prefs.getValue(FLAG_FILTER_PREFERENCE, "");
+        title = prefs.getValue(TITLE_PREFERENCE, "Interesting Proposals");
+        try {
+            feedSize = Integer.parseInt(prefs.getValue(FEED_SIZE_PREFERENCE, "4"));
+        } catch (NumberFormatException e) {
+            feedSize = 4;
+        }
         flagFilters = convertStringsToLongs(flagFiltersStr.split(","));
         
     }
@@ -43,6 +69,8 @@ public class PreferencesBean {
         
         prefs.setValue(SELECTED_PHASES_PREFERENCE, StringUtils.join(convertLongsToStrings(selectedPhases), ","));
         prefs.setValue(FLAG_FILTER_PREFERENCE, flagFiltersStr);
+        prefs.setValue(TITLE_PREFERENCE, title);
+        prefs.setValue(FEED_SIZE_PREFERENCE, feedSize+"");
 
         prefs.store();
         
