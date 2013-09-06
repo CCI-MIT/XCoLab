@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 public class RandomProposalsBean {
     
-    private static final int MAX_PLANS = 4;
     private PreferencesBean preferencesBean;
     private String baseImagePath;
     
@@ -50,7 +49,7 @@ public class RandomProposalsBean {
         }
         
         Collections.shuffle(availablePlans);
-        for (int i=0; i < availablePlans.size() && i < MAX_PLANS; i++) {
+        for (int i=0; i < availablePlans.size() && i < preferencesBean.getFeedSize(); i++) {
             ret.add(new PlanItemWrapper(availablePlans.get(i)));
         }
         
