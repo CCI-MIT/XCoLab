@@ -18,6 +18,9 @@ import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.utils.NotificationUnregisterUtils;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.log.LogUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -29,6 +32,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 public class NotificationUnregisterController {
 
 	private long DEFAULT_COMPANY_ID = 10112L;
+	private final static Log _log = LogFactoryUtil.getLog(NotificationUnregisterController.class);
 	
 	@RequestMapping
 	public String register(PortletRequest request, PortletResponse response, Model model) throws SystemException {
@@ -45,12 +49,10 @@ public class NotificationUnregisterController {
 	    if (userId > 0) {
 	        try {
 	            user = UserLocalServiceUtil.getUser(userId);
-	            System.out.println(NotificationUnregisterUtils.getToken(user));
-	            System.out.println(token);
 	            error = ! NotificationUnregisterUtils.isTokenValid(token, user);
 	        }
 	        catch (Exception e) {
-	            error = true;
+	            _log.error("Error when unsubscribing", e);
 	        }
 	    }
 	    if (subscriptionId > 0) {
@@ -60,7 +62,9 @@ public class NotificationUnregisterController {
                 unregisteringSubscription = true;
 	        }
 	        catch (Exception e) {
-                error = true;
+                _log.error("Error when unsubscribing", e);
+                // error = true; ignore, but log exception
+	            
 	        }
 	    }
 	    
