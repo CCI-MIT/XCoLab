@@ -23,7 +23,7 @@
                     <input name="redirect" type="hidden" />
                     <div class="btns">
                         <div style="float: left;">
-                            <span><em><a href="javascript:;" class="forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span><br />
+                            <span><em><a href="javascript:;" class="forgot" style="color:#900;" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span><br />
                             <span><em><a href="/web/guest/loginregister?redirect=$escapeTool.url($themeDisplay.uRLCurrent)" class="forgot" >Haven't registered yet?</a></em></span><br />
                             <div class="clearfix"></div>
                         </div>
