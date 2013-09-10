@@ -101,7 +101,7 @@
 				</f:subview>
 			</div>
 
-			<div class="moreinfo">
+			<div class="moreinfo #{contest.contest.sponsorLogo ne '/image' ? 'withSponsor' : 'noSponsor'}">
 				<table>
 					<tr>
 						<f:subview
@@ -110,7 +110,7 @@
 									var="teamRole"
 									value="#{contest.contest.contestTeamMembersByRole}">
 									<div class="contestTeamRole">
-										<table style="width: auto;">
+										<table>
 									    <tr><td class="contestTeamRoleName">
 										<f:subview rendered="#{fn:length(teamRole.users) eq 1}">
 											<div style="width: 53px; display: inline-block;">#{teamRole.roleName}</div>
