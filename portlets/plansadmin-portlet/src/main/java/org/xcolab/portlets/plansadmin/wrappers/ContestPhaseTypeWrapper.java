@@ -6,7 +6,9 @@ import javax.faces.event.ActionEvent;
 
 import org.xcolab.portlets.plansadmin.ContestPhaseTypeBean;
 
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -64,5 +66,21 @@ public class ContestPhaseTypeWrapper {
         contestPhaseTypeBean.refresh();
     }
     
-
+    public void delete(ActionEvent e) throws SystemException {
+        if (contestPhaseType.getId() <= 0) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest phase type that doesn't exist", ""));
+            return;
+        }
+        for (ContestPhase cp: ContestPhaseLocalServiceUtil.getContestPhases(0, Integer.MAX_VALUE)) {
+            if (cp.getContestPhaseType() == contestPhaseType.getId()) {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest phase type which is referenced by contest phases", ""));
+                return;
+            }
+        }
+        
+        ContestPhaseTypeLocalServiceUtil.deleteContestPhaseType(contestPhaseType);
+        contestPhaseTypeBean.refresh();
+    }
 }

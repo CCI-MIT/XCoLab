@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -117,6 +119,21 @@ public class ContestWrapper {
 		}
         
         ContestLocalServiceUtil.store(contest);
+    }
+    
+    public void delete(ActionEvent e) throws SystemException, IOException, PortalException {
+        if (contest.getContestPK() <= 0) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest that doesn't exist", ""));
+            return;
+        }
+        if (! ContestLocalServiceUtil.getPhases(contest).isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest as it has phases", ""));
+            return;
+        }
+        
+        ContestLocalServiceUtil.deleteContest(contest);
+        return;
     }
     
     private Image addImage(File file) throws  SystemException, IOException, PortalException{

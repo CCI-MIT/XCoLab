@@ -29,6 +29,7 @@
             }
         </style>
 <h1>Plans administration</h1>
+<ice:messages />
 <ice:panelTabSet>
 	<ice:panelTab label="Contests">
         <h2>Contests</h2>
@@ -48,6 +49,7 @@
                 <ice:commandButton value="edit" action="#{contestsAdmin.editContest}" actionListener="#{contestsAdmin.editCotnestActionListener}">
                     <f:attribute name="contest" value="#{contest}" />
                 </ice:commandButton>
+                <ice:commandButton value="delete" actionListener="#{contest.delete}" />
             
             </ice:column>
             

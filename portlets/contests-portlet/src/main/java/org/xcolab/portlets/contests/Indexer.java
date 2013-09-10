@@ -53,8 +53,9 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void delete(Object obj) throws SearchException {
-
-        Document doc = getDocument(getContest(obj));
+        Contest c = getContest(obj);
+        if (c == null) return;
+        Document doc = getDocument(c);
         SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
         
     }
@@ -248,7 +249,8 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         
             try {
                 Contest c = ContestLocalServiceUtil.getContest(contestId);
-                return c;
+                
+                return c == null ? (Contest) obj : c;
             } catch (PortalException e) {
                 _log.error("Can't reindex contest " + obj, e);
                 return null;

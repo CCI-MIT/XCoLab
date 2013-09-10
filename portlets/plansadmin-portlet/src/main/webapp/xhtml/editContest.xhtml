@@ -190,6 +190,7 @@
     		<ice:column>
     			<f:facet name="header">Action</f:facet>
     			<ice:commandButton actionListener="#{phase.save}" value="#{phase.new ? 'Add phase' : 'Save'}" />
+    			<ice:commandButton actionListener="#{phase.delete}" value="Delete" rendered="#{not phase.new}" />
     		</ice:column>
     	</ice:dataTable>
     </ice:panelTab>

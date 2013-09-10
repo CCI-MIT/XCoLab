@@ -105,6 +105,22 @@ public class ContestPhaseWrapper {
         contestWrapper.refresh();
     }
     
+    public void delete(ActionEvent e) throws SystemException, PortalException {
+        if (contestPhase.getContestPhasePK() <= 0) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest phase that doesn't exist", ""));
+            return;
+        }
+        if (! ContestPhaseLocalServiceUtil.getPlans(contestPhase).isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest phase has plans associated with it", ""));   
+            return;
+        }
+        ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
+        contestWrapper.refresh();
+        
+    }
+    
     public boolean isNew() {
         return contestPhase.getContestPhasePK() <= 0;
     }
