@@ -74,6 +74,11 @@
 		<managed-bean-class>org.xcolab.portlets.plansadmin.PlanTemplatesAdmin</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>contestPhaseTypeBean</managed-bean-name>
+		<managed-bean-class>org.xcolab.portlets.plansadmin.ContestPhaseTypeBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<navigation-rule>
 		<from-view-id>/xhtml/view.xhtml</from-view-id>
 		<navigation-case>

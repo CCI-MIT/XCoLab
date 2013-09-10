@@ -13,30 +13,31 @@
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     >
     <ice:portlet styleClass="plansAdmin"><ice:form>
+    <ice:outputStyle href="/xmlhttp/css/xp/xp.css" />
         
         <style>
-            .plansAdmin table {
-                width: 700px;
-                margin: 10px 0 20px 30px;
-                
-            }
-            .iceDatTblCol2 {
-                width: 100px;
-            }
+        	.LftTop, .MidTop, .RtTop, .LftBtm, .MidBtm, .RtBtm {
+        		line-height: 1px;
+        		font-size: 1px;
+        		
+        	}
             .portlet-section-alternate {
                 background: #f0f0f0;
-            }
-            
-            td {
-                padding: 5px;
             }
             .clear {
                 clear: both;
             }
         </style>
-        <h1>Plans administration</h1>
+<h1>Plans administration</h1>
+<ice:panelTabSet>
+	<ice:panelTab label="Contests">
         <h2>Contests</h2>
         <ice:dataTable value="#{contestsAdmin.contests}" var="contest">
+            <ice:column>
+                <f:facet name="header">id</f:facet>
+                #{contest.contest.contestPK}
+            
+            </ice:column>
             <ice:column>
                 <f:facet name="header">Name</f:facet>
                 #{contest.contestShortName}
@@ -51,6 +52,9 @@
             </ice:column>
             
         </ice:dataTable>
+		<ice:commandButton value="Add new contest" action="#{contestsAdmin.addContest}"  />
+    </ice:panelTab>
+	<ice:panelTab label="Plan templates">
         <h2 style="float: left;">Plan templates</h2>
             <ice:commandButton value="Create new plan template" action="#{planTemplatesAdmin.createNew}" style="float: right;"/>
             <div class="clear"></div>
@@ -68,7 +72,8 @@
                 </ice:column>
             </ice:dataTable>
             
-        
+    </ice:panelTab>
+	<ice:panelTab label="Plan sections definitions">
         <h2 style="float: left;">Plan sections definitions</h2>
             <ice:commandButton value="Create new section definition" action="#{planSectionDefinitionsAdmin.createNew}" style="float: right;"/>
             <div class="clear"></div>
@@ -89,6 +94,12 @@
                     </ice:commandButton>
                 </ice:column>
             </ice:dataTable>
+    </ice:panelTab>
+    <ice:panelTab label="Contest phase types">
+    	<ui:include src="./editContestPhaseTypes.xhtml" />
+    </ice:panelTab>
+    
+</ice:panelTabSet>
     </ice:form></ice:portlet>
 </f:view>         
 

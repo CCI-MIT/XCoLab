@@ -28,6 +28,11 @@ public class ContestsAdmin {
         editedContest = (ContestWrapper) e.getComponent().getAttributes().get("contest");
     }
     
+    public String addContest() throws SystemException {
+        editedContest = new ContestWrapper(ContestLocalServiceUtil.createContest(0));
+        return "editContest";
+    }
+    
     public String editContest() {
         return "editContest";
     }
