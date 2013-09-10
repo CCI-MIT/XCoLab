@@ -17,11 +17,13 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.counter.service.persistence.CounterUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -33,9 +35,14 @@ public class ContestWrapper {
 	private Contest contest;
 	private File newContestLogo;
 	private File newSponsorLogo;
+	private List<ContestPhaseWrapper> phases = new ArrayList<>();
 
-	public ContestWrapper(Contest contest) {
+	public ContestWrapper(Contest contest) throws SystemException {
 		this.contest = contest;
+		if (contest == null) {
+		    this.contest = ContestLocalServiceUtil.createContest(0);
+		}
+		refresh();
 	}
 
 	public String getContestShortName() {
@@ -95,6 +102,13 @@ public class ContestWrapper {
 	}
 
     public void save() throws SystemException, IOException, PortalException {
+        long id = CounterLocalServiceUtil.getCounter(Contest.class.getName()).getCurrentId();
+        if (id < 100) {
+            id = CounterLocalServiceUtil.increment(Contest.class.getName(), 100);
+        }
+        if (contest.getContestPK() <= 0) {
+            contest.setContestPK(id);
+        }
         if (newContestLogo != null) {
             contest.setContestLogoId(addImage(newContestLogo).getImageId());
         }
@@ -221,6 +235,22 @@ public class ContestWrapper {
 		return Helper.getThemeDisplay().getPathImage()
 				+ ContestLocalServiceUtil.getSponsorLogoPath(contest);
 	}
+	
+	public List<ContestPhaseWrapper> getPhases() {
+	    return phases;
+	}
 
 	private final static Log _log = LogFactoryUtil.getLog(ContestWrapper.class);
+
+    public void refresh() throws SystemException {
+        phases.clear();
+        
+        if (contest.getContestPK() > 0) {
+            for (ContestPhase cp: ContestLocalServiceUtil.getPhases(contest)) {
+                phases.add(new ContestPhaseWrapper(cp, this));
+            }
+        }
+        phases.add(new ContestPhaseWrapper(null, this));
+        
+    }
 }
