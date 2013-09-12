@@ -20,6 +20,11 @@ public class PlanItemFinderUtil {
         getFinder().removePlanWithHistory(planId);
     }
 
+    public static java.util.List<com.ext.portlet.model.PlanItem> getPlansForUser(
+        long userId) {
+        return getFinder().getPlansForUser(userId);
+    }
+
     public static int countVotesForPlanType(com.ext.portlet.model.PlanType type) {
         return getFinder().countVotesForPlanType(type);
     }

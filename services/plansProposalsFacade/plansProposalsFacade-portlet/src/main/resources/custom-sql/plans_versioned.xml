@@ -20,6 +20,24 @@
 
 </sql>
 
+<sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.getPlansForUser">
+    <![CDATA[
+        SELECT pi.*
+        FROM
+            xcolab_PlanItem pi,
+            xcolab_PlanMeta pm
+        WHERE
+            pm.planGroupId IN (
+                SELECT groupId FROM Users_Groups WHERE userId = ?
+                ) AND
+            pi.version = (
+                SELECT max(version) FROM xcolab_PlanItem pi_sub WHERE pi_sub.planId = pi.planId
+                ) AND
+            pi.planId = pm.planId
+    ]]>
+
+</sql>
+
 
 
 <sql id="com.ext.portlet.service.persistence.PlanItemFinderImpl.getPlans">

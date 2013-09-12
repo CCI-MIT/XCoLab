@@ -263,6 +263,11 @@ public class PlanItemLocalServiceWrapper implements PlanItemLocalService,
         return _planItemLocalService.createPlan(basePlan, contestPhase, authorId);
     }
 
+    public java.util.List<com.ext.portlet.model.PlanItem> getPlansForUser(
+        long userId) {
+        return _planItemLocalService.getPlansForUser(userId);
+    }
+
     public java.util.List<com.ext.portlet.model.PlanItem> getPlans()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planItemLocalService.getPlans();

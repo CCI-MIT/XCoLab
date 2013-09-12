@@ -270,6 +270,11 @@ public class PlanItemLocalServiceUtil {
         return getService().createPlan(basePlan, contestPhase, authorId);
     }
 
+    public static java.util.List<com.ext.portlet.model.PlanItem> getPlansForUser(
+        long userId) {
+        return getService().getPlansForUser(userId);
+    }
+
     public static java.util.List<com.ext.portlet.model.PlanItem> getPlans()
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getPlans();

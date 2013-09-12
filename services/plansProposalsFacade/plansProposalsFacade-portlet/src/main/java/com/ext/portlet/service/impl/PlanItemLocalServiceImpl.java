@@ -1,17 +1,8 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
+import com.liferay.portal.kernel.dao.orm.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -71,10 +62,6 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.base.PlanItemLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.Criterion;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -165,6 +152,8 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 	public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on plan %s";
 
 	public static final String DEFAULT_UNTITLED_PLAN_STEM_NAME = "Untitled Proposal ";
+
+    private static final String PLAN_ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
 	/**
 	 * Default forum category name.
@@ -608,6 +597,10 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 		PlanMetaLocalServiceUtil.store(planMeta);
 
 	}
+
+    public List<PlanItem> getPlansForUser(long userId){
+        return planItemFinder.getPlansForUser(userId);
+    }
 
 	public List<PlanItem> getPlans() throws SystemException {
 		return this.planItemFinder.getPlans();

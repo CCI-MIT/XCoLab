@@ -238,6 +238,10 @@ public interface PlanItemLocalService extends PersistedModelLocalService {
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.PlanItem> getPlansForUser(
+        long userId);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.PlanItem> getPlans()
         throws com.liferay.portal.kernel.exception.SystemException;
 

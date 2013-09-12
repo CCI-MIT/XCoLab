@@ -109,6 +109,11 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
     public static final String GET_LATEST_VERSION_OF_PLAN = PlanItemFinderImpl.class.getName() + ".getLatestPlanVersion";
 
     /**
+     * Name of custom SQL statement that is responsible for retrieval all plans for given user ID;
+     */
+    public static final String GET_PLANS_FOR_USER = PlanItemFinderImpl.class.getName() + ".getPlansForUser";
+
+    /**
      * Position of published parameter in custom queries.
      */
     public static final int PARAM_PLAN_TYPE_ID = 0;
@@ -429,7 +434,17 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
         query.setLong(0, planId);
         query.executeUpdate();
      }
-    
+
+
+    public List<PlanItem> getPlansForUser(long userId){
+        Session session = openSession();
+        String sql = CustomSQLUtil.get(GET_PLANS_FOR_USER);
+        SQLQuery query = session.createSQLQuery(sql);
+        query.setLong(0, userId);
+
+        query.addEntity("PlanItem", PlanItemImpl.class);
+        return (List<PlanItem>) QueryUtil.list(query,getDialect(),0,Integer.MAX_VALUE);
+    }
     
 
     public int countVotesForPlanType(PlanType type) {
