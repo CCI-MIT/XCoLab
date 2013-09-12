@@ -49,6 +49,7 @@ public class UserProfileBean implements Serializable {
     private UserSubscriptionsBean subscriptionsBean;
     private String messagingPortletId;
     private boolean messageSent;
+    private BadgeBean badges;
 
     private boolean displayEMailErrorMessage = false;
     
@@ -107,6 +108,8 @@ public class UserProfileBean implements Serializable {
         } catch (Exception e) {
 
         }
+
+        badges = new BadgeBean(currentUser.getUserId());
     }
 
     public boolean isDisplayEMailErrorMessage() {
@@ -249,6 +252,10 @@ public class UserProfileBean implements Serializable {
 
     public UserSubscriptionsBean getSubscriptionsBean() {
         return subscriptionsBean;
+    }
+
+    public BadgeBean getBadges(){
+        return badges;
     }
 
 }

@@ -75,12 +75,33 @@
 	<div id="main"
 		class="#{userprofileBean.viewingOwnProfile ? '' : 'full'} userProfile">
 
-		<div class="comm_member">
+		<div class="comm_member" style="margin-top: 0;">
+            <f:subview rendered="#{currentUser.attendsConference}">
+                <a href="/web/guest/conference2013" class="attendingConference"><img src="/climatecolab-theme/images/attending-conference.png" alt="Attends MIT Conference 2013"/></a>
+            </f:subview>
+
+            <div class="badge-container">
+                <ui:repeat value="#{userprofileBean.badges.badges}" var="badge">
+                    <div class="badge-big badge-#{badge.badgeType}">
+
+                        <span class="badge-title">
+                            <collab:planLink planId="#{badge.planId}"
+                                             contestId="#{badge.contestId}"
+                                             text="#{badge.badgeTitle}"
+                                             style="#{badge.badgeTitle.length() gt 8 ? 'top: 26px;' : ''};"   />
+                        </span>
+
+                        <div class="badge-text" style="#{badge.badgeText.length() gt 15 ? 'font-size: 7px;' : ''}">#{badge.badgeText}</div>
+                        <span class="badge-year">#{badge.badgeYear}</span>
+                    </div>
+                </ui:repeat>
+            </div>
+
 			<div class="comm_member-photo">
 				<img src="#{currentUser.portrait}" width="150" height="150"
 					alt="#{currentUser.realName}" />
 			</div>
-			<div class="comm_member-info">
+			<div class="comm_member-info" style="width:300px;">
 				<table border="0" cellpadding="0" cellspacing="0"
 					class="colab members topInfo">
 					<tr>
@@ -88,25 +109,11 @@
 					</tr>
 					<tr>
 						<td class="memname">#{currentUser.realName}</td>
-						<td class="r btm">
-                            <f:subview rendered="#{currentUser.attendsConference}">
-                                <a href="/web/guest/conference2013" class="attendingConference">Attends MIT Conference 2013</a>
-                            </f:subview>
-                            <ice:form>
-								<f:subview rendered="#{userprofileBean.viewingOwnProfile}">
-									<a href="./#{currentUser.userId}/page/edit">Manage profile
-										and settings &gt;&gt;</a>
-								</f:subview>
-							</ice:form> <f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
-								<a href="javascript:;"
-									onclick="if (! deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
-									#{currentUser.firstName} a Message </a>
-							</f:subview></td>
 					</tr>
 				</table>
-				<div class="memdiv"></div>
+				<div class="memdiv" style="background-color:#707070;"></div>
 				<table border="0" cellpadding="0" cellspacing="0"
-					class="colab members otherInfo" style="width:100%;">
+					class="colab members otherInfo" style="width:280px;">
 					<tr>
 						<td class="b" nowrap="nowrap">Screen Name</td>
 						<td>#{currentUser.screenName}</td>
@@ -118,6 +125,7 @@
 									timeZone="America/New_York" />
 							</ice:outputText></td>
 					</tr>
+
 					<f:subview rendered="#{userprofileBean.viewingOwnProfile}">
 						<tr>
 							<td class="b">Email</td>
@@ -135,7 +143,16 @@
 							<td>#{currentUser.country}</td>
 						</tr>
 					</f:subview>
-
+                    <tr><td colspan="2"><ice:form>
+                        <f:subview rendered="#{userprofileBean.viewingOwnProfile}">
+                            <a href="./#{currentUser.userId}/page/edit">Manage profile
+                                and settings &gt;&gt;</a>
+                        </f:subview>
+                    </ice:form> <f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
+                        <a style="margin-top: 6px; display: block;" href="javascript:;"
+                           onclick="if (! deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
+                            #{currentUser.firstName} a Message </a>
+                    </f:subview></td></tr>
 				</table>
 			</div>
 			<div class="clearfix"></div>
