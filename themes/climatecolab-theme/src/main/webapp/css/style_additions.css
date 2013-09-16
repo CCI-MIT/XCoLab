@@ -1155,6 +1155,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 .mitproject {
     background: url(../images/logo_mit_bluegreen.gif) no-repeat;
     padding-left: 90px;
+    margin-bottom: 5px;
 }
 
 .portlet-topper {
