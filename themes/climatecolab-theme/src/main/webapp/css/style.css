@@ -328,7 +328,7 @@ position: absolute;
 .topshade {height:9px; background: url(../images/topshade.png) repeat-x; position:relative; z-index:5;}
 .earth {background:url(../images/homespot-earth.jpg) no-repeat 500px top; width:100%; min-height:336px; position:relative; top:-9px;}
 .homespot-left {float:left; width:530px; padding-left:10px; color:#404041; position:relative; font-size:16px;}
-.social {font-size:14px; width:458px; position:absolute; left:507px; bottom:0;}
+.social {font-size: 14px; width: 125px; position: absolute; right: -9px; top: 2px;}
 
 .homespot-left h1 {font-size:35px; margin:20px 0 10px 0;}
 a.learn, a.get {height:33px; padding-top:11px; margin-right:11px; display:inline-block; font-size:16px; font-weight:700; text-transform:uppercase; color:#fff;}
@@ -337,7 +337,7 @@ a.get {background:url(../images/homespot-get.png) no-repeat; width:132px; paddin
 a.learn:hover {background:url(../images/homespot-learn-hover.png) no-repeat;}
 a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
-.newsbox {background:url(../images/pattern-6x6.png) #f7f7f5; width:418px; font-size:15px; padding:10px 26px 10px 18px; margin:38px 0 18px; position:relative; border:1px solid #a3a39e; -webkit-border-radius:6px; -moz-border-radius:6px; border-radius:6px;}
+.newsbox {background:url(../images/pattern-6x6.png) #f7f7f5; width:418px; font-size:15px; padding:10px 26px 10px 18px; margin:25px 0 25px; position:relative; border:1px solid #a3a39e; -webkit-border-radius:6px; -moz-border-radius:6px; border-radius:6px;}
 .newsbox h3 {float:left; font-size:15px; color:#000; width:55px;}
 .newsbox-arrow {position:absolute; top:8px; left:-17px; width:17px; height:17px; background:url(../images/newsbox-arrow.png) no-repeat;}
 .newsbox:after, .homespot:after {content:"."; display:block; height:0; clear:both; visibility:hidden;}
@@ -349,12 +349,62 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .newslinks a.readmore {color:#000;}
 .newslinks a.readmore:hover {border-bottom:1px solid #000;}
 
-.facebook {background:url(../images/icon-facebook.png) no-repeat; float:left; width:81px; height:17px; padding:1px 0 0 25px;}
-.twitter {background:url(../images/icon-twitter.png) no-repeat; float:left; height:17px; padding:1px 0 0 25px;}
-.reddit {background:url(../images/icon-reddit.png) no-repeat; float:left; height:17px; padding:0px 0 0 25px;margin-left:17px;}
-.pinterest {background:url(../images/icon-pinterest.png) no-repeat; float:left; height:17px; padding:1px 0 0 25px;margin-left:17px;}
-.linkedin {background:url(../images/icon-linkedin.png) no-repeat; float:left; height:17px; padding:1px 0 0 25px;margin-left:17px;}
 
+.social-icon{ float: left; height: 17px; padding: 1px 0px 0px 25px; text-indent: -999px; overflow: hidden; }
+.facebook {background:url(../images/icon-facebook.png) no-repeat;}
+.twitter {background:url(../images/icon-twitter.png) no-repeat;}
+.reddit {background:url(../images/icon-reddit.png) no-repeat;}
+.pinterest {background:url(../images/icon-pinterest.png) no-repeat;}
+.linkedin {background:url(../images/icon-linkedin.png) no-repeat;}
+
+/* <Conference Countdown Flipclock>*/
+#conference-countdown{ position: absolute; top: 342px; left: 539px; width: 400px; }
+
+.countdown-day{ z-index: 1; position:relative; font-size: 26px; display: block; margin: 11px 0 0 15px; }
+
+.countdown-graphic{ position: absolute; left:0px; top:0px; z-index:0; }
+
+.conference-days{ color: #e36f0f; font-weight: bold; margin: 16px 0 0 60px; display: block; }
+
+.conference-until{ margin: 16px 0 0 5px; display:block; }
+
+#conference-countdown span, #conference-countdown img{ float:left; }
+
+#sec { width: 48px; position: absolute; float: left; height: 40px; top: 348px; left: 544px; z-index: 1; }
+
+.flip { position: absolute; height: 20px; font-family: Tahoma, Geneva, sans-serif; font-size: 26px; line-height: 40px; text-align: center; overflow: hidden; width: 48px; color: black; }
+
+.top { top: 0px; -moz-transform-origin: center bottom; -webkit-transform-origin: center bottom; -o-transform-origin: center bottom; transform-origin: center bottom; background: url('../images/flip_top.png') no-repeat; }
+
+.bottom { top: 19px; -moz-transform-origin: center top; -webkit-transform-origin: center top; -o-transform-origin: center top; transform-origin: center top; background: url('../images/flip_bottom.png') no-repeat; }
+
+.bottom SPAN { display: block; margin-top: -19px; }
+
+.ap { font-weight: bold; font-size: 20px; line-height: 20px; position: absolute; left: 30px; top: 170px; }
+
+.front { z-index: 200; }
+
+.back { z-index: 0; }
+
+.hide { display: none; }
+
+.ani1 .top.front { -moz-transform: skew(5deg) scaleY(.90); -webkit-transform: skew(5deg) scaleY(.90); -o-transform: skew(5deg) scaleY(.90); transform: skew(5deg) scaleY(.90); }
+
+.ani2 .top.front { -moz-transform: skew(10deg) scaleY(.60); -webkit-transform: skew(10deg) scaleY(.60); -o-transform: skew(10deg) scaleY(.60); transform: skew(10deg) scaleY(.60); }
+
+.ani3 .top.front { -moz-transform: skew(20deg) scaleY(.30); -webkit-transform: skew(20deg) scaleY(.30); -o-transform: skew(20deg) scaleY(.30); transform: skew(20deg) scaleY(.30); }
+
+.ani4 .top.front { -moz-transform: skew(50deg) scaleY(0.10); -webkit-transform: skew(50deg) scaleY(0.10); -o-transform: skew(50deg) scaleY(0.10); transform: skew(50deg) scaleY(0.10); }
+
+.ani4 .bottom.front { -moz-transform: skew(-50deg) scaleY(0.10); -webkit-transform: skew(-50deg) scaleY(0.10); -o-transform: skew(-50deg) scaleY(0.10); transform: skew(-50deg) scaleY(0.10); }
+
+.ani3 .bottom.front { -moz-transform: skew(-20deg) scaleY(.30); -webkit-transform: skew(-20deg) scaleY(.30); -o-transform: skew(-20deg) scaleY(.30); transform: skew(-20deg) scaleY(.30); }
+
+.ani2 .bottom.front { -moz-transform: skew(-10deg) scaleY(.60); -webkit-transform: skew(-10deg) scaleY(.60); -o-transform: skew(-10deg) scaleY(.60); transform: skew(-10deg) scaleY(.60); }
+
+.ani1 .bottom.front { -moz-transform: skew(-5deg) scaleY(.90); -webkit-transform: skew(-5deg) scaleY(.90); -o-transform: skew(-5deg) scaleY(.90); transform: skew(-5deg) scaleY(.90); }
+
+/* </ Conference Countdown Flipclock>*/
 
 /* columns ------------- */
 .home-left {float:left; width:520px;}
