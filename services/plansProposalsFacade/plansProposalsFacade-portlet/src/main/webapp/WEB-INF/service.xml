@@ -18,4 +18,6 @@
     <service-builder-import file="services/service-massmessaging.xml" />
     <service-builder-import file="services/service-landingpage.xml" />
     <service-builder-import file="services/service-balloon.xml" />
+    
+    <service-builder-import file="services/service-proposals.xml" />
 </service-builder>

@@ -594,3 +594,53 @@ create table xcolab_PlansUserSettings (
 	filterEnabled BOOLEAN,
 	filterPositionsAll BOOLEAN
 );
+
+create table xcolab_Proposal (
+	proposalId LONG not null primary key,
+	createDate DATE null,
+	currentVersion INTEGER,
+	authorId LONG,
+	visible BOOLEAN,
+	discussionId LONG,
+	judgeDiscussionId LONG,
+	fellowDiscussionId LONG,
+	advisorDiscussionId LONG,
+	groupId LONG
+);
+
+create table xcolab_Proposal2Phase (
+	proposalId LONG not null,
+	contestPhaseId LONG not null,
+	versionFrom INTEGER,
+	versionTo INTEGER,
+	sortWeight INTEGER,
+	autopromoteCandidate BOOLEAN,
+	primary key (proposalId, contestPhaseId)
+);
+
+create table xcolab_ProposalAttribute (
+	proposalId LONG not null,
+	version INTEGER not null,
+	name VARCHAR(75) not null,
+	additionalId LONG not null,
+	numericValue LONG,
+	stringValue TEXT null,
+	realValue DOUBLE,
+	primary key (proposalId, version, name, additionalId)
+);
+
+create table xcolab_ProposalAttributeType (
+	name VARCHAR(75) not null primary key,
+	visibleInVersionHistory BOOLEAN,
+	copyOnPromote BOOLEAN
+);
+
+create table xcolab_ProposalVersion (
+	proposalId LONG not null,
+	version INTEGER not null,
+	authorId LONG,
+	createDate DATE null,
+	updateType VARCHAR(75) null,
+	updateAdditionalId LONG,
+	primary key (proposalId, version)
+);

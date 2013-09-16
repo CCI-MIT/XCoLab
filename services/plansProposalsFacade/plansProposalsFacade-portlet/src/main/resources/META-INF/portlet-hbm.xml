@@ -65,6 +65,11 @@
 	<import class="com.ext.portlet.model.PlanTypeAttribute" />
 	<import class="com.ext.portlet.model.PlanTypeColumn" />
 	<import class="com.ext.portlet.model.PlanVote" />
+	<import class="com.ext.portlet.model.Proposal" />
+	<import class="com.ext.portlet.model.Proposal2Phase" />
+	<import class="com.ext.portlet.model.ProposalAttribute" />
+	<import class="com.ext.portlet.model.ProposalAttributeType" />
+	<import class="com.ext.portlet.model.ProposalVersion" />
 	<class name="com.ext.portlet.model.impl.ActivitySubscriptionImpl" table="xcolab_ActivitySubscription">
 		<cache usage="read-write" />
 		<id name="pk" type="long">
@@ -773,5 +778,62 @@
 		</composite-id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalImpl" table="xcolab_Proposal">
+		<cache usage="read-write" />
+		<id name="proposalId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="currentVersion" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="discussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="judgeDiscussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="fellowDiscussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="advisorDiscussionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.Proposal2PhaseImpl" table="xcolab_Proposal2Phase">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.Proposal2PhasePK">
+			<key-property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="contestPhaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+		<property name="versionFrom" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="versionTo" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="sortWeight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="autopromoteCandidate" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalAttributeImpl" table="xcolab_ProposalAttribute">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ProposalAttributePK">
+			<key-property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="version" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+			<key-property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+			<key-property name="additionalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalAttributeTypeImpl" table="xcolab_ProposalAttributeType">
+		<cache usage="read-write" />
+		<id name="name" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="visibleInVersionHistory" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalVersionImpl" table="xcolab_ProposalVersion">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ProposalVersionPK">
+			<key-property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="version" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		</composite-id>
+		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="updateType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="updateAdditionalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 </hibernate-mapping>

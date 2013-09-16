@@ -67,6 +67,11 @@ import com.ext.portlet.service.persistence.PlanVotePersistence;
 import com.ext.portlet.service.persistence.PlansFilterPersistence;
 import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
 import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
+import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
+import com.ext.portlet.service.persistence.ProposalAttributePersistence;
+import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
+import com.ext.portlet.service.persistence.ProposalPersistence;
+import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -326,6 +331,16 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
     protected PlanTypeColumnPersistence planTypeColumnPersistence;
     @BeanReference(type = PlanVotePersistence.class)
     protected PlanVotePersistence planVotePersistence;
+    @BeanReference(type = ProposalPersistence.class)
+    protected ProposalPersistence proposalPersistence;
+    @BeanReference(type = Proposal2PhasePersistence.class)
+    protected Proposal2PhasePersistence proposal2PhasePersistence;
+    @BeanReference(type = ProposalAttributePersistence.class)
+    protected ProposalAttributePersistence proposalAttributePersistence;
+    @BeanReference(type = ProposalAttributeTypePersistence.class)
+    protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
+    @BeanReference(type = ProposalVersionPersistence.class)
+    protected ProposalVersionPersistence proposalVersionPersistence;
     @BeanReference(type = ResourcePersistence.class)
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)

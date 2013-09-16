@@ -127,6 +127,16 @@ import com.ext.portlet.service.PlansFilterPositionServiceUtil;
 import com.ext.portlet.service.PlansFilterServiceUtil;
 import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
 import com.ext.portlet.service.PlansUserSettingsServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeServiceUtil;
+import com.ext.portlet.service.ProposalAttributeTypeLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeTypeServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalServiceUtil;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
+import com.ext.portlet.service.ProposalVersionServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -333,6 +343,21 @@ public class ClpMessageListener extends BaseMessageListener {
             PlanVoteLocalServiceUtil.clearService();
 
             PlanVoteServiceUtil.clearService();
+            ProposalLocalServiceUtil.clearService();
+
+            ProposalServiceUtil.clearService();
+            Proposal2PhaseLocalServiceUtil.clearService();
+
+            Proposal2PhaseServiceUtil.clearService();
+            ProposalAttributeLocalServiceUtil.clearService();
+
+            ProposalAttributeServiceUtil.clearService();
+            ProposalAttributeTypeLocalServiceUtil.clearService();
+
+            ProposalAttributeTypeServiceUtil.clearService();
+            ProposalVersionLocalServiceUtil.clearService();
+
+            ProposalVersionServiceUtil.clearService();
         }
     }
 }

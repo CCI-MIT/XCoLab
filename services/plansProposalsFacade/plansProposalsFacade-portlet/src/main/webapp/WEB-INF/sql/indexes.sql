@@ -144,3 +144,5 @@ create index IX_4E60E847 on xcolab_PlanVote (planId);
 create index IX_C1242E47 on xcolab_PlansFilterPosition (userId, planTypeId);
 
 create index IX_95AABD4 on xcolab_PlansUserSettings (userId, planTypeId);
+
+create index IX_8FF24CAD on xcolab_ProposalAttribute (proposalId, version);
