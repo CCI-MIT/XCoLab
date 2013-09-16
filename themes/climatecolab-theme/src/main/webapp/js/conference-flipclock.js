@@ -14,7 +14,7 @@ ReadyList.push(function() {
         msPerDay=24*60*60*1000,
         timeLeft=(BigDay.getTime()-today.getTime()),
         e_daysLeft=timeLeft/msPerDay,
-        daysLeft=Math.floor(e_daysLeft)-1,
+        daysLeft=Math.floor(e_daysLeft),
         startDays = daysLeft + 5,
 
         now = new Date(),
