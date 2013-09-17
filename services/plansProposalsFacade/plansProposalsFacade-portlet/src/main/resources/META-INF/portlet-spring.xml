@@ -630,7 +630,7 @@
 	<bean id="com.ext.portlet.service.persistence.ProposalVersionPersistence" class="com.ext.portlet.service.persistence.ProposalVersionPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.utils.userInput.PolicyFct" class="com.ext.utils.userInput.PolicyFct">
 		<property name="policyFile">
-			<value>/antisamy-policy.xml</value>
+			<value>antisamy-policy.xml</value>
 		</property>
 	</bean>
 	<bean id="com.ext.utils.userInput.UserInputFilter" class="com.ext.utils.userInput.UserInputFilterImpl">
