@@ -821,4 +821,36 @@
 			<bean class="com.liferay.portal.service.persistence.BatchSessionImpl" />
 		</property>
 	</bean>
+		<bean id="com.liferay.portal.kernel.cache.MultiVMPool" class="com.liferay.portal.cache.MultiVMPoolImpl">
+		<property name="portalCacheManager" ref="com.liferay.portal.kernel.cache.MultiVMPortalCacheManager" />
+	</bean>
+	
+	<bean id="com.liferay.portal.kernel.dao.orm.FinderCacheUtil" class="com.liferay.portal.kernel.dao.orm.FinderCacheUtil">
+		<property name="finderCache">
+			<bean class="com.liferay.portal.dao.orm.common.FinderCacheImpl">
+				<property name="multiVMPool" ref="com.liferay.portal.kernel.cache.MultiVMPool" />
+			</bean>
+		</property>
+	</bean>
+	
+		<bean id="com.liferay.portal.kernel.cache.MultiVMPortalCacheManager" class="com.liferay.portal.cache.ehcache.EhcachePortalCacheManager">
+		<property name="clusterAware" value="true" />
+		<property name="configPropertyKey" value="ehcache.multi.vm.config.location" />
+		<property name="MBeanServer" ref="registryAwareMBeanServer" />
+	</bean>
+	
+	<bean id="com.liferay.portal.kernel.dao.orm.EntityCacheUtil" class="com.liferay.portal.kernel.dao.orm.EntityCacheUtil">
+		<property name="entityCache">
+			<bean class="com.liferay.portal.dao.orm.common.EntityCacheImpl">
+				<property name="multiVMPool" ref="com.liferay.portal.kernel.cache.MultiVMPool" />
+			</bean>
+		</property>
+	</bean>
+	
+	
+	<bean id="com.liferay.portal.kernel.search.IndexerRegistryUtil" class="com.liferay.portal.kernel.search.IndexerRegistryUtil">
+		<property name="indexerRegistry">
+			<bean class="com.liferay.portal.search.IndexerRegistryImpl" />
+		</property>
+	</bean>
 </beans>

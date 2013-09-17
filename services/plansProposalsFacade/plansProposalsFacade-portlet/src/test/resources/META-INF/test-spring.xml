@@ -13,7 +13,9 @@
   	<context:property-placeholder location="classpath*:META-INF/properties/*.properties" />
 
 	
-	<bean id="com.liferay.portal.service.MockContextProvider" class="com.liferay.portal.service.MockContextProvider" />
+	<bean id="com.liferay.portal.service.MockContextProvider" class="com.liferay.portal.service.MockContextProvider" >
+		<property name="dataSource" ref="liferayDataSource" />
+	</bean>
 	
 	<!-- 
 	<bean id="com.liferay.portal.service.PersistedModelLocalServiceRegistry" class="com.liferay.portal.service.PersistedModelLocalServiceRegistryMock" />

@@ -1,21 +1,22 @@
 package com.ext.portlet.service.impl;
 
 
+import static org.junit.Assert.*;
+
+import org.junit.Assert;
+import org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalService;
-import com.ext.portlet.service.impl.mock.PortalServicesHelperMock;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.MockContextProvider;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.spring.context.ArrayApplicationContext;
-import com.liferay.portal.util.InitUtil;
 
 public class ProposalLocalServiceImplTest {
 	private ProposalLocalService proposalLocalServiceImpl;
@@ -38,7 +39,7 @@ public class ProposalLocalServiceImplTest {
 	            "META-INF/test-spring.xml",
 	            "META-INF/counter-spring.xml",
 	            "META-INF/hibernate-spring.xml", "META-INF/base-spring.xml",
-	            "META-INF/portlet-spring.xml", "META-INF/util-spring.xml", 
+	            "META-INF/portlet-spring.xml", "META-INF/infrastructure-spring.xml", "META-INF/util-spring.xml", "META-INF/management-spring.xml",
 	            "META-INF/portlet-spring-override.xml"});
         
 		proposalLocalServiceImpl = ctx.getBean(ProposalLocalService.class);
@@ -52,12 +53,20 @@ public class ProposalLocalServiceImplTest {
 
     @Test
     public void testProposalCreation() throws SystemException, PortalException {
-        try {
-            proposalLocalServiceImpl.create(0);
-        }
-        catch (Throwable t) {
-            t.printStackTrace();
-        }
+        Proposal p = proposalLocalServiceImpl.create(1234L);
+        assertEquals(1234L, p.getAuthorId());
+        
+        Proposal rawFromDb = proposalLocalServiceImpl.getProposal(p.getProposalId());
+        assertEquals(rawFromDb.getProposalId(), p.getProposalId());
+        assertFalse(rawFromDb == p);
+        
+        assertEquals(rawFromDb, p);
+        assertEquals(rawFromDb.getCreateDate(), rawFromDb.getCreateDate());
+        assertEquals(rawFromDb.getVisible(), p.getVisible());
+        assertEquals(rawFromDb.getCreateDate(), p.getCreateDate());
+        assertEquals(rawFromDb.getAuthorId(), p.getAuthorId());
+        
+        
     }
 
 }

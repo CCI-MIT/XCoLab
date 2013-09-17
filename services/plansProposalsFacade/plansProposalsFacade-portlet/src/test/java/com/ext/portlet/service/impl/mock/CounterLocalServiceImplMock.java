@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.PersistedModel;
 
 public class CounterLocalServiceImplMock implements CounterLocalService {
+    private long counter = 0;
 
     @Override
     public Counter addCounter(Counter counter) throws SystemException {
@@ -132,19 +133,19 @@ public class CounterLocalServiceImplMock implements CounterLocalService {
     @Override
     public long increment() throws SystemException {
         // TODO Auto-generated method stub
-        return 0;
+        return counter++;
     }
 
     @Override
     public long increment(String name) throws SystemException {
         // TODO Auto-generated method stub
-        return 0;
+        return increment();
     }
 
     @Override
     public long increment(String name, int size) throws SystemException {
         // TODO Auto-generated method stub
-        return 0;
+        return increment();
     }
 
     @Override
