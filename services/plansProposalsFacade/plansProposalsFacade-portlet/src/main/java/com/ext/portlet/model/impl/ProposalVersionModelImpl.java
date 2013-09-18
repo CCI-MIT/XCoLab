@@ -63,7 +63,10 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
     public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.finder.cache.enabled.com.ext.portlet.model.ProposalVersion"),
             true);
-    public static final boolean COLUMN_BITMASK_ENABLED = false;
+    public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.column.bitmask.enabled.com.ext.portlet.model.ProposalVersion"),
+            true);
+    public static long PROPOSALID_COLUMN_BITMASK = 1L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalVersion"));
     private static ClassLoader _classLoader = ProposalVersion.class.getClassLoader();
@@ -71,11 +74,14 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
             ProposalVersion.class
         };
     private long _proposalId;
+    private long _originalProposalId;
+    private boolean _setOriginalProposalId;
     private int _version;
     private long _authorId;
     private Date _createDate;
     private String _updateType;
     private long _updateAdditionalId;
+    private long _columnBitmask;
     private ProposalVersion _escapedModelProxy;
 
     public ProposalVersionModelImpl() {
@@ -148,7 +154,19 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
     }
 
     public void setProposalId(long proposalId) {
+        _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
+
+        if (!_setOriginalProposalId) {
+            _setOriginalProposalId = true;
+
+            _originalProposalId = _proposalId;
+        }
+
         _proposalId = proposalId;
+    }
+
+    public long getOriginalProposalId() {
+        return _originalProposalId;
     }
 
     @JSON
@@ -198,6 +216,10 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
 
     public void setUpdateAdditionalId(long updateAdditionalId) {
         _updateAdditionalId = updateAdditionalId;
+    }
+
+    public long getColumnBitmask() {
+        return _columnBitmask;
     }
 
     @Override
@@ -263,6 +285,13 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
 
     @Override
     public void resetOriginalValues() {
+        ProposalVersionModelImpl proposalVersionModelImpl = this;
+
+        proposalVersionModelImpl._originalProposalId = proposalVersionModelImpl._proposalId;
+
+        proposalVersionModelImpl._setOriginalProposalId = false;
+
+        proposalVersionModelImpl._columnBitmask = 0;
     }
 
     @Override

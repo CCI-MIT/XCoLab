@@ -247,9 +247,46 @@ public interface ProposalLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public void setAttribute(long authorId, long proposalId,
-        java.lang.String attributeName, long additionalId,
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue, long numericValue, double realValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalAttribute getAttribute(
+        long proposalId, java.lang.String attributeName, long additionalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalAttribute getAttribute(
+        long proposalId, int version, java.lang.String attributeName,
+        long additionalId)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalVersion> getProposalVersions(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalVersion getProposalVersion(
+        long proposalId, int version)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }

@@ -28,6 +28,10 @@
     	<column name="createDate" type="Date" />
     	<column name="updateType" type="String" />
     	<column name="updateAdditionalId" type="long" />
+    	
+    	<finder return-type="Collection" name="ProposalId">
+    		<finder-column name="proposalId" />
+    	</finder>
     </entity>
     
     <entity name="ProposalAttribute" local-service="true">
@@ -42,6 +46,13 @@
     	<finder return-type="Collection" name="ProposalIdVersion">
     		<finder-column name="proposalId" />
     		<finder-column name="version" />
+    	</finder>
+    	
+    	<finder return-type="ProposalAttribute" name="ProposalIdVersionNameAdditionalId">
+    		<finder-column name="proposalId" />
+    		<finder-column name="version" />
+    		<finder-column name="name" />
+    		<finder-column name="additionalId" />
     	</finder>
     </entity>
     

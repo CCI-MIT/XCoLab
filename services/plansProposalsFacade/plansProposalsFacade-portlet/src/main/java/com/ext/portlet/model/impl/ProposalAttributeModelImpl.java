@@ -66,8 +66,10 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.ProposalAttribute"),
             true);
-    public static long PROPOSALID_COLUMN_BITMASK = 1L;
-    public static long VERSION_COLUMN_BITMASK = 2L;
+    public static long ADDITIONALID_COLUMN_BITMASK = 1L;
+    public static long NAME_COLUMN_BITMASK = 2L;
+    public static long PROPOSALID_COLUMN_BITMASK = 4L;
+    public static long VERSION_COLUMN_BITMASK = 8L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalAttribute"));
     private static ClassLoader _classLoader = ProposalAttribute.class.getClassLoader();
@@ -81,7 +83,10 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     private int _originalVersion;
     private boolean _setOriginalVersion;
     private String _name;
+    private String _originalName;
     private long _additionalId;
+    private long _originalAdditionalId;
+    private boolean _setOriginalAdditionalId;
     private long _numericValue;
     private String _stringValue;
     private double _realValue;
@@ -209,7 +214,17 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     public void setName(String name) {
+        _columnBitmask |= NAME_COLUMN_BITMASK;
+
+        if (_originalName == null) {
+            _originalName = _name;
+        }
+
         _name = name;
+    }
+
+    public String getOriginalName() {
+        return GetterUtil.getString(_originalName);
     }
 
     @JSON
@@ -218,7 +233,19 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     public void setAdditionalId(long additionalId) {
+        _columnBitmask |= ADDITIONALID_COLUMN_BITMASK;
+
+        if (!_setOriginalAdditionalId) {
+            _setOriginalAdditionalId = true;
+
+            _originalAdditionalId = _additionalId;
+        }
+
         _additionalId = additionalId;
+    }
+
+    public long getOriginalAdditionalId() {
+        return _originalAdditionalId;
     }
 
     @JSON
@@ -329,6 +356,12 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         proposalAttributeModelImpl._originalVersion = proposalAttributeModelImpl._version;
 
         proposalAttributeModelImpl._setOriginalVersion = false;
+
+        proposalAttributeModelImpl._originalName = proposalAttributeModelImpl._name;
+
+        proposalAttributeModelImpl._originalAdditionalId = proposalAttributeModelImpl._additionalId;
+
+        proposalAttributeModelImpl._setOriginalAdditionalId = false;
 
         proposalAttributeModelImpl._columnBitmask = 0;
     }

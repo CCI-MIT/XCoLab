@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
@@ -43,13 +44,11 @@ import com.liferay.portal.service.ServiceContext;
  * be accessed from within the same VM.
  * </p>
  * 
- * @author Brian Wing Shun Chan
+ * @author janusz
  * @see com.ext.portlet.service.base.ProposalLocalServiceBaseImpl
  * @see com.ext.portlet.service.ProposalLocalServiceUtil
  */
 public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
-
-    private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
 
     /**
      * Default community permissions for community forum category.
@@ -67,8 +66,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on plan %s";
     
+    /**
+     * Service helper for accessing external services
+     */
     private PortalServicesHelper portalServicesHelper;
     
+    /**
+     * Setter for PortalServicesHelper. 
+     * @param portalServicesHelper
+     */
     public ProposalLocalServiceImpl(PortalServicesHelper portalServicesHelper) {
         this.portalServicesHelper = portalServicesHelper;
     }
@@ -97,6 +103,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *             in case of a Liferay error
      * @throws PortalException
      *             in case of a Liferay error
+     *             
+     * @author janusz
      */
     @Transactional
     public Proposal create(long authorId) throws SystemException, PortalException {
@@ -134,8 +142,33 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return proposal;
     }
 
+    /**
+     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
+     * <p>The algorithm for setting an attribute value is as follows:</p>
+     * <ol>
+     *  <li>new proposal version is created</li>
+     *  <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
+     *      it is copied to the new version</li>
+     *  <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
+     * </ol>
+     * 
+     * @param authorId id of a change author
+     * @param proposalId id of a proposal
+     * @param attributeName name of an attribute
+     * @param additionalId additional id for an attribute
+     * @param stringValue string value for an attribute
+     * @param numericValue numeric value for an attribute
+     * @param doubleValue double value for an attribute
+     * 
+     * @return ProposalAttribute that represents newly set attribute
+     * 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     * 
+     * @author janusz 
+     */
     @Transactional
-    public void setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
             String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
 
@@ -154,22 +187,263 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // create new one with for new proposal version
         for (ProposalAttribute attribute : currentProposalAttributes) {
             if (!attributeName.equals(attribute.getName()) || additionalId != attribute.getAdditionalId()) {
-                // update version
-                attribute.setVersion(newVersion);
-                proposalAttributeLocalService.updateProposalAttribute(attribute);
+                // clone the attribute and set its version to the new value
+                ProposalAttribute newAttribute = (ProposalAttribute) attribute.clone();
+                newAttribute.setNew(true);
+                
+                newAttribute.setVersion(newVersion);
+                proposalAttributeLocalService.addProposalAttribute(newAttribute);
             }
         }
 
         // set new value for provided attribute
-        setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
+        ProposalAttribute attribute = setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
 
         // create newly created version descriptor
         createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId);
         updateProposal(proposal);
+        
+        return attribute;
     }
+    
+    /**
+     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)} 
+     * it uses nulls/zeros for unspecified values</p>
+     * @param authorId
+     * @param proposalId
+     * @param attributeName
+     * @param additionalId
+     * @param stringValue
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName,
+            String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
+        return setAttribute(authorId, proposalId, attributeName, 0L, stringValue, numericValue, realValue);
+    }
+    
+    /**
+     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)} 
+     * it uses nulls/zeros for unspecified values</p>
+     * @param authorId
+     * @param proposalId
+     * @param attributeName
+     * @param additionalId
+     * @param stringValue
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, String stringValue) throws PortalException, SystemException {
+        return setAttribute(authorId, proposalId, attributeName, additionalId, stringValue, 0, 0);
+    }
+    
+    /**
+     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)} 
+     * it uses nulls/zeros for unspecified values</p>
+     * @param authorId
+     * @param proposalId
+     * @param attributeName
+     * @param additionalId
+     * @param stringValue
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, String stringValue) throws PortalException, SystemException {
+        return setAttribute(authorId, proposalId, attributeName, 0, stringValue, 0, 0);
+    }
+    
+    /**
+     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)} 
+     * it uses nulls/zeros for unspecified values</p>
+     * @param authorId
+     * @param proposalId
+     * @param attributeName
+     * @param additionalId
+     * @param numericValue
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, long numericValue) throws PortalException, SystemException {
+        return setAttribute(authorId, proposalId, attributeName, additionalId, null, numericValue, 0);
+    }
+    
+    /**
+     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)} 
+     * it uses nulls/zeros for unspecified values</p>
+     * @param authorId
+     * @param proposalId
+     * @param attributeName
+     * @param additionalId
+     * @param numericValue
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long numericValue) throws PortalException, SystemException {
+        return setAttribute(authorId, proposalId, attributeName, 0, null, numericValue, 0);
+    }
+    
+    /**
+     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)} 
+     * it uses nulls/zeros for unspecified values</p>
+     * @param authorId
+     * @param proposalId
+     * @param attributeName
+     * @param additionalId
+     * @param realValue
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, double realValue) throws PortalException, SystemException {
+        return setAttribute(authorId, proposalId, attributeName, additionalId, null, 0, realValue);
+    }
+    
+    /**
+     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)} 
+     * it uses nulls/zeros for unspecified values</p>
+     * @param authorId
+     * @param proposalId
+     * @param attributeName
+     * @param additionalId
+     * @param realValue
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, double realValue) throws PortalException, SystemException {
+        return setAttribute(authorId, proposalId, attributeName, 0, null, 0, realValue);
+    }
+    
+    /**
+     * <p>Returns all attributes for current version of a proposal.</p>
+     * 
+     * @param proposalId id of a proposal
+     * @return list of proposal attributes for current version of a proposal
+     * 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     * 
+     * @author janusz
+     */
+    public List<ProposalAttribute> getAttributes(long proposalId) throws SystemException, PortalException {
+        Proposal proposal = getProposal(proposalId);
+        
+        return getAttributes(proposalId, proposal.getCurrentVersion());
+    }
+    
+    /**
+     * <p>Returns all attributes for given version of a proposal.</p>
+     * 
+     * @param proposalId id of a proposal
+     * @param version version number of a proposal
+     * 
+     * @return list of proposal attributes for current version of a proposal
+     * 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     * 
+     * @author janusz
+     */
+    public List<ProposalAttribute> getAttributes(long proposalId, int version) throws SystemException, PortalException {
+        return proposalAttributePersistence.findByProposalIdVersion(proposalId, version);   
+    }
+    
+    /**
+     * <p>Returns an attribute for current version of a proposal.</p>
+     * 
+     * @param proposalId id of a proposal
+     * @param attributeName name of an attribute
+     * @param additionalId additionalId of an attribute
+     * 
+     * @return proposal attribute
+     * 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     * 
+     * @author janusz
+     */
+    public ProposalAttribute getAttribute(long proposalId, String attributeName, long additionalId) throws PortalException, SystemException {
+        Proposal proposal = getProposal(proposalId);
+        return getAttribute(proposalId, proposal.getCurrentVersion(), attributeName, additionalId);
+    }
+    
+    /**
+     * <p>Returns an attribute for concrete version of a proposal.</p>
+     * 
+     * @param proposalId id of a proposal
+     * @param version version of a proposal
+     * @param attributeName name of an attribute
+     * @param additionalId additionalId of an attribute
+     * 
+     * @return proposal attribute
+     * 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     * 
+     * @author janusz
+     */
+    public ProposalAttribute getAttribute(long proposalId, int version, String attributeName, long additionalId) throws NoSuchProposalAttributeException, SystemException {
+        return proposalAttributePersistence.findByProposalIdVersionNameAdditionalId(proposalId, version, attributeName, additionalId);
+    }
+    
+    /**
+     * <p>Returns a list of all proposal version descriptors.</p>
+     * 
+     * @param proposalId id of a proposal
+     * 
+     * @return list of proposal versions covering entire change history for a proposal
+     * 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     * 
+     * @author janusz
+     * 
+     */
+    public List<ProposalVersion> getProposalVersions(long proposalId) throws PortalException, SystemException {
+        return proposalVersionPersistence.findByProposalId(proposalId);
+    }
+    
+    /**
+     * <p>Returns a concrete proposal version descriptor.</p>
+     * 
+     * @param proposalId id of a proposal
+     * @param version version of a proposal
+     * 
+     * @return proposal version descriptor
+     * 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     * 
+     * @author janusz
+     * 
+     */
+    public ProposalVersion getProposalVersion(long proposalId, int version) throws PortalException, SystemException {
+        return proposalVersionLocalService.getProposalVersion(new ProposalVersionPK(proposalId, version));
+    }
+    
 
+    /**
+     * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>
+     * 
+     * @param proposalId id of a proposal
+     * @param version proposal version
+     * @param attributeName name of an attribute
+     * @param additionalId additional id for an attribute
+     * @param stringValue string value for an attribute
+     * @param numericValue numeric value for an attribute
+     * @param realValue real value for an attribute
+     * @return newly created proposal attribute
+     * @throws SystemException in case of a LR error
+     * 
+     * @author janusz
+     */
     @Transactional
-    private void setAttributeValue(long proposalId, int version, String attributeName, long additionalId,
+    private ProposalAttribute setAttributeValue(long proposalId, int version, String attributeName, long additionalId,
             String stringValue, long numericValue, double realValue) throws SystemException {
         ProposalAttribute attribute = proposalAttributeLocalService.createProposalAttribute(new ProposalAttributePK(
                 proposalId, version, attributeName, additionalId));
@@ -179,11 +453,26 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         attribute.setRealValue(realValue);
 
         proposalAttributeLocalService.addProposalAttribute(attribute);
+        
+        return attribute;
     }
 
+    /**
+     * <p>Creates a Liferay group for proposal and sets up proper permissions on it.</p>
+     * 
+     * @param authorId id of a proposal author
+     * @param proposalId id of a proposal
+     * @return newly created group
+     * @throws PortalException in case on LR error
+     * @throws SystemException in case on LR error
+     * 
+     * @author janusz
+     */
+    @Transactional
     private Group createGroupAndSetUpPermissions(long authorId, long proposalId) throws PortalException,
             SystemException {
 
+        // create new gropu
         ServiceContext groupServiceContext = new ServiceContext();
         groupServiceContext.setUserId(authorId);
         String groupName = "Proposal_" + proposalId;
@@ -192,6 +481,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 String.format(DEFAULT_GROUP_DESCRIPTION, StringUtils.substring(groupName, 0, 80)),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
 
+        // set up permissions
         Long companyId = group.getCompanyId();
         Role owner = portalServicesHelper.getRoleLocalService().getRole(companyId, RoleConstants.SITE_OWNER);
         Role admin = portalServicesHelper.getRoleLocalService().getRole(companyId, RoleConstants.SITE_ADMINISTRATOR);
@@ -239,6 +529,16 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return group;
     }
 
+    /**
+     * <p>Creates new plan version descriptor</p>
+     * 
+     * @param authorId id of a change author
+     * @param proposalId id of a proposal
+     * @param version proposal version
+     * @param updateType name of updated attribute
+     * @param additionalId additional id of an updated attribute
+     * @throws SystemException
+     */
     @Transactional
     private void createPlanVersionDescription(long authorId, long proposalId, int version, String updateType,
             long additionalId) throws SystemException {
@@ -254,4 +554,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     }
 
 
+
+    private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
 }

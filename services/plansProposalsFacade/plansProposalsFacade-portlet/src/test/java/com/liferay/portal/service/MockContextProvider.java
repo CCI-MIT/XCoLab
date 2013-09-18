@@ -25,20 +25,26 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.MappingSqlQueryFactoryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
+/**
+ * <p>Creates and initializes all beans that need to be set up for tests to run, also it initializes database.</p>
+ * 
+ * @author janusz
+ *
+ */
 public class MockContextProvider implements ApplicationContextAware {
     public MockContextProvider() {
         PortletClassLoaderUtil.setClassLoader(MockContextProvider.class.getClassLoader());
         PortalClassLoaderUtil.setClassLoader(MockContextProvider.class.getClassLoader());
-        //PortalClassLoaderUtil.setClassLoader(MockContextProvider.class.getClassLoader());
         ConfigurationFactoryUtil.setConfigurationFactory(new ConfigurationFactoryImpl());
         DBFactoryUtil.setDBFactory(new DBFactoryImpl());
         CacheRegistryUtil.setCacheRegistry(new CacheRegistryImpl());
         (new MappingSqlQueryFactoryUtil()).setMappingSqlQueryFactory(new MappingSqlQueryFactoryImpl());
-        //InitUtil.initWithSpring();
         
     }
     public static ClassLoader getClassLoader() {
@@ -56,20 +62,20 @@ public class MockContextProvider implements ApplicationContextAware {
     
     public void afterPropertiesSet() throws FileNotFoundException, IOException, NamingException, SQLException {
         DB db = DBFactoryUtil.getDB();
-        //_log.info("Running " + buildNamespace + " SQL scripts");
+        _log.info("Running SQL scripts");
         
         String tablesSQL = IOUtils.toString(new FileReader(new File("./src/main/webapp/WEB-INF/sql/tables.sql")));
         String sequencesSQL = IOUtils.toString(new FileReader(new File("./src/main/webapp/WEB-INF/sql/sequences.sql")));
         String indexesSQL = IOUtils.toString(new FileReader(new File("./src/main/webapp/WEB-INF/sql/indexes.sql")));
-        System.out.println("Running SQL scripts");
         db.runSQLTemplateString(tablesSQL, true, false);
         db.runSQLTemplateString(sequencesSQL, true, false);
         db.runSQLTemplateString(indexesSQL, true, false);
-        System.out.println("SQL scripts executed");
     }
     
     public void setDataSource(DataSource dataSource) {
         new InfrastructureUtil().setDataSource(dataSource);
     }
 
+    
+    private final static Log _log = LogFactoryUtil.getLog(MockContextProvider.class);
 }

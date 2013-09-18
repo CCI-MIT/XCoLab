@@ -853,4 +853,36 @@
 			<bean class="com.liferay.portal.search.IndexerRegistryImpl" />
 		</property>
 	</bean>
+	
+	
+	<bean id="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil" class="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil">
+		<property name="cacheKeyGenerators">
+			<map>
+				<entry key="com.liferay.portal.kernel.dao.orm.EntityCache">
+					<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
+				</entry>
+				<entry key="com.liferay.portal.kernel.dao.orm.FinderCache">
+					<bean class="com.liferay.portal.cache.key.SimpleCacheKeyGenerator" />
+				</entry>
+				<entry key="com.liferay.portal.kernel.dao.orm.FinderCache#BaseModel">
+					<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
+				</entry>
+				<entry key="com.liferay.portal.kernel.servlet.filters.invoker.InvokerFilter">
+					<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
+				</entry>
+				<entry key="com.liferay.portal.language.LanguageResources">
+					<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
+				</entry>
+				<entry key="com.liferay.portal.servlet.ComboServlet">
+					<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
+				</entry>
+				<entry key="com.liferay.portal.servlet.filters.strip.StripFilter">
+					<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
+				</entry>
+			</map>
+		</property>
+		<property name="defaultCacheKeyGenerator">
+			<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
+		</property>
+	</bean>
 </beans>

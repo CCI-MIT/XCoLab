@@ -269,13 +269,58 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         return _proposalLocalService.create(authorId);
     }
 
-    public void setAttribute(long authorId, long proposalId,
-        java.lang.String attributeName, long additionalId,
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue, long numericValue, double realValue)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _proposalLocalService.setAttribute(authorId, proposalId, attributeName,
-            additionalId, stringValue, numericValue, realValue);
+        return _proposalLocalService.setAttribute(authorId, proposalId,
+            attributeName, additionalId, stringValue, numericValue, realValue);
+    }
+
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getAttributes(proposalId);
+    }
+
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getAttributes(proposalId, version);
+    }
+
+    public com.ext.portlet.model.ProposalAttribute getAttribute(
+        long proposalId, java.lang.String attributeName, long additionalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getAttribute(proposalId, attributeName,
+            additionalId);
+    }
+
+    public com.ext.portlet.model.ProposalAttribute getAttribute(
+        long proposalId, int version, java.lang.String attributeName,
+        long additionalId)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getAttribute(proposalId, version,
+            attributeName, additionalId);
+    }
+
+    public java.util.List<com.ext.portlet.model.ProposalVersion> getProposalVersions(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getProposalVersions(proposalId);
+    }
+
+    public com.ext.portlet.model.ProposalVersion getProposalVersion(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getProposalVersion(proposalId, version);
     }
 
     /**

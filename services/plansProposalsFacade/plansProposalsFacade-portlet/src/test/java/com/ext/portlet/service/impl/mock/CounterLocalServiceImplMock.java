@@ -13,6 +13,12 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.PersistedModel;
 
+/**
+ * <p>A mock class that realizes a counter contract.</p>
+ * 
+ * @author janusz
+ *
+ */
 public class CounterLocalServiceImplMock implements CounterLocalService {
     private long counter = 0;
 

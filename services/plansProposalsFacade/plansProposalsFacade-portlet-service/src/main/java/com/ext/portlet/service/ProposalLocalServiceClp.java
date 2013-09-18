@@ -26,6 +26,12 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _createMethodKey17;
     private MethodKey _setAttributeMethodKey18;
+    private MethodKey _getAttributesMethodKey19;
+    private MethodKey _getAttributesMethodKey20;
+    private MethodKey _getAttributeMethodKey21;
+    private MethodKey _getAttributeMethodKey22;
+    private MethodKey _getProposalVersionsMethodKey23;
+    private MethodKey _getProposalVersionMethodKey24;
 
     public ProposalLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -95,6 +101,25 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         _setAttributeMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setAttribute", long.class, long.class, java.lang.String.class,
                 long.class, java.lang.String.class, long.class, double.class);
+
+        _getAttributesMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAttributes", long.class);
+
+        _getAttributesMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAttributes", long.class, int.class);
+
+        _getAttributeMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAttribute", long.class, java.lang.String.class, long.class);
+
+        _getAttributeMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAttribute", long.class, int.class, java.lang.String.class,
+                long.class);
+
+        _getProposalVersionsMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getProposalVersions", long.class);
+
+        _getProposalVersionMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getProposalVersion", long.class, int.class);
     }
 
     public com.ext.portlet.model.Proposal addProposal(
@@ -553,11 +578,13 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         return (com.ext.portlet.model.Proposal) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void setAttribute(long authorId, long proposalId,
-        java.lang.String attributeName, long additionalId,
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue, long numericValue, double realValue)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
         MethodHandler methodHandler = new MethodHandler(_setAttributeMethodKey18,
                 authorId, proposalId,
                 ClpSerializer.translateInput(attributeName), additionalId,
@@ -565,7 +592,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                 realValue);
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
@@ -582,6 +609,197 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.ProposalAttribute) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAttributesMethodKey19,
+                proposalId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalAttribute>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAttributesMethodKey20,
+                proposalId, version);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalAttribute>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.model.ProposalAttribute getAttribute(
+        long proposalId, java.lang.String attributeName, long additionalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAttributeMethodKey21,
+                proposalId, ClpSerializer.translateInput(attributeName),
+                additionalId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalAttribute) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.model.ProposalAttribute getAttribute(
+        long proposalId, int version, java.lang.String attributeName,
+        long additionalId)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAttributeMethodKey22,
+                proposalId, version,
+                ClpSerializer.translateInput(attributeName), additionalId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.ext.portlet.NoSuchProposalAttributeException) {
+                throw (com.ext.portlet.NoSuchProposalAttributeException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalAttribute) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.model.ProposalVersion> getProposalVersions(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getProposalVersionsMethodKey23,
+                proposalId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalVersion>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.model.ProposalVersion getProposalVersion(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getProposalVersionMethodKey24,
+                proposalId, version);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalVersion) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {
