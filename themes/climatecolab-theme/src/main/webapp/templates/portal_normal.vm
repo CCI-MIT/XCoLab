@@ -28,11 +28,11 @@
 	<link rel="image_src"  type="image/png"   href="http://climatecolab.org/climatecolab-theme/images/ClimateColabLogo_big.png" />
 	
     <link rel="stylesheet" href="$css_folder/jquery.jqplot.min.css?tt=$themeTimestamp" type="text/css"/>
-    <link rel="stylesheet" href="$css_folder/style.css" type="text/css" />
-    <link rel="stylesheet" href="$css_folder/style_additions.css" type="text/css" />
-    <link rel="stylesheet" href="$css_folder/style_lr6.css" type="text/css" />
-    <link rel="stylesheet" href="$css_folder/autoSuggest.css" type="text/css" />
-    <link rel="stylesheet" href="$css_folder/ui.dynatree.css" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/style.css?tt=$themeTimestamp" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/style_additions.css?tt=$themeTimestamp" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/style_lr6.css?tt=$themeTimestamp" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/autoSuggest.css?tt=$themeTimestamp" type="text/css" />
+    <link rel="stylesheet" href="$css_folder/ui.dynatree.css?tt=$themeTimestamp" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script type="text/javascript" src="http://use.typekit.com/bmu2xym.js?akisc"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -80,7 +80,7 @@
 <body class="$css_class $page.getName($locale).toLowerCase() $body_style_class">
 
 #if ($permissionChecker.isOmniadmin())
-	<link rel='stylesheet' href='$css_folder/dockbar.css' />
+	<link rel='stylesheet' href='$css_folder/dockbar.css?tt=$themeTimestamp' />
 	#dockbar()
 #end
 
