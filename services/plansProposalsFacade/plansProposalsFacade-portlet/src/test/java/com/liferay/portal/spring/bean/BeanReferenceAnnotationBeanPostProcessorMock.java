@@ -1,7 +1,5 @@
 package com.liferay.portal.spring.bean;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +12,6 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.util.ReflectionUtils;
 
-import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
-import com.ext.portlet.service.impl.ProposalLocalServiceImpl;
 import com.liferay.portal.cluster.ClusterableAdvice;
 import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.bean.BeanReference;
