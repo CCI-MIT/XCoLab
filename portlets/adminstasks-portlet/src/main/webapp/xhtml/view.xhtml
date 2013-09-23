@@ -20,6 +20,20 @@
             <ice:messages globalOnly="false" layout="table" />
             <ice:outputConnectionStatus />
             <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+
+                <ice:panelTab label="Migration">
+                    <ul>
+                        <li><ice:commandButton action="#{adminTask.migrateDBSchema}" value="Start Migration"/></li>
+                        <li><ice:commandButton action="#{adminTask.stopDBMigration}" value="Stop Migration"/></li>
+                    </ul>
+
+                    <h:dataTable id="messages" value="#{adminTask.messages}" var="m">
+                        <h:column>
+                            <h:outputText value="#{m}" />
+                        </h:column>
+                    </h:dataTable>
+                </ice:panelTab>
+
                 <ice:panelTab label="Commons">
                     <ul>
                         <li><ice:commandButton action="#{adminTask.fixWikiPermissions}" value="Fix wiki permissions"/></li>

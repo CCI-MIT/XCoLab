@@ -27,6 +27,7 @@ import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
 import com.ext.utils.UserAccountGenerator;
+import com.icesoft.faces.async.render.SessionRenderer;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.NoSuchResourceException;
@@ -51,6 +52,12 @@ import edu.emory.mathcs.backport.java.util.Collections;
 public class AdminTasksBean {
     private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
 
+
+    private List<String> messages;
+    private Thread dataMigrationThread;
+    public List<String> getMessages(){
+        return messages;
+    }
 
     public String populateFirstEmptySectionWithDescription() throws SystemException, PortalException {
         for (PlanItem plan : PlanItemLocalServiceUtil.getPlans()) {
@@ -654,6 +661,26 @@ public class AdminTasksBean {
             */
         }
 
+
+
+
+
+    }
+
+    public void migrateDBSchema(){
+
+        SessionRenderer.addCurrentSession("migration");
+        messages = new ArrayList<String>();
+        dataMigrationThread = new Thread(new DataMigrator(messages));
+        dataMigrationThread.start();
+
+    }
+
+    public void stopDBMigration(){
+        dataMigrationThread.stop();
+        if (messages!=null) messages.add("Migration STOPPED");
+        SessionRenderer.render("migration");
+        SessionRenderer.removeCurrentSession("migration");
     }
 
 

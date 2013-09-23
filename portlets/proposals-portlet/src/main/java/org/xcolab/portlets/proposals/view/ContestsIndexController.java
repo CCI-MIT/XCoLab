@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,7 +30,7 @@ public class ContestsIndexController {
         ProposalLocalServiceUtil.setAttribute(10144L, p.getProposalId(), "NAME", 0, "6This is a proposal " + p.getProposalId(), 0, 0);
         ProposalLocalServiceUtil.setAttribute(10144L, p.getProposalId(), "NAME", 0, "7This is a proposal " + p.getProposalId(), 0, 0);
         ProposalLocalServiceUtil.setAttribute(10144L, p.getProposalId(), "NAME", 0, "8This is a proposal " + p.getProposalId(), 0, 0);
-        
+
         return "contestIndex";
     }
 
