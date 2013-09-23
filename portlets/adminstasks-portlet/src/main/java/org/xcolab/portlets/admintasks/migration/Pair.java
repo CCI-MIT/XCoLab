@@ -7,16 +7,22 @@ package org.xcolab.portlets.admintasks.migration;
  * Time: 2:20 PM
  * To change this template use File | Settings | File Templates.
  */
-class Pair<L,R> {
+public class Pair<L,R> {
 
-    private final L left;
-    private final R right;
+    private L left;
+    private R right;
 
     public Pair(L left, R right) {
         this.left = left;
         this.right = right;
     }
 
+    public void setLeft(L left){
+        this.left = left;
+    }
+    public void setRight(R right){
+        this.right = right;
+    }
     public L getLeft() { return left; }
     public R getRight() { return right; }
 
