@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+      http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
+      version="2.1">
+      
+  <description>Collab JSP tags</description>
+  <display-name>Collab JSP tags</display-name>
+  <tlib-version>1.0</tlib-version>
+  <short-name>collab</short-name>
+  <uri>http://climatecolab.org/tags/collab_1.0</uri>
+  
+  <tag-file>
+    <description>Contest link</description>
+    <name>contestLink</name>
+    <path>/META-INF/tags/collab/contestLink.tagx</path>
+  </tag-file>
+  
+  <tag-file>
+    <description>Sort arrow</description>
+    <name>sortArrow</name>
+    <path>/META-INF/tags/collab/sortArrow.tagx</path>
+  </tag-file>
+  
+</taglib>  

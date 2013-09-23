@@ -1,0 +1,28 @@
+/** Contests list **/
+.contestlist.table .column.contestName {
+	width: 366px;
+}
+
+.contestlist.table .column.contestName .contestFlag {
+	position: relative;
+}
+
+.contestlist.table .column.contestProposalsCount {
+	width: 31px;
+}
+
+.contestlist.table .column.contestCommentsCount {
+	width: 35px;
+}
+
+.contestlist.table .column.contestWhat {
+	width: 153px;
+}
+
+.contestlist.table .column.contestWhere {
+	width: 140px;
+}
+
+.contestlist.table .column.contestWho {
+	width: 140px;
+}

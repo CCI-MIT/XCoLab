@@ -1,0 +1,89 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	<div class="headline formmargin">
+		<h1>Contests</h1>
+		<portlet:renderURL var="changeViewTypeURL">
+			<portlet:param name="viewType"
+				value="${viewType == 'GRID' ? 'LIST' : 'GRID' }" />
+			<portlet:param name="filter" value="${sortFilterPage.filter }" />
+			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+		</portlet:renderURL>
+			
+		<div class="view ${fn:toLowerCase(viewType)}view">
+			<!-- To switch the button over to list view just change "gridview" to "listview" -->
+			<div class="grid">
+				<div>
+					<c:choose>
+						<c:when test="${viewType == 'GRID' }">
+								Grid view
+							</c:when>
+						<c:otherwise>
+							<a href="${changeViewTypeURL }">Grid view</a>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+			<div class="list">
+				<div>
+					<c:choose>
+						<c:when test="${viewType == 'LIST' }">
+								List view
+							</c:when>
+						<c:otherwise>
+							<a href="${changeViewTypeURL }">List view</a>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+		</div>
+		<div class="show">
+			<a href="/web/guest/resources/-/wiki/Main/What%2C+Where%2C+Who+taxonomy--Quick+view" >Outline View</a>
+		</div>
+		<div class="divider"><!--  --></div>
+		<div class="show">
+			<c:choose>
+				<c:when test="${showActiveContests }">
+					<a href="/web/guest/plans/-/plans/contestsType/prior" >Show prior contests</a>
+				</c:when>
+				<c:otherwise>
+					<a href="/web/guest/plans/" >Show active contests</a>
+				</c:otherwise>
+			</c:choose>
+		</div>
+  		<div class="divider"><!--  --></div> 
+  		<div class="show">
+  			<a href="javascript:;" onclick="if(!deferUntilLogin()) return false; jQuery('#suggestContestPopupContainer').show();">Suggest a new contest</a>
+  		</div> 
+ 		<div class="filter" style="position: relative;">
+ 			<portlet:renderURL var="filterURL" />
+ 			<form action="${filterURL }" id="filterContestsForm" method="get">
+ 				<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
+ 				<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
+ 				<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
+ 				<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
+ 				<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter contests" name="filter" />
+    			<c:if test="${not empty sortFilterPage.filter }">
+        			<a href="javascript:;" id="contestsFilterClear">&#160;</a>
+        		</c:if>
+        	</form>
+ 		</div>
+	</div>
+	<c:choose>
+		<c:when test="${showActiveContests }">
+	    	<div style="margin-bottom: 10px; font-size: 17px;">
+	    		Winners have been selected! Click on a contest to view winners, finalists, and all submitted proposals.
+	    	</div>
+	    </c:when>
+	    <c:otherwise>
+            <div id="archivedContestsMarkerContainer">
+                <img src="/climatecolab-theme/images/contests-archive.png" />
+                <strong>Archived:</strong>You are currently viewing archived contests.&#160; <a href="/web/guest/plans" >Back to active contests</a>
+            </div>
+		</c:otherwise>
+	</c:choose>
+</jsp:root>

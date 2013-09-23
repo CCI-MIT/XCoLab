@@ -166,6 +166,12 @@
 			<version>1.0.0.GA</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.xcolab.taglibs</groupId>
+			<artifactId>colabJspTags</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 	<repositories>
 		<repository>

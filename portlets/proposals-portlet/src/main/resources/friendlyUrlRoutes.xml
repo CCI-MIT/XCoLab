@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN"
+"http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
+<routes>
+    <route>
+        <pattern>/contestsType/prior</pattern>
+        <generated-parameter name="showActiveContests">false</generated-parameter>
+    </route>
+    <route>
+        <pattern>/viewType/{viewType}</pattern>
+        <generated-parameter name="viewType">{viewType}</generated-parameter>
+    </route>
+    <route>
+        <pattern>/filter/{filterString}</pattern>
+        <generated-parameter name="filter">{filterString}</generated-parameter>
+    </route>
+    <route>
+        <pattern>/contestsType/prior</pattern>
+        <generated-parameter name="showActiveContests">false</generated-parameter>
+    </route>
+    <route>
+        <pattern>/contestsType/prior/viewType/{viewType}</pattern>
+        <generated-parameter name="viewType">{viewType}</generated-parameter>
+        <generated-parameter name="showActiveContests">false</generated-parameter>
+    </route>
+    <route>
+        <pattern>/contestsType/prior/filter/{filterString}</pattern>
+        <generated-parameter name="showActiveContests">false</generated-parameter>
+        <generated-parameter name="filter">{filterString}</generated-parameter>
+    </route>
+</routes>
