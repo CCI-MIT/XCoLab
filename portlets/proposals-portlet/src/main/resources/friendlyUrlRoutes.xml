@@ -28,4 +28,10 @@
         <generated-parameter name="showActiveContests">false</generated-parameter>
         <generated-parameter name="filter">{filterString}</generated-parameter>
     </route>
+    <!-- contest proposals -->
+    <route>
+        <pattern>/contestId/{contestId}</pattern>
+        <generated-parameter name="pageToDisplay">contestProposals</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+    </route>
 </routes>

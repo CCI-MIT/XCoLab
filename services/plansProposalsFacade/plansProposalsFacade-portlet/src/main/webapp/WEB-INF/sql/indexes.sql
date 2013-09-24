@@ -88,6 +88,8 @@ create index IX_7AF843AF on xcolab_OntologyTermEntity (classNameId, classPK);
 create index IX_EF334F35 on xcolab_OntologyTermEntity (termId);
 create index IX_BA88C839 on xcolab_OntologyTermEntity (termId, classNameId);
 
+create index IX_84EB676C on xcolab_Plan2Proposal (proposalId);
+
 create index IX_FAAC13FD on xcolab_PlanAttribute (attributeName, attributeValue);
 create index IX_EF85A9DB on xcolab_PlanAttribute (planId);
 create index IX_9A8772FC on xcolab_PlanAttribute (planId, attributeName);
@@ -144,6 +146,9 @@ create index IX_4E60E847 on xcolab_PlanVote (planId);
 create index IX_C1242E47 on xcolab_PlansFilterPosition (userId, planTypeId);
 
 create index IX_95AABD4 on xcolab_PlansUserSettings (userId, planTypeId);
+
+create index IX_DBA8038D on xcolab_Proposal2Phase (contestPhaseId);
+create index IX_D273A4B8 on xcolab_Proposal2Phase (proposalId);
 
 create index IX_8FF24CAD on xcolab_ProposalAttribute (proposalId, version);
 create index IX_F4926C2 on xcolab_ProposalAttribute (proposalId, version, name, additionalId);

@@ -73,6 +73,8 @@ import com.ext.portlet.service.OntologyTermEntityLocalService;
 import com.ext.portlet.service.OntologyTermEntityService;
 import com.ext.portlet.service.OntologyTermLocalService;
 import com.ext.portlet.service.OntologyTermService;
+import com.ext.portlet.service.Plan2ProposalLocalService;
+import com.ext.portlet.service.Plan2ProposalService;
 import com.ext.portlet.service.PlanAttributeFilterLocalService;
 import com.ext.portlet.service.PlanAttributeFilterService;
 import com.ext.portlet.service.PlanAttributeLocalService;
@@ -173,6 +175,7 @@ import com.ext.portlet.service.persistence.ModelPositionPersistence;
 import com.ext.portlet.service.persistence.OntologySpacePersistence;
 import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
 import com.ext.portlet.service.persistence.OntologyTermPersistence;
+import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
 import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
 import com.ext.portlet.service.persistence.PlanAttributePersistence;
 import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
@@ -455,6 +458,12 @@ public abstract class MessagingMessageConversionServiceBaseImpl
     protected OntologyTermEntityService ontologyTermEntityService;
     @BeanReference(type = OntologyTermEntityPersistence.class)
     protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
+    @BeanReference(type = Plan2ProposalLocalService.class)
+    protected Plan2ProposalLocalService plan2ProposalLocalService;
+    @BeanReference(type = Plan2ProposalService.class)
+    protected Plan2ProposalService plan2ProposalService;
+    @BeanReference(type = Plan2ProposalPersistence.class)
+    protected Plan2ProposalPersistence plan2ProposalPersistence;
     @BeanReference(type = PlanAttributeLocalService.class)
     protected PlanAttributeLocalService planAttributeLocalService;
     @BeanReference(type = PlanAttributeService.class)
@@ -2710,6 +2719,63 @@ public abstract class MessagingMessageConversionServiceBaseImpl
     public void setOntologyTermEntityPersistence(
         OntologyTermEntityPersistence ontologyTermEntityPersistence) {
         this.ontologyTermEntityPersistence = ontologyTermEntityPersistence;
+    }
+
+    /**
+     * Returns the plan2 proposal local service.
+     *
+     * @return the plan2 proposal local service
+     */
+    public Plan2ProposalLocalService getPlan2ProposalLocalService() {
+        return plan2ProposalLocalService;
+    }
+
+    /**
+     * Sets the plan2 proposal local service.
+     *
+     * @param plan2ProposalLocalService the plan2 proposal local service
+     */
+    public void setPlan2ProposalLocalService(
+        Plan2ProposalLocalService plan2ProposalLocalService) {
+        this.plan2ProposalLocalService = plan2ProposalLocalService;
+    }
+
+    /**
+     * Returns the plan2 proposal remote service.
+     *
+     * @return the plan2 proposal remote service
+     */
+    public Plan2ProposalService getPlan2ProposalService() {
+        return plan2ProposalService;
+    }
+
+    /**
+     * Sets the plan2 proposal remote service.
+     *
+     * @param plan2ProposalService the plan2 proposal remote service
+     */
+    public void setPlan2ProposalService(
+        Plan2ProposalService plan2ProposalService) {
+        this.plan2ProposalService = plan2ProposalService;
+    }
+
+    /**
+     * Returns the plan2 proposal persistence.
+     *
+     * @return the plan2 proposal persistence
+     */
+    public Plan2ProposalPersistence getPlan2ProposalPersistence() {
+        return plan2ProposalPersistence;
+    }
+
+    /**
+     * Sets the plan2 proposal persistence.
+     *
+     * @param plan2ProposalPersistence the plan2 proposal persistence
+     */
+    public void setPlan2ProposalPersistence(
+        Plan2ProposalPersistence plan2ProposalPersistence) {
+        this.plan2ProposalPersistence = plan2ProposalPersistence;
     }
 
     /**

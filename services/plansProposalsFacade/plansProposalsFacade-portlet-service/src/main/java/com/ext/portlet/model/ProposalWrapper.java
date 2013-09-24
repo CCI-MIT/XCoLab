@@ -81,6 +81,24 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     }
 
     /**
+    * Returns the updated date of this proposal.
+    *
+    * @return the updated date of this proposal
+    */
+    public java.util.Date getUpdatedDate() {
+        return _proposal.getUpdatedDate();
+    }
+
+    /**
+    * Sets the updated date of this proposal.
+    *
+    * @param updatedDate the updated date of this proposal
+    */
+    public void setUpdatedDate(java.util.Date updatedDate) {
+        _proposal.setUpdatedDate(updatedDate);
+    }
+
+    /**
     * Returns the current version of this proposal.
     *
     * @return the current version of this proposal

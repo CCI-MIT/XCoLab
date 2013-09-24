@@ -269,6 +269,7 @@ public class ProposalLocalServiceUtil {
     in case of a Liferay error
     * @throws PortalException
     in case of a Liferay error
+    * @author janusz
     */
     public static com.ext.portlet.model.Proposal create(long authorId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -276,6 +277,28 @@ public class ProposalLocalServiceUtil {
         return getService().create(authorId);
     }
 
+    /**
+    * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
+    * <p>The algorithm for setting an attribute value is as follows:</p>
+    * <ol>
+    *  <li>new proposal version is created</li>
+    *  <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
+    *      it is copied to the new version</li>
+    *  <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
+    * </ol>
+    *
+    * @param authorId id of a change author
+    * @param proposalId id of a proposal
+    * @param attributeName name of an attribute
+    * @param additionalId additional id for an attribute
+    * @param stringValue string value for an attribute
+    * @param numericValue numeric value for an attribute
+    * @param doubleValue double value for an attribute
+    * @return ProposalAttribute that represents newly set attribute
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
     public static com.ext.portlet.model.ProposalAttribute setAttribute(
         long authorId, long proposalId, java.lang.String attributeName,
         long additionalId, java.lang.String stringValue, long numericValue,
@@ -287,6 +310,175 @@ public class ProposalLocalServiceUtil {
             additionalId, stringValue, numericValue, realValue);
     }
 
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @param authorId
+    * @param proposalId
+    * @param attributeName
+    * @param additionalId
+    * @param stringValue
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.ProposalAttribute setAttribute(
+        long authorId, long proposalId, java.lang.String attributeName,
+        java.lang.String stringValue, long numericValue, double realValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .setAttribute(authorId, proposalId, attributeName,
+            stringValue, numericValue, realValue);
+    }
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @param authorId
+    * @param proposalId
+    * @param attributeName
+    * @param additionalId
+    * @param stringValue
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.ProposalAttribute setAttribute(
+        long authorId, long proposalId, java.lang.String attributeName,
+        long additionalId, java.lang.String stringValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .setAttribute(authorId, proposalId, attributeName,
+            additionalId, stringValue);
+    }
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @param authorId
+    * @param proposalId
+    * @param attributeName
+    * @param additionalId
+    * @param stringValue
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.ProposalAttribute setAttribute(
+        long authorId, long proposalId, java.lang.String attributeName,
+        java.lang.String stringValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .setAttribute(authorId, proposalId, attributeName,
+            stringValue);
+    }
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @param authorId
+    * @param proposalId
+    * @param attributeName
+    * @param additionalId
+    * @param numericValue
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.ProposalAttribute setAttribute(
+        long authorId, long proposalId, java.lang.String attributeName,
+        long additionalId, long numericValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .setAttribute(authorId, proposalId, attributeName,
+            additionalId, numericValue);
+    }
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @param authorId
+    * @param proposalId
+    * @param attributeName
+    * @param additionalId
+    * @param numericValue
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.ProposalAttribute setAttribute(
+        long authorId, long proposalId, java.lang.String attributeName,
+        long numericValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .setAttribute(authorId, proposalId, attributeName,
+            numericValue);
+    }
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @param authorId
+    * @param proposalId
+    * @param attributeName
+    * @param additionalId
+    * @param realValue
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.ProposalAttribute setAttribute(
+        long authorId, long proposalId, java.lang.String attributeName,
+        long additionalId, double realValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .setAttribute(authorId, proposalId, attributeName,
+            additionalId, realValue);
+    }
+
+    /**
+    * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
+    * it uses nulls/zeros for unspecified values</p>
+    *
+    * @param authorId
+    * @param proposalId
+    * @param attributeName
+    * @param additionalId
+    * @param realValue
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.ProposalAttribute setAttribute(
+        long authorId, long proposalId, java.lang.String attributeName,
+        double realValue)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .setAttribute(authorId, proposalId, attributeName, realValue);
+    }
+
+    /**
+    * <p>Returns all attributes for current version of a proposal.</p>
+    *
+    * @param proposalId id of a proposal
+    * @return list of proposal attributes for current version of a proposal
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
     public static java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -294,6 +486,16 @@ public class ProposalLocalServiceUtil {
         return getService().getAttributes(proposalId);
     }
 
+    /**
+    * <p>Returns all attributes for given version of a proposal.</p>
+    *
+    * @param proposalId id of a proposal
+    * @param version version number of a proposal
+    * @return list of proposal attributes for current version of a proposal
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
     public static java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId, int version)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -301,6 +503,17 @@ public class ProposalLocalServiceUtil {
         return getService().getAttributes(proposalId, version);
     }
 
+    /**
+    * <p>Returns an attribute for current version of a proposal.</p>
+    *
+    * @param proposalId id of a proposal
+    * @param attributeName name of an attribute
+    * @param additionalId additionalId of an attribute
+    * @return proposal attribute
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
     public static com.ext.portlet.model.ProposalAttribute getAttribute(
         long proposalId, java.lang.String attributeName, long additionalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -308,6 +521,18 @@ public class ProposalLocalServiceUtil {
         return getService().getAttribute(proposalId, attributeName, additionalId);
     }
 
+    /**
+    * <p>Returns an attribute for concrete version of a proposal.</p>
+    *
+    * @param proposalId id of a proposal
+    * @param version version of a proposal
+    * @param attributeName name of an attribute
+    * @param additionalId additionalId of an attribute
+    * @return proposal attribute
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
     public static com.ext.portlet.model.ProposalAttribute getAttribute(
         long proposalId, int version, java.lang.String attributeName,
         long additionalId)
@@ -318,6 +543,15 @@ public class ProposalLocalServiceUtil {
             additionalId);
     }
 
+    /**
+    * <p>Returns a list of all proposal version descriptors.</p>
+    *
+    * @param proposalId id of a proposal
+    * @return list of proposal versions covering entire change history for a proposal
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
     public static java.util.List<com.ext.portlet.model.ProposalVersion> getProposalVersions(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -325,11 +559,36 @@ public class ProposalLocalServiceUtil {
         return getService().getProposalVersions(proposalId);
     }
 
+    /**
+    * <p>Returns a concrete proposal version descriptor.</p>
+    *
+    * @param proposalId id of a proposal
+    * @param version version of a proposal
+    * @return proposal version descriptor
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author janusz
+    */
     public static com.ext.portlet.model.ProposalVersion getProposalVersion(
         long proposalId, int version)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getProposalVersion(proposalId, version);
+    }
+
+    /**
+    * <p>Returns a list of proposals associated with given contest phase</p>
+    *
+    * @param contestPhaseId id of a contest phase
+    * @return list of proposals from given contest phase
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal> getProposalsInContestPhase(
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getProposalsInContestPhase(contestPhaseId);
     }
 
     public static void clearService() {

@@ -99,6 +99,9 @@
     	<proposalsPortlet:contestsList contests="${contestsSorted.contestsFeatured }" />
     </c:if>
     <c:if test="${not empty contestsSorted.contestsNormal }">
+    	<c:if test="${not empty contestsSorted.contestsFeatured}">
+    		<div class="shadebar"><!--  --></div>
+    	</c:if>
     	<proposalsPortlet:contestsList contests="${contestsSorted.contestsNormal }" />
     </c:if>
 </jsp:root>

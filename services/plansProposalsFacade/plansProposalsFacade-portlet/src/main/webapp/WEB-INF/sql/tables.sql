@@ -338,6 +338,11 @@ create table xcolab_OntologyTermEntity (
 	classPK LONG
 );
 
+create table xcolab_Plan2Proposal (
+	planId LONG not null primary key,
+	proposalId LONG
+);
+
 create table xcolab_PlanAttribute (
 	attributeId LONG not null primary key,
 	planId LONG,
@@ -598,6 +603,7 @@ create table xcolab_PlansUserSettings (
 create table xcolab_Proposal (
 	proposalId LONG not null primary key,
 	createDate DATE null,
+	updatedDate DATE null,
 	currentVersion INTEGER,
 	authorId LONG,
 	visible BOOLEAN,

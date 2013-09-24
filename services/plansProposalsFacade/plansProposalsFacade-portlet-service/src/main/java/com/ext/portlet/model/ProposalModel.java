@@ -73,6 +73,20 @@ public interface ProposalModel extends BaseModel<Proposal> {
     public void setCreateDate(Date createDate);
 
     /**
+     * Returns the updated date of this proposal.
+     *
+     * @return the updated date of this proposal
+     */
+    public Date getUpdatedDate();
+
+    /**
+     * Sets the updated date of this proposal.
+     *
+     * @param updatedDate the updated date of this proposal
+     */
+    public void setUpdatedDate(Date updatedDate);
+
+    /**
      * Returns the current version of this proposal.
      *
      * @return the current version of this proposal

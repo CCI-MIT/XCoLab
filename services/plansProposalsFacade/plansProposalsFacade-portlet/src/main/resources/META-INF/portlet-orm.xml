@@ -539,6 +539,14 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.Plan2ProposalModelImpl">
+		<attributes>
+			<id name="planId" />
+			<basic name="proposalId" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.PlanAttributeModelImpl">
 		<attributes>
 			<id name="attributeId" />
@@ -933,6 +941,9 @@
 			<basic name="createDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<basic name="updatedDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
 			<basic name="currentVersion" />
 			<basic name="authorId" />
 			<basic name="visible" />
@@ -1138,6 +1149,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.OntologyTermEntityImpl" name="OntologyTermEntity">
 		<table name="xcolab_OntologyTermEntity" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.Plan2ProposalImpl" name="Plan2Proposal">
+		<table name="xcolab_Plan2Proposal" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.PlanAttributeImpl" name="PlanAttribute">

@@ -1,5 +1,6 @@
 package com.ext.portlet.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
@@ -426,6 +429,22 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return proposalVersionLocalService.getProposalVersion(new ProposalVersionPK(proposalId, version));
     }
     
+    /**
+     * <p>Returns a list of proposals associated with given contest phase</p>
+     * @param contestPhaseId id of a contest phase
+     * 
+     * @return list of proposals from given contest phase
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public List<Proposal> getProposalsInContestPhase(long contestPhaseId) throws PortalException, SystemException {
+        List<Proposal> proposals = new ArrayList<>();
+        
+        for (Proposal2Phase proposal2Phase: proposal2PhasePersistence.findByContestPhaseId(contestPhaseId)) {
+            proposals.add(proposalPersistence.findByPrimaryKey(proposal2Phase.getProposalId()));
+        }
+        return proposals;
+    }
 
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>

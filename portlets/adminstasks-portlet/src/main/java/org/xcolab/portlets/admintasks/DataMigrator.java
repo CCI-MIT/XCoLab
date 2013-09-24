@@ -8,6 +8,7 @@ import java.util.*;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
@@ -28,7 +29,7 @@ public class DataMigrator implements Runnable {
 
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
-    private boolean TESTING = false;
+    private boolean TESTING = true;
 
     public DataMigrator(List<String> reference){
         this.reference = reference;
@@ -44,6 +45,7 @@ public class DataMigrator implements Runnable {
         dbSuccess &= deleteAllProposals();
         dbSuccess &= deleteAllProposalVersions();
         dbSuccess &= deleteAllProposalAttributes();
+        dbSuccess &= deleteAllPlan2Proposal();
         if (!dbSuccess) return;
         pushAjaxUpdate("Successfully cleaned DB");
 
@@ -51,8 +53,10 @@ public class DataMigrator implements Runnable {
         pushAjaxUpdate("Creating new Proposals");
         pushAjaxUpdate("0%");
         int counter = 0;
+        
         for(Iterator<Pair<Long,List<PlanItem>>> i = groupedPlans.iterator(); i.hasNext(); ) {
-            if (++counter > 0 && (counter % (groupedPlans.size() / 10)) == 0) updateLastAjaxUpdate((100 * counter / groupedPlans.size()) + "%");
+            System.out.println(counter + "\t" + groupedPlans.size() + "\t" + (counter % (groupedPlans.size() / 33)));
+            if (++counter > 0 && (counter % (groupedPlans.size() / 33)) == 0) updateLastAjaxUpdate((100 * counter / groupedPlans.size()) + "%");
             Pair<Long,List<PlanItem>> pair = i.next();
             createNewPlan(pair.getLeft(),pair.getRight());
             if (counter > (groupedPlans.size()/10) && TESTING) break;
@@ -61,6 +65,7 @@ public class DataMigrator implements Runnable {
 
         pushAjaxUpdate("-- MIGRATION FINISHED WITHOUT ERRORS --");
     }
+
 
     private void setPermissions(){
         PrincipalThreadLocal.setName(10144L);
@@ -137,6 +142,20 @@ public class DataMigrator implements Runnable {
         }
         return true;
     }
+    
+    private boolean deleteAllPlan2Proposal() {
+        try {
+            pushAjaxUpdate("Deleting " + Plan2ProposalLocalServiceUtil.getPlan2ProposalsCount() + " plans2proposal mappings");
+            for (Plan2Proposal p2p: Plan2ProposalLocalServiceUtil.getPlan2Proposals(0, Integer.MAX_VALUE)) {
+                Plan2ProposalLocalServiceUtil.deletePlan2Proposal(p2p.getPlanId());
+            }
+        }
+        catch (Exception e) {
+            pushAjaxUpdate("Error while cleaning DB: " + e);
+            return false;
+        }
+        return true;
+    }
 
 
     private List<Pair<Long,List<PlanItem>>> getAllDistinctPlanGroupIds(){
@@ -144,7 +163,8 @@ public class DataMigrator implements Runnable {
         List<PlanItem> allPlans;
         List<Pair<Long,List<PlanItem>>> results = new LinkedList<Pair<Long,List<PlanItem>>>();
         try {
-            allPlans = PlanItemLocalServiceUtil.getPlanItems(0,PlanItemLocalServiceUtil.getPlanItemsCount());
+            //allPlans = PlanItemLocalServiceUtil.getPlanItems(0,PlanItemLocalServiceUtil.getPlanItemsCount());
+            allPlans = PlanItemLocalServiceUtil.getPlans();
         } catch (Exception e){
             pushAjaxUpdate("Error: " + e);
             return null;
@@ -155,7 +175,7 @@ public class DataMigrator implements Runnable {
         int counter=0;
         for(Iterator<PlanItem> i = allPlans.iterator(); i.hasNext(); ) {
             PlanItem plan = i.next();
-            if (++counter > 0 && (counter % (allPlans.size() / 10)) == 0) updateLastAjaxUpdate((100 * counter / allPlans.size() + 1) + "%");
+            if (++counter > 0 && (counter % (allPlans.size() / 3)) == 0) updateLastAjaxUpdate((100 * counter / allPlans.size() + 1) + "%");
             try{
                 long groupID = PlanItemLocalServiceUtil.getPlanGroupId(plan);
                 boolean didFindGroupIdInSet = false;
@@ -183,21 +203,6 @@ public class DataMigrator implements Runnable {
     }
 
     private void createNewPlan(long groupID, List<PlanItem> plans){
-        // Get Author
-        if (plans.get(0).getUpdateType().compareTo("CREATED") != 0)   {
-            pushAjaxUpdate("Could not find author for Plan " + plans.get(0).getPlanId());
-            return;
-        }
-        long authorID = plans.get(0).getUpdateAuthorId();
-        Proposal p = null;
-        try {
-            p = ProposalLocalServiceUtil.create(authorID);
-        } catch (Exception e){
-            pushAjaxUpdate("Error while creating Proposal " + groupID + ": " + e);
-        }
-        // set create date
-        p.setCreateDate(plans.get(0).getUpdated());
-        // set user group
         PlanMeta currentPlanMeta = null;
         try{
             currentPlanMeta = PlanMetaLocalServiceUtil.getCurrentForPlan(plans.get(0));
@@ -205,6 +210,18 @@ public class DataMigrator implements Runnable {
             pushAjaxUpdate("Error while getting PlanMetas " + plans.get(0).getId() + ": " + e);
             return;
         }
+
+        long authorID = currentPlanMeta.getAuthorId();
+        
+        Proposal p = null;
+        try {   
+            p = ProposalLocalServiceUtil.create(authorID);
+        } catch (Exception e){
+            pushAjaxUpdate("Error while creating Proposal " + groupID + ": " + e);
+        }
+        // set create date
+        p.setCreateDate(plans.get(0).getUpdated());
+        // set user group
 
         p.setGroupId(currentPlanMeta.getPlanGroupId());
         p.setDiscussionId(currentPlanMeta.getCategoryGroupId());
@@ -214,61 +231,83 @@ public class DataMigrator implements Runnable {
 
         for(Iterator<PlanItem> i = plans.iterator(); i.hasNext(); ) {
             PlanItem plan = i.next();
+            
+             
+            Plan2Proposal plan2Proposal = Plan2ProposalLocalServiceUtil.createPlan2Proposal(plan.getPlanId());
+            plan2Proposal.setProposalId(p.getProposalId());
+            
+            try {
+                Plan2ProposalLocalServiceUtil.addPlan2Proposal(plan2Proposal);
+            } catch (SystemException e1) {
+                pushAjaxUpdate("Error while creating mapping between plan " + plan.getPlanId() + " and proposal: " + p.getProposalId() + "\n" + e1);
+            }
 
-            if (plan.getUpdateType().equalsIgnoreCase("CREATED")){
-                // ignore use just for transfering from one phase to another
+            // plan entity represents a last version of a plan (for given planId) so we need to iterate over all of it's versions
+            
+            List<PlanItem> planVersions = null;
+            try {
+                planVersions = PlanItemLocalServiceUtil.getAllVersions(plan);
+            } catch (SystemException e1) {
+                pushAjaxUpdate("Error while fetching plan versions: " + plan.getPlanId() + "\n" + e1);
+            }
+            
+            for (PlanItem planVersion: planVersions) {
+                if (planVersion.getUpdateType().equalsIgnoreCase("CREATED")){
+                    // ignore use just for transfering from one phase to another
 
-            } else if (plan.getUpdateType().equalsIgnoreCase("MODEL_UPDATED")){
-                // IGNORE because modelID is deprecated
-            } else if (plan.getUpdateType().equalsIgnoreCase("SCENARIO_UPDATED")){
-                // Get scenarioId from xcolab_PlanModelRun and use it to create attribute
-                List<PlanModelRun> pmrs = null;
-                try{
-                    pmrs = PlanModelRunLocalServiceUtil.getAllForPlan(plan);
-                } catch(Exception e){
-                    pushAjaxUpdate("Error while getting ScenarioID " + plan.getPlanId() + ": " + e);
-                }
-                for(Iterator<PlanModelRun> j = pmrs.iterator(); j.hasNext(); ) {
-                    PlanModelRun pmr = j.next();
-                    if (pmr.getPlanVersion() == plan.getVersion()){
-                        try{
-                            ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),"SCENARIO_ID",0,null,pmr.getScenarioId(),0);
-                        } catch(Exception e){
-                            pushAjaxUpdate("Error while setting ScenarioID " + plan.getPlanId() + ": " + e);
-                        }
-                        break;
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("MODEL_UPDATED")){
+                    // IGNORE because modelID is deprecated
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("SCENARIO_UPDATED")){
+                    // Get scenarioId from xcolab_PlanModelRun and use it to create attribute
+                    List<PlanModelRun> pmrs = null;
+                    try{
+                        pmrs = PlanModelRunLocalServiceUtil.getAllForPlan(planVersion);
+                    } catch(Exception e){
+                        pushAjaxUpdate("Error while getting ScenarioID " + planVersion.getPlanId() + ": " + e);
                     }
+                
+                    for(Iterator<PlanModelRun> j = pmrs.iterator(); j.hasNext(); ) {
+                        PlanModelRun pmr = j.next();
+                        if (pmr.getPlanVersion() == planVersion.getVersion()){
+                            try{
+                                ProposalLocalServiceUtil.setAttribute(planVersion.getUpdateAuthorId(),p.getProposalId(),"SCENARIO_ID",0,null,pmr.getScenarioId(),0);
+                            } catch(Exception e){
+                                pushAjaxUpdate("Error while setting ScenarioID " + planVersion.getPlanId() + ": " + e);
+                            }
+                            break;
+                        }
+                    }
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("PLAN_POSITIONS_UPDATED")){
+                    // IGNORE
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("PLAN_DELETED")){
+                    // SET visibility = false
+                    p.setVisible(false);
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("DESCRIPTION_UPDATED")){
+                    // Get description from xcolab_PlanDescription and use setAttribute
+                    setAttributeRelatedToPlanDescription(planVersion,p,"DESCRIPTION");
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("NAME_UPDATED")){
+                    // Get name from xcolab_PlanDescription and use setAttribute
+                    setAttributeRelatedToPlanDescription(planVersion,p,"NAME");
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("PLAN_STATUS_UPDATED")){
+                    // IGNORE (connected to PlanMeta (col: Status)
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("PLAN_CLOSED")){
+                    // Get open from PlanMeta - anyone can edit (open), only team members can edit
+                    setAttributeRelatedToPlanMeta(planVersion,p,"PLAN_CLOSED");
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("PLAN_OPENED")){
+                    // Get open from PlanMeta - anyone can edit (open), only team members can edit
+                    setAttributeRelatedToPlanMeta(planVersion,p,"PLAN_OPENED");
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("PLAN_SECTION_UPDATED")){
+                    // Get PlanSection -> .setAttr. (col: additionalId = planSectionDef. and String = content (date from PlanITem)
+                    setAttributeRelatedToPlanSection(planVersion,p,"PLAN_SECTION_UPDATED");
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("PITCH_UPDATED")){
+                    // Get pitch from xcolab_PlanDescription and use setAttribute
+                    setAttributeRelatedToPlanDescription(planVersion,p,"PITCH");
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("IMAGE_UPDATED")){
+                    // Get image_id from xcolab_PlanDescription and use setAttribute
+                    setAttributeRelatedToPlanDescription(planVersion,p,"IMAGE_ID");
+                } else if (planVersion.getUpdateType().equalsIgnoreCase("PLAN_REVERTED")){
+                    // IGNORE
                 }
-            } else if (plan.getUpdateType().equalsIgnoreCase("PLAN_POSITIONS_UPDATED")){
-                // IGNORE
-            } else if (plan.getUpdateType().equalsIgnoreCase("PLAN_DELETED")){
-                // SET visibility = false
-                p.setVisible(false);
-            } else if (plan.getUpdateType().equalsIgnoreCase("DESCRIPTION_UPDATED")){
-                // Get description from xcolab_PlanDescription and use setAttribute
-                setAttributeRelatedToPlanDescription(plan,p,"DESCRIPTION");
-            } else if (plan.getUpdateType().equalsIgnoreCase("NAME_UPDATED")){
-                // Get name from xcolab_PlanDescription and use setAttribute
-                setAttributeRelatedToPlanDescription(plan,p,"NAME");
-            } else if (plan.getUpdateType().equalsIgnoreCase("PLAN_STATUS_UPDATED")){
-               // IGNORE (connected to PlanMeta (col: Status)
-            } else if (plan.getUpdateType().equalsIgnoreCase("PLAN_CLOSED")){
-                // Get open from PlanMeta - anyone can edit (open), only team members can edit
-                setAttributeRelatedToPlanMeta(plan,p,"PLAN_CLOSED");
-            } else if (plan.getUpdateType().equalsIgnoreCase("PLAN_OPENED")){
-                // Get open from PlanMeta - anyone can edit (open), only team members can edit
-                setAttributeRelatedToPlanMeta(plan,p,"PLAN_OPENED");
-            } else if (plan.getUpdateType().equalsIgnoreCase("PLAN_SECTION_UPDATED")){
-                // Get PlanSection -> .setAttr. (col: additionalId = planSectionDef. and String = content (date from PlanITem)
-                setAttributeRelatedToPlanSection(plan,p,"PLAN_SECTION_UPDATED");
-            } else if (plan.getUpdateType().equalsIgnoreCase("PITCH_UPDATED")){
-                // Get pitch from xcolab_PlanDescription and use setAttribute
-                setAttributeRelatedToPlanDescription(plan,p,"PITCH");
-            } else if (plan.getUpdateType().equalsIgnoreCase("IMAGE_UPDATED")){
-                // Get image_id from xcolab_PlanDescription and use setAttribute
-                setAttributeRelatedToPlanDescription(plan,p,"IMAGE_ID");
-            } else if (plan.getUpdateType().equalsIgnoreCase("PLAN_REVERTED")){
-                // IGNORE
             }
 
         }

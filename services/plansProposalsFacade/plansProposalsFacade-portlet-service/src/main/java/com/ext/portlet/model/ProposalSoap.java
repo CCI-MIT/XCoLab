@@ -16,6 +16,7 @@ import java.util.List;
 public class ProposalSoap implements Serializable {
     private long _proposalId;
     private Date _createDate;
+    private Date _updatedDate;
     private int _currentVersion;
     private long _authorId;
     private boolean _visible;
@@ -33,6 +34,7 @@ public class ProposalSoap implements Serializable {
 
         soapModel.setProposalId(model.getProposalId());
         soapModel.setCreateDate(model.getCreateDate());
+        soapModel.setUpdatedDate(model.getUpdatedDate());
         soapModel.setCurrentVersion(model.getCurrentVersion());
         soapModel.setAuthorId(model.getAuthorId());
         soapModel.setVisible(model.getVisible());
@@ -103,6 +105,14 @@ public class ProposalSoap implements Serializable {
 
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
+    }
+
+    public Date getUpdatedDate() {
+        return _updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        _updatedDate = updatedDate;
     }
 
     public int getCurrentVersion() {

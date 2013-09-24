@@ -73,6 +73,8 @@ import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermServiceUtil;
+import com.ext.portlet.service.Plan2ProposalLocalServiceUtil;
+import com.ext.portlet.service.Plan2ProposalServiceUtil;
 import com.ext.portlet.service.PlanAttributeFilterLocalServiceUtil;
 import com.ext.portlet.service.PlanAttributeFilterServiceUtil;
 import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
@@ -262,6 +264,9 @@ public class ClpMessageListener extends BaseMessageListener {
             OntologyTermEntityLocalServiceUtil.clearService();
 
             OntologyTermEntityServiceUtil.clearService();
+            Plan2ProposalLocalServiceUtil.clearService();
+
+            Plan2ProposalServiceUtil.clearService();
             PlanAttributeLocalServiceUtil.clearService();
 
             PlanAttributeServiceUtil.clearService();

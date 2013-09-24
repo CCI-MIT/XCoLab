@@ -61,7 +61,11 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.finder.cache.enabled.com.ext.portlet.model.Proposal2Phase"),
             true);
-    public static final boolean COLUMN_BITMASK_ENABLED = false;
+    public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.column.bitmask.enabled.com.ext.portlet.model.Proposal2Phase"),
+            true);
+    public static long CONTESTPHASEID_COLUMN_BITMASK = 1L;
+    public static long PROPOSALID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Proposal2Phase"));
     private static ClassLoader _classLoader = Proposal2Phase.class.getClassLoader();
@@ -69,11 +73,16 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
             Proposal2Phase.class
         };
     private long _proposalId;
+    private long _originalProposalId;
+    private boolean _setOriginalProposalId;
     private long _contestPhaseId;
+    private long _originalContestPhaseId;
+    private boolean _setOriginalContestPhaseId;
     private int _versionFrom;
     private int _versionTo;
     private int _sortWeight;
     private boolean _autopromoteCandidate;
+    private long _columnBitmask;
     private Proposal2Phase _escapedModelProxy;
 
     public Proposal2PhaseModelImpl() {
@@ -145,7 +154,19 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     }
 
     public void setProposalId(long proposalId) {
+        _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
+
+        if (!_setOriginalProposalId) {
+            _setOriginalProposalId = true;
+
+            _originalProposalId = _proposalId;
+        }
+
         _proposalId = proposalId;
+    }
+
+    public long getOriginalProposalId() {
+        return _originalProposalId;
     }
 
     @JSON
@@ -154,7 +175,19 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     }
 
     public void setContestPhaseId(long contestPhaseId) {
+        _columnBitmask |= CONTESTPHASEID_COLUMN_BITMASK;
+
+        if (!_setOriginalContestPhaseId) {
+            _setOriginalContestPhaseId = true;
+
+            _originalContestPhaseId = _contestPhaseId;
+        }
+
         _contestPhaseId = contestPhaseId;
+    }
+
+    public long getOriginalContestPhaseId() {
+        return _originalContestPhaseId;
     }
 
     @JSON
@@ -195,6 +228,10 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
 
     public void setAutopromoteCandidate(boolean autopromoteCandidate) {
         _autopromoteCandidate = autopromoteCandidate;
+    }
+
+    public long getColumnBitmask() {
+        return _columnBitmask;
     }
 
     @Override
@@ -260,6 +297,17 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
 
     @Override
     public void resetOriginalValues() {
+        Proposal2PhaseModelImpl proposal2PhaseModelImpl = this;
+
+        proposal2PhaseModelImpl._originalProposalId = proposal2PhaseModelImpl._proposalId;
+
+        proposal2PhaseModelImpl._setOriginalProposalId = false;
+
+        proposal2PhaseModelImpl._originalContestPhaseId = proposal2PhaseModelImpl._contestPhaseId;
+
+        proposal2PhaseModelImpl._setOriginalContestPhaseId = false;
+
+        proposal2PhaseModelImpl._columnBitmask = 0;
     }
 
     @Override

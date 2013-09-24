@@ -36,6 +36,7 @@ import com.ext.portlet.model.ModelPositionClp;
 import com.ext.portlet.model.OntologySpaceClp;
 import com.ext.portlet.model.OntologyTermClp;
 import com.ext.portlet.model.OntologyTermEntityClp;
+import com.ext.portlet.model.Plan2ProposalClp;
 import com.ext.portlet.model.PlanAttributeClp;
 import com.ext.portlet.model.PlanAttributeFilterClp;
 import com.ext.portlet.model.PlanColumnSettingsClp;
@@ -299,6 +300,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(OntologyTermEntityClp.class.getName())) {
             return translateInputOntologyTermEntity(oldModel);
+        }
+
+        if (oldModelClassName.equals(Plan2ProposalClp.class.getName())) {
+            return translateInputPlan2Proposal(oldModel);
         }
 
         if (oldModelClassName.equals(PlanAttributeClp.class.getName())) {
@@ -3046,6 +3051,47 @@ public class ClpSerializer {
         return oldModel;
     }
 
+    public static Object translateInputPlan2Proposal(BaseModel<?> oldModel) {
+        Plan2ProposalClp oldCplModel = (Plan2ProposalClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.Plan2ProposalImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setPlanId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getPlanId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setProposalId",
+                        new Class[] { Long.TYPE });
+
+                Long value1 = new Long(oldCplModel.getProposalId());
+
+                method1.invoke(newModel, value1);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
     public static Object translateInputPlanAttribute(BaseModel<?> oldModel) {
         PlanAttributeClp oldCplModel = (PlanAttributeClp) oldModel;
 
@@ -4950,61 +4996,68 @@ public class ClpSerializer {
 
                 method1.invoke(newModel, value1);
 
-                Method method2 = newModelClass.getMethod("setCurrentVersion",
-                        new Class[] { Integer.TYPE });
+                Method method2 = newModelClass.getMethod("setUpdatedDate",
+                        new Class[] { Date.class });
 
-                Integer value2 = new Integer(oldCplModel.getCurrentVersion());
+                Date value2 = oldCplModel.getUpdatedDate();
 
                 method2.invoke(newModel, value2);
 
-                Method method3 = newModelClass.getMethod("setAuthorId",
-                        new Class[] { Long.TYPE });
+                Method method3 = newModelClass.getMethod("setCurrentVersion",
+                        new Class[] { Integer.TYPE });
 
-                Long value3 = new Long(oldCplModel.getAuthorId());
+                Integer value3 = new Integer(oldCplModel.getCurrentVersion());
 
                 method3.invoke(newModel, value3);
 
-                Method method4 = newModelClass.getMethod("setVisible",
-                        new Class[] { Boolean.TYPE });
+                Method method4 = newModelClass.getMethod("setAuthorId",
+                        new Class[] { Long.TYPE });
 
-                Boolean value4 = new Boolean(oldCplModel.getVisible());
+                Long value4 = new Long(oldCplModel.getAuthorId());
 
                 method4.invoke(newModel, value4);
 
-                Method method5 = newModelClass.getMethod("setDiscussionId",
-                        new Class[] { Long.TYPE });
+                Method method5 = newModelClass.getMethod("setVisible",
+                        new Class[] { Boolean.TYPE });
 
-                Long value5 = new Long(oldCplModel.getDiscussionId());
+                Boolean value5 = new Boolean(oldCplModel.getVisible());
 
                 method5.invoke(newModel, value5);
 
-                Method method6 = newModelClass.getMethod("setJudgeDiscussionId",
+                Method method6 = newModelClass.getMethod("setDiscussionId",
                         new Class[] { Long.TYPE });
 
-                Long value6 = new Long(oldCplModel.getJudgeDiscussionId());
+                Long value6 = new Long(oldCplModel.getDiscussionId());
 
                 method6.invoke(newModel, value6);
 
-                Method method7 = newModelClass.getMethod("setFellowDiscussionId",
+                Method method7 = newModelClass.getMethod("setJudgeDiscussionId",
                         new Class[] { Long.TYPE });
 
-                Long value7 = new Long(oldCplModel.getFellowDiscussionId());
+                Long value7 = new Long(oldCplModel.getJudgeDiscussionId());
 
                 method7.invoke(newModel, value7);
 
-                Method method8 = newModelClass.getMethod("setAdvisorDiscussionId",
+                Method method8 = newModelClass.getMethod("setFellowDiscussionId",
                         new Class[] { Long.TYPE });
 
-                Long value8 = new Long(oldCplModel.getAdvisorDiscussionId());
+                Long value8 = new Long(oldCplModel.getFellowDiscussionId());
 
                 method8.invoke(newModel, value8);
 
-                Method method9 = newModelClass.getMethod("setGroupId",
+                Method method9 = newModelClass.getMethod("setAdvisorDiscussionId",
                         new Class[] { Long.TYPE });
 
-                Long value9 = new Long(oldCplModel.getGroupId());
+                Long value9 = new Long(oldCplModel.getAdvisorDiscussionId());
 
                 method9.invoke(newModel, value9);
+
+                Method method10 = newModelClass.getMethod("setGroupId",
+                        new Class[] { Long.TYPE });
+
+                Long value10 = new Long(oldCplModel.getGroupId());
+
+                method10.invoke(newModel, value10);
 
                 return newModel;
             } catch (Exception e) {
@@ -5469,6 +5522,11 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.OntologyTermEntityImpl")) {
             return translateOutputOntologyTermEntity(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.Plan2ProposalImpl")) {
+            return translateOutputPlan2Proposal(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -8054,6 +8112,42 @@ public class ClpSerializer {
         return oldModel;
     }
 
+    public static Object translateOutputPlan2Proposal(BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Plan2ProposalClp newModel = new Plan2ProposalClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getPlanId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setPlanId(value0);
+
+                Method method1 = oldModelClass.getMethod("getProposalId");
+
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setProposalId(value1);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
     public static Object translateOutputPlanAttribute(BaseModel<?> oldModel) {
         Thread currentThread = Thread.currentThread();
 
@@ -9782,57 +9876,63 @@ public class ClpSerializer {
 
                 newModel.setCreateDate(value1);
 
-                Method method2 = oldModelClass.getMethod("getCurrentVersion");
+                Method method2 = oldModelClass.getMethod("getUpdatedDate");
 
-                Integer value2 = (Integer) method2.invoke(oldModel,
+                Date value2 = (Date) method2.invoke(oldModel, (Object[]) null);
+
+                newModel.setUpdatedDate(value2);
+
+                Method method3 = oldModelClass.getMethod("getCurrentVersion");
+
+                Integer value3 = (Integer) method3.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setCurrentVersion(value2);
+                newModel.setCurrentVersion(value3);
 
-                Method method3 = oldModelClass.getMethod("getAuthorId");
+                Method method4 = oldModelClass.getMethod("getAuthorId");
 
-                Long value3 = (Long) method3.invoke(oldModel, (Object[]) null);
+                Long value4 = (Long) method4.invoke(oldModel, (Object[]) null);
 
-                newModel.setAuthorId(value3);
+                newModel.setAuthorId(value4);
 
-                Method method4 = oldModelClass.getMethod("getVisible");
+                Method method5 = oldModelClass.getMethod("getVisible");
 
-                Boolean value4 = (Boolean) method4.invoke(oldModel,
+                Boolean value5 = (Boolean) method5.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setVisible(value4);
+                newModel.setVisible(value5);
 
-                Method method5 = oldModelClass.getMethod("getDiscussionId");
-
-                Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
-
-                newModel.setDiscussionId(value5);
-
-                Method method6 = oldModelClass.getMethod("getJudgeDiscussionId");
+                Method method6 = oldModelClass.getMethod("getDiscussionId");
 
                 Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
 
-                newModel.setJudgeDiscussionId(value6);
+                newModel.setDiscussionId(value6);
 
-                Method method7 = oldModelClass.getMethod(
-                        "getFellowDiscussionId");
+                Method method7 = oldModelClass.getMethod("getJudgeDiscussionId");
 
                 Long value7 = (Long) method7.invoke(oldModel, (Object[]) null);
 
-                newModel.setFellowDiscussionId(value7);
+                newModel.setJudgeDiscussionId(value7);
 
                 Method method8 = oldModelClass.getMethod(
-                        "getAdvisorDiscussionId");
+                        "getFellowDiscussionId");
 
                 Long value8 = (Long) method8.invoke(oldModel, (Object[]) null);
 
-                newModel.setAdvisorDiscussionId(value8);
+                newModel.setFellowDiscussionId(value8);
 
-                Method method9 = oldModelClass.getMethod("getGroupId");
+                Method method9 = oldModelClass.getMethod(
+                        "getAdvisorDiscussionId");
 
                 Long value9 = (Long) method9.invoke(oldModel, (Object[]) null);
 
-                newModel.setGroupId(value9);
+                newModel.setAdvisorDiscussionId(value9);
+
+                Method method10 = oldModelClass.getMethod("getGroupId");
+
+                Long value10 = (Long) method10.invoke(oldModel, (Object[]) null);
+
+                newModel.setGroupId(value10);
 
                 return newModel;
             } catch (Exception e) {

@@ -40,6 +40,7 @@ import com.ext.portlet.service.persistence.ModelPositionPersistence;
 import com.ext.portlet.service.persistence.OntologySpacePersistence;
 import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
 import com.ext.portlet.service.persistence.OntologyTermPersistence;
+import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
 import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
 import com.ext.portlet.service.persistence.PlanAttributePersistence;
 import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
@@ -80,6 +81,7 @@ import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -91,6 +93,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -129,6 +132,50 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PROPOSALID =
+        new FinderPath(Proposal2PhaseModelImpl.ENTITY_CACHE_ENABLED,
+            Proposal2PhaseModelImpl.FINDER_CACHE_ENABLED,
+            Proposal2PhaseImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findByProposalId",
+            new String[] {
+                Long.class.getName(),
+                
+            "java.lang.Integer", "java.lang.Integer",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID =
+        new FinderPath(Proposal2PhaseModelImpl.ENTITY_CACHE_ENABLED,
+            Proposal2PhaseModelImpl.FINDER_CACHE_ENABLED,
+            Proposal2PhaseImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByProposalId",
+            new String[] { Long.class.getName() },
+            Proposal2PhaseModelImpl.PROPOSALID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_PROPOSALID = new FinderPath(Proposal2PhaseModelImpl.ENTITY_CACHE_ENABLED,
+            Proposal2PhaseModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByProposalId",
+            new String[] { Long.class.getName() });
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTPHASEID =
+        new FinderPath(Proposal2PhaseModelImpl.ENTITY_CACHE_ENABLED,
+            Proposal2PhaseModelImpl.FINDER_CACHE_ENABLED,
+            Proposal2PhaseImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findByContestPhaseId",
+            new String[] {
+                Long.class.getName(),
+                
+            "java.lang.Integer", "java.lang.Integer",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID =
+        new FinderPath(Proposal2PhaseModelImpl.ENTITY_CACHE_ENABLED,
+            Proposal2PhaseModelImpl.FINDER_CACHE_ENABLED,
+            Proposal2PhaseImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByContestPhaseId",
+            new String[] { Long.class.getName() },
+            Proposal2PhaseModelImpl.CONTESTPHASEID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_CONTESTPHASEID = new FinderPath(Proposal2PhaseModelImpl.ENTITY_CACHE_ENABLED,
+            Proposal2PhaseModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByContestPhaseId",
+            new String[] { Long.class.getName() });
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(Proposal2PhaseModelImpl.ENTITY_CACHE_ENABLED,
             Proposal2PhaseModelImpl.FINDER_CACHE_ENABLED,
             Proposal2PhaseImpl.class,
@@ -141,9 +188,14 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
             Proposal2PhaseModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     private static final String _SQL_SELECT_PROPOSAL2PHASE = "SELECT proposal2Phase FROM Proposal2Phase proposal2Phase";
+    private static final String _SQL_SELECT_PROPOSAL2PHASE_WHERE = "SELECT proposal2Phase FROM Proposal2Phase proposal2Phase WHERE ";
     private static final String _SQL_COUNT_PROPOSAL2PHASE = "SELECT COUNT(proposal2Phase) FROM Proposal2Phase proposal2Phase";
+    private static final String _SQL_COUNT_PROPOSAL2PHASE_WHERE = "SELECT COUNT(proposal2Phase) FROM Proposal2Phase proposal2Phase WHERE ";
+    private static final String _FINDER_COLUMN_PROPOSALID_PROPOSALID_2 = "proposal2Phase.id.proposalId = ?";
+    private static final String _FINDER_COLUMN_CONTESTPHASEID_CONTESTPHASEID_2 = "proposal2Phase.id.contestPhaseId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "proposal2Phase.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Proposal2Phase exists with the primary key ";
+    private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Proposal2Phase exists with the key {";
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(Proposal2PhasePersistenceImpl.class);
@@ -237,6 +289,8 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
     protected OntologyTermPersistence ontologyTermPersistence;
     @BeanReference(type = OntologyTermEntityPersistence.class)
     protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
+    @BeanReference(type = Plan2ProposalPersistence.class)
+    protected Plan2ProposalPersistence plan2ProposalPersistence;
     @BeanReference(type = PlanAttributePersistence.class)
     protected PlanAttributePersistence planAttributePersistence;
     @BeanReference(type = PlanAttributeFilterPersistence.class)
@@ -477,6 +531,10 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
         throws SystemException {
         proposal2Phase = toUnwrappedModel(proposal2Phase);
 
+        boolean isNew = proposal2Phase.isNew();
+
+        Proposal2PhaseModelImpl proposal2PhaseModelImpl = (Proposal2PhaseModelImpl) proposal2Phase;
+
         Session session = null;
 
         try {
@@ -492,6 +550,53 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
         }
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !Proposal2PhaseModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((proposal2PhaseModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        Long.valueOf(proposal2PhaseModelImpl.getOriginalProposalId())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
+                    args);
+
+                args = new Object[] {
+                        Long.valueOf(proposal2PhaseModelImpl.getProposalId())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
+                    args);
+            }
+
+            if ((proposal2PhaseModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        Long.valueOf(proposal2PhaseModelImpl.getOriginalContestPhaseId())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTPHASEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID,
+                    args);
+
+                args = new Object[] {
+                        Long.valueOf(proposal2PhaseModelImpl.getContestPhaseId())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTPHASEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID,
+                    args);
+            }
+        }
 
         EntityCacheUtil.putResult(Proposal2PhaseModelImpl.ENTITY_CACHE_ENABLED,
             Proposal2PhaseImpl.class, proposal2Phase.getPrimaryKey(),
@@ -618,6 +723,657 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
     }
 
     /**
+     * Returns all the proposal2 phases where proposalId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @return the matching proposal2 phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<Proposal2Phase> findByProposalId(long proposalId)
+        throws SystemException {
+        return findByProposalId(proposalId, QueryUtil.ALL_POS,
+            QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the proposal2 phases where proposalId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposalId the proposal ID
+     * @param start the lower bound of the range of proposal2 phases
+     * @param end the upper bound of the range of proposal2 phases (not inclusive)
+     * @return the range of matching proposal2 phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<Proposal2Phase> findByProposalId(long proposalId, int start,
+        int end) throws SystemException {
+        return findByProposalId(proposalId, start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the proposal2 phases where proposalId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposalId the proposal ID
+     * @param start the lower bound of the range of proposal2 phases
+     * @param end the upper bound of the range of proposal2 phases (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching proposal2 phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<Proposal2Phase> findByProposalId(long proposalId, int start,
+        int end, OrderByComparator orderByComparator) throws SystemException {
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID;
+            finderArgs = new Object[] { proposalId };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PROPOSALID;
+            finderArgs = new Object[] { proposalId, start, end, orderByComparator };
+        }
+
+        List<Proposal2Phase> list = (List<Proposal2Phase>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(3 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(2);
+            }
+
+            query.append(_SQL_SELECT_PROPOSAL2PHASE_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_PROPOSALID_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                list = (List<Proposal2Phase>) QueryUtil.list(q, getDialect(),
+                        start, end);
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (list == null) {
+                    FinderCacheUtil.removeResult(finderPath, finderArgs);
+                } else {
+                    cacheResult(list);
+
+                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                }
+
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first proposal2 phase in the ordered set where proposalId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposalId the proposal ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching proposal2 phase
+     * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public Proposal2Phase findByProposalId_First(long proposalId,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposal2PhaseException, SystemException {
+        List<Proposal2Phase> list = findByProposalId(proposalId, 0, 1,
+                orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("proposalId=");
+            msg.append(proposalId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchProposal2PhaseException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the last proposal2 phase in the ordered set where proposalId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposalId the proposal ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching proposal2 phase
+     * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public Proposal2Phase findByProposalId_Last(long proposalId,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposal2PhaseException, SystemException {
+        int count = countByProposalId(proposalId);
+
+        List<Proposal2Phase> list = findByProposalId(proposalId, count - 1,
+                count, orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("proposalId=");
+            msg.append(proposalId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchProposal2PhaseException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the proposal2 phases before and after the current proposal2 phase in the ordered set where proposalId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposal2PhasePK the primary key of the current proposal2 phase
+     * @param proposalId the proposal ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next proposal2 phase
+     * @throws com.ext.portlet.NoSuchProposal2PhaseException if a proposal2 phase with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public Proposal2Phase[] findByProposalId_PrevAndNext(
+        Proposal2PhasePK proposal2PhasePK, long proposalId,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposal2PhaseException, SystemException {
+        Proposal2Phase proposal2Phase = findByPrimaryKey(proposal2PhasePK);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            Proposal2Phase[] array = new Proposal2PhaseImpl[3];
+
+            array[0] = getByProposalId_PrevAndNext(session, proposal2Phase,
+                    proposalId, orderByComparator, true);
+
+            array[1] = proposal2Phase;
+
+            array[2] = getByProposalId_PrevAndNext(session, proposal2Phase,
+                    proposalId, orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected Proposal2Phase getByProposalId_PrevAndNext(Session session,
+        Proposal2Phase proposal2Phase, long proposalId,
+        OrderByComparator orderByComparator, boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_PROPOSAL2PHASE_WHERE);
+
+        query.append(_FINDER_COLUMN_PROPOSALID_PROPOSALID_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(proposalId);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(proposal2Phase);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<Proposal2Phase> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns all the proposal2 phases where contestPhaseId = &#63;.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @return the matching proposal2 phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<Proposal2Phase> findByContestPhaseId(long contestPhaseId)
+        throws SystemException {
+        return findByContestPhaseId(contestPhaseId, QueryUtil.ALL_POS,
+            QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the proposal2 phases where contestPhaseId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param start the lower bound of the range of proposal2 phases
+     * @param end the upper bound of the range of proposal2 phases (not inclusive)
+     * @return the range of matching proposal2 phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<Proposal2Phase> findByContestPhaseId(long contestPhaseId,
+        int start, int end) throws SystemException {
+        return findByContestPhaseId(contestPhaseId, start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the proposal2 phases where contestPhaseId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param start the lower bound of the range of proposal2 phases
+     * @param end the upper bound of the range of proposal2 phases (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching proposal2 phases
+     * @throws SystemException if a system exception occurred
+     */
+    public List<Proposal2Phase> findByContestPhaseId(long contestPhaseId,
+        int start, int end, OrderByComparator orderByComparator)
+        throws SystemException {
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID;
+            finderArgs = new Object[] { contestPhaseId };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTPHASEID;
+            finderArgs = new Object[] {
+                    contestPhaseId,
+                    
+                    start, end, orderByComparator
+                };
+        }
+
+        List<Proposal2Phase> list = (List<Proposal2Phase>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(3 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(2);
+            }
+
+            query.append(_SQL_SELECT_PROPOSAL2PHASE_WHERE);
+
+            query.append(_FINDER_COLUMN_CONTESTPHASEID_CONTESTPHASEID_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(contestPhaseId);
+
+                list = (List<Proposal2Phase>) QueryUtil.list(q, getDialect(),
+                        start, end);
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (list == null) {
+                    FinderCacheUtil.removeResult(finderPath, finderArgs);
+                } else {
+                    cacheResult(list);
+
+                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                }
+
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first proposal2 phase in the ordered set where contestPhaseId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching proposal2 phase
+     * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public Proposal2Phase findByContestPhaseId_First(long contestPhaseId,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposal2PhaseException, SystemException {
+        List<Proposal2Phase> list = findByContestPhaseId(contestPhaseId, 0, 1,
+                orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("contestPhaseId=");
+            msg.append(contestPhaseId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchProposal2PhaseException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the last proposal2 phase in the ordered set where contestPhaseId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching proposal2 phase
+     * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public Proposal2Phase findByContestPhaseId_Last(long contestPhaseId,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposal2PhaseException, SystemException {
+        int count = countByContestPhaseId(contestPhaseId);
+
+        List<Proposal2Phase> list = findByContestPhaseId(contestPhaseId,
+                count - 1, count, orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("contestPhaseId=");
+            msg.append(contestPhaseId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchProposal2PhaseException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the proposal2 phases before and after the current proposal2 phase in the ordered set where contestPhaseId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposal2PhasePK the primary key of the current proposal2 phase
+     * @param contestPhaseId the contest phase ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next proposal2 phase
+     * @throws com.ext.portlet.NoSuchProposal2PhaseException if a proposal2 phase with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public Proposal2Phase[] findByContestPhaseId_PrevAndNext(
+        Proposal2PhasePK proposal2PhasePK, long contestPhaseId,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposal2PhaseException, SystemException {
+        Proposal2Phase proposal2Phase = findByPrimaryKey(proposal2PhasePK);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            Proposal2Phase[] array = new Proposal2PhaseImpl[3];
+
+            array[0] = getByContestPhaseId_PrevAndNext(session, proposal2Phase,
+                    contestPhaseId, orderByComparator, true);
+
+            array[1] = proposal2Phase;
+
+            array[2] = getByContestPhaseId_PrevAndNext(session, proposal2Phase,
+                    contestPhaseId, orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected Proposal2Phase getByContestPhaseId_PrevAndNext(Session session,
+        Proposal2Phase proposal2Phase, long contestPhaseId,
+        OrderByComparator orderByComparator, boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_PROPOSAL2PHASE_WHERE);
+
+        query.append(_FINDER_COLUMN_CONTESTPHASEID_CONTESTPHASEID_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(contestPhaseId);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(proposal2Phase);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<Proposal2Phase> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Returns all the proposal2 phases.
      *
      * @return the proposal2 phases
@@ -727,6 +1483,32 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
     }
 
     /**
+     * Removes all the proposal2 phases where proposalId = &#63; from the database.
+     *
+     * @param proposalId the proposal ID
+     * @throws SystemException if a system exception occurred
+     */
+    public void removeByProposalId(long proposalId) throws SystemException {
+        for (Proposal2Phase proposal2Phase : findByProposalId(proposalId)) {
+            remove(proposal2Phase);
+        }
+    }
+
+    /**
+     * Removes all the proposal2 phases where contestPhaseId = &#63; from the database.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @throws SystemException if a system exception occurred
+     */
+    public void removeByContestPhaseId(long contestPhaseId)
+        throws SystemException {
+        for (Proposal2Phase proposal2Phase : findByContestPhaseId(
+                contestPhaseId)) {
+            remove(proposal2Phase);
+        }
+    }
+
+    /**
      * Removes all the proposal2 phases from the database.
      *
      * @throws SystemException if a system exception occurred
@@ -735,6 +1517,109 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
         for (Proposal2Phase proposal2Phase : findAll()) {
             remove(proposal2Phase);
         }
+    }
+
+    /**
+     * Returns the number of proposal2 phases where proposalId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @return the number of matching proposal2 phases
+     * @throws SystemException if a system exception occurred
+     */
+    public int countByProposalId(long proposalId) throws SystemException {
+        Object[] finderArgs = new Object[] { proposalId };
+
+        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                finderArgs, this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PROPOSAL2PHASE_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_PROPOSALID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                count = (Long) q.uniqueResult();
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (count == null) {
+                    count = Long.valueOf(0);
+                }
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                    finderArgs, count);
+
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns the number of proposal2 phases where contestPhaseId = &#63;.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @return the number of matching proposal2 phases
+     * @throws SystemException if a system exception occurred
+     */
+    public int countByContestPhaseId(long contestPhaseId)
+        throws SystemException {
+        Object[] finderArgs = new Object[] { contestPhaseId };
+
+        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONTESTPHASEID,
+                finderArgs, this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PROPOSAL2PHASE_WHERE);
+
+            query.append(_FINDER_COLUMN_CONTESTPHASEID_CONTESTPHASEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(contestPhaseId);
+
+                count = (Long) q.uniqueResult();
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (count == null) {
+                    count = Long.valueOf(0);
+                }
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONTESTPHASEID,
+                    finderArgs, count);
+
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
     }
 
     /**

@@ -40,6 +40,7 @@ import com.ext.portlet.service.persistence.ModelPositionPersistence;
 import com.ext.portlet.service.persistence.OntologySpacePersistence;
 import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
 import com.ext.portlet.service.persistence.OntologyTermPersistence;
+import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
 import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
 import com.ext.portlet.service.persistence.PlanAttributePersistence;
 import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
@@ -235,6 +236,8 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
     protected OntologyTermPersistence ontologyTermPersistence;
     @BeanReference(type = OntologyTermEntityPersistence.class)
     protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
+    @BeanReference(type = Plan2ProposalPersistence.class)
+    protected Plan2ProposalPersistence plan2ProposalPersistence;
     @BeanReference(type = PlanAttributePersistence.class)
     protected PlanAttributePersistence planAttributePersistence;
     @BeanReference(type = PlanAttributeFilterPersistence.class)
@@ -506,6 +509,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
 
         proposalImpl.setProposalId(proposal.getProposalId());
         proposalImpl.setCreateDate(proposal.getCreateDate());
+        proposalImpl.setUpdatedDate(proposal.getUpdatedDate());
         proposalImpl.setCurrentVersion(proposal.getCurrentVersion());
         proposalImpl.setAuthorId(proposal.getAuthorId());
         proposalImpl.setVisible(proposal.isVisible());

@@ -17,6 +17,7 @@ import java.util.Date;
 public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
     private long _proposalId;
     private Date _createDate;
+    private Date _updatedDate;
     private int _currentVersion;
     private long _authorId;
     private boolean _visible;
@@ -67,6 +68,14 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
 
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
+    }
+
+    public Date getUpdatedDate() {
+        return _updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        _updatedDate = updatedDate;
     }
 
     public int getCurrentVersion() {
@@ -157,6 +166,7 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
 
         clone.setProposalId(getProposalId());
         clone.setCreateDate(getCreateDate());
+        clone.setUpdatedDate(getUpdatedDate());
         clone.setCurrentVersion(getCurrentVersion());
         clone.setAuthorId(getAuthorId());
         clone.setVisible(getVisible());
@@ -211,12 +221,14 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(21);
+        StringBundler sb = new StringBundler(23);
 
         sb.append("{proposalId=");
         sb.append(getProposalId());
         sb.append(", createDate=");
         sb.append(getCreateDate());
+        sb.append(", updatedDate=");
+        sb.append(getUpdatedDate());
         sb.append(", currentVersion=");
         sb.append(getCurrentVersion());
         sb.append(", authorId=");
@@ -239,7 +251,7 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(34);
+        StringBundler sb = new StringBundler(37);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Proposal");
@@ -252,6 +264,10 @@ public class ProposalClp extends BaseModelImpl<Proposal> implements Proposal {
         sb.append(
             "<column><column-name>createDate</column-name><column-value><![CDATA[");
         sb.append(getCreateDate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>updatedDate</column-name><column-value><![CDATA[");
+        sb.append(getUpdatedDate());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>currentVersion</column-name><column-value><![CDATA[");

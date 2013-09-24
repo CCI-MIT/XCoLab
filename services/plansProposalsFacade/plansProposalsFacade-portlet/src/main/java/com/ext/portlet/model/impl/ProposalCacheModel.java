@@ -19,6 +19,7 @@ import java.util.Date;
 public class ProposalCacheModel implements CacheModel<Proposal>, Serializable {
     public long proposalId;
     public long createDate;
+    public long updatedDate;
     public int currentVersion;
     public long authorId;
     public boolean visible;
@@ -30,12 +31,14 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Serializable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(21);
+        StringBundler sb = new StringBundler(23);
 
         sb.append("{proposalId=");
         sb.append(proposalId);
         sb.append(", createDate=");
         sb.append(createDate);
+        sb.append(", updatedDate=");
+        sb.append(updatedDate);
         sb.append(", currentVersion=");
         sb.append(currentVersion);
         sb.append(", authorId=");
@@ -66,6 +69,12 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Serializable {
             proposalImpl.setCreateDate(null);
         } else {
             proposalImpl.setCreateDate(new Date(createDate));
+        }
+
+        if (updatedDate == Long.MIN_VALUE) {
+            proposalImpl.setUpdatedDate(null);
+        } else {
+            proposalImpl.setUpdatedDate(new Date(updatedDate));
         }
 
         proposalImpl.setCurrentVersion(currentVersion);

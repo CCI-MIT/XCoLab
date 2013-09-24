@@ -49,6 +49,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
     public static final Object[][] TABLE_COLUMNS = {
             { "proposalId", Types.BIGINT },
             { "createDate", Types.TIMESTAMP },
+            { "updatedDate", Types.TIMESTAMP },
             { "currentVersion", Types.INTEGER },
             { "authorId", Types.BIGINT },
             { "visible", Types.BOOLEAN },
@@ -58,7 +59,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
             { "advisorDiscussionId", Types.BIGINT },
             { "groupId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Proposal (proposalId LONG not null primary key,createDate DATE null,currentVersion INTEGER,authorId LONG,visible BOOLEAN,discussionId LONG,judgeDiscussionId LONG,fellowDiscussionId LONG,advisorDiscussionId LONG,groupId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Proposal (proposalId LONG not null primary key,createDate DATE null,updatedDate DATE null,currentVersion INTEGER,authorId LONG,visible BOOLEAN,discussionId LONG,judgeDiscussionId LONG,fellowDiscussionId LONG,advisorDiscussionId LONG,groupId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Proposal";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -78,6 +79,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
         };
     private long _proposalId;
     private Date _createDate;
+    private Date _updatedDate;
     private int _currentVersion;
     private long _authorId;
     private boolean _visible;
@@ -103,6 +105,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
 
         model.setProposalId(soapModel.getProposalId());
         model.setCreateDate(soapModel.getCreateDate());
+        model.setUpdatedDate(soapModel.getUpdatedDate());
         model.setCurrentVersion(soapModel.getCurrentVersion());
         model.setAuthorId(soapModel.getAuthorId());
         model.setVisible(soapModel.getVisible());
@@ -171,6 +174,15 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
 
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
+    }
+
+    @JSON
+    public Date getUpdatedDate() {
+        return _updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        _updatedDate = updatedDate;
     }
 
     @JSON
@@ -281,6 +293,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
 
         proposalImpl.setProposalId(getProposalId());
         proposalImpl.setCreateDate(getCreateDate());
+        proposalImpl.setUpdatedDate(getUpdatedDate());
         proposalImpl.setCurrentVersion(getCurrentVersion());
         proposalImpl.setAuthorId(getAuthorId());
         proposalImpl.setVisible(getVisible());
@@ -353,6 +366,14 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
             proposalCacheModel.createDate = Long.MIN_VALUE;
         }
 
+        Date updatedDate = getUpdatedDate();
+
+        if (updatedDate != null) {
+            proposalCacheModel.updatedDate = updatedDate.getTime();
+        } else {
+            proposalCacheModel.updatedDate = Long.MIN_VALUE;
+        }
+
         proposalCacheModel.currentVersion = getCurrentVersion();
 
         proposalCacheModel.authorId = getAuthorId();
@@ -374,12 +395,14 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(21);
+        StringBundler sb = new StringBundler(23);
 
         sb.append("{proposalId=");
         sb.append(getProposalId());
         sb.append(", createDate=");
         sb.append(getCreateDate());
+        sb.append(", updatedDate=");
+        sb.append(getUpdatedDate());
         sb.append(", currentVersion=");
         sb.append(getCurrentVersion());
         sb.append(", authorId=");
@@ -402,7 +425,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(34);
+        StringBundler sb = new StringBundler(37);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Proposal");
@@ -415,6 +438,10 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
         sb.append(
             "<column><column-name>createDate</column-name><column-value><![CDATA[");
         sb.append(getCreateDate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>updatedDate</column-name><column-value><![CDATA[");
+        sb.append(getUpdatedDate());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>currentVersion</column-name><column-value><![CDATA[");

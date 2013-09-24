@@ -339,6 +339,15 @@
 		<property name="service" ref="com.ext.portlet.service.OntologyTermEntityService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.OntologyTermEntityPersistence" class="com.ext.portlet.service.persistence.OntologyTermEntityPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.Plan2ProposalLocalService" class="com.ext.portlet.service.impl.Plan2ProposalLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.Plan2ProposalLocalServiceUtil" class="com.ext.portlet.service.Plan2ProposalLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.Plan2ProposalLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.Plan2ProposalService" class="com.ext.portlet.service.impl.Plan2ProposalServiceImpl" />
+	<bean id="com.ext.portlet.service.Plan2ProposalServiceUtil" class="com.ext.portlet.service.Plan2ProposalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.Plan2ProposalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.Plan2ProposalPersistence" class="com.ext.portlet.service.persistence.Plan2ProposalPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.PlanAttributeLocalService" class="com.ext.portlet.service.impl.PlanAttributeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.PlanAttributeLocalServiceUtil" class="com.ext.portlet.service.PlanAttributeLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.PlanAttributeLocalService" />

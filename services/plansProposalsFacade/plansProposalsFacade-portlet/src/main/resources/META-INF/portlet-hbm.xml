@@ -38,6 +38,7 @@
 	<import class="com.ext.portlet.model.OntologySpace" />
 	<import class="com.ext.portlet.model.OntologyTerm" />
 	<import class="com.ext.portlet.model.OntologyTermEntity" />
+	<import class="com.ext.portlet.model.Plan2Proposal" />
 	<import class="com.ext.portlet.model.PlanAttribute" />
 	<import class="com.ext.portlet.model.PlanAttributeFilter" />
 	<import class="com.ext.portlet.model.PlanColumnSettings" />
@@ -481,6 +482,13 @@
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
+	<class name="com.ext.portlet.model.impl.Plan2ProposalImpl" table="xcolab_Plan2Proposal">
+		<cache usage="read-write" />
+		<id name="planId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
 	<class name="com.ext.portlet.model.impl.PlanAttributeImpl" table="xcolab_PlanAttribute">
 		<cache usage="read-write" />
 		<id name="attributeId" type="long">
@@ -785,6 +793,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="updatedDate" type="org.hibernate.type.TimestampType" />
 		<property name="currentVersion" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
