@@ -95,7 +95,7 @@ public class DataMigrator implements Runnable {
         try{
             numberOfProposals = ProposalLocalServiceUtil.getProposalsCount();
             pushAjaxUpdate("Deleting " + numberOfProposals + " Proposal(s)");
-            List<Proposal> proposals = ProposalLocalServiceUtil.getProposals(0, numberOfProposals);
+            List<Proposal> proposals = ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE);
             for(Proposal p : proposals) {
                 ProposalLocalServiceUtil.deleteProposal(p);
             }

@@ -250,6 +250,11 @@ public class Proposal2PhaseLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    public static com.ext.portlet.model.Proposal2Phase create(
+        java.lang.Long proposalId, java.lang.Long contestPhaseId) {
+        return getService().create(proposalId, contestPhaseId);
+    }
+
     public static void clearService() {
         _service = null;
     }

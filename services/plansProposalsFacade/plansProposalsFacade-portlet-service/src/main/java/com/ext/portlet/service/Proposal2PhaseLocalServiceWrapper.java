@@ -245,6 +245,11 @@ public class Proposal2PhaseLocalServiceWrapper
         _proposal2PhaseLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    public com.ext.portlet.model.Proposal2Phase create(
+        java.lang.Long proposalId, java.lang.Long contestPhaseId) {
+        return _proposal2PhaseLocalService.create(proposalId, contestPhaseId);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

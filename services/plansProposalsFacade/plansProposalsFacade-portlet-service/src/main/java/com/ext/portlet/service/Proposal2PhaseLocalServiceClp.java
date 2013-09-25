@@ -24,6 +24,7 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
     private MethodKey _updateProposal2PhaseMethodKey14;
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
+    private MethodKey _createMethodKey17;
 
     public Proposal2PhaseLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -92,6 +93,9 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
 
         _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setBeanIdentifier", java.lang.String.class);
+
+        _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+                "create", java.lang.Long.class, java.lang.Long.class);
     }
 
     public com.ext.portlet.model.Proposal2Phase addProposal2Phase(
@@ -523,6 +527,28 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
                     " is not a valid exception");
             }
         }
+    }
+
+    public com.ext.portlet.model.Proposal2Phase create(
+        java.lang.Long proposalId, java.lang.Long contestPhaseId) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_createMethodKey17,
+                ClpSerializer.translateInput(proposalId),
+                ClpSerializer.translateInput(contestPhaseId));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

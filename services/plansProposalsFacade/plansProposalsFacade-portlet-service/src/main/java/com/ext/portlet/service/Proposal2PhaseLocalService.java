@@ -222,4 +222,7 @@ public interface Proposal2PhaseLocalService extends PersistedModelLocalService {
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    public com.ext.portlet.model.Proposal2Phase create(
+        java.lang.Long proposalId, java.lang.Long contestPhaseId);
 }
