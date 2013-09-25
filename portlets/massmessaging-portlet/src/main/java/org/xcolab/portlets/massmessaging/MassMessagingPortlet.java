@@ -482,7 +482,7 @@ public class MassMessagingPortlet extends MVCPortlet {
     public void serveResource(ResourceRequest req, ResourceResponse res)
             throws PortletException {
         String DEL = ";";  // delimiter
-        String TQF = "\""; // text quantifier
+        String TQF = ""; // text quantifier
         ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
 
         DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(User.class, portalClassLoader);
@@ -523,10 +523,10 @@ public class MassMessagingPortlet extends MVCPortlet {
     private List<String> getIgnoredRecipients(){
         List<String> emailList = new LinkedList<String>();
         try{
-            List<MessagingIgnoredRecipients> ignoredRecipientses = MessagingIgnoredRecipientsLocalServiceUtil
+            List<MessagingIgnoredRecipients> ignoredRecipients = MessagingIgnoredRecipientsLocalServiceUtil
                     .getMessagingIgnoredRecipientses(0,MessagingIgnoredRecipientsLocalServiceUtil.getMessagingIgnoredRecipientsesCount());
 
-            for(Iterator<MessagingIgnoredRecipients> i = ignoredRecipientses.iterator(); i.hasNext();) {
+            for(Iterator<MessagingIgnoredRecipients> i = ignoredRecipients.iterator(); i.hasNext();) {
                 emailList.add(i.next().getEmail());
             }
         } catch (Exception e){
