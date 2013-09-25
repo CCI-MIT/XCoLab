@@ -1,7 +1,8 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
-
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.persistence.Proposal2PhasePK;
 /**
  * The implementation of the proposal2 phase local service.
  *
@@ -23,4 +24,8 @@ public class Proposal2PhaseLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.Proposal2PhaseLocalServiceUtil} to access the proposal2 phase local service.
      */
+
+    public Proposal2Phase create(Long proposalId, Long contestPhaseId) {
+        return createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
+    }
 }

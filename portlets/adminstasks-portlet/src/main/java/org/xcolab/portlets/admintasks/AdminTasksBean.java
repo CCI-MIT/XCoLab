@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
@@ -14,7 +13,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.model.PlanAttribute;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanItemGroup;
 import com.ext.portlet.model.PlanSection;
@@ -26,7 +24,6 @@ import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
-import com.ext.utils.UserAccountGenerator;
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
@@ -48,13 +45,16 @@ import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
+import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
+import org.xcolab.portlets.admintasks.migration.DataMigrator;
 
 public class AdminTasksBean {
     private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
 
-
+    private DataMigrator dataMigrator;
     private List<String> messages;
     private Thread dataMigrationThread;
+    private Thread dataIntegrityCheckerThread;
     public List<String> getMessages(){
         return messages;
     }
@@ -667,17 +667,36 @@ public class AdminTasksBean {
 
     }
 
+
+
     public void migrateDBSchema(){
 
         SessionRenderer.addCurrentSession("migration");
         messages = new ArrayList<String>();
-        dataMigrationThread = new Thread(new DataMigrator(messages));
+        dataMigrator = new DataMigrator(messages);
+        dataMigrationThread = new Thread(dataMigrator);
         dataMigrationThread.start();
 
     }
 
     public void stopDBMigration(){
-        dataMigrationThread.stop();
+        dataMigrator.STOP = true;
+        if (messages!=null) messages.add("Migration STOPPED");
+        SessionRenderer.render("migration");
+        SessionRenderer.removeCurrentSession("migration");
+    }
+
+    public void startDBIntegrityCheck(){
+
+        SessionRenderer.addCurrentSession("migration");
+        messages = new ArrayList<String>();
+        dataIntegrityCheckerThread = new Thread(new DataIntegrityChecker(messages));
+        dataIntegrityCheckerThread.start();
+
+    }
+
+    public void stopDBIntegrityCheck(){
+        dataIntegrityCheckerThread.stop();
         if (messages!=null) messages.add("Migration STOPPED");
         SessionRenderer.render("migration");
         SessionRenderer.removeCurrentSession("migration");

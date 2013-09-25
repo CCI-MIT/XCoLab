@@ -22,10 +22,12 @@
             <ice:panelTabSet styleClass="componentPanelTabSetLayout">
 
                 <ice:panelTab label="Migration">
-                    <ul>
-                        <li><ice:commandButton action="#{adminTask.migrateDBSchema}" value="Start Migration"/></li>
-                        <li><ice:commandButton action="#{adminTask.stopDBMigration}" value="Stop Migration"/></li>
-                    </ul>
+
+                    <ice:commandButton action="#{adminTask.migrateDBSchema}" value="Start Migration"/>
+                    <ice:commandButton action="#{adminTask.stopDBMigration}" value="Stop Migration"/>
+
+                    <ice:commandButton action="#{adminTask.startDBIntegrityCheck}" value="Start Checking Data Integrity"/>
+                    <ice:commandButton action="#{adminTask.stopDBIntegrityCheck}" value="Stop Checking Data Integrity"/>
 
                     <h:dataTable id="messages" value="#{adminTask.messages}" var="m">
                         <h:column>
