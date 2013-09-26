@@ -1,0 +1,102 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">		
+
+	<div class="contest-detail">
+		<div class="heading">${contest.contestName}</div>
+		<div class="description">
+			<p>${contest.contestDescription }</p>
+			<c:if test="${contest.hasFocusArea }">
+				<table style="width: auto;">
+					<tr>
+						<c:if test="${not empty contest.what}">
+							<td class="what"><strong>What:</strong></td>
+							<td class="ontologyItem">
+								<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}" />
+							</td>
+						</c:if>
+						
+						<c:if test="${not empty contest.where}">
+							<td class="where"><strong>Where:</strong></td>
+							<td class="ontologyItem">
+								<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}" />
+							</td>
+						</c:if>
+						
+						<c:if test="${not empty contest.who}">
+							<td class="who"><strong>Who:</strong></td>
+							<td class="ontologyItem">
+								<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}" />
+							</td>
+						</c:if>
+					</tr>
+				</table>
+			</c:if>
+		</div>
+
+		<div class="moreinfo ${contest.sponsorLogoId > 0 ? 'withSponsor' : 'noSponsor'}">
+			<table>
+				<tr>
+					<c:if test="${not empty contest.contestTeamMembersByRole }">
+						<td nowrap="nowrap">
+							<c:forEach var="teamRole" items="${contest.contestTeamMembersByRole }">
+								<div class="contestTeamRole">
+									<table>
+									    <tr>
+									    	<td class="contestTeamRoleName">
+									    		<c:choose>
+									    			<c:when test="${fn:length(teamRole.users) eq 1}">
+														<div style="width: 53px; display: inline-block;">${teamRole.roleName}</div>
+									    			</c:when>
+									    			<c:otherwise>
+														<div style="width: 53px; display: inline-block;">${teamRole.roleName}s</div>
+									    			</c:otherwise>
+									    		</c:choose>
+											</td>
+											<td class="contestTeamMembers">
+												<c:forEach var="teamRoleUser" items="${teamRole.users }" varStatus="status">
+													<div class="contestTeamMember">
+														<proposalsPortlet:userPortrait screenName="${teamRoleUser.screenName }"	portraitId="${teamRoleUser.portraitId}" width="30"	height="30" />
+														<proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}" text="${teamRoleUser.fullName}" />
+													</div>
+												</c:forEach>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</c:forEach>
+						</td>
+					</c:if>
+					<td style="text-align: center;">
+						<c:if test="${contest.sponsorLogoId > 0}">
+							<div class="sponsorLogo">
+								<table>
+									<tr>
+										<td>
+											<img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" />
+										</td>
+										<td style="vertical-align: middle;">${contest.sponsorText}</td>
+									</tr>
+								</table>
+							</div>
+						</c:if>
+					</td>
+					<td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+						<div>
+							<c:if test="${not empty contest.resourcesUrl}">
+								<a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
+							</c:if>
+							<a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</jsp:root>

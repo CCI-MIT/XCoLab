@@ -245,9 +245,17 @@ public class Proposal2PhaseLocalServiceWrapper
         _proposal2PhaseLocalService.setBeanIdentifier(beanIdentifier);
     }
 
-    public com.ext.portlet.model.Proposal2Phase create(
-        java.lang.Long proposalId, java.lang.Long contestPhaseId) {
+    public com.ext.portlet.model.Proposal2Phase create(long proposalId,
+        long contestPhaseId) {
         return _proposal2PhaseLocalService.create(proposalId, contestPhaseId);
+    }
+
+    public com.ext.portlet.model.Proposal2Phase getByProposalIdContestPhaseId(
+        long proposalId, long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.getByProposalIdContestPhaseId(proposalId,
+            contestPhaseId);
     }
 
     /**

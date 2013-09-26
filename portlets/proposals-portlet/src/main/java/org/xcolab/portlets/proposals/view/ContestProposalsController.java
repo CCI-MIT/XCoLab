@@ -16,6 +16,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -26,7 +27,7 @@ public class ContestProposalsController {
 
     @RequestMapping(params = "pageToDisplay=contestProposals")
     public String showContestProposals(@RequestParam Long contestId, 
-            @RequestParam(required = false) Long contestPhaseId, Model model) 
+            @RequestParam(required = false, value="phaseId") Long contestPhaseId, Model model) 
             throws PortalException, SystemException {
         System.out.println(contestId);
         
@@ -46,9 +47,10 @@ public class ContestProposalsController {
         }
         
         
+        
         //List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK());
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
-        for (Proposal proposal: ProposalLocalServiceUtil.getProposals(0, 1000)) {
+        for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             proposals.add(new ProposalWrapper(proposal));
         }
         

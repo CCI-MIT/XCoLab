@@ -26,3 +26,65 @@
 .contestlist.table .column.contestWho {
 	width: 140px;
 }
+
+.contestSubscribe img {
+	width: 25px;
+	vertical-align: bottom;
+	margin-right: 5px;
+}
+
+td.ontologyItem {
+	padding-right:35px;
+	padding-top:2px;
+}
+
+
+
+div.sponsorLogo {
+	max-width:320px;
+	min-width:0;
+	display:inline-block;
+	margin-top:20px;
+	font-size:14px;
+	/*margin-left:10px;*/
+}
+
+div.sponsorLogo table {
+	width:100%;
+}
+
+
+div.sponsorLogo img {
+	height:54px;	
+	padding-right:5px;
+}
+
+.noSponsor .contestTeamRole {
+	white-space: normal;
+	min-width: 435px;
+	max-width: 755px;
+}
+
+.withSponsor .contestTeamRole {
+	white-space: normal;
+	min-width: 355px;
+	max-width: 355px;
+}
+
+.contestTeamRole .contestTeamRoleName {
+	padding-top: 15px;
+	width:70px; 
+}
+
+
+.contestTeamRole .contestTeamMembers {
+	width: 100%;
+}
+.contestTeamRole .contestTeamMember {
+	white-space: nowrap;
+	float: left;
+	padding-right: 10px;
+}
+.contestTeamRole .contestTeamMember img {
+	margin-right: 5px;
+}

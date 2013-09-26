@@ -5,17 +5,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestTeamMember;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 
 public class ContestWrapper {
     private static final String WHERE = "where";
@@ -24,6 +28,9 @@ public class ContestWrapper {
     private final static Map<Long, FocusArea> faCache = new HashMap<Long, FocusArea>();
     private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
     private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
+    private List<ContestPhaseWrapper> phases;
+
+    private List<ContestTeamRoleWrapper> contestTeamMembersByRole;
     
     private Contest contest;
 
@@ -355,7 +362,40 @@ public class ContestWrapper {
 
         }   
         return ontologySpaceCache.get(space);
+    }
+    
+    public List<ContestPhaseWrapper> getPhases() {
+        if (phases == null) {
+            phases = new ArrayList<ContestPhaseWrapper>();
+            for (ContestPhase phase: ContestLocalServiceUtil.getPhases(contest)) {
+                phases.add(new ContestPhaseWrapper(phase));
+            }
+        }
+        return phases;
+    }
+    
+    public boolean getHasFocusArea() {
+        return contest.getFocusAreaId() > 0;
+    }
+    
+    public List<ContestTeamRoleWrapper> getContestTeamMembersByRole() throws PortalException, SystemException {
+        if (contestTeamMembersByRole == null) {
+            contestTeamMembersByRole = new ArrayList<ContestTeamRoleWrapper>();
+            Map<String, List<User>> teamRoleUsersMap = new TreeMap<String, List<User>>();
+            for (ContestTeamMember ctm : ContestLocalServiceUtil.getTeamMembers(contest)) {
+                List<User> roleUsers = teamRoleUsersMap.get(ctm.getRole());
+                if (roleUsers == null) {
+                    roleUsers = new ArrayList<User>();
+                    teamRoleUsersMap.put(ctm.getRole(), roleUsers);
+                }
+                roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+            }
         
+            for (String role: teamRoleUsersMap.keySet()) {
+                contestTeamMembersByRole.add(new ContestTeamRoleWrapper(role, teamRoleUsersMap.get(role)));
+            }
+        }
+        return contestTeamMembersByRole;
     }
 
 }

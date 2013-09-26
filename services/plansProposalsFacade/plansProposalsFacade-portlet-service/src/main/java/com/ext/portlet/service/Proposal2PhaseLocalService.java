@@ -223,6 +223,12 @@ public interface Proposal2PhaseLocalService extends PersistedModelLocalService {
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
 
-    public com.ext.portlet.model.Proposal2Phase create(
-        java.lang.Long proposalId, java.lang.Long contestPhaseId);
+    public com.ext.portlet.model.Proposal2Phase create(long proposalId,
+        long contestPhaseId);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.Proposal2Phase getByProposalIdContestPhaseId(
+        long proposalId, long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

@@ -25,6 +25,7 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _createMethodKey17;
+    private MethodKey _getByProposalIdContestPhaseIdMethodKey18;
 
     public Proposal2PhaseLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -95,7 +96,10 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
                 "setBeanIdentifier", java.lang.String.class);
 
         _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "create", java.lang.Long.class, java.lang.Long.class);
+                "create", long.class, long.class);
+
+        _getByProposalIdContestPhaseIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getByProposalIdContestPhaseId", long.class, long.class);
     }
 
     public com.ext.portlet.model.Proposal2Phase addProposal2Phase(
@@ -529,17 +533,47 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         }
     }
 
-    public com.ext.portlet.model.Proposal2Phase create(
-        java.lang.Long proposalId, java.lang.Long contestPhaseId) {
+    public com.ext.portlet.model.Proposal2Phase create(long proposalId,
+        long contestPhaseId) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createMethodKey17,
-                ClpSerializer.translateInput(proposalId),
-                ClpSerializer.translateInput(contestPhaseId));
+                proposalId, contestPhaseId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.model.Proposal2Phase getByProposalIdContestPhaseId(
+        long proposalId, long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getByProposalIdContestPhaseIdMethodKey18,
+                proposalId, contestPhaseId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {

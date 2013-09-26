@@ -9,6 +9,24 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<jsp:directive.include file="./init.jspx" />
 	<div id="content">
+		<jsp:directive.include file="./contestProposals/header.jspx" />
+		<jsp:directive.include file="./contestProposals/header_contest_details.jspx" />
+
+		<div class="headline subhead">
+			<h2>
+				<span>${fn:length(proposals)}</span> proposals
+			</h2>
+			<c:if test="${contestPhase.status == 'OPEN_FOR_SUBMISSION' and contestPhase.active}">
+				<div class="right">
+					<div class="blue-button">
+						<a href="#" onclick="if(!deferUntilLogin()) return false;">
+							<span>CREATE</span> proposal
+						</a>
+					</div>
+					
+				</div>
+			</c:if>
+		</div>
 	<div class="blueheaderbar tooltips">
 				<div class="proposalname">
 					<div style="display: inline-block">
@@ -58,7 +76,6 @@
 					</div>
 				</div>
 			</div>
-		<h1>Contest proposals</h1>
 			<c:forEach var="proposal" items="${proposals }">
 				<div class="propbox ${proposal.featured ? 'featured' : ''}">
 					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">

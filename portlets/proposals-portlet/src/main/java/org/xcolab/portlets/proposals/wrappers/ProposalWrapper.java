@@ -160,6 +160,15 @@ public class ProposalWrapper {
         return true;
     }
     
+    public long getVotesCount() {
+        // TODO
+        return 0;
+    }
+    
+    public long getImageId() throws PortalException, SystemException {
+        return getAttributeValueLong("LONG", 0L, 0);
+    }
+    
     private String getAttributeValueString(String attributeName, String defaultVal) throws PortalException, SystemException {
         return getAttributeValueString(attributeName, 0, defaultVal);
     }
@@ -190,6 +199,8 @@ public class ProposalWrapper {
             return null;
         }
     }
+    
+    
     
     
 

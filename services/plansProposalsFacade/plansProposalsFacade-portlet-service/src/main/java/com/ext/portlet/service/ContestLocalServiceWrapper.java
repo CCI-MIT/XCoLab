@@ -304,6 +304,13 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getActivePhase(contest);
     }
 
+    public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
+        com.ext.portlet.model.Contest contest)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getActiveOrLastPhase(contest);
+    }
+
     public boolean isActive(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.isActive(contest);

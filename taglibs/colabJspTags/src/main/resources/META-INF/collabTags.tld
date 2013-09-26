@@ -10,7 +10,29 @@
   <tlib-version>1.0</tlib-version>
   <short-name>collab</short-name>
   <uri>http://climatecolab.org/tags/collab_1.0</uri>
+
+   <tag>
+  	<name>formatTimeSpan</name>
+  	<tag-class>org.xcolab.tags.FormatTimeSpanTag</tag-class>
+	<body-content>empty</body-content>
+		
+	<attribute>
+		<name>value</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+		<type>java.lang.Long</type>			
+	</attribute>
+	
+	<attribute>
+		<name>returnUnit</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+		<type>java.lang.Boolean</type>			
+	</attribute>
+  	
+  </tag>
   
+   
   <tag-file>
     <description>Contest link</description>
     <name>contestLink</name>
@@ -22,5 +44,5 @@
     <name>sortArrow</name>
     <path>/META-INF/tags/collab/sortArrow.tagx</path>
   </tag-file>
-  
+
 </taglib>  

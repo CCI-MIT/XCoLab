@@ -2,9 +2,13 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -99,4 +103,43 @@ public class ContestPhaseWrapper {
         return getStatus().isCanEdit();
     }
 
+    public boolean isActive() {
+        Date now = new Date();
+        if (contestPhase.getPhaseStartDate() != null && contestPhase.getPhaseEndDate() != null) 
+            return contestPhase.getPhaseStartDate().before(now) && contestPhase.getPhaseEndDate().after(now);
+        return false;
+    }
+    
+    public long getMilisecondsTillEnd() {
+        return contestPhase.getPhaseEndDate().getTime() - System.currentTimeMillis();
+    }
+    
+    public String getName() throws PortalException, SystemException {
+        return ContestPhaseLocalServiceUtil.getName(contestPhase);
+    }
+    
+    public boolean isEnded() {
+        Date now = new Date();
+        if (contestPhase.getPhaseEndDate() != null) return contestPhase.getPhaseEndDate().before(now);
+        return false;
+    }
+    
+    public boolean isAlreadyStarted() {
+        Date now = new Date();
+        return contestPhase.getPhaseStartDate().before(now);
+    }
+    
+    public String getPhaseStatusDescription() throws PortalException, SystemException {
+        String descriptionOverride = contestPhase.getContestPhaseDescriptionOverride();
+        if (StringUtils.isBlank(descriptionOverride)) {
+            try {
+                return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getDescription();
+            }
+            catch (NoSuchContestPhaseException e) {
+                // ignore
+            }
+            return null;
+        }
+        return descriptionOverride;
+    }
 }

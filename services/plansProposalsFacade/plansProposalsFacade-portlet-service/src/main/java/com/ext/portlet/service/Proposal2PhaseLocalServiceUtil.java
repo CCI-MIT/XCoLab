@@ -250,9 +250,17 @@ public class Proposal2PhaseLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
-    public static com.ext.portlet.model.Proposal2Phase create(
-        java.lang.Long proposalId, java.lang.Long contestPhaseId) {
+    public static com.ext.portlet.model.Proposal2Phase create(long proposalId,
+        long contestPhaseId) {
         return getService().create(proposalId, contestPhaseId);
+    }
+
+    public static com.ext.portlet.model.Proposal2Phase getByProposalIdContestPhaseId(
+        long proposalId, long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getByProposalIdContestPhaseId(proposalId, contestPhaseId);
     }
 
     public static void clearService() {

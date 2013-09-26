@@ -3,6 +3,8 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 /**
  * The implementation of the proposal2 phase local service.
  *
@@ -25,7 +27,11 @@ public class Proposal2PhaseLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.Proposal2PhaseLocalServiceUtil} to access the proposal2 phase local service.
      */
 
-    public Proposal2Phase create(Long proposalId, Long contestPhaseId) {
+    public Proposal2Phase create(long proposalId, long contestPhaseId) {
         return createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
+    }
+    
+    public Proposal2Phase getByProposalIdContestPhaseId(long proposalId, long contestPhaseId) throws PortalException, SystemException {
+        return getProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
     }
 }

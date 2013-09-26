@@ -312,6 +312,13 @@ public class ContestLocalServiceUtil {
         return getService().getActivePhase(contest);
     }
 
+    public static com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
+        com.ext.portlet.model.Contest contest)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getActiveOrLastPhase(contest);
+    }
+
     public static boolean isActive(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().isActive(contest);

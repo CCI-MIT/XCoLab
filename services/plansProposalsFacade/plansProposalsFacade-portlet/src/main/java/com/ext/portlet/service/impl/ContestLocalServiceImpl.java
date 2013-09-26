@@ -231,6 +231,15 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return null;
     }
     
+    public ContestPhase getActiveOrLastPhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
+        ContestPhase phaseToReturn = null;
+        for (ContestPhase phase: getPhases(contest)) {
+            phaseToReturn = phase;
+            if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
+        }
+        return phaseToReturn;
+    }
+    
     public boolean isActive(Contest contest) throws SystemException {
         try {
             ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);

@@ -30,7 +30,7 @@ public class DataMigrator implements Runnable {
 
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
-    private boolean TESTING = true;
+    private boolean TESTING = false;
 
     public boolean STOP = false;
 
