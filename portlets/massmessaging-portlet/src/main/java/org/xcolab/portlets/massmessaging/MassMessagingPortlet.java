@@ -43,6 +43,8 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.util.mail.MailEngine;
 import com.sun.mail.smtp.SMTPTransport;
+import java.text.Normalizer;
+
 
 public class MassMessagingPortlet extends MVCPortlet {
 
@@ -481,7 +483,7 @@ public class MassMessagingPortlet extends MVCPortlet {
      */
     public void serveResource(ResourceRequest req, ResourceResponse res)
             throws PortletException {
-        String DEL = ";";  // delimiter
+        String DEL = ",";  // delimiter
         String TQF = ""; // text quantifier
         ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
 
@@ -497,7 +499,7 @@ public class MassMessagingPortlet extends MVCPortlet {
             for(Iterator<User> i = userList.iterator(); i.hasNext();) {
                 User u = i.next();
                 String s = TQF + u.getScreenName() + DEL + u.getFirstName() + DEL + u.getLastName() + DEL + u.getEmailAddress() + TQF + "\n";
-                baos.write(s.getBytes());
+                baos.write(replaceNonAsciiCharacters(deAccent(s)).getBytes());
             }
 
             res.setContentType("text/csv");
@@ -519,6 +521,15 @@ public class MassMessagingPortlet extends MVCPortlet {
 
     }
 
+    public String deAccent(String str) {
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
+    }
+
+    public String replaceNonAsciiCharacters(String str){
+        return str.replaceAll("[^\\x00-\\x7F]", "");
+    }
 
     private List<String> getIgnoredRecipients(){
         List<String> emailList = new LinkedList<String>();
