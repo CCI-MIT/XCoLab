@@ -68,7 +68,9 @@ import com.ext.portlet.model.Proposal2PhaseClp;
 import com.ext.portlet.model.ProposalAttributeClp;
 import com.ext.portlet.model.ProposalAttributeTypeClp;
 import com.ext.portlet.model.ProposalClp;
+import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
+import com.ext.portlet.model.ProposalVoteClp;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -430,8 +432,16 @@ public class ClpSerializer {
             return translateInputProposalAttributeType(oldModel);
         }
 
+        if (oldModelClassName.equals(ProposalSupporterClp.class.getName())) {
+            return translateInputProposalSupporter(oldModel);
+        }
+
         if (oldModelClassName.equals(ProposalVersionClp.class.getName())) {
             return translateInputProposalVersion(oldModel);
+        }
+
+        if (oldModelClassName.equals(ProposalVoteClp.class.getName())) {
+            return translateInputProposalVote(oldModel);
         }
 
         return oldModel;
@@ -5264,6 +5274,54 @@ public class ClpSerializer {
         return oldModel;
     }
 
+    public static Object translateInputProposalSupporter(BaseModel<?> oldModel) {
+        ProposalSupporterClp oldCplModel = (ProposalSupporterClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ProposalSupporterImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setProposalId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getProposalId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setUserId",
+                        new Class[] { Long.TYPE });
+
+                Long value1 = new Long(oldCplModel.getUserId());
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setCreateDate",
+                        new Class[] { Date.class });
+
+                Date value2 = oldCplModel.getCreateDate();
+
+                method2.invoke(newModel, value2);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
     public static Object translateInputProposalVersion(BaseModel<?> oldModel) {
         ProposalVersionClp oldCplModel = (ProposalVersionClp) oldModel;
 
@@ -5321,6 +5379,61 @@ public class ClpSerializer {
                 Long value5 = new Long(oldCplModel.getUpdateAdditionalId());
 
                 method5.invoke(newModel, value5);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputProposalVote(BaseModel<?> oldModel) {
+        ProposalVoteClp oldCplModel = (ProposalVoteClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ProposalVoteImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setProposalId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getProposalId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setContestPhaseId",
+                        new Class[] { Long.TYPE });
+
+                Long value1 = new Long(oldCplModel.getContestPhaseId());
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setUserId",
+                        new Class[] { Long.TYPE });
+
+                Long value2 = new Long(oldCplModel.getUserId());
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setCreateDate",
+                        new Class[] { Date.class });
+
+                Date value3 = oldCplModel.getCreateDate();
+
+                method3.invoke(newModel, value3);
 
                 return newModel;
             } catch (Exception e) {
@@ -5679,8 +5792,18 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalSupporterImpl")) {
+            return translateOutputProposalSupporter(oldModel);
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalVersionImpl")) {
             return translateOutputProposalVersion(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalVoteImpl")) {
+            return translateOutputProposalVote(oldModel);
         }
 
         return oldModel;
@@ -10127,6 +10250,48 @@ public class ClpSerializer {
         return oldModel;
     }
 
+    public static Object translateOutputProposalSupporter(BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                ProposalSupporterClp newModel = new ProposalSupporterClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getProposalId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setProposalId(value0);
+
+                Method method1 = oldModelClass.getMethod("getUserId");
+
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setUserId(value1);
+
+                Method method2 = oldModelClass.getMethod("getCreateDate");
+
+                Date value2 = (Date) method2.invoke(oldModel, (Object[]) null);
+
+                newModel.setCreateDate(value2);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
     public static Object translateOutputProposalVersion(BaseModel<?> oldModel) {
         Thread currentThread = Thread.currentThread();
 
@@ -10178,6 +10343,54 @@ public class ClpSerializer {
                 Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
 
                 newModel.setUpdateAdditionalId(value5);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputProposalVote(BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                ProposalVoteClp newModel = new ProposalVoteClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getProposalId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setProposalId(value0);
+
+                Method method1 = oldModelClass.getMethod("getContestPhaseId");
+
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setContestPhaseId(value1);
+
+                Method method2 = oldModelClass.getMethod("getUserId");
+
+                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
+
+                newModel.setUserId(value2);
+
+                Method method3 = oldModelClass.getMethod("getCreateDate");
+
+                Date value3 = (Date) method3.invoke(oldModel, (Object[]) null);
+
+                newModel.setCreateDate(value3);
 
                 return newModel;
             } catch (Exception e) {

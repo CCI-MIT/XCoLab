@@ -641,6 +641,13 @@ create table xcolab_ProposalAttributeType (
 	copyOnPromote BOOLEAN
 );
 
+create table xcolab_ProposalSupporter (
+	proposalId LONG not null,
+	userId LONG not null,
+	createDate DATE null,
+	primary key (proposalId, userId)
+);
+
 create table xcolab_ProposalVersion (
 	proposalId LONG not null,
 	version INTEGER not null,
@@ -649,4 +656,12 @@ create table xcolab_ProposalVersion (
 	updateType VARCHAR(75) null,
 	updateAdditionalId LONG,
 	primary key (proposalId, version)
+);
+
+create table xcolab_ProposalVote (
+	proposalId LONG,
+	contestPhaseId LONG not null,
+	userId LONG not null,
+	createDate DATE null,
+	primary key (contestPhaseId, userId)
 );

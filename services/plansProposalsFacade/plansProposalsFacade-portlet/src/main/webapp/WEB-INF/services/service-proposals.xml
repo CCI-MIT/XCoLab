@@ -90,4 +90,42 @@
     	
     </entity>
     
+    
+    <entity name="ProposalSupporter" local-service="true">
+    	<column name="proposalId" type="long" primary="true" />
+    	<column name="userId" type="long" primary="true" />
+    	<column name="createDate" type="Date" />
+    	
+    	<finder return-type="Collection" name="ProposalId">
+    		<finder-column name="proposalId" />
+    	</finder>
+    	
+    	<finder return-type="Collection" name="UserId">
+    		<finder-column name="userId" />
+    	</finder>
+    	
+    </entity>
+    
+	<entity name="ProposalVote" local-service="true">
+    	<column name="proposalId" type="long" />
+    	<column name="contestPhaseId" type="long" primary="true" />
+    	<column name="userId" type="long" primary="true" />
+    	<column name="createDate" type="Date" />
+    	
+    	<finder return-type="Collection" name="ProposalId">
+    		<finder-column name="proposalId" />
+    	</finder>
+    	
+    	<finder return-type="Collection" name="ProposalIdContestPhaseId">
+    		<finder-column name="proposalId" />
+    		<finder-column name="contestPhaseId" />
+    	</finder>
+    	
+    	
+    	<finder return-type="Collection" name="UserId">
+    		<finder-column name="userId" />
+    	</finder>
+    	
+    </entity>
+    
 </service-builder>

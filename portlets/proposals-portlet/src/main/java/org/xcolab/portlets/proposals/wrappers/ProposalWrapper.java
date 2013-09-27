@@ -1,10 +1,18 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -14,10 +22,34 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 
 public class ProposalWrapper {
-    private Proposal proposal;
+    private final Proposal proposal;
+    private final int version;
+    private final Contest contest;
+    private final ContestPhase contestPhase;
+    
+    private List<ProposalTeamMemberWrapper> members;
+    private List<ProposalSectionWrapper> sections;
     
     public ProposalWrapper(Proposal proposal) {
         this.proposal = proposal;
+        this.version = proposal.getCurrentVersion();
+        this.contest = null;
+        this.contestPhase = null;
+    }
+
+
+    public ProposalWrapper(Proposal proposal, int version) {
+        this.proposal = proposal;
+        this.version = version;
+        this.contest = null;
+        this.contestPhase = null;
+    }
+    
+    public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase) {
+        this.proposal = proposal;
+        this.version = version;
+        this.contest = contest;
+        this.contestPhase = contestPhase;
     }
 
     public Class<?> getModelClass() {
@@ -168,6 +200,33 @@ public class ProposalWrapper {
     public long getImageId() throws PortalException, SystemException {
         return getAttributeValueLong("LONG", 0L, 0);
     }
+    
+    
+    public List<ProposalSectionWrapper> getSections() throws PortalException, SystemException {
+        if (sections == null) {
+            sections = new ArrayList<ProposalSectionWrapper>();
+            if (contest != null) { 
+                PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
+                if (planTemplate != null) {
+                    for (PlanSectionDefinition psd: PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
+                        sections.add(new ProposalSectionWrapper(psd, proposal));
+                    }
+                }
+            }
+        }
+        return sections;
+    }
+    
+    public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
+        if (members == null) {
+            members = new ArrayList<ProposalTeamMemberWrapper>();
+            for (User user: ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
+                members.add(new ProposalTeamMemberWrapper(proposal, user));
+            }
+        }
+        return members;
+    }
+    
     
     private String getAttributeValueString(String attributeName, String defaultVal) throws PortalException, SystemException {
         return getAttributeValueString(attributeName, 0, defaultVal);

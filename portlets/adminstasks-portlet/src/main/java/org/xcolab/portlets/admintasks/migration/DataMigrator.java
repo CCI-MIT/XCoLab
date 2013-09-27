@@ -227,6 +227,15 @@ public class DataMigrator implements Runnable {
     }
 
     private void createNewPlan(long groupID, List<PlanItem> plans){
+        
+        // sort plans by create date
+        Collections.sort(plans, new Comparator<PlanItem>() {
+
+            public int compare(PlanItem o1, PlanItem o2) {
+                return o1.getUpdated().compareTo(o2.getUpdated());
+            }
+            
+        });
         PlanMeta currentPlanMeta = null;
         Proposal2Phase latestP2P = null;
         long currentContestPhase = 0;

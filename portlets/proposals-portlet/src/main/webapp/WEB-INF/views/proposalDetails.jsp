@@ -8,41 +8,33 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 <jsp:directive.include file="./init.jspx" />
 
-<div id="content">
-	<div class="proposal-head">
-		<div class="inner">
-			<div class="headline">
-				<div class="proposal-image">
-					<c:choose>
-						<c:when test='${proposal.imageId > 0}'>
-							<img src="/image/proposal?img_id=${proposal.imageId}" width="52" height="52" alt="${proposal.name }" />
-						</c:when>
-						<c:otherwise>
-							<img src="/climatecolab-theme/images/proposal_default.png" width="52" height="52" alt="${proposal.name}" />
-						</c:otherwise>
-					</c:choose>
-				</div>
-				<div class="proposal-title">
-					<div class="prop-description">
-						Proposal for
-						<proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />
-						by
-						<c:choose>
-							<c:when test="${empty proposal.team}">
-								<proposalsPortlet:userLinkSimple userId="${proposal.authorId}" text="${proposal.author.screenName}" />
-							</c:when>
-							<c:otherwise>
-                        		${proposal.team}
-                        	</c:otherwise>
-                        </c:choose>
-					</div>
-					<h1>${proposal.name}</h1>
-				</div>
-			</div>
+	<jsp:directive.include file="./proposalDetails/header.jspx" />
+	
+	<div id="content">
+		<div class="prop-left">
+			<c:if test="${not empty proposal.pitch }">
+				<h2>Pitch</h2>
+				<p class="intro">${proposal.pitch}</p>
+				<div class="div1"><!--  --></div>
+			</c:if>
+		
+			<h2>Description</h2>
+			<c:choose>
+				<c:when test="${empty proposal.sections }">
+					${proposa.description }
+				</c:when>
+				<c:otherwise>
+					<c:forEach var="section" items="${proposal.sections }" varStatus="status">
+						<h3>${section.title }</h3>
+							<p>${section.content }</p>
+					
+						<c:if test="${not status.last }">
+							<div class="div2"><!--  --></div>
+						</c:if>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
 		</div>
-		<!-- /inner -->
 	</div>
-	<!-- /proposal-head -->	
-</div>
 
 </jsp:root>

@@ -88,3 +88,10 @@ div.sponsorLogo img {
 .contestTeamRole .contestTeamMember img {
 	margin-right: 5px;
 }
+
+
+/** PROPOSAL DETAILS **/
+
+.contributors td {
+	width: 525px;
+}

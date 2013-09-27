@@ -137,8 +137,12 @@ import com.ext.portlet.service.ProposalAttributeTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeTypeServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalServiceUtil;
+import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.ext.portlet.service.ProposalSupporterServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
+import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
+import com.ext.portlet.service.ProposalVoteServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -360,9 +364,15 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalAttributeTypeLocalServiceUtil.clearService();
 
             ProposalAttributeTypeServiceUtil.clearService();
+            ProposalSupporterLocalServiceUtil.clearService();
+
+            ProposalSupporterServiceUtil.clearService();
             ProposalVersionLocalServiceUtil.clearService();
 
             ProposalVersionServiceUtil.clearService();
+            ProposalVoteLocalServiceUtil.clearService();
+
+            ProposalVoteServiceUtil.clearService();
         }
     }
 }

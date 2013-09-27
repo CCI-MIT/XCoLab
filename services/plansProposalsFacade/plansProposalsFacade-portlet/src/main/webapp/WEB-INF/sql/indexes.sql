@@ -153,4 +153,12 @@ create index IX_D273A4B8 on xcolab_Proposal2Phase (proposalId);
 create index IX_8FF24CAD on xcolab_ProposalAttribute (proposalId, version);
 create index IX_F4926C2 on xcolab_ProposalAttribute (proposalId, version, name, additionalId);
 
+create index IX_2AAA1DDB on xcolab_ProposalSupporter (proposalId);
+create index IX_1DCA0834 on xcolab_ProposalSupporter (userId);
+
 create index IX_59E3C2F7 on xcolab_ProposalVersion (proposalId);
+
+create index IX_A4D26028 on xcolab_ProposalVote (contestPhaseId, userId);
+create index IX_EA28CF99 on xcolab_ProposalVote (proposalId);
+create index IX_43559ACF on xcolab_ProposalVote (proposalId, contestPhaseId);
+create index IX_497348F2 on xcolab_ProposalVote (userId);

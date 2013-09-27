@@ -628,6 +628,15 @@
 		<property name="service" ref="com.ext.portlet.service.ProposalAttributeTypeService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.ProposalAttributeTypePersistence" class="com.ext.portlet.service.persistence.ProposalAttributeTypePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ProposalSupporterLocalService" class="com.ext.portlet.service.impl.ProposalSupporterLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalSupporterLocalServiceUtil" class="com.ext.portlet.service.ProposalSupporterLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ProposalSupporterLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.ProposalSupporterService" class="com.ext.portlet.service.impl.ProposalSupporterServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalSupporterServiceUtil" class="com.ext.portlet.service.ProposalSupporterServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ProposalSupporterService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.ProposalSupporterPersistence" class="com.ext.portlet.service.persistence.ProposalSupporterPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalVersionLocalService" class="com.ext.portlet.service.impl.ProposalVersionLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalVersionLocalServiceUtil" class="com.ext.portlet.service.ProposalVersionLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.ProposalVersionLocalService" />
@@ -637,6 +646,15 @@
 		<property name="service" ref="com.ext.portlet.service.ProposalVersionService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.ProposalVersionPersistence" class="com.ext.portlet.service.persistence.ProposalVersionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ProposalVoteLocalService" class="com.ext.portlet.service.impl.ProposalVoteLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalVoteLocalServiceUtil" class="com.ext.portlet.service.ProposalVoteLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ProposalVoteLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.ProposalVoteService" class="com.ext.portlet.service.impl.ProposalVoteServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalVoteServiceUtil" class="com.ext.portlet.service.ProposalVoteServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ProposalVoteService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.ProposalVotePersistence" class="com.ext.portlet.service.persistence.ProposalVotePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.utils.userInput.PolicyFct" class="com.ext.utils.userInput.PolicyFct">
 		<property name="policyFile">
 			<value>antisamy-policy.xml</value>

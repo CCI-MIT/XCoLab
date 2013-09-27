@@ -137,8 +137,12 @@ import com.ext.portlet.service.ProposalAttributeTypeLocalService;
 import com.ext.portlet.service.ProposalAttributeTypeService;
 import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.ProposalService;
+import com.ext.portlet.service.ProposalSupporterLocalService;
+import com.ext.portlet.service.ProposalSupporterService;
 import com.ext.portlet.service.ProposalVersionLocalService;
 import com.ext.portlet.service.ProposalVersionService;
+import com.ext.portlet.service.ProposalVoteLocalService;
+import com.ext.portlet.service.ProposalVoteService;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
@@ -208,7 +212,9 @@ import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
+import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
+import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
 import com.liferay.counter.service.CounterLocalService;
 
@@ -651,12 +657,24 @@ public abstract class ContestPhaseTypeServiceBaseImpl extends PrincipalBean
     protected ProposalAttributeTypeService proposalAttributeTypeService;
     @BeanReference(type = ProposalAttributeTypePersistence.class)
     protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
+    @BeanReference(type = ProposalSupporterLocalService.class)
+    protected ProposalSupporterLocalService proposalSupporterLocalService;
+    @BeanReference(type = ProposalSupporterService.class)
+    protected ProposalSupporterService proposalSupporterService;
+    @BeanReference(type = ProposalSupporterPersistence.class)
+    protected ProposalSupporterPersistence proposalSupporterPersistence;
     @BeanReference(type = ProposalVersionLocalService.class)
     protected ProposalVersionLocalService proposalVersionLocalService;
     @BeanReference(type = ProposalVersionService.class)
     protected ProposalVersionService proposalVersionService;
     @BeanReference(type = ProposalVersionPersistence.class)
     protected ProposalVersionPersistence proposalVersionPersistence;
+    @BeanReference(type = ProposalVoteLocalService.class)
+    protected ProposalVoteLocalService proposalVoteLocalService;
+    @BeanReference(type = ProposalVoteService.class)
+    protected ProposalVoteService proposalVoteService;
+    @BeanReference(type = ProposalVotePersistence.class)
+    protected ProposalVotePersistence proposalVotePersistence;
     @BeanReference(type = CounterLocalService.class)
     protected CounterLocalService counterLocalService;
     @BeanReference(type = ResourceLocalService.class)
@@ -4544,6 +4562,63 @@ public abstract class ContestPhaseTypeServiceBaseImpl extends PrincipalBean
     }
 
     /**
+     * Returns the proposal supporter local service.
+     *
+     * @return the proposal supporter local service
+     */
+    public ProposalSupporterLocalService getProposalSupporterLocalService() {
+        return proposalSupporterLocalService;
+    }
+
+    /**
+     * Sets the proposal supporter local service.
+     *
+     * @param proposalSupporterLocalService the proposal supporter local service
+     */
+    public void setProposalSupporterLocalService(
+        ProposalSupporterLocalService proposalSupporterLocalService) {
+        this.proposalSupporterLocalService = proposalSupporterLocalService;
+    }
+
+    /**
+     * Returns the proposal supporter remote service.
+     *
+     * @return the proposal supporter remote service
+     */
+    public ProposalSupporterService getProposalSupporterService() {
+        return proposalSupporterService;
+    }
+
+    /**
+     * Sets the proposal supporter remote service.
+     *
+     * @param proposalSupporterService the proposal supporter remote service
+     */
+    public void setProposalSupporterService(
+        ProposalSupporterService proposalSupporterService) {
+        this.proposalSupporterService = proposalSupporterService;
+    }
+
+    /**
+     * Returns the proposal supporter persistence.
+     *
+     * @return the proposal supporter persistence
+     */
+    public ProposalSupporterPersistence getProposalSupporterPersistence() {
+        return proposalSupporterPersistence;
+    }
+
+    /**
+     * Sets the proposal supporter persistence.
+     *
+     * @param proposalSupporterPersistence the proposal supporter persistence
+     */
+    public void setProposalSupporterPersistence(
+        ProposalSupporterPersistence proposalSupporterPersistence) {
+        this.proposalSupporterPersistence = proposalSupporterPersistence;
+    }
+
+    /**
      * Returns the proposal version local service.
      *
      * @return the proposal version local service
@@ -4598,6 +4673,62 @@ public abstract class ContestPhaseTypeServiceBaseImpl extends PrincipalBean
     public void setProposalVersionPersistence(
         ProposalVersionPersistence proposalVersionPersistence) {
         this.proposalVersionPersistence = proposalVersionPersistence;
+    }
+
+    /**
+     * Returns the proposal vote local service.
+     *
+     * @return the proposal vote local service
+     */
+    public ProposalVoteLocalService getProposalVoteLocalService() {
+        return proposalVoteLocalService;
+    }
+
+    /**
+     * Sets the proposal vote local service.
+     *
+     * @param proposalVoteLocalService the proposal vote local service
+     */
+    public void setProposalVoteLocalService(
+        ProposalVoteLocalService proposalVoteLocalService) {
+        this.proposalVoteLocalService = proposalVoteLocalService;
+    }
+
+    /**
+     * Returns the proposal vote remote service.
+     *
+     * @return the proposal vote remote service
+     */
+    public ProposalVoteService getProposalVoteService() {
+        return proposalVoteService;
+    }
+
+    /**
+     * Sets the proposal vote remote service.
+     *
+     * @param proposalVoteService the proposal vote remote service
+     */
+    public void setProposalVoteService(ProposalVoteService proposalVoteService) {
+        this.proposalVoteService = proposalVoteService;
+    }
+
+    /**
+     * Returns the proposal vote persistence.
+     *
+     * @return the proposal vote persistence
+     */
+    public ProposalVotePersistence getProposalVotePersistence() {
+        return proposalVotePersistence;
+    }
+
+    /**
+     * Sets the proposal vote persistence.
+     *
+     * @param proposalVotePersistence the proposal vote persistence
+     */
+    public void setProposalVotePersistence(
+        ProposalVotePersistence proposalVotePersistence) {
+        this.proposalVotePersistence = proposalVotePersistence;
     }
 
     /**

@@ -992,6 +992,19 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalSupporterModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ProposalSupporterPK" />
+		<attributes>
+			<id name="proposalId" />
+			<id name="userId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalVersionModelImpl">
 		<id-class class="com.ext.portlet.service.persistence.ProposalVersionPK" />
 		<attributes>
@@ -1005,6 +1018,20 @@
 			<basic name="updateAdditionalId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalVoteModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ProposalVotePK" />
+		<attributes>
+			<id name="contestPhaseId" />
+			<id name="userId" />
+			<basic name="proposalId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<entity class="com.ext.portlet.model.impl.ActivitySubscriptionImpl" name="ActivitySubscription">
@@ -1279,8 +1306,16 @@
 		<table name="xcolab_ProposalAttributeType" />
 		<attributes />
 	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalSupporterImpl" name="ProposalSupporter">
+		<table name="xcolab_ProposalSupporter" />
+		<attributes />
+	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalVersionImpl" name="ProposalVersion">
 		<table name="xcolab_ProposalVersion" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalVoteImpl" name="ProposalVote">
+		<table name="xcolab_ProposalVote" />
 		<attributes />
 	</entity>
 </entity-mappings>

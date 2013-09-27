@@ -518,4 +518,121 @@ public interface ProposalLocalService extends PersistedModelLocalService {
         long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns list of proposal team members</p>
+    *
+    * @param proposalId proposal id
+    * @return list of proposal team members
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.User> getMembers(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns list of proposal supporters</p>
+    *
+    * @param proposalId proposal id
+    * @return list of proposal supporters
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.User> getSupporters(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Adds supporter to a proposal</p>
+    *
+    * @param proposalId id of a proposal
+    * @param userId id of a supported to be added
+    * @throws SystemException in case of an LR error
+    */
+    public void addSupporter(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Retracts support from a proposal</p>
+    *
+    * @param proposalId id of a proposal
+    * @param userId id of a supported to be removed
+    * @throws SystemException in case of an LR error
+    */
+    public void removeSupporter(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns list of users that have voted for a proposal in given contest phase</p>
+    *
+    * @param proposalId proposal id
+    * @param contestPhaseId contest phase id
+    * @return list of proposal voters
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.User> getVoters(
+        long proposalId, long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Return number of users that have voted for a proposal in given contest phase</p>
+    *
+    * @param proposalId proposal id
+    * @param contestPhaseId contest phase id
+    * @return number of votes
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public long getVotesCount(long proposalId, long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Adds a user vote to a proposal in context of given contest phase. If user has already voted
+    * for different proposal in this phase, then that vote is removed first. User has only one vote
+    * in one contestPhase.</p>
+    *
+    * @param proposalId id of a proposal
+    * @param contestPhaseId id of a contest phase
+    * @param userId id of an user
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public void addVote(long proposalId, long contestPhaseId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Retracts user vote in context of a contest phase.</p>
+    *
+    * @param contestPhaseId id of a contest phase
+    * @param userId id of an user
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public void removeVote(long contestPhaseId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Tells if user is a member of a proposal team</p>
+    *
+    * @param proposalId id of a proposal
+    * @param userId id of an user
+    * @return true if user is a member of given proposal team, false otherwise
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isUserAMember(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

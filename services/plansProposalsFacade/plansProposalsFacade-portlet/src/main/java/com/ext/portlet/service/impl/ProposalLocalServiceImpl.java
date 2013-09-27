@@ -9,16 +9,21 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.NoSuchProposalException;
+import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalAttributePK;
+import com.ext.portlet.service.persistence.ProposalSupporterPK;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
+import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.ext.utils.PortalServicesHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -30,8 +35,11 @@ import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
+import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the proposal local service.
@@ -445,7 +453,154 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
         return proposals;
     }
+    
+    /**
+     * <p>Returns list of proposal team members</p>
+     * 
+     * @param proposalId proposal id
+     * @return list of proposal team members
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public List<User> getMembers(long proposalId) throws SystemException, PortalException {
+        Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+        
+        return UserLocalServiceUtil.getGroupUsers(proposal.getGroupId());
+    }
+    
+    /**
+     * <p>Returns list of proposal supporters</p>
+     * 
+     * @param proposalId proposal id
+     * @return list of proposal supporters
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public List<User> getSupporters(long proposalId) throws SystemException, PortalException {
+        List<User> ret = new ArrayList<>();
+        for (ProposalSupporter supporter: proposalSupporterPersistence.findByProposalId(proposalId)) {
+            ret.add(UserLocalServiceUtil.getUser(supporter.getUserId()));
+        }
+        return ret;
+    }
+    
+        
+    /**
+     * <p>Adds supporter to a proposal</p>
+     * @param proposalId id of a proposal
+     * @param userId id of a supported to be added
+     * @throws SystemException in case of an LR error
+     */
+    @Transactional
+    public void addSupporter(long proposalId, long userId) throws SystemException {
+        ProposalSupporter supporter = 
+                proposalSupporterLocalService.createProposalSupporter(new ProposalSupporterPK(proposalId, userId));
+        
+        supporter.setCreateDate(new Date());
+        proposalSupporterLocalService.addProposalSupporter(supporter);
+    }
+    
+    /**
+     * <p>Retracts support from a proposal</p>
+     * @param proposalId id of a proposal
+     * @param userId id of a supported to be removed
+     * @throws SystemException in case of an LR error
+     */
+    @Transactional
+    public void removeSupporter(long proposalId, long userId) throws SystemException {
+        ProposalSupporter supporter = 
+                proposalSupporterLocalService.createProposalSupporter(new ProposalSupporterPK(proposalId, userId));
+        
+        proposalSupporterLocalService.deleteProposalSupporter(supporter);
+    }
+    
+    /**
+     * <p>Returns list of users that have voted for a proposal in given contest phase</p>
+     * 
+     * @param proposalId proposal id
+     * @param contestPhaseId contest phase id
+     * @return list of proposal voters
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public List<User> getVoters(long proposalId, long contestPhaseId) throws SystemException, PortalException {
+        List<User> ret = new ArrayList<>();
+        for (ProposalVote proposalVote: proposalVotePersistence.findByProposalIdContestPhaseId(proposalId, contestPhaseId)) {
+            ret.add(UserLocalServiceUtil.getUser(proposalVote.getUserId()));
+        }
+        return ret;
+    }
+    
+    /**
+     * <p>Return number of users that have voted for a proposal in given contest phase</p>
+     * 
+     * @param proposalId proposal id
+     * @param contestPhaseId contest phase id
+     * @return number of votes 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public long getVotesCount(long proposalId, long contestPhaseId) throws SystemException {
+        return proposalVotePersistence.countByProposalIdContestPhaseId(proposalId, contestPhaseId);
+    }
 
+    /**
+     * <p>Adds a user vote to a proposal in context of given contest phase. If user has already voted
+     * for different proposal in this phase, then that vote is removed first. User has only one vote
+     * in one contestPhase.</p>
+     * 
+     * @param proposalId id of a proposal
+     * @param contestPhaseId id of a contest phase
+     * @param userId id of an user
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    @Transactional
+    public void addVote(long proposalId, long contestPhaseId, long userId) 
+    throws SystemException, PortalException {
+        
+        // retract any vote that user has given to any proposal in context of provided phase
+        removeVote(contestPhaseId, userId);
+
+        // add vote to a proposal
+        ProposalVote vote = proposalVoteLocalService.createProposalVote(new ProposalVotePK(contestPhaseId, userId));
+        vote.setCreateDate(new Date());
+        vote.setProposalId(proposalId);
+        
+        proposalVoteLocalService.addProposalVote(vote);
+    }
+    
+    /**
+     * <p>Retracts user vote in context of a contest phase.</p>
+     * @param contestPhaseId id of a contest phase
+     * @param userId id of an user
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    @Transactional
+    public void removeVote(long contestPhaseId, long userId) throws SystemException, PortalException {
+        try {
+            proposalVoteLocalService.deleteProposalVote(
+                    proposalVoteLocalService.getProposalVote(new ProposalVotePK(contestPhaseId, userId)));
+        } catch (NoSuchProposalVoteException e) {
+            // ignore
+        }
+    }
+    
+    
+    /**
+     * <p>Tells if user is a member of a proposal team</p> 
+     * @param proposalId id of a proposal
+     * @param userId id of an user
+     * @return true if user is a member of given proposal team, false otherwise
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public boolean isUserAMember(long proposalId, long userId) throws SystemException, PortalException {
+        Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+        return GroupLocalServiceUtil.hasUserGroup(userId, proposal.getGroupId());
+    }
+    
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>
      * 

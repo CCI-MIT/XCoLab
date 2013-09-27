@@ -720,6 +720,11 @@
 		<field name="visibleInVersionHistory" type="boolean" />
 		<field name="copyOnPromote" type="boolean" />
 	</model>
+	<model name="com.ext.portlet.model.ProposalSupporter">
+		<field name="proposalId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
 	<model name="com.ext.portlet.model.ProposalVersion">
 		<field name="proposalId" type="long" />
 		<field name="version" type="int" />
@@ -727,5 +732,11 @@
 		<field name="createDate" type="Date" />
 		<field name="updateType" type="String" />
 		<field name="updateAdditionalId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalVote">
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
 	</model>
 </model-hints>
