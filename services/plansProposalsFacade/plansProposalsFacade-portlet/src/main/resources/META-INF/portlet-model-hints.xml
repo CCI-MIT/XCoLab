@@ -705,8 +705,10 @@
 		<field name="autopromoteCandidate" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalAttribute">
+		<field name="id" type="long" />
 		<field name="proposalId" type="long" />
 		<field name="version" type="int" />
+		<field name="versionWhenCreated" type="int" />
 		<field name="name" type="String" />
 		<field name="additionalId" type="long" />
 		<field name="numericValue" type="long" />

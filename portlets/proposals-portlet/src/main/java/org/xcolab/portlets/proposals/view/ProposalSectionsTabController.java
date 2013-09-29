@@ -29,7 +29,6 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             @RequestParam(value="planId") Long proposalId, 
             @RequestParam Long contestId, 
             @RequestParam(required = false) Long phaseId, 
-            @RequestParam(defaultValue="DESCRIPTION") String tab,
             Model model) 
             throws PortalException, SystemException {
         
@@ -40,4 +39,17 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     }
     
 
+    @RequestMapping(params = "pageToDisplay=proposalDetails_DESCRIPTION")
+    public String showProposalDetailsTab(
+            @RequestParam(value="planId") Long proposalId, 
+            @RequestParam Long contestId, 
+            @RequestParam(required = false) Long phaseId, 
+            Model model) 
+            throws PortalException, SystemException {
+        
+        showProposalDetails(proposalId, contestId, phaseId, model);
+        
+        return "proposalDetails";
+    }
+    
 }

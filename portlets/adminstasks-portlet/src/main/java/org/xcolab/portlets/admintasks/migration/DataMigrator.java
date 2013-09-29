@@ -1,5 +1,6 @@
 package org.xcolab.portlets.admintasks.migration;
 
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
@@ -409,7 +410,8 @@ public class DataMigrator implements Runnable {
         for(PlanModelRun pmr : pmrs) {
             if (pmr.getPlanVersion() == plan.getVersion()){
                 try{
-                    ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),"SCENARIO_ID",0,null,pmr.getScenarioId(),0);
+                    PlanType planType = PlanItemLocalServiceUtil.getPlanType(plan);
+                    ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SCENARIO_ID,planType.getModelId(),null,pmr.getScenarioId(),0);
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting ScenarioID " + plan.getPlanId() + ": " + e);
                 }
@@ -430,7 +432,7 @@ public class DataMigrator implements Runnable {
             if (planMeta.getPlanVersion() == plan.getVersion()){
                 try{
                     if(attribute.equalsIgnoreCase("PLAN_OPENED") || attribute.equalsIgnoreCase("PLAN_CLOSED"))
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),"OPEN",0,null,planMeta.getOpen() ? 1 : 0,0);
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.OPEN,0,null,planMeta.getOpen() ? 1 : 0,0);
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);
                 }
@@ -459,7 +461,7 @@ public class DataMigrator implements Runnable {
 
         for(PlanSection planSection :  planSections) {
             try{
-                ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),"SECTION",
+                ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SECTION,
                         planSection.getPlanSectionDefinitionId(),planSection.getContent(),0,0);
             } catch (Exception e){
                 pushAjaxUpdate("Error while setting Section " + plan.getPlanId() + ": " + e);
@@ -478,13 +480,13 @@ public class DataMigrator implements Runnable {
         for(PlanDescription planDescription : planDescriptions) {
             if (planDescription.getPlanVersion() == plan.getVersion()){
                 try{
-                    if(attribute.equalsIgnoreCase("NAME"))
+                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME))
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getName(),0,0);
-                    else if(attribute.equalsIgnoreCase("DESCRIPTION"))
+                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.DESCRIPTION))
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getDescription(),0,0);
-                    else if(attribute.equalsIgnoreCase("PITCH"))
+                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.PITCH))
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getPitch(),0,0);
-                    else if(attribute.equalsIgnoreCase("IMAGE_ID"))
+                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID))
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,null,planDescription.getImage(),0);
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);

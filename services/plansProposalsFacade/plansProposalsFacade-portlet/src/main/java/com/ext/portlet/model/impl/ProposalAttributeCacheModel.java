@@ -17,8 +17,10 @@ import java.io.Serializable;
  */
 public class ProposalAttributeCacheModel implements CacheModel<ProposalAttribute>,
     Serializable {
+    public long id;
     public long proposalId;
     public int version;
+    public int versionWhenCreated;
     public String name;
     public long additionalId;
     public long numericValue;
@@ -27,12 +29,16 @@ public class ProposalAttributeCacheModel implements CacheModel<ProposalAttribute
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(19);
 
-        sb.append("{proposalId=");
+        sb.append("{id=");
+        sb.append(id);
+        sb.append(", proposalId=");
         sb.append(proposalId);
         sb.append(", version=");
         sb.append(version);
+        sb.append(", versionWhenCreated=");
+        sb.append(versionWhenCreated);
         sb.append(", name=");
         sb.append(name);
         sb.append(", additionalId=");
@@ -51,8 +57,10 @@ public class ProposalAttributeCacheModel implements CacheModel<ProposalAttribute
     public ProposalAttribute toEntityModel() {
         ProposalAttributeImpl proposalAttributeImpl = new ProposalAttributeImpl();
 
+        proposalAttributeImpl.setId(id);
         proposalAttributeImpl.setProposalId(proposalId);
         proposalAttributeImpl.setVersion(version);
+        proposalAttributeImpl.setVersionWhenCreated(versionWhenCreated);
 
         if (name == null) {
             proposalAttributeImpl.setName(StringPool.BLANK);

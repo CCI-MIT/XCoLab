@@ -11,6 +11,7 @@
 			<portlet-mode>help</portlet-mode>
 			<portlet-mode>view_contest</portlet-mode>
 		</supports>
+		<resource-bundle>Language</resource-bundle>
 		<portlet-info>
 			<title>Mit ClimateColab Proposals Portlet</title>
 			<short-title>Plans Portlet</short-title>

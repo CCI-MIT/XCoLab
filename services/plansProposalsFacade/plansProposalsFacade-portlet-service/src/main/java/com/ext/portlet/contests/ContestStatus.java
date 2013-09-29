@@ -15,13 +15,13 @@ package com.ext.portlet.contests;
  */
 public enum ContestStatus {
 
-    NOT_YET_OPEN("Not yet open",false,false),
-    OPEN_FOR_EDIT("Open for editing",true,false),
-    OPEN_FOR_SUBMISSION("Open for submission",true,false),
-    CLOSED_FOR_JUDGING("Closed for judging",false,false),
-    VOTING("Open for voting",false,true),
-    FINISHED("Finished",false,false),
-    CLOSED("Closed",false,false);
+    NOT_YET_OPEN("Not yet open",false, false,false),
+    OPEN_FOR_EDIT("Open for editing",false, true,false),
+    OPEN_FOR_SUBMISSION("Open for submission",true, true,false),
+    CLOSED_FOR_JUDGING("Closed for judging",false, false,false),
+    VOTING("Open for voting",false, false,true),
+    FINISHED("Finished",false, false,false),
+    CLOSED("Closed",false, false,false);
 
 
 
@@ -35,10 +35,12 @@ public enum ContestStatus {
         return canVote;
     }
 
-    private boolean canEdit;
-    private boolean canVote;
+    private final boolean canCreate;
+    private final boolean canEdit;
+    private final boolean canVote;
 
-    ContestStatus(String name, boolean canEdit, boolean canVote) {
+    ContestStatus(String name, boolean canCreate, boolean canEdit, boolean canVote) {
+        this.canCreate = canCreate;
         this.canEdit = canEdit;
         this.canVote = canVote;
         this.myName = name;
@@ -47,6 +49,10 @@ public enum ContestStatus {
 
     public String toString() {
         return myName;
+    }
+
+    public boolean isCanCreate() {
+        return canCreate;
     }
 
 }

@@ -9,22 +9,27 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.plans.PlanTeamActions;
+import com.ext.portlet.service.PlanTeamHistoryLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
-import com.ext.portlet.service.persistence.ProposalAttributePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.ext.utils.PortalServicesHelper;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -32,12 +37,15 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
+import com.liferay.portal.model.MembershipRequest;
+import com.liferay.portal.model.MembershipRequestConstants;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -195,18 +203,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // for each attribute, if it isn't the one that we are changing, simply
         // update it to the most recent version
         // if it is the one that we are changing then leave old one as it is and
-        // create new one with for new proposal version
+        // create new one for new proposal version
         for (ProposalAttribute attribute : currentProposalAttributes) {
             if (!attributeName.equals(attribute.getName()) || additionalId != attribute.getAdditionalId()) {
                 // clone the attribute and set its version to the new value
-                ProposalAttribute newAttribute = (ProposalAttribute) attribute.clone();
-                newAttribute.setNew(true);
-                
-                newAttribute.setVersion(newVersion);
-                proposalAttributeLocalService.addProposalAttribute(newAttribute);
+                attribute.setVersion(newVersion);
+                proposalAttributeLocalService.updateProposalAttribute(attribute);
             }
         }
-
+        
         // set new value for provided attribute
         ProposalAttribute attribute = setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
 
@@ -361,7 +366,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @author janusz
      */
     public List<ProposalAttribute> getAttributes(long proposalId, int version) throws SystemException, PortalException {
-        return proposalAttributePersistence.findByProposalIdVersion(proposalId, version);   
+        return proposalAttributePersistence.findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId, version, version);   
     }
     
     /**
@@ -484,6 +489,24 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return ret;
     }
     
+    /**
+     * <p>Returns true if user is a proposal supporter, false otherwise.</p>
+     * 
+     * @param proposalId proposal id
+     * @return true if user is a proposal supporter, false otherwise
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public boolean isSupporter(long proposalId, long userId) throws SystemException, PortalException {
+        try {
+            proposalSupporterPersistence.findByPrimaryKey(new ProposalSupporterPK(proposalId, userId));
+            return true;
+        }
+        catch (NoSuchProposalSupporterException e) {
+            return false;
+        }
+    }
+    
         
     /**
      * <p>Adds supporter to a proposal</p>
@@ -597,9 +620,116 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of an LR error
      */
     public boolean isUserAMember(long proposalId, long userId) throws SystemException, PortalException {
-        Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+        Proposal proposal = getProposal(proposalId);
         return GroupLocalServiceUtil.hasUserGroup(userId, proposal.getGroupId());
     }
+    
+    /**
+     * <p>Returns true if proposal is open (so it can be edited by any user).</p>
+     * 
+     * @param proposalId id of proposal 
+     * @return true if plan is open, false otherwise
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public boolean isOpen(long proposalId) throws PortalException, SystemException {
+        try {
+            ProposalAttribute attribute = getAttribute(proposalId, ProposalAttributeKeys.OPEN, 0);
+            return attribute.getNumericValue() > 0;
+            
+        }
+        catch (NoSuchProposalAttributeException e) {
+            // ignore
+        }
+        return false;
+    }
+    
+    /**
+     * <p>Returns all team membership requests for a proposal.</p>
+     * @param proposalId proposal id
+     * @return list of membership requests
+     * @throws SystemException in case of LR error
+     * @throws PortalException in case of LR error
+     */
+    public List<MembershipRequest> getMembershipRequests(long proposalId) throws SystemException, PortalException {
+        Proposal proposal = getProposal(proposalId);
+        return MembershipRequestLocalServiceUtil.search(proposal.getGroupId(), 
+                MembershipRequestConstants.STATUS_PENDING, 0, Integer.MAX_VALUE);
+    }
+
+    /**
+     * <p>Sends a request to join proposal teamp</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @param comment optional comment 
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    public void addMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
+        Proposal proposal = getProposal(proposalId);
+        
+        MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
+    }
+
+    /**
+     * <p>Denies user as a member of proposal team</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    public void dennyMembershipRequest(long proposalId, long userId, long membershipRequestId, String reply, long updateAuthorId) 
+            throws PortalException, SystemException {
+        if (hasUserRequestedMembership(proposalId, userId)) {
+            MembershipRequestLocalServiceUtil.updateStatus(userId, membershipRequestId, reply, 
+                    MembershipRequestConstants.STATUS_DENIED, false, null);
+        }
+    }
+    
+    /**
+     * <p>Approves user as a member of proposal team</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    public void approveMembershipRequest(long proposalId, Long userId, MembershipRequest request, String reply, Long updateAuthorId)
+            throws PortalException, SystemException {
+
+        if (hasUserRequestedMembership(proposalId, userId)) {
+            MembershipRequestLocalServiceUtil.updateStatus(userId, request.getMembershipRequestId(), reply, 
+                    MembershipRequestConstants.STATUS_APPROVED, true, null);
+        }
+    }
+    
+    /**
+     * <p>Tells if user has requested membership of given plan</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @return true if user has requested membership, false otherwise
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    public boolean hasUserRequestedMembership(long proposalId, long userId) throws PortalException, SystemException {
+        Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+        return ! MembershipRequestLocalServiceUtil.getMembershipRequests(userId, proposal.getGroupId(), MembershipRequestConstants.STATUS_PENDING).isEmpty();
+        
+    }
+    
+    /**
+     * <p>Adds user to a proposal team if proposal is open and user is not a member already</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    public void joinIfNotAMemberAndProposalIsOpen(long proposalId, long userId) throws PortalException, SystemException {
+        Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+        if (isOpen(proposalId) && ! isUserAMember(proposalId, userId)) {
+            GroupLocalServiceUtil.addUserGroups(userId, new long[] { proposal.getGroupId() });
+        }
+    }
+    
     
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>
@@ -619,9 +749,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Transactional
     private ProposalAttribute setAttributeValue(long proposalId, int version, String attributeName, long additionalId,
             String stringValue, long numericValue, double realValue) throws SystemException {
-        ProposalAttribute attribute = proposalAttributeLocalService.createProposalAttribute(new ProposalAttributePK(
-                proposalId, version, attributeName, additionalId));
+        ProposalAttribute attribute = proposalAttributeLocalService.createProposalAttribute(
+                CounterLocalServiceUtil.increment(ProposalAttribute.class.getName()));
 
+        attribute.setName(attributeName);
+        attribute.setProposalId(proposalId);
+        attribute.setVersion(version);
+        attribute.setVersionWhenCreated(version);
+        attribute.setAdditionalId(additionalId);
+        
         attribute.setNumericValue(numericValue);
         attribute.setStringValue(stringValue);
         attribute.setRealValue(realValue);

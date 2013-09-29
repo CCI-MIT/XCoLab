@@ -227,6 +227,10 @@ public class ProposalWrapper {
         return members;
     }
     
+    public List<User> getSupporters() throws PortalException, SystemException {
+        return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
+    }
+    
     
     private String getAttributeValueString(String attributeName, String defaultVal) throws PortalException, SystemException {
         return getAttributeValueString(attributeName, 0, defaultVal);

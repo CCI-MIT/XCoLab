@@ -5165,54 +5165,68 @@ public class ClpSerializer {
 
                 Object newModel = newModelClass.newInstance();
 
-                Method method0 = newModelClass.getMethod("setProposalId",
+                Method method0 = newModelClass.getMethod("setId",
                         new Class[] { Long.TYPE });
 
-                Long value0 = new Long(oldCplModel.getProposalId());
+                Long value0 = new Long(oldCplModel.getId());
 
                 method0.invoke(newModel, value0);
 
-                Method method1 = newModelClass.getMethod("setVersion",
-                        new Class[] { Integer.TYPE });
+                Method method1 = newModelClass.getMethod("setProposalId",
+                        new Class[] { Long.TYPE });
 
-                Integer value1 = new Integer(oldCplModel.getVersion());
+                Long value1 = new Long(oldCplModel.getProposalId());
 
                 method1.invoke(newModel, value1);
 
-                Method method2 = newModelClass.getMethod("setName",
-                        new Class[] { String.class });
+                Method method2 = newModelClass.getMethod("setVersion",
+                        new Class[] { Integer.TYPE });
 
-                String value2 = oldCplModel.getName();
+                Integer value2 = new Integer(oldCplModel.getVersion());
 
                 method2.invoke(newModel, value2);
 
-                Method method3 = newModelClass.getMethod("setAdditionalId",
-                        new Class[] { Long.TYPE });
+                Method method3 = newModelClass.getMethod("setVersionWhenCreated",
+                        new Class[] { Integer.TYPE });
 
-                Long value3 = new Long(oldCplModel.getAdditionalId());
+                Integer value3 = new Integer(oldCplModel.getVersionWhenCreated());
 
                 method3.invoke(newModel, value3);
 
-                Method method4 = newModelClass.getMethod("setNumericValue",
-                        new Class[] { Long.TYPE });
+                Method method4 = newModelClass.getMethod("setName",
+                        new Class[] { String.class });
 
-                Long value4 = new Long(oldCplModel.getNumericValue());
+                String value4 = oldCplModel.getName();
 
                 method4.invoke(newModel, value4);
 
-                Method method5 = newModelClass.getMethod("setStringValue",
-                        new Class[] { String.class });
+                Method method5 = newModelClass.getMethod("setAdditionalId",
+                        new Class[] { Long.TYPE });
 
-                String value5 = oldCplModel.getStringValue();
+                Long value5 = new Long(oldCplModel.getAdditionalId());
 
                 method5.invoke(newModel, value5);
 
-                Method method6 = newModelClass.getMethod("setRealValue",
-                        new Class[] { Double.TYPE });
+                Method method6 = newModelClass.getMethod("setNumericValue",
+                        new Class[] { Long.TYPE });
 
-                Double value6 = new Double(oldCplModel.getRealValue());
+                Long value6 = new Long(oldCplModel.getNumericValue());
 
                 method6.invoke(newModel, value6);
+
+                Method method7 = newModelClass.getMethod("setStringValue",
+                        new Class[] { String.class });
+
+                String value7 = oldCplModel.getStringValue();
+
+                method7.invoke(newModel, value7);
+
+                Method method8 = newModelClass.getMethod("setRealValue",
+                        new Class[] { Double.TYPE });
+
+                Double value8 = new Double(oldCplModel.getRealValue());
+
+                method8.invoke(newModel, value8);
 
                 return newModel;
             } catch (Exception e) {
@@ -10146,51 +10160,65 @@ public class ClpSerializer {
 
                 Class<?> oldModelClass = oldModel.getClass();
 
-                Method method0 = oldModelClass.getMethod("getProposalId");
+                Method method0 = oldModelClass.getMethod("getId");
 
                 Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
 
-                newModel.setProposalId(value0);
+                newModel.setId(value0);
 
-                Method method1 = oldModelClass.getMethod("getVersion");
+                Method method1 = oldModelClass.getMethod("getProposalId");
 
-                Integer value1 = (Integer) method1.invoke(oldModel,
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setProposalId(value1);
+
+                Method method2 = oldModelClass.getMethod("getVersion");
+
+                Integer value2 = (Integer) method2.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setVersion(value1);
+                newModel.setVersion(value2);
 
-                Method method2 = oldModelClass.getMethod("getName");
+                Method method3 = oldModelClass.getMethod(
+                        "getVersionWhenCreated");
 
-                String value2 = (String) method2.invoke(oldModel,
+                Integer value3 = (Integer) method3.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setName(value2);
+                newModel.setVersionWhenCreated(value3);
 
-                Method method3 = oldModelClass.getMethod("getAdditionalId");
+                Method method4 = oldModelClass.getMethod("getName");
 
-                Long value3 = (Long) method3.invoke(oldModel, (Object[]) null);
-
-                newModel.setAdditionalId(value3);
-
-                Method method4 = oldModelClass.getMethod("getNumericValue");
-
-                Long value4 = (Long) method4.invoke(oldModel, (Object[]) null);
-
-                newModel.setNumericValue(value4);
-
-                Method method5 = oldModelClass.getMethod("getStringValue");
-
-                String value5 = (String) method5.invoke(oldModel,
+                String value4 = (String) method4.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setStringValue(value5);
+                newModel.setName(value4);
 
-                Method method6 = oldModelClass.getMethod("getRealValue");
+                Method method5 = oldModelClass.getMethod("getAdditionalId");
 
-                Double value6 = (Double) method6.invoke(oldModel,
+                Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
+
+                newModel.setAdditionalId(value5);
+
+                Method method6 = oldModelClass.getMethod("getNumericValue");
+
+                Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
+
+                newModel.setNumericValue(value6);
+
+                Method method7 = oldModelClass.getMethod("getStringValue");
+
+                String value7 = (String) method7.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setRealValue(value6);
+                newModel.setStringValue(value7);
+
+                Method method8 = oldModelClass.getMethod("getRealValue");
+
+                Double value8 = (Double) method8.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setRealValue(value8);
 
                 return newModel;
             } catch (Exception e) {

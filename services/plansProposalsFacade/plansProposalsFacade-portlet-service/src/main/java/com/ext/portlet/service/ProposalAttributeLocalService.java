@@ -45,21 +45,20 @@ public interface ProposalAttributeLocalService
     /**
     * Creates a new proposal attribute with the primary key. Does not add the proposal attribute to the database.
     *
-    * @param proposalAttributePK the primary key for the new proposal attribute
+    * @param id the primary key for the new proposal attribute
     * @return the new proposal attribute
     */
     public com.ext.portlet.model.ProposalAttribute createProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK);
+        long id);
 
     /**
     * Deletes the proposal attribute with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param proposalAttributePK the primary key of the proposal attribute
+    * @param id the primary key of the proposal attribute
     * @throws PortalException if a proposal attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
+    public void deleteProposalAttribute(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -137,20 +136,18 @@ public interface ProposalAttributeLocalService
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ProposalAttribute fetchProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the proposal attribute with the primary key.
     *
-    * @param proposalAttributePK the primary key of the proposal attribute
+    * @param id the primary key of the proposal attribute
     * @return the proposal attribute
     * @throws PortalException if a proposal attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ProposalAttribute getProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
+    public com.ext.portlet.model.ProposalAttribute getProposalAttribute(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

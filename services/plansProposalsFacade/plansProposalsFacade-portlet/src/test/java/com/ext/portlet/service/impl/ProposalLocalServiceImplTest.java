@@ -116,7 +116,6 @@ public class ProposalLocalServiceImplTest {
         Proposal proposal = proposalLocalServiceImpl.create(authorId);
         
         for (ProposalAttributeValues valueToSet: valuesToSet) {
-            
             proposalLocalServiceImpl.setAttribute(valueToSet.authorId, proposal.getProposalId(), 
                     valueToSet.attributeName, valueToSet.additionalId, valueToSet.stringValue, 
                     valueToSet.numericValue, valueToSet.realValue);
@@ -179,6 +178,15 @@ public class ProposalLocalServiceImplTest {
             this.realValue = realValue;
             this.additionalId = additionalId;
         }
+
+        @Override
+        public String toString() {
+            return "ProposalAttributeValues [authorId=" + authorId + ", attributeName=" + attributeName
+                    + ", additionalId=" + additionalId + ", stringValue=" + stringValue + ", numericValue="
+                    + numericValue + ", realValue=" + realValue + "]";
+        }
+        
+        
         
     }
 

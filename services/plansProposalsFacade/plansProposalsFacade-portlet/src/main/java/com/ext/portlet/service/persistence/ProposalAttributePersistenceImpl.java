@@ -159,6 +159,41 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByProposalIdVersion",
             new String[] { Long.class.getName(), Integer.class.getName() });
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL =
+        new FinderPath(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalAttributeModelImpl.FINDER_CACHE_ENABLED,
+            ProposalAttributeImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual",
+            new String[] {
+                Long.class.getName(), Integer.class.getName(),
+                Integer.class.getName(),
+                
+            "java.lang.Integer", "java.lang.Integer",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL =
+        new FinderPath(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalAttributeModelImpl.FINDER_CACHE_ENABLED,
+            ProposalAttributeImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual",
+            new String[] {
+                Long.class.getName(), Integer.class.getName(),
+                Integer.class.getName()
+            },
+            ProposalAttributeModelImpl.PROPOSALID_COLUMN_BITMASK |
+            ProposalAttributeModelImpl.VERSION_COLUMN_BITMASK |
+            ProposalAttributeModelImpl.VERSIONWHENCREATED_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL =
+        new FinderPath(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalAttributeModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual",
+            new String[] {
+                Long.class.getName(), Integer.class.getName(),
+                Integer.class.getName()
+            });
     public static final FinderPath FINDER_PATH_FETCH_BY_PROPOSALIDVERSIONNAMEADDITIONALID =
         new FinderPath(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
             ProposalAttributeModelImpl.FINDER_CACHE_ENABLED,
@@ -196,20 +231,26 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
     private static final String _SQL_SELECT_PROPOSALATTRIBUTE_WHERE = "SELECT proposalAttribute FROM ProposalAttribute proposalAttribute WHERE ";
     private static final String _SQL_COUNT_PROPOSALATTRIBUTE = "SELECT COUNT(proposalAttribute) FROM ProposalAttribute proposalAttribute";
     private static final String _SQL_COUNT_PROPOSALATTRIBUTE_WHERE = "SELECT COUNT(proposalAttribute) FROM ProposalAttribute proposalAttribute WHERE ";
-    private static final String _FINDER_COLUMN_PROPOSALIDVERSION_PROPOSALID_2 = "proposalAttribute.id.proposalId = ? AND ";
-    private static final String _FINDER_COLUMN_PROPOSALIDVERSION_VERSION_2 = "proposalAttribute.id.version = ?";
+    private static final String _FINDER_COLUMN_PROPOSALIDVERSION_PROPOSALID_2 = "proposalAttribute.proposalId = ? AND ";
+    private static final String _FINDER_COLUMN_PROPOSALIDVERSION_VERSION_2 = "proposalAttribute.version = ?";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_PROPOSALID_2 =
+        "proposalAttribute.proposalId = ? AND ";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_VERSION_2 =
+        "proposalAttribute.version >= ? AND ";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_VERSIONWHENCREATED_2 =
+        "proposalAttribute.versionWhenCreated <= ?";
     private static final String _FINDER_COLUMN_PROPOSALIDVERSIONNAMEADDITIONALID_PROPOSALID_2 =
-        "proposalAttribute.id.proposalId = ? AND ";
+        "proposalAttribute.proposalId = ? AND ";
     private static final String _FINDER_COLUMN_PROPOSALIDVERSIONNAMEADDITIONALID_VERSION_2 =
-        "proposalAttribute.id.version = ? AND ";
+        "proposalAttribute.version = ? AND ";
     private static final String _FINDER_COLUMN_PROPOSALIDVERSIONNAMEADDITIONALID_NAME_1 =
-        "proposalAttribute.id.name IS NULL AND ";
+        "proposalAttribute.name IS NULL AND ";
     private static final String _FINDER_COLUMN_PROPOSALIDVERSIONNAMEADDITIONALID_NAME_2 =
-        "proposalAttribute.id.name = ? AND ";
+        "proposalAttribute.name = ? AND ";
     private static final String _FINDER_COLUMN_PROPOSALIDVERSIONNAMEADDITIONALID_NAME_3 =
-        "(proposalAttribute.id.name IS NULL OR proposalAttribute.id.name = ?) AND ";
+        "(proposalAttribute.name IS NULL OR proposalAttribute.name = ?) AND ";
     private static final String _FINDER_COLUMN_PROPOSALIDVERSIONNAMEADDITIONALID_ADDITIONALID_2 =
-        "proposalAttribute.id.additionalId = ?";
+        "proposalAttribute.additionalId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "proposalAttribute.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ProposalAttribute exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ProposalAttribute exists with the key {";
@@ -487,14 +528,14 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
     /**
      * Creates a new proposal attribute with the primary key. Does not add the proposal attribute to the database.
      *
-     * @param proposalAttributePK the primary key for the new proposal attribute
+     * @param id the primary key for the new proposal attribute
      * @return the new proposal attribute
      */
-    public ProposalAttribute create(ProposalAttributePK proposalAttributePK) {
+    public ProposalAttribute create(long id) {
         ProposalAttribute proposalAttribute = new ProposalAttributeImpl();
 
         proposalAttribute.setNew(true);
-        proposalAttribute.setPrimaryKey(proposalAttributePK);
+        proposalAttribute.setPrimaryKey(id);
 
         return proposalAttribute;
     }
@@ -502,14 +543,14 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
     /**
      * Removes the proposal attribute with the primary key from the database. Also notifies the appropriate model listeners.
      *
-     * @param proposalAttributePK the primary key of the proposal attribute
+     * @param id the primary key of the proposal attribute
      * @return the proposal attribute that was removed
      * @throws com.ext.portlet.NoSuchProposalAttributeException if a proposal attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ProposalAttribute remove(ProposalAttributePK proposalAttributePK)
+    public ProposalAttribute remove(long id)
         throws NoSuchProposalAttributeException, SystemException {
-        return remove((Serializable) proposalAttributePK);
+        return remove(Long.valueOf(id));
     }
 
     /**
@@ -624,6 +665,31 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                 FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALIDVERSION,
                     args);
             }
+
+            if ((proposalAttributeModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        Long.valueOf(proposalAttributeModelImpl.getOriginalProposalId()),
+                        Integer.valueOf(proposalAttributeModelImpl.getOriginalVersion()),
+                        Integer.valueOf(proposalAttributeModelImpl.getOriginalVersionWhenCreated())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL,
+                    args);
+
+                args = new Object[] {
+                        Long.valueOf(proposalAttributeModelImpl.getProposalId()),
+                        Integer.valueOf(proposalAttributeModelImpl.getVersion()),
+                        Integer.valueOf(proposalAttributeModelImpl.getVersionWhenCreated())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL,
+                    args);
+            }
         }
 
         EntityCacheUtil.putResult(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
@@ -680,8 +746,10 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
         proposalAttributeImpl.setNew(proposalAttribute.isNew());
         proposalAttributeImpl.setPrimaryKey(proposalAttribute.getPrimaryKey());
 
+        proposalAttributeImpl.setId(proposalAttribute.getId());
         proposalAttributeImpl.setProposalId(proposalAttribute.getProposalId());
         proposalAttributeImpl.setVersion(proposalAttribute.getVersion());
+        proposalAttributeImpl.setVersionWhenCreated(proposalAttribute.getVersionWhenCreated());
         proposalAttributeImpl.setName(proposalAttribute.getName());
         proposalAttributeImpl.setAdditionalId(proposalAttribute.getAdditionalId());
         proposalAttributeImpl.setNumericValue(proposalAttribute.getNumericValue());
@@ -702,30 +770,28 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
     @Override
     public ProposalAttribute findByPrimaryKey(Serializable primaryKey)
         throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((ProposalAttributePK) primaryKey);
+        return findByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
      * Returns the proposal attribute with the primary key or throws a {@link com.ext.portlet.NoSuchProposalAttributeException} if it could not be found.
      *
-     * @param proposalAttributePK the primary key of the proposal attribute
+     * @param id the primary key of the proposal attribute
      * @return the proposal attribute
      * @throws com.ext.portlet.NoSuchProposalAttributeException if a proposal attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ProposalAttribute findByPrimaryKey(
-        ProposalAttributePK proposalAttributePK)
+    public ProposalAttribute findByPrimaryKey(long id)
         throws NoSuchProposalAttributeException, SystemException {
-        ProposalAttribute proposalAttribute = fetchByPrimaryKey(proposalAttributePK);
+        ProposalAttribute proposalAttribute = fetchByPrimaryKey(id);
 
         if (proposalAttribute == null) {
             if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    proposalAttributePK);
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + id);
             }
 
             throw new NoSuchProposalAttributeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                proposalAttributePK);
+                id);
         }
 
         return proposalAttribute;
@@ -741,20 +807,20 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
     @Override
     public ProposalAttribute fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((ProposalAttributePK) primaryKey);
+        return fetchByPrimaryKey(((Long) primaryKey).longValue());
     }
 
     /**
      * Returns the proposal attribute with the primary key or returns <code>null</code> if it could not be found.
      *
-     * @param proposalAttributePK the primary key of the proposal attribute
+     * @param id the primary key of the proposal attribute
      * @return the proposal attribute, or <code>null</code> if a proposal attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ProposalAttribute fetchByPrimaryKey(
-        ProposalAttributePK proposalAttributePK) throws SystemException {
+    public ProposalAttribute fetchByPrimaryKey(long id)
+        throws SystemException {
         ProposalAttribute proposalAttribute = (ProposalAttribute) EntityCacheUtil.getResult(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
-                ProposalAttributeImpl.class, proposalAttributePK);
+                ProposalAttributeImpl.class, id);
 
         if (proposalAttribute == _nullProposalAttribute) {
             return null;
@@ -769,7 +835,7 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                 session = openSession();
 
                 proposalAttribute = (ProposalAttribute) session.get(ProposalAttributeImpl.class,
-                        proposalAttributePK);
+                        Long.valueOf(id));
             } catch (Exception e) {
                 hasException = true;
 
@@ -779,8 +845,7 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                     cacheResult(proposalAttribute);
                 } else if (!hasException) {
                     EntityCacheUtil.putResult(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
-                        ProposalAttributeImpl.class, proposalAttributePK,
-                        _nullProposalAttribute);
+                        ProposalAttributeImpl.class, id, _nullProposalAttribute);
                 }
 
                 closeSession(session);
@@ -1003,7 +1068,7 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
      * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
      * </p>
      *
-     * @param proposalAttributePK the primary key of the current proposal attribute
+     * @param id the primary key of the current proposal attribute
      * @param proposalId the proposal ID
      * @param version the version
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1011,11 +1076,10 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
      * @throws com.ext.portlet.NoSuchProposalAttributeException if a proposal attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ProposalAttribute[] findByProposalIdVersion_PrevAndNext(
-        ProposalAttributePK proposalAttributePK, long proposalId, int version,
-        OrderByComparator orderByComparator)
+    public ProposalAttribute[] findByProposalIdVersion_PrevAndNext(long id,
+        long proposalId, int version, OrderByComparator orderByComparator)
         throws NoSuchProposalAttributeException, SystemException {
-        ProposalAttribute proposalAttribute = findByPrimaryKey(proposalAttributePK);
+        ProposalAttribute proposalAttribute = findByPrimaryKey(id);
 
         Session session = null;
 
@@ -1122,6 +1186,384 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
         qPos.add(proposalId);
 
         qPos.add(version);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(proposalAttribute);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<ProposalAttribute> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns all the proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @return the matching proposal attributes
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ProposalAttribute> findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated)
+        throws SystemException {
+        return findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+            version, versionWhenCreated, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+            null);
+    }
+
+    /**
+     * Returns a range of all the proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param start the lower bound of the range of proposal attributes
+     * @param end the upper bound of the range of proposal attributes (not inclusive)
+     * @return the range of matching proposal attributes
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ProposalAttribute> findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated, int start, int end)
+        throws SystemException {
+        return findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+            version, versionWhenCreated, start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param start the lower bound of the range of proposal attributes
+     * @param end the upper bound of the range of proposal attributes (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching proposal attributes
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ProposalAttribute> findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated, int start,
+        int end, OrderByComparator orderByComparator) throws SystemException {
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL;
+            finderArgs = new Object[] { proposalId, version, versionWhenCreated };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL;
+            finderArgs = new Object[] {
+                    proposalId, version, versionWhenCreated,
+                    
+                    start, end, orderByComparator
+                };
+        }
+
+        List<ProposalAttribute> list = (List<ProposalAttribute>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(5 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(4);
+            }
+
+            query.append(_SQL_SELECT_PROPOSALATTRIBUTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_PROPOSALID_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_VERSION_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_VERSIONWHENCREATED_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                qPos.add(version);
+
+                qPos.add(versionWhenCreated);
+
+                list = (List<ProposalAttribute>) QueryUtil.list(q,
+                        getDialect(), start, end);
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (list == null) {
+                    FinderCacheUtil.removeResult(finderPath, finderArgs);
+                } else {
+                    cacheResult(list);
+
+                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                }
+
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first proposal attribute in the ordered set where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching proposal attribute
+     * @throws com.ext.portlet.NoSuchProposalAttributeException if a matching proposal attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ProposalAttribute findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_First(
+        long proposalId, int version, int versionWhenCreated,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposalAttributeException, SystemException {
+        List<ProposalAttribute> list = findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+                version, versionWhenCreated, 0, 1, orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(8);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("proposalId=");
+            msg.append(proposalId);
+
+            msg.append(", version=");
+            msg.append(version);
+
+            msg.append(", versionWhenCreated=");
+            msg.append(versionWhenCreated);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchProposalAttributeException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the last proposal attribute in the ordered set where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching proposal attribute
+     * @throws com.ext.portlet.NoSuchProposalAttributeException if a matching proposal attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ProposalAttribute findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_Last(
+        long proposalId, int version, int versionWhenCreated,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposalAttributeException, SystemException {
+        int count = countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+                version, versionWhenCreated);
+
+        List<ProposalAttribute> list = findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+                version, versionWhenCreated, count - 1, count, orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(8);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("proposalId=");
+            msg.append(proposalId);
+
+            msg.append(", version=");
+            msg.append(version);
+
+            msg.append(", versionWhenCreated=");
+            msg.append(versionWhenCreated);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchProposalAttributeException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the proposal attributes before and after the current proposal attribute in the ordered set where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param id the primary key of the current proposal attribute
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next proposal attribute
+     * @throws com.ext.portlet.NoSuchProposalAttributeException if a proposal attribute with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ProposalAttribute[] findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_PrevAndNext(
+        long id, long proposalId, int version, int versionWhenCreated,
+        OrderByComparator orderByComparator)
+        throws NoSuchProposalAttributeException, SystemException {
+        ProposalAttribute proposalAttribute = findByPrimaryKey(id);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            ProposalAttribute[] array = new ProposalAttributeImpl[3];
+
+            array[0] = getByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_PrevAndNext(session,
+                    proposalAttribute, proposalId, version, versionWhenCreated,
+                    orderByComparator, true);
+
+            array[1] = proposalAttribute;
+
+            array[2] = getByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_PrevAndNext(session,
+                    proposalAttribute, proposalId, version, versionWhenCreated,
+                    orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected ProposalAttribute getByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_PrevAndNext(
+        Session session, ProposalAttribute proposalAttribute, long proposalId,
+        int version, int versionWhenCreated,
+        OrderByComparator orderByComparator, boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_PROPOSALATTRIBUTE_WHERE);
+
+        query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_PROPOSALID_2);
+
+        query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_VERSION_2);
+
+        query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_VERSIONWHENCREATED_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(proposalId);
+
+        qPos.add(version);
+
+        qPos.add(versionWhenCreated);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(proposalAttribute);
@@ -1439,6 +1881,23 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
     }
 
     /**
+     * Removes all the proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; from the database.
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @throws SystemException if a system exception occurred
+     */
+    public void removeByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated)
+        throws SystemException {
+        for (ProposalAttribute proposalAttribute : findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+                proposalId, version, versionWhenCreated)) {
+            remove(proposalAttribute);
+        }
+    }
+
+    /**
      * Removes the proposal attribute where proposalId = &#63; and version = &#63; and name = &#63; and additionalId = &#63; from the database.
      *
      * @param proposalId the proposal ID
@@ -1515,6 +1974,71 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                 }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALIDVERSION,
+                    finderArgs, count);
+
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns the number of proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @return the number of matching proposal attributes
+     * @throws SystemException if a system exception occurred
+     */
+    public int countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated)
+        throws SystemException {
+        Object[] finderArgs = new Object[] {
+                proposalId, version, versionWhenCreated
+            };
+
+        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL,
+                finderArgs, this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(4);
+
+            query.append(_SQL_COUNT_PROPOSALATTRIBUTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_PROPOSALID_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_VERSION_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_VERSIONWHENCREATED_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                qPos.add(version);
+
+                qPos.add(versionWhenCreated);
+
+                count = (Long) q.uniqueResult();
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (count == null) {
+                    count = Long.valueOf(0);
+                }
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL,
                     finderArgs, count);
 
                 closeSession(session);

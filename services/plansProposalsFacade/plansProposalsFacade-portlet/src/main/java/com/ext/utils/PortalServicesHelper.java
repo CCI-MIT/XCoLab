@@ -4,6 +4,7 @@ import com.liferay.counter.service.CounterLocalService;
 import com.liferay.portal.service.GroupService;
 import com.liferay.portal.service.PermissionLocalService;
 import com.liferay.portal.service.RoleLocalService;
+import com.liferay.util.dao.orm.CustomSQLUtil;
 /**
  * <p>Purpose of this class is to provide getters for XLocalServices and XServices from LiferayPortal 
  * or other services that are used across this service. Thanks to that it will be possible to

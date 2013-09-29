@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 @RequestMapping("view")
 public class ProposalModelTabController extends BaseProposalTabController {
 
-    @RequestMapping(params = {"pageToDisplay=proposalDetails", "tab=ACTIONSIMPACTS"})
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_ACTIONSIMPACTS"})
     public String show(
             @RequestParam(value="planId") Long proposalId, 
             @RequestParam Long contestId, 

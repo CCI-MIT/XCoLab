@@ -1,7 +1,6 @@
 package com.ext.portlet.model;
 
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.persistence.ProposalAttributePK;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -15,8 +14,10 @@ import java.lang.reflect.Proxy;
 
 public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
     implements ProposalAttribute {
+    private long _id;
     private long _proposalId;
     private int _version;
+    private int _versionWhenCreated;
     private String _name;
     private long _additionalId;
     private long _numericValue;
@@ -34,25 +35,28 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
         return ProposalAttribute.class.getName();
     }
 
-    public ProposalAttributePK getPrimaryKey() {
-        return new ProposalAttributePK(_proposalId, _version, _name,
-            _additionalId);
+    public long getPrimaryKey() {
+        return _id;
     }
 
-    public void setPrimaryKey(ProposalAttributePK primaryKey) {
-        setProposalId(primaryKey.proposalId);
-        setVersion(primaryKey.version);
-        setName(primaryKey.name);
-        setAdditionalId(primaryKey.additionalId);
+    public void setPrimaryKey(long primaryKey) {
+        setId(primaryKey);
     }
 
     public Serializable getPrimaryKeyObj() {
-        return new ProposalAttributePK(_proposalId, _version, _name,
-            _additionalId);
+        return new Long(_id);
     }
 
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-        setPrimaryKey((ProposalAttributePK) primaryKeyObj);
+        setPrimaryKey(((Long) primaryKeyObj).longValue());
+    }
+
+    public long getId() {
+        return _id;
+    }
+
+    public void setId(long id) {
+        _id = id;
     }
 
     public long getProposalId() {
@@ -69,6 +73,14 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
 
     public void setVersion(int version) {
         _version = version;
+    }
+
+    public int getVersionWhenCreated() {
+        return _versionWhenCreated;
+    }
+
+    public void setVersionWhenCreated(int versionWhenCreated) {
+        _versionWhenCreated = versionWhenCreated;
     }
 
     public String getName() {
@@ -130,8 +142,10 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
     public Object clone() {
         ProposalAttributeClp clone = new ProposalAttributeClp();
 
+        clone.setId(getId());
         clone.setProposalId(getProposalId());
         clone.setVersion(getVersion());
+        clone.setVersionWhenCreated(getVersionWhenCreated());
         clone.setName(getName());
         clone.setAdditionalId(getAdditionalId());
         clone.setNumericValue(getNumericValue());
@@ -142,9 +156,15 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
     }
 
     public int compareTo(ProposalAttribute proposalAttribute) {
-        ProposalAttributePK primaryKey = proposalAttribute.getPrimaryKey();
+        long primaryKey = proposalAttribute.getPrimaryKey();
 
-        return getPrimaryKey().compareTo(primaryKey);
+        if (getPrimaryKey() < primaryKey) {
+            return -1;
+        } else if (getPrimaryKey() > primaryKey) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -161,9 +181,9 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
             return false;
         }
 
-        ProposalAttributePK primaryKey = proposalAttribute.getPrimaryKey();
+        long primaryKey = proposalAttribute.getPrimaryKey();
 
-        if (getPrimaryKey().equals(primaryKey)) {
+        if (getPrimaryKey() == primaryKey) {
             return true;
         } else {
             return false;
@@ -172,17 +192,21 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(19);
 
-        sb.append("{proposalId=");
+        sb.append("{id=");
+        sb.append(getId());
+        sb.append(", proposalId=");
         sb.append(getProposalId());
         sb.append(", version=");
         sb.append(getVersion());
+        sb.append(", versionWhenCreated=");
+        sb.append(getVersionWhenCreated());
         sb.append(", name=");
         sb.append(getName());
         sb.append(", additionalId=");
@@ -199,12 +223,16 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalAttribute");
         sb.append("</model-name>");
 
+        sb.append(
+            "<column><column-name>id</column-name><column-value><![CDATA[");
+        sb.append(getId());
+        sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>proposalId</column-name><column-value><![CDATA[");
         sb.append(getProposalId());
@@ -212,6 +240,10 @@ public class ProposalAttributeClp extends BaseModelImpl<ProposalAttribute>
         sb.append(
             "<column><column-name>version</column-name><column-value><![CDATA[");
         sb.append(getVersion());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>versionWhenCreated</column-name><column-value><![CDATA[");
+        sb.append(getVersionWhenCreated());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");

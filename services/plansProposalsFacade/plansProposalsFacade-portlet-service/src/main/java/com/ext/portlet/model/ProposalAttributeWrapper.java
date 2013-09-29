@@ -32,7 +32,7 @@ public class ProposalAttributeWrapper implements ProposalAttribute,
     *
     * @return the primary key of this proposal attribute
     */
-    public com.ext.portlet.service.persistence.ProposalAttributePK getPrimaryKey() {
+    public long getPrimaryKey() {
         return _proposalAttribute.getPrimaryKey();
     }
 
@@ -41,9 +41,26 @@ public class ProposalAttributeWrapper implements ProposalAttribute,
     *
     * @param primaryKey the primary key of this proposal attribute
     */
-    public void setPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalAttributePK primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _proposalAttribute.setPrimaryKey(primaryKey);
+    }
+
+    /**
+    * Returns the ID of this proposal attribute.
+    *
+    * @return the ID of this proposal attribute
+    */
+    public long getId() {
+        return _proposalAttribute.getId();
+    }
+
+    /**
+    * Sets the ID of this proposal attribute.
+    *
+    * @param id the ID of this proposal attribute
+    */
+    public void setId(long id) {
+        _proposalAttribute.setId(id);
     }
 
     /**
@@ -80,6 +97,24 @@ public class ProposalAttributeWrapper implements ProposalAttribute,
     */
     public void setVersion(int version) {
         _proposalAttribute.setVersion(version);
+    }
+
+    /**
+    * Returns the version when created of this proposal attribute.
+    *
+    * @return the version when created of this proposal attribute
+    */
+    public int getVersionWhenCreated() {
+        return _proposalAttribute.getVersionWhenCreated();
+    }
+
+    /**
+    * Sets the version when created of this proposal attribute.
+    *
+    * @param versionWhenCreated the version when created of this proposal attribute
+    */
+    public void setVersionWhenCreated(int versionWhenCreated) {
+        _proposalAttribute.setVersionWhenCreated(versionWhenCreated);
     }
 
     /**

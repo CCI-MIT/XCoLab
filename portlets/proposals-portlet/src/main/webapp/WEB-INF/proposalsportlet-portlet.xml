@@ -20,15 +20,35 @@
       <property name="suffix" value=".jsp"/>
     </bean>
     
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    	<property name="interceptors">
+    		<list>
+				<bean class="org.xcolab.portlets.proposals.view.interceptors.PopulateContextInterceptor" />
+				<bean class="org.xcolab.portlets.proposals.view.interceptors.ParametersMappingInterceptor">
+					<property name="parameters">
+						<list>
+							<value>contestId</value>
+							<value>proposalId</value>
+							<value>planId</value>
+							<value>pageToDisplay</value>
+						</list>
+					</property>
+				</bean>
+    		</list>
+    	</property>
+    </bean>
+
+	<bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter">
     	<property name="webBindingInitializer">
         	<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
             	<property name="validator">
                 	<bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
             	</property>
-        	</bean>
+        	</bean>        	
     	</property>
 	</bean>
-
+	
+	
 	<mvc:annotation-driven/>
+	
 </beans>

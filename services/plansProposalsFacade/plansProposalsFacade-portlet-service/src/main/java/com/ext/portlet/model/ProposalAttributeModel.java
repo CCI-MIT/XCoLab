@@ -1,7 +1,5 @@
 package com.ext.portlet.model;
 
-import com.ext.portlet.service.persistence.ProposalAttributePK;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -36,14 +34,28 @@ public interface ProposalAttributeModel extends BaseModel<ProposalAttribute> {
      *
      * @return the primary key of this proposal attribute
      */
-    public ProposalAttributePK getPrimaryKey();
+    public long getPrimaryKey();
 
     /**
      * Sets the primary key of this proposal attribute.
      *
      * @param primaryKey the primary key of this proposal attribute
      */
-    public void setPrimaryKey(ProposalAttributePK primaryKey);
+    public void setPrimaryKey(long primaryKey);
+
+    /**
+     * Returns the ID of this proposal attribute.
+     *
+     * @return the ID of this proposal attribute
+     */
+    public long getId();
+
+    /**
+     * Sets the ID of this proposal attribute.
+     *
+     * @param id the ID of this proposal attribute
+     */
+    public void setId(long id);
 
     /**
      * Returns the proposal ID of this proposal attribute.
@@ -72,6 +84,20 @@ public interface ProposalAttributeModel extends BaseModel<ProposalAttribute> {
      * @param version the version of this proposal attribute
      */
     public void setVersion(int version);
+
+    /**
+     * Returns the version when created of this proposal attribute.
+     *
+     * @return the version when created of this proposal attribute
+     */
+    public int getVersionWhenCreated();
+
+    /**
+     * Sets the version when created of this proposal attribute.
+     *
+     * @param versionWhenCreated the version when created of this proposal attribute
+     */
+    public void setVersionWhenCreated(int versionWhenCreated);
 
     /**
      * Returns the name of this proposal attribute.

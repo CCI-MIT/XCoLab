@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -23,7 +24,12 @@ public class ProposalSectionWrapper {
     }
     
     public String getContent() throws PortalException, SystemException {
-        return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId()).getStringValue();
+        try {
+            return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId()).getStringValue();
+        }
+        catch (NoSuchProposalAttributeException e) {
+            return null;
+        }
     }
 
 }

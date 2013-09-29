@@ -970,12 +970,15 @@
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalAttributeModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.ProposalAttributePK" />
 		<attributes>
-			<id name="proposalId" />
-			<id name="version" />
-			<id name="name" />
-			<id name="additionalId" />
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="proposalId" />
+			<basic name="version" />
+			<basic name="versionWhenCreated" />
+			<basic name="name" />
+			<basic name="additionalId" />
 			<basic name="numericValue" />
 			<basic name="stringValue" />
 			<basic name="realValue" />

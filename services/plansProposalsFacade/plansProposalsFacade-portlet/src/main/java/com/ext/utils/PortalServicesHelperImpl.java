@@ -8,6 +8,7 @@ import com.liferay.portal.service.PermissionLocalService;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.util.dao.orm.CustomSQLUtil;
 
 
 public class PortalServicesHelperImpl implements PortalServicesHelper {
@@ -30,4 +31,5 @@ public class PortalServicesHelperImpl implements PortalServicesHelper {
     public GroupService getGroupService() {
         return GroupServiceUtil.getService();
     }
+
 }

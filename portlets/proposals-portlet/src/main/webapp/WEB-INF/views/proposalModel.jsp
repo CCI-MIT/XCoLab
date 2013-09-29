@@ -9,6 +9,6 @@
 <jsp:directive.include file="./init.jspx" />
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
-	<h1>model tab</h1>
+	<h1>model tab "contest: " + ${proposalsPermissions.canEdit }</h1>
 
 </jsp:root>

@@ -25,30 +25,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 public class BaseProposalTabController {
     
     
-    protected ProposalPhaseContest findEntitiesAndPopulateModel(
+    protected void findEntitiesAndPopulateModel(
             @RequestParam(value="planId") Long proposalId, 
             @RequestParam Long contestId, 
             @RequestParam(required = false) Long phaseId, 
             Model model) 
     throws PortalException, SystemException {
-        
-
-        Contest contest = ContestLocalServiceUtil.getContest(contestId);
-        ContestPhase contestPhase = null;
-        if (phaseId != null) {
-            contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
-        }
-        else {
-            contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
-        }
-        Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhase.getContestPhasePK());
-        
-        Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
-        
-        
-        model.addAttribute("proposal", new ProposalWrapper(proposal, p2p.getVersionTo() > 0 ? p2p.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase));
-        model.addAttribute("contestPhase", new ContestPhaseWrapper(contestPhase));
-        model.addAttribute("contest", new ContestWrapper(contest));
         
         // populate available tabs
         
@@ -61,7 +43,6 @@ public class BaseProposalTabController {
         
         model.addAttribute("tabs", tabs);
         
-        return new ProposalPhaseContest(proposal, contest, contestPhase);
         
     }
     

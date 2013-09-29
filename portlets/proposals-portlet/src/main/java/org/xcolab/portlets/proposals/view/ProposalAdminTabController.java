@@ -24,12 +24,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 @RequestMapping("view")
 public class ProposalAdminTabController extends BaseProposalTabController {
 
-    @RequestMapping(params = {"pageToDisplay=proposalDetails", "tab=ADMIN"})
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_ADMIN"})
     public String showProposalDetails(
             @RequestParam(value="planId") Long proposalId, 
             @RequestParam Long contestId, 
             @RequestParam(required = false) Long phaseId, 
-            @RequestParam(defaultValue="DESCRIPTION") String tab,
             Model model) 
             throws PortalException, SystemException {
         

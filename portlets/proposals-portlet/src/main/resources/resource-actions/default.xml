@@ -7,17 +7,9 @@
             <action-key>CAN_EDIT</action-key>
             <action-key>CAN_ADMIN</action-key>
             <action-key>CAN_ADMIN_ALL</action-key>
-            <action-key>DEBATES_CAN_EDIT</action-key>
-            <action-key>DEBATES_CAN_ADMIN</action-key>
-            <action-key>DEBATES_CAN_VOTE</action-key>
-            <action-key>DEBATES_CAN_ADD_COMMENT</action-key>
-            <action-key>DEBATES_CAN_EDIT_DEBATE_MAP</action-key>
         </supports>
         <community-defaults>
             <action-key>CAN_VIEW</action-key>
-            <action-key>DEBATES_CAN_EDIT</action-key>
-            <action-key>DEBATES_CAN_VOTE</action-key>
-            <action-key>DEBATES_CAN_ADD_COMMENT</action-key>
         </community-defaults>
         <guest-defaults>
             <action-key>CAN_VIEW</action-key>

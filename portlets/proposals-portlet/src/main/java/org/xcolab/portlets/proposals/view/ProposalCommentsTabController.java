@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 @RequestMapping("view")
 public class ProposalCommentsTabController extends BaseProposalTabController {
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails", "tab=COMMENTS"})
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_COMMENTS"})
     public String showComments(
             @RequestParam(value="planId") Long proposalId, 
             @RequestParam Long contestId, 
@@ -28,7 +28,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         return "proposalComments";
     }
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails", "tab=JUDGES_COMMENTS"})
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_JUDGES_COMMENTS"})
     public String showJudgesComments(
             @RequestParam(value="planId") Long proposalId, 
             @RequestParam Long contestId, 
@@ -43,7 +43,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         return "proposalComments";
     }
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails", "tab=ADVISORS_COMMENTS"})
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVISORS_COMMENTS"})
     public String showAdvisorsComments(
             @RequestParam(value="planId") Long proposalId, 
             @RequestParam Long contestId, 

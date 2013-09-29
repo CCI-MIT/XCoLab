@@ -209,7 +209,6 @@ import com.ext.portlet.service.persistence.PlansFilterPersistence;
 import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
 import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePK;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
@@ -744,24 +743,23 @@ public abstract class ProposalAttributeLocalServiceBaseImpl
     /**
      * Creates a new proposal attribute with the primary key. Does not add the proposal attribute to the database.
      *
-     * @param proposalAttributePK the primary key for the new proposal attribute
+     * @param id the primary key for the new proposal attribute
      * @return the new proposal attribute
      */
-    public ProposalAttribute createProposalAttribute(
-        ProposalAttributePK proposalAttributePK) {
-        return proposalAttributePersistence.create(proposalAttributePK);
+    public ProposalAttribute createProposalAttribute(long id) {
+        return proposalAttributePersistence.create(id);
     }
 
     /**
      * Deletes the proposal attribute with the primary key from the database. Also notifies the appropriate model listeners.
      *
-     * @param proposalAttributePK the primary key of the proposal attribute
+     * @param id the primary key of the proposal attribute
      * @throws PortalException if a proposal attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteProposalAttribute(ProposalAttributePK proposalAttributePK)
+    public void deleteProposalAttribute(long id)
         throws PortalException, SystemException {
-        ProposalAttribute proposalAttribute = proposalAttributePersistence.remove(proposalAttributePK);
+        ProposalAttribute proposalAttribute = proposalAttributePersistence.remove(id);
 
         Indexer indexer = IndexerRegistryUtil.getIndexer(getModelClassName());
 
@@ -865,23 +863,22 @@ public abstract class ProposalAttributeLocalServiceBaseImpl
         return proposalAttributePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
-    public ProposalAttribute fetchProposalAttribute(
-        ProposalAttributePK proposalAttributePK) throws SystemException {
-        return proposalAttributePersistence.fetchByPrimaryKey(proposalAttributePK);
+    public ProposalAttribute fetchProposalAttribute(long id)
+        throws SystemException {
+        return proposalAttributePersistence.fetchByPrimaryKey(id);
     }
 
     /**
      * Returns the proposal attribute with the primary key.
      *
-     * @param proposalAttributePK the primary key of the proposal attribute
+     * @param id the primary key of the proposal attribute
      * @return the proposal attribute
      * @throws PortalException if a proposal attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public ProposalAttribute getProposalAttribute(
-        ProposalAttributePK proposalAttributePK)
+    public ProposalAttribute getProposalAttribute(long id)
         throws PortalException, SystemException {
-        return proposalAttributePersistence.findByPrimaryKey(proposalAttributePK);
+        return proposalAttributePersistence.findByPrimaryKey(id);
     }
 
     public PersistedModel getPersistedModel(Serializable primaryKeyObj)

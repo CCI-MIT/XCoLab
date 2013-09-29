@@ -3,7 +3,6 @@ package com.ext.portlet.model.impl;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalAttributeModel;
 import com.ext.portlet.model.ProposalAttributeSoap;
-import com.ext.portlet.service.persistence.ProposalAttributePK;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
@@ -13,6 +12,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.service.ServiceContext;
+
+import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
@@ -44,15 +47,17 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
      */
     public static final String TABLE_NAME = "xcolab_ProposalAttribute";
     public static final Object[][] TABLE_COLUMNS = {
+            { "id_", Types.BIGINT },
             { "proposalId", Types.BIGINT },
             { "version", Types.INTEGER },
+            { "versionWhenCreated", Types.INTEGER },
             { "name", Types.VARCHAR },
             { "additionalId", Types.BIGINT },
             { "numericValue", Types.BIGINT },
             { "stringValue", Types.CLOB },
             { "realValue", Types.DOUBLE }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalAttribute (proposalId LONG not null,version INTEGER not null,name VARCHAR(75) not null,additionalId LONG not null,numericValue LONG,stringValue TEXT null,realValue DOUBLE,primary key (proposalId, version, name, additionalId))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalAttribute (id_ LONG not null primary key,proposalId LONG,version INTEGER,versionWhenCreated INTEGER,name VARCHAR(75) null,additionalId LONG,numericValue LONG,stringValue TEXT null,realValue DOUBLE)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalAttribute";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -70,18 +75,23 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     public static long NAME_COLUMN_BITMASK = 2L;
     public static long PROPOSALID_COLUMN_BITMASK = 4L;
     public static long VERSION_COLUMN_BITMASK = 8L;
+    public static long VERSIONWHENCREATED_COLUMN_BITMASK = 16L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalAttribute"));
     private static ClassLoader _classLoader = ProposalAttribute.class.getClassLoader();
     private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
             ProposalAttribute.class
         };
+    private long _id;
     private long _proposalId;
     private long _originalProposalId;
     private boolean _setOriginalProposalId;
     private int _version;
     private int _originalVersion;
     private boolean _setOriginalVersion;
+    private int _versionWhenCreated;
+    private int _originalVersionWhenCreated;
+    private boolean _setOriginalVersionWhenCreated;
     private String _name;
     private String _originalName;
     private long _additionalId;
@@ -90,6 +100,7 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     private long _numericValue;
     private String _stringValue;
     private double _realValue;
+    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
     private ProposalAttribute _escapedModelProxy;
 
@@ -105,8 +116,10 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     public static ProposalAttribute toModel(ProposalAttributeSoap soapModel) {
         ProposalAttribute model = new ProposalAttributeImpl();
 
+        model.setId(soapModel.getId());
         model.setProposalId(soapModel.getProposalId());
         model.setVersion(soapModel.getVersion());
+        model.setVersionWhenCreated(soapModel.getVersionWhenCreated());
         model.setName(soapModel.getName());
         model.setAdditionalId(soapModel.getAdditionalId());
         model.setNumericValue(soapModel.getNumericValue());
@@ -133,25 +146,20 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         return models;
     }
 
-    public ProposalAttributePK getPrimaryKey() {
-        return new ProposalAttributePK(_proposalId, _version, _name,
-            _additionalId);
+    public long getPrimaryKey() {
+        return _id;
     }
 
-    public void setPrimaryKey(ProposalAttributePK primaryKey) {
-        setProposalId(primaryKey.proposalId);
-        setVersion(primaryKey.version);
-        setName(primaryKey.name);
-        setAdditionalId(primaryKey.additionalId);
+    public void setPrimaryKey(long primaryKey) {
+        setId(primaryKey);
     }
 
     public Serializable getPrimaryKeyObj() {
-        return new ProposalAttributePK(_proposalId, _version, _name,
-            _additionalId);
+        return new Long(_id);
     }
 
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-        setPrimaryKey((ProposalAttributePK) primaryKeyObj);
+        setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
     public Class<?> getModelClass() {
@@ -160,6 +168,15 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
 
     public String getModelClassName() {
         return ProposalAttribute.class.getName();
+    }
+
+    @JSON
+    public long getId() {
+        return _id;
+    }
+
+    public void setId(long id) {
+        _id = id;
     }
 
     @JSON
@@ -202,6 +219,27 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
 
     public int getOriginalVersion() {
         return _originalVersion;
+    }
+
+    @JSON
+    public int getVersionWhenCreated() {
+        return _versionWhenCreated;
+    }
+
+    public void setVersionWhenCreated(int versionWhenCreated) {
+        _columnBitmask |= VERSIONWHENCREATED_COLUMN_BITMASK;
+
+        if (!_setOriginalVersionWhenCreated) {
+            _setOriginalVersionWhenCreated = true;
+
+            _originalVersionWhenCreated = _versionWhenCreated;
+        }
+
+        _versionWhenCreated = versionWhenCreated;
+    }
+
+    public int getOriginalVersionWhenCreated() {
+        return _originalVersionWhenCreated;
     }
 
     @JSON
@@ -295,11 +333,28 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     @Override
+    public ExpandoBridge getExpandoBridge() {
+        if (_expandoBridge == null) {
+            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+                    ProposalAttribute.class.getName(), getPrimaryKey());
+        }
+
+        return _expandoBridge;
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+        getExpandoBridge().setAttributes(serviceContext);
+    }
+
+    @Override
     public Object clone() {
         ProposalAttributeImpl proposalAttributeImpl = new ProposalAttributeImpl();
 
+        proposalAttributeImpl.setId(getId());
         proposalAttributeImpl.setProposalId(getProposalId());
         proposalAttributeImpl.setVersion(getVersion());
+        proposalAttributeImpl.setVersionWhenCreated(getVersionWhenCreated());
         proposalAttributeImpl.setName(getName());
         proposalAttributeImpl.setAdditionalId(getAdditionalId());
         proposalAttributeImpl.setNumericValue(getNumericValue());
@@ -312,9 +367,15 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     public int compareTo(ProposalAttribute proposalAttribute) {
-        ProposalAttributePK primaryKey = proposalAttribute.getPrimaryKey();
+        long primaryKey = proposalAttribute.getPrimaryKey();
 
-        return getPrimaryKey().compareTo(primaryKey);
+        if (getPrimaryKey() < primaryKey) {
+            return -1;
+        } else if (getPrimaryKey() > primaryKey) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -331,9 +392,9 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
             return false;
         }
 
-        ProposalAttributePK primaryKey = proposalAttribute.getPrimaryKey();
+        long primaryKey = proposalAttribute.getPrimaryKey();
 
-        if (getPrimaryKey().equals(primaryKey)) {
+        if (getPrimaryKey() == primaryKey) {
             return true;
         } else {
             return false;
@@ -342,7 +403,7 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override
@@ -357,6 +418,10 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
 
         proposalAttributeModelImpl._setOriginalVersion = false;
 
+        proposalAttributeModelImpl._originalVersionWhenCreated = proposalAttributeModelImpl._versionWhenCreated;
+
+        proposalAttributeModelImpl._setOriginalVersionWhenCreated = false;
+
         proposalAttributeModelImpl._originalName = proposalAttributeModelImpl._name;
 
         proposalAttributeModelImpl._originalAdditionalId = proposalAttributeModelImpl._additionalId;
@@ -370,9 +435,13 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     public CacheModel<ProposalAttribute> toCacheModel() {
         ProposalAttributeCacheModel proposalAttributeCacheModel = new ProposalAttributeCacheModel();
 
+        proposalAttributeCacheModel.id = getId();
+
         proposalAttributeCacheModel.proposalId = getProposalId();
 
         proposalAttributeCacheModel.version = getVersion();
+
+        proposalAttributeCacheModel.versionWhenCreated = getVersionWhenCreated();
 
         proposalAttributeCacheModel.name = getName();
 
@@ -401,12 +470,16 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(19);
 
-        sb.append("{proposalId=");
+        sb.append("{id=");
+        sb.append(getId());
+        sb.append(", proposalId=");
         sb.append(getProposalId());
         sb.append(", version=");
         sb.append(getVersion());
+        sb.append(", versionWhenCreated=");
+        sb.append(getVersionWhenCreated());
         sb.append(", name=");
         sb.append(getName());
         sb.append(", additionalId=");
@@ -423,12 +496,16 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalAttribute");
         sb.append("</model-name>");
 
+        sb.append(
+            "<column><column-name>id</column-name><column-value><![CDATA[");
+        sb.append(getId());
+        sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>proposalId</column-name><column-value><![CDATA[");
         sb.append(getProposalId());
@@ -436,6 +513,10 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         sb.append(
             "<column><column-name>version</column-name><column-value><![CDATA[");
         sb.append(getVersion());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>versionWhenCreated</column-name><column-value><![CDATA[");
+        sb.append(getVersionWhenCreated());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");

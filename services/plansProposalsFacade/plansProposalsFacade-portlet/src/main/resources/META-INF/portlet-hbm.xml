@@ -818,12 +818,14 @@
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalAttributeImpl" table="xcolab_ProposalAttribute">
 		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ProposalAttributePK">
-			<key-property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="version" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-			<key-property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-			<key-property name="additionalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="version" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="versionWhenCreated" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="additionalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />

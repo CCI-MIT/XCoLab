@@ -123,27 +123,25 @@ public class ProposalAttributeUtil {
     /**
     * Creates a new proposal attribute with the primary key. Does not add the proposal attribute to the database.
     *
-    * @param proposalAttributePK the primary key for the new proposal attribute
+    * @param id the primary key for the new proposal attribute
     * @return the new proposal attribute
     */
-    public static com.ext.portlet.model.ProposalAttribute create(
-        ProposalAttributePK proposalAttributePK) {
-        return getPersistence().create(proposalAttributePK);
+    public static com.ext.portlet.model.ProposalAttribute create(long id) {
+        return getPersistence().create(id);
     }
 
     /**
     * Removes the proposal attribute with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param proposalAttributePK the primary key of the proposal attribute
+    * @param id the primary key of the proposal attribute
     * @return the proposal attribute that was removed
     * @throws com.ext.portlet.NoSuchProposalAttributeException if a proposal attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ProposalAttribute remove(
-        ProposalAttributePK proposalAttributePK)
+    public static com.ext.portlet.model.ProposalAttribute remove(long id)
         throws com.ext.portlet.NoSuchProposalAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().remove(proposalAttributePK);
+        return getPersistence().remove(id);
     }
 
     public static com.ext.portlet.model.ProposalAttribute updateImpl(
@@ -155,29 +153,28 @@ public class ProposalAttributeUtil {
     /**
     * Returns the proposal attribute with the primary key or throws a {@link com.ext.portlet.NoSuchProposalAttributeException} if it could not be found.
     *
-    * @param proposalAttributePK the primary key of the proposal attribute
+    * @param id the primary key of the proposal attribute
     * @return the proposal attribute
     * @throws com.ext.portlet.NoSuchProposalAttributeException if a proposal attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalAttribute findByPrimaryKey(
-        ProposalAttributePK proposalAttributePK)
+        long id)
         throws com.ext.portlet.NoSuchProposalAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPrimaryKey(proposalAttributePK);
+        return getPersistence().findByPrimaryKey(id);
     }
 
     /**
     * Returns the proposal attribute with the primary key or returns <code>null</code> if it could not be found.
     *
-    * @param proposalAttributePK the primary key of the proposal attribute
+    * @param id the primary key of the proposal attribute
     * @return the proposal attribute, or <code>null</code> if a proposal attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalAttribute fetchByPrimaryKey(
-        ProposalAttributePK proposalAttributePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPrimaryKey(proposalAttributePK);
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPrimaryKey(id);
     }
 
     /**
@@ -294,7 +291,7 @@ public class ProposalAttributeUtil {
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
     * </p>
     *
-    * @param proposalAttributePK the primary key of the current proposal attribute
+    * @param id the primary key of the current proposal attribute
     * @param proposalId the proposal ID
     * @param version the version
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -303,13 +300,155 @@ public class ProposalAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalAttribute[] findByProposalIdVersion_PrevAndNext(
-        ProposalAttributePK proposalAttributePK, long proposalId, int version,
+        long id, long proposalId, int version,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .findByProposalIdVersion_PrevAndNext(proposalAttributePK,
-            proposalId, version, orderByComparator);
+                   .findByProposalIdVersion_PrevAndNext(id, proposalId,
+            version, orderByComparator);
+    }
+
+    /**
+    * Returns all the proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @return the matching proposal attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalAttribute> findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+            version, versionWhenCreated);
+    }
+
+    /**
+    * Returns a range of all the proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param start the lower bound of the range of proposal attributes
+    * @param end the upper bound of the range of proposal attributes (not inclusive)
+    * @return the range of matching proposal attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalAttribute> findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+            version, versionWhenCreated, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param start the lower bound of the range of proposal attributes
+    * @param end the upper bound of the range of proposal attributes (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching proposal attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalAttribute> findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated, int start,
+        int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+            version, versionWhenCreated, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal attribute in the ordered set where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal attribute
+    * @throws com.ext.portlet.NoSuchProposalAttributeException if a matching proposal attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalAttribute findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_First(
+        long proposalId, int version, int versionWhenCreated,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_First(proposalId,
+            version, versionWhenCreated, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal attribute in the ordered set where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal attribute
+    * @throws com.ext.portlet.NoSuchProposalAttributeException if a matching proposal attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalAttribute findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_Last(
+        long proposalId, int version, int versionWhenCreated,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_Last(proposalId,
+            version, versionWhenCreated, orderByComparator);
+    }
+
+    /**
+    * Returns the proposal attributes before and after the current proposal attribute in the ordered set where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param id the primary key of the current proposal attribute
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next proposal attribute
+    * @throws com.ext.portlet.NoSuchProposalAttributeException if a proposal attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalAttribute[] findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_PrevAndNext(
+        long id, long proposalId, int version, int versionWhenCreated,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_PrevAndNext(id,
+            proposalId, version, versionWhenCreated, orderByComparator);
     }
 
     /**
@@ -432,6 +571,22 @@ public class ProposalAttributeUtil {
     }
 
     /**
+    * Removes all the proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence()
+            .removeByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+            version, versionWhenCreated);
+    }
+
+    /**
     * Removes the proposal attribute where proposalId = &#63; and version = &#63; and name = &#63; and additionalId = &#63; from the database.
     *
     * @param proposalId the proposal ID
@@ -470,6 +625,23 @@ public class ProposalAttributeUtil {
     public static int countByProposalIdVersion(long proposalId, int version)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByProposalIdVersion(proposalId, version);
+    }
+
+    /**
+    * Returns the number of proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @return the number of matching proposal attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(
+        long proposalId, int version, int versionWhenCreated)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId,
+            version, versionWhenCreated);
     }
 
     /**

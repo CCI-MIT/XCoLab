@@ -625,14 +625,15 @@ create table xcolab_Proposal2Phase (
 );
 
 create table xcolab_ProposalAttribute (
-	proposalId LONG not null,
-	version INTEGER not null,
-	name VARCHAR(75) not null,
-	additionalId LONG not null,
+	id_ LONG not null primary key,
+	proposalId LONG,
+	version INTEGER,
+	versionWhenCreated INTEGER,
+	name VARCHAR(75) null,
+	additionalId LONG,
 	numericValue LONG,
 	stringValue TEXT null,
-	realValue DOUBLE,
-	primary key (proposalId, version, name, additionalId)
+	realValue DOUBLE
 );
 
 create table xcolab_ProposalAttributeType (

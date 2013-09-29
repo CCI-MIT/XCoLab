@@ -605,6 +605,20 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Returns true if user is a proposal supporter, false otherwise.</p>
+    *
+    * @param proposalId proposal id
+    * @return true if user is a proposal supporter, false otherwise
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public boolean isSupporter(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.isSupporter(proposalId, userId);
+    }
+
+    /**
     * <p>Adds supporter to a proposal</p>
     *
     * @param proposalId id of a proposal
@@ -702,6 +716,20 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.isUserAMember(proposalId, userId);
+    }
+
+    /**
+    * <p>Returns true if proposal is open (so it can be edited by any user).</p>
+    *
+    * @param proposalId id of proposal
+    * @return true if plan is open, false otherwise
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public boolean isOpen(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.isOpen(proposalId);
     }
 
     /**

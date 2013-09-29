@@ -37,26 +37,25 @@ public class ProposalAttributeLocalServiceWrapper
     /**
     * Creates a new proposal attribute with the primary key. Does not add the proposal attribute to the database.
     *
-    * @param proposalAttributePK the primary key for the new proposal attribute
+    * @param id the primary key for the new proposal attribute
     * @return the new proposal attribute
     */
     public com.ext.portlet.model.ProposalAttribute createProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK) {
-        return _proposalAttributeLocalService.createProposalAttribute(proposalAttributePK);
+        long id) {
+        return _proposalAttributeLocalService.createProposalAttribute(id);
     }
 
     /**
     * Deletes the proposal attribute with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param proposalAttributePK the primary key of the proposal attribute
+    * @param id the primary key of the proposal attribute
     * @throws PortalException if a proposal attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
+    public void deleteProposalAttribute(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _proposalAttributeLocalService.deleteProposalAttribute(proposalAttributePK);
+        _proposalAttributeLocalService.deleteProposalAttribute(id);
     }
 
     /**
@@ -144,24 +143,22 @@ public class ProposalAttributeLocalServiceWrapper
     }
 
     public com.ext.portlet.model.ProposalAttribute fetchProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalAttributeLocalService.fetchProposalAttribute(proposalAttributePK);
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalAttributeLocalService.fetchProposalAttribute(id);
     }
 
     /**
     * Returns the proposal attribute with the primary key.
     *
-    * @param proposalAttributePK the primary key of the proposal attribute
+    * @param id the primary key of the proposal attribute
     * @return the proposal attribute
     * @throws PortalException if a proposal attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ProposalAttribute getProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
+    public com.ext.portlet.model.ProposalAttribute getProposalAttribute(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposalAttributeLocalService.getProposalAttribute(proposalAttributePK);
+        return _proposalAttributeLocalService.getProposalAttribute(id);
     }
 
     public com.liferay.portal.model.PersistedModel getPersistedModel(

@@ -1,7 +1,5 @@
 package com.ext.portlet.model;
 
-import com.ext.portlet.service.persistence.ProposalAttributePK;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -15,8 +13,10 @@ import java.util.List;
  * @generated
  */
 public class ProposalAttributeSoap implements Serializable {
+    private long _id;
     private long _proposalId;
     private int _version;
+    private int _versionWhenCreated;
     private String _name;
     private long _additionalId;
     private long _numericValue;
@@ -29,8 +29,10 @@ public class ProposalAttributeSoap implements Serializable {
     public static ProposalAttributeSoap toSoapModel(ProposalAttribute model) {
         ProposalAttributeSoap soapModel = new ProposalAttributeSoap();
 
+        soapModel.setId(model.getId());
         soapModel.setProposalId(model.getProposalId());
         soapModel.setVersion(model.getVersion());
+        soapModel.setVersionWhenCreated(model.getVersionWhenCreated());
         soapModel.setName(model.getName());
         soapModel.setAdditionalId(model.getAdditionalId());
         soapModel.setNumericValue(model.getNumericValue());
@@ -79,16 +81,20 @@ public class ProposalAttributeSoap implements Serializable {
         return soapModels.toArray(new ProposalAttributeSoap[soapModels.size()]);
     }
 
-    public ProposalAttributePK getPrimaryKey() {
-        return new ProposalAttributePK(_proposalId, _version, _name,
-            _additionalId);
+    public long getPrimaryKey() {
+        return _id;
     }
 
-    public void setPrimaryKey(ProposalAttributePK pk) {
-        setProposalId(pk.proposalId);
-        setVersion(pk.version);
-        setName(pk.name);
-        setAdditionalId(pk.additionalId);
+    public void setPrimaryKey(long pk) {
+        setId(pk);
+    }
+
+    public long getId() {
+        return _id;
+    }
+
+    public void setId(long id) {
+        _id = id;
     }
 
     public long getProposalId() {
@@ -105,6 +111,14 @@ public class ProposalAttributeSoap implements Serializable {
 
     public void setVersion(int version) {
         _version = version;
+    }
+
+    public int getVersionWhenCreated() {
+        return _versionWhenCreated;
+    }
+
+    public void setVersionWhenCreated(int versionWhenCreated) {
+        _versionWhenCreated = versionWhenCreated;
     }
 
     public String getName() {

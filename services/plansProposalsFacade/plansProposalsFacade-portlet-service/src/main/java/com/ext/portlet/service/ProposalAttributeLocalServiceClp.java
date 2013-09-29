@@ -34,12 +34,10 @@ public class ProposalAttributeLocalServiceClp
                 com.ext.portlet.model.ProposalAttribute.class);
 
         _createProposalAttributeMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createProposalAttribute",
-                com.ext.portlet.service.persistence.ProposalAttributePK.class);
+                "createProposalAttribute", long.class);
 
         _deleteProposalAttributeMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteProposalAttribute",
-                com.ext.portlet.service.persistence.ProposalAttributePK.class);
+                "deleteProposalAttribute", long.class);
 
         _deleteProposalAttributeMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteProposalAttribute",
@@ -65,12 +63,10 @@ public class ProposalAttributeLocalServiceClp
                 com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
 
         _fetchProposalAttributeMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchProposalAttribute",
-                com.ext.portlet.service.persistence.ProposalAttributePK.class);
+                "fetchProposalAttribute", long.class);
 
         _getProposalAttributeMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposalAttribute",
-                com.ext.portlet.service.persistence.ProposalAttributePK.class);
+                "getProposalAttribute", long.class);
 
         _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPersistedModel", java.io.Serializable.class);
@@ -123,11 +119,11 @@ public class ProposalAttributeLocalServiceClp
     }
 
     public com.ext.portlet.model.ProposalAttribute createProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK) {
+        long id) {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createProposalAttributeMethodKey1,
-                ClpSerializer.translateInput(proposalAttributePK));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -143,12 +139,11 @@ public class ProposalAttributeLocalServiceClp
         return (com.ext.portlet.model.ProposalAttribute) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
+    public void deleteProposalAttribute(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_deleteProposalAttributeMethodKey2,
-                ClpSerializer.translateInput(proposalAttributePK));
+                id);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
@@ -303,12 +298,11 @@ public class ProposalAttributeLocalServiceClp
     }
 
     public com.ext.portlet.model.ProposalAttribute fetchProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_fetchProposalAttributeMethodKey8,
-                ClpSerializer.translateInput(proposalAttributePK));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -328,14 +322,13 @@ public class ProposalAttributeLocalServiceClp
         return (com.ext.portlet.model.ProposalAttribute) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.ProposalAttribute getProposalAttribute(
-        com.ext.portlet.service.persistence.ProposalAttributePK proposalAttributePK)
+    public com.ext.portlet.model.ProposalAttribute getProposalAttribute(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getProposalAttributeMethodKey9,
-                ClpSerializer.translateInput(proposalAttributePK));
+                id);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
