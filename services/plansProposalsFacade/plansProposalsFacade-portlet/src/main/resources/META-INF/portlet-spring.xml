@@ -628,6 +628,24 @@
 		<property name="service" ref="com.ext.portlet.service.ProposalAttributeTypeService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.ProposalAttributeTypePersistence" class="com.ext.portlet.service.persistence.ProposalAttributeTypePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeLocalService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil" class="com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ProposalContestPhaseAttributeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeServiceUtil" class="com.ext.portlet.service.ProposalContestPhaseAttributeServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ProposalContestPhaseAttributeService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence" class="com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeTypeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil" class="com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeTypeService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeTypeServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeTypeServiceUtil" class="com.ext.portlet.service.ProposalContestPhaseAttributeTypeServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ProposalContestPhaseAttributeTypeService" />
+	</bean>
+	<bean id="com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence" class="com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalSupporterLocalService" class="com.ext.portlet.service.impl.ProposalSupporterLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalSupporterLocalServiceUtil" class="com.ext.portlet.service.ProposalSupporterLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.ProposalSupporterLocalService" />

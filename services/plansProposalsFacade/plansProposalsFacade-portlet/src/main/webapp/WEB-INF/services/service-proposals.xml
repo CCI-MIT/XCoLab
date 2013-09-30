@@ -136,4 +136,19 @@
     	
     </entity>
     
+    <entity name="ProposalContestPhaseAttribute" local-service="true">
+    	<column name="id" type="long" primary="true" />
+    	<column name="proposalId" type="long" />
+    	<column name="contestPhaseId" type="long" />
+    	<column name="typeId" type="long" />
+    </entity>
+    
+    <entity name="ProposalContestPhaseAttributeType" local-service="true">
+    	<column name="id" type="long" primary="true" />
+    	<column name="ribbon" type="String" />
+    	<column name="hoverText" type="String" />
+    	<column name="description" type="String" />
+    	<column name="copyOnPromote" type="boolean" />
+    </entity>
+    
 </service-builder>

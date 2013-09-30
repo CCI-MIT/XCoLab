@@ -135,6 +135,10 @@ import com.ext.portlet.service.ProposalAttributeLocalService;
 import com.ext.portlet.service.ProposalAttributeService;
 import com.ext.portlet.service.ProposalAttributeTypeLocalService;
 import com.ext.portlet.service.ProposalAttributeTypeService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeTypeService;
 import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.ProposalService;
 import com.ext.portlet.service.ProposalSupporterLocalService;
@@ -211,6 +215,8 @@ import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
+import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
+import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
@@ -657,6 +663,18 @@ public abstract class PlanVoteServiceBaseImpl extends PrincipalBean
     protected ProposalAttributeTypeService proposalAttributeTypeService;
     @BeanReference(type = ProposalAttributeTypePersistence.class)
     protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
+    @BeanReference(type = ProposalContestPhaseAttributeLocalService.class)
+    protected ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
+    @BeanReference(type = ProposalContestPhaseAttributeService.class)
+    protected ProposalContestPhaseAttributeService proposalContestPhaseAttributeService;
+    @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
+    protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
+    @BeanReference(type = ProposalContestPhaseAttributeTypeLocalService.class)
+    protected ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService;
+    @BeanReference(type = ProposalContestPhaseAttributeTypeService.class)
+    protected ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService;
+    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
+    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
     @BeanReference(type = ProposalSupporterLocalService.class)
     protected ProposalSupporterLocalService proposalSupporterLocalService;
     @BeanReference(type = ProposalSupporterService.class)
@@ -4559,6 +4577,120 @@ public abstract class PlanVoteServiceBaseImpl extends PrincipalBean
     public void setProposalAttributeTypePersistence(
         ProposalAttributeTypePersistence proposalAttributeTypePersistence) {
         this.proposalAttributeTypePersistence = proposalAttributeTypePersistence;
+    }
+
+    /**
+     * Returns the proposal contest phase attribute local service.
+     *
+     * @return the proposal contest phase attribute local service
+     */
+    public ProposalContestPhaseAttributeLocalService getProposalContestPhaseAttributeLocalService() {
+        return proposalContestPhaseAttributeLocalService;
+    }
+
+    /**
+     * Sets the proposal contest phase attribute local service.
+     *
+     * @param proposalContestPhaseAttributeLocalService the proposal contest phase attribute local service
+     */
+    public void setProposalContestPhaseAttributeLocalService(
+        ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService) {
+        this.proposalContestPhaseAttributeLocalService = proposalContestPhaseAttributeLocalService;
+    }
+
+    /**
+     * Returns the proposal contest phase attribute remote service.
+     *
+     * @return the proposal contest phase attribute remote service
+     */
+    public ProposalContestPhaseAttributeService getProposalContestPhaseAttributeService() {
+        return proposalContestPhaseAttributeService;
+    }
+
+    /**
+     * Sets the proposal contest phase attribute remote service.
+     *
+     * @param proposalContestPhaseAttributeService the proposal contest phase attribute remote service
+     */
+    public void setProposalContestPhaseAttributeService(
+        ProposalContestPhaseAttributeService proposalContestPhaseAttributeService) {
+        this.proposalContestPhaseAttributeService = proposalContestPhaseAttributeService;
+    }
+
+    /**
+     * Returns the proposal contest phase attribute persistence.
+     *
+     * @return the proposal contest phase attribute persistence
+     */
+    public ProposalContestPhaseAttributePersistence getProposalContestPhaseAttributePersistence() {
+        return proposalContestPhaseAttributePersistence;
+    }
+
+    /**
+     * Sets the proposal contest phase attribute persistence.
+     *
+     * @param proposalContestPhaseAttributePersistence the proposal contest phase attribute persistence
+     */
+    public void setProposalContestPhaseAttributePersistence(
+        ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence) {
+        this.proposalContestPhaseAttributePersistence = proposalContestPhaseAttributePersistence;
+    }
+
+    /**
+     * Returns the proposal contest phase attribute type local service.
+     *
+     * @return the proposal contest phase attribute type local service
+     */
+    public ProposalContestPhaseAttributeTypeLocalService getProposalContestPhaseAttributeTypeLocalService() {
+        return proposalContestPhaseAttributeTypeLocalService;
+    }
+
+    /**
+     * Sets the proposal contest phase attribute type local service.
+     *
+     * @param proposalContestPhaseAttributeTypeLocalService the proposal contest phase attribute type local service
+     */
+    public void setProposalContestPhaseAttributeTypeLocalService(
+        ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService) {
+        this.proposalContestPhaseAttributeTypeLocalService = proposalContestPhaseAttributeTypeLocalService;
+    }
+
+    /**
+     * Returns the proposal contest phase attribute type remote service.
+     *
+     * @return the proposal contest phase attribute type remote service
+     */
+    public ProposalContestPhaseAttributeTypeService getProposalContestPhaseAttributeTypeService() {
+        return proposalContestPhaseAttributeTypeService;
+    }
+
+    /**
+     * Sets the proposal contest phase attribute type remote service.
+     *
+     * @param proposalContestPhaseAttributeTypeService the proposal contest phase attribute type remote service
+     */
+    public void setProposalContestPhaseAttributeTypeService(
+        ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService) {
+        this.proposalContestPhaseAttributeTypeService = proposalContestPhaseAttributeTypeService;
+    }
+
+    /**
+     * Returns the proposal contest phase attribute type persistence.
+     *
+     * @return the proposal contest phase attribute type persistence
+     */
+    public ProposalContestPhaseAttributeTypePersistence getProposalContestPhaseAttributeTypePersistence() {
+        return proposalContestPhaseAttributeTypePersistence;
+    }
+
+    /**
+     * Sets the proposal contest phase attribute type persistence.
+     *
+     * @param proposalContestPhaseAttributeTypePersistence the proposal contest phase attribute type persistence
+     */
+    public void setProposalContestPhaseAttributeTypePersistence(
+        ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence) {
+        this.proposalContestPhaseAttributeTypePersistence = proposalContestPhaseAttributeTypePersistence;
     }
 
     /**

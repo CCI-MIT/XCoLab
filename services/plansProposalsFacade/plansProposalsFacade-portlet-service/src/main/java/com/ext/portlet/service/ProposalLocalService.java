@@ -661,4 +661,86 @@ public interface ProposalLocalService extends PersistedModelLocalService {
     public boolean isOpen(long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns all team membership requests for a proposal.</p>
+    *
+    * @param proposalId proposal id
+    * @return list of membership requests
+    * @throws SystemException in case of LR error
+    * @throws PortalException in case of LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.MembershipRequest> getMembershipRequests(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sends a request to join proposal teamp</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @param comment optional comment
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void addMembershipRequest(long proposalId, long userId,
+        java.lang.String comment)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Denies user as a member of proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void dennyMembershipRequest(long proposalId, long userId,
+        long membershipRequestId, java.lang.String reply, long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Approves user as a member of proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void approveMembershipRequest(long proposalId,
+        java.lang.Long userId,
+        com.liferay.portal.model.MembershipRequest request,
+        java.lang.String reply, java.lang.Long updateAuthorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Tells if user has requested membership of given plan</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @return true if user has requested membership, false otherwise
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasUserRequestedMembership(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Adds user to a proposal team if proposal is open and user is not a member already</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void joinIfNotAMemberAndProposalIsOpen(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

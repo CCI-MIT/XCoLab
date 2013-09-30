@@ -859,6 +859,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposalVersion.setAuthorId(authorId);
         proposalVersion.setUpdateType(updateType);
         proposalVersion.setUpdateAdditionalId(additionalId);
+        proposalVersion.setCreateDate(new Date());
 
         proposalVersionLocalService.addProposalVersion(proposalVersion);
     }
