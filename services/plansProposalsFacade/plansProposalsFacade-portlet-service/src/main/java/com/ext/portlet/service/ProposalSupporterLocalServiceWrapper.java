@@ -246,6 +246,11 @@ public class ProposalSupporterLocalServiceWrapper
         _proposalSupporterLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    public com.ext.portlet.model.ProposalSupporter create(long proposalID,
+        long userID) {
+        return _proposalSupporterLocalService.create(proposalID, userID);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

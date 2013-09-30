@@ -243,6 +243,11 @@ public class ProposalVoteLocalServiceWrapper implements ProposalVoteLocalService
         _proposalVoteLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    public com.ext.portlet.model.ProposalVote create(long contestPhaseId,
+        long userID) {
+        return _proposalVoteLocalService.create(contestPhaseId, userID);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

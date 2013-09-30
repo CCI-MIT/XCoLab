@@ -25,6 +25,7 @@ public class ProposalSupporterLocalServiceClp
     private MethodKey _updateProposalSupporterMethodKey14;
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
+    private MethodKey _createMethodKey17;
 
     public ProposalSupporterLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -94,6 +95,9 @@ public class ProposalSupporterLocalServiceClp
 
         _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setBeanIdentifier", java.lang.String.class);
+
+        _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+                "create", long.class, long.class);
     }
 
     public com.ext.portlet.model.ProposalSupporter addProposalSupporter(
@@ -525,6 +529,27 @@ public class ProposalSupporterLocalServiceClp
                     " is not a valid exception");
             }
         }
+    }
+
+    public com.ext.portlet.model.ProposalSupporter create(long proposalID,
+        long userID) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_createMethodKey17,
+                proposalID, userID);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalSupporter) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

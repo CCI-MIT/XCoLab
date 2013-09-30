@@ -223,4 +223,7 @@ public interface ProposalSupporterLocalService
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    public com.ext.portlet.model.ProposalSupporter create(long proposalID,
+        long userID);
 }

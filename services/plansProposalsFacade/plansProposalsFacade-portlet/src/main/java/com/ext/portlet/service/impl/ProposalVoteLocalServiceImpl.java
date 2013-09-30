@@ -1,6 +1,8 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.base.ProposalVoteLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.ProposalVotePK;
 
 /**
  * The implementation of the proposal vote local service.
@@ -23,4 +25,10 @@ public class ProposalVoteLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalVoteLocalServiceUtil} to access the proposal vote local service.
      */
+
+    public ProposalVote create(long contestPhaseId, long userID) {
+        return createProposalVote(new ProposalVotePK(contestPhaseId, userID));
+    }
+
+
 }
