@@ -103,7 +103,7 @@
                                 
                         </c:if>
                         
-                        <proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" escape="true" />
+                        <proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
                         
                         /&#160;
                         <c:choose>

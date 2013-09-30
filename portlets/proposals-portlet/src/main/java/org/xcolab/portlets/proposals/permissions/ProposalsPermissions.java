@@ -2,7 +2,7 @@ package org.xcolab.portlets.proposals.permissions;
 
 import javax.portlet.PortletRequest;
 
-import org.xcolab.portlets.proposals.utils.ProposalsActions;
+import org.xcolab.portlets.proposals.utils.ProposalsActions; 
 
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
@@ -92,11 +92,11 @@ public class ProposalsPermissions {
         return contestStatus.isCanCreate();
     }
     
-    public boolean getCanSeeRequestMembershipButton() throws SystemException {
+    public boolean getCanSeeRequestMembershipButton() throws SystemException, PortalException {
         return user.isDefaultUser() || getCanRequestMembership();
     }
     
-    public boolean getCanRequestMembership() throws SystemException {
+    public boolean getCanRequestMembership() throws SystemException, PortalException {
         return !user.isDefaultUser() && ! isProposalMember() && !getRequestedMembership();
     }
     
@@ -104,7 +104,7 @@ public class ProposalsPermissions {
         return user.isDefaultUser() || getCanSupportProposal();
     }
     
-    private boolean getRequestedMembership() {
+    private boolean getRequestedMembership() throws PortalException, SystemException {
         if (! user.isDefaultUser()) {
             return ProposalLocalServiceUtil.hasUserRequestedMembership(proposal.getProposalId(), user.getUserId());
         }

@@ -22,6 +22,8 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
     private static final String MODEL_ATTRIBUTE_CONTEST_PHASE = "contestPhase";
     private static final String MODEL_ATTRIBUTE_PROPOSAL = "proposal";
     private static final String MODEL_ATTRIBUTE_CONTEST = "contest";
+    private static final String MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID = "viewContestPhaseId";
+    
     @Autowired
     private ProposalsContext proposalsContext;
 
@@ -48,14 +50,15 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
                     if (proposal != null) {
                         modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSAL, 
                                 new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
-                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion()));
+                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase));
                    
                     }
                 }
             }
             
             modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSALS_PERMISSIONS, permissions);
-            
+            System.out.println(proposalsContext.getViewContestPhaseId(request));
+            modelAndView.addObject(MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID, proposalsContext.getViewContestPhaseId(request));
             
         }
     }

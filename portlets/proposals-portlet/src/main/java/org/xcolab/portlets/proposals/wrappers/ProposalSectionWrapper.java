@@ -32,4 +32,9 @@ public class ProposalSectionWrapper {
         }
     }
 
+
+    public Long getSectionDefinitionId() {
+        return definition.getId();
+    }
+
 }

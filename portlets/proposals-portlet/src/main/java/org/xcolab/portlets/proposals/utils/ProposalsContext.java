@@ -23,4 +23,6 @@ public interface ProposalsContext {
 
     Proposal2Phase getProposal2Phase(PortletRequest request) throws PortalException, SystemException;
 
+    Long getViewContestPhaseId(PortletRequest request) throws PortalException, SystemException;
+
 }

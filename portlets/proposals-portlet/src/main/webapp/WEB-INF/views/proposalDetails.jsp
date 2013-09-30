@@ -10,6 +10,13 @@
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	
+	<h1>Sections etc... ${updateProposalSectionsBean.sections }</h1>
+	<form:form commandName="updateProposalSectionsBean">
+		<c:forEach var="section" items="${updateProposalSectionsBean.sections }">
+			${section }
+		</c:forEach>	
+	</form:form>
+	
 	<div id="content">
 		<div class="prop-left">
 			<c:if test="${not empty proposal.pitch }">

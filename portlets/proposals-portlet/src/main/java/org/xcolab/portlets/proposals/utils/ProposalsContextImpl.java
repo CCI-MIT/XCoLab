@@ -26,6 +26,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String PROPOSAL_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposals";
     private static final String CONTEST_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
     private static final String PROPOSAL_2_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposal2phase";
+    private static final String REQUEST_PHASE_ID_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "requestPhaseId";
     
     public static final String PROPOSAL_ID_PARAM = "planId";
     public static final String CONTEST_ID_PARAM = "contestId";
@@ -73,6 +74,11 @@ public class ProposalsContextImpl implements ProposalsContext {
         return getAttribute(request, PROPOSAL_2_PHASE_ATTRIBUTE, Proposal2Phase.class);        
     }
     
+    @Override
+    public Long getViewContestPhaseId(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, REQUEST_PHASE_ID_ATTRIBUTE, Long.class);        
+    }
+    
     private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz) throws PortalException, SystemException {
         Object contextInitialized =  request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
@@ -82,9 +88,9 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
     
     private void init(PortletRequest request) throws PortalException, SystemException {
-        Long proposalId = (Long) ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
-        Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
-        Long phaseId = (Long) ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
+        final Long proposalId = (Long) ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
+        final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
+        final Long phaseId = (Long) ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         
         
         Contest contest = null;
@@ -114,6 +120,9 @@ public class ProposalsContextImpl implements ProposalsContext {
         request.setAttribute(CONTEST_PHASE_ATTRIBUTE, contestPhase);
         request.setAttribute(PROPOSAL_2_PHASE_ATTRIBUTE, proposal2Phase);
         request.setAttribute(PERMISSIONS_ATTRIBUTE, new ProposalsPermissions(request, proposal, contestPhase));
+        if (phaseId > 0) {
+            request.setAttribute(REQUEST_PHASE_ID_ATTRIBUTE, phaseId);
+        }
         
         request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
         

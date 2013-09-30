@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PlanSectionDefinition;
@@ -198,7 +199,7 @@ public class ProposalWrapper {
     }
     
     public long getImageId() throws PortalException, SystemException {
-        return getAttributeValueLong("LONG", 0L, 0);
+        return getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
     
     
