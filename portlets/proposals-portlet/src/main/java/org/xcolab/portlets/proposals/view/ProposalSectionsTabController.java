@@ -31,7 +31,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         
         findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
         
-        model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalsContext.getProposal(request)));
+        model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalsContext.getProposalWrapped(request)));
         
         model.addAttribute("currentTab", ProposalTab.DESCRIPTION);
         

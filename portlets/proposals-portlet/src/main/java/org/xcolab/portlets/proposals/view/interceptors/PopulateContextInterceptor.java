@@ -57,7 +57,6 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             }
             
             modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSALS_PERMISSIONS, permissions);
-            System.out.println(proposalsContext.getViewContestPhaseId(request));
             modelAndView.addObject(MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID, proposalsContext.getViewContestPhaseId(request));
             
         }

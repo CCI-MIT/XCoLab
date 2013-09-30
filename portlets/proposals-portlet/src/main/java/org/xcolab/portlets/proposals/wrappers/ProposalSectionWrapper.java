@@ -37,4 +37,15 @@ public class ProposalSectionWrapper {
         return definition.getId();
     }
 
+    public boolean isLocked() {
+        return definition.getLocked();
+    }
+    
+    public int getCharacterLimit() {
+        return definition.getCharacterLimit();
+    }
+    
+    public String getHelpText() {
+        return definition.getHelpText();
+    }
 }

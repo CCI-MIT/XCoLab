@@ -4,6 +4,9 @@ import javax.portlet.PortletRequest;
 
 import org.springframework.stereotype.Component;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -27,6 +30,9 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String CONTEST_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
     private static final String PROPOSAL_2_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposal2phase";
     private static final String REQUEST_PHASE_ID_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "requestPhaseId";
+    private static final String CONTEST_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestWrapped";
+    private static final String CONTEST_PHASE_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhaseWrapped";
+    private static final String PROPOSAL_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
     
     public static final String PROPOSAL_ID_PARAM = "planId";
     public static final String CONTEST_ID_PARAM = "contestId";
@@ -79,6 +85,21 @@ public class ProposalsContextImpl implements ProposalsContext {
         return getAttribute(request, REQUEST_PHASE_ID_ATTRIBUTE, Long.class);        
     }
     
+    @Override
+    public ProposalWrapper getProposalWrapped(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, PROPOSAL_WRAPPED_ATTRIBUTE, ProposalWrapper.class);
+    }
+    
+    @Override
+    public ContestWrapper getContestWrapped(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE, ContestWrapper.class);
+    }
+    
+    @Override
+    public ContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE, ContestPhaseWrapper.class);
+    }
+    
     private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz) throws PortalException, SystemException {
         Object contextInitialized =  request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
@@ -114,6 +135,22 @@ public class ProposalsContextImpl implements ProposalsContext {
                 proposal = ProposalLocalServiceUtil.getProposal(proposalId);
             }
         }
+        
+        if (contest != null) {
+            request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
+            
+            if (contestPhase != null) {
+                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(contestPhase));
+                
+                if (proposal != null) {
+                    request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, 
+                            new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
+                                    proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase));
+               
+                }
+            }
+        }
+        
         
         request.setAttribute(PROPOSAL_ATTRIBUTE, proposal);
         request.setAttribute(CONTEST_ATTRIBUTE, contest);
