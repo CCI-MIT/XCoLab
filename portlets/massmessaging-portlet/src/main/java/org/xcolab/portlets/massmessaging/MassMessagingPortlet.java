@@ -484,12 +484,13 @@ public class MassMessagingPortlet extends MVCPortlet {
     public void serveResource(ResourceRequest req, ResourceResponse res)
             throws PortletException {
         String DEL = ",";  // delimiter
-        String TQF = ""; // text quantifier
+        String TQF = ""; // text qualifier
         ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
 
         DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(User.class, portalClassLoader);
         userQuery.add(PropertyFactoryUtil.forName("status").eq(0));
         userQuery.add(RestrictionsFactoryUtil.not(PropertyFactoryUtil.forName("emailAddress").in(getIgnoredRecipients().toArray())));
+            // entities with different class loaders can't be mixed in dynamic queries
 
         try{
 
