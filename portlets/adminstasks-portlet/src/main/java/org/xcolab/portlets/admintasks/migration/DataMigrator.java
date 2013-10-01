@@ -682,6 +682,17 @@ public class DataMigrator implements Runnable {
 
         if (planRibbon < 1) return;
 
+        PlanMeta currentPlanMeta = null;
+        // get current plan meta for setting proposal entity attributes
+        try{
+            currentPlanMeta = PlanMetaLocalServiceUtil.getCurrentForPlan(plan);
+        } catch (Exception e){
+            pushAjaxUpdate("Error while getting PlanMetas " + plan.getId() + ": " + e);
+            return;
+        }
+
+
+
         DynamicQuery proposalRibbonQuery = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttributeType.class, portletClassLoader);
         planRibbonQuery.add(PropertyFactoryUtil.forName("ribbon").eq(planRibbon));
         planRibbonQuery.add(PropertyFactoryUtil.forName("hoverText").eq(planRibbonText));
@@ -703,6 +714,7 @@ public class DataMigrator implements Runnable {
                         ));
                 attr.setProposalId(p.getProposalId());
                 attr.setTypeId(ribbonTypes.get(0).getId());
+                attr.setContestPhaseId(currentPlanMeta.getContestPhase());
                 ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attr);
                 /*TODO SET CONTEST PHASE*/
             } catch (Exception e){
@@ -737,8 +749,8 @@ public class DataMigrator implements Runnable {
                         ));
                 attr.setProposalId(p.getProposalId());
                 attr.setTypeId(attributeType.getId());
+                attr.setContestPhaseId(currentPlanMeta.getContestPhase());
                 ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attr);
-                /*TODO SET CONTEST PHASE*/
             } catch (Exception e){
                 e.printStackTrace();
                 pushAjaxUpdate("Error while getting ribbons");
