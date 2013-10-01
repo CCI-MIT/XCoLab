@@ -1,6 +1,17 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 /**
  * The implementation of the proposal remote service.
@@ -16,10 +27,45 @@ import com.ext.portlet.service.base.ProposalServiceBaseImpl;
  * @see com.ext.portlet.service.base.ProposalServiceBaseImpl
  * @see com.ext.portlet.service.ProposalServiceUtil
  */
+@JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     /*
      * NOTE FOR DEVELOPERS:
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalServiceUtil} to access the proposal remote service.
      */
+    @JSONWebService
+    public String getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
+        JSONObject result = JSONFactoryUtil.createJSONObject();
+        result.put("proposalId", proposalId);
+        result.put("start", start);
+        result.put("end", end);
+        result.put("totalCount", ProposalVersionLocalServiceUtil.countByProposalId(proposalId));
+        
+        JSONArray proposalVersionsArray = JSONFactoryUtil.createJSONArray();
+        result.put("versions", proposalVersionsArray);
+        
+        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, start, end)) {
+            JSONObject proposalVersionJsonObj = JSONFactoryUtil.createJSONObject();
+            proposalVersionsArray.put(proposalVersionJsonObj);
+            
+            proposalVersionJsonObj.put("version", proposalVersion.getVersion());
+            proposalVersionJsonObj.put("date", proposalVersion.getCreateDate());
+            proposalVersionJsonObj.put("author", converUserToJson(proposalVersion.getAuthorId()));
+            proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
+        }
+        
+        return result.toString();
+    }
+    
+    private JSONObject converUserToJson(long userId) throws PortalException, SystemException {
+        User user = UserLocalServiceUtil.getUser(userId);
+
+        JSONObject userJsonObj = JSONFactoryUtil.createJSONObject();
+        userJsonObj.put("userId", user.getUserId());
+        userJsonObj.put("screenName", user.getScreenName());
+        userJsonObj.put("fullName", user.getFullName());
+        
+        return userJsonObj;
+    }
 }

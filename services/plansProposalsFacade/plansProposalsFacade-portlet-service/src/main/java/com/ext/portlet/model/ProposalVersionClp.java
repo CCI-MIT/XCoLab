@@ -130,9 +130,23 @@ public class ProposalVersionClp extends BaseModelImpl<ProposalVersion>
     }
 
     public int compareTo(ProposalVersion proposalVersion) {
-        ProposalVersionPK primaryKey = proposalVersion.getPrimaryKey();
+        int value = 0;
 
-        return getPrimaryKey().compareTo(primaryKey);
+        if (getVersion() < proposalVersion.getVersion()) {
+            value = -1;
+        } else if (getVersion() > proposalVersion.getVersion()) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+
+        value = value * -1;
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override

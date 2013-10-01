@@ -26,6 +26,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             @RequestParam(value="planId") Long proposalId, 
             @RequestParam Long contestId, 
             @RequestParam(required = false) Long phaseId, 
+            @RequestParam(defaultValue="false") boolean edit,
             Model model, PortletRequest request) 
             throws PortalException, SystemException {
         
@@ -35,21 +36,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         
         model.addAttribute("currentTab", ProposalTab.DESCRIPTION);
         
+        if (edit) {
+            return "proposalDetails_edit";
+        }
         return "proposalDetails";
     }
-    
-
-    @RequestMapping(params = "pageToDisplay=proposalDetails_DESCRIPTION")
-    public String showProposalDetailsTab(
-            @RequestParam(value="planId") Long proposalId, 
-            @RequestParam Long contestId, 
-            @RequestParam(required = false) Long phaseId, 
-            Model model, PortletRequest request) 
-            throws PortalException, SystemException {
-        
-        showProposalDetails(proposalId, contestId, phaseId, model, request);
-        
-        return "proposalDetails";
-    }
-    
 }

@@ -22,3 +22,10 @@ Liferay.Service.registerClass(
 		helloWorld: true
 	}
 );
+
+Liferay.Service.registerClass(
+	Liferay.Service.xcolab, "Proposal",
+	{
+		getProposalVersions: true
+	}
+);

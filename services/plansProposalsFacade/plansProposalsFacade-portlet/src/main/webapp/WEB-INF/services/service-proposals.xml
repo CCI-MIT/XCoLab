@@ -8,7 +8,7 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet.plans">
     
-    <entity name="Proposal" local-service="true">
+    <entity name="Proposal" local-service="true" remote-service="true">
     	<column name="proposalId" type="long" primary="true" />
     	<column name="createDate" type="Date" />
     	<column name="updatedDate" type="Date" />
@@ -29,6 +29,10 @@
     	<column name="createDate" type="Date" />
     	<column name="updateType" type="String" />
     	<column name="updateAdditionalId" type="long" />
+    	
+    	<order by="">
+    		<order-column name="version" order-by="desc" />
+    	</order>
     	
     	<finder return-type="Collection" name="ProposalId">
     		<finder-column name="proposalId" />

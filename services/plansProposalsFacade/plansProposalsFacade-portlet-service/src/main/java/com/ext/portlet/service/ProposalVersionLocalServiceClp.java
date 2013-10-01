@@ -25,6 +25,8 @@ public class ProposalVersionLocalServiceClp
     private MethodKey _updateProposalVersionMethodKey14;
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
+    private MethodKey _countByProposalIdMethodKey17;
+    private MethodKey _getByProposalIdMethodKey18;
 
     public ProposalVersionLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -94,6 +96,12 @@ public class ProposalVersionLocalServiceClp
 
         _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setBeanIdentifier", java.lang.String.class);
+
+        _countByProposalIdMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+                "countByProposalId", long.class);
+
+        _getByProposalIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getByProposalId", long.class, int.class, int.class);
     }
 
     public com.ext.portlet.model.ProposalVersion addProposalVersion(
@@ -525,6 +533,57 @@ public class ProposalVersionLocalServiceClp
                     " is not a valid exception");
             }
         }
+    }
+
+    public long countByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_countByProposalIdMethodKey17,
+                proposalId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    public java.util.List<com.ext.portlet.model.ProposalVersion> getByProposalId(
+        long proposalId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getByProposalIdMethodKey18,
+                proposalId, start, end);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalVersion>) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

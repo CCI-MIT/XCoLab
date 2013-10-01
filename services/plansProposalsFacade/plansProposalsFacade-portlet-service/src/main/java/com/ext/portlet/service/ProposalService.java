@@ -4,6 +4,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
 /**
@@ -29,4 +30,9 @@ public interface ProposalService {
      *
      * Never modify or reference this interface directly. Always use {@link ProposalServiceUtil} to access the proposal remote service. Add custom service methods to {@link com.ext.portlet.service.impl.ProposalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
      */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getProposalVersions(long proposalId, int start,
+        int end)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

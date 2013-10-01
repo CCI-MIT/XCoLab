@@ -1,5 +1,12 @@
 package com.ext.portlet.service.http;
 
+import com.ext.portlet.service.ProposalServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * <p>
  * This class provides a SOAP utility for the
@@ -44,4 +51,19 @@ package com.ext.portlet.service.http;
  * @generated
  */
 public class ProposalServiceSoap {
+    private static Log _log = LogFactoryUtil.getLog(ProposalServiceSoap.class);
+
+    public static java.lang.String getProposalVersions(long proposalId,
+        int start, int end) throws RemoteException {
+        try {
+            java.lang.String returnValue = ProposalServiceUtil.getProposalVersions(proposalId,
+                    start, end);
+
+            return returnValue;
+        } catch (Exception e) {
+            _log.error(e, e);
+
+            throw new RemoteException(e.getMessage());
+        }
+    }
 }

@@ -250,6 +250,33 @@ public class ProposalVersionLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    /**
+    * <p>Returns proposal version count for given proposal</p>
+    *
+    * @param proposalId proposal id
+    * @return proposal versions count
+    * @throws SystemException
+    */
+    public static long countByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().countByProposalId(proposalId);
+    }
+
+    /**
+    * <p>Returns list of proposal versions for given proposal</p>
+    *
+    * @param proposalId id of a proposal
+    * @param start first entity
+    * @param end last entity
+    * @return list of proposal versions
+    * @throws SystemException
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalVersion> getByProposalId(
+        long proposalId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByProposalId(proposalId, start, end);
+    }
+
     public static void clearService() {
         _service = null;
     }

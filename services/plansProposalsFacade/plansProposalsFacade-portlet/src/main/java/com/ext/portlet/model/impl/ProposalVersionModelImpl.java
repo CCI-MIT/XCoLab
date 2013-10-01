@@ -54,6 +54,8 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalVersion (proposalId LONG not null,version INTEGER not null,authorId LONG,createDate DATE null,updateType VARCHAR(75) null,updateAdditionalId LONG,primary key (proposalId, version))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalVersion";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposalVersion.id.version DESC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalVersion.version DESC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -175,6 +177,8 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
     }
 
     public void setVersion(int version) {
+        _columnBitmask = -1L;
+
         _version = version;
     }
 
@@ -250,9 +254,23 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
     }
 
     public int compareTo(ProposalVersion proposalVersion) {
-        ProposalVersionPK primaryKey = proposalVersion.getPrimaryKey();
+        int value = 0;
 
-        return getPrimaryKey().compareTo(primaryKey);
+        if (getVersion() < proposalVersion.getVersion()) {
+            value = -1;
+        } else if (getVersion() > proposalVersion.getVersion()) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+
+        value = value * -1;
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override

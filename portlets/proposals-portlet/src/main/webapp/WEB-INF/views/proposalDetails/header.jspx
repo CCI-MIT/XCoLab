@@ -41,7 +41,15 @@
 				<ul>
 					<c:forEach var="tab" items="${tabs }">
 						<li class="${currentTab == tab.tab ? 'c' : ''}">
-							<a href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}/tab/${tab.name}">
+							<c:choose>
+								<c:when test="${tab.tab.default }">
+									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}" />
+								</c:when>
+								<c:otherwise>
+									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}/tab/${tab.name}" />
+								</c:otherwise>
+							</c:choose>
+							<a href="${proposalURL }">
 								${tab.displayName}
 								<c:if test="${tab.activityCount > 0}">
 									<div>${tab.activityCount}</div>

@@ -18,4 +18,8 @@ public enum ProposalTab {
     public String getDisplayName() {
         return displayName;
     }
+    
+    public boolean isDefault() {
+        return this.ordinal() == 0;
+    }
 }

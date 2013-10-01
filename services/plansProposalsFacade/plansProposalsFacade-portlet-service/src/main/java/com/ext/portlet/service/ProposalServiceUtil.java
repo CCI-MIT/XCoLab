@@ -26,6 +26,13 @@ public class ProposalServiceUtil {
      *
      * Never modify this class directly. Add custom service methods to {@link com.ext.portlet.service.impl.ProposalServiceImpl} and rerun ServiceBuilder to regenerate this class.
      */
+    public static java.lang.String getProposalVersions(long proposalId,
+        int start, int end)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getProposalVersions(proposalId, start, end);
+    }
+
     public static void clearService() {
         _service = null;
     }

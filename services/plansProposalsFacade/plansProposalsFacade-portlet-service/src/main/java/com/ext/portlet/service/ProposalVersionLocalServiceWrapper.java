@@ -247,6 +247,34 @@ public class ProposalVersionLocalServiceWrapper
     }
 
     /**
+    * <p>Returns proposal version count for given proposal</p>
+    *
+    * @param proposalId proposal id
+    * @return proposal versions count
+    * @throws SystemException
+    */
+    public long countByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalVersionLocalService.countByProposalId(proposalId);
+    }
+
+    /**
+    * <p>Returns list of proposal versions for given proposal</p>
+    *
+    * @param proposalId id of a proposal
+    * @param start first entity
+    * @param end last entity
+    * @return list of proposal versions
+    * @throws SystemException
+    */
+    public java.util.List<com.ext.portlet.model.ProposalVersion> getByProposalId(
+        long proposalId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalVersionLocalService.getByProposalId(proposalId, start,
+            end);
+    }
+
+    /**
      * @deprecated Renamed to {@link #getWrappedService}
      */
     public ProposalVersionLocalService getWrappedProposalVersionLocalService() {

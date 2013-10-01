@@ -1,6 +1,10 @@
 package com.ext.portlet.service.impl;
 
+import java.util.List;
+
+import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.base.ProposalVersionLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The implementation of the proposal version local service.
@@ -23,4 +27,26 @@ public class ProposalVersionLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalVersionLocalServiceUtil} to access the proposal version local service.
      */
+    
+    /**
+     * <p>Returns proposal version count for given proposal</p>
+     * @param proposalId proposal id
+     * @return proposal versions count
+     * @throws SystemException
+     */
+    public long countByProposalId(long proposalId) throws SystemException {
+        return proposalVersionPersistence.countByProposalId(proposalId);
+    }
+    
+    /**
+     * <p>Returns list of proposal versions for given proposal</p>
+     * @param proposalId id of a proposal
+     * @param start first entity
+     * @param end last entity
+     * @return list of proposal versions
+     * @throws SystemException
+     */
+    public List<ProposalVersion> getByProposalId(long proposalId, int start, int end) throws SystemException {
+        return proposalVersionPersistence.findByProposalId(proposalId, start, end);
+    }
 }
