@@ -1,6 +1,8 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.base.ProposalSupporterLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.ProposalSupporterPK;
 
 /**
  * The implementation of the proposal supporter local service.
@@ -23,4 +25,9 @@ public class ProposalSupporterLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalSupporterLocalServiceUtil} to access the proposal supporter local service.
      */
+
+    public ProposalSupporter create(long proposalID, long userID) {
+        return createProposalSupporter(new ProposalSupporterPK(proposalID, userID));
+    }
+
 }

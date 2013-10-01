@@ -4,10 +4,12 @@ import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
+import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.icesoft.faces.async.render.SessionRenderer;
 
 import java.util.*;
 
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -16,8 +18,6 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.portlets.admintasks.migration.Pair;
-
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +31,7 @@ public class DataMigrator implements Runnable {
 
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
-    private boolean TESTING = false;
+    private boolean TESTING = true;
 
     public boolean STOP = false;
 
@@ -50,7 +50,12 @@ public class DataMigrator implements Runnable {
                 deleteAllProposalVersions() &
                 deleteAllProposalAttributes() &
                 deleteAllPlan2Proposal() &
-                deleteAllProposal2Phase();
+                deleteAllProposal2Phase() &
+                deleteAllProposalVotes() &
+                deleteAllProposalSupporters() &
+                deleteAllProposalContestPhaseAttributes() &
+                deleteAllProposalContestPhaseAttributeTypes();
+
         if (!dbSuccess) return;
         pushAjaxUpdate("Successfully cleaned DB");
 
@@ -69,7 +74,7 @@ public class DataMigrator implements Runnable {
                 skippedFirstRecords = true;
             }
 
-            System.out.println(counter + "\t" + groupedPlans.size() + "\t" + (counter % (groupedPlans.size() / 33)));
+            //System.out.println(counter + "\t" + groupedPlans.size() + "\t" + (counter % (groupedPlans.size() / 33)));
             if (++counter > 0 && (counter % (groupedPlans.size() / 33)) == 0) updateLastAjaxUpdate((100 * counter / groupedPlans.size()) + "%");
             Pair<Long,List<PlanItem>> pair = i.next();
             createNewPlan(pair.getLeft(),pair.getRight());
@@ -78,7 +83,6 @@ public class DataMigrator implements Runnable {
 
         pushAjaxUpdate("-- MIGRATION FINISHED WITHOUT ERRORS --");
     }
-
 
     private void setPermissions(){
         PrincipalThreadLocal.setName(10144L);
@@ -184,6 +188,61 @@ public class DataMigrator implements Runnable {
         return true;
     }
 
+    private boolean deleteAllProposalVotes(){
+        try {
+            pushAjaxUpdate("Deleting " + ProposalVoteLocalServiceUtil.getProposalVotesCount() + " ProposalVotes");
+            for (ProposalVote p : ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE)) {
+                ProposalVoteLocalServiceUtil.deleteProposalVote(p);
+            }
+        }
+        catch (Exception e) {
+            pushAjaxUpdate("Error while cleaning DB: " + e);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean deleteAllProposalSupporters(){
+        try {
+            pushAjaxUpdate("Deleting " + ProposalSupporterLocalServiceUtil.getProposalSupportersCount() + " ProposalSupporters");
+            for (ProposalSupporter p : ProposalSupporterLocalServiceUtil.getProposalSupporters(0, Integer.MAX_VALUE)) {
+                ProposalSupporterLocalServiceUtil.deleteProposalSupporter(p);
+            }
+        }
+        catch (Exception e) {
+            pushAjaxUpdate("Error while cleaning DB: " + e);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean deleteAllProposalContestPhaseAttributeTypes(){
+        try {
+            pushAjaxUpdate("Deleting " + ProposalContestPhaseAttributeTypeLocalServiceUtil.getProposalContestPhaseAttributeTypesCount() + " ProposalAttributeTypes");
+            for (ProposalContestPhaseAttributeType p : ProposalContestPhaseAttributeTypeLocalServiceUtil.getProposalContestPhaseAttributeTypes(0, Integer.MAX_VALUE)) {
+                ProposalContestPhaseAttributeTypeLocalServiceUtil.deleteProposalContestPhaseAttributeType(p);
+            }
+        }
+        catch (Exception e) {
+            pushAjaxUpdate("Error while cleaning DB: " + e);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean deleteAllProposalContestPhaseAttributes(){
+        try {
+            pushAjaxUpdate("Deleting " + ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributesCount() + " ProposalAttributes");
+            for (ProposalContestPhaseAttribute p : ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(0, Integer.MAX_VALUE)) {
+                ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(p);
+            }
+        }
+        catch (Exception e) {
+            pushAjaxUpdate("Error while cleaning DB: " + e);
+            return false;
+        }
+        return true;
+    }
 
     private List<Pair<Long,List<PlanItem>>> getAllDistinctPlanGroupIds(){
         pushAjaxUpdate("Getting Distinct PlanGroupIDs");
@@ -272,6 +331,8 @@ public class DataMigrator implements Runnable {
             pushAjaxUpdate("Error while updating Proposal " + groupID + ": " + e);
         }
 
+        List<Long> planFans = new ArrayList<Long>();
+
         // Loop through all plans - each representing one contest phase
         for(PlanItem plan :  plans) {
             // get updated proposal
@@ -291,7 +352,67 @@ public class DataMigrator implements Runnable {
             // plan entity represents a last version of a plan (for given planId) so we need to iterate over all of it's versions
             // to create respective attributes of a proposal
             createProposalAttributesFromPlan(plan,proposal);
+            createVotesFromPlan(plan,proposal);
+            // copy supporters (fans)
+            createSupporters(plan,proposal,planFans);
+
+            // create ribbons for this plan
+            createRibbons(plan, proposal);
         }
+    }
+
+    private void createVotesFromPlan(PlanItem plan, Proposal proposal){
+        List<PlanVote> planVotes = null;
+        long contestPhase = 0;
+        try{
+            planVotes = PlanVoteLocalServiceUtil.getPlanVotes(plan.getPlanId());
+            contestPhase = PlanItemLocalServiceUtil.getContestPhase(plan).getContestPhasePK();
+        } catch (Exception e){
+            pushAjaxUpdate("Error while getting Votes " + plan.getPlanId() + ": " + e);
+            return;
+        }
+
+        for (PlanVote planVote : planVotes){
+            ProposalVote vote = ProposalVoteLocalServiceUtil.create(contestPhase, planVote.getUserId());
+            vote.setCreateDate(planVote.getCreateDate());
+            vote.setProposalId(proposal.getProposalId());
+            try{
+                ProposalVoteLocalServiceUtil.addProposalVote(vote);
+            } catch (Exception e){
+                pushAjaxUpdate("Error while persisting Votes " + plan.getPlanId() + ": " + e);
+                return;
+            }
+        }
+
+
+    }
+
+    private void createSupporters(PlanItem plan, Proposal proposal, List<Long> proposalSupporter){
+        List<PlanFan> planFans = null;
+        long contestPhase = 0;
+        try{
+            planFans = PlanFanLocalServiceUtil.getPlanFansForPlan(plan.getPlanId());
+        } catch (Exception e){
+            pushAjaxUpdate("Error while getting Fans " + plan.getPlanId() + ": " + e);
+            return;
+        }
+
+        for (PlanFan planFan : planFans){
+            // add supporter if not already added
+            if (!proposalSupporter.contains(planFan.getUserId())){
+                ProposalSupporter supporter = ProposalSupporterLocalServiceUtil.create(proposal.getProposalId(),planFan.getUserId());
+                supporter.setCreateDate(planFan.getCreated());
+                try{
+                    ProposalSupporterLocalServiceUtil.addProposalSupporter(supporter);
+                } catch (Exception e){
+                    pushAjaxUpdate("Error while persisting Supporters " + plan.getPlanId() + ": " + e);
+                    return;
+                }
+                proposalSupporter.add(planFan.getUserId());
+            }
+        }
+
+
     }
 
     private void createPlan2ProposalMapping(PlanItem plan, Proposal proposal){
@@ -399,6 +520,33 @@ public class DataMigrator implements Runnable {
         }
     }
 
+    private void updateLatestVersionDate(Proposal proposal, Date date){
+        // get latest version of a proposal
+
+        ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+                ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
+
+        DynamicQuery versionQuery = DynamicQueryFactoryUtil.forClass(ProposalVersion.class, portletClassLoader);
+        versionQuery.add(PropertyFactoryUtil.forName("primaryKey.proposalId").eq(proposal.getProposalId()));
+        versionQuery.addOrder(OrderFactoryUtil.desc("primaryKey.version"));
+        ProposalVersion version = null;
+        try{
+            List<ProposalVersion> versions = ProposalVersionLocalServiceUtil.dynamicQuery(versionQuery);
+            if (versions.size() > 0){
+                version = (ProposalVersion) versions.get(0);
+                version.setCreateDate(date);
+                ProposalVersionLocalServiceUtil.updateProposalVersion(version);
+            } else {
+                System.out.println("Could not update Version at proposalId: " + proposal.getProposalId());
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+            pushAjaxUpdate("Could not find latest version for proposal: " + proposal.getProposalId());
+            return;
+        }
+    }
+
     private void setAttributeRelatedToScenario(PlanItem plan, Proposal p, String attribute){
         List<PlanModelRun> pmrs = null;
         try{
@@ -418,6 +566,7 @@ public class DataMigrator implements Runnable {
                 break;
             }
         }
+        updateLatestVersionDate(p,plan.getUpdated());
     }
 
     private void setAttributeRelatedToPlanMeta(PlanItem plan, Proposal p, String attribute){
@@ -439,6 +588,7 @@ public class DataMigrator implements Runnable {
                 break;
             }
         }
+        updateLatestVersionDate(p,plan.getUpdated());
     }
 
     private void setAttributeRelatedToPlanSection(PlanItem plan, Proposal p, String attribute){
@@ -457,7 +607,6 @@ public class DataMigrator implements Runnable {
         } catch (Exception e){
             pushAjaxUpdate("Error while getting Section " + plan.getPlanId() + ": " + e);
         }
-        //if (planSections != null && planSections.size() > 1) pushAjaxUpdate("Found more then one PlanSection: (id) " + plan.getPlanId());
 
         for(PlanSection planSection :  planSections) {
             try{
@@ -467,6 +616,7 @@ public class DataMigrator implements Runnable {
                 pushAjaxUpdate("Error while setting Section " + plan.getPlanId() + ": " + e);
             }
         }
+        updateLatestVersionDate(p,plan.getUpdated());
     }
 
     private void setAttributeRelatedToPlanDescription(PlanItem plan, Proposal p, String attribute){
@@ -494,6 +644,119 @@ public class DataMigrator implements Runnable {
                 break;
             }
         }
+        updateLatestVersionDate(p,plan.getUpdated());
+    }
+
+    private void createRibbons(PlanItem plan, Proposal p){
+        ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+                ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
+
+        DynamicQuery planRibbonQuery = DynamicQueryFactoryUtil.forClass(PlanAttribute.class, portletClassLoader);
+        planRibbonQuery.add(PropertyFactoryUtil.forName("attributeName").like("PLAN_RIBBON%"));
+        planRibbonQuery.add(PropertyFactoryUtil.forName("planId").eq(plan.getPlanId()));
+
+        long planRibbon = -1;
+        String planRibbonText = "";
+
+        List<PlanAttribute> ribbons = null;
+        try{
+            ribbons = PlanAttributeLocalServiceUtil.dynamicQuery(planRibbonQuery);
+        } catch(Exception e){
+            e.printStackTrace();
+            pushAjaxUpdate("Error while getting ribbons");
+            return;
+        }
+
+        for (PlanAttribute pa : ribbons){
+            if (pa.getAttributeName().equalsIgnoreCase("PLAN_RIBBON")){
+                try{
+                    planRibbon = Long.parseLong(pa.getAttributeValue());
+                } catch (NumberFormatException e){
+                    planRibbon = -1;
+                }
+            } else if (pa.getAttributeName().equalsIgnoreCase("PLAN_RIBBON_TEXT")){
+                planRibbonText = pa.getAttributeValue();
+            }
+
+        }
+
+        if (planRibbon < 1) return;
+
+        PlanMeta currentPlanMeta = null;
+        // get current plan meta for setting proposal entity attributes
+        try{
+            currentPlanMeta = PlanMetaLocalServiceUtil.getCurrentForPlan(plan);
+        } catch (Exception e){
+            pushAjaxUpdate("Error while getting PlanMetas " + plan.getId() + ": " + e);
+            return;
+        }
+
+
+
+        DynamicQuery proposalRibbonQuery = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttributeType.class, portletClassLoader);
+        planRibbonQuery.add(PropertyFactoryUtil.forName("ribbon").eq(planRibbon));
+        planRibbonQuery.add(PropertyFactoryUtil.forName("hoverText").eq(planRibbonText));
+
+        List<ProposalContestPhaseAttributeType> ribbonTypes = null;
+        try{
+            ribbonTypes = ProposalContestPhaseAttributeTypeLocalServiceUtil.dynamicQuery(proposalRibbonQuery);
+        } catch(Exception e){
+            e.printStackTrace();
+            pushAjaxUpdate("Error while getting ribbons");
+            return;
+        }
+
+        if (ribbonTypes.size() > 0){
+            // set up link to ribbon with get0
+            try{
+                ProposalContestPhaseAttribute attr = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
+                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()
+                        ));
+                attr.setProposalId(p.getProposalId());
+                attr.setTypeId(ribbonTypes.get(0).getId());
+                attr.setContestPhaseId(currentPlanMeta.getContestPhase());
+                ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attr);
+                /*TODO SET CONTEST PHASE*/
+            } catch (Exception e){
+                e.printStackTrace();
+                pushAjaxUpdate("Error while getting ribbons");
+            }
+
+        } else {
+            // set up new ribbon
+            ProposalContestPhaseAttributeType attributeType = null;
+            try{
+                attributeType = ProposalContestPhaseAttributeTypeLocalServiceUtil.createProposalContestPhaseAttributeType(
+                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttributeType.class.getName())
+                );
+            } catch (Exception e){
+                e.printStackTrace();
+                pushAjaxUpdate("Error while getting ribbons");
+            }
+            attributeType.setRibbon(planRibbon + "");
+            attributeType.setHoverText(planRibbonText);
+
+            try{
+                ProposalContestPhaseAttributeTypeLocalServiceUtil.updateProposalContestPhaseAttributeType(attributeType);
+            } catch (Exception e){
+                e.printStackTrace();
+                pushAjaxUpdate("Error while getting ribbons");
+            }
+
+            try{
+                ProposalContestPhaseAttribute attr = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
+                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()
+                        ));
+                attr.setProposalId(p.getProposalId());
+                attr.setTypeId(attributeType.getId());
+                attr.setContestPhaseId(currentPlanMeta.getContestPhase());
+                ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attr);
+            } catch (Exception e){
+                e.printStackTrace();
+                pushAjaxUpdate("Error while getting ribbons");
+            }
+        }
+
     }
 
     private void pushAjaxUpdate(String message){

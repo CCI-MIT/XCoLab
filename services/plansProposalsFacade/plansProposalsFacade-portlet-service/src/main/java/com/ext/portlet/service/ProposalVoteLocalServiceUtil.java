@@ -250,6 +250,11 @@ public class ProposalVoteLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    public static com.ext.portlet.model.ProposalVote create(
+        long contestPhaseId, long userID) {
+        return getService().create(contestPhaseId, userID);
+    }
+
     public static void clearService() {
         _service = null;
     }

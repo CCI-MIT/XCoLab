@@ -24,6 +24,7 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
     private MethodKey _updateProposalVoteMethodKey14;
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
+    private MethodKey _createMethodKey17;
 
     public ProposalVoteLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -90,6 +91,9 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
 
         _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setBeanIdentifier", java.lang.String.class);
+
+        _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+                "create", long.class, long.class);
     }
 
     public com.ext.portlet.model.ProposalVote addProposalVote(
@@ -521,6 +525,27 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
                     " is not a valid exception");
             }
         }
+    }
+
+    public com.ext.portlet.model.ProposalVote create(long contestPhaseId,
+        long userID) {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_createMethodKey17,
+                contestPhaseId, userID);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

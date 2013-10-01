@@ -52,6 +52,7 @@ public class AdminTasksBean {
     private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
 
     private DataMigrator dataMigrator;
+    private DataIntegrityChecker dataIntegrityChecker;
     private List<String> messages;
     private Thread dataMigrationThread;
     private Thread dataIntegrityCheckerThread;
@@ -690,13 +691,14 @@ public class AdminTasksBean {
 
         SessionRenderer.addCurrentSession("migration");
         messages = new ArrayList<String>();
-        dataIntegrityCheckerThread = new Thread(new DataIntegrityChecker(messages));
+        dataIntegrityChecker =  new DataIntegrityChecker(messages);
+        dataIntegrityCheckerThread = new Thread(dataIntegrityChecker);
         dataIntegrityCheckerThread.start();
 
     }
 
     public void stopDBIntegrityCheck(){
-        dataIntegrityCheckerThread.stop();
+        dataIntegrityChecker.STOP = true;
         if (messages!=null) messages.add("Migration STOPPED");
         SessionRenderer.render("migration");
         SessionRenderer.removeCurrentSession("migration");

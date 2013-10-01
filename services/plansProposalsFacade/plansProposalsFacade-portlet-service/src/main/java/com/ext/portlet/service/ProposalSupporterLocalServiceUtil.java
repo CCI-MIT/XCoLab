@@ -250,6 +250,11 @@ public class ProposalSupporterLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    public static com.ext.portlet.model.ProposalSupporter create(
+        long proposalID, long userID) {
+        return getService().create(proposalID, userID);
+    }
+
     public static void clearService() {
         _service = null;
     }

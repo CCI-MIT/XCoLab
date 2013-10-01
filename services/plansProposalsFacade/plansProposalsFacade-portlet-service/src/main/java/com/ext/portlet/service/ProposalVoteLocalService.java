@@ -222,4 +222,7 @@ public interface ProposalVoteLocalService extends PersistedModelLocalService {
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    public com.ext.portlet.model.ProposalVote create(long contestPhaseId,
+        long userID);
 }
