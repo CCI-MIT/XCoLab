@@ -605,6 +605,20 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Returns number of proposal supporters</p>
+    *
+    * @param proposalId proposal id
+    * @return number of proposal supporters
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public int getSupportersCount(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getSupportersCount(proposalId);
+    }
+
+    /**
     * <p>Returns true if user is a proposal supporter, false otherwise.</p>
     *
     * @param proposalId proposal id

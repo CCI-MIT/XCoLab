@@ -622,6 +622,20 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
+    * <p>Returns number of proposal supporters</p>
+    *
+    * @param proposalId proposal id
+    * @return number of proposal supporters
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public static int getSupportersCount(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getSupportersCount(proposalId);
+    }
+
+    /**
     * <p>Returns true if user is a proposal supporter, false otherwise.</p>
     *
     * @param proposalId proposal id

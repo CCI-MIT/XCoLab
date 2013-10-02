@@ -173,9 +173,8 @@ public class ProposalWrapper {
         return UserLocalServiceUtil.getUser(proposal.getAuthorId());
     }
     
-    public long getSupportersCount() {
-        // TODO
-        return 0;
+    public long getSupportersCount() throws PortalException, SystemException {
+        return ProposalLocalServiceUtil.getSupportersCount(proposal.getProposalId());
     }
 
     public long getCommentsCount() {
@@ -184,18 +183,15 @@ public class ProposalWrapper {
     }
     
     public Date getLastModifiedDate() {
-        // TODO
-        return new Date();
+        return proposal.getUpdatedDate();
     }
     
-    public boolean isOpen() {
-        // TODO
-        return true;
+    public boolean isOpen() throws PortalException, SystemException {
+        return getAttributeValueLong(ProposalAttributeKeys.OPEN, 0, 0) > 0;
     }
     
-    public long getVotesCount() {
-        // TODO
-        return 0;
+    public long getVotesCount() throws SystemException {
+        return ProposalLocalServiceUtil.getVotesCount(proposal.getProposalId(), contestPhase.getContestPhasePK());
     }
     
     public long getImageId() throws PortalException, SystemException {

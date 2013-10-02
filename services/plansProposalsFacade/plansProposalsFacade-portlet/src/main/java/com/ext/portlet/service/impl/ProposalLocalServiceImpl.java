@@ -492,6 +492,18 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     }
     
     /**
+     * <p>Returns number of proposal supporters</p>
+     * 
+     * @param proposalId proposal id
+     * @return number of proposal supporters
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public int getSupportersCount(long proposalId) throws SystemException, PortalException {
+        return proposalSupporterPersistence.countByProposalId(proposalId);
+    }
+    
+    /**
      * <p>Returns true if user is a proposal supporter, false otherwise.</p>
      * 
      * @param proposalId proposal id
