@@ -1,10 +1,7 @@
 package org.xcolab.portlets.admintasks.migration.persistence;
 
 import com.ext.portlet.model.*;
-import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil;
+import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -80,6 +77,21 @@ public class OldPersistenceQueries {
             return null;
         }
         return planSections;
+    }
+
+    public static List<PlanItem> getAllVersionsForPlanASC(long planId){
+        DynamicQuery planQuery = DynamicQueryFactoryUtil.forClass(PlanItem.class, portletClassLoader);
+        planQuery.add(PropertyFactoryUtil.forName("planId").eq(planId));
+        planQuery.addOrder(OrderFactoryUtil.asc("version"));
+
+        List<PlanItem> planItems = null;
+        try{
+            planItems = PlanItemLocalServiceUtil.dynamicQuery(planQuery);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return planItems;
     }
 
 

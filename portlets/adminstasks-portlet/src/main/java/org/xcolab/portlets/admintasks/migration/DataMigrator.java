@@ -117,7 +117,11 @@ public class DataMigrator implements Runnable {
     }
 
     private void createNewPlan(long groupID, List<PlanItem> plans){
-        
+
+        if (groupID == 1001501){
+            System.out.println("..");
+        }
+
         // sort plans by create date
         Collections.sort(plans, new Comparator<PlanItem>() {
 
@@ -269,7 +273,7 @@ public class DataMigrator implements Runnable {
             }
         }
         // add new p2p record
-        System.out.println("Current Version:" + proposal.getCurrentVersion() + " ID: " + proposal.getProposalId() + " ContestPhase: " + currentContestPhase);
+        //System.out.println("Current Version:" + proposal.getCurrentVersion() + " ID: " + proposal.getProposalId() + " ContestPhase: " + currentContestPhase);
         PlanMeta matchingMeta = null;
         try {
             for (PlanMeta pm : PlanMetaLocalServiceUtil.getAllForPlan(plan)){
@@ -301,12 +305,7 @@ public class DataMigrator implements Runnable {
     }
 
     private void createProposalAttributesFromPlan(PlanItem plan, Proposal proposal){
-        List<PlanItem> planVersions = null;
-        try {
-            planVersions = PlanItemLocalServiceUtil.getAllVersions(plan);
-        } catch (SystemException e1) {
-            pushAjaxUpdate("Error while fetching plan versions: " + plan.getPlanId() + "\n" + e1);
-        }
+        List<PlanItem> planVersions = OldPersistenceQueries.getAllVersionsForPlanASC(plan.getPlanId());
 
         for (PlanItem planVersion : planVersions) {
             if (planVersion.getUpdateType().equalsIgnoreCase("CREATED")){
