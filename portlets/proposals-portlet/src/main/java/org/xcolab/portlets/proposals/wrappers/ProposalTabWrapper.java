@@ -41,4 +41,8 @@ public class ProposalTabWrapper {
         }
         return displayName;
     }
+    
+    public boolean isDefault() {
+        return tab.isDefault();
+    }
 }
