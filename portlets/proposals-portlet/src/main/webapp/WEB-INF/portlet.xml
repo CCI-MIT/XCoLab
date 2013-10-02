@@ -5,6 +5,7 @@
 		<portlet-name>proposals-portlet</portlet-name>
 		<display-name>MIT ClimateColab Proposals Portlet</display-name>
 		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+<!-- 		<expiration-cache>1</expiration-cache>-->
 		<supports>
 			<mime-type>text/html</mime-type>
 			<portlet-mode>edit</portlet-mode>

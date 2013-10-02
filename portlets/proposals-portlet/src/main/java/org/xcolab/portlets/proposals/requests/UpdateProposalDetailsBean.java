@@ -11,8 +11,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-@Controller
-@RequestMapping("view")
 public class UpdateProposalDetailsBean {
     private Map<Long, String> sectionsContent = new HashMap<Long, String>();  
     private String pitch;

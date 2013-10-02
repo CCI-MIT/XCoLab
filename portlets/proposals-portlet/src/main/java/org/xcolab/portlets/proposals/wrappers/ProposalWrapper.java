@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
@@ -258,6 +260,17 @@ public class ProposalWrapper {
         catch (NoSuchProposalAttributeException e) {
             return null;
         }
+    }
+
+
+    
+    public String getAuthorName() throws PortalException, SystemException {
+        String authorName = getTeam();
+        if (StringUtils.isBlank(authorName)) {
+            authorName = getAuthor().getScreenName();
+        }
+        return authorName;
+        
     }
     
     

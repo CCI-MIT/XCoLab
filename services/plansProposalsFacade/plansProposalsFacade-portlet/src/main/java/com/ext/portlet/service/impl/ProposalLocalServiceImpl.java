@@ -194,8 +194,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         int currentVersion = proposal.getCurrentVersion();
         int newVersion = currentVersion + 1;
 
-        proposal.setCurrentVersion(newVersion);
-
         // find attributes for current version of a proposal
         List<ProposalAttribute> currentProposalAttributes = proposalAttributePersistence.findByProposalIdVersion(
                 proposalId, currentVersion);
@@ -215,6 +213,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // set new value for provided attribute
         ProposalAttribute attribute = setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
 
+        proposal.setCurrentVersion(newVersion);
+        proposal.setUpdatedDate(new Date());
+        
         // create newly created version descriptor
         createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId);
         updateProposal(proposal);
@@ -453,6 +454,17 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of an LR error
      */
     public List<Proposal> getProposalsInContestPhase(long contestPhaseId) throws PortalException, SystemException {
+        List<Proposal> proposals = new ArrayList<>();
+        
+        for (Proposal2Phase proposal2Phase: proposal2PhasePersistence.findByContestPhaseId(contestPhaseId)) {
+            proposals.add(proposalPersistence.findByPrimaryKey(proposal2Phase.getProposalId()));
+        }
+        return proposals;
+    }
+    
+    public List<Proposal> getProposalsInContestPhase(long contestPhaseId, String sortProperty, boolean sortAscending, int start, int end) 
+            throws PortalException, SystemException {
+        
         List<Proposal> proposals = new ArrayList<>();
         
         for (Proposal2Phase proposal2Phase: proposal2PhasePersistence.findByContestPhaseId(contestPhaseId)) {

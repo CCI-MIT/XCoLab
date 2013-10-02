@@ -30,50 +30,92 @@
 	<div class="blueheaderbar tooltips">
 				<div class="proposalname">
 					<div style="display: inline-block">
-						<a href="#">Proposal name</a>
+						<portlet:renderURL var="sortURL">
+        					<portlet:param name="contestId" value="${contest.contestPK }" />
+        					<portlet:param name="pageToDisplay" value="contestProposals" />
+        					<portlet:param name="sortColumn" value="NAME" />
+        					<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : true }" />
+        				</portlet:renderURL>
+						<a href="${sortURL }">Proposal name</a>
 						<div class="tooltip">
 							click to sort by name
 							<div class="tt-arrow"><!-- --></div>
 						</div>
+						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
 					</div>
 					/&#160;
 
 					<div style="display: inline-block">
-						<a href="#">Author(s)</a>
+						<portlet:renderURL var="sortURL">
+        					<portlet:param name="contestId" value="${contest.contestPK }" />
+        					<portlet:param name="pageToDisplay" value="contestProposals" />
+        					<portlet:param name="sortColumn" value="AUTHOR" />
+        					<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'AUTHOR' ? not sortFilterPage.sortAscending : true }" />
+        				</portlet:renderURL>
+						<a href="${sortURL }">Author(s)</a>
 
 						<div class="tooltip">
 							click to sort by author
 							<div class="tt-arrow"><!-- --></div>
 						</div>
+						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
 					</div>
 				</div>
 				<div class="thumbs">
-					<a href="#"><!--  --></a>
+					<portlet:renderURL var="sortURL">
+        				<portlet:param name="contestId" value="${contest.contestPK }" />
+        				<portlet:param name="pageToDisplay" value="contestProposals" />
+        				<portlet:param name="sortColumn" value="SUPPORTERS" />
+        				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : true }" />
+        			</portlet:renderURL>
+					<a href="${sortURL }"><!--  --></a>
 					<div class="tooltip">
 						click to sort by<br />number of supporters
 						<div class="tt-arrow"><!-- --></div>
 					</div>
+					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
 				</div>
 				<div class="propcomm">
-					<a href="#"><!--  --></a>
+					<portlet:renderURL var="sortURL">
+        				<portlet:param name="contestId" value="${contest.contestPK }" />
+        				<portlet:param name="pageToDisplay" value="contestProposals" />
+        				<portlet:param name="sortColumn" value="COMMENTS" />
+        				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'COMMENTS' ? not sortFilterPage.sortAscending : true }" />
+        			</portlet:renderURL>
+					<a href="${sortURL }"><!--  --></a>
 					<div class="tooltip">
 						click to sort by<br />number of comments
 						<div class="tt-arrow"><!-- --></div>
 					</div>
+					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
 				</div>
 				<div class="modified">
-					<a href="#">Modified</a>
+					<portlet:renderURL var="sortURL">
+        				<portlet:param name="contestId" value="${contest.contestPK }" />
+        				<portlet:param name="pageToDisplay" value="contestProposals" />
+        				<portlet:param name="sortColumn" value="MODIFIED" />
+        				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : true }" />
+        			</portlet:renderURL>
+					<a href="${sortURL }">Modified</a>
 					<div class="tooltip">
 						click to sort by date
 						<div class="tt-arrow"><!-- --></div>
 					</div>
+					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
 				</div>
 				<div class="contributor">
-					<a href="#">Contributors</a>
+					<portlet:renderURL var="sortURL">
+        				<portlet:param name="contestId" value="${contest.contestPK }" />
+        				<portlet:param name="pageToDisplay" value="contestProposals" />
+        				<portlet:param name="sortColumn" value="CONTRIBUTORS" />
+        				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CONTRIBUTORS' ? not sortFilterPage.sortAscending : true }" />
+        			</portlet:renderURL>
+					<a href="${sortURL }">Contributors</a>
 					<div class="tooltip">
 						click to sort by contributor
 						<div class="tt-arrow"><!-- --></div>
 					</div>
+					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
 				</div>
 			</div>
 			<c:forEach var="proposal" items="${proposals }">
@@ -92,19 +134,7 @@
             <div class="row1">
                 <div class="title-author">
                     <h4>
-                    	<c:if test="${not empty singleProposal.tags}">
-                            <div style="display: inline; display: inline-block;">
-                                <span class="fieldWithTooltip">${proposal.tags}:</span>
-                                <div class="tooltip">
-                                    ${proposal.tagsHover}
-                                    <div class="tt-arrow"><!--  --></div>
-                                </div>
-                            </div>
-                                
-                        </c:if>
-                        
-                        <proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
-                        
+                    	<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
                         /&#160;
                         <c:choose>
                         	<c:when test="${empty proposal.team}">
