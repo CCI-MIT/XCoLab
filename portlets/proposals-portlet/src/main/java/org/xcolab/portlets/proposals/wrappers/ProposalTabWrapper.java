@@ -45,4 +45,8 @@ public class ProposalTabWrapper {
     public boolean isDefault() {
         return tab.isDefault();
     }
+    
+    public boolean isDefaultTab() {
+        return tab.isDefault();
+    }
 }
