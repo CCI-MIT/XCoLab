@@ -379,13 +379,13 @@ public class DataMigrator implements Runnable {
                 try{
                     PlanType planType = PlanItemLocalServiceUtil.getPlanType(plan);
                     ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SCENARIO_ID,planType.getModelId(),null,pmr.getScenarioId(),0);
+                    updateLatestVersionDate(p,plan.getUpdated());
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting ScenarioID " + plan.getPlanId() + ": " + e);
                 }
                 break;
             }
         }
-        updateLatestVersionDate(p,plan.getUpdated());
     }
 
     private void setAttributeRelatedToPlanMeta(PlanItem plan, Proposal p, String attribute){
@@ -401,13 +401,13 @@ public class DataMigrator implements Runnable {
                 try{
                     if(attribute.equalsIgnoreCase("PLAN_OPENED") || attribute.equalsIgnoreCase("PLAN_CLOSED"))
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.OPEN,0,null,planMeta.getOpen() ? 1 : 0,0);
+                        updateLatestVersionDate(p,plan.getUpdated());
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);
                 }
                 break;
             }
         }
-        updateLatestVersionDate(p,plan.getUpdated());
     }
 
     private void setAttributeRelatedToPlanSection(PlanItem plan, Proposal p, String attribute){
@@ -423,11 +423,11 @@ public class DataMigrator implements Runnable {
             try{
                 ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SECTION,
                         planSection.getPlanSectionDefinitionId(),planSection.getContent(),0,0);
+                updateLatestVersionDate(p,plan.getUpdated());
             } catch (Exception e){
                 pushAjaxUpdate("Error while setting Section " + plan.getPlanId() + ": " + e);
             }
         }
-        updateLatestVersionDate(p,plan.getUpdated());
     }
 
     private void setAttributeRelatedToPlanDescription(PlanItem plan, Proposal p, String attribute){
@@ -448,13 +448,13 @@ public class DataMigrator implements Runnable {
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getPitch(),0,0);
                     else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID))
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,null,planDescription.getImage(),0);
+                    updateLatestVersionDate(p,plan.getUpdated());
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);
                 }
                 break;
             }
         }
-        updateLatestVersionDate(p,plan.getUpdated());
     }
 
     private void createRibbons(PlanItem plan, Proposal p){
