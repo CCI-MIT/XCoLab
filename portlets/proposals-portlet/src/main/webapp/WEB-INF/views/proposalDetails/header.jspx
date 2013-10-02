@@ -42,7 +42,7 @@
 					<c:forEach var="tab" items="${tabs }">
 						<li class="${currentTab == tab.tab ? 'c' : ''}">
 							<c:choose>
-								<c:when test="${tab.tab.default }">
+								<c:when test="${tab.default }">
 									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}" />
 								</c:when>
 								<c:otherwise>
