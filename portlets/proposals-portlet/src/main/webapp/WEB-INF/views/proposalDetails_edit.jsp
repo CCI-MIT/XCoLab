@@ -8,6 +8,7 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 <jsp:directive.include file="./init.jspx" />
 
+    <script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js" ><!-- --></script>
 	<jsp:directive.include file="./proposalDetails/header.jspx" />	
 	<div id="content">
 		<div class="prop-left">
@@ -20,7 +21,7 @@
 	</portlet:actionURL>
 	
 	
-	<form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean">
+	<form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" cssClass="addpropform">
 			<input type="submit" value="submit" />
 		<c:forEach var="section" items="${proposal.sections }">
 			<c:if test="${not section.locked }">
@@ -37,7 +38,7 @@
                             <form:textarea cssClass="rte"  cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]" />
                         <c:if test="${section.characterLimit gt 0}">
                             <div class="inputLimitContainer">
-                                <span class="limit_characterCount"></span>/&#160;<span class="limit_charactersMax">${section.characterLimit}</span> characters
+                                <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">${section.characterLimit}</span> characters
                             </div>
                         </c:if>
                     </div>

@@ -38,20 +38,16 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             ContestPhase contestPhase = proposalsContext.getContestPhase(request);
             Proposal proposal = proposalsContext.getProposal(request);
             ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-            Proposal2Phase proposal2Phase = proposalsContext.getProposal2Phase(request);
             
             
             if (contest != null) {
-                modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST, new ContestWrapper(contest));
+                modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST, proposalsContext.getContest(request));
                 
                 if (contestPhase != null) {
-                    modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_PHASE, new ContestPhaseWrapper(contestPhase));
+                    modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_PHASE, proposalsContext.getContestPhaseWrapped(request));
                     
                     if (proposal != null) {
-                        modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSAL, 
-                                new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
-                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase));
-                   
+                        modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSAL, proposalsContext.getProposalWrapped(request));
                     }
                 }
             }

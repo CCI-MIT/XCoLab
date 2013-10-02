@@ -218,6 +218,31 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                 Long.class.getName(), Integer.class.getName(),
                 String.class.getName(), Long.class.getName()
             });
+    public static final FinderPath FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID =
+        new FinderPath(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalAttributeModelImpl.FINDER_CACHE_ENABLED,
+            ProposalAttributeImpl.class, FINDER_CLASS_NAME_ENTITY,
+            "fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId",
+            new String[] {
+                Long.class.getName(), Integer.class.getName(),
+                Integer.class.getName(), String.class.getName(),
+                Long.class.getName()
+            },
+            ProposalAttributeModelImpl.PROPOSALID_COLUMN_BITMASK |
+            ProposalAttributeModelImpl.VERSION_COLUMN_BITMASK |
+            ProposalAttributeModelImpl.VERSIONWHENCREATED_COLUMN_BITMASK |
+            ProposalAttributeModelImpl.NAME_COLUMN_BITMASK |
+            ProposalAttributeModelImpl.ADDITIONALID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID =
+        new FinderPath(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalAttributeModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId",
+            new String[] {
+                Long.class.getName(), Integer.class.getName(),
+                Integer.class.getName(), String.class.getName(),
+                Long.class.getName()
+            });
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ProposalAttributeModelImpl.ENTITY_CACHE_ENABLED,
             ProposalAttributeModelImpl.FINDER_CACHE_ENABLED,
             ProposalAttributeImpl.class,
@@ -252,6 +277,20 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
     private static final String _FINDER_COLUMN_PROPOSALIDVERSIONNAMEADDITIONALID_NAME_3 =
         "(proposalAttribute.name IS NULL OR proposalAttribute.name = ?) AND ";
     private static final String _FINDER_COLUMN_PROPOSALIDVERSIONNAMEADDITIONALID_ADDITIONALID_2 =
+        "proposalAttribute.additionalId = ?";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_PROPOSALID_2 =
+        "proposalAttribute.proposalId = ? AND ";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_VERSION_2 =
+        "proposalAttribute.version >= ? AND ";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_VERSIONWHENCREATED_2 =
+        "proposalAttribute.versionWhenCreated <= ? AND ";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_1 =
+        "proposalAttribute.name IS NULL AND ";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_2 =
+        "proposalAttribute.name = ? AND ";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_3 =
+        "(proposalAttribute.name IS NULL OR proposalAttribute.name = ?) AND ";
+    private static final String _FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_ADDITIONALID_2 =
         "proposalAttribute.additionalId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "proposalAttribute.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ProposalAttribute exists with the primary key ";
@@ -448,6 +487,16 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                 Long.valueOf(proposalAttribute.getAdditionalId())
             }, proposalAttribute);
 
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+            new Object[] {
+                Long.valueOf(proposalAttribute.getProposalId()),
+                Integer.valueOf(proposalAttribute.getVersion()),
+                Integer.valueOf(proposalAttribute.getVersionWhenCreated()),
+                
+            proposalAttribute.getName(),
+                Long.valueOf(proposalAttribute.getAdditionalId())
+            }, proposalAttribute);
+
         proposalAttribute.resetOriginalValues();
     }
 
@@ -525,6 +574,16 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
             new Object[] {
                 Long.valueOf(proposalAttribute.getProposalId()),
                 Integer.valueOf(proposalAttribute.getVersion()),
+                
+            proposalAttribute.getName(),
+                Long.valueOf(proposalAttribute.getAdditionalId())
+            });
+
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+            new Object[] {
+                Long.valueOf(proposalAttribute.getProposalId()),
+                Integer.valueOf(proposalAttribute.getVersion()),
+                Integer.valueOf(proposalAttribute.getVersionWhenCreated()),
                 
             proposalAttribute.getName(),
                 Long.valueOf(proposalAttribute.getAdditionalId())
@@ -711,6 +770,16 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                 proposalAttribute.getName(),
                     Long.valueOf(proposalAttribute.getAdditionalId())
                 }, proposalAttribute);
+
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                new Object[] {
+                    Long.valueOf(proposalAttribute.getProposalId()),
+                    Integer.valueOf(proposalAttribute.getVersion()),
+                    Integer.valueOf(proposalAttribute.getVersionWhenCreated()),
+                    
+                proposalAttribute.getName(),
+                    Long.valueOf(proposalAttribute.getAdditionalId())
+                }, proposalAttribute);
         } else {
             if ((proposalAttributeModelImpl.getColumnBitmask() &
                     FINDER_PATH_FETCH_BY_PROPOSALIDVERSIONNAMEADDITIONALID.getColumnBitmask()) != 0) {
@@ -731,6 +800,34 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                     new Object[] {
                         Long.valueOf(proposalAttribute.getProposalId()),
                         Integer.valueOf(proposalAttribute.getVersion()),
+                        
+                    proposalAttribute.getName(),
+                        Long.valueOf(proposalAttribute.getAdditionalId())
+                    }, proposalAttribute);
+            }
+
+            if ((proposalAttributeModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        Long.valueOf(proposalAttributeModelImpl.getOriginalProposalId()),
+                        Integer.valueOf(proposalAttributeModelImpl.getOriginalVersion()),
+                        Integer.valueOf(proposalAttributeModelImpl.getOriginalVersionWhenCreated()),
+                        
+                        proposalAttributeModelImpl.getOriginalName(),
+                        Long.valueOf(proposalAttributeModelImpl.getOriginalAdditionalId())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                    args);
+
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                    new Object[] {
+                        Long.valueOf(proposalAttribute.getProposalId()),
+                        Integer.valueOf(proposalAttribute.getVersion()),
+                        Integer.valueOf(
+                            proposalAttribute.getVersionWhenCreated()),
                         
                     proposalAttribute.getName(),
                         Long.valueOf(proposalAttribute.getAdditionalId())
@@ -1763,6 +1860,192 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
     }
 
     /**
+     * Returns the proposal attribute where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63; or throws a {@link com.ext.portlet.NoSuchProposalAttributeException} if it could not be found.
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param name the name
+     * @param additionalId the additional ID
+     * @return the matching proposal attribute
+     * @throws com.ext.portlet.NoSuchProposalAttributeException if a matching proposal attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ProposalAttribute findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated, String name,
+        long additionalId)
+        throws NoSuchProposalAttributeException, SystemException {
+        ProposalAttribute proposalAttribute = fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(proposalId,
+                version, versionWhenCreated, name, additionalId);
+
+        if (proposalAttribute == null) {
+            StringBundler msg = new StringBundler(12);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("proposalId=");
+            msg.append(proposalId);
+
+            msg.append(", version=");
+            msg.append(version);
+
+            msg.append(", versionWhenCreated=");
+            msg.append(versionWhenCreated);
+
+            msg.append(", name=");
+            msg.append(name);
+
+            msg.append(", additionalId=");
+            msg.append(additionalId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchProposalAttributeException(msg.toString());
+        }
+
+        return proposalAttribute;
+    }
+
+    /**
+     * Returns the proposal attribute where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param name the name
+     * @param additionalId the additional ID
+     * @return the matching proposal attribute, or <code>null</code> if a matching proposal attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ProposalAttribute fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated, String name,
+        long additionalId) throws SystemException {
+        return fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(proposalId,
+            version, versionWhenCreated, name, additionalId, true);
+    }
+
+    /**
+     * Returns the proposal attribute where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param name the name
+     * @param additionalId the additional ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching proposal attribute, or <code>null</code> if a matching proposal attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ProposalAttribute fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated, String name,
+        long additionalId, boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] {
+                proposalId, version, versionWhenCreated, name, additionalId
+            };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                    finderArgs, this);
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(6);
+
+            query.append(_SQL_SELECT_PROPOSALATTRIBUTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_PROPOSALID_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_VERSION_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_VERSIONWHENCREATED_2);
+
+            if (name == null) {
+                query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_1);
+            } else {
+                if (name.equals(StringPool.BLANK)) {
+                    query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_3);
+                } else {
+                    query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_2);
+                }
+            }
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_ADDITIONALID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                qPos.add(version);
+
+                qPos.add(versionWhenCreated);
+
+                if (name != null) {
+                    qPos.add(name);
+                }
+
+                qPos.add(additionalId);
+
+                List<ProposalAttribute> list = q.list();
+
+                result = list;
+
+                ProposalAttribute proposalAttribute = null;
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                        finderArgs, list);
+                } else {
+                    proposalAttribute = list.get(0);
+
+                    cacheResult(proposalAttribute);
+
+                    if ((proposalAttribute.getProposalId() != proposalId) ||
+                            (proposalAttribute.getVersion() != version) ||
+                            (proposalAttribute.getVersionWhenCreated() != versionWhenCreated) ||
+                            (proposalAttribute.getName() == null) ||
+                            !proposalAttribute.getName().equals(name) ||
+                            (proposalAttribute.getAdditionalId() != additionalId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                            finderArgs, proposalAttribute);
+                    }
+                }
+
+                return proposalAttribute;
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (result == null) {
+                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                        finderArgs);
+                }
+
+                closeSession(session);
+            }
+        } else {
+            if (result instanceof List<?>) {
+                return null;
+            } else {
+                return (ProposalAttribute) result;
+            }
+        }
+    }
+
+    /**
      * Returns all the proposal attributes.
      *
      * @return the proposal attributes
@@ -1917,6 +2200,26 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
         throws NoSuchProposalAttributeException, SystemException {
         ProposalAttribute proposalAttribute = findByProposalIdVersionNameAdditionalId(proposalId,
                 version, name, additionalId);
+
+        remove(proposalAttribute);
+    }
+
+    /**
+     * Removes the proposal attribute where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63; from the database.
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param name the name
+     * @param additionalId the additional ID
+     * @throws SystemException if a system exception occurred
+     */
+    public void removeByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated, String name,
+        long additionalId)
+        throws NoSuchProposalAttributeException, SystemException {
+        ProposalAttribute proposalAttribute = findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(proposalId,
+                version, versionWhenCreated, name, additionalId);
 
         remove(proposalAttribute);
     }
@@ -2124,6 +2427,91 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                 }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALIDVERSIONNAMEADDITIONALID,
+                    finderArgs, count);
+
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns the number of proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @param version the version
+     * @param versionWhenCreated the version when created
+     * @param name the name
+     * @param additionalId the additional ID
+     * @return the number of matching proposal attributes
+     * @throws SystemException if a system exception occurred
+     */
+    public int countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated, String name,
+        long additionalId) throws SystemException {
+        Object[] finderArgs = new Object[] {
+                proposalId, version, versionWhenCreated, name, additionalId
+            };
+
+        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
+                finderArgs, this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(6);
+
+            query.append(_SQL_COUNT_PROPOSALATTRIBUTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_PROPOSALID_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_VERSION_2);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_VERSIONWHENCREATED_2);
+
+            if (name == null) {
+                query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_1);
+            } else {
+                if (name.equals(StringPool.BLANK)) {
+                    query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_3);
+                } else {
+                    query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_NAME_2);
+                }
+            }
+
+            query.append(_FINDER_COLUMN_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID_ADDITIONALID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                qPos.add(version);
+
+                qPos.add(versionWhenCreated);
+
+                if (name != null) {
+                    qPos.add(name);
+                }
+
+                qPos.add(additionalId);
+
+                count = (Long) q.uniqueResult();
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (count == null) {
+                    count = Long.valueOf(0);
+                }
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALID_VERSIONGREATEREQUAL_VERSIONWHENCREATEDLESSEREQUAL_NAMEADDITIONALID,
                     finderArgs, count);
 
                 closeSession(session);

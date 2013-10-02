@@ -510,6 +510,69 @@ public class ProposalAttributeUtil {
     }
 
     /**
+    * Returns the proposal attribute where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63; or throws a {@link com.ext.portlet.NoSuchProposalAttributeException} if it could not be found.
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param name the name
+    * @param additionalId the additional ID
+    * @return the matching proposal attribute
+    * @throws com.ext.portlet.NoSuchProposalAttributeException if a matching proposal attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalAttribute findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated,
+        java.lang.String name, long additionalId)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(proposalId,
+            version, versionWhenCreated, name, additionalId);
+    }
+
+    /**
+    * Returns the proposal attribute where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param name the name
+    * @param additionalId the additional ID
+    * @return the matching proposal attribute, or <code>null</code> if a matching proposal attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalAttribute fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated,
+        java.lang.String name, long additionalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(proposalId,
+            version, versionWhenCreated, name, additionalId);
+    }
+
+    /**
+    * Returns the proposal attribute where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param name the name
+    * @param additionalId the additional ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching proposal attribute, or <code>null</code> if a matching proposal attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalAttribute fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated,
+        java.lang.String name, long additionalId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(proposalId,
+            version, versionWhenCreated, name, additionalId, retrieveFromCache);
+    }
+
+    /**
     * Returns all the proposal attributes.
     *
     * @return the proposal attributes
@@ -605,6 +668,26 @@ public class ProposalAttributeUtil {
     }
 
     /**
+    * Removes the proposal attribute where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param name the name
+    * @param additionalId the additional ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated,
+        java.lang.String name, long additionalId)
+        throws com.ext.portlet.NoSuchProposalAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getPersistence()
+            .removeByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(proposalId,
+            version, versionWhenCreated, name, additionalId);
+    }
+
+    /**
     * Removes all the proposal attributes from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -660,6 +743,26 @@ public class ProposalAttributeUtil {
         return getPersistence()
                    .countByProposalIdVersionNameAdditionalId(proposalId,
             version, name, additionalId);
+    }
+
+    /**
+    * Returns the number of proposal attributes where proposalId = &#63; and version &ge; &#63; and versionWhenCreated &le; &#63; and name = &#63; and additionalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param version the version
+    * @param versionWhenCreated the version when created
+    * @param name the name
+    * @param additionalId the additional ID
+    * @return the number of matching proposal attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+        long proposalId, int version, int versionWhenCreated,
+        java.lang.String name, long additionalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(proposalId,
+            version, versionWhenCreated, name, additionalId);
     }
 
     /**

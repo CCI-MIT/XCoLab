@@ -153,6 +153,7 @@ create index IX_D273A4B8 on xcolab_Proposal2Phase (proposalId);
 create index IX_8FF24CAD on xcolab_ProposalAttribute (proposalId, version);
 create unique index IX_F4926C2 on xcolab_ProposalAttribute (proposalId, version, name, additionalId);
 create index IX_4941177 on xcolab_ProposalAttribute (proposalId, version, versionWhenCreated);
+create index IX_F612A28C on xcolab_ProposalAttribute (proposalId, version, versionWhenCreated, name, additionalId);
 
 create index IX_2AAA1DDB on xcolab_ProposalSupporter (proposalId);
 create index IX_1DCA0834 on xcolab_ProposalSupporter (userId);

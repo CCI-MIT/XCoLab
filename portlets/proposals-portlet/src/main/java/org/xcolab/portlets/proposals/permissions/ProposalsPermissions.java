@@ -39,10 +39,15 @@ public class ProposalsPermissions {
         permissionChecker = themeDisplay.getPermissionChecker();
         portletId = (String) request.getAttribute(WebKeys.PORTLET_ID);
         primKey = themeDisplay.getPortletDisplay().getResourcePK();
-
-        String statusStr = 
-                ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getStatus();
-        contestStatus = ContestStatus.valueOf(statusStr);
+        
+        if (contestPhase != null) {
+            String statusStr = 
+                    ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getStatus();
+            contestStatus = ContestStatus.valueOf(statusStr);
+        }
+        else {
+            contestStatus = null;
+        }
         
         // set proper context group id
         if (proposal == null) {

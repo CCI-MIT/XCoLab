@@ -37,6 +37,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     public static final String PROPOSAL_ID_PARAM = "planId";
     public static final String CONTEST_ID_PARAM = "contestId";
     public static final String CONTEST_PHASE_ID_PARAM = "phaseId";
+    public static final String VERSION_PARAM = "version";
     
 
     public ProposalsContextImpl() {
@@ -112,6 +113,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         final Long proposalId = (Long) ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
         final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
         final Long phaseId = (Long) ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
+        final Integer version = (Integer) ParamUtil.getInteger(request, VERSION_PARAM);
         
         
         Contest contest = null;
@@ -143,10 +145,17 @@ public class ProposalsContextImpl implements ProposalsContext {
                 request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, new ContestPhaseWrapper(contestPhase));
                 
                 if (proposal != null) {
-                    request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, 
-                            new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
-                                    proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase));
-               
+                    ProposalWrapper proposalWrapper = null;
+                    if (version != null && version > 0) {
+                        proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase);
+                    }
+                    else {
+                        request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, 
+                                new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
+                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase));
+                    }
+                    request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
+              
                 }
             }
         }

@@ -404,7 +404,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @author janusz
      */
     public ProposalAttribute getAttribute(long proposalId, int version, String attributeName, long additionalId) throws NoSuchProposalAttributeException, SystemException {
-        return proposalAttributePersistence.findByProposalIdVersionNameAdditionalId(proposalId, version, attributeName, additionalId);
+        return proposalAttributePersistence.
+                findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
+                proposalId, version, version, attributeName,  additionalId);
     }
     
     /**
