@@ -41,7 +41,7 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             
             
             if (contest != null) {
-                modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST, proposalsContext.getContest(request));
+                modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST, proposalsContext.getContestWrapped(request));
                 
                 if (contestPhase != null) {
                     modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_PHASE, proposalsContext.getContestPhaseWrapped(request));
