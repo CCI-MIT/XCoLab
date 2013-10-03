@@ -44,6 +44,19 @@ public enum ProposalsColumn {
         }
         
     }),
+    VOTES(new Comparator<ProposalWrapper>() {
+
+        @Override
+        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+            try {
+                return (int) (o1.getVotesCount() - o2.getVotesCount());
+            }
+            catch (Exception e) {
+                return (int) (o1.getProposalId() - o2.getProposalId());
+            }
+        }
+        
+    }),
     COMMENTS(new Comparator<ProposalWrapper>() {
 
         @Override

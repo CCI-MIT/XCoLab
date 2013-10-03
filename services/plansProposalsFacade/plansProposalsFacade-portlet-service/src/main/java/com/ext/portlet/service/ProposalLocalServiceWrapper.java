@@ -574,6 +574,15 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         return _proposalLocalService.getProposalsInContestPhase(contestPhaseId);
     }
 
+    public java.util.List<com.ext.portlet.model.Proposal> getProposalsInContestPhase(
+        long contestPhaseId, java.lang.String sortProperty,
+        boolean sortAscending, int start, int end)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getProposalsInContestPhase(contestPhaseId,
+            sortProperty, sortAscending, start, end);
+    }
+
     /**
     * <p>Returns list of proposal team members</p>
     *
@@ -718,6 +727,20 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Returns number of comments in discussion associated with this proposal</p>
+    *
+    * @param proposalId proposal id
+    * @return number of comments
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public long getCommentsCount(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getCommentsCount(proposalId);
+    }
+
+    /**
     * <p>Tells if user is a member of a proposal team</p>
     *
     * @param proposalId id of a proposal
@@ -840,6 +863,36 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
             com.liferay.portal.kernel.exception.SystemException {
         _proposalLocalService.joinIfNotAMemberAndProposalIsOpen(proposalId,
             userId);
+    }
+
+    public boolean isSubscribed(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.isSubscribed(proposalId, userId);
+    }
+
+    public void subscribe(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.subscribe(proposalId, userId);
+    }
+
+    public void subscribe(long proposalId, long userId, boolean automatic)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.subscribe(proposalId, userId, automatic);
+    }
+
+    public void unsubscribe(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.unsubscribe(proposalId, userId);
+    }
+
+    public void unsubscribe(long proposalId, long userId, boolean automatic)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.unsubscribe(proposalId, userId, automatic);
     }
 
     /**

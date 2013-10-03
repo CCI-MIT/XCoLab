@@ -21,6 +21,8 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanType;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -32,6 +34,7 @@ import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -41,6 +44,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Image;
@@ -390,6 +394,57 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     
     public List<ContestTeamMember> getTeamMembers(Contest contest) throws SystemException {
         return ContestTeamMemberLocalServiceUtil.findForContest(contest.getContestPK());
+    }
+    
+    /**
+     * <p>Returns true if user is subscribed to a contest, false otherwise</p>
+     * @param contestPK id of a contest
+     * @param userId id of a user
+     * @return true if user is subscribed to a contest, false otherwise
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    public boolean isSubscribed(long contestPK, long userId) throws PortalException, SystemException {
+        return ActivitySubscriptionLocalServiceUtil.isSubscribed(userId, Contest.class, contestPK, 0, "");
+    }
+    
+    /**
+     * <p>Subscribes user to contest</p>
+     * @param contestPK id of a contest
+     * @param userId id of a user
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    @Transactional
+    public void subscribe(long contestPK, long userId) throws PortalException, SystemException {
+        ActivitySubscriptionLocalServiceUtil.addSubscription(Contest.class, contestPK, 0, "", userId);
+        
+        // automatically subscribe user to all proposals in the phase but
+        for (ContestPhase contestPhase: ContestPhaseLocalServiceUtil.getPhasesForContest(contestPK)) {
+            for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+                ProposalLocalServiceUtil.subscribe(proposal.getProposalId(), userId, true);
+            }
+        }
+    }
+    
+    /**
+     * <p>Subscribes user to contest</p>
+     * @param contestPK id of a contest
+     * @param userId id of a user
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    @Transactional
+    public void unsubscribe(long contestPK, long userId) throws PortalException, SystemException {
+        activitySubscriptionLocalService.deleteSubscription(userId, Contest.class, contestPK, 0, "");
+        
+        // subscribe user to all proposals in the phase
+        for (ContestPhase contestPhase: contestPhaseLocalService.getPhasesForContest(contestPK)) {
+            for (Proposal proposal: proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+                // remove automatic subscription from proposal
+                proposalLocalService.unsubscribe(proposal.getProposalId(), userId, true);
+            }
+        }
     }
     
     private void reindex(Contest contest) {

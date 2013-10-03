@@ -3,6 +3,7 @@ create table xcolab_ActivitySubscription (
 	classNameId LONG,
 	classPK LONG,
 	type_ INTEGER,
+	automaticSubscriptionCounter INTEGER,
 	extraData TEXT null,
 	receiverId LONG,
 	createDate DATE null,

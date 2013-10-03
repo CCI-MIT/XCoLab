@@ -307,6 +307,12 @@ public class ContestPhaseLocalServiceUtil {
         return getService().getPhasesForContest(contest);
     }
 
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContest(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPhasesForContest(contestPK);
+    }
+
     public static com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
         throws com.ext.portlet.NoSuchContestPhaseException,

@@ -302,6 +302,12 @@ public class DiscussionCategoryGroupLocalServiceWrapper
             description, author);
     }
 
+    public int getCommentsCount(long discussionId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionCategoryGroupLocalService.getCommentsCount(discussionId);
+    }
+
     public int getCommentsCount(
         com.ext.portlet.model.DiscussionCategoryGroup dcg)
         throws com.liferay.portal.kernel.exception.PortalException,

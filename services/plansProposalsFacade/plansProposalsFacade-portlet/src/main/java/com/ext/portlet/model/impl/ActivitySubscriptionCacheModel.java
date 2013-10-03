@@ -23,6 +23,7 @@ public class ActivitySubscriptionCacheModel implements CacheModel<ActivitySubscr
     public long classNameId;
     public long classPK;
     public int type;
+    public int automaticSubscriptionCounter;
     public String extraData;
     public long receiverId;
     public long createDate;
@@ -30,7 +31,7 @@ public class ActivitySubscriptionCacheModel implements CacheModel<ActivitySubscr
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{pk=");
         sb.append(pk);
@@ -40,6 +41,8 @@ public class ActivitySubscriptionCacheModel implements CacheModel<ActivitySubscr
         sb.append(classPK);
         sb.append(", type=");
         sb.append(type);
+        sb.append(", automaticSubscriptionCounter=");
+        sb.append(automaticSubscriptionCounter);
         sb.append(", extraData=");
         sb.append(extraData);
         sb.append(", receiverId=");
@@ -60,6 +63,7 @@ public class ActivitySubscriptionCacheModel implements CacheModel<ActivitySubscr
         activitySubscriptionImpl.setClassNameId(classNameId);
         activitySubscriptionImpl.setClassPK(classPK);
         activitySubscriptionImpl.setType(type);
+        activitySubscriptionImpl.setAutomaticSubscriptionCounter(automaticSubscriptionCounter);
 
         if (extraData == null) {
             activitySubscriptionImpl.setExtraData(StringPool.BLANK);

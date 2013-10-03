@@ -28,7 +28,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 @Controller
 @RequestMapping("view")
-public class UpdateProposalDetailsActionController {
+public class AddUpdateProposalDetailsActionController {
 
     @Autowired
     private ProposalsContext proposalsContext;
@@ -71,7 +71,7 @@ public class UpdateProposalDetailsActionController {
     
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails", "action=updateProposalDetails", "error=true"})
-    public String registerError(PortletRequest request, Model model,
+    public String reportError(PortletRequest request, Model model,
             @Valid RequestMembershipBean newAccountBean, BindingResult result,
             @RequestParam(required = false) String redirect) {
         return "proposalSections";

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
@@ -94,24 +95,64 @@ public class ActivitySubscriptionLocalServiceImpl
     }
     
     public void deleteSubscription(Long userId, Long classNameId, Long classPK, Integer type, String extraData) throws SystemException {
+        deleteSubscription(userId, classNameId, classPK, type, extraData, false);
+    }
+    
+    @Transactional
+    public void deleteSubscription(Long userId, Long classNameId, Long classPK, Integer type, String extraData, boolean automatic) throws SystemException {
         List<ActivitySubscription> subscriptions = 
             ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type, extraData, userId);
         for (ActivitySubscription subscription: subscriptions) {
-            delete(subscription);
+            if (automatic) {
+                // we are removing automatic subscriptions only
+                if (subscription.getAutomaticSubscriptionCounter() == 1) {
+                    delete(subscription);
+                }
+                else if (subscription.getAutomaticSubscriptionCounter() > 1) {
+                    // decrement automatic subscription counter as this subscription can be still
+                    // valid (ie it has been added as a result of regional->global link and because
+                    // user is susbscribed to a contest)
+                    subscription.setAutomaticSubscriptionCounter(subscription.getAutomaticSubscriptionCounter() -1);
+                    updateActivitySubscription(subscription);
+                }
+            }
+            else {
+                // remove subscription as it's probably requested directly by the user 
+                delete(subscription);
+            }
         }
-        
     }
     
+
+    public void deleteSubscription(Long userId, Class clasz, Long classPK, Integer type, String extraData, boolean automatic) throws SystemException {
+        deleteSubscription(userId, PortalUtil.getClassNameId(clasz), classPK, type, extraData, automatic);
+    }
+
+    
     public void deleteSubscription(Long userId, Class clasz, Long classPK, Integer type, String extraData) throws SystemException {
-        deleteSubscription(userId, PortalUtil.getClassNameId(clasz), classPK, type, extraData);
+        deleteSubscription(userId, clasz, classPK, type, extraData, false);
     }
 
     public void addSubscription(Long classNameId, Long classPK, Integer type, String extraData, Long userId)
             throws PortalException, SystemException {
+        addSubscription(classNameId, classPK, type, extraData, userId, false);
+    }
+    
+    @Transactional
+    public void addSubscription(Long classNameId, Long classPK, Integer type, String extraData, Long userId, boolean automatic)
+            throws PortalException, SystemException {
 
-        if (ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type,
-                extraData, userId).size() > 0) {
-            // subscription exists, do nothing
+        List<ActivitySubscription> subscriptions = ActivitySubscriptionUtil
+                .findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type, extraData, userId);
+        
+        if (! subscriptions.isEmpty()) {
+            // subscription exists
+            ActivitySubscription subscription = subscriptions.get(0);
+            if (automatic && subscription.getAutomaticSubscriptionCounter() > 0) {
+                // this is an automatic subscription, if existing subscription is also automatic then increment the counter, otherwise do nothing
+                subscription.setAutomaticSubscriptionCounter(subscription.getAutomaticSubscriptionCounter() + 1);
+                ActivitySubscriptionLocalServiceUtil.updateActivitySubscription(subscription);
+            }
             return;
         }
 
@@ -123,6 +164,7 @@ public class ActivitySubscriptionLocalServiceImpl
         subscription.setType(type);
         subscription.setExtraData(extraData);
         subscription.setReceiverId(userId);
+        subscription.setAutomaticSubscriptionCounter(automatic ? 1 : -1);
 
         subscription.setModifiedDate(new Date());
         subscription.setCreateDate(new Date());
@@ -132,8 +174,13 @@ public class ActivitySubscriptionLocalServiceImpl
 
     public void addSubscription(Class clasz, Long classPK, Integer type, String extraData, Long userId)
             throws PortalException, SystemException {
+        addSubscription(clasz, classPK, type, extraData, userId, false);
+    }
+    
+    public void addSubscription(Class clasz, Long classPK, Integer type, String extraData, Long userId, boolean automatic)
+            throws PortalException, SystemException {
         Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
-        addSubscription(classNameId, classPK, type, extraData, userId);
+        addSubscription(classNameId, classPK, type, extraData, userId, automatic);
     }
 
 
@@ -226,6 +273,17 @@ public class ActivitySubscriptionLocalServiceImpl
             }
             lastEmailNotification = new Date();
         }
+    }
+    public List<User> getSubscribedUsers(Class clasz, long classPK) throws PortalException, SystemException {
+        return getSubscribedUsers(ClassNameLocalServiceUtil.getClassNameId(clasz), classPK);
+    }
+    
+    public List<User> getSubscribedUsers(long classNameId, long classPK) throws PortalException, SystemException {
+        List<User> users = new ArrayList<>();
+        for (ActivitySubscription subscription: activitySubscriptionPersistence.findByClassNameIdClassPK(classNameId, classPK)) {
+            users.add(userLocalService.getUser(subscription.getReceiverId()));
+        }
+        return users;
     }
     
     private final String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"

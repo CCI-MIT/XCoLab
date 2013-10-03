@@ -4,9 +4,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	default-destroy-method="destroy" default-init-method="afterPropertiesSet" 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.ext.utils.PortalServicesHelperImpl" class="com.ext.utils.PortalServicesHelperImpl" />
+	<bean id="com.ext.utils.PortalServicesHelper" class="com.ext.utils.PortalServicesHelperImpl" />
 	
+	<bean id="org.xcolab.services.EventBusService" class="org.xcolab.services.EventBusServiceImpl" />
+	
+	<bean id="org.xcolab.proposals.events.SubscribeProposalForAllContestSubscribersEventHandler" 
+		class="org.xcolab.proposals.events.SubscribeProposalForAllContestSubscribersEventHandler" />
+	
+	<!-- 
 	<bean id="com.ext.portlet.service.ProposalLocalService" class="com.ext.portlet.service.impl.ProposalLocalServiceImpl">
 		<constructor-arg name="portalServicesHelper" ref="com.ext.utils.PortalServicesHelperImpl" />
 	</bean>
+	 -->
 </beans>

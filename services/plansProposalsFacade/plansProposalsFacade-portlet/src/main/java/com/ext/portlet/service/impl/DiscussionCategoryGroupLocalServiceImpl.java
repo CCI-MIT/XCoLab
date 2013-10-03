@@ -108,6 +108,10 @@ public class DiscussionCategoryGroupLocalServiceImpl
         return comment;
     }
     
+    public int getCommentsCount(long discussionId) throws SystemException, PortalException {
+        return getCommentsCount(getDiscussionCategoryGroup(discussionId));
+    }
+    
     public int getCommentsCount(DiscussionCategoryGroup dcg) throws SystemException, PortalException {
         if (getCommentThread(dcg) == null) {
             return 0;

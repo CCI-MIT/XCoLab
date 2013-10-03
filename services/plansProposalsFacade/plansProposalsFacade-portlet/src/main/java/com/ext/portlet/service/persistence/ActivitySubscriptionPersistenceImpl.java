@@ -158,6 +158,31 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
             ActivitySubscriptionModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByreceiverId",
             new String[] { Long.class.getName() });
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPK =
+        new FinderPath(ActivitySubscriptionModelImpl.ENTITY_CACHE_ENABLED,
+            ActivitySubscriptionModelImpl.FINDER_CACHE_ENABLED,
+            ActivitySubscriptionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByClassNameIdClassPK",
+            new String[] {
+                Long.class.getName(), Long.class.getName(),
+                
+            "java.lang.Integer", "java.lang.Integer",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPK =
+        new FinderPath(ActivitySubscriptionModelImpl.ENTITY_CACHE_ENABLED,
+            ActivitySubscriptionModelImpl.FINDER_CACHE_ENABLED,
+            ActivitySubscriptionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "findByClassNameIdClassPK",
+            new String[] { Long.class.getName(), Long.class.getName() },
+            ActivitySubscriptionModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+            ActivitySubscriptionModelImpl.CLASSPK_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_CLASSNAMEIDCLASSPK = new FinderPath(ActivitySubscriptionModelImpl.ENTITY_CACHE_ENABLED,
+            ActivitySubscriptionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByClassNameIdClassPK",
+            new String[] { Long.class.getName(), Long.class.getName() });
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPKRECEIVERID =
         new FinderPath(ActivitySubscriptionModelImpl.ENTITY_CACHE_ENABLED,
             ActivitySubscriptionModelImpl.FINDER_CACHE_ENABLED,
@@ -318,6 +343,8 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
     private static final String _SQL_COUNT_ACTIVITYSUBSCRIPTION = "SELECT COUNT(activitySubscription) FROM ActivitySubscription activitySubscription";
     private static final String _SQL_COUNT_ACTIVITYSUBSCRIPTION_WHERE = "SELECT COUNT(activitySubscription) FROM ActivitySubscription activitySubscription WHERE ";
     private static final String _FINDER_COLUMN_RECEIVERID_RECEIVERID_2 = "activitySubscription.receiverId = ?";
+    private static final String _FINDER_COLUMN_CLASSNAMEIDCLASSPK_CLASSNAMEID_2 = "activitySubscription.classNameId = ? AND ";
+    private static final String _FINDER_COLUMN_CLASSNAMEIDCLASSPK_CLASSPK_2 = "activitySubscription.classPK = ?";
     private static final String _FINDER_COLUMN_CLASSNAMEIDCLASSPKRECEIVERID_CLASSNAMEID_2 =
         "activitySubscription.classNameId = ? AND ";
     private static final String _FINDER_COLUMN_CLASSNAMEIDCLASSPKRECEIVERID_CLASSPK_2 =
@@ -753,6 +780,29 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
             }
 
             if ((activitySubscriptionModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPK.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        Long.valueOf(activitySubscriptionModelImpl.getOriginalClassNameId()),
+                        Long.valueOf(activitySubscriptionModelImpl.getOriginalClassPK())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CLASSNAMEIDCLASSPK,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPK,
+                    args);
+
+                args = new Object[] {
+                        Long.valueOf(activitySubscriptionModelImpl.getClassNameId()),
+                        Long.valueOf(activitySubscriptionModelImpl.getClassPK())
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CLASSNAMEIDCLASSPK,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPK,
+                    args);
+            }
+
+            if ((activitySubscriptionModelImpl.getColumnBitmask() &
                     FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPKRECEIVERID.getColumnBitmask()) != 0) {
                 Object[] args = new Object[] {
                         Long.valueOf(activitySubscriptionModelImpl.getOriginalClassNameId()),
@@ -887,6 +937,7 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
         activitySubscriptionImpl.setClassNameId(activitySubscription.getClassNameId());
         activitySubscriptionImpl.setClassPK(activitySubscription.getClassPK());
         activitySubscriptionImpl.setType(activitySubscription.getType());
+        activitySubscriptionImpl.setAutomaticSubscriptionCounter(activitySubscription.getAutomaticSubscriptionCounter());
         activitySubscriptionImpl.setExtraData(activitySubscription.getExtraData());
         activitySubscriptionImpl.setReceiverId(activitySubscription.getReceiverId());
         activitySubscriptionImpl.setCreateDate(activitySubscription.getCreateDate());
@@ -1297,6 +1348,358 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
         QueryPos qPos = QueryPos.getInstance(q);
 
         qPos.add(receiverId);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(activitySubscription);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<ActivitySubscription> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns all the activity subscriptions where classNameId = &#63; and classPK = &#63;.
+     *
+     * @param classNameId the class name ID
+     * @param classPK the class p k
+     * @return the matching activity subscriptions
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ActivitySubscription> findByClassNameIdClassPK(
+        long classNameId, long classPK) throws SystemException {
+        return findByClassNameIdClassPK(classNameId, classPK,
+            QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the activity subscriptions where classNameId = &#63; and classPK = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param classNameId the class name ID
+     * @param classPK the class p k
+     * @param start the lower bound of the range of activity subscriptions
+     * @param end the upper bound of the range of activity subscriptions (not inclusive)
+     * @return the range of matching activity subscriptions
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ActivitySubscription> findByClassNameIdClassPK(
+        long classNameId, long classPK, int start, int end)
+        throws SystemException {
+        return findByClassNameIdClassPK(classNameId, classPK, start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the activity subscriptions where classNameId = &#63; and classPK = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param classNameId the class name ID
+     * @param classPK the class p k
+     * @param start the lower bound of the range of activity subscriptions
+     * @param end the upper bound of the range of activity subscriptions (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching activity subscriptions
+     * @throws SystemException if a system exception occurred
+     */
+    public List<ActivitySubscription> findByClassNameIdClassPK(
+        long classNameId, long classPK, int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPK;
+            finderArgs = new Object[] { classNameId, classPK };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_CLASSNAMEIDCLASSPK;
+            finderArgs = new Object[] {
+                    classNameId, classPK,
+                    
+                    start, end, orderByComparator
+                };
+        }
+
+        List<ActivitySubscription> list = (List<ActivitySubscription>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(4 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(3);
+            }
+
+            query.append(_SQL_SELECT_ACTIVITYSUBSCRIPTION_WHERE);
+
+            query.append(_FINDER_COLUMN_CLASSNAMEIDCLASSPK_CLASSNAMEID_2);
+
+            query.append(_FINDER_COLUMN_CLASSNAMEIDCLASSPK_CLASSPK_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(classNameId);
+
+                qPos.add(classPK);
+
+                list = (List<ActivitySubscription>) QueryUtil.list(q,
+                        getDialect(), start, end);
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (list == null) {
+                    FinderCacheUtil.removeResult(finderPath, finderArgs);
+                } else {
+                    cacheResult(list);
+
+                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                }
+
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first activity subscription in the ordered set where classNameId = &#63; and classPK = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param classNameId the class name ID
+     * @param classPK the class p k
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching activity subscription
+     * @throws com.ext.portlet.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ActivitySubscription findByClassNameIdClassPK_First(
+        long classNameId, long classPK, OrderByComparator orderByComparator)
+        throws NoSuchActivitySubscriptionException, SystemException {
+        List<ActivitySubscription> list = findByClassNameIdClassPK(classNameId,
+                classPK, 0, 1, orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("classNameId=");
+            msg.append(classNameId);
+
+            msg.append(", classPK=");
+            msg.append(classPK);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchActivitySubscriptionException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the last activity subscription in the ordered set where classNameId = &#63; and classPK = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param classNameId the class name ID
+     * @param classPK the class p k
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching activity subscription
+     * @throws com.ext.portlet.NoSuchActivitySubscriptionException if a matching activity subscription could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ActivitySubscription findByClassNameIdClassPK_Last(
+        long classNameId, long classPK, OrderByComparator orderByComparator)
+        throws NoSuchActivitySubscriptionException, SystemException {
+        int count = countByClassNameIdClassPK(classNameId, classPK);
+
+        List<ActivitySubscription> list = findByClassNameIdClassPK(classNameId,
+                classPK, count - 1, count, orderByComparator);
+
+        if (list.isEmpty()) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("classNameId=");
+            msg.append(classNameId);
+
+            msg.append(", classPK=");
+            msg.append(classPK);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            throw new NoSuchActivitySubscriptionException(msg.toString());
+        } else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Returns the activity subscriptions before and after the current activity subscription in the ordered set where classNameId = &#63; and classPK = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param pk the primary key of the current activity subscription
+     * @param classNameId the class name ID
+     * @param classPK the class p k
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next activity subscription
+     * @throws com.ext.portlet.NoSuchActivitySubscriptionException if a activity subscription with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public ActivitySubscription[] findByClassNameIdClassPK_PrevAndNext(
+        long pk, long classNameId, long classPK,
+        OrderByComparator orderByComparator)
+        throws NoSuchActivitySubscriptionException, SystemException {
+        ActivitySubscription activitySubscription = findByPrimaryKey(pk);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            ActivitySubscription[] array = new ActivitySubscriptionImpl[3];
+
+            array[0] = getByClassNameIdClassPK_PrevAndNext(session,
+                    activitySubscription, classNameId, classPK,
+                    orderByComparator, true);
+
+            array[1] = activitySubscription;
+
+            array[2] = getByClassNameIdClassPK_PrevAndNext(session,
+                    activitySubscription, classNameId, classPK,
+                    orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected ActivitySubscription getByClassNameIdClassPK_PrevAndNext(
+        Session session, ActivitySubscription activitySubscription,
+        long classNameId, long classPK, OrderByComparator orderByComparator,
+        boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_ACTIVITYSUBSCRIPTION_WHERE);
+
+        query.append(_FINDER_COLUMN_CLASSNAMEIDCLASSPK_CLASSNAMEID_2);
+
+        query.append(_FINDER_COLUMN_CLASSNAMEIDCLASSPK_CLASSPK_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(classNameId);
+
+        qPos.add(classPK);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(activitySubscription);
@@ -3071,6 +3474,21 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
     }
 
     /**
+     * Removes all the activity subscriptions where classNameId = &#63; and classPK = &#63; from the database.
+     *
+     * @param classNameId the class name ID
+     * @param classPK the class p k
+     * @throws SystemException if a system exception occurred
+     */
+    public void removeByClassNameIdClassPK(long classNameId, long classPK)
+        throws SystemException {
+        for (ActivitySubscription activitySubscription : findByClassNameIdClassPK(
+                classNameId, classPK)) {
+            remove(activitySubscription);
+        }
+    }
+
+    /**
      * Removes all the activity subscriptions where classNameId = &#63; and classPK = &#63; and receiverId = &#63; from the database.
      *
      * @param classNameId the class name ID
@@ -3192,6 +3610,63 @@ public class ActivitySubscriptionPersistenceImpl extends BasePersistenceImpl<Act
                 }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_RECEIVERID,
+                    finderArgs, count);
+
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns the number of activity subscriptions where classNameId = &#63; and classPK = &#63;.
+     *
+     * @param classNameId the class name ID
+     * @param classPK the class p k
+     * @return the number of matching activity subscriptions
+     * @throws SystemException if a system exception occurred
+     */
+    public int countByClassNameIdClassPK(long classNameId, long classPK)
+        throws SystemException {
+        Object[] finderArgs = new Object[] { classNameId, classPK };
+
+        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CLASSNAMEIDCLASSPK,
+                finderArgs, this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_ACTIVITYSUBSCRIPTION_WHERE);
+
+            query.append(_FINDER_COLUMN_CLASSNAMEIDCLASSPK_CLASSNAMEID_2);
+
+            query.append(_FINDER_COLUMN_CLASSNAMEIDCLASSPK_CLASSPK_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(classNameId);
+
+                qPos.add(classPK);
+
+                count = (Long) q.uniqueResult();
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (count == null) {
+                    count = Long.valueOf(0);
+                }
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CLASSNAMEIDCLASSPK,
                     finderArgs, count);
 
                 closeSession(session);

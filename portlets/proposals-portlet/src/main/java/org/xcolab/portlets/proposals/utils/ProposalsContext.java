@@ -13,6 +13,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 
 public interface ProposalsContext {
 
@@ -33,5 +34,7 @@ public interface ProposalsContext {
     ContestWrapper getContestWrapped(PortletRequest request) throws PortalException, SystemException;
 
     ContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException;
+    
+    User getUser(PortletRequest request) throws PortalException, SystemException;
 
 }

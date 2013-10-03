@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -154,7 +155,7 @@ public class ProposalWrapper {
 
     public String getName() throws PortalException, SystemException {
         return getAttributeValueString("NAME", "");
-    }
+    } 
     
     public boolean isFeatured() {
         // TODO
@@ -179,9 +180,8 @@ public class ProposalWrapper {
         return ProposalLocalServiceUtil.getSupportersCount(proposal.getProposalId());
     }
 
-    public long getCommentsCount() {
-        // TODO
-        return 0;
+    public long getCommentsCount() throws PortalException, SystemException {
+        return ProposalLocalServiceUtil.getCommentsCount(proposal.getProposalId());
     }
     
     public Date getLastModifiedDate() {
@@ -189,7 +189,7 @@ public class ProposalWrapper {
     }
     
     public boolean isOpen() throws PortalException, SystemException {
-        return getAttributeValueLong(ProposalAttributeKeys.OPEN, 0, 0) > 0;
+        return ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
     }
     
     public long getVotesCount() throws SystemException {
@@ -258,6 +258,9 @@ public class ProposalWrapper {
             return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), attributeName, additionalId);
         }
         catch (NoSuchProposalAttributeException e) {
+            return null;
+        }
+        catch (NoSuchProposalException e) {
             return null;
         }
     }

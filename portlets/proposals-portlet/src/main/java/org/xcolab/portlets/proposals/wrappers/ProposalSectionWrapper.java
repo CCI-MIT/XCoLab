@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -41,6 +42,9 @@ public class ProposalSectionWrapper {
             }
         }
         catch (NoSuchProposalAttributeException e) {
+            return null;
+        }
+        catch (NoSuchProposalException e) {
             return null;
         }
     }

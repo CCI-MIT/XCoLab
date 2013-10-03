@@ -449,6 +449,49 @@ public class ContestLocalServiceUtil {
         return getService().getTeamMembers(contest);
     }
 
+    /**
+    * <p>Returns true if user is subscribed to a contest, false otherwise</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @return true if user is subscribed to a contest, false otherwise
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public static boolean isSubscribed(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().isSubscribed(contestPK, userId);
+    }
+
+    /**
+    * <p>Subscribes user to contest</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public static void subscribe(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().subscribe(contestPK, userId);
+    }
+
+    /**
+    * <p>Subscribes user to contest</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public static void unsubscribe(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().unsubscribe(contestPK, userId);
+    }
+
     public static void clearService() {
         _service = null;
     }

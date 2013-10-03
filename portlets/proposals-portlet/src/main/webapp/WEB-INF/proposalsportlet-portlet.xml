@@ -48,6 +48,16 @@
     	</property>
 	</bean>
 	
+	<bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver" p:defaultErrorView="uncaughtException">
+   	<property name="exceptionMappings">
+    	<props>
+           <prop key=".ProposalsAuthorizationException">accessDenied</prop>
+           <prop key=".DataAccessException">dataAccessFailure</prop>
+           <prop key=".TypeMismatchException">resourceNotFound</prop>
+           <prop key=".AccessDeniedException">accessDenied</prop>
+        </props>
+    </property>
+ </bean>
 	
 	<mvc:annotation-driven/>
 	

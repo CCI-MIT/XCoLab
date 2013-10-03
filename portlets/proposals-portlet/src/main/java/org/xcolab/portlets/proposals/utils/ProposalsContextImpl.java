@@ -19,6 +19,9 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
@@ -28,6 +31,8 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String CONTEST_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contest";
     private static final String PROPOSAL_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposals";
     private static final String CONTEST_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
+    private static final String USER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "user";
+    
     private static final String PROPOSAL_2_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposal2phase";
     private static final String REQUEST_PHASE_ID_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "requestPhaseId";
     private static final String CONTEST_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestWrapped";
@@ -101,6 +106,11 @@ public class ProposalsContextImpl implements ProposalsContext {
         return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE, ContestPhaseWrapper.class);
     }
     
+    @Override
+    public User getUser(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, USER_ATTRIBUTE, User.class);
+    }
+    
     private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz) throws PortalException, SystemException {
         Object contextInitialized =  request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
@@ -165,6 +175,9 @@ public class ProposalsContextImpl implements ProposalsContext {
         request.setAttribute(CONTEST_PHASE_ATTRIBUTE, contestPhase);
         request.setAttribute(PROPOSAL_2_PHASE_ATTRIBUTE, proposal2Phase);
         request.setAttribute(PERMISSIONS_ATTRIBUTE, new ProposalsPermissions(request, proposal, contestPhase));
+        
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
         if (phaseId > 0) {
             request.setAttribute(REQUEST_PHASE_ID_ATTRIBUTE, phaseId);
         }

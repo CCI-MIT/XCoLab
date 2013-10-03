@@ -28,7 +28,7 @@ import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQuerie
  */
 public class DataMigrator implements Runnable {
     List<String> reference;
-    private boolean TESTING = true;
+    private boolean TESTING = false;
     public boolean STOP = false;
 
     public DataMigrator(List<String> reference){

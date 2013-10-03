@@ -306,6 +306,12 @@ public class DiscussionCategoryGroupLocalServiceUtil {
         return getService().addComment(dcg, title, description, author);
     }
 
+    public static int getCommentsCount(long discussionId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCommentsCount(discussionId);
+    }
+
     public static int getCommentsCount(
         com.ext.portlet.model.DiscussionCategoryGroup dcg)
         throws com.liferay.portal.kernel.exception.PortalException,

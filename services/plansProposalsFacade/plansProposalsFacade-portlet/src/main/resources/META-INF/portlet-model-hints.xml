@@ -6,6 +6,7 @@
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />
 		<field name="type" type="int" />
+		<field name="automaticSubscriptionCounter" type="int" />
 		<field name="extraData" type="String">
 			<hint name="max-length">4096</hint>
 		</field>

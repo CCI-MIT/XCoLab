@@ -300,6 +300,12 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         return _contestPhaseLocalService.getPhasesForContest(contest);
     }
 
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContest(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPhasesForContest(contestPK);
+    }
+
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
         throws com.ext.portlet.NoSuchContestPhaseException,

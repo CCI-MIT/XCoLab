@@ -22,6 +22,7 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
     private long _classNameId;
     private long _classPK;
     private int _type;
+    private int _automaticSubscriptionCounter;
     private String _extraData;
     private long _receiverId;
     private Date _createDate;
@@ -94,6 +95,15 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         _type = type;
     }
 
+    public int getAutomaticSubscriptionCounter() {
+        return _automaticSubscriptionCounter;
+    }
+
+    public void setAutomaticSubscriptionCounter(
+        int automaticSubscriptionCounter) {
+        _automaticSubscriptionCounter = automaticSubscriptionCounter;
+    }
+
     public String getExtraData() {
         return _extraData;
     }
@@ -149,6 +159,7 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         clone.setClassNameId(getClassNameId());
         clone.setClassPK(getClassPK());
         clone.setType(getType());
+        clone.setAutomaticSubscriptionCounter(getAutomaticSubscriptionCounter());
         clone.setExtraData(getExtraData());
         clone.setReceiverId(getReceiverId());
         clone.setCreateDate(getCreateDate());
@@ -199,7 +210,7 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{pk=");
         sb.append(getPk());
@@ -209,6 +220,8 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         sb.append(getClassPK());
         sb.append(", type=");
         sb.append(getType());
+        sb.append(", automaticSubscriptionCounter=");
+        sb.append(getAutomaticSubscriptionCounter());
         sb.append(", extraData=");
         sb.append(getExtraData());
         sb.append(", receiverId=");
@@ -223,7 +236,7 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ActivitySubscription");
@@ -244,6 +257,10 @@ public class ActivitySubscriptionClp extends BaseModelImpl<ActivitySubscription>
         sb.append(
             "<column><column-name>type</column-name><column-value><![CDATA[");
         sb.append(getType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>automaticSubscriptionCounter</column-name><column-value><![CDATA[");
+        sb.append(getAutomaticSubscriptionCounter());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>extraData</column-name><column-value><![CDATA[");

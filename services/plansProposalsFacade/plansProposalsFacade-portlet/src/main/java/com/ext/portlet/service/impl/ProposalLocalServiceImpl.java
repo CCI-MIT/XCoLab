@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.xcolab.services.EventBusService;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalSupporterException;
@@ -14,15 +15,12 @@ import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
-import com.ext.portlet.plans.PlanTeamActions;
-import com.ext.portlet.service.PlanTeamHistoryLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
@@ -30,6 +28,7 @@ import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.ext.utils.PortalServicesHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -88,16 +87,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * Service helper for accessing external services
      */
+    @BeanReference(type = PortalServicesHelper.class)
     private PortalServicesHelper portalServicesHelper;
     
-    /**
-     * Setter for PortalServicesHelper. 
-     * @param portalServicesHelper
-     */
-    public ProposalLocalServiceImpl(PortalServicesHelper portalServicesHelper) {
-        this.portalServicesHelper = portalServicesHelper;
-    }
+    @BeanReference(type = EventBusService.class) 
+    private EventBusService eventBus;
 
+    public ProposalLocalServiceImpl() {
+    }
+    
     /**
      * <p>
      * Creates new proposal initialized to version 1 with one attribute "NAME"
@@ -457,7 +455,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         List<Proposal> proposals = new ArrayList<>();
         
         for (Proposal2Phase proposal2Phase: proposal2PhasePersistence.findByContestPhaseId(contestPhaseId)) {
-            proposals.add(proposalPersistence.findByPrimaryKey(proposal2Phase.getProposalId()));
+            Proposal proposal = getProposal(proposal2Phase.getProposalId());
+            
+            // set proper version for proposal to reflect max version that proposal has reached at given phase
+            if (proposal2Phase.getVersionTo() > 0) {
+                proposal.setCurrentVersion(proposal2Phase.getVersionTo());
+            }
+            proposals.add(proposal);
         }
         return proposals;
     }
@@ -636,7 +640,19 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
     }
     
-    
+    /**
+     * <p>Returns number of comments in discussion associated with this proposal</p>
+     * 
+     * @param proposalId proposal id
+     * @return number of comments 
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public long getCommentsCount(long proposalId) throws SystemException, PortalException {
+        Proposal proposal = getProposal(proposalId);
+        return discussionCategoryGroupLocalService.getCommentsCount(proposal.getDiscussionId());
+    }
+
     /**
      * <p>Tells if user is a member of a proposal team</p> 
      * @param proposalId id of a proposal
@@ -756,6 +772,27 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
     }
     
+    public boolean isSubscribed(long proposalId, long userId) throws PortalException, SystemException {
+        return activitySubscriptionLocalService.isSubscribed(userId, Proposal.class, proposalId, 0, "");
+    }
+    
+
+    public void subscribe(long proposalId, long userId) throws PortalException, SystemException {
+        subscribe(proposalId, userId, false);
+    }
+    
+    public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
+        activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
+    }
+    
+
+    public void unsubscribe(long proposalId, long userId) throws PortalException, SystemException {
+        unsubscribe(proposalId, userId, false);
+    }
+    
+    public void unsubscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
+        activitySubscriptionLocalService.deleteSubscription(userId, Proposal.class, proposalId, 0, "", automatic);
+    }
     
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>

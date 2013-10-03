@@ -106,7 +106,11 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanSeeSupportButton() throws PortalException, SystemException {
-        return user.isDefaultUser() || getCanSupportProposal();
+        return user.isDefaultUser() || !isSupporter();
+    }
+
+    public boolean getCanSeeUnsupportButton() throws PortalException, SystemException {
+        return !user.isDefaultUser() && isSupporter();
     }
     
     private boolean getRequestedMembership() throws PortalException, SystemException {
@@ -118,7 +122,7 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanSupportProposal() throws PortalException, SystemException {
-        return ! user.isDefaultUser() && isSupporter();
+        return ! user.isDefaultUser();
     }
     
     private boolean isSupporter() throws PortalException, SystemException {
@@ -137,6 +141,22 @@ public class ProposalsPermissions {
     
     private boolean isProposalMember() throws SystemException {
         return GroupLocalServiceUtil.hasUserGroup(user.getUserId(), groupId);
+    }
+
+    public boolean getCanSubscribeContest() {
+        return ! user.isDefaultUser();
+    }
+    
+    public boolean getCanSeeSubscribeContestButton() {
+        return true;
+    }
+
+    public boolean getCanSubscribeProposal() {
+        return ! user.isDefaultUser();
+    }
+    
+    public boolean getCanSeeSubscribeProposalButton() {
+        return true;
     }
 
 

@@ -50,6 +50,14 @@
         <generated-parameter name="planId">{planId}</generated-parameter>
     </route>
     
+	<!-- create proposal -->
+    <route>
+        <pattern>/contestId/{contestId}/createProposal</pattern>
+        <generated-parameter name="pageToDisplay">createProposal</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+    </route>
+    
+    
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/version/{version}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>

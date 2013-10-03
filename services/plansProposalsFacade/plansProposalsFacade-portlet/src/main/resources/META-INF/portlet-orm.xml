@@ -15,6 +15,7 @@
 			<basic name="type">
 				<column name="TYPE_" />
 			</basic>
+			<basic name="automaticSubscriptionCounter" />
 			<basic name="extraData" />
 			<basic name="receiverId" />
 			<basic name="createDate">

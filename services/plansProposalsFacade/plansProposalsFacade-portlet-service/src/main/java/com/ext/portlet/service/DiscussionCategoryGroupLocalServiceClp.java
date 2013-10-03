@@ -34,7 +34,8 @@ public class DiscussionCategoryGroupLocalServiceClp
     private MethodKey _getCommentThreadMethodKey23;
     private MethodKey _addCommentMethodKey24;
     private MethodKey _getCommentsCountMethodKey25;
-    private MethodKey _copyEverythingMethodKey26;
+    private MethodKey _getCommentsCountMethodKey26;
+    private MethodKey _copyEverythingMethodKey27;
 
     public DiscussionCategoryGroupLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -136,10 +137,13 @@ public class DiscussionCategoryGroupLocalServiceClp
                 com.liferay.portal.model.User.class);
 
         _getCommentsCountMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getCommentsCount", long.class);
+
+        _getCommentsCountMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getCommentsCount",
                 com.ext.portlet.model.DiscussionCategoryGroup.class);
 
-        _copyEverythingMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
+        _copyEverythingMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
                 "copyEverything",
                 com.ext.portlet.model.DiscussionCategoryGroup.class,
                 com.ext.portlet.model.DiscussionCategoryGroup.class);
@@ -807,13 +811,43 @@ public class DiscussionCategoryGroupLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    public int getCommentsCount(long discussionId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey25,
+                discussionId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Integer) returnObj).intValue();
+    }
+
     public int getCommentsCount(
         com.ext.portlet.model.DiscussionCategoryGroup dcg)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey25,
+        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey26,
                 ClpSerializer.translateInput(dcg));
 
         try {
@@ -843,7 +877,7 @@ public class DiscussionCategoryGroupLocalServiceClp
         com.ext.portlet.model.DiscussionCategoryGroup source)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_copyEverythingMethodKey26,
+        MethodHandler methodHandler = new MethodHandler(_copyEverythingMethodKey27,
                 ClpSerializer.translateInput(dcg),
                 ClpSerializer.translateInput(source));
 

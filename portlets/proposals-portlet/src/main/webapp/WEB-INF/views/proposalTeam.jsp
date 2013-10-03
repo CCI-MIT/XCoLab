@@ -34,6 +34,23 @@
 		<h2>
 			<span>${fn:length(proposal.supporters)}</span> ${fn:length(proposal.supporters) == 1 ? 'supporter' : 'supporters' }
 		</h2>
+		<c:if test="${proposalsPermissions.canSeeSupportButton or proposalsPermissions.canSeeUnsupportButton  }">
+			<portlet:actionURL var="supportProposalActionURL">
+			<portlet:param name="pageToDisplay" value="proposalDetails_TEAM" />
+				<portlet:param name="contestId" value="${contest.contestPK }" />
+				<portlet:param name="planId" value="${proposal.proposalId }" />
+				<portlet:param name="proposalId" value="${proposal.proposalId }" />
+				<portlet:param name="action" value="supportProposalAction" />
+			</portlet:actionURL>
+			<div class="prop-butt">
+				<img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
+				<div class="blue-button">
+					<a href="${supportProposalActionURL }" onclick="if(!deferUntilLogin()) return false;" class="submitLink">
+						${proposalsPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
+					</a>
+				</div>
+			</div>
+		</c:if>
 	</div>
 	<c:if test="${not empty proposal.supporters }">
 		<table class="contributors">
@@ -78,6 +95,9 @@
 			</div>
 		</div>
 	</form:form>
+	
+	
 
+	
 </div>	
 </jsp:root>

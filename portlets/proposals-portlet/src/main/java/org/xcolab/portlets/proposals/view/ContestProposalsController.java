@@ -19,6 +19,7 @@ import org.xcolab.portlets.proposals.utils.ProposalsColumn;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -39,10 +40,11 @@ public class ContestProposalsController {
             throws PortalException, SystemException {
         
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        Contest contest = proposalsContext.getContest(request);
         
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
         for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-            proposals.add(new ProposalWrapper(proposal));
+            proposals.add(new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase)); 
         }
         
         if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {

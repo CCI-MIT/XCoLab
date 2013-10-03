@@ -516,33 +516,40 @@ public class ClpSerializer {
 
                 method3.invoke(newModel, value3);
 
-                Method method4 = newModelClass.getMethod("setExtraData",
-                        new Class[] { String.class });
+                Method method4 = newModelClass.getMethod("setAutomaticSubscriptionCounter",
+                        new Class[] { Integer.TYPE });
 
-                String value4 = oldCplModel.getExtraData();
+                Integer value4 = new Integer(oldCplModel.getAutomaticSubscriptionCounter());
 
                 method4.invoke(newModel, value4);
 
-                Method method5 = newModelClass.getMethod("setReceiverId",
-                        new Class[] { Long.TYPE });
+                Method method5 = newModelClass.getMethod("setExtraData",
+                        new Class[] { String.class });
 
-                Long value5 = new Long(oldCplModel.getReceiverId());
+                String value5 = oldCplModel.getExtraData();
 
                 method5.invoke(newModel, value5);
 
-                Method method6 = newModelClass.getMethod("setCreateDate",
-                        new Class[] { Date.class });
+                Method method6 = newModelClass.getMethod("setReceiverId",
+                        new Class[] { Long.TYPE });
 
-                Date value6 = oldCplModel.getCreateDate();
+                Long value6 = new Long(oldCplModel.getReceiverId());
 
                 method6.invoke(newModel, value6);
 
-                Method method7 = newModelClass.getMethod("setModifiedDate",
+                Method method7 = newModelClass.getMethod("setCreateDate",
                         new Class[] { Date.class });
 
-                Date value7 = oldCplModel.getModifiedDate();
+                Date value7 = oldCplModel.getCreateDate();
 
                 method7.invoke(newModel, value7);
+
+                Method method8 = newModelClass.getMethod("setModifiedDate",
+                        new Class[] { Date.class });
+
+                Date value8 = oldCplModel.getModifiedDate();
+
+                method8.invoke(newModel, value8);
 
                 return newModel;
             } catch (Exception e) {
@@ -6025,30 +6032,38 @@ public class ClpSerializer {
 
                 newModel.setType(value3);
 
-                Method method4 = oldModelClass.getMethod("getExtraData");
+                Method method4 = oldModelClass.getMethod(
+                        "getAutomaticSubscriptionCounter");
 
-                String value4 = (String) method4.invoke(oldModel,
+                Integer value4 = (Integer) method4.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setExtraData(value4);
+                newModel.setAutomaticSubscriptionCounter(value4);
 
-                Method method5 = oldModelClass.getMethod("getReceiverId");
+                Method method5 = oldModelClass.getMethod("getExtraData");
 
-                Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
+                String value5 = (String) method5.invoke(oldModel,
+                        (Object[]) null);
 
-                newModel.setReceiverId(value5);
+                newModel.setExtraData(value5);
 
-                Method method6 = oldModelClass.getMethod("getCreateDate");
+                Method method6 = oldModelClass.getMethod("getReceiverId");
 
-                Date value6 = (Date) method6.invoke(oldModel, (Object[]) null);
+                Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
 
-                newModel.setCreateDate(value6);
+                newModel.setReceiverId(value6);
 
-                Method method7 = oldModelClass.getMethod("getModifiedDate");
+                Method method7 = oldModelClass.getMethod("getCreateDate");
 
                 Date value7 = (Date) method7.invoke(oldModel, (Object[]) null);
 
-                newModel.setModifiedDate(value7);
+                newModel.setCreateDate(value7);
+
+                Method method8 = oldModelClass.getMethod("getModifiedDate");
+
+                Date value8 = (Date) method8.invoke(oldModel, (Object[]) null);
+
+                newModel.setModifiedDate(value8);
 
                 return newModel;
             } catch (Exception e) {

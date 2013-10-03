@@ -124,6 +124,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return contestPhasePersistence.findByContestId(contest.getContestPK());
     }
 
+    public List<ContestPhase> getPhasesForContest(long contestPK) throws SystemException {
+        return contestPhasePersistence.findByContestId(contestPK);
+    }
+
     public ContestPhase getActivePhaseForContest(Contest contest) throws NoSuchContestPhaseException, SystemException {
         Date now = new Date();
         try {
