@@ -328,7 +328,7 @@ position: absolute;
 .topshade {height:9px; background: url(../images/topshade.png) repeat-x; position:relative; z-index:5;}
 .earth {background:url(../images/homespot-earth.jpg) no-repeat 500px top; width:100%; min-height:336px; position:relative; top:-9px;}
 .homespot-left {float:left; width:530px; padding-left:10px; color:#404041; position:relative; font-size:16px;}
-.social {font-size: 14px; width: 125px; position: absolute; right: -9px; top: 2px;}
+.social {font-size: 14px; width: 150px; position: absolute; right: -9px; top: 2px;}
 
 .homespot-left h1 {font-size:35px; margin:20px 0 10px 0;}
 a.learn, a.get {height:33px; padding-top:11px; margin-right:11px; display:inline-block; font-size:16px; font-weight:700; text-transform:uppercase; color:#fff;}
@@ -356,6 +356,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .reddit {background:url(../images/icon-reddit.png) no-repeat;}
 .pinterest {background:url(../images/icon-pinterest.png) no-repeat;}
 .linkedin {background:url(../images/icon-linkedin.png) no-repeat;}
+.googleplus {background:url(../images/icon-googleplus.png) no-repeat;}
 
 /* <Conference Countdown Flipclock>*/
 #conference-countdown{ position: absolute; top: 342px; left: 539px; width: 420px; }
