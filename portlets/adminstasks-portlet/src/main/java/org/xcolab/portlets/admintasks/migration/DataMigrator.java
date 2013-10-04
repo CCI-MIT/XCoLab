@@ -1,23 +1,61 @@
 package org.xcolab.portlets.admintasks.migration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.xcolab.portlets.admintasks.migration.persistence.NewPersistenceCleaner;
+import org.xcolab.portlets.admintasks.migration.persistence.NewPersistenceQueries;
+import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
+
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+import com.ext.portlet.model.ContestPhaseRibbonType;
+import com.ext.portlet.model.Plan2Proposal;
+import com.ext.portlet.model.PlanAttribute;
+import com.ext.portlet.model.PlanDescription;
+import com.ext.portlet.model.PlanFan;
+import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.PlanMeta;
+import com.ext.portlet.model.PlanModelRun;
+import com.ext.portlet.model.PlanSection;
+import com.ext.portlet.model.PlanType;
+import com.ext.portlet.model.PlanVote;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.plans.PlanConstants;
+import com.ext.portlet.service.Plan2ProposalLocalServiceUtil;
+import com.ext.portlet.service.PlanDescriptionLocalServiceUtil;
+import com.ext.portlet.service.PlanFanLocalServiceUtil;
+import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
+import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.PlanMetaLocalServiceUtil;
+import com.ext.portlet.service.PlanModelRunLocalServiceUtil;
+import com.ext.portlet.service.PlanVoteLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
+import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
-
-import java.util.*;
-
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.portlets.admintasks.migration.persistence.NewPersistenceCleaner;
-import org.xcolab.portlets.admintasks.migration.persistence.NewPersistenceQueries;
-import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +69,20 @@ public class DataMigrator implements Runnable {
     private boolean TESTING = false;
     public boolean STOP = false;
 
+
+    private final static String[] regionsDevelopedArr = {"United States", "European Union",
+            "Russia/Former Soviet Union", "OECD Asia", "Canada"};
+    private final static String[] regionsRapidlyDevelopingArr = {"China", "India", "Brazil", "South Africa", "Mexico",
+            "Rapidly developing Asia",};
+    private final static String[] regionsOtherDevelopingArr = {"Middle East", "Latin America", "Africa",
+            "Other developing Asia"};
+    private final static Set<String> regionsDeveloped = new HashSet<String>(Arrays.asList(regionsDevelopedArr));
+    private final static Set<String> regionsRapidlyDeveloping = new HashSet<String>(
+            Arrays.asList(regionsRapidlyDevelopingArr));
+    private final static Set<String> regionsOtherDeveloping = new HashSet<String>(
+            Arrays.asList(regionsOtherDevelopingArr));
+
+    
     public DataMigrator(List<String> reference){
         this.reference = reference;
     }
@@ -168,6 +220,7 @@ public class DataMigrator implements Runnable {
         List<Long> planFans = new ArrayList<Long>();
 
         // Loop through all plans - each representing one contest phase
+        boolean isFirstInGroup = true;
         for(PlanItem plan :  plans) {
             // get updated proposal
             try {
@@ -185,6 +238,34 @@ public class DataMigrator implements Runnable {
 
             // plan entity represents a last version of a plan (for given planId) so we need to iterate over all of it's versions
             // to create respective attributes of a proposal
+            if (isFirstInGroup) {
+                // transfer regional attributes if they exist
+                try {
+                    PlanAttribute regionAttribute = PlanItemLocalServiceUtil.getPlanAttribute(plan, "REGION");
+                    if (regionAttribute != null) {
+                        String region = regionAttribute.getAttributeValue();
+                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.REGION, region);
+
+                        String regionEconomy = "Other Developing";
+                        
+                        
+                        if (regionsDeveloped.contains(region)) {
+                            regionEconomy = "Developed";
+                        } else if (regionsRapidlyDeveloping.contains(region)) {
+                            regionEconomy = "Rapidly Developing";
+                        }
+                        
+                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.REGION_ECONOMY, regionEconomy);
+                    }
+                    PlanAttribute subregionAttribute = PlanItemLocalServiceUtil.getPlanAttribute(plan, "SUBREGION");
+                    if (subregionAttribute != null) {
+                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.SUBREGION, subregionAttribute.getAttributeValue());
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             createProposalAttributesFromPlan(plan,proposal);
             createVotesFromPlan(plan,proposal);
             // copy supporters (fans)
@@ -309,7 +390,8 @@ public class DataMigrator implements Runnable {
 
         for (PlanItem planVersion : planVersions) {
             if (planVersion.getUpdateType().equalsIgnoreCase("CREATED")){
-                // ignore use just for transfering from one phase to another
+                // ignore use just for transferring from one phase to another
+                
             } else if (planVersion.getUpdateType().equalsIgnoreCase("MODEL_UPDATED")){
                 // IGNORE because modelID is deprecated
             } else if (planVersion.getUpdateType().equalsIgnoreCase("SCENARIO_UPDATED")){
@@ -378,6 +460,22 @@ public class DataMigrator implements Runnable {
                 try{
                     PlanType planType = PlanItemLocalServiceUtil.getPlanType(plan);
                     ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SCENARIO_ID,planType.getModelId(),null,pmr.getScenarioId(),0);
+                    
+                    Map<String, String> attributes = getAttributes(plan); 
+                    
+                    
+                    Map<String, String> planAttributesToCopy = new HashMap<String, String>();
+                    planAttributesToCopy.put(ProposalAttributeKeys.SCENARIO_CO2_CONCENTRATION, "CO2_CONCENTRATION");
+                    planAttributesToCopy.put(ProposalAttributeKeys.SCENARIO_TEMP_CHANGE, "TEMP_CHANGE");
+                    planAttributesToCopy.put(ProposalAttributeKeys.SCENARIO_MITIGATION_COST_NO_ERRORS, "MITIGATION_COST_NO_ERRORS");
+                    planAttributesToCopy.put(ProposalAttributeKeys.SCENARIO_DAMAGE_COST, "DAMAGE_COST");
+                    for (Map.Entry<String, String> attributeToCopy: planAttributesToCopy.entrySet()) {
+                        if (attributes.containsKey(attributeToCopy.getValue())) {
+                            ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attributeToCopy.getKey(),
+                                    planType.getModelId(), attributes.get(attributeToCopy.getValue()),0, 0);
+                        }
+                    }
+                    
                     updateLatestVersionDate(p,plan.getUpdated());
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting ScenarioID " + plan.getPlanId() + ": " + e);
@@ -471,23 +569,23 @@ public class DataMigrator implements Runnable {
         }
 
         long ribbonContestPhaseAttributeTypeId = NewPersistenceQueries
-                .getProposalContestPhaseAttributeTypeIdForRibbon(ribbon.getLeft() + "", ribbon.getRight());
+                .getContestPhaseRibbonTypeIdForRibbon(ribbon.getLeft().intValue(), ribbon.getRight());
 
         if (ribbonContestPhaseAttributeTypeId > 0){
             // Create new ContestPhaseAttribute
-            NewPersistenceQueries.createNewProposalContestPhaseAttribute(
+            NewPersistenceQueries.associateProposalWithRibbon(
                     p.getProposalId(), ribbonContestPhaseAttributeTypeId, currentPlanMeta.getContestPhase());
         } else {
             // Set up new ContestPhaseAttributeType
-            ProposalContestPhaseAttributeType attributeType = NewPersistenceQueries
-                    .createNewProposalContestPhaseAttributeType(ribbon.getLeft() + "", ribbon.getRight());
-            if (attributeType == null){
+            ContestPhaseRibbonType ribbonType = NewPersistenceQueries
+                    .createNewContestPhaseRibbonType(ribbon.getLeft() + "", ribbon.getRight());
+            if (ribbonType == null){
                 pushAjaxUpdate("Error while creating AttributeType");
                 return;
             }
             // Create new ContestPhaseAttribute
-            NewPersistenceQueries.createNewProposalContestPhaseAttribute(
-                    p.getProposalId(), attributeType.getId(), currentPlanMeta.getContestPhase());
+            NewPersistenceQueries.associateProposalWithRibbon(
+                    p.getProposalId(), ribbonType.getId(), currentPlanMeta.getContestPhase());
         }
 
     }
@@ -501,5 +599,21 @@ public class DataMigrator implements Runnable {
         reference.remove(reference.size()-1);
         reference.add((message));
         SessionRenderer.render("migration");
+    }
+    
+
+    private Map<String, String> getAttributes(PlanItem plan) throws SystemException, PortalException {
+        // if (planAttributes == null) {
+        Map<String, String> planAttributes = new HashMap<String, String>();
+        for (PlanAttribute attr : PlanItemLocalServiceUtil.getPlanAttributes(plan)) {
+            planAttributes.put(attr.getAttributeName(), attr.getAttributeValue());
+        }
+
+        for (PlanConstants.Columns column : PlanConstants.Columns.values()) {
+            planAttributes.put(column.name(), column.getValue(plan));
+        }
+        // }
+        return planAttributes;
+
     }
 }

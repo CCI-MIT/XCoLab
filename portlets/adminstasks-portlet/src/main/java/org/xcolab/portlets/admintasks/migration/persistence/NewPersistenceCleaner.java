@@ -1,10 +1,25 @@
 package org.xcolab.portlets.admintasks.migration.persistence;
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
-import com.icesoft.faces.async.render.SessionRenderer;
-
 import java.util.List;
+
+import com.ext.portlet.model.ContestPhaseRibbonType;
+import com.ext.portlet.model.Plan2Proposal;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.Plan2ProposalLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
+import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
+import com.icesoft.faces.async.render.SessionRenderer;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +30,11 @@ import java.util.List;
  */
 public class NewPersistenceCleaner {
 
+
+    private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
+    private static ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+            ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
+    
     List<String> reference;
 
     public NewPersistenceCleaner(List<String> reference){
@@ -31,8 +51,7 @@ public class NewPersistenceCleaner {
                 deleteAllProposal2Phase() &
                 deleteAllProposalVotes() &
                 deleteAllProposalSupporters() &
-                deleteAllProposalContestPhaseAttributes() &
-                deleteAllProposalContestPhaseAttributeTypes();
+                deleteAllContestPhaseRibbonTypes();
         if (dbSuccess) pushAjaxUpdate("Successfully cleaned DB");
         else pushAjaxUpdate("Error while cleaning DB");
 
@@ -160,25 +179,12 @@ public class NewPersistenceCleaner {
         return true;
     }
 
-    private boolean deleteAllProposalContestPhaseAttributeTypes(){
+    private boolean deleteAllContestPhaseRibbonTypes(){
         try {
-            pushAjaxUpdate("Deleting " + ProposalContestPhaseAttributeTypeLocalServiceUtil.getProposalContestPhaseAttributeTypesCount() + " ProposalAttributeTypes");
-            for (ProposalContestPhaseAttributeType p : ProposalContestPhaseAttributeTypeLocalServiceUtil.getProposalContestPhaseAttributeTypes(0, Integer.MAX_VALUE)) {
-                ProposalContestPhaseAttributeTypeLocalServiceUtil.deleteProposalContestPhaseAttributeType(p);
-            }
-        }
-        catch (Exception e) {
-            pushAjaxUpdate("Error while cleaning DB: " + e);
-            return false;
-        }
-        return true;
-    }
-
-    private boolean deleteAllProposalContestPhaseAttributes(){
-        try {
-            pushAjaxUpdate("Deleting " + ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributesCount() + " ProposalAttributes");
-            for (ProposalContestPhaseAttribute p : ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(0, Integer.MAX_VALUE)) {
-                ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(p);
+            pushAjaxUpdate("Deleting " + ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypesCount() + " ContestPhaseRibbonTypes");
+            
+            for (ContestPhaseRibbonType p : ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE)) {
+                ContestPhaseRibbonTypeLocalServiceUtil.deleteContestPhaseRibbonType(p);
             }
         }
         catch (Exception e) {

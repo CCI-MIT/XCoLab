@@ -1,6 +1,5 @@
 package org.xcolab.proposals.events;
 
-import org.springframework.stereotype.Component;
 import org.xcolab.services.EventBusService;
 
 import com.ext.portlet.model.Contest;
@@ -13,7 +12,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
 
-@Component
 /**
  * <p>Event handler that reacts to ProposalCreatedEvent. For each user that is subscribed
  * to a contest to which this proposal belongs, it subscribes him/her to the newly created proposal too</p>

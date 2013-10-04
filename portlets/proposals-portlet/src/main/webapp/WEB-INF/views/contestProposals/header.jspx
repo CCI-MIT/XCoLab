@@ -27,13 +27,25 @@
 	<div class="blueheaderbar">
 		<div class="contestbar">
 			<jsp:directive.include file="./header_contestPhases.jspx" />
-			<div class="contestSubscribe">
-				<!--  TODO -->
-				<a href="#">
-					<img src="/climatecolab-theme/images/unsubscribe.png" />Unsubscribe
-				</a>
-			
-			</div>
+			<c:if test="${proposalsPermissions.canSeeSubscribeContestButton || proposalsPermissions.canSeeUnsubscribeContestButton}">
+				<portlet:actionURL var="subscribeContestURL">
+					<portlet:param name="contestId" value="${contest.contestPK }" />
+					<portlet:param name="action" value="subscribeContest" />
+					<portlet:param name="action_forwardToPage" value="contestProposals" />
+				</portlet:actionURL>
+				<div class="contestSubscribe">
+					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
+						<c:choose>
+							<c:when test="${proposalsPermissions.canSeeSubscribeContestButton }">
+								<img src="/climatecolab-theme/images/icon_star.png" />Subscribe
+							</c:when>
+							<c:otherwise>
+								<img src="/climatecolab-theme/images/unsubscribe.png" />Unsubscribe
+							</c:otherwise>
+						</c:choose>
+					</a>
+				</div>
+			</c:if>
 		</div>
 	</div>
 	<div class="shadebar"><!--  --></div>

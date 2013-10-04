@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
@@ -418,11 +420,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Transactional
     public void subscribe(long contestPK, long userId) throws PortalException, SystemException {
         ActivitySubscriptionLocalServiceUtil.addSubscription(Contest.class, contestPK, 0, "", userId);
-        
+        Set<Long> proposalsProcessed = new HashSet<Long>();
         // automatically subscribe user to all proposals in the phase but
         for (ContestPhase contestPhase: ContestPhaseLocalServiceUtil.getPhasesForContest(contestPK)) {
             for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                ProposalLocalServiceUtil.subscribe(proposal.getProposalId(), userId, true);
+                if (!proposalsProcessed.contains(proposal.getProposalId())) {
+                    ProposalLocalServiceUtil.subscribe(proposal.getProposalId(), userId, true);
+                }
+                proposalsProcessed.add(proposal.getProposalId());
             }
         }
     }
@@ -437,12 +442,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Transactional
     public void unsubscribe(long contestPK, long userId) throws PortalException, SystemException {
         activitySubscriptionLocalService.deleteSubscription(userId, Contest.class, contestPK, 0, "");
-        
-        // subscribe user to all proposals in the phase
+
+        Set<Long> proposalsProcessed = new HashSet<Long>();
+        // unsubscribe user from all proposals in the phase to which he was automatically registered  
         for (ContestPhase contestPhase: contestPhaseLocalService.getPhasesForContest(contestPK)) {
             for (Proposal proposal: proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
                 // remove automatic subscription from proposal
-                proposalLocalService.unsubscribe(proposal.getProposalId(), userId, true);
+                if (!proposalsProcessed.contains(proposal.getProposalId())) {
+                    proposalLocalService.unsubscribe(proposal.getProposalId(), userId, true);
+                }
+                proposalsProcessed.add(proposal.getProposalId());
             }
         }
     }

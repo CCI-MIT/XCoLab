@@ -36,7 +36,7 @@ public class CreateProposalController {
         Proposal proposal = ProposalLocalServiceUtil.createProposal(0);
         proposal.setAuthorId(themeDisplay.getUserId());
         
-        ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request), proposalsContext.getContestPhase(request));
+        ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request), proposalsContext.getContestPhase(request), null);
 
         model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped));
         

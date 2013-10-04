@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 public class ProposalRequestMembershipActionController {
 
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails_TEAM", "action=requestMembership"})
+    @RequestMapping(params = {"action=requestMembership"})
     public void show(ActionRequest request, Model model,
             ActionResponse response, @Valid RequestMembershipBean requestMembershipBean, BindingResult result) 
             throws PortalException, SystemException {

@@ -18,6 +18,7 @@ public class Proposal2PhaseCacheModel implements CacheModel<Proposal2Phase>,
     Serializable {
     public long proposalId;
     public long contestPhaseId;
+    public long ribbonTypeId;
     public int versionFrom;
     public int versionTo;
     public int sortWeight;
@@ -25,12 +26,14 @@ public class Proposal2PhaseCacheModel implements CacheModel<Proposal2Phase>,
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{proposalId=");
         sb.append(proposalId);
         sb.append(", contestPhaseId=");
         sb.append(contestPhaseId);
+        sb.append(", ribbonTypeId=");
+        sb.append(ribbonTypeId);
         sb.append(", versionFrom=");
         sb.append(versionFrom);
         sb.append(", versionTo=");
@@ -49,6 +52,7 @@ public class Proposal2PhaseCacheModel implements CacheModel<Proposal2Phase>,
 
         proposal2PhaseImpl.setProposalId(proposalId);
         proposal2PhaseImpl.setContestPhaseId(contestPhaseId);
+        proposal2PhaseImpl.setRibbonTypeId(ribbonTypeId);
         proposal2PhaseImpl.setVersionFrom(versionFrom);
         proposal2PhaseImpl.setVersionTo(versionTo);
         proposal2PhaseImpl.setSortWeight(sortWeight);

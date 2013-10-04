@@ -10,6 +10,7 @@ import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
 import com.ext.portlet.service.persistence.ContestPhasePersistence;
+import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
@@ -71,8 +72,6 @@ import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
@@ -219,6 +218,8 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     protected ContestPhasePersistence contestPhasePersistence;
     @BeanReference(type = ContestPhaseColumnPersistence.class)
     protected ContestPhaseColumnPersistence contestPhaseColumnPersistence;
+    @BeanReference(type = ContestPhaseRibbonTypePersistence.class)
+    protected ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence;
     @BeanReference(type = ContestPhaseTypePersistence.class)
     protected ContestPhaseTypePersistence contestPhaseTypePersistence;
     @BeanReference(type = ContestTeamMemberPersistence.class)
@@ -343,10 +344,6 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     protected ProposalAttributePersistence proposalAttributePersistence;
     @BeanReference(type = ProposalAttributeTypePersistence.class)
     protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
-    protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
-    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
     @BeanReference(type = ProposalSupporterPersistence.class)
     protected ProposalSupporterPersistence proposalSupporterPersistence;
     @BeanReference(type = ProposalVersionPersistence.class)

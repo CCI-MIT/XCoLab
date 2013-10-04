@@ -10,6 +10,7 @@ import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
 import com.ext.portlet.service.persistence.ContestPhasePersistence;
+import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
@@ -71,8 +72,6 @@ import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
@@ -233,6 +232,8 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
     protected ContestPhasePersistence contestPhasePersistence;
     @BeanReference(type = ContestPhaseColumnPersistence.class)
     protected ContestPhaseColumnPersistence contestPhaseColumnPersistence;
+    @BeanReference(type = ContestPhaseRibbonTypePersistence.class)
+    protected ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence;
     @BeanReference(type = ContestPhaseTypePersistence.class)
     protected ContestPhaseTypePersistence contestPhaseTypePersistence;
     @BeanReference(type = ContestTeamMemberPersistence.class)
@@ -357,10 +358,6 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
     protected ProposalAttributePersistence proposalAttributePersistence;
     @BeanReference(type = ProposalAttributeTypePersistence.class)
     protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
-    protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
-    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
     @BeanReference(type = ProposalSupporterPersistence.class)
     protected ProposalSupporterPersistence proposalSupporterPersistence;
     @BeanReference(type = ProposalVersionPersistence.class)
@@ -629,6 +626,7 @@ public class Proposal2PhasePersistenceImpl extends BasePersistenceImpl<Proposal2
 
         proposal2PhaseImpl.setProposalId(proposal2Phase.getProposalId());
         proposal2PhaseImpl.setContestPhaseId(proposal2Phase.getContestPhaseId());
+        proposal2PhaseImpl.setRibbonTypeId(proposal2Phase.getRibbonTypeId());
         proposal2PhaseImpl.setVersionFrom(proposal2Phase.getVersionFrom());
         proposal2PhaseImpl.setVersionTo(proposal2Phase.getVersionTo());
         proposal2PhaseImpl.setSortWeight(proposal2Phase.getSortWeight());

@@ -65,6 +65,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private MethodKey _subscribeMethodKey55;
     private MethodKey _unsubscribeMethodKey56;
     private MethodKey _unsubscribeMethodKey57;
+    private MethodKey _hasUserVotedMethodKey58;
 
     public ProposalLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -264,6 +265,9 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _unsubscribeMethodKey57 = new MethodKey(_classLoaderProxy.getClassName(),
                 "unsubscribe", long.class, long.class, boolean.class);
+
+        _hasUserVotedMethodKey58 = new MethodKey(_classLoaderProxy.getClassName(),
+                "hasUserVoted", long.class, long.class, long.class);
     }
 
     public com.ext.portlet.model.Proposal addProposal(
@@ -1913,6 +1917,31 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     " is not a valid exception");
             }
         }
+    }
+
+    public boolean hasUserVoted(long proposalId, long contestPhaseId,
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_hasUserVotedMethodKey58,
+                proposalId, contestPhaseId, userId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

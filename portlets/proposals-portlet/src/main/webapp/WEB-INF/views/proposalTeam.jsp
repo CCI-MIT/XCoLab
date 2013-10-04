@@ -36,7 +36,7 @@
 		</h2>
 		<c:if test="${proposalsPermissions.canSeeSupportButton or proposalsPermissions.canSeeUnsupportButton  }">
 			<portlet:actionURL var="supportProposalActionURL">
-			<portlet:param name="pageToDisplay" value="proposalDetails_TEAM" />
+				<portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
 				<portlet:param name="contestId" value="${contest.contestPK }" />
 				<portlet:param name="planId" value="${proposal.proposalId }" />
 				<portlet:param name="proposalId" value="${proposal.proposalId }" />
@@ -45,7 +45,7 @@
 			<div class="prop-butt">
 				<img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
 				<div class="blue-button">
-					<a href="${supportProposalActionURL }" onclick="if(!deferUntilLogin()) return false;" class="submitLink">
+					<a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
 						${proposalsPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
 					</a>
 				</div>
@@ -69,7 +69,7 @@
 	
 
 	<portlet:actionURL var="requestMembershipURL">
-		<portlet:param name="pageToDisplay" value="proposalDetails_TEAM" />
+		<portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
 		<portlet:param name="contestId" value="${contest.contestPK }" />
 		<portlet:param name="planId" value="${proposal.proposalId }" />
 		<portlet:param name="action" value="requestMembership" />

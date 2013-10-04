@@ -73,6 +73,20 @@ public interface Proposal2PhaseModel extends BaseModel<Proposal2Phase> {
     public void setContestPhaseId(long contestPhaseId);
 
     /**
+     * Returns the ribbon type ID of this proposal2 phase.
+     *
+     * @return the ribbon type ID of this proposal2 phase
+     */
+    public long getRibbonTypeId();
+
+    /**
+     * Sets the ribbon type ID of this proposal2 phase.
+     *
+     * @param ribbonTypeId the ribbon type ID of this proposal2 phase
+     */
+    public void setRibbonTypeId(long ribbonTypeId);
+
+    /**
      * Returns the version from of this proposal2 phase.
      *
      * @return the version from of this proposal2 phase

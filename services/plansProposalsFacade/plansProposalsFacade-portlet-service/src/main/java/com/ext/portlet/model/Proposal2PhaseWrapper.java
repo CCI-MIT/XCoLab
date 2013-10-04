@@ -83,6 +83,24 @@ public class Proposal2PhaseWrapper implements Proposal2Phase,
     }
 
     /**
+    * Returns the ribbon type ID of this proposal2 phase.
+    *
+    * @return the ribbon type ID of this proposal2 phase
+    */
+    public long getRibbonTypeId() {
+        return _proposal2Phase.getRibbonTypeId();
+    }
+
+    /**
+    * Sets the ribbon type ID of this proposal2 phase.
+    *
+    * @param ribbonTypeId the ribbon type ID of this proposal2 phase
+    */
+    public void setRibbonTypeId(long ribbonTypeId) {
+        _proposal2Phase.setRibbonTypeId(ribbonTypeId);
+    }
+
+    /**
     * Returns the version from of this proposal2 phase.
     *
     * @return the version from of this proposal2 phase

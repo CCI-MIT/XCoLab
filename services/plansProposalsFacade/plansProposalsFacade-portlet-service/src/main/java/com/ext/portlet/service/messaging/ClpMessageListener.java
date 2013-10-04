@@ -11,6 +11,8 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeServiceUtil;
 import com.ext.portlet.service.ContestPhaseServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeServiceUtil;
@@ -135,10 +137,6 @@ import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeServiceUtil;
 import com.ext.portlet.service.ProposalAttributeTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeTypeServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
@@ -182,6 +180,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestPhaseColumnLocalServiceUtil.clearService();
 
             ContestPhaseColumnServiceUtil.clearService();
+            ContestPhaseRibbonTypeLocalServiceUtil.clearService();
+
+            ContestPhaseRibbonTypeServiceUtil.clearService();
             ContestPhaseTypeLocalServiceUtil.clearService();
 
             ContestPhaseTypeServiceUtil.clearService();
@@ -368,12 +369,6 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalAttributeTypeLocalServiceUtil.clearService();
 
             ProposalAttributeTypeServiceUtil.clearService();
-            ProposalContestPhaseAttributeLocalServiceUtil.clearService();
-
-            ProposalContestPhaseAttributeServiceUtil.clearService();
-            ProposalContestPhaseAttributeTypeLocalServiceUtil.clearService();
-
-            ProposalContestPhaseAttributeTypeServiceUtil.clearService();
             ProposalSupporterLocalServiceUtil.clearService();
 
             ProposalSupporterServiceUtil.clearService();

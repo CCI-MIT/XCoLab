@@ -11,11 +11,14 @@ import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -30,6 +33,8 @@ public class ProposalWrapper {
     private final int version;
     private final Contest contest;
     private final ContestPhase contestPhase;
+    private final Proposal2Phase proposal2Phase;
+    private ContestPhaseRibbonType contestPhaseRibbonType;
     
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
@@ -39,6 +44,7 @@ public class ProposalWrapper {
         this.version = proposal.getCurrentVersion();
         this.contest = null;
         this.contestPhase = null;
+        this.proposal2Phase = null;
     }
 
 
@@ -47,13 +53,15 @@ public class ProposalWrapper {
         this.version = version;
         this.contest = null;
         this.contestPhase = null;
+        this.proposal2Phase = null;
     }
     
-    public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase) {
+    public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         this.proposal = proposal;
         this.version = version;
         this.contest = contest;
         this.contestPhase = contestPhase;
+        this.proposal2Phase = proposal2Phase;
     }
 
     public Class<?> getModelClass() {
@@ -157,14 +165,29 @@ public class ProposalWrapper {
         return getAttributeValueString("NAME", "");
     } 
     
+    public String getDescription() throws PortalException, SystemException {
+        return getAttributeValueString("DESCRIPTION", "");
+    } 
+    
     public boolean isFeatured() {
         // TODO
         return false;
     }
     
-    public int getRibbon() {
-        // TODO
+    public int getRibbon() throws PortalException, SystemException {
+        getRibbonType();
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getRibbon();
+        }
         return 0;
+    }
+    
+    public String getRibbonText() throws PortalException, SystemException {
+        getRibbonType();
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getHoverText();
+        }
+        return null;
     }
     
     public String getTeam() {
@@ -199,7 +222,7 @@ public class ProposalWrapper {
     public long getImageId() throws PortalException, SystemException {
         return getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
-    
+     
     
     public List<ProposalSectionWrapper> getSections() throws PortalException, SystemException {
         if (sections == null) {
@@ -230,6 +253,13 @@ public class ProposalWrapper {
         return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
     }
     
+    public boolean hasAttribute(String name) throws PortalException, SystemException {
+        return getAttributeOrNull(name, 0) != null;
+    }
+
+    public String attributeString(String name) throws PortalException, SystemException {
+        return getAttributeValueString(name, "");
+    }
     
     private String getAttributeValueString(String attributeName, String defaultVal) throws PortalException, SystemException {
         return getAttributeValueString(attributeName, 0, defaultVal);
@@ -276,6 +306,15 @@ public class ProposalWrapper {
         
     }
     
+    
+    private ContestPhaseRibbonType getRibbonType() throws PortalException, SystemException {
+        if (contestPhaseRibbonType == null) {
+            if (proposal2Phase != null && proposal2Phase.getRibbonTypeId() > 0) {
+                contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(proposal2Phase.getRibbonTypeId());
+            }
+        }
+        return contestPhaseRibbonType;
+    }
     
     
     

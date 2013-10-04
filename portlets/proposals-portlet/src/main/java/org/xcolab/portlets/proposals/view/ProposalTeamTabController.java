@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
-import org.xcolab.portlets.proposals.requests.SupportProposalActionBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -40,7 +39,6 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         model.addAttribute("currentTab", ProposalTab.TEAM);
         
         model.addAttribute("requestMembershipBean", new RequestMembershipBean());
-        model.addAttribute("supportProposalBean", new SupportProposalActionBean(proposalId));
         
         return "proposalTeam";
     }

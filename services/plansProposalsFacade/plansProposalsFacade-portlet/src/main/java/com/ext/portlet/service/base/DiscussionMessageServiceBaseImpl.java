@@ -11,6 +11,8 @@ import com.ext.portlet.service.ContestLocalService;
 import com.ext.portlet.service.ContestPhaseColumnLocalService;
 import com.ext.portlet.service.ContestPhaseColumnService;
 import com.ext.portlet.service.ContestPhaseLocalService;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalService;
+import com.ext.portlet.service.ContestPhaseRibbonTypeService;
 import com.ext.portlet.service.ContestPhaseService;
 import com.ext.portlet.service.ContestPhaseTypeLocalService;
 import com.ext.portlet.service.ContestPhaseTypeService;
@@ -135,10 +137,6 @@ import com.ext.portlet.service.ProposalAttributeLocalService;
 import com.ext.portlet.service.ProposalAttributeService;
 import com.ext.portlet.service.ProposalAttributeTypeLocalService;
 import com.ext.portlet.service.ProposalAttributeTypeService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeService;
 import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.ProposalService;
 import com.ext.portlet.service.ProposalSupporterLocalService;
@@ -153,6 +151,7 @@ import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
 import com.ext.portlet.service.persistence.ContestPhasePersistence;
+import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
@@ -215,8 +214,6 @@ import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
@@ -289,6 +286,12 @@ public abstract class DiscussionMessageServiceBaseImpl extends PrincipalBean
     protected ContestPhaseColumnService contestPhaseColumnService;
     @BeanReference(type = ContestPhaseColumnPersistence.class)
     protected ContestPhaseColumnPersistence contestPhaseColumnPersistence;
+    @BeanReference(type = ContestPhaseRibbonTypeLocalService.class)
+    protected ContestPhaseRibbonTypeLocalService contestPhaseRibbonTypeLocalService;
+    @BeanReference(type = ContestPhaseRibbonTypeService.class)
+    protected ContestPhaseRibbonTypeService contestPhaseRibbonTypeService;
+    @BeanReference(type = ContestPhaseRibbonTypePersistence.class)
+    protected ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence;
     @BeanReference(type = ContestPhaseTypeLocalService.class)
     protected ContestPhaseTypeLocalService contestPhaseTypeLocalService;
     @BeanReference(type = ContestPhaseTypeService.class)
@@ -663,18 +666,6 @@ public abstract class DiscussionMessageServiceBaseImpl extends PrincipalBean
     protected ProposalAttributeTypeService proposalAttributeTypeService;
     @BeanReference(type = ProposalAttributeTypePersistence.class)
     protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeLocalService.class)
-    protected ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
-    @BeanReference(type = ProposalContestPhaseAttributeService.class)
-    protected ProposalContestPhaseAttributeService proposalContestPhaseAttributeService;
-    @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
-    protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeTypeLocalService.class)
-    protected ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService;
-    @BeanReference(type = ProposalContestPhaseAttributeTypeService.class)
-    protected ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService;
-    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
-    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
     @BeanReference(type = ProposalSupporterLocalService.class)
     protected ProposalSupporterLocalService proposalSupporterLocalService;
     @BeanReference(type = ProposalSupporterService.class)
@@ -1051,6 +1042,63 @@ public abstract class DiscussionMessageServiceBaseImpl extends PrincipalBean
     public void setContestPhaseColumnPersistence(
         ContestPhaseColumnPersistence contestPhaseColumnPersistence) {
         this.contestPhaseColumnPersistence = contestPhaseColumnPersistence;
+    }
+
+    /**
+     * Returns the contest phase ribbon type local service.
+     *
+     * @return the contest phase ribbon type local service
+     */
+    public ContestPhaseRibbonTypeLocalService getContestPhaseRibbonTypeLocalService() {
+        return contestPhaseRibbonTypeLocalService;
+    }
+
+    /**
+     * Sets the contest phase ribbon type local service.
+     *
+     * @param contestPhaseRibbonTypeLocalService the contest phase ribbon type local service
+     */
+    public void setContestPhaseRibbonTypeLocalService(
+        ContestPhaseRibbonTypeLocalService contestPhaseRibbonTypeLocalService) {
+        this.contestPhaseRibbonTypeLocalService = contestPhaseRibbonTypeLocalService;
+    }
+
+    /**
+     * Returns the contest phase ribbon type remote service.
+     *
+     * @return the contest phase ribbon type remote service
+     */
+    public ContestPhaseRibbonTypeService getContestPhaseRibbonTypeService() {
+        return contestPhaseRibbonTypeService;
+    }
+
+    /**
+     * Sets the contest phase ribbon type remote service.
+     *
+     * @param contestPhaseRibbonTypeService the contest phase ribbon type remote service
+     */
+    public void setContestPhaseRibbonTypeService(
+        ContestPhaseRibbonTypeService contestPhaseRibbonTypeService) {
+        this.contestPhaseRibbonTypeService = contestPhaseRibbonTypeService;
+    }
+
+    /**
+     * Returns the contest phase ribbon type persistence.
+     *
+     * @return the contest phase ribbon type persistence
+     */
+    public ContestPhaseRibbonTypePersistence getContestPhaseRibbonTypePersistence() {
+        return contestPhaseRibbonTypePersistence;
+    }
+
+    /**
+     * Sets the contest phase ribbon type persistence.
+     *
+     * @param contestPhaseRibbonTypePersistence the contest phase ribbon type persistence
+     */
+    public void setContestPhaseRibbonTypePersistence(
+        ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence) {
+        this.contestPhaseRibbonTypePersistence = contestPhaseRibbonTypePersistence;
     }
 
     /**
@@ -4577,120 +4625,6 @@ public abstract class DiscussionMessageServiceBaseImpl extends PrincipalBean
     public void setProposalAttributeTypePersistence(
         ProposalAttributeTypePersistence proposalAttributeTypePersistence) {
         this.proposalAttributeTypePersistence = proposalAttributeTypePersistence;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute local service.
-     *
-     * @return the proposal contest phase attribute local service
-     */
-    public ProposalContestPhaseAttributeLocalService getProposalContestPhaseAttributeLocalService() {
-        return proposalContestPhaseAttributeLocalService;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute local service.
-     *
-     * @param proposalContestPhaseAttributeLocalService the proposal contest phase attribute local service
-     */
-    public void setProposalContestPhaseAttributeLocalService(
-        ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService) {
-        this.proposalContestPhaseAttributeLocalService = proposalContestPhaseAttributeLocalService;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute remote service.
-     *
-     * @return the proposal contest phase attribute remote service
-     */
-    public ProposalContestPhaseAttributeService getProposalContestPhaseAttributeService() {
-        return proposalContestPhaseAttributeService;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute remote service.
-     *
-     * @param proposalContestPhaseAttributeService the proposal contest phase attribute remote service
-     */
-    public void setProposalContestPhaseAttributeService(
-        ProposalContestPhaseAttributeService proposalContestPhaseAttributeService) {
-        this.proposalContestPhaseAttributeService = proposalContestPhaseAttributeService;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute persistence.
-     *
-     * @return the proposal contest phase attribute persistence
-     */
-    public ProposalContestPhaseAttributePersistence getProposalContestPhaseAttributePersistence() {
-        return proposalContestPhaseAttributePersistence;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute persistence.
-     *
-     * @param proposalContestPhaseAttributePersistence the proposal contest phase attribute persistence
-     */
-    public void setProposalContestPhaseAttributePersistence(
-        ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence) {
-        this.proposalContestPhaseAttributePersistence = proposalContestPhaseAttributePersistence;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute type local service.
-     *
-     * @return the proposal contest phase attribute type local service
-     */
-    public ProposalContestPhaseAttributeTypeLocalService getProposalContestPhaseAttributeTypeLocalService() {
-        return proposalContestPhaseAttributeTypeLocalService;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute type local service.
-     *
-     * @param proposalContestPhaseAttributeTypeLocalService the proposal contest phase attribute type local service
-     */
-    public void setProposalContestPhaseAttributeTypeLocalService(
-        ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService) {
-        this.proposalContestPhaseAttributeTypeLocalService = proposalContestPhaseAttributeTypeLocalService;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute type remote service.
-     *
-     * @return the proposal contest phase attribute type remote service
-     */
-    public ProposalContestPhaseAttributeTypeService getProposalContestPhaseAttributeTypeService() {
-        return proposalContestPhaseAttributeTypeService;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute type remote service.
-     *
-     * @param proposalContestPhaseAttributeTypeService the proposal contest phase attribute type remote service
-     */
-    public void setProposalContestPhaseAttributeTypeService(
-        ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService) {
-        this.proposalContestPhaseAttributeTypeService = proposalContestPhaseAttributeTypeService;
-    }
-
-    /**
-     * Returns the proposal contest phase attribute type persistence.
-     *
-     * @return the proposal contest phase attribute type persistence
-     */
-    public ProposalContestPhaseAttributeTypePersistence getProposalContestPhaseAttributeTypePersistence() {
-        return proposalContestPhaseAttributeTypePersistence;
-    }
-
-    /**
-     * Sets the proposal contest phase attribute type persistence.
-     *
-     * @param proposalContestPhaseAttributeTypePersistence the proposal contest phase attribute type persistence
-     */
-    public void setProposalContestPhaseAttributeTypePersistence(
-        ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence) {
-        this.proposalContestPhaseAttributeTypePersistence = proposalContestPhaseAttributeTypePersistence;
     }
 
     /**

@@ -157,11 +157,11 @@ public class ProposalsContextImpl implements ProposalsContext {
                 if (proposal != null) {
                     ProposalWrapper proposalWrapper = null;
                     if (version != null && version > 0) {
-                        proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase);
+                        proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
                     }
                     else {
                         proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
-                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase);
+                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
               

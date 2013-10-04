@@ -35,6 +35,7 @@
 				</c:otherwise>
 			</c:choose>
 		</div>
+		<jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
 	</div>
 
 </jsp:root>

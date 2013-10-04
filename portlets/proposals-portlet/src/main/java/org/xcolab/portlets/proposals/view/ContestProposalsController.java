@@ -22,6 +22,8 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -44,7 +46,8 @@ public class ContestProposalsController {
         
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
         for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-            proposals.add(new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase)); 
+            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+            proposals.add(new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)); 
         }
         
         if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {

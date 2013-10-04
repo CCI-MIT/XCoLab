@@ -14,7 +14,7 @@
 		<div class="prop-left">
 		
 	<portlet:actionURL var="updateProposalSectionsURL">
-		<portlet:param name="pageToDisplay" value="proposalDetails" />
+		<portlet:param name="action_forwardToPage" value="proposalDetails" />
 		<portlet:param name="contestId" value="${contest.contestPK }" />
 		<portlet:param name="planId" value="${proposal.proposalId }" />
 		<portlet:param name="action" value="updateProposalDetails" />

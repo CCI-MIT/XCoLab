@@ -104,6 +104,13 @@
 		<field name="columnWeight" type="int" />
 		<field name="defaultSort" type="boolean" />
 	</model>
+	<model name="com.ext.portlet.model.ContestPhaseRibbonType">
+		<field name="id" type="long" />
+		<field name="ribbon" type="int" />
+		<field name="hoverText" type="String" />
+		<field name="description" type="String" />
+		<field name="copyOnPromote" type="boolean" />
+	</model>
 	<model name="com.ext.portlet.model.ContestPhaseType">
 		<field name="id" type="long" />
 		<field name="name" type="String">
@@ -700,6 +707,7 @@
 	<model name="com.ext.portlet.model.Proposal2Phase">
 		<field name="proposalId" type="long" />
 		<field name="contestPhaseId" type="long" />
+		<field name="ribbonTypeId" type="long" />
 		<field name="versionFrom" type="int" />
 		<field name="versionTo" type="int" />
 		<field name="sortWeight" type="int" />
@@ -721,19 +729,6 @@
 	<model name="com.ext.portlet.model.ProposalAttributeType">
 		<field name="name" type="String" />
 		<field name="visibleInVersionHistory" type="boolean" />
-		<field name="copyOnPromote" type="boolean" />
-	</model>
-	<model name="com.ext.portlet.model.ProposalContestPhaseAttribute">
-		<field name="id" type="long" />
-		<field name="proposalId" type="long" />
-		<field name="contestPhaseId" type="long" />
-		<field name="typeId" type="long" />
-	</model>
-	<model name="com.ext.portlet.model.ProposalContestPhaseAttributeType">
-		<field name="id" type="long" />
-		<field name="ribbon" type="String" />
-		<field name="hoverText" type="String" />
-		<field name="description" type="String" />
 		<field name="copyOnPromote" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalSupporter">

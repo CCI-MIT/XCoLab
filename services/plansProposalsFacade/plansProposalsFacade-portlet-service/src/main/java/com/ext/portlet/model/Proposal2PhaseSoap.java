@@ -17,6 +17,7 @@ import java.util.List;
 public class Proposal2PhaseSoap implements Serializable {
     private long _proposalId;
     private long _contestPhaseId;
+    private long _ribbonTypeId;
     private int _versionFrom;
     private int _versionTo;
     private int _sortWeight;
@@ -30,6 +31,7 @@ public class Proposal2PhaseSoap implements Serializable {
 
         soapModel.setProposalId(model.getProposalId());
         soapModel.setContestPhaseId(model.getContestPhaseId());
+        soapModel.setRibbonTypeId(model.getRibbonTypeId());
         soapModel.setVersionFrom(model.getVersionFrom());
         soapModel.setVersionTo(model.getVersionTo());
         soapModel.setSortWeight(model.getSortWeight());
@@ -97,6 +99,14 @@ public class Proposal2PhaseSoap implements Serializable {
 
     public void setContestPhaseId(long contestPhaseId) {
         _contestPhaseId = contestPhaseId;
+    }
+
+    public long getRibbonTypeId() {
+        return _ribbonTypeId;
+    }
+
+    public void setRibbonTypeId(long ribbonTypeId) {
+        _ribbonTypeId = ribbonTypeId;
     }
 
     public int getVersionFrom() {

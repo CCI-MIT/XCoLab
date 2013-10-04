@@ -7,6 +7,7 @@ import org.xcolab.portlets.proposals.utils.ProposalsActions;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -147,17 +148,52 @@ public class ProposalsPermissions {
         return ! user.isDefaultUser();
     }
     
-    public boolean getCanSeeSubscribeContestButton() {
-        return true;
+    public boolean getCanSeeSubscribeContestButton() throws PortalException, SystemException {
+        return user.isDefaultUser() || ! ContestLocalServiceUtil.isSubscribed(contestPhase.getContestPK(), user.getUserId());
+    }
+    public boolean getCanSeeUnsubscribeContestButton() throws PortalException, SystemException {
+        return ! user.isDefaultUser() && ContestLocalServiceUtil.isSubscribed(contestPhase.getContestPK(), user.getUserId());
     }
 
     public boolean getCanSubscribeProposal() {
         return ! user.isDefaultUser();
     }
     
-    public boolean getCanSeeSubscribeProposalButton() {
-        return true;
+    public boolean getCanSeeSubscribeProposalButton() throws PortalException, SystemException {
+        return user.isDefaultUser() || ! ProposalLocalServiceUtil.isSubscribed(proposal.getProposalId(), user.getUserId());
+    }
+
+    public boolean getCanSeeUnsubscribeProposalButton() throws PortalException, SystemException {
+        return ! user.isDefaultUser() && ProposalLocalServiceUtil.isSubscribed(proposal.getProposalId(), user.getUserId());
+    }
+    
+    public boolean isVotingEnabled() {
+        return ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase) && contestStatus.isCanVote(); 
+    }
+    
+    public boolean getCanVote() {
+        return ! user.isDefaultUser() && isVotingEnabled();
+    }
+    
+    public boolean getCanAdmin() {
+        return getCanAdminAll() || isOwner();
+    }
+    
+
+    public boolean getCanSeeVoteButton() throws SystemException {
+        return user.isDefaultUser() || ! hasVotedOnThisProposal();
+    }
+
+    public boolean getCanSeeUnvoteButton() throws SystemException {
+        return !user.isDefaultUser() && hasVotedOnThisProposal();
     }
 
 
+    private boolean hasVotedOnThisProposal() throws SystemException {
+        return ProposalLocalServiceUtil.hasUserVoted(proposal.getProposalId(), contestPhase.getContestPhasePK(), user.getUserId());
+    }
+
+    private boolean isOwner() {
+        return user.getUserId() == proposal.getAuthorId();
+    }
 }

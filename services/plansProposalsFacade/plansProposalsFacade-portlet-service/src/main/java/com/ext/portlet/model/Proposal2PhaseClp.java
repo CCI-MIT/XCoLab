@@ -17,6 +17,7 @@ public class Proposal2PhaseClp extends BaseModelImpl<Proposal2Phase>
     implements Proposal2Phase {
     private long _proposalId;
     private long _contestPhaseId;
+    private long _ribbonTypeId;
     private int _versionFrom;
     private int _versionTo;
     private int _sortWeight;
@@ -64,6 +65,14 @@ public class Proposal2PhaseClp extends BaseModelImpl<Proposal2Phase>
 
     public void setContestPhaseId(long contestPhaseId) {
         _contestPhaseId = contestPhaseId;
+    }
+
+    public long getRibbonTypeId() {
+        return _ribbonTypeId;
+    }
+
+    public void setRibbonTypeId(long ribbonTypeId) {
+        _ribbonTypeId = ribbonTypeId;
     }
 
     public int getVersionFrom() {
@@ -123,6 +132,7 @@ public class Proposal2PhaseClp extends BaseModelImpl<Proposal2Phase>
 
         clone.setProposalId(getProposalId());
         clone.setContestPhaseId(getContestPhaseId());
+        clone.setRibbonTypeId(getRibbonTypeId());
         clone.setVersionFrom(getVersionFrom());
         clone.setVersionTo(getVersionTo());
         clone.setSortWeight(getSortWeight());
@@ -167,12 +177,14 @@ public class Proposal2PhaseClp extends BaseModelImpl<Proposal2Phase>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{proposalId=");
         sb.append(getProposalId());
         sb.append(", contestPhaseId=");
         sb.append(getContestPhaseId());
+        sb.append(", ribbonTypeId=");
+        sb.append(getRibbonTypeId());
         sb.append(", versionFrom=");
         sb.append(getVersionFrom());
         sb.append(", versionTo=");
@@ -187,7 +199,7 @@ public class Proposal2PhaseClp extends BaseModelImpl<Proposal2Phase>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Proposal2Phase");
@@ -200,6 +212,10 @@ public class Proposal2PhaseClp extends BaseModelImpl<Proposal2Phase>
         sb.append(
             "<column><column-name>contestPhaseId</column-name><column-value><![CDATA[");
         sb.append(getContestPhaseId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ribbonTypeId</column-name><column-value><![CDATA[");
+        sb.append(getRibbonTypeId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>versionFrom</column-name><column-value><![CDATA[");

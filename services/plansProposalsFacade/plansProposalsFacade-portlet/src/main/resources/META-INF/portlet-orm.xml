@@ -132,6 +132,19 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestPhaseRibbonTypeModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="ribbon" />
+			<basic name="hoverText" />
+			<basic name="description" />
+			<basic name="copyOnPromote" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestPhaseTypeModelImpl">
 		<attributes>
 			<id name="id">
@@ -962,6 +975,7 @@
 		<attributes>
 			<id name="proposalId" />
 			<id name="contestPhaseId" />
+			<basic name="ribbonTypeId" />
 			<basic name="versionFrom" />
 			<basic name="versionTo" />
 			<basic name="sortWeight" />
@@ -991,31 +1005,6 @@
 		<attributes>
 			<id name="name" />
 			<basic name="visibleInVersionHistory" />
-			<basic name="copyOnPromote" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="proposalId" />
-			<basic name="contestPhaseId" />
-			<basic name="typeId" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="ribbon" />
-			<basic name="hoverText" />
-			<basic name="description" />
 			<basic name="copyOnPromote" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1085,6 +1074,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestPhaseColumnImpl" name="ContestPhaseColumn">
 		<table name="xcolab_ContestPhaseColumn" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestPhaseRibbonTypeImpl" name="ContestPhaseRibbonType">
+		<table name="xcolab_ContestPhaseRibbonType" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestPhaseTypeImpl" name="ContestPhaseType">
@@ -1333,14 +1326,6 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalAttributeTypeImpl" name="ProposalAttributeType">
 		<table name="xcolab_ProposalAttributeType" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl" name="ProposalContestPhaseAttribute">
-		<table name="xcolab_ProposalContestPhaseAttribute" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl" name="ProposalContestPhaseAttributeType">
-		<table name="xcolab_ProposalContestPhaseAttributeType" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalSupporterImpl" name="ProposalSupporter">

@@ -885,35 +885,97 @@ public class ProposalLocalServiceUtil {
         getService().joinIfNotAMemberAndProposalIsOpen(proposalId, userId);
     }
 
+    /**
+    * <p>Returns true if user is subscribed to given proposal</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @return true if user has subscribed to a proposal, false otherwise
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
     public static boolean isSubscribed(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().isSubscribed(proposalId, userId);
     }
 
+    /**
+    * <p>Subscribes user to a proposal</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
     public static void subscribe(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().subscribe(proposalId, userId);
     }
 
+    /**
+    * <p>Subscribes user to a proposal (supports manual and automatic subscriptions).
+    * Automatic subscription is created when user is being subscribed indirectly
+    * (ie. when new proposal is created in a contest to which user is subscribed). </p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @param automatic if this is an automatic subscription
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
     public static void subscribe(long proposalId, long userId, boolean automatic)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().subscribe(proposalId, userId, automatic);
     }
 
+    /**
+    * <p>Unsubscribes user from given proposal</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
     public static void unsubscribe(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().unsubscribe(proposalId, userId);
     }
 
+    /**
+    * <p>Unsubscribes user from given proposal (supports removal of automatic subscriptions).
+    * If user is unsubscribing manually then subscription is removed without any conditions,
+    * but if this is removal of an automatic subscription then a "automaticSubscriptionCounter"
+    * is decreased by 1 for this subscription and if it reaches 0 then subscription is removed. </p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @param automatic if this is an automatic subscription
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
     public static void unsubscribe(long proposalId, long userId,
         boolean automatic)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().unsubscribe(proposalId, userId, automatic);
+    }
+
+    /**
+    * <p>Returns true if user has voted for given proposal in context of a contest phase</p>
+    *
+    * @param proposalId proposal id
+    * @param contestPhaseId contest phase id
+    * @param userId user id
+    * @return true if user has voted for proposal in context of a contest phase
+    * @throws SystemException
+    */
+    public static boolean hasUserVoted(long proposalId, long contestPhaseId,
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasUserVoted(proposalId, contestPhaseId, userId);
     }
 
     public static void clearService() {

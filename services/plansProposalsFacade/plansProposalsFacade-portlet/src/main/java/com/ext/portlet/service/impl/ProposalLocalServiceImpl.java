@@ -772,26 +772,88 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
     }
     
+    /**
+     * <p>Returns true if user is subscribed to given proposal</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @return true if user has subscribed to a proposal, false otherwise
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
     public boolean isSubscribed(long proposalId, long userId) throws PortalException, SystemException {
         return activitySubscriptionLocalService.isSubscribed(userId, Proposal.class, proposalId, 0, "");
     }
     
-
+    /**
+     * <p>Subscribes user to a proposal</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     * 
+     */
     public void subscribe(long proposalId, long userId) throws PortalException, SystemException {
         subscribe(proposalId, userId, false);
     }
-    
+    /**
+     * <p>Subscribes user to a proposal (supports manual and automatic subscriptions). 
+     * Automatic subscription is created when user is being subscribed indirectly 
+     * (ie. when new proposal is created in a contest to which user is subscribed). </p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @param automatic if this is an automatic subscription
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     * 
+     */
     public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
     }
     
 
+    /**
+     * <p>Unsubscribes user from given proposal</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
     public void unsubscribe(long proposalId, long userId) throws PortalException, SystemException {
         unsubscribe(proposalId, userId, false);
     }
-    
+
+
+    /**
+     * <p>Unsubscribes user from given proposal (supports removal of automatic subscriptions).
+     * If user is unsubscribing manually then subscription is removed without any conditions, 
+     * but if this is removal of an automatic subscription then a "automaticSubscriptionCounter"
+     * is decreased by 1 for this subscription and if it reaches 0 then subscription is removed. </p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @param automatic if this is an automatic subscription
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
     public void unsubscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.deleteSubscription(userId, Proposal.class, proposalId, 0, "", automatic);
+    }
+    
+    /**
+     * <p>Returns true if user has voted for given proposal in context of a contest phase</p>
+     * @param proposalId proposal id 
+     * @param contestPhaseId contest phase id
+     * @param userId user id
+     * @return true if user has voted for proposal in context of a contest phase
+     * @throws SystemException
+     */
+    public boolean hasUserVoted(long proposalId, long contestPhaseId, long userId) throws SystemException {
+        try {
+            ProposalVote proposalVote = proposalVotePersistence.findByPrimaryKey(new ProposalVotePK(contestPhaseId, userId));
+            return proposalVote.getProposalId() == proposalId;
+        }
+        catch (NoSuchProposalVoteException e) {
+            return false;
+        }
     }
     
     /**

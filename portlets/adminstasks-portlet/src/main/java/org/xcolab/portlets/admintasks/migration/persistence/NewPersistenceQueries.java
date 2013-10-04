@@ -1,11 +1,13 @@
 package org.xcolab.portlets.admintasks.migration.persistence;
 
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalContestPhaseAttributeType;
-import com.ext.portlet.model.ProposalVersion;
+import java.util.List;
+
+import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -13,8 +15,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,14 +28,15 @@ public class NewPersistenceQueries {
     private static ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
             ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
 
-    public static long getProposalContestPhaseAttributeTypeIdForRibbon(String ribbon, String hoverText){
-        DynamicQuery proposalRibbonQuery = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttributeType.class, portletClassLoader);
+    public static long getContestPhaseRibbonTypeIdForRibbon(int ribbon, String hoverText){
+        
+        DynamicQuery proposalRibbonQuery = DynamicQueryFactoryUtil.forClass(ContestPhaseRibbonType.class, portletClassLoader);
         proposalRibbonQuery.add(PropertyFactoryUtil.forName("ribbon").eq(ribbon));
         proposalRibbonQuery.add(PropertyFactoryUtil.forName("hoverText").eq(hoverText));
 
-        List<ProposalContestPhaseAttributeType> ribbonTypes = null;
+        List<ContestPhaseRibbonType> ribbonTypes = null;
         try{
-            ribbonTypes = ProposalContestPhaseAttributeTypeLocalServiceUtil.dynamicQuery(proposalRibbonQuery);
+            ribbonTypes = ContestPhaseRibbonTypeLocalServiceUtil.dynamicQuery(proposalRibbonQuery);
         } catch(Exception e){
             e.printStackTrace();
             return -1;
@@ -44,16 +45,11 @@ public class NewPersistenceQueries {
         return ribbonTypes.get(0).getId();
     }
 
-    public static boolean createNewProposalContestPhaseAttribute(long proposalId, long typeId, long contestPhaseId){
+    public static boolean associateProposalWithRibbon(long proposalId, long typeId, long contestPhaseId){
         try{
-            ProposalContestPhaseAttribute attr =
-                    ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
-                            CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()
-                            ));
-            attr.setProposalId(proposalId);
-            attr.setTypeId(typeId);
-            attr.setContestPhaseId(contestPhaseId);
-            ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attr);
+            Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhaseId);
+            proposal2Phase.setRibbonTypeId(typeId);
+            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(proposal2Phase);
         } catch (Exception e){
             e.printStackTrace();
             return false;
@@ -61,26 +57,26 @@ public class NewPersistenceQueries {
         return true;
     }
 
-    public static ProposalContestPhaseAttributeType createNewProposalContestPhaseAttributeType(String ribbon, String hoverText){
-        ProposalContestPhaseAttributeType attributeType = null;
+    public static ContestPhaseRibbonType createNewContestPhaseRibbonType(String ribbon, String hoverText){
+        ContestPhaseRibbonType ribbonType = null;
         try{
-            attributeType = ProposalContestPhaseAttributeTypeLocalServiceUtil.createProposalContestPhaseAttributeType(
-                    CounterLocalServiceUtil.increment(ProposalContestPhaseAttributeType.class.getName())
+            ribbonType = ContestPhaseRibbonTypeLocalServiceUtil.createContestPhaseRibbonType(
+                    CounterLocalServiceUtil.increment(ContestPhaseRibbonType.class.getName())
             );
         } catch (Exception e){
             e.printStackTrace();
             return null;
         }
-        attributeType.setRibbon(ribbon);
-        attributeType.setHoverText(hoverText);
+        ribbonType.setRibbon(Integer.valueOf(ribbon));
+        ribbonType.setHoverText(hoverText);
 
         try{
-            ProposalContestPhaseAttributeTypeLocalServiceUtil.updateProposalContestPhaseAttributeType(attributeType);
+            ContestPhaseRibbonTypeLocalServiceUtil.addContestPhaseRibbonType(ribbonType);
         } catch (Exception e){
             e.printStackTrace();
             return null;
         }
-        return attributeType;
+        return ribbonType;
     }
 
     public static ProposalVersion getLatestVersionForProposal(Proposal proposal){

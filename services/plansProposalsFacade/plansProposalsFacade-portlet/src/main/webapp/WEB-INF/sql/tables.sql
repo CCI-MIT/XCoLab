@@ -79,6 +79,14 @@ create table xcolab_ContestPhaseColumn (
 	defaultSort BOOLEAN
 );
 
+create table xcolab_ContestPhaseRibbonType (
+	id_ LONG not null primary key,
+	ribbon INTEGER,
+	hoverText VARCHAR(75) null,
+	description VARCHAR(75) null,
+	copyOnPromote BOOLEAN
+);
+
 create table xcolab_ContestPhaseType (
 	id_ LONG not null primary key,
 	name VARCHAR(1024) null,
@@ -618,6 +626,7 @@ create table xcolab_Proposal (
 create table xcolab_Proposal2Phase (
 	proposalId LONG not null,
 	contestPhaseId LONG not null,
+	ribbonTypeId LONG,
 	versionFrom INTEGER,
 	versionTo INTEGER,
 	sortWeight INTEGER,

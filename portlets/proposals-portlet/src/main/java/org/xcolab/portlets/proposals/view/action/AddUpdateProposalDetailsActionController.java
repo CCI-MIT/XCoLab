@@ -34,7 +34,7 @@ public class AddUpdateProposalDetailsActionController {
     private ProposalsContext proposalsContext;
 
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails", "action=updateProposalDetails"})
+    @RequestMapping(params = {"action=updateProposalDetails"})
     public void show(ActionRequest request, Model model,
             ActionResponse response, @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result) 
             throws PortalException, SystemException {

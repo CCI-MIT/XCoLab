@@ -26,12 +26,28 @@
 				<bean class="org.xcolab.portlets.proposals.view.interceptors.PopulateContextInterceptor" />
 				<bean class="org.xcolab.portlets.proposals.view.interceptors.ParametersMappingInterceptor">
 					<property name="parameters">
-						<list>
-							<value>contestId</value>
-							<value>proposalId</value>
-							<value>planId</value>
-							<value>pageToDisplay</value>
-						</list>
+						<map>
+							<entry>
+								<key><value>contestId</value></key>
+								<value>contestId</value>
+							</entry>
+							<entry>
+								<key><value>proposalId</value></key>
+								<value>proposalId</value>
+							</entry>
+							<entry>
+								<key><value>planId</value></key>
+								<value>planId</value>
+							</entry>
+							<entry>
+								<key><value>pageToDisplay</value></key>
+								<value>pageToDisplay</value>
+							</entry>
+							<entry>
+								<key><value>action_forwardToPage</value></key>
+								<value>pageToDisplay</value>
+							</entry>
+						</map>
 					</property>
 				</bean>
     		</list>
