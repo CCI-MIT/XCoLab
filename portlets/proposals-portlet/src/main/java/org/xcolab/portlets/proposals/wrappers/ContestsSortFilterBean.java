@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.utils;
+package org.xcolab.portlets.proposals.wrappers;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.utils.ContestsColumn;
 
 public class ContestsSortFilterBean {
     private final List<ContestWrapper> contests;

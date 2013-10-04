@@ -35,7 +35,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalServiceUtil} to access the proposal remote service.
      */
     @JSONWebService
-    public String getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
+    public JSONObject getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
         JSONObject result = JSONFactoryUtil.createJSONObject();
         result.put("proposalId", proposalId);
         result.put("start", start);
@@ -54,8 +54,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
             proposalVersionJsonObj.put("author", converUserToJson(proposalVersion.getAuthorId()));
             proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
         }
-        
-        return result.toString();
+        return result;
     }
     
     private JSONObject converUserToJson(long userId) throws PortalException, SystemException {

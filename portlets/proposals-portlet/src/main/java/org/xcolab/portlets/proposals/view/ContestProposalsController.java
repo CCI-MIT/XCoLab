@@ -18,6 +18,7 @@ import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ProposalsColumn;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -49,30 +50,10 @@ public class ContestProposalsController {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
             proposals.add(new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)); 
         }
-        
-        if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
-            try {
-                final Comparator<ProposalWrapper> proposalsSorter = ProposalsColumn.valueOf(sortFilterPage.getSortColumn()).getComparator();
-
-                Collections.sort(proposals, new Comparator<ProposalWrapper>() {
-
-                    @Override
-                    public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-                        int ret = 0;
-                        ret = proposalsSorter.compare(o1, o2);
-                        return sortFilterPage.isSortAscending() ? ret : -ret;
-                    }
-                });
-            }
-            catch (Exception e) {
-                // ignore
-            }
-        }
 
         
-
         model.addAttribute("sortFilterPage", sortFilterPage);
-        model.addAttribute("proposals", proposals);
+        model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
         
         return "contestProposals";
     }

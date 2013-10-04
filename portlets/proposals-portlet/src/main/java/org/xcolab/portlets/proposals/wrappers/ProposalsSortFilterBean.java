@@ -1,0 +1,100 @@
+package org.xcolab.portlets.proposals.wrappers;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.portlets.proposals.utils.ProposalsColumn;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+public class ProposalsSortFilterBean {
+    private final List<ProposalWrapper> proposals;
+    private final SortFilterPage sortFilterPage;
+    private Comparator<ProposalWrapper> proposalComparator;
+    
+    private List<ProposalWrapper> proposalsWithRibbons = new ArrayList<ProposalWrapper>();
+    private List<ProposalWrapper> proposalsNormal = new ArrayList<ProposalWrapper>();
+    
+
+    public ProposalsSortFilterBean(List<ProposalWrapper> proposals, final SortFilterPage sortFilterPage) throws PortalException, SystemException {
+        super();
+        this.sortFilterPage = sortFilterPage;
+        this.proposals = proposals;
+        
+        // sort proposals
+        if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
+            
+        }
+
+        
+        if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
+            proposalComparator = ProposalsColumn.valueOf(sortFilterPage.getSortColumn()).getComparator();
+        }
+        else {
+            proposalComparator = ProposalsColumn.MODIFIED.getComparator();
+        }
+        
+        
+        Collections.sort(this.proposals, new Comparator<ProposalWrapper>() {
+            @Override
+            public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+                try {
+                    int ribbonDiff = o2.getRibbon() - o1.getRibbon();
+                    if (ribbonDiff != 0) {
+                        return ribbonDiff;
+                    }
+                }
+                catch (Exception e) {
+                    _log.error("can't compare proposals", e);
+                }
+                int ret = proposalComparator.compare(o1, o2);
+                
+                return sortFilterPage.isSortAscending() ? ret : - ret;
+            }
+        });
+        
+        for (ProposalWrapper contest: this.proposals) {
+            if (contest.getRibbon() > 0) proposalsWithRibbons.add(contest);
+            else proposalsNormal.add(contest);
+        }
+    }
+
+    
+    
+    public List<ProposalWrapper> getProposalsWithRibbons() {
+        return proposalsWithRibbons;
+    }
+
+
+
+    public void setProposalsWithRibbons(List<ProposalWrapper> proposalsWithRibbons) {
+        this.proposalsWithRibbons = proposalsWithRibbons;
+    }
+
+    public List<ProposalWrapper> getProposalsNormal() {
+        return proposalsNormal;
+    }
+
+
+
+    public void setProposalsNormal(List<ProposalWrapper> proposalsNormal) {
+        this.proposalsNormal = proposalsNormal;
+    }
+
+
+
+    public List<ProposalWrapper> getProposals() {
+        return proposals;
+    }
+
+
+
+    private final static Log _log = LogFactoryUtil.getLog(ProposalsSortFilterBean.class);
+}

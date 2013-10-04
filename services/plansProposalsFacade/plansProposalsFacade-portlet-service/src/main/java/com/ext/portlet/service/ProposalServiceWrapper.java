@@ -19,8 +19,8 @@ public class ProposalServiceWrapper implements ProposalService,
         _proposalService = proposalService;
     }
 
-    public java.lang.String getProposalVersions(long proposalId, int start,
-        int end)
+    public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
+        long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalService.getProposalVersions(proposalId, start, end);

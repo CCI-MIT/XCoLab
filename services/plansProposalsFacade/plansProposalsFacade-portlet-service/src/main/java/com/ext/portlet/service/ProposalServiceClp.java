@@ -16,8 +16,8 @@ public class ProposalServiceClp implements ProposalService {
                 "getProposalVersions", long.class, int.class, int.class);
     }
 
-    public java.lang.String getProposalVersions(long proposalId, int start,
-        int end)
+    public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
+        long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -44,7 +44,7 @@ public class ProposalServiceClp implements ProposalService {
             }
         }
 
-        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+        return (com.liferay.portal.kernel.json.JSONObject) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

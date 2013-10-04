@@ -14,7 +14,7 @@
 
 		<div class="headline subhead">
 			<h2>
-				<span>${fn:length(proposals)}</span> proposals
+				<span>${fn:length(proposals.proposals)}</span> proposals
 			</h2>
 			<c:if test="${contestPhase.status == 'OPEN_FOR_SUBMISSION' and contestPhase.active}">
 				<div class="right">
@@ -147,66 +147,7 @@
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
 				</div>
 			</div>
-			<c:forEach var="proposal" items="${proposals }">
-				<div class="propbox ${proposal.featured ? 'featured' : ''}">
-					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">
-            <div class="ribbonPlaceholder">
-                <span class="fieldWithTooltip">
-                    <br />
-                    <img src="/climatecolab-theme/images/icon-prize${proposal.ribbon}.png" />
-                </span>
-                <div class="tooltip">
-                    ${proposal.ribbonText}
-                </div>
-            </div>
-            </c:if>
-            <div class="row1">
-                <div class="title-author">
-                    <h4>
-                    	<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
-                        /&#160;
-                        <c:choose>
-                        	<c:when test="${empty proposal.team}">
-                        		<proposalsPortlet:userLinkSimple userId="${proposal.author.userId}" text="${proposal.author.screenName}" />
-                        	</c:when>
-                        	<c:otherwise>
-                            	${singleProposal.team}
-                        	</c:otherwise>
-                        </c:choose>
-                    </h4>
-                    <div class="clear" ><!--  --></div>
-                </div>
-                <c:choose>
-                	<c:when test="${contestPhase.canVote}">
-                		<div class="voteboxsmall">
-    	            		<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
-    	        		</div>
-    	        	</c:when>
-    	        	<c:otherwise>
-    	        		<div class="thumbbox">
-                			<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.supportersCount}" hashString="plans%3Dtab%3ATEAM"/>
-                		</div>
-                	</c:otherwise>
-               	</c:choose>
-                <div class="commbox">
-                    <proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.commentsCount}" hashString="plans%3Dtab%3ACOMMENTS" />
-                </div>
-                <div class="modbox">
-                    <fmt:formatDate value="${proposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" />
-                </div>
-                <div class="conbox">
-                	<c:choose>
-                		<c:when test="${proposal.open}">
-	                        anyone
-	                    </c:when>
-	                    <c:otherwise>
-                        	team only
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
-            <div class="row2">${proposal.pitch}</div>
-        </div> <!-- /proposal -->
-			</c:forEach>
+			<proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }" showShadebar="true"/>
+			<proposalsPortlet:proposalsList proposals="${proposals.proposalsNormal }" showShadebar="${fn:length(proposals.proposalsWithRibbons) > 0 }"/>
 	</div>
 </jsp:root>

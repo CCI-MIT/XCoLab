@@ -169,9 +169,8 @@ public class ProposalWrapper {
         return getAttributeValueString("DESCRIPTION", "");
     } 
     
-    public boolean isFeatured() {
-        // TODO
-        return false;
+    public boolean isFeatured() throws PortalException, SystemException {
+        return getRibbon() > 0;
     }
     
     public int getRibbon() throws PortalException, SystemException {

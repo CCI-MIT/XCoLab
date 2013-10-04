@@ -56,10 +56,10 @@ public class ProposalServiceSoap {
     public static java.lang.String getProposalVersions(long proposalId,
         int start, int end) throws RemoteException {
         try {
-            java.lang.String returnValue = ProposalServiceUtil.getProposalVersions(proposalId,
+            com.liferay.portal.kernel.json.JSONObject returnValue = ProposalServiceUtil.getProposalVersions(proposalId,
                     start, end);
 
-            return returnValue;
+            return returnValue.toString();
         } catch (Exception e) {
             _log.error(e, e);
 
