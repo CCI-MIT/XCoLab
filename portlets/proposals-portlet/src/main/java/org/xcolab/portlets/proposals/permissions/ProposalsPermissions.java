@@ -194,6 +194,6 @@ public class ProposalsPermissions {
     }
 
     private boolean isOwner() {
-        return user.getUserId() == proposal.getAuthorId();
+        return !user.isDefaultUser() && (proposal == null || user.getUserId() == proposal.getAuthorId());
     }
 }

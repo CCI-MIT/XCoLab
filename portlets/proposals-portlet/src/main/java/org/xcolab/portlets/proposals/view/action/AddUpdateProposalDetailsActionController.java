@@ -9,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
@@ -43,23 +42,38 @@ public class AddUpdateProposalDetailsActionController {
         
         if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
+            response.setRenderParameter("action", "updateProposalDetails");
+            response.setRenderParameter("edit", "true");
+            request.setAttribute("ACTION_ERROR", true);
             return;
         }
         
         
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        if (updateProposalSectionsBean.getName() != null && !updateProposalSectionsBean.getName().equals(proposal.getName())) {
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, updateProposalSectionsBean.getName()); 
+        }
+        
+        if (updateProposalSectionsBean.getPitch() != null && !updateProposalSectionsBean.getPitch().equals(proposal.getPitch())) {
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, updateProposalSectionsBean.getPitch()); 
+        }
+
+        /*
+         * TODO - team attribute handling
+        if (updateProposalSectionsBean.getTeam() != null && !updateProposalSectionsBean.getTeam().equals(proposal.getTeam())) {
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys., updateProposalSectionsBean.getTeam()); 
+        }*/
+
+        if (updateProposalSectionsBean.getImageId() > 0 && updateProposalSectionsBean.getImageId() != proposal.getImageId()) {
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.IMAGE_ID, updateProposalSectionsBean.getImageId()); 
+        }
+        
         for (ProposalSectionWrapper section: proposal.getSections()) {
             String newSectionContent = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
-            if (newSectionContent == null) {
-                System.out.println("content is null " + section.getSectionDefinitionId() + "\t" + section.getTitle());
-            }
-            else {
-                System.out.println(section.getContent().length() + "\t" + newSectionContent.length() + "\t" + section.getContent().equals(newSectionContent));
-                ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newSectionContent);
-            }
             
             if (newSectionContent != null && !newSectionContent.equals(section.getContent())) {
-                System.out.println("New section content: " + section.getSectionDefinitionId());   
+                System.out.println("New section content: " + section.getSectionDefinitionId() + "\t" + newSectionContent);
+                ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newSectionContent);
             }
         }
         
@@ -71,9 +85,11 @@ public class AddUpdateProposalDetailsActionController {
     
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails", "action=updateProposalDetails", "error=true"})
-    public String reportError(PortletRequest request, Model model,
-            @Valid RequestMembershipBean newAccountBean, BindingResult result,
-            @RequestParam(required = false) String redirect) {
-        return "proposalSections";
+    public String reportError(PortletRequest request, Model model, 
+            @ModelAttribute("updateProposalSectionsBean") @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result) {
+        System.out.println("bajobongo i do przodu!");
+        
+        
+        return "proposalDetails_edit";
     }
 }

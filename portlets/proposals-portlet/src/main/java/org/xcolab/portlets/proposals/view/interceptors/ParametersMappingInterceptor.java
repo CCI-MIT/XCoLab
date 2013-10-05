@@ -1,8 +1,9 @@
 package org.xcolab.portlets.proposals.view.interceptors;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -20,6 +21,8 @@ import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
 public class ParametersMappingInterceptor extends HandlerInterceptorAdapter {
     
     private Map<String, String> parameters = new HashMap<String, String>();
+    private Set<String> ignoreOnError = new HashSet<String>();
+    private Set<String> ignoreOnSuccess = new HashSet<String>();
     
     public Map<String, String> getParameters() {
         return parameters;
@@ -28,21 +31,43 @@ public class ParametersMappingInterceptor extends HandlerInterceptorAdapter {
     public void setParameters(Map<String, String> parameters) {
         this.parameters = parameters;
     }
+    
+    public Set<String> getIgnoreOnError() {
+        return ignoreOnError;
+    }
+
+    public void setIgnoreOnError(Set<String> ignoreOnError) {
+        this.ignoreOnError = ignoreOnError;
+    }
+
+    public Set<String> getIgnoreOnSuccess() {
+        return ignoreOnSuccess;
+    }
+
+    public void setIgnoreOnSuccess(Set<String> ignoreOnSuccess) {
+        this.ignoreOnSuccess = ignoreOnSuccess;
+    }
 
     /**
      * If request is an {@link javax.portlet.ActionRequest ActionRequest},
      * get handler mapping parameters and add them to the ActionResponse.
      */
+    
     @Override
-    public boolean preHandleAction(ActionRequest request, ActionResponse response, Object handler) {
+    public void afterActionCompletion(ActionRequest request, ActionResponse response, Object handler, Exception ex)
+            throws Exception {
+        
+        boolean actionError = request.getAttribute("ACTION_ERROR") != null;
+        
         for (Map.Entry<String, String> parameterMapping: parameters.entrySet()) {
+            if ((actionError && ignoreOnError.contains(parameterMapping.getKey())) ||
+                    (!actionError && ignoreOnSuccess.contains(parameterMapping.getKey()))) continue;
+            
             String mappingParameterValue = request.getParameter(parameterMapping.getKey());
 
             if (mappingParameterValue != null) {
                 response.setRenderParameter(parameterMapping.getValue(), mappingParameterValue);
             }
         }
-        
-        return true;
     }
 }

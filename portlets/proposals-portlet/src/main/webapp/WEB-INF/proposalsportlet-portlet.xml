@@ -47,7 +47,21 @@
 								<key><value>action_forwardToPage</value></key>
 								<value>pageToDisplay</value>
 							</entry>
+							<entry>
+								<key><value>action_errorForwardToPage</value></key>
+								<value>pageToDisplay</value>
+							</entry>
 						</map>
+					</property>
+					<property name="ignoreOnError">
+						<list>
+							<value>action_forwardToPage</value>
+						</list>
+					</property>
+					<property name="ignoreOnSuccess">
+						<list>
+							<value>action_errorForwardToPage</value>
+						</list>
 					</property>
 				</bean>
     		</list>

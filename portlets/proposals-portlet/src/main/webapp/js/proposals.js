@@ -83,7 +83,6 @@ function updateCharacterCounter(input, editor) {
             elem.limitCharacterCounter.parent().removeClass('overflow');
             input.removeClass('invalid');
         }
-        console.log('updating character counter', elem.limitCharacterCounter);
         elem.limitCharacterCounter.text(count);
     }
 }

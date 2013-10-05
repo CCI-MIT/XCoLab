@@ -115,3 +115,29 @@ div.sponsorLogo img {
 	font-size: 12px;
 	text-align: right;
 }
+
+#uploadWidget {
+    background: url(../img/image_upload-button.png) no-repeat;
+    width: 219px;
+    height: 30px;
+    margin-top: 12px;
+    cursor: pointer;
+    float: left;
+}
+
+#uploadWidget:hover {
+    background: url(../img/image_upload-button-hover.png) no-repeat;
+}
+
+#proposalPitchInput {
+	height: 100px;
+}
+
+#fileUploadForm input {
+	opacity:0;
+	filter:alpha(opacity=0); /* For IE8 and earlier */
+	cursor: pointer;
+	width: 219px;
+	height: 30px;
+	z-index: 100000;	
+}

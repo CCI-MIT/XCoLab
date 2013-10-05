@@ -203,7 +203,10 @@ public class ProposalWrapper {
     }
 
     public long getCommentsCount() throws PortalException, SystemException {
-        return ProposalLocalServiceUtil.getCommentsCount(proposal.getProposalId());
+        if (proposal.getProposalId() > 0) {
+            return ProposalLocalServiceUtil.getCommentsCount(proposal.getProposalId());
+        }
+        return 0;
     }
     
     public Date getLastModifiedDate() {
@@ -211,11 +214,17 @@ public class ProposalWrapper {
     }
     
     public boolean isOpen() throws PortalException, SystemException {
-        return ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
+        if (proposal.getProposalId() > 0) {
+            return ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
+        }
+        return false;
     }
     
     public long getVotesCount() throws SystemException {
-        return ProposalLocalServiceUtil.getVotesCount(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        if (proposal.getProposalId() > 0) {
+            return ProposalLocalServiceUtil.getVotesCount(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        }
+        return 0;
     }
     
     public long getImageId() throws PortalException, SystemException {
