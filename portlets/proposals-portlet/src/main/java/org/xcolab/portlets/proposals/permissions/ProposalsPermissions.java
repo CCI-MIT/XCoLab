@@ -95,7 +95,9 @@ public class ProposalsPermissions {
         if (user.isDefaultUser()) 
             return false;
         
-        return contestStatus.isCanCreate();
+        // TODO - 
+        //return contestStatus.isCanCreate();
+        return true;
     }
     
     public boolean getCanSeeRequestMembershipButton() throws SystemException, PortalException {
@@ -114,34 +116,8 @@ public class ProposalsPermissions {
         return !user.isDefaultUser() && isSupporter();
     }
     
-    private boolean getRequestedMembership() throws PortalException, SystemException {
-        if (! user.isDefaultUser()) {
-            return ProposalLocalServiceUtil.hasUserRequestedMembership(proposal.getProposalId(), user.getUserId());
-        }
-        return false;
-        
-    }
-    
     public boolean getCanSupportProposal() throws PortalException, SystemException {
         return ! user.isDefaultUser();
-    }
-    
-    private boolean isSupporter() throws PortalException, SystemException {
-        return ProposalLocalServiceUtil.isSupporter(proposal.getProposalId(), user.getUserId());
-    }
-
-    private boolean isProposalOpen() throws SystemException, PortalException {
-        return proposal == null ? false : ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
-    }
-    
-
-    private boolean getCanAdminAll() {
-        boolean adminAll =  permissionChecker.hasPermission(groupId, portletId, primKey, ProposalsActions.CAN_ADMIN_ALL);
-        return adminAll;
-    }
-    
-    private boolean isProposalMember() throws SystemException {
-        return GroupLocalServiceUtil.hasUserGroup(user.getUserId(), groupId);
     }
 
     public boolean getCanSubscribeContest() {
@@ -149,10 +125,10 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanSeeSubscribeContestButton() throws PortalException, SystemException {
-        return user.isDefaultUser() || ! ContestLocalServiceUtil.isSubscribed(contestPhase.getContestPK(), user.getUserId());
+        return user.isDefaultUser() || ! isSubscribedToContest();
     }
     public boolean getCanSeeUnsubscribeContestButton() throws PortalException, SystemException {
-        return ! user.isDefaultUser() && ContestLocalServiceUtil.isSubscribed(contestPhase.getContestPK(), user.getUserId());
+        return ! user.isDefaultUser() && isSubscribedToContest();
     }
 
     public boolean getCanSubscribeProposal() {
@@ -160,15 +136,15 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanSeeSubscribeProposalButton() throws PortalException, SystemException {
-        return user.isDefaultUser() || ! ProposalLocalServiceUtil.isSubscribed(proposal.getProposalId(), user.getUserId());
+        return user.isDefaultUser() || ! isSubscribedToProposal();
     }
 
     public boolean getCanSeeUnsubscribeProposalButton() throws PortalException, SystemException {
-        return ! user.isDefaultUser() && ProposalLocalServiceUtil.isSubscribed(proposal.getProposalId(), user.getUserId());
+        return ! user.isDefaultUser() && isSubscribedToProposal();
     }
     
     public boolean isVotingEnabled() {
-        return ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase) && contestStatus.isCanVote(); 
+        return contestPhase == null ? false : ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase) && contestStatus.isCanVote(); 
     }
     
     public boolean getCanVote() {
@@ -195,5 +171,41 @@ public class ProposalsPermissions {
 
     private boolean isOwner() {
         return !user.isDefaultUser() && (proposal == null || user.getUserId() == proposal.getAuthorId());
+    }
+    
+    
+    private boolean isSupporter() throws PortalException, SystemException {
+        return proposal == null ? false :  ProposalLocalServiceUtil.isSupporter(proposal.getProposalId(), user.getUserId());
+    }
+
+    private boolean isProposalOpen() throws SystemException, PortalException {
+        return proposal == null ? false : ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
+    }
+    
+
+    private boolean getCanAdminAll() {
+        boolean adminAll =  permissionChecker.hasPermission(groupId, portletId, primKey, ProposalsActions.CAN_ADMIN_ALL);
+        return adminAll;
+    }
+    
+    private boolean isProposalMember() throws SystemException {
+        return GroupLocalServiceUtil.hasUserGroup(user.getUserId(), groupId);
+    }
+
+    private boolean isSubscribedToProposal() throws PortalException, SystemException {
+        return proposal == null ? false :  ProposalLocalServiceUtil.isSubscribed(proposal.getProposalId(), user.getUserId());
+    }
+
+    private boolean isSubscribedToContest() throws PortalException, SystemException {
+        return contestPhase == null ? false : ContestLocalServiceUtil.isSubscribed(contestPhase.getContestPK(), user.getUserId());
+    }
+
+    
+    private boolean getRequestedMembership() throws PortalException, SystemException {
+        if (! user.isDefaultUser()) {
+            return ProposalLocalServiceUtil.hasUserRequestedMembership(proposal.getProposalId(), user.getUserId());
+        }
+        return false;
+        
     }
 }

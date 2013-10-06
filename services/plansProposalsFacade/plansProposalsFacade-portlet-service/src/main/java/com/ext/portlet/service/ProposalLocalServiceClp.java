@@ -130,7 +130,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                 "setBeanIdentifier", java.lang.String.class);
 
         _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "create", long.class);
+                "create", long.class, long.class);
 
         _setAttributeMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setAttribute", long.class, long.class, java.lang.String.class,
@@ -696,13 +696,14 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         }
     }
 
-    public com.ext.portlet.model.Proposal create(long authorId)
+    public com.ext.portlet.model.Proposal create(long authorId,
+        long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_createMethodKey17,
-                authorId);
+                authorId, contestPhaseId);
 
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);

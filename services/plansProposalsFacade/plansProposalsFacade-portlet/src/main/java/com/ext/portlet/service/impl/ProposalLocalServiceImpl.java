@@ -23,6 +23,7 @@ import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.ext.portlet.service.persistence.ProposalVotePK;
@@ -98,8 +99,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     
     /**
      * <p>
-     * Creates new proposal initialized to version 1 with one attribute "NAME"
-     * set to "Untitled proposal - PROPOSAL_ID". All related entities are
+     * Creates new proposal, initializes it and associates it with contest phase. All related entities are
      * created:
      * </p>
      * <ul>
@@ -115,6 +115,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * 
      * @param authorId
      *            id of proposal author
+     * @param contestPhaseId
+     *            id of a contestPhase
      * @return created proposal
      * @throws SystemException
      *             in case of a Liferay error
@@ -124,14 +126,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @author janusz
      */
     @Transactional
-    public Proposal create(long authorId) throws SystemException, PortalException {
+    public Proposal create(long authorId, long contestPhaseId) throws SystemException, PortalException {
 
         long proposalId = portalServicesHelper.getCounterLocalService().increment(Proposal.class.getName());
         Proposal proposal = createProposal(proposalId);
         proposal.setVisible(true);
         proposal.setAuthorId(authorId);
         proposal.setCreateDate(new Date());
-
+        
         // create discussions
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup("Proposal " + proposalId + " main discussion");
@@ -155,6 +157,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         
         
         addProposal(proposal);
+        
+        // associate proposal with phase
+        Proposal2Phase p2p = proposal2PhaseLocalService.createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
+        p2p.setVersionFrom(proposal.getCurrentVersion());
+        p2p.setVersionTo(-1);
+        proposal2PhaseLocalService.addProposal2Phase(p2p);
+        
 
         return proposal;
     }

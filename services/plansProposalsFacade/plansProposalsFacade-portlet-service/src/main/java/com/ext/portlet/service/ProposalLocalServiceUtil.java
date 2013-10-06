@@ -247,8 +247,7 @@ public class ProposalLocalServiceUtil {
 
     /**
     * <p>
-    * Creates new proposal initialized to version 1 with one attribute "NAME"
-    * set to "Untitled proposal - PROPOSAL_ID". All related entities are
+    * Creates new proposal, initializes it and associates it with contest phase. All related entities are
     * created:
     * </p>
     * <ul>
@@ -264,6 +263,8 @@ public class ProposalLocalServiceUtil {
     *
     * @param authorId
     id of proposal author
+    * @param contestPhaseId
+    id of a contestPhase
     * @return created proposal
     * @throws SystemException
     in case of a Liferay error
@@ -271,10 +272,11 @@ public class ProposalLocalServiceUtil {
     in case of a Liferay error
     * @author janusz
     */
-    public static com.ext.portlet.model.Proposal create(long authorId)
+    public static com.ext.portlet.model.Proposal create(long authorId,
+        long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().create(authorId);
+        return getService().create(authorId, contestPhaseId);
     }
 
     /**

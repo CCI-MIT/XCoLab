@@ -157,16 +157,16 @@ public class ProposalWrapper {
     }
     
     public String getPitch() throws PortalException, SystemException {
-        return getAttributeValueString("PITCH", "");
+        return getAttributeValueString(ProposalAttributeKeys.PITCH, "");
     }
 
 
     public String getName() throws PortalException, SystemException {
-        return getAttributeValueString("NAME", "");
+        return getAttributeValueString(ProposalAttributeKeys.NAME, "");
     } 
     
     public String getDescription() throws PortalException, SystemException {
-        return getAttributeValueString("DESCRIPTION", "");
+        return getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     } 
     
     public boolean isFeatured() throws PortalException, SystemException {
@@ -189,9 +189,8 @@ public class ProposalWrapper {
         return null;
     }
     
-    public String getTeam() {
-        // TODO
-        return null;
+    public String getTeam() throws PortalException, SystemException {
+        return getAttributeValueString(ProposalAttributeKeys.TEAM, "");
     }
     
     public User getAuthor() throws PortalException, SystemException {

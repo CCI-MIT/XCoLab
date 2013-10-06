@@ -63,5 +63,15 @@
 		<!-- /inner -->
 	</div>
 	<!-- /proposal-head -->	
+	
+	<div class="edit-prop-wrap">
+		<div class="inner">
+			<div class="edit-prop">
+				<div class="edit-prop-butts">
+					<proposalsPortlet:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="Edit" edit="true" />
+				</div>
+			</div>
+		</div>
+	</div>
 
 </jsp:root>

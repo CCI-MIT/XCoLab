@@ -15,6 +15,7 @@ public class ProposalAttributeKeys {
     public static final String REGION = "REGION";
     public static final String SUBREGION = "SUBREGION";
     public static final String REGION_ECONOMY = "REGION_ECONOMY";
+    public static final String TEAM = "TEAM";
     
 
 }

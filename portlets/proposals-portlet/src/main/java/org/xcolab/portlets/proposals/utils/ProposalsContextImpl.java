@@ -7,6 +7,7 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -32,6 +33,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String PROPOSAL_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposals";
     private static final String CONTEST_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
     private static final String USER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "user";
+    private static final String PROPOSALS_PREFERENCES_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "preferences";
     
     private static final String PROPOSAL_2_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposal2phase";
     private static final String REQUEST_PHASE_ID_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "requestPhaseId";
@@ -105,10 +107,20 @@ public class ProposalsContextImpl implements ProposalsContext {
     public ContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException {
         return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE, ContestPhaseWrapper.class);
     }
+
+    @Override
+    public ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request) throws PortalException, SystemException {
+        return getAttribute(request, PROPOSALS_PREFERENCES_ATTRIBUTE, ProposalsPreferencesWrapper.class);
+    }
     
     @Override
     public User getUser(PortletRequest request) throws PortalException, SystemException {
         return getAttribute(request, USER_ATTRIBUTE, User.class);
+    }
+    
+    @Override
+    public void invalidateContext(PortletRequest request) {
+        request.removeAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
     }
     
     private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz) throws PortalException, SystemException {
@@ -175,6 +187,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         request.setAttribute(CONTEST_PHASE_ATTRIBUTE, contestPhase);
         request.setAttribute(PROPOSAL_2_PHASE_ATTRIBUTE, proposal2Phase);
         request.setAttribute(PERMISSIONS_ATTRIBUTE, new ProposalsPermissions(request, proposal, contestPhase));
+        request.setAttribute(PROPOSALS_PREFERENCES_ATTRIBUTE, new ProposalsPreferencesWrapper(request));
         
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());

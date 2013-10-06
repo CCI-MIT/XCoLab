@@ -240,8 +240,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
 
     /**
     * <p>
-    * Creates new proposal initialized to version 1 with one attribute "NAME"
-    * set to "Untitled proposal - PROPOSAL_ID". All related entities are
+    * Creates new proposal, initializes it and associates it with contest phase. All related entities are
     * created:
     * </p>
     * <ul>
@@ -257,6 +256,8 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     *
     * @param authorId
     id of proposal author
+    * @param contestPhaseId
+    id of a contestPhase
     * @return created proposal
     * @throws SystemException
     in case of a Liferay error
@@ -264,10 +265,11 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     in case of a Liferay error
     * @author janusz
     */
-    public com.ext.portlet.model.Proposal create(long authorId)
+    public com.ext.portlet.model.Proposal create(long authorId,
+        long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposalLocalService.create(authorId);
+        return _proposalLocalService.create(authorId, contestPhaseId);
     }
 
     /**

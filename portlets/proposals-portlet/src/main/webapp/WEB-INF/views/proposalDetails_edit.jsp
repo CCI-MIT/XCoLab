@@ -47,8 +47,7 @@
 	</form>
 	
 	
-	<form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform">
-		<input type="submit" value="submit" />
+	<form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform" id="editForm">
 		
 		<div class="addpropbox q1">
             <label>
@@ -175,12 +174,24 @@
   				
   				<h5>CONTEST RULES:</h5>
   				<div class="terms">
-					${preferences.defaultDescription}
+					${preferences.termsOfService}
   				</div>
   				<div class="btns">
-   					<div class="blue-button"><a href="javascript:;" onclick="tosAcceptedSave();" class="cp1-1">ACCEPT</a></div> 
-   					<div class="gray-button"><a href="javascript:;" class="cp1-2" onclick="closeAcceptTosPopup();">DO NOT Accept</a></div>
+   					<div class="blue-button"><a href="javascript:;" id="tosAccepted" class="cp1-1">ACCEPT</a></div> 
+   					<div class="gray-button"><a href="javascript:;" class="cp1-2" id="closeAcceptTos">DO NOT Accept</a></div>
    				</div>
+ 			</div>
+		</div>
+	</div>
+	
+	<div id="invalidFieldsPopupContainer" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none; ">
+		<div class="popup-wrap p1" id="invalidFieldsPopup">
+ 			<div class="popup">
+  				<h4>The following sections have too many characters:</h4>
+  				<ul id="invalidFieldsList"><!--  --></ul>
+  				<div class="btns">
+   					<div class="blue-button"><a href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')" class="cp1-1">CLOSE</a></div>
+  				</div>
  			</div>
 		</div>
 	</div>
@@ -201,7 +212,7 @@
                     	<br />
                     	<c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                     </p>
-                    <div class="blue-button"><a href="#">SAVE changes</a></div>
+                    <div class="blue-button"><a href="#" id="saveChangesButton">SAVE changes</a></div>
                     <div class="gray-button">
                     <c:choose>
                     	<c:when test="${proposal.currentVersion > 0 }">
@@ -252,9 +263,43 @@
 				
 	}
 	
+     function showAcceptTosPopup() {
+        jQuery("#acceptTosPopup").fadeIn("fast");
+    }
+    
+    function closeAcceptTosPopup() {
+        jQuery("#acceptTosPopup").fadeOut("fast");
+        
+    }
+    
+    function tosAcceptedSave() {
+    	jQuery("#acceptTosPopup").fadeOut("fast");
+    	saveIfValid();
+    }
+    
+    function saveIfValid() {
+    	if (validatePlanEditForm()) {
+			jQuery("#editForm").submit();
+    	}
+    }
+	
 	jQuery(function() {
 		updateUploadBtnOffset();
 		$(window).resize(updateUploadBtnOffset);
+		
+		
+		
+		jQuery("#saveChangesButton").click(function() {
+			if (${proposal.proposalId > 0}) {
+				saveIfValid();
+			}
+			else {
+				showAcceptTosPopup();
+			}
+		});
+		
+		jQuery("#closeAcceptTos").click(closeAcceptTosPopup);
+		jQuery("#tosAccepted").click(tosAcceptedSave);
 	});
 			
 </script>

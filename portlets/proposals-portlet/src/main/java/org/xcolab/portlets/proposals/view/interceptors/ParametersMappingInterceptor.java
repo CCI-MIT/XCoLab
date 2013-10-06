@@ -57,6 +57,9 @@ public class ParametersMappingInterceptor extends HandlerInterceptorAdapter {
     public void afterActionCompletion(ActionRequest request, ActionResponse response, Object handler, Exception ex)
             throws Exception {
         
+
+        if (request.getAttribute("ACTION_REDIRECTING") != null) return;
+        
         boolean actionError = request.getAttribute("ACTION_ERROR") != null;
         
         for (Map.Entry<String, String> parameterMapping: parameters.entrySet()) {

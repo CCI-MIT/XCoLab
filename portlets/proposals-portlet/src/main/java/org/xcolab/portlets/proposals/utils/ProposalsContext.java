@@ -6,6 +6,7 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -36,5 +37,9 @@ public interface ProposalsContext {
     ContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException;
     
     User getUser(PortletRequest request) throws PortalException, SystemException;
+
+    void invalidateContext(PortletRequest request);
+
+    ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request) throws PortalException, SystemException;
 
 }

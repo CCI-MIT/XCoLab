@@ -169,6 +169,37 @@ function initializeTextEditors() {
     
 };
 
+function validatePlanEditForm() {
+    for (var ckInstanceId in CKEDITOR.instances) {
+        if (document.getElementById(ckInstanceId)) {
+        	var ckInstance = CKEDITOR.instances[ckInstanceId];
+            ckInstance.element['$'].value = ckInstance.getData();
+        }
+    }
+    var invalidFieldsList = jQuery("#invalidFieldsList");
+    invalidFieldsList.html("");
+    
+    var isValid = true;
+    jQuery("input[type='text'].invalid, textarea.invalid").each(function() {
+        var x = jQuery(this).parents(".addpropbox");
+        invalidFieldsList.append("<li>" + jQuery(this).parents(".addpropbox").find("strong").text() + "</li>");
+        
+        isValid = false;   
+    });
+    if (!isValid) {
+        jQuery("#invalidFieldsPopupContainer").show();
+    }
+    for (var ckInstanceId in CKEDITOR.instances) {
+        if (document.getElementById(ckInstanceId)) {
+        	// remove all instances
+        	//ckInstance.destroy();
+        }
+    }
+    //delete CKEDITOR;
+    
+    return isValid;
+};
+
 jQuery(function() {
 	jQuery(".addpropform .helpTrigger").click(function() {
 		var trigger = jQuery(this);

@@ -52,7 +52,7 @@ public class ProposalLocalServiceImplTest {
     @Test
     public void testProposalCreation() throws SystemException, PortalException {
         long authorId = 1234L;
-        Proposal p = proposalLocalServiceImpl.create(authorId);
+        Proposal p = proposalLocalServiceImpl.create(authorId, 0);
         assertEquals(authorId, p.getAuthorId());
         
         Proposal rawFromDb = proposalLocalServiceImpl.getProposal(p.getProposalId());
@@ -76,7 +76,7 @@ public class ProposalLocalServiceImplTest {
         long attributeNumericVal = rand.nextLong();
         double attributeRealVal = rand.nextDouble();
         
-        Proposal proposal = proposalLocalServiceImpl.create(authorId);
+        Proposal proposal = proposalLocalServiceImpl.create(authorId, 0);
         
         ProposalAttribute attribute = proposalLocalServiceImpl.setAttribute(
                 authorId, 
@@ -113,7 +113,7 @@ public class ProposalLocalServiceImplTest {
                 new ProposalAttributeValues(7, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble())
         };
         
-        Proposal proposal = proposalLocalServiceImpl.create(authorId);
+        Proposal proposal = proposalLocalServiceImpl.create(authorId, 0);
         
         for (ProposalAttributeValues valueToSet: valuesToSet) {
             proposalLocalServiceImpl.setAttribute(valueToSet.authorId, proposal.getProposalId(), 

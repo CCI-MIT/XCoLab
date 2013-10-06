@@ -7,10 +7,14 @@
 	<jsp:directive.attribute name="proposalId" type="java.lang.Long" required="true" rtexprvalue="true" description="Proposal id" />
 	<jsp:directive.attribute name="contestId" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest id" />
 	<jsp:directive.attribute name="phaseId" type="java.lang.Long" required="false" rtexprvalue="true" description="Phase id" />
+	<jsp:directive.attribute name="edit" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Edit proposal link" />
 	<jsp:directive.attribute name="text" type="java.lang.String" required="true" rtexprvalue="true" description="Link text" />
 	<jsp:directive.attribute name="hashString" type="java.lang.String" required="false" rtexprvalue="true" description="Hash string" />
 	<jsp:directive.attribute name="escape" type="java.lang.Boolean" required="false" rtexprvalue="true" description="escape text" />
 	<c:choose>
+		<c:when test="${edit }">
+			<a href="/web/guest/plans/-/plans/contestId/${contestId }/planId/${proposalId }/edit"><c:out value="${text }" escapeXml="${escape ? true : false }" /></a>
+		</c:when>
 		<c:when test="${empty phaseId  or phaseId le 0}">
 			<a href="/web/guest/plans/-/plans/contestId/${contestId }/planId/${proposalId }${empty hashString ? '' : '#'}${hashString}"><c:out value="${text }" escapeXml="${escape ? true : false }" /></a>
 		</c:when>
