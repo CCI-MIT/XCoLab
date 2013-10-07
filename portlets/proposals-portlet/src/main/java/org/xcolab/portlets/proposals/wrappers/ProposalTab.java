@@ -5,8 +5,8 @@ public enum ProposalTab {
     ACTIONSIMPACTS("Model results"),
     TEAM("Contributors"),
     COMMENTS("Comments"),
-    JUDGES_COMMENTS("Judges comments"),
-    ADVISORS_COMMENTS("Advisors comments"),
+    JUDGE("Judge"),
+    FELLOW("Fellow"),
     ADMIN("Admin"),
     OTHER("");
     private final String displayName;

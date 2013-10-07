@@ -28,35 +28,6 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         return "proposalComments";
     }
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails_JUDGES_COMMENTS"})
-    public String showJudgesComments(
-            @RequestParam(value="planId") Long proposalId, 
-            @RequestParam Long contestId, 
-            @RequestParam(required = false) Long phaseId, 
-            @RequestParam(defaultValue="DESCRIPTION") String tab,
-            Model model) 
-            throws PortalException, SystemException {
-
-        handleRequest(proposalId, contestId, phaseId, model);
-        model.addAttribute("currentTab", ProposalTab.JUDGES_COMMENTS);
-        
-        return "proposalComments";
-    }
-    
-    @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVISORS_COMMENTS"})
-    public String showAdvisorsComments(
-            @RequestParam(value="planId") Long proposalId, 
-            @RequestParam Long contestId, 
-            @RequestParam(required = false) Long phaseId, 
-            @RequestParam(defaultValue="DESCRIPTION") String tab,
-            Model model) 
-            throws PortalException, SystemException {
-        
-        handleRequest(proposalId, contestId, phaseId, model);
-        model.addAttribute("currentTab", ProposalTab.ADVISORS_COMMENTS);
-        return "proposalComments";
-    }
-    
     private void handleRequest(Long proposalId, Long contestId, Long phaseId, Model model) throws PortalException, SystemException {
         findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
     }
