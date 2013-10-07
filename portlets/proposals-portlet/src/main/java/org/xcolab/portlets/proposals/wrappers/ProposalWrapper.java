@@ -322,6 +322,10 @@ public class ProposalWrapper {
         }
         return contestPhaseRibbonType;
     }
+
+    public long getContestId(){
+        return contest.getContestPK();
+    }
     
     
     

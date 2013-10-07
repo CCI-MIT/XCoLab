@@ -1,41 +1,99 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-<jsp:directive.include file="./init.jspx" />
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+    <jsp:directive.include file="./init.jspx" />
 
-	<jsp:directive.include file="./proposalDetails/header.jspx" />
-	
-	<div id="content">
-		<div class="prop-left">
-			<c:if test="${not empty proposal.pitch }">
-				<h2>Pitch</h2>
-				<p class="intro">${proposal.pitch}</p>
-				<div class="div1"><!--  --></div>
-			</c:if>
-		
-			<h2>Description</h2>
-			<c:choose>
-				<c:when test="${empty proposal.sections }">
-					${proposal.description }
-				</c:when>
-				<c:otherwise>
-					<c:forEach var="section" items="${proposal.sections }" varStatus="status">
-						<h3>${section.title }</h3>
-							<p>${section.content }</p>
-					
-						<c:if test="${not status.last }">
-							<div class="div2"><!--  --></div>
-						</c:if>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
-		</div>
-		<jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
-	</div>
+    <jsp:directive.include file="./proposalDetails/header.jspx" />
+
+    <div id="content">
+
+        <style type="text/css">
+                /*
+                        inplace stylesheet is preferred over jquery CSS.
+                */
+            .ui-widget-content a {
+                color: #30a3fb;
+            }
+
+            .historyTable * {
+                border: 0px !important;
+                text-align: left !important;
+                font-size: 15px !important;
+            }
+
+            .historyTable .ui-datatable-even td {
+                background-color: #f1f1e9;
+            }
+
+            .historyTable .ui-datatable-odd td {
+                background-color: #fff;
+            }
+
+            .historyTable table{
+                width: 617px;
+                margin-top: 10px;
+            }
+
+            .ui-datatable table {
+                width: auto;
+            }
+
+            .ui-widget-header {
+                background: none;
+            }
+        </style>
+
+        <script>var proposalId = ${ proposal.proposalId }; var contestId = ${proposal.contestId};</script>
+
+        <div class="prop-left">
+
+            <div class="edit-prop-wrap" style="width:616px; padding-top: 0px">
+                <div class="inner">
+                    <div class="edit-prop-butts" style="line-height: normal; float: none;">
+                        <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show history</a>
+                    </div>
+                    <div id="versions" class="versionsContainer hidden">
+                        <div class="versions">
+                            <div class="historyTable">
+                                <table>
+                                    <tbody class="ui-datatable-data ui-widget-content">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <c:if test="${not empty proposal.pitch }">
+                <h2>Pitch</h2>
+                <p class="intro">${proposal.pitch}</p>
+                <div class="div1"><!--  --></div>
+            </c:if>
+
+            <h2>Description</h2>
+            <c:choose>
+                <c:when test="${empty proposal.sections }">
+                        ${proposal.description }
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="section" items="${proposal.sections }" varStatus="status">
+                        <h3>${section.title }</h3>
+                        <p>${section.content }</p>
+
+                        <c:if test="${not status.last }">
+                            <div class="div2"><!--  --></div>
+                        </c:if>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
+        </div>
+        <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
+    </div>
 
 </jsp:root>
