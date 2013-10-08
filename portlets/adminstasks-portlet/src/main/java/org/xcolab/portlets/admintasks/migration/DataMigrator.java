@@ -198,7 +198,7 @@ public class DataMigrator implements Runnable {
         
         Proposal proposal = null;
         try {   
-            proposal = ProposalLocalServiceUtil.create(authorID);
+            proposal = ProposalLocalServiceUtil.create(authorID, 0);
         } catch (Exception e){
             pushAjaxUpdate("Error while creating Proposal " + groupID + ": " + e);
         }

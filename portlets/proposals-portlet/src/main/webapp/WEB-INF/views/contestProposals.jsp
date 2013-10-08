@@ -16,16 +16,24 @@
 			<h2>
 				<span>${fn:length(proposals.proposals)}</span> proposals
 			</h2>
-			<c:if test="${contestPhase.status == 'OPEN_FOR_SUBMISSION' and contestPhase.active}">
+			<!--  TODO should check if user can see createProposalButton -->
 				<div class="right">
 					<div class="blue-button">
-						<a href="#" onclick="if(!deferUntilLogin()) return false;">
-							<span>CREATE</span> proposal
-						</a>
+						<c:choose>
+							<c:when test="${proposalsPermissions.canCreate }">
+								<a href="/web/guest/plans/-/plans/contestId/${contest.contestPK }/createProposal" >
+									<span>CREATE</span> proposal
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="${proposalsPermissions.canCreate ? createProposalURL : '#'}" onclick="if(!deferUntilLogin()) return false;">
+									<span>CREATE</span> proposal
+								</a>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					
 				</div>
-			</c:if>
 		</div>
 	<div class="blueheaderbar tooltips">
 				<div class="proposalname">

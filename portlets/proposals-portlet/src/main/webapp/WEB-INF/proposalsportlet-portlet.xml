@@ -28,22 +28,6 @@
 					<property name="parameters">
 						<map>
 							<entry>
-								<key><value>contestId</value></key>
-								<value>contestId</value>
-							</entry>
-							<entry>
-								<key><value>proposalId</value></key>
-								<value>proposalId</value>
-							</entry>
-							<entry>
-								<key><value>planId</value></key>
-								<value>planId</value>
-							</entry>
-							<entry>
-								<key><value>pageToDisplay</value></key>
-								<value>pageToDisplay</value>
-							</entry>
-							<entry>
 								<key><value>action_forwardToPage</value></key>
 								<value>pageToDisplay</value>
 							</entry>
@@ -63,9 +47,11 @@
 							<value>action_errorForwardToPage</value>
 						</list>
 					</property>
+					<property name="mapAll" value="true" />
 				</bean>
     		</list>
     	</property>
+    	
     </bean>
 
 	<bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter">
@@ -90,5 +76,7 @@
  </bean>
 	
 	<mvc:annotation-driven/>
+	
+	<bean class="org.xcolab.jsp.tags.discussion.actions.AddDiscussionMessageActionController" />
 	
 </beans>

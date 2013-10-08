@@ -158,11 +158,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         
         addProposal(proposal);
         
-        // associate proposal with phase
-        Proposal2Phase p2p = proposal2PhaseLocalService.createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
-        p2p.setVersionFrom(proposal.getCurrentVersion());
-        p2p.setVersionTo(-1);
-        proposal2PhaseLocalService.addProposal2Phase(p2p);
+        if (contestPhaseId > 0) {
+            // associate proposal with phase
+            Proposal2Phase p2p = proposal2PhaseLocalService.createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
+            p2p.setVersionFrom(proposal.getCurrentVersion());
+            p2p.setVersionTo(-1);
+            proposal2PhaseLocalService.addProposal2Phase(p2p);
+        }
         
 
         return proposal;

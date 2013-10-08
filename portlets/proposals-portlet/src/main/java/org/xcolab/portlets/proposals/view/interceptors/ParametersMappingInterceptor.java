@@ -23,6 +23,7 @@ public class ParametersMappingInterceptor extends HandlerInterceptorAdapter {
     private Map<String, String> parameters = new HashMap<String, String>();
     private Set<String> ignoreOnError = new HashSet<String>();
     private Set<String> ignoreOnSuccess = new HashSet<String>();
+    private boolean mapAll;
     
     public Map<String, String> getParameters() {
         return parameters;
@@ -62,15 +63,28 @@ public class ParametersMappingInterceptor extends HandlerInterceptorAdapter {
         
         boolean actionError = request.getAttribute("ACTION_ERROR") != null;
         
-        for (Map.Entry<String, String> parameterMapping: parameters.entrySet()) {
-            if ((actionError && ignoreOnError.contains(parameterMapping.getKey())) ||
-                    (!actionError && ignoreOnSuccess.contains(parameterMapping.getKey()))) continue;
+        for (Map.Entry<String, String[]> reqParameter: request.getParameterMap().entrySet()) {
             
-            String mappingParameterValue = request.getParameter(parameterMapping.getKey());
-
-            if (mappingParameterValue != null) {
-                response.setRenderParameter(parameterMapping.getValue(), mappingParameterValue);
+            if (actionError && ignoreOnError.contains(reqParameter.getKey())) continue;
+            else if (!actionError && ignoreOnSuccess.contains(reqParameter.getKey())) continue;
+            
+            if (!mapAll && !parameters.containsKey(reqParameter.getKey())) continue;
+            
+            String mappedKey = reqParameter.getKey();
+            if (parameters.containsKey(mappedKey)) {
+                // we have a mapping for that parameter
+                mappedKey = parameters.get(mappedKey);
             }
+            
+            response.setRenderParameter(mappedKey, reqParameter.getValue());
         }
+    }
+
+    public boolean isMapAll() {
+        return mapAll;
+    }
+
+    public void setMapAll(boolean mapAll) {
+        this.mapAll = mapAll;
     }
 }

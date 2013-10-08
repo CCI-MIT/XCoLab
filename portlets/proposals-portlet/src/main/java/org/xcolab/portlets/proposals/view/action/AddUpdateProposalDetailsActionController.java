@@ -102,11 +102,8 @@ public class AddUpdateProposalDetailsActionController {
         if (createNew) {
             request.setAttribute("ACTION_REDIRECTING", true);
             response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + proposal.getProposalId());
-            
         }
-        
     }
-    
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
     public String reportError(PortletRequest request, Model model, 
