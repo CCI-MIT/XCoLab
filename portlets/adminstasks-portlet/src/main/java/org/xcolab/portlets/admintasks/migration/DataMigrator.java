@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.ext.portlet.service.*;
+import com.liferay.portal.model.User;
 import org.xcolab.portlets.admintasks.migration.persistence.NewPersistenceCleaner;
 import org.xcolab.portlets.admintasks.migration.persistence.NewPersistenceQueries;
 import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
@@ -35,19 +37,6 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.plans.PlanConstants;
-import com.ext.portlet.service.Plan2ProposalLocalServiceUtil;
-import com.ext.portlet.service.PlanDescriptionLocalServiceUtil;
-import com.ext.portlet.service.PlanFanLocalServiceUtil;
-import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.service.PlanMetaLocalServiceUtil;
-import com.ext.portlet.service.PlanModelRunLocalServiceUtil;
-import com.ext.portlet.service.PlanVoteLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
-import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
-import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -66,7 +55,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
  */
 public class DataMigrator implements Runnable {
     List<String> reference;
-    private boolean TESTING = false;
+    private boolean TESTING = true;
     public boolean STOP = false;
 
 
@@ -273,6 +262,9 @@ public class DataMigrator implements Runnable {
 
             // create ribbons for this plan
             createRibbons(plan, proposal);
+
+            // add supporters
+            copySupporters(plan,proposal);
         }
     }
 
@@ -552,6 +544,22 @@ public class DataMigrator implements Runnable {
                 break;
             }
         }
+    }
+
+    private void copySupporters(PlanItem plan, Proposal p){
+        List<User> subscribers = null;
+        try{
+            subscribers = ActivitySubscriptionLocalServiceUtil.getSubscribedUsers(PlanItem.class,plan.getPlanId());
+        } catch (Exception e){ e.printStackTrace(); }
+
+        if (subscribers == null || subscribers.size() < 1) return;
+
+        for (User u : subscribers){
+            try{
+                ProposalLocalServiceUtil.subscribe(p.getProposalId(),u.getUserId());
+            } catch (Exception e){ e.printStackTrace(); }
+        }
+
     }
 
     private void createRibbons(PlanItem plan, Proposal p){
