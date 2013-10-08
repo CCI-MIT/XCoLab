@@ -71,6 +71,9 @@ public class UserWrapper implements Serializable {
     private String newPasswordRetype;
     private Boolean attendsConference;
 
+    private boolean profileWasComplete = false;
+    private boolean fireGoogleEvent = false;
+
     private final static Log _log = LogFactoryUtil.getLog(UserWrapper.class);
 
     public UserWrapper(User user) throws PortalException, SystemException {
@@ -118,6 +121,16 @@ public class UserWrapper implements Serializable {
             // {
             userActivities.add(new UserActivityBean(activity));
         }
+
+        profileWasComplete = profileIsComplete();
+    }
+
+    private boolean profileIsComplete() {
+        //ignore mandatory fields, only care about optional ones
+        String[] blankCheck = {about, country};
+        for (String s : blankCheck) if (s == null || s.equals(StringPool.BLANK)) return false;
+
+        return true;
     }
 
 
@@ -250,30 +263,31 @@ public class UserWrapper implements Serializable {
     }
 
     public void persistChanges() throws Exception {
-        boolean changed = false;
+        boolean changedUserPart = false;
+        boolean changedExpando = false;
         boolean eMailChanged = false;
 
         if (!user.getScreenName().equals(screenName)) {
             user.setScreenName(screenName);
-            changed = true;
+            changedUserPart = true;
         }
         if (!user.getEmailAddress().equals(email)) {
             user.setEmailAddress(email);
-            changed = true;
+            changedUserPart = true;
             eMailChanged = true;
         }
         if (!user.getFirstName().equals(firstName)) {
             user.setFirstName(firstName);
-            changed = true;
+            changedUserPart = true;
         }
         if (!user.getLastName().equals(lastName)) {
             user.setLastName(lastName);
-            changed = true;
+            changedUserPart = true;
         }
 
         if (newPassword.trim().length() > 0) {
             user.setPassword(PwdEncryptor.encrypt(newPassword));
-            changed = true;
+            changedUserPart = true;
         }
 
         long companyId = CompanyThreadLocal.getCompanyId();
@@ -289,6 +303,7 @@ public class UserWrapper implements Serializable {
             ExpandoValueLocalServiceUtil.addValue(User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.BIO,
                     user.getUserId(), about);
+            changedExpando = true;
         }
 
         String existingCountry = ExpandoValueLocalServiceUtil.getData(
@@ -298,10 +313,15 @@ public class UserWrapper implements Serializable {
             ExpandoValueLocalServiceUtil.addValue(User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
                     user.getUserId(), country);
+            changedExpando = true;
         }
 
 
-        if (changed) {
+        if(changedExpando || changedUserPart) {
+            fireGoogleEvent = !profileWasComplete && profileIsComplete();
+        }
+
+        if (changedUserPart) {
             UserLocalServiceUtil.updateUser(user);
 
             if (eMailChanged) {
@@ -456,5 +476,10 @@ public class UserWrapper implements Serializable {
 
     public User getWrapped() {
         return user;
+    }
+
+    public boolean isFireGoogleEvent() {
+        System.out.println("said "+fireGoogleEvent);
+        return fireGoogleEvent;
     }
 }

@@ -25,7 +25,7 @@
     		<ui:include src="./pages/PROFILE_NOT_INITIALIZED.xhtml" >
             	<ui:param value="#{userprofileBean.currentUser}" name="currentUser" />
             	<ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
-        	</ui:include>
+        	</ui:include>‚
     	</f:subview>
     	<f:subview rendered="#{userprofileBean.pageType == 'SUBSCRIPTIONS_MANAGE'}">
     		<ui:include src="./pages/SUBSCRIPTIONS_MANAGE.xhtml" >
@@ -39,6 +39,14 @@
             	<ui:param value="#{userprofileBean.subscriptionsBean}" name="userSubscriptionsBean" />
         	</ui:include>
     	</f:subview>
+
+        <f:subview rendered="#{userprofileBean.currentUser.fireGoogleEvent}">
+            LABLE
+            <script type="text/javascript">
+                alert("hi");
+                pageTracker._trackEvent('Users', 'completed_profile', '', 1);
+            </script>
+        </f:subview>
     </ice:portlet>
   </h:body>
 </f:view>

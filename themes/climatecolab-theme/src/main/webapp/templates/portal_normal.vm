@@ -212,7 +212,7 @@ $theme.include($top_messages_include)
     /* ]]> */
 </script>
 #if ($request.getSession().getAttribute('collab_user_has_registered'))
-    <script type="text/javascript">
+    <script type="text/javascript"§>
 // disabled in test env
         $request.getSession().removeAttribute('collab_user_has_registered')
         pageTracker._trackPageview('/colab/$user.screenName/registered');
