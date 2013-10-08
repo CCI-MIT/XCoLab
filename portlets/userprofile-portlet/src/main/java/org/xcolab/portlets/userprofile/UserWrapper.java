@@ -479,7 +479,6 @@ public class UserWrapper implements Serializable {
     }
 
     public boolean isFireGoogleEvent() {
-        System.out.println("said "+fireGoogleEvent);
         return fireGoogleEvent;
     }
 }
