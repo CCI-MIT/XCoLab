@@ -755,6 +755,10 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .uploadbox {float:left; width:50px; height:50px; border:1px dashed #000; margin-right:20px;}
 
 .addprophelp {background:url(../images/icon-addprop-arrow.png) no-repeat 0px 3px; float:right; width:454px; padding:0 0 5px 11px; color:#545454;}
+
+.blue-arrow-right { display: inline-block; width: 18px; height: 18px; background: url(/climatecolab-theme/images/arrows.png) 18px 0; vertical-align: top;}
+.blue-arrow-left { display: inline-block; width: 18px; height: 18px; background: url(/climatecolab-theme/images/arrows.png) 0 0; vertical-align: top;}
+
 /* ------------------------------------------------------------------------------------------------------- */
 
 

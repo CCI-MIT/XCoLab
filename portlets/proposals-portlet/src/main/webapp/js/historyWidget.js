@@ -19,9 +19,9 @@ function addVersionToTable(data, even){
 
 function addPagination(prev,next,currentPage,totalPages){
     var output = "<span>";
-    if (prev) output += '<a href="javascript:;" onClick="loadHistory(' + (currentPage - 1) + ');">prev</a>';
+    if (prev) output += '<a href="javascript:;" onClick="loadHistory(' + (currentPage - 1) + ');" class="blue-arrow-left"></a>';
     output += ' Page ' + (currentPage + 1) + ' of ' + (totalPages+1) + ' ';
-    if (next) output += '<a href="javascript:;" onClick="loadHistory(' + (currentPage + 1) + ');">next</a>';
+    if (next) output += '<a href="javascript:;" onClick="loadHistory(' + (currentPage + 1) + ');" class="blue-arrow-right"></a>';
     output += '</span>';
     $('#versions > div > div > table > tbody').append('<tr><td colspan="2" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
