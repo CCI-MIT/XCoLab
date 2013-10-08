@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.ext.portlet.JudgingSystemActions;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
@@ -36,10 +35,10 @@ public class ProposalWrapper {
     private final ContestPhase contestPhase;
     private final Proposal2Phase proposal2Phase;
     private ContestPhaseRibbonType contestPhaseRibbonType;
-
+    
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
-
+    
     public ProposalWrapper(Proposal proposal) {
         this.proposal = proposal;
         this.version = proposal.getCurrentVersion();
@@ -56,7 +55,7 @@ public class ProposalWrapper {
         this.contestPhase = null;
         this.proposal2Phase = null;
     }
-
+    
     public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         this.proposal = proposal;
         this.version = version;
@@ -156,7 +155,7 @@ public class ProposalWrapper {
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
         proposal.setExpandoBridgeAttributes(serviceContext);
     }
-
+    
     public String getPitch() throws PortalException, SystemException {
         return getAttributeValueString(ProposalAttributeKeys.PITCH, "");
     }
@@ -164,16 +163,16 @@ public class ProposalWrapper {
 
     public String getName() throws PortalException, SystemException {
         return getAttributeValueString(ProposalAttributeKeys.NAME, "");
-    }
-
+    } 
+    
     public String getDescription() throws PortalException, SystemException {
         return getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
-    }
-
+    } 
+    
     public boolean isFeatured() throws PortalException, SystemException {
         return getRibbon() > 0;
     }
-
+    
     public int getRibbon() throws PortalException, SystemException {
         getRibbonType();
         if (contestPhaseRibbonType != null) {
@@ -181,7 +180,7 @@ public class ProposalWrapper {
         }
         return 0;
     }
-
+    
     public String getRibbonText() throws PortalException, SystemException {
         getRibbonType();
         if (contestPhaseRibbonType != null) {
@@ -220,11 +219,11 @@ public class ProposalWrapper {
     public String getTeam() throws PortalException, SystemException {
         return getAttributeValueString(ProposalAttributeKeys.TEAM, "");
     }
-
+    
     public User getAuthor() throws PortalException, SystemException {
         return UserLocalServiceUtil.getUser(proposal.getAuthorId());
     }
-
+    
     public long getSupportersCount() throws PortalException, SystemException {
         return ProposalLocalServiceUtil.getSupportersCount(proposal.getProposalId());
     }
@@ -235,37 +234,37 @@ public class ProposalWrapper {
         }
         return 0;
     }
-
+    
     public Date getLastModifiedDate() {
         return proposal.getUpdatedDate();
     }
-
+    
     public boolean isOpen() throws PortalException, SystemException {
         if (proposal.getProposalId() > 0) {
             return ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
         }
         return false;
     }
-
+    
     public long getVotesCount() throws SystemException {
         if (proposal.getProposalId() > 0) {
             return ProposalLocalServiceUtil.getVotesCount(proposal.getProposalId(), contestPhase.getContestPhasePK());
         }
         return 0;
     }
-
+    
     public long getImageId() throws PortalException, SystemException {
         return getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
-
-
+     
+    
     public List<ProposalSectionWrapper> getSections() throws PortalException, SystemException {
         if (sections == null) {
             sections = new ArrayList<ProposalSectionWrapper>();
-            if (contest != null) {
+            if (contest != null) { 
                 PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
                 if (planTemplate != null) {
-                    for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
+                    for (PlanSectionDefinition psd: PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
                         sections.add(new ProposalSectionWrapper(psd, proposal, version));
                     }
                 }
@@ -273,21 +272,21 @@ public class ProposalWrapper {
         }
         return sections;
     }
-
+    
     public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
         if (members == null) {
             members = new ArrayList<ProposalTeamMemberWrapper>();
-            for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
+            for (User user: ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
                 members.add(new ProposalTeamMemberWrapper(proposal, user));
             }
         }
         return members;
     }
-
+    
     public List<User> getSupporters() throws PortalException, SystemException {
         return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
     }
-
+    
     public boolean hasAttribute(String name) throws PortalException, SystemException {
         return getAttributeOrNull(name, 0) != null;
     }
@@ -295,16 +294,16 @@ public class ProposalWrapper {
     public String attributeString(String name) throws PortalException, SystemException {
         return getAttributeValueString(name, "");
     }
-
+    
     private String getAttributeValueString(String attributeName, String defaultVal) throws PortalException, SystemException {
         return getAttributeValueString(attributeName, 0, defaultVal);
     }
 
-
+    
     private String getAttributeValueString(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
         ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
         return pa == null ? defaultVal : pa.getStringValue();
-
+        
     }
 
     private long getAttributeValueLong(String attributeName, long defaultVal) throws PortalException, SystemException {
@@ -314,34 +313,38 @@ public class ProposalWrapper {
     private long getAttributeValueLong(String attributeName, long additionalId, long defaultVal) throws PortalException, SystemException {
         ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
         return pa == null ? defaultVal : pa.getNumericValue();
+        
     }
 
     private double getAttributeValueReal(String attributeName, long additionalId, double defaultVal) throws PortalException, SystemException {
         ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
         return pa == null ? defaultVal : pa.getRealValue();
     }
-
+    
     private ProposalAttribute getAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
         try {
             return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), attributeName, additionalId);
-        } catch (NoSuchProposalAttributeException e) {
+        }
+        catch (NoSuchProposalAttributeException e) {
             return null;
-        } catch (NoSuchProposalException e) {
+        }
+        catch (NoSuchProposalException e) {
             return null;
         }
     }
 
 
+    
     public String getAuthorName() throws PortalException, SystemException {
         String authorName = getTeam();
         if (StringUtils.isBlank(authorName)) {
             authorName = getAuthor().getScreenName();
         }
         return authorName;
-
+        
     }
-
-
+    
+    
     private ContestPhaseRibbonType getRibbonType() throws PortalException, SystemException {
         if (contestPhaseRibbonType == null) {
             if (proposal2Phase != null && proposal2Phase.getRibbonTypeId() > 0) {
@@ -350,6 +353,8 @@ public class ProposalWrapper {
         }
         return contestPhaseRibbonType;
     }
-
+    
+    
+    
 
 }

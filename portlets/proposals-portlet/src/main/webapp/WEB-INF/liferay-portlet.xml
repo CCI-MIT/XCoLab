@@ -11,6 +11,7 @@
 		<instanceable>false</instanceable>
 		<header-portlet-css>/css/proposals.css</header-portlet-css>
 		<header-portlet-javascript>/js/proposals.js</header-portlet-javascript>
+        <footer-portlet-javascript>/js/historyWidget.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
