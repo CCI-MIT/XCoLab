@@ -22,6 +22,8 @@ public class MembershipRequestWrapper {
         } catch(Exception e){ e.printStackTrace(); }
     }
 
-    public MembershipRequestWrapper()
+    public List<MembershipRequest> getAllRequests(){
+        return membershipRequests;
+    }
 
 }

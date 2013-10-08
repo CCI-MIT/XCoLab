@@ -39,6 +39,7 @@ public class ProposalWrapper {
     
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
+    private MembershipRequestWrapper membershipRequestWrapper;
     
     public ProposalWrapper(Proposal proposal) {
         this.proposal = proposal;
@@ -46,6 +47,7 @@ public class ProposalWrapper {
         this.contest = null;
         this.contestPhase = null;
         this.proposal2Phase = null;
+        this.membershipRequestWrapper = new MembershipRequestWrapper(proposal);
     }
 
 
@@ -55,6 +57,7 @@ public class ProposalWrapper {
         this.contest = null;
         this.contestPhase = null;
         this.proposal2Phase = null;
+        this.membershipRequestWrapper = new MembershipRequestWrapper(proposal);
     }
     
     public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
@@ -63,6 +66,7 @@ public class ProposalWrapper {
         this.contest = contest;
         this.contestPhase = contestPhase;
         this.proposal2Phase = proposal2Phase;
+        this.membershipRequestWrapper = new MembershipRequestWrapper(proposal);
     }
 
     public Class<?> getModelClass() {
@@ -355,7 +359,9 @@ public class ProposalWrapper {
         return contestPhaseRibbonType;
     }
     
-    
+    public MembershipRequestWrapper getMembershipRequests(){
+        return this.membershipRequestWrapper;
+    }
     
 
 }
