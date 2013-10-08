@@ -216,6 +216,7 @@ $theme.include($top_messages_include)
 // disabled in test env
         $request.getSession().removeAttribute('collab_user_has_registered')
         pageTracker._trackPageview('/colab/$user.screenName/registered');
+	pageTracker._trackEvent('Users', 'registered');
     </script>
 #end
 
