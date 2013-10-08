@@ -33,6 +33,7 @@ create index IX_1A115E3F on xcolab_DiscussionMessage (subject, categoryGroupId);
 create index IX_FDE36548 on xcolab_DiscussionMessage (threadId);
 
 create index IX_63652E37 on xcolab_DiscussionMessageFlag (messageId);
+create unique index IX_BEA683B1 on xcolab_DiscussionMessageFlag (messageId, flagType);
 
 create index IX_4849B8A9 on xcolab_EmailList (name);
 create index IX_55E95283 on xcolab_EmailList (name, email);

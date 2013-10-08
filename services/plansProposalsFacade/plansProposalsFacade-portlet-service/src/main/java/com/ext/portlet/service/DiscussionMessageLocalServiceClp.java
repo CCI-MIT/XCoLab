@@ -49,6 +49,7 @@ public class DiscussionMessageLocalServiceClp
     private MethodKey _getFlagsMethodKey38;
     private MethodKey _addFlagMethodKey39;
     private MethodKey _removeFlagMethodKey40;
+    private MethodKey _hasFlagMethodKey41;
 
     public DiscussionMessageLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -200,6 +201,9 @@ public class DiscussionMessageLocalServiceClp
         _removeFlagMethodKey40 = new MethodKey(_classLoaderProxy.getClassName(),
                 "removeFlag", com.ext.portlet.model.DiscussionMessage.class,
                 java.lang.String.class);
+
+        _hasFlagMethodKey41 = new MethodKey(_classLoaderProxy.getClassName(),
+                "hasFlag", long.class, java.lang.String.class);
     }
 
     public com.ext.portlet.model.DiscussionMessage addDiscussionMessage(
@@ -1284,6 +1288,31 @@ public class DiscussionMessageLocalServiceClp
                     " is not a valid exception");
             }
         }
+    }
+
+    public boolean hasFlag(long messageId, java.lang.String flag)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_hasFlagMethodKey41,
+                messageId, ClpSerializer.translateInput(flag));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

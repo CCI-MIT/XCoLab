@@ -340,4 +340,8 @@ public interface DiscussionMessageLocalService
     public void removeFlag(com.ext.portlet.model.DiscussionMessage dMessage,
         java.lang.String flagType)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasFlag(long messageId, java.lang.String flag)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

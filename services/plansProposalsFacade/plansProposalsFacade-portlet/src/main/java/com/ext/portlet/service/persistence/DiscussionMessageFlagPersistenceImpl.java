@@ -157,6 +157,18 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
             DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMessageId",
             new String[] { Long.class.getName() });
+    public static final FinderPath FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED,
+            DiscussionMessageFlagImpl.class, FINDER_CLASS_NAME_ENTITY,
+            "fetchByMessageIdFlagType",
+            new String[] { Long.class.getName(), String.class.getName() },
+            DiscussionMessageFlagModelImpl.MESSAGEID_COLUMN_BITMASK |
+            DiscussionMessageFlagModelImpl.FLAGTYPE_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByMessageIdFlagType",
+            new String[] { Long.class.getName(), String.class.getName() });
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
             DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED,
             DiscussionMessageFlagImpl.class,
@@ -173,6 +185,10 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     private static final String _SQL_COUNT_DISCUSSIONMESSAGEFLAG = "SELECT COUNT(discussionMessageFlag) FROM DiscussionMessageFlag discussionMessageFlag";
     private static final String _SQL_COUNT_DISCUSSIONMESSAGEFLAG_WHERE = "SELECT COUNT(discussionMessageFlag) FROM DiscussionMessageFlag discussionMessageFlag WHERE ";
     private static final String _FINDER_COLUMN_MESSAGEID_MESSAGEID_2 = "discussionMessageFlag.messageId = ?";
+    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_MESSAGEID_2 = "discussionMessageFlag.messageId = ? AND ";
+    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_1 = "discussionMessageFlag.flagType IS NULL";
+    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2 = "discussionMessageFlag.flagType = ?";
+    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3 = "(discussionMessageFlag.flagType IS NULL OR discussionMessageFlag.flagType = ?)";
     private static final String _ORDER_BY_ENTITY_ALIAS = "discussionMessageFlag.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DiscussionMessageFlag exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DiscussionMessageFlag exists with the key {";
@@ -357,6 +373,13 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
             DiscussionMessageFlagImpl.class,
             discussionMessageFlag.getPrimaryKey(), discussionMessageFlag);
 
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+            new Object[] {
+                Long.valueOf(discussionMessageFlag.getMessageId()),
+                
+            discussionMessageFlag.getFlagType()
+            }, discussionMessageFlag);
+
         discussionMessageFlag.resetOriginalValues();
     }
 
@@ -413,6 +436,8 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        clearUniqueFindersCache(discussionMessageFlag);
     }
 
     @Override
@@ -424,7 +449,19 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
             EntityCacheUtil.removeResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
                 DiscussionMessageFlagImpl.class,
                 discussionMessageFlag.getPrimaryKey());
+
+            clearUniqueFindersCache(discussionMessageFlag);
         }
+    }
+
+    protected void clearUniqueFindersCache(
+        DiscussionMessageFlag discussionMessageFlag) {
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+            new Object[] {
+                Long.valueOf(discussionMessageFlag.getMessageId()),
+                
+            discussionMessageFlag.getFlagType()
+            });
     }
 
     /**
@@ -570,6 +607,36 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
         EntityCacheUtil.putResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
             DiscussionMessageFlagImpl.class,
             discussionMessageFlag.getPrimaryKey(), discussionMessageFlag);
+
+        if (isNew) {
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                new Object[] {
+                    Long.valueOf(discussionMessageFlag.getMessageId()),
+                    
+                discussionMessageFlag.getFlagType()
+                }, discussionMessageFlag);
+        } else {
+            if ((discussionMessageFlagModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        Long.valueOf(discussionMessageFlagModelImpl.getOriginalMessageId()),
+                        
+                        discussionMessageFlagModelImpl.getOriginalFlagType()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                    args);
+
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                    new Object[] {
+                        Long.valueOf(discussionMessageFlag.getMessageId()),
+                        
+                    discussionMessageFlag.getFlagType()
+                    }, discussionMessageFlag);
+            }
+        }
 
         return discussionMessageFlag;
     }
@@ -1016,6 +1083,153 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     }
 
     /**
+     * Returns the discussion message flag where messageId = &#63; and flagType = &#63; or throws a {@link com.ext.portlet.NoSuchDiscussionMessageFlagException} if it could not be found.
+     *
+     * @param messageId the message ID
+     * @param flagType the flag type
+     * @return the matching discussion message flag
+     * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a matching discussion message flag could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public DiscussionMessageFlag findByMessageIdFlagType(long messageId,
+        String flagType)
+        throws NoSuchDiscussionMessageFlagException, SystemException {
+        DiscussionMessageFlag discussionMessageFlag = fetchByMessageIdFlagType(messageId,
+                flagType);
+
+        if (discussionMessageFlag == null) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("messageId=");
+            msg.append(messageId);
+
+            msg.append(", flagType=");
+            msg.append(flagType);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchDiscussionMessageFlagException(msg.toString());
+        }
+
+        return discussionMessageFlag;
+    }
+
+    /**
+     * Returns the discussion message flag where messageId = &#63; and flagType = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param messageId the message ID
+     * @param flagType the flag type
+     * @return the matching discussion message flag, or <code>null</code> if a matching discussion message flag could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public DiscussionMessageFlag fetchByMessageIdFlagType(long messageId,
+        String flagType) throws SystemException {
+        return fetchByMessageIdFlagType(messageId, flagType, true);
+    }
+
+    /**
+     * Returns the discussion message flag where messageId = &#63; and flagType = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param messageId the message ID
+     * @param flagType the flag type
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching discussion message flag, or <code>null</code> if a matching discussion message flag could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public DiscussionMessageFlag fetchByMessageIdFlagType(long messageId,
+        String flagType, boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { messageId, flagType };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                    finderArgs, this);
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_DISCUSSIONMESSAGEFLAG_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_MESSAGEID_2);
+
+            if (flagType == null) {
+                query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_1);
+            } else {
+                if (flagType.equals(StringPool.BLANK)) {
+                    query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3);
+                } else {
+                    query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2);
+                }
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(messageId);
+
+                if (flagType != null) {
+                    qPos.add(flagType);
+                }
+
+                List<DiscussionMessageFlag> list = q.list();
+
+                result = list;
+
+                DiscussionMessageFlag discussionMessageFlag = null;
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                        finderArgs, list);
+                } else {
+                    discussionMessageFlag = list.get(0);
+
+                    cacheResult(discussionMessageFlag);
+
+                    if ((discussionMessageFlag.getMessageId() != messageId) ||
+                            (discussionMessageFlag.getFlagType() == null) ||
+                            !discussionMessageFlag.getFlagType().equals(flagType)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                            finderArgs, discussionMessageFlag);
+                    }
+                }
+
+                return discussionMessageFlag;
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (result == null) {
+                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                        finderArgs);
+                }
+
+                closeSession(session);
+            }
+        } else {
+            if (result instanceof List<?>) {
+                return null;
+            } else {
+                return (DiscussionMessageFlag) result;
+            }
+        }
+    }
+
+    /**
      * Returns all the discussion message flags.
      *
      * @return the discussion message flags
@@ -1138,6 +1352,21 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     }
 
     /**
+     * Removes the discussion message flag where messageId = &#63; and flagType = &#63; from the database.
+     *
+     * @param messageId the message ID
+     * @param flagType the flag type
+     * @throws SystemException if a system exception occurred
+     */
+    public void removeByMessageIdFlagType(long messageId, String flagType)
+        throws NoSuchDiscussionMessageFlagException, SystemException {
+        DiscussionMessageFlag discussionMessageFlag = findByMessageIdFlagType(messageId,
+                flagType);
+
+        remove(discussionMessageFlag);
+    }
+
+    /**
      * Removes all the discussion message flags from the database.
      *
      * @throws SystemException if a system exception occurred
@@ -1190,6 +1419,73 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
                 }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGEID,
+                    finderArgs, count);
+
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns the number of discussion message flags where messageId = &#63; and flagType = &#63;.
+     *
+     * @param messageId the message ID
+     * @param flagType the flag type
+     * @return the number of matching discussion message flags
+     * @throws SystemException if a system exception occurred
+     */
+    public int countByMessageIdFlagType(long messageId, String flagType)
+        throws SystemException {
+        Object[] finderArgs = new Object[] { messageId, flagType };
+
+        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
+                finderArgs, this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_DISCUSSIONMESSAGEFLAG_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_MESSAGEID_2);
+
+            if (flagType == null) {
+                query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_1);
+            } else {
+                if (flagType.equals(StringPool.BLANK)) {
+                    query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3);
+                } else {
+                    query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2);
+                }
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(messageId);
+
+                if (flagType != null) {
+                    qPos.add(flagType);
+                }
+
+                count = (Long) q.uniqueResult();
+            } catch (Exception e) {
+                throw processException(e);
+            } finally {
+                if (count == null) {
+                    count = Long.valueOf(0);
+                }
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
                     finderArgs, count);
 
                 closeSession(session);

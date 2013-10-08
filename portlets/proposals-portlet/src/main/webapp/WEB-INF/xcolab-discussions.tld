@@ -23,4 +23,10 @@
 			<type>java.lang.Long</type>			
 		</attribute>
 	</tag>
+	<!-- 
+	<tag-file>
+		<name>discussionComments</name>
+		<path>WEB-INF/tags/discussions/discussionComments.tagx</path>
+	</tag-file>
+	 -->
 </taglib>  

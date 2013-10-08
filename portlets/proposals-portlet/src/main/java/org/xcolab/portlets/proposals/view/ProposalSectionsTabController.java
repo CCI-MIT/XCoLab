@@ -30,7 +30,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             Model model, PortletRequest request) 
             throws PortalException, SystemException {
         
-        findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
+        //findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
         
         model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalsContext.getProposalWrapped(request)));
         

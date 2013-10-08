@@ -34,7 +34,7 @@
                         	</c:otherwise>
                         </c:choose>
 					</div>
-					<h1>name: ${proposal.name}</h1>
+					<h1>${proposal.name}</h1>
 				</div>
 			</div>
 			<div class="prop-tabs">
