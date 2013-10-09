@@ -16,7 +16,6 @@ import java.util.Map;
 public class JudgeProposalBean {
     private Long judgeRating;
     private Long fellowRating;
-    private String judgeComment, fellowComment;
     private JudgingSystemActions.JudgeAction judgeAction;
     private JudgingSystemActions.FellowAction fellowAction;
 
@@ -24,8 +23,6 @@ public class JudgeProposalBean {
         judgeRating = wrapper.getJudgeRating();
         fellowRating = wrapper.getFellowRating();
 
-        judgeComment = wrapper.getJudgeComment();
-        fellowComment = wrapper.getFellowComment();
 
         judgeAction = wrapper.getJudgeAction();
         fellowAction = wrapper.getFellowAction();
@@ -45,22 +42,6 @@ public class JudgeProposalBean {
 
     public void setFellowRating(Long fellowRating) {
         this.fellowRating = fellowRating;
-    }
-
-    public String getJudgeComment() {
-        return judgeComment;
-    }
-
-    public void setJudgeComment(String judgeComment) {
-        this.judgeComment = judgeComment;
-    }
-
-    public String getFellowComment() {
-        return fellowComment;
-    }
-
-    public void setFellowComment(String fellowComment) {
-        this.fellowComment = fellowComment;
     }
 
     public JudgingSystemActions.JudgeAction getJudgeAction() {

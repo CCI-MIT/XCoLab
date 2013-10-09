@@ -212,15 +212,6 @@ public class ProposalWrapper {
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
     }
 
-    public String getJudgeComment() throws SystemException, PortalException {
-        return getAttributeValueString(ProposalAttributeKeys.JUDGE_COMMENT, "");
-    }
-
-    public String getFellowComment() throws SystemException, PortalException {
-        return getAttributeValueString(ProposalAttributeKeys.FELLOW_COMMENT, "");
-    }
-
-
     public String getTeam() throws PortalException, SystemException {
         return getAttributeValueString(ProposalAttributeKeys.TEAM, "");
     }
