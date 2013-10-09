@@ -22,10 +22,14 @@ public class DiscussionCategoryGroupWrapper {
         List<DiscussionMessageWrapper> comments = new ArrayList<DiscussionMessageWrapper>();
         long commentsThread = discussionCategoryGroup.getCommentsThread();
         if (commentsThread > 0) {
+            DiscussionMessage thread = DiscussionMessageLocalServiceUtil.getMessageByMessageId(commentsThread);
+            System.out.println(thread);
             for (DiscussionMessage msg: DiscussionMessageLocalServiceUtil.getThreadMessages(commentsThread)) {
                 comments.add(new DiscussionMessageWrapper(msg));
             }
-            comments.add(new DiscussionMessageWrapper(DiscussionMessageLocalServiceUtil.getMessageByMessageId(commentsThread)));
+            if (thread != null && thread.getDeleted() == null) {
+                comments.add(new DiscussionMessageWrapper(thread));
+            }
         }
         Collections.reverse(comments);
         return comments;
@@ -41,6 +45,10 @@ public class DiscussionCategoryGroupWrapper {
     
     public String getDiscussionUrl() {
         return discussionCategoryGroup.getUrl();
+    }
+    
+    public long getId() {
+        return discussionCategoryGroup.getId();
     }
     
     public long getDiscussionId() {

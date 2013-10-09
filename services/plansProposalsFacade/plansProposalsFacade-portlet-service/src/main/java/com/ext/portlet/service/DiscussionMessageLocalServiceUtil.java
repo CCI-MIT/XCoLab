@@ -408,6 +408,11 @@ public class DiscussionMessageLocalServiceUtil {
         getService().removeFlag(dMessage, flagType);
     }
 
+    public static boolean hasFlag(long messageId, java.lang.String flag)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasFlag(messageId, flag);
+    }
+
     public static void clearService() {
         _service = null;
     }

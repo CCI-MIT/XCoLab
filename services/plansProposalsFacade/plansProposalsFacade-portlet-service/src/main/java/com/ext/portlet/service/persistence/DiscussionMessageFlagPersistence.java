@@ -192,6 +192,45 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns the discussion message flag where messageId = &#63; and flagType = &#63; or throws a {@link com.ext.portlet.NoSuchDiscussionMessageFlagException} if it could not be found.
+    *
+    * @param messageId the message ID
+    * @param flagType the flag type
+    * @return the matching discussion message flag
+    * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a matching discussion message flag could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.DiscussionMessageFlag findByMessageIdFlagType(
+        long messageId, java.lang.String flagType)
+        throws com.ext.portlet.NoSuchDiscussionMessageFlagException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the discussion message flag where messageId = &#63; and flagType = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param messageId the message ID
+    * @param flagType the flag type
+    * @return the matching discussion message flag, or <code>null</code> if a matching discussion message flag could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.DiscussionMessageFlag fetchByMessageIdFlagType(
+        long messageId, java.lang.String flagType)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the discussion message flag where messageId = &#63; and flagType = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param messageId the message ID
+    * @param flagType the flag type
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching discussion message flag, or <code>null</code> if a matching discussion message flag could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.DiscussionMessageFlag fetchByMessageIdFlagType(
+        long messageId, java.lang.String flagType, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the discussion message flags.
     *
     * @return the discussion message flags
@@ -244,6 +283,18 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes the discussion message flag where messageId = &#63; and flagType = &#63; from the database.
+    *
+    * @param messageId the message ID
+    * @param flagType the flag type
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByMessageIdFlagType(long messageId,
+        java.lang.String flagType)
+        throws com.ext.portlet.NoSuchDiscussionMessageFlagException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Removes all the discussion message flags from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -259,6 +310,18 @@ public interface DiscussionMessageFlagPersistence extends BasePersistence<Discus
     * @throws SystemException if a system exception occurred
     */
     public int countByMessageId(long messageId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of discussion message flags where messageId = &#63; and flagType = &#63;.
+    *
+    * @param messageId the message ID
+    * @param flagType the flag type
+    * @return the number of matching discussion message flags
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByMessageIdFlagType(long messageId,
+        java.lang.String flagType)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

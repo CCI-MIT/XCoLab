@@ -5,10 +5,15 @@
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_1.0"
+	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/discussions"
+	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 <jsp:directive.include file="./init.jspx" />
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
-	<h1>Fellow tab</h1>
-
+	<div id="content">
+		<discussionsTagFiles:discussionComments discussionId="${discussionId }" />
+	</div>
+	
 </jsp:root>

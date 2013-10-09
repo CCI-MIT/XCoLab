@@ -25,15 +25,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 public class ProposalModelTabController extends BaseProposalTabController {
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ACTIONSIMPACTS"})
-    public String show(
-            @RequestParam(value="planId") Long proposalId, 
-            @RequestParam Long contestId, 
-            @RequestParam(required = false) Long phaseId, 
-            @RequestParam(defaultValue="DESCRIPTION") String tab,
-            Model model) 
+    public String show(Model model) 
             throws PortalException, SystemException {
         
-        findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
         model.addAttribute("currentTab", ProposalTab.ACTIONSIMPACTS);
         
         return "proposalModel";

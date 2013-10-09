@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.NoSuchDiscussionMessageException;
+import com.ext.portlet.NoSuchDiscussionMessageFlagException;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
@@ -294,12 +295,24 @@ public class DiscussionMessageLocalServiceImpl
            }
        }
        
-       private DiscussionMessageFlag findFlag(DiscussionMessage dMessage, String flagType) throws SystemException {
-           for (DiscussionMessageFlag flag: getFlags(dMessage)) {
-               if (flag.getFlagType().equals(flagType)) {
-                   return flag;
-               }
+       public boolean hasFlag(long messageId, String flag) throws SystemException {
+           try {
+               discussionMessageFlagPersistence.findByMessageIdFlagType(messageId, flag);
+               return true;
            }
-           return null;
+           catch (NoSuchDiscussionMessageFlagException e) {
+               return false;
+           }
+           
+       }
+       
+       private DiscussionMessageFlag findFlag(DiscussionMessage dMessage, String flagType) throws SystemException {
+           try {
+               return discussionMessageFlagPersistence.findByMessageIdFlagType(dMessage.getMessageId(), flagType);
+           }
+           catch (NoSuchDiscussionMessageFlagException e) {
+               return null;
+           }
+           
        }
 }

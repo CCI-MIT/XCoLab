@@ -71,7 +71,8 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.DiscussionMessageFlag"),
             true);
-    public static long MESSAGEID_COLUMN_BITMASK = 1L;
+    public static long FLAGTYPE_COLUMN_BITMASK = 1L;
+    public static long MESSAGEID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.DiscussionMessageFlag"));
     private static ClassLoader _classLoader = DiscussionMessageFlag.class.getClassLoader();
@@ -83,6 +84,7 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
     private long _originalMessageId;
     private boolean _setOriginalMessageId;
     private String _flagType;
+    private String _originalFlagType;
     private String _data;
     private Date _created;
     private long _userId;
@@ -195,7 +197,17 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
     }
 
     public void setFlagType(String flagType) {
+        _columnBitmask |= FLAGTYPE_COLUMN_BITMASK;
+
+        if (_originalFlagType == null) {
+            _originalFlagType = _flagType;
+        }
+
         _flagType = flagType;
+    }
+
+    public String getOriginalFlagType() {
+        return GetterUtil.getString(_originalFlagType);
     }
 
     @JSON
@@ -330,6 +342,8 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
         discussionMessageFlagModelImpl._originalMessageId = discussionMessageFlagModelImpl._messageId;
 
         discussionMessageFlagModelImpl._setOriginalMessageId = false;
+
+        discussionMessageFlagModelImpl._originalFlagType = discussionMessageFlagModelImpl._flagType;
 
         discussionMessageFlagModelImpl._columnBitmask = 0;
     }

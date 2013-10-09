@@ -2,6 +2,8 @@ package org.xcolab.jsp.tags.discussion.wrappers;
 
 import java.util.Date;
 
+import org.xcolab.commons.utils.ContentFilterHelper;
+
 import com.ext.portlet.discussions.DiscussionMessageFlagType;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.DiscussionMessageFlag;
@@ -27,7 +29,7 @@ public class DiscussionMessageWrapper {
     }
 
     public String getBody() {
-        return wrapped.getBody();
+        return ContentFilterHelper.filterContent(wrapped.getBody());
     }
 
     public long getThreadId() {

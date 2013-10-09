@@ -111,5 +111,10 @@
         <finder name="MessageId" return-type="Collection">
             <finder-column name="messageId" />
         </finder>
+        
+        <finder name="MessageIdFlagType" unique="true" return-type="DiscussionMessageFlag">
+            <finder-column name="messageId" />
+            <finder-column name="flagType" />
+        </finder>
     </entity>
 </service-builder>
