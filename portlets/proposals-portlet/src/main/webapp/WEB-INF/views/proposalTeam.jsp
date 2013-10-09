@@ -18,6 +18,37 @@
 		<h2>
 			<span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
 		</h2>
+            <div class="prop-butt">
+                <img src="/climatecolab-theme/images/icon-request-membership.png"
+                     width="24" height="22" alt="request membership" style="float:left;"/>
+
+
+
+
+                <form:form action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
+                    <div class="requestMembershipDIV">
+                        <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" style="margin: 0 0 10px 4px; width:193px; height: 27px;" onfocus="this.value=''" value="Optional comment"/>
+                        <form:errors cssClass="alert alert-error" path="requestComment" />
+                        <div class="blue-button" style="display:block;">
+                            <a href="javascript:;" class="requestMembershipSubmitButton" onclick="requestMembership();">Request membership</a>
+                        </div>
+
+                        <script>
+                            $('#requestComment').slideUp(1);
+                            function requestMembership(){
+                                $('#requestComment').slideDown('slow');
+                                $('.requestMembershipSubmitButton').text('Send request');
+                            }
+
+                            /* jQuery(this).parents('form').submit(); */
+                        </script>
+                    </div>
+                </form:form>
+
+            </div>
+
+
+
 	</div>
 	<table class="contributors">
 		<c:forEach var="member" items="${proposal.members }" varStatus="status">
@@ -74,27 +105,7 @@
 		<portlet:param name="planId" value="${proposal.proposalId }" />
 		<portlet:param name="action" value="requestMembership" />
 	</portlet:actionURL>
-	
-	<form:form action="${requestMembershipURL }" method="post" commandName="requestMembershipBean">
-		<div class="requestMembershipDIV">
-			<div class="manageMembersTop">
-				<h3>Request Membership</h3>
-			</div>
-			<div class="manageMembersContent">
-				Optional comment:
-				<p>
-					<form:textarea cssClass="requestComment" path="requestComment" />
-					<form:errors cssClass="alert alert-error" path="requestComment" />
-				</p>
-			</div>
-			<div class="blue-button">
-				<a href="#" class="requestMembershipSubmitButton" onclick="jQuery(this).parents('form').submit();">REQUEST membership</a>
-			</div>
-			<div class="blue-button">
-				<a href="#">CANCEL</a>
-			</div>
-		</div>
-	</form:form>
+
 	
 	
 
