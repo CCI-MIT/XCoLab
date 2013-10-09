@@ -41,7 +41,7 @@ public class ProposalRequestMembershipActionController {
 
         ProposalLocalServiceUtil.addMembershipRequest(proposalId,userId,comment);
 
-        SessionMessages.add(request, "membershipRequestSent");
+        //SessionMessages.add(request, "membershipRequestSent");
         
     }
 

@@ -20,27 +20,41 @@
 		</h2>
             <div class="prop-butt">
                 <img src="/climatecolab-theme/images/icon-request-membership.png"
-                     width="24" height="22" alt="request membership" style="float:left;"/>
+                     width="24" height="22" alt="request membership" style="float:left; margin-top:8px;"/>
 
 
+                <portlet:actionURL var="requestMembershipURL">
+                    <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
+                    <portlet:param name="contestId" value="${contest.contestPK }" />
+                    <portlet:param name="planId" value="${proposal.proposalId }" />
+                    <portlet:param name="action" value="requestMembership" />
+                </portlet:actionURL>
 
-
-                <form:form action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
+                <form:form id="requestMembershipForm" action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
                     <div class="requestMembershipDIV">
-                        <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" style="margin: 0 0 10px 4px; width:193px; height: 27px;" onfocus="this.value=''" value="Optional comment"/>
+                        <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" style="margin: 6px 0 10px 3px; width:192px; height: 27px;" onfocus="this.value=''" value="Optional comment"/>
                         <form:errors cssClass="alert alert-error" path="requestComment" />
-                        <div class="blue-button" style="display:block;">
-                            <a href="javascript:;" class="requestMembershipSubmitButton" onclick="requestMembership();">Request membership</a>
+                        <div id="requestButtons">
+                            <div class="blue-button" style="display:block;">
+                                <a href="javascript:;" class="requestMembershipSubmitButton" onclick="requestMembership();">Request membership</a>
+                            </div>
                         </div>
 
                         <script>
                             $('#requestComment').slideUp(1);
                             function requestMembership(){
                                 $('#requestComment').slideDown('slow');
-                                $('.requestMembershipSubmitButton').text('Send request');
+                                $('#requestButtons').empty();
+                                $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="hideRequestForm(true);">Cancel</a></div>');
+                                $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="$(\\'#requestMembershipForm\\').submit();hideRequestForm(false);">Send</a></div>');
+                            }
+                            function hideRequestForm(animate){
+                                if (animate) $('#requestComment').slideUp('slow');
+                                else $('#requestComment').hide();
+                                $('#requestButtons').empty();
+                                $('#requestButtons').append('<div class="blue-button" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="requestMembership();">Request membership</a></div>');
                             }
 
-                            /* jQuery(this).parents('form').submit(); */
                         </script>
                     </div>
                 </form:form>
@@ -75,11 +89,11 @@
 			</portlet:actionURL>
 			<div class="prop-butt">
 				<img src="/climatecolab-theme/images/icon-proposal-thumb.png" width="20" height="22" alt="support proposal" />
-				<div class="blue-button">
-					<a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-						${proposalsPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
-					</a>
-				</div>
+                    <div class="blue-button">
+                        <a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+                            ${proposalsPermissions.canSeeSupportButton ? 'Support proposal' : 'Retract support' }
+                        </a>
+                    </div>
 			</div>
 		</c:if>
 	</div>
@@ -97,14 +111,6 @@
 			</c:forEach>
 		</table>
 	</c:if>
-	
-
-	<portlet:actionURL var="requestMembershipURL">
-		<portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
-		<portlet:param name="contestId" value="${contest.contestPK }" />
-		<portlet:param name="planId" value="${proposal.proposalId }" />
-		<portlet:param name="action" value="requestMembership" />
-	</portlet:actionURL>
 
 	
 	

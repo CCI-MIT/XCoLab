@@ -141,3 +141,8 @@ div.sponsorLogo img {
 	height: 30px;
 	z-index: 100000;	
 }
+
+.requestMembershipSubmitFormButton{
+    width: 60px;
+    text-align: center;
+}
