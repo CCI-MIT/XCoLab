@@ -19,41 +19,53 @@
             <h2>
                 <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
             </h2>
-            <div class="prop-butt-popover">
-                <img src="/climatecolab-theme/images/icon-request-membership.png"
-                     width="24" height="22" alt="request membership" class="request-membership-icon"/>
+            <c:if test="${!proposalsPermissions.isTeamMember}">
+                <div class="prop-butt-popover">
+                    <img src="/climatecolab-theme/images/icon-request-membership.png"
+                         width="24" height="22" alt="request membership" class="request-membership-icon"/>
 
 
-                <portlet:actionURL var="requestMembershipURL">
-                    <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
-                    <portlet:param name="contestId" value="${contest.contestPK }" />
-                    <portlet:param name="planId" value="${proposal.proposalId }" />
-                    <portlet:param name="action" value="requestMembership" />
-                </portlet:actionURL>
+                    <portlet:actionURL var="requestMembershipURL">
+                        <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
+                        <portlet:param name="contestId" value="${contest.contestPK }" />
+                        <portlet:param name="planId" value="${proposal.proposalId }" />
+                        <portlet:param name="action" value="requestMembership" />
+                    </portlet:actionURL>
 
-                <form:form id="requestMembershipForm" action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
-                    <div class="requestMembershipDIV">
-                        <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
-                        <form:errors cssClass="alert alert-error" path="requestComment" />
-                        <div id="requestButtons">
-                            <div class="blue-button" style="display:block;">
-                                <a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>
+                    <form:form id="requestMembershipForm" action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
+                        <div class="requestMembershipDIV">
+                            <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
+                            <form:errors cssClass="alert alert-error" path="requestComment" />
+                            <div id="requestButtons">
+                                <div class="blue-button" style="display:block;">
+                                    <a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form:form>
-
-            </div>
-
+                    </form:form>
+                </div>
+            </c:if>
 
 
         </div>
         <table class="contributors">
             <c:forEach var="member" items="${proposal.members }" varStatus="status">
+
+
+                <portlet:actionURL var="removeUserFromTeam">
+                    <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
+                    <portlet:param name="contestId" value="${contest.contestPK }" />
+                    <portlet:param name="planId" value="${proposal.proposalId }" />
+                    <portlet:param name="action" value="removeUserFromTeam" />
+                    <portlet:param name="member" value="${member.userId}" />
+                </portlet:actionURL>
+
+
+
                 <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
                     <td><proposalsPortlet:proposalTeamMember member="${member }" /></td>
                     <td>${member.memberType }</td>
-                    <!-- TODO add options to remove user for admin -->
+                    <td><a href="${removeUserFromTeam }">Remove</a></td>
                 </tr>
             </c:forEach>
         </table>

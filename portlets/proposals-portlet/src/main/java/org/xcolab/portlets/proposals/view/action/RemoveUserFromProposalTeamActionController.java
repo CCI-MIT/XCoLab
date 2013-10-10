@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -28,24 +29,13 @@ public class RemoveUserFromProposalTeamActionController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = {"action=removeUserFromTeam"})
-    public void handleAction(ActionRequest request, Model model, ActionResponse response)
+    public void handleAction(ActionRequest request, Model model, ActionResponse response, @RequestParam("member") long memberUserId)
             throws PortalException, SystemException, ProposalsAuthorizationException {
-     /*
-        if (proposalsContext.getPermissions(request).getCanVote()) {
-            long proposalId = proposalsContext.getProposal(request).getProposalId();
-            long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-            long userId = proposalsContext.getUser(request).getUserId();
-            if (ProposalLocalServiceUtil.hasUserVoted(proposalId, contestPhaseId, userId)) {
-                ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
-            }
-            else {
-                ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
-            }
-        }
-        else {
-            throw new ProposalsAuthorizationException("User isn't allowed to vote on proposal ");
-        }
-        */
+
+        long proposalId = proposalsContext.getProposal(request).getProposalId();
+
+        ProposalLocalServiceUtil.removeUserFromTeam(proposalId,memberUserId);
+
     }
 
 }

@@ -726,6 +726,18 @@ public interface ProposalLocalService extends PersistedModelLocalService {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * <p>Remove a user from a proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId user id
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void removeUserFromTeam(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * <p>Denies user as a member of proposal team</p>
     *
     * @param proposalId proposal id

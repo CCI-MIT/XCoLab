@@ -724,6 +724,27 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
     }
 
+
+
+    /**
+     * <p>Remove a user from a proposal team</p>
+     * @param proposalId proposal id
+     * @param userId user id
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    public void removeUserFromTeam(long proposalId, long userId) throws PortalException, SystemException {
+        Proposal proposal = getProposal(proposalId);
+        GroupLocalServiceUtil.unsetUserGroups(userId,new long[]{proposal.getGroupId()});
+    }
+
+
+
+
+
+
+
+
     /**
      * <p>Denies user as a member of proposal team</p>
      * @param proposalId proposal id

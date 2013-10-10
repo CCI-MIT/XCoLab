@@ -6,6 +6,8 @@ import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.model.MembershipRequest;
+import com.liferay.portal.util.PortalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,11 +49,30 @@ public class ProposalRequestMembershipActionController {
 
 
 
-    @RequestMapping(params = {"action=approveMembershipRequest"})
-    public void approveMembership(ActionRequest request, Model model,
-                     ActionResponse response, BindingResult result)
+    @RequestMapping(params = {"action=replyToMembershipRequest"})
+    public void respond(ActionRequest request, Model model,
+                        ActionResponse response,
+                        @RequestParam("approve") String approve,
+                        @RequestParam("comment") String comment,
+                        @RequestParam("requestId") long requestId)
             throws PortalException, SystemException {
-                 System.out.println("------ TEST ------");
+        if (PortalUtil.getUser(request) == null) return;
+
+        long userId = PortalUtil.getUser(request).getUserId();
+        long proposalId = proposalsContext.getProposal(request).getProposalId();
+
+        MembershipRequest membershipRequest = null;
+        for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposalId)){
+            if (mr.getPrimaryKey() == requestId) membershipRequest = mr;
+        }
+
+        if (membershipRequest == null) return;
+        if (comment == null || comment.equalsIgnoreCase("Optional response")) comment = "";
+        if (approve.equalsIgnoreCase("APPROVE")){
+            ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
+        } else if (approve.equalsIgnoreCase("DENY")){
+            ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
+        }
 
     }
 }
