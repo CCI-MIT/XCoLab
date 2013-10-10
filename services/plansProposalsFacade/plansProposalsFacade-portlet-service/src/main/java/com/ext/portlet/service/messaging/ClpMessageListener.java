@@ -69,6 +69,8 @@ import com.ext.portlet.service.ModelOutputItemLocalServiceUtil;
 import com.ext.portlet.service.ModelOutputItemServiceUtil;
 import com.ext.portlet.service.ModelPositionLocalServiceUtil;
 import com.ext.portlet.service.ModelPositionServiceUtil;
+import com.ext.portlet.service.ModelRunnerLocalServiceUtil;
+import com.ext.portlet.service.ModelRunnerServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
@@ -264,6 +266,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ModelPositionLocalServiceUtil.clearService();
 
             ModelPositionServiceUtil.clearService();
+            ModelRunnerLocalServiceUtil.clearService();
+
+            ModelRunnerServiceUtil.clearService();
             OntologySpaceLocalServiceUtil.clearService();
 
             OntologySpaceServiceUtil.clearService();

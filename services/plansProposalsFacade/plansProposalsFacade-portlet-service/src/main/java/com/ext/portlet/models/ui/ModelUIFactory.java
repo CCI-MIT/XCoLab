@@ -9,6 +9,7 @@ package com.ext.portlet.models.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,12 +24,16 @@ import com.ext.portlet.service.ModelInputGroupLocalServiceUtil;
 import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.ext.portlet.service.ModelPositionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.Tuple;
 import edu.mit.cci.roma.client.Variable;
 
 /**
@@ -364,6 +369,103 @@ public class ModelUIFactory {
     
     public static void setSimulationPositionsIds(Simulation sim, List<Long> positionsIds) throws SystemException {
         ModelPositionLocalServiceUtil.setModelPositions(sim.getId(), positionsIds);
+    }
+    
+    public static JSONObject convertToJson(MetaData md) {
+        //JSONFactoryUtil.
+        JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+        addField(jsonObject, "id", md.getId());
+        addField(jsonObject, "name", md.getName());
+        addField(jsonObject, "description", md.getDescription());
+        addField(jsonObject, "externalInfo", md.getExternalInfo());
+        addField(jsonObject, "internalName", md.getInternalName());
+        addField(jsonObject, "varType", md.getVarType().name());
+        addField(jsonObject, "isIndex", md.getIndex());
+        addField(jsonObject, "categories", md.getCategories());
+        addField(jsonObject, "labels", md.getLabels());
+        addField(jsonObject, "default", md.getDefault());
+        addField(jsonObject, "max", md.getMax());
+        addField(jsonObject, "min", md.getMin());
+        addField(jsonObject, "units", md.getUnits());
+        addField(jsonObject, "varContext", md.getVarContext().name());
+        addField(jsonObject, "profiles", md.getProfile());
+        
+        if (md.getIndexingMetaData() != null) {
+            addField(jsonObject, "indexingMetaData", md.getIndexingMetaData().getId());
+        }
+        return jsonObject;
+        
+    }
+    
+    public static JSONObject convertToJson(Variable var) {
+        JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+        
+        
+        //jsonObject.var.get
+        addField(jsonObject, "id", var.getId());
+        addField(jsonObject, "metaData", var.getMetaData().getId());
+        
+        JSONArray valuesArray = JSONFactoryUtil.createJSONArray();
+        for (Tuple val: var.getValue()) {
+            valuesArray.put(convertArray(val.getValues()));
+        }
+        jsonObject.put("values", valuesArray);
+        
+        
+        return jsonObject;
+    }
+
+    
+    public static void addField(JSONObject jsonObject, String key, Object obj) {
+        if (obj == null) return;
+        if (obj.getClass().isArray()) {
+            jsonObject.put(key, convertArray((Object[]) obj));
+        }
+        else if (obj instanceof Integer || obj.getClass() == int.class) {
+            jsonObject.put(key, (Integer) obj);
+        }
+        else if (obj instanceof Long || obj.getClass() == long.class) {
+            jsonObject.put(key, (Long) obj);
+        }
+        else if (obj instanceof Double || obj.getClass() == double.class) {
+            jsonObject.put(key, (Double) obj);
+        }
+        else if (obj instanceof Boolean || obj.getClass() == boolean.class) {
+            jsonObject.put(key, (Boolean) obj);
+        }
+        else if (obj instanceof Date) {
+            jsonObject.put(key, (Date) obj);
+        }
+        else {
+            jsonObject.put(key, String.valueOf(obj));
+        }
+        
+        
+    }
+    
+    public static JSONArray convertArray(Object[] array) {
+        JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+        for (Object obj: array) {
+            if (obj != null) {
+                if (obj instanceof Integer || obj.getClass() == int.class) {
+                    jsonArray.put((Integer) obj);
+                }
+                else if (obj instanceof Long || obj.getClass() == long.class) {
+                    jsonArray.put((Long) obj);
+                }
+                else if (obj instanceof Double || obj.getClass() == double.class) {
+                    jsonArray.put((Double) obj);
+                }
+                else if (obj instanceof Boolean || obj.getClass() == boolean.class) {
+                    jsonArray.put((Boolean) obj);
+                }
+                else {
+                    jsonArray.put(String.valueOf(obj));
+                }
+            }
+            else jsonArray.put((String) null);
+        }
+        return jsonArray;
     }
 
 }

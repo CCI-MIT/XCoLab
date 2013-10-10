@@ -321,6 +321,14 @@
 		<property name="service" ref="com.ext.portlet.service.ModelPositionService" />
 	</bean>
 	<bean id="com.ext.portlet.service.persistence.ModelPositionPersistence" class="com.ext.portlet.service.persistence.ModelPositionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ModelRunnerLocalService" class="com.ext.portlet.service.impl.ModelRunnerLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ModelRunnerLocalServiceUtil" class="com.ext.portlet.service.ModelRunnerLocalServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ModelRunnerLocalService" />
+	</bean>
+	<bean id="com.ext.portlet.service.ModelRunnerService" class="com.ext.portlet.service.impl.ModelRunnerServiceImpl" />
+	<bean id="com.ext.portlet.service.ModelRunnerServiceUtil" class="com.ext.portlet.service.ModelRunnerServiceUtil">
+		<property name="service" ref="com.ext.portlet.service.ModelRunnerService" />
+	</bean>
 	<bean id="com.ext.portlet.service.OntologySpaceLocalService" class="com.ext.portlet.service.impl.OntologySpaceLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.OntologySpaceLocalServiceUtil" class="com.ext.portlet.service.OntologySpaceLocalServiceUtil">
 		<property name="service" ref="com.ext.portlet.service.OntologySpaceLocalService" />

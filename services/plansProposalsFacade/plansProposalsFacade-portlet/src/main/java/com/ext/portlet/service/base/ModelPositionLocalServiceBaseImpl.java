@@ -69,6 +69,8 @@ import com.ext.portlet.service.ModelOutputItemLocalService;
 import com.ext.portlet.service.ModelOutputItemService;
 import com.ext.portlet.service.ModelPositionLocalService;
 import com.ext.portlet.service.ModelPositionService;
+import com.ext.portlet.service.ModelRunnerLocalService;
+import com.ext.portlet.service.ModelRunnerService;
 import com.ext.portlet.service.OntologySpaceLocalService;
 import com.ext.portlet.service.OntologySpaceService;
 import com.ext.portlet.service.OntologyTermEntityLocalService;
@@ -468,6 +470,10 @@ public abstract class ModelPositionLocalServiceBaseImpl
     protected ModelPositionService modelPositionService;
     @BeanReference(type = ModelPositionPersistence.class)
     protected ModelPositionPersistence modelPositionPersistence;
+    @BeanReference(type = ModelRunnerLocalService.class)
+    protected ModelRunnerLocalService modelRunnerLocalService;
+    @BeanReference(type = ModelRunnerService.class)
+    protected ModelRunnerService modelRunnerService;
     @BeanReference(type = OntologySpaceLocalService.class)
     protected OntologySpaceLocalService ontologySpaceLocalService;
     @BeanReference(type = OntologySpaceService.class)
@@ -2887,6 +2893,43 @@ public abstract class ModelPositionLocalServiceBaseImpl
     public void setModelPositionPersistence(
         ModelPositionPersistence modelPositionPersistence) {
         this.modelPositionPersistence = modelPositionPersistence;
+    }
+
+    /**
+     * Returns the model runner local service.
+     *
+     * @return the model runner local service
+     */
+    public ModelRunnerLocalService getModelRunnerLocalService() {
+        return modelRunnerLocalService;
+    }
+
+    /**
+     * Sets the model runner local service.
+     *
+     * @param modelRunnerLocalService the model runner local service
+     */
+    public void setModelRunnerLocalService(
+        ModelRunnerLocalService modelRunnerLocalService) {
+        this.modelRunnerLocalService = modelRunnerLocalService;
+    }
+
+    /**
+     * Returns the model runner remote service.
+     *
+     * @return the model runner remote service
+     */
+    public ModelRunnerService getModelRunnerService() {
+        return modelRunnerService;
+    }
+
+    /**
+     * Sets the model runner remote service.
+     *
+     * @param modelRunnerService the model runner remote service
+     */
+    public void setModelRunnerService(ModelRunnerService modelRunnerService) {
+        this.modelRunnerService = modelRunnerService;
     }
 
     /**

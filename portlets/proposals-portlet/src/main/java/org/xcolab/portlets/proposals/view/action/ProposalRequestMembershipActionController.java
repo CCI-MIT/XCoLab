@@ -41,7 +41,7 @@ public class ProposalRequestMembershipActionController {
 
         ProposalLocalServiceUtil.addMembershipRequest(proposalId,userId,comment);
 
-        //SessionMessages.add(request, "membershipRequestSent");
+        SessionMessages.add(request, "membershipRequestSent");
         
     }
 
@@ -53,13 +53,5 @@ public class ProposalRequestMembershipActionController {
             throws PortalException, SystemException {
                  System.out.println("------ TEST ------");
 
-    }
-    
-
-    @RequestMapping(params = {"pageToDisplay=proposalDetails_TEAM", "action=requestMembership", "error=true"})
-    public String registerError(PortletRequest request, Model model,
-            @Valid RequestMembershipBean newAccountBean, BindingResult result,
-            @RequestParam(required = false) String redirect) {
-        return "proposalTeam";
     }
 }

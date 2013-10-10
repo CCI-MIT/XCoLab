@@ -24,6 +24,15 @@ Liferay.Service.registerClass(
 );
 
 Liferay.Service.registerClass(
+	Liferay.Service.xcolab, "ModelRunner",
+	{
+		getScenario: true,
+		getModel: true,
+		runModel: true
+	}
+);
+
+Liferay.Service.registerClass(
 	Liferay.Service.xcolab, "Proposal",
 	{
 		getProposalVersions: true

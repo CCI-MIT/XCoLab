@@ -8,6 +8,8 @@ package com.ext.portlet.models.ui;
 
 import java.io.Serializable;
 
+import com.liferay.portal.kernel.json.JSONObject;
+
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Tuple;
 import edu.mit.cci.roma.client.TupleStatus;
@@ -94,6 +96,15 @@ public abstract class ModelOutputDisplayItem extends ModelDisplayItem implements
     public ModelOutputChartType getChartType() {
         return ModelOutputChartType.FREE;
     }
-
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = super.toJson();
+        
+        jsonObject.put("displayItemType", getDisplayItemType().name());
+        jsonObject.put("chartType", getChartType().name());
+        jsonObject.put("visible", isVisible());
+        
+        return jsonObject;
+    }
 
 }

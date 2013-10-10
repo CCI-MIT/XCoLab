@@ -36,6 +36,7 @@
 	<import class="com.ext.portlet.model.ModelOutputChartOrder" />
 	<import class="com.ext.portlet.model.ModelOutputItem" />
 	<import class="com.ext.portlet.model.ModelPosition" />
+	<import class="com.ext.portlet.model.ModelRunner" />
 	<import class="com.ext.portlet.model.OntologySpace" />
 	<import class="com.ext.portlet.model.OntologyTerm" />
 	<import class="com.ext.portlet.model.OntologyTermEntity" />

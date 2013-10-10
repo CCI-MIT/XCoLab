@@ -7,6 +7,8 @@
 package com.ext.portlet.models.ui;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
@@ -64,4 +66,12 @@ public abstract class ModelDisplayItem implements Comparable<ModelDisplayItem> {
     public abstract int getOrder();
 
     public abstract void setOrder(int o) throws SystemException;
+    public JSONObject toJson() {
+        JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+        
+        jsonObject.put("name", getName());
+        jsonObject.put("order", getOrder());
+        
+        return jsonObject;
+    }
 }

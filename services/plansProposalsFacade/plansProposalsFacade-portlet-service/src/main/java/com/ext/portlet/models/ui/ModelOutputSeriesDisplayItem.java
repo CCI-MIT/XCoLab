@@ -15,6 +15,7 @@ import com.ext.portlet.model.ModelOutputItem;
 import com.ext.portlet.service.ModelOutputItemLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -226,6 +227,19 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
     public void setLabelFormatString(String format) throws SystemException {
         item.setModelItemLabelFormat(format);
         ModelOutputItemLocalServiceUtil.updateModelOutputItem(item);
+    }
+    
+    @Override
+    public ModelOutputChartType getChartType() {
+        return ModelOutputChartType.TIME_SERIES;
+    }
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = super.toJson();
+        jsonObject.put("variable", ModelUIFactory.convertToJson(getVariable()));
+        jsonObject.put("outputType", "SERIES");
+        
+        return jsonObject;
     }
 
 
