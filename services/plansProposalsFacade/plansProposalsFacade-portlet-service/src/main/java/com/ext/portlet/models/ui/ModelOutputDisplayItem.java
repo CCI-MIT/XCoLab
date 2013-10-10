@@ -8,6 +8,7 @@ package com.ext.portlet.models.ui;
 
 import java.io.Serializable;
 
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import edu.mit.cci.roma.client.Simulation;
@@ -104,7 +105,24 @@ public abstract class ModelOutputDisplayItem extends ModelDisplayItem implements
         jsonObject.put("chartType", getChartType().name());
         jsonObject.put("visible", isVisible());
         
+        convertErrorBehaviorToJson(jsonObject, "invalidErrorPolicy", getInvalidError());
+        convertErrorBehaviorToJson(jsonObject, "rangeErrorPolicy", getRangeError());
+
         return jsonObject;
+    }
+    
+    protected void convertErrorBehaviorToJson(JSONObject jsonObject, String key, ModelOutputErrorBehavior errorBehavior) {
+        if (errorBehavior == null) return;
+        
+        JSONObject errorObject = JSONFactoryUtil.createJSONObject();
+        if (errorBehavior.getPolicy() != null) {
+            errorObject.put("policy", errorBehavior.getPolicy().name());
+        }
+        if (errorBehavior.getMessage() != null) { 
+            errorObject.put("message", errorBehavior.getMessage());
+        }
+        
+        jsonObject.put(key, errorObject);
     }
 
 }

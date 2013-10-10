@@ -238,6 +238,12 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
         JSONObject jsonObject = super.toJson();
         jsonObject.put("variable", ModelUIFactory.convertToJson(getVariable()));
         jsonObject.put("outputType", "SERIES");
+        jsonObject.put("labelFormatString", getLabelFormatString());
+        Long associatedMetaDataId = getAssociatedMetaDataId();
+        if (associatedMetaDataId != null && associatedMetaDataId > 0) {
+            jsonObject.put("associatedMetaDataId", associatedMetaDataId);
+        }
+        
         
         return jsonObject;
     }

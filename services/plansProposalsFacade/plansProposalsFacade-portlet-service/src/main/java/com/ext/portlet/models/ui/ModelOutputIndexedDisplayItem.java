@@ -375,6 +375,10 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
             jsonSeriesArray.put(serie.toJson());
         }
         jsonObject.put("series", jsonSeriesArray);
+        jsonObject.put("index", ModelUIFactory.convertToJson(getIndexVariable()));
+
+        convertErrorBehaviorToJson(jsonObject, "indexedOutOfRangeError", getOutOfRangeErrorBehavior());
+        convertErrorBehaviorToJson(jsonObject, "indexedInvalidError", getInvalidErrorBehavior());
         
         return jsonObject;
     }

@@ -3,21 +3,38 @@
 <html version="-//W3C//DTD HTML 4.01 Transitional//EN">
 	<head>
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+		
 		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		<script src="//cdn.jsdelivr.net/jqplot/1.0.8/jquery.jqplot.min.js"></script>
+		<script src="//cdn.jsdelivr.net/jqplot/1.0.8/plugins/jqplot.ohlcRenderer.min.js"></script>
+		
 		<script src="js/modeling/xcolab.modeling.core.js"></script>
+		<script src="js/modeling/xcolab.modeling.serieRenderer.chart.js"></script>
+		<script src="js/modeling/xcolab.modeling.serieRenderer.free.js"></script>
+		<script src="js/modeling/xcolab.modeling.inputRenderer.groupVertical.js"></script>
+		<script src="js/modeling/xcolab.modeling.inputRenderer.groupHorizontal.js"></script>
+		<script src="js/modeling/xcolab.modeling.inputRenderer.groupTab.js"></script>
+		
+		<script src="js/modeling/xcolab.modeling.inputRenderer.individualSlider.js"></script>
+		<script src="js/modeling/xcolab.modeling.inputRenderer.individualText.js"></script>
+		
 		
 		<link rel="stylesheet" href="//cdn.jsdelivr.net/jqplot/1.0.8/jquery.jqplot.css" ></link>
-		
+		<link rel="stylesheet" href="http://localhost:9082/climatecolab-theme/css/jquery/jquery.css?tt=1381264905000" />
+		<link rel="stylesheet" href="http://localhost:9082/climatecolab-theme/css/style.css?tt=1381264905000" />
+		<link rel="stylesheet" href="http://localhost:9082/climatecolab-theme/css/style_additions.css?tt=1381264905000" />
 	</head>
 	<body>
 		<h1>cześć, hej ho</h1>
-		<div id="modelsOutputContainer"></div>
+		<div id="content">
+			<div id="modelsOutputContainer"></div>
+		</div>
 		
 		<script>
 			console.log('will load model');
 			XCoLab.modeling.init('#modelsOutputContainer');
-			XCoLab.modeling.loadScenario(6226);
+			XCoLab.modeling.loadScenario(6061);
 		</script>
 	</body>
 </html>

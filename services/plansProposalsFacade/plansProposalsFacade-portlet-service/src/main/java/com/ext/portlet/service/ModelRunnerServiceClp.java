@@ -66,7 +66,13 @@ public class ModelRunnerServiceClp implements ModelRunnerService {
     }
 
     public com.liferay.portal.kernel.json.JSONObject runModel(long modelId,
-        java.lang.String inputs) {
+        java.lang.String inputs)
+        throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.portal.kernel.json.JSONException,
+            edu.mit.cci.roma.client.comm.ModelNotFoundException,
+            edu.mit.cci.roma.client.comm.ScenarioNotFoundException,
+            java.io.IOException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_runModelMethodKey2,
@@ -75,6 +81,30 @@ public class ModelRunnerServiceClp implements ModelRunnerService {
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof com.ext.portlet.models.ui.IllegalUIConfigurationException) {
+                throw (com.ext.portlet.models.ui.IllegalUIConfigurationException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.json.JSONException) {
+                throw (com.liferay.portal.kernel.json.JSONException) t;
+            }
+
+            if (t instanceof edu.mit.cci.roma.client.comm.ModelNotFoundException) {
+                throw (edu.mit.cci.roma.client.comm.ModelNotFoundException) t;
+            }
+
+            if (t instanceof edu.mit.cci.roma.client.comm.ScenarioNotFoundException) {
+                throw (edu.mit.cci.roma.client.comm.ScenarioNotFoundException) t;
+            }
+
+            if (t instanceof java.io.IOException) {
+                throw (java.io.IOException) t;
+            }
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {

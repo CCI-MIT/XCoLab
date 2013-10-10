@@ -403,7 +403,7 @@ public class ModelUIFactory {
         
         //jsonObject.var.get
         addField(jsonObject, "id", var.getId());
-        addField(jsonObject, "metaData", var.getMetaData().getId());
+        jsonObject.put("metaData", convertToJson(var.getMetaData()));
         
         JSONArray valuesArray = JSONFactoryUtil.createJSONArray();
         for (Tuple val: var.getValue()) {
@@ -458,6 +458,9 @@ public class ModelUIFactory {
                 }
                 else if (obj instanceof Boolean || obj.getClass() == boolean.class) {
                     jsonArray.put((Boolean) obj);
+                }
+                else if (obj instanceof Class<?>) {
+                    jsonArray.put(((Class<?>) obj).getName());
                 }
                 else {
                     jsonArray.put(String.valueOf(obj));

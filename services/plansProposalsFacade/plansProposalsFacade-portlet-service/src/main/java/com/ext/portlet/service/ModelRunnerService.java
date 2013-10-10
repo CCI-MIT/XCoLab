@@ -38,5 +38,11 @@ public interface ModelRunnerService {
     public com.liferay.portal.kernel.json.JSONObject getModel(long modelId);
 
     public com.liferay.portal.kernel.json.JSONObject runModel(long modelId,
-        java.lang.String inputs);
+        java.lang.String inputs)
+        throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.portal.kernel.json.JSONException,
+            edu.mit.cci.roma.client.comm.ModelNotFoundException,
+            edu.mit.cci.roma.client.comm.ScenarioNotFoundException,
+            java.io.IOException;
 }
