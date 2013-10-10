@@ -45,7 +45,7 @@
                             <div>${request.membershipRequest.comments }</div>
                             <input type="hidden" name="requestId" value="${request.membershipRequest.primaryKey}" />
                             <div style="margin-top: 10px;">
-                                <textarea name="comment" style="max-width: 245px; width: 245px; height: 33px; margin-top: 2px;" onfocus="clearContents(this);">Optional response</textarea>
+                                <textarea name="comment" class="membership-request-comment-admin" onfocus="clearContents(this);">Optional response</textarea>
                                 <div class="allow-deny-membership-box">
                                     <div>
                                         <input type="radio" name="approve" value="approve" id="radio-approve"/>

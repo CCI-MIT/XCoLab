@@ -206,3 +206,10 @@ div.sponsorLogo img {
     margin-top:8px;
     padding-right: 10px;
 }
+
+.membership-request-comment-admin{
+    max-width: 245px;
+    width: 245px;
+    height: 33px;
+    margin-top: 2px;
+}
