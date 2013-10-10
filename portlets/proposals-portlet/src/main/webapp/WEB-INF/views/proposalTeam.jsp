@@ -15,16 +15,6 @@
 <div id="content">
 	<liferay-ui:success key="membershipRequestSent" message="Membership request sent" />
 	
-	<portlet:renderURL var="testUrl">
-		<portlet:param name="requestComment" value="asdasd123" />
-		<portlet:param name="contestId" value="${contest.contestPK }" />
-		<portlet:param name="implicitModel" value="true" />
-		<portlet:param name="action" value="requestMembership" />
-		<portlet:param name="pageToDisplay" value="proposalDetails_TEAM" />
-		<portlet:param name="planId" value="${proposal.proposalId }" />
-	</portlet:renderURL>
-	<a href="${testUrl }">${testUrl}</a>
-	
 	<div class="headline prophead">
 		<h2>
 			<span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
