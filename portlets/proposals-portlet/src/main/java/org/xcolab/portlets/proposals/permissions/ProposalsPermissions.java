@@ -164,6 +164,10 @@ public class ProposalsPermissions {
         return !user.isDefaultUser() && hasVotedOnThisProposal();
     }
 
+    public boolean getIsTeamMember() throws SystemException, PortalException {
+        return proposal == null ? false :  ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId()) && !user.isDefaultUser();
+    }
+
 
     private boolean hasVotedOnThisProposal() throws SystemException {
         return ProposalLocalServiceUtil.hasUserVoted(proposal.getProposalId(), contestPhase.getContestPhasePK(), user.getUserId());
@@ -172,7 +176,6 @@ public class ProposalsPermissions {
     private boolean isOwner() {
         return !user.isDefaultUser() && (proposal == null || user.getUserId() == proposal.getAuthorId());
     }
-    
     
     private boolean isSupporter() throws PortalException, SystemException {
         return proposal == null ? false :  ProposalLocalServiceUtil.isSupporter(proposal.getProposalId(), user.getUserId());

@@ -25,29 +25,42 @@
 
     <div id="content">
         <div class="admin_left"><h2>LEFT</h2></div>
-
-
         <div class="admin_right">
             <div class="addpropbox">
                 <strong>Membership requests</strong>
 
-                <c:if test="${fn:length(proposal.membershipRequests.allRequests) lt 1}">
+                <c:if test="${fn:length(proposal.membershipRequests) lt 1}">
                     <div><i>No new requests</i></div>
                 </c:if>
-
-
-                    <portlet:actionURL var="approveMembershipRequest">
-                        <portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
-                        <portlet:param name="contestId" value="${contest.contestPK }" />
-                        <portlet:param name="planId" value="${proposal.proposalId }" />
-                        <portlet:param name="action" value="approveMembershipRequest" />
-                    </portlet:actionURL>
-
-                <ul>
-                    <c:forEach items="${proposal.membershipRequests.allRequests}" var="request">
-                        <li>${request.comments} <a href="">Approve</a><a href="">Deny</a></li>
+                <portlet:actionURL var="replyToMembershipRequest">
+                    <portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
+                    <portlet:param name="contestId" value="${contest.contestPK }" />
+                    <portlet:param name="planId" value="${proposal.proposalId }" />
+                    <portlet:param name="action" value="replyToMembershipRequest" />
+                </portlet:actionURL>
+                <c:set var="count" value="1" scope="page" />
+                    <c:forEach items="${proposal.membershipRequests}" var="request">
+                        <form action="${replyToMembershipRequest }" method="post" style="padding: 10px 0; ${count lt fn:length(proposal.membershipRequests) ? 'border-bottom: 1px solid gray;' :''}">
+                            <proposalsPortlet:userLinkSimple userId="${request.requestUser.userId}" text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})" />
+                            <div>${request.membershipRequest.comments }</div>
+                            <input type="hidden" name="requestId" value="${request.membershipRequest.primaryKey}" />
+                            <div style="margin-top: 10px;">
+                                <textarea name="comment" style="max-width: 245px; width: 245px; height: 33px; margin-top: 2px;" onfocus="clearContents(this);">Optional response</textarea>
+                                <div class="allow-deny-membership-box">
+                                    <div>
+                                        <input type="radio" name="approve" value="approve" id="radio-approve"/>
+                                        <label for="radio-approve" style="margin-left: 10px;">Approve</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="approve" value="deny" id="radio-deny" />
+                                        <label for="radio-deny" style="margin-left: 10px;">Deny</label>
+                                    </div>
+                                </div>
+                                <a class="sendButton" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Send</a>
+                            </div>
+                        </form>
+                        <c:set var="count" value="${count + 1}" scope="page"/>
                     </c:forEach>
-                </ul>
 
                 <div id="manage_membership_request_dialog"></div>
             </div>

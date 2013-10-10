@@ -19,21 +19,21 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     @Autowired
     private Validator validator;
-    
+
     @InitBinder("requestMembershipBean")
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(validator);
     }
-    
+
     @RequestMapping(params = {"pageToDisplay=proposalDetails_TEAM"})
-    public String show(Model model) 
+    public String show(Model model)
             throws PortalException, SystemException {
         model.addAttribute("currentTab", ProposalTab.TEAM);
-        
+
         model.addAttribute("requestMembershipBean", new RequestMembershipBean());
-        
+
         return "proposalTeam";
     }
-    
+
 
 }

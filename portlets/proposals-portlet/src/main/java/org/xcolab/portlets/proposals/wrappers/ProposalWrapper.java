@@ -28,6 +28,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.portal.model.MembershipRequest;
 
 public class ProposalWrapper {
     private final Proposal proposal;
@@ -39,15 +40,14 @@ public class ProposalWrapper {
     
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
-    private MembershipRequestWrapper membershipRequestWrapper;
-    
+    private List<MembershipRequestWrapper> membershipRequests;
+
     public ProposalWrapper(Proposal proposal) {
         this.proposal = proposal;
         this.version = proposal.getCurrentVersion();
         this.contest = null;
         this.contestPhase = null;
         this.proposal2Phase = null;
-        this.membershipRequestWrapper = new MembershipRequestWrapper(proposal);
     }
 
 
@@ -57,7 +57,6 @@ public class ProposalWrapper {
         this.contest = null;
         this.contestPhase = null;
         this.proposal2Phase = null;
-        this.membershipRequestWrapper = new MembershipRequestWrapper(proposal);
     }
     
     public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
@@ -66,7 +65,6 @@ public class ProposalWrapper {
         this.contest = contest;
         this.contestPhase = contestPhase;
         this.proposal2Phase = proposal2Phase;
-        this.membershipRequestWrapper = new MembershipRequestWrapper(proposal);
     }
 
     public Class<?> getModelClass() {
@@ -349,10 +347,21 @@ public class ProposalWrapper {
         }
         return contestPhaseRibbonType;
     }
-    
-    public MembershipRequestWrapper getMembershipRequests(){
-        return this.membershipRequestWrapper;
-    }
-    
 
+
+    
+    public List<MembershipRequestWrapper> getMembershipRequests(){
+        if (this.membershipRequests == null){
+            // get all Membershiprequests
+            membershipRequests = new ArrayList<MembershipRequestWrapper>();
+            try{
+                for (MembershipRequest m : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())){
+                    membershipRequests.add(new MembershipRequestWrapper(m));
+                }
+            } catch(Exception e){ e.printStackTrace(); }
+
+        }
+        return this.membershipRequests;
+
+    }
 }

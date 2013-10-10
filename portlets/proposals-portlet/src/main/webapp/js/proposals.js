@@ -210,3 +210,25 @@ jQuery(function() {
 });
 
 
+
+/* Request membership form logic */
+function clearContents(element) {
+    element.value = '';
+};
+
+function requestMembership() {
+    $('#requestComment').slideDown('slow');
+    $('.prop-butt-popover:first').css('background', 'url(/climatecolab-theme/images/search-bg.png)');
+    $('#requestButtons').empty();
+    $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="hideRequestForm(true);">Cancel</a></div>');
+    $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a></div>');
+}
+function hideRequestForm(animate) {
+    var speed = animate ? 600 : 1;
+    $('#requestComment').slideUp('slow', function () {
+        $('.prop-butt-popover:first').css('background', 'none');
+        $('#requestButtons').empty();
+        $('#requestButtons').append('<div class="blue-button" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a></div>');
+    });
+}
+/* End of request membership form logic */

@@ -146,3 +146,63 @@ div.sponsorLogo img {
     width: 60px;
     text-align: center;
 }
+
+
+.prop-butt-popover{
+    z-index: 10;
+    padding: 20px;
+    top: -20px;
+    position: absolute;
+    left: 486px;
+    width: 240px;
+    font-size: 14px;
+    color: #d4d4d4;
+    font-weight: 700;
+    -moz-border-radius-bottomleft: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -moz-border-radius-bottomright: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -webkit-border-top-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+
+.sendButton{
+    width: 75px;
+    height: 28px;
+    display: inline-block;
+    padding-top: 9px;
+    margin-left: 3px;
+    background: #fcfbf9;
+    border: 1px solid #6a96a7;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    vertical-align: top;
+}
+
+.allow-deny-membership-box{
+    width: 87px;
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: top;
+}
+
+.requestComment{
+    margin: 6px 0 10px 3px;
+    width:192px;
+    height: 32px;
+    max-width: 192px;
+    font: 12px 'Lucida Grande', Arial, sans-serif;
+}
+
+.request-membership-icon{
+    float:left;
+    margin-top:8px;
+    padding-right: 10px;
+}

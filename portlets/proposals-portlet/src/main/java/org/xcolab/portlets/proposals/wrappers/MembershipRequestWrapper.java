@@ -2,7 +2,8 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.model.MembershipRequest;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.util.List;
 
@@ -14,16 +15,25 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class MembershipRequestWrapper {
-    private List<MembershipRequest> membershipRequests;
+    private User requestUser;
+    private MembershipRequest membershipRequest;
 
-    public MembershipRequestWrapper(Proposal proposal){
+    public MembershipRequestWrapper(MembershipRequest membershipRequest){
+        this.membershipRequest = membershipRequest;
+
         try{
-            membershipRequests = ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId());
-        } catch(Exception e){ e.printStackTrace(); }
+            this.requestUser = UserLocalServiceUtil.getUser(membershipRequest.getUserId());
+        } catch (Exception e) { e.printStackTrace();}
     }
 
-    public List<MembershipRequest> getAllRequests(){
-        return membershipRequests;
+    public User getRequestUser(){
+        return requestUser;
     }
+
+    public MembershipRequest getMembershipRequest(){
+        return membershipRequest;
+    }
+
+
 
 }
