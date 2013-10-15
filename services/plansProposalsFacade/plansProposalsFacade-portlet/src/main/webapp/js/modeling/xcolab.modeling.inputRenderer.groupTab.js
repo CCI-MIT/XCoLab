@@ -11,11 +11,11 @@ var groupInputVerticalRenderer = {
 		return input.displayItemType == 'GROUP' && input.groupType == 'TAB'; 
 	},
 	render: function(target, input, modeling) {
-		console.log('rendering tab input', input);
 		var tabContainer = jQuery("<div><h3>tab: " + input.name + "</h3></div>");
 		target.append(tabContainer);
+		var self = this;
 		jQuery.each(input.inputs, function(idx, childInput) {
-			modeling.getInputRenderer(childInput).render(tabContainer, childInput, modeling);
+			modeling.getInputRenderer(childInput).render(tabContainer, childInput, modeling, idx, self);
 		});
 	}
 };

@@ -107,10 +107,14 @@ XCoLab['modeling'] = {
 				modeling.simulationId = data.modelId;
 
 				jQuery.each(data.inputs, function(idx, input) {
-					modeling.getInputRenderer(input).render(modeling.container, input, modeling);
+					modeling.getInputRenderer(input).render(modeling.container, input, modeling, idx);
 					
 				});
-					
+				modeling.container.find(".act-edit_right").remove();
+				var container = jQuery("<div class='act-edit_right'></div>");
+				modeling.container.append(container);
+				modeling.outputsRenderer.render(container, data);
+				/*
 				jQuery.each(data.outputs, function(idx, serie) {
 					modeling.container.append('<h2>' + this.name + "</h2>");
 					var renderer = null;
@@ -128,6 +132,7 @@ XCoLab['modeling'] = {
 					}
 					
 				});
+				*/
 
 				
 				

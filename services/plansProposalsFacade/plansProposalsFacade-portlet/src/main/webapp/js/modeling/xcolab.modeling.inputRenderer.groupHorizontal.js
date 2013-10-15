@@ -10,12 +10,12 @@ var groupInputVerticalRenderer = {
 	canRender: function(input) {
 		return input.displayItemType == 'GROUP' && input.groupType == 'VERTICAL'; 
 	},
-	render: function(target, input, modeling) {
-		console.log('rendering group horizontal input', input);
-		var verticalGroupContainer = jQuery("<div><h4>vertical group: " + input.name + "</h4></div>");
+	render: function(target, input, modeling, idx) {
+		var verticalGroupContainer = jQuery("<div></div>");
 		target.append(verticalGroupContainer);
+		var self = this;
 		jQuery.each(input.inputs, function(idx, childInput) {
-			modeling.getInputRenderer(childInput).render(verticalGroupContainer, childInput, modeling);
+			modeling.getInputRenderer(childInput).render(verticalGroupContainer, childInput, modeling, self);
 		});
 	}
 };

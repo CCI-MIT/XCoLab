@@ -11,7 +11,7 @@ var individualSliderInputRenderer = {
 	canRender: function(input) {
 		return input.displayItemType == 'INDIVIDUAL' && input.widgetType == 'SLIDER'; 
 	},
-	render: function(target, input, modeling) {
+	render: function(target, input, modeling, idx, parent) {
 		var min = parseFloat(input.metaData.min[0]);
 		var max = parseFloat(input.metaData.max[0]);
 		var defaultVal = parseFloat(input.metaData['default'][0]);
@@ -40,13 +40,31 @@ var individualSliderInputRenderer = {
 			sliderMin = this.SLIDER_MIN;
 			interval = (max-min)/(sliderMax - sliderMin);
 		} 
+		var inputContainer = jQuery("<table></table>").appendTo(target);
+		if (typeof(parent) == 'undefined' || parent.groupType == 'TAB') {
+			// this input has no parent or its parent is a tab, it should display it's name as an input section header
+			inputContainer.append("<tr><td><div class='actInputDef control_title'><span>" + (idx+1) + ".</span> " + input.name + "</div></td></tr>");
+		}
+		var inputRow = jQuery("<tr></tr>").appendTo(inputContainer);
 		
 		
 		var slider = jQuery("<div></div>");
-		target.append("<span>" + input.name + "</span>");
-		target.append(slider);
-		var valueField = jQuery("<input type='text' class='value control_input' data-id='" + input.metaData.id + "'  value='" + modeling.formatInputValue(input, modeling.getInputValue(input)) + "' />");
-		target.append(valueField);
+		
+		var valueField = jQuery("<input type='text' class='value control_input' data-id='" + input.metaData.id + "'  value='" + modeling.formatInputValue(input, currentValue) + "' />");
+		var bindingInput = jQuery("<input type='text' class='value control_input valueBinding hidden' value='" + currentValue + "' data-id='" + input.metaData.id + "' />");
+		
+		if ('minLabel' in input && 'maxLabel' in input) {
+			var minMaxLabels = jQuery("<div class='slider-labels'><table><tr><td class='left-label'>" + input.minLabel + "</td><td class='right-label'>" + input.maxLabel + "</td></tr></table></div>");
+			jQuery("<td class='sliderCol'></td>").append(slider).append(minMaxLabels).appendTo(inputRow);
+		}
+		else {
+			jQuery("<td class='valueCol'></td>").append(slider).appendTo(inputRow);
+		}
+		
+		
+		jQuery("<td></td>").append(valueField).append(bindingInput).appendTo(inputRow);
+		
+		
 
 		slider.slider({
 				min: sliderMin,
@@ -61,7 +79,8 @@ var individualSliderInputRenderer = {
 						valueField.val(modeling.formatInputValue(input, min + interval *  ui.value.toFixed(2)));
 						//inputValues[id] = formatFieldValue(min + interval * ui.value.toFixed(2), unit,null);
 					}
-
+					valueField.change();
+					
 					//valueBinding.val(valueField.val());
 				},		
 		
@@ -89,7 +108,6 @@ var individualSliderInputRenderer = {
 
 			currentValue = modeling.parseInputValue(input, valueField.val());
 			var sliderVal = currentValue;
-			console.log('current value: ', valueField.val(), modeling.formatInputValue(input, currentValue));
 			valueField.val(modeling.formatInputValue(input, currentValue));
 
 			if (modeling.isDouble(dataType)) {
@@ -97,7 +115,7 @@ var individualSliderInputRenderer = {
 			}
 
 			slider.slider("option", "value", sliderVal);
-			
+			bindingInput.val(currentValue);
 			return true;
 		});
 		
