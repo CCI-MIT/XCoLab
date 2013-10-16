@@ -398,4 +398,14 @@ public class ContestWrapper {
         return contestTeamMembersByRole;
     }
 
+    public List<User> getContestJudges() throws PortalException, SystemException {
+        List<User> judges = null;
+        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()){
+            if (c.getRoleName().equalsIgnoreCase("Judge")){
+                judges = c.getUsers();
+            }
+        }
+        return judges;
+    }
+
 }

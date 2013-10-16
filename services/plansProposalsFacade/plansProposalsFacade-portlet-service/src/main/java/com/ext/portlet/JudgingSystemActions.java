@@ -23,10 +23,18 @@ public class JudgingSystemActions {
 
             return NO_DECISION;
         }
+
+        public int getAttributeValue(){
+            return this.attributeValue;
+        }
+
+        public String getDescription(){
+            return description;
+        }
     }
 
     public enum FellowAction {
-        NO_DECISION(0, "no decision"), DONT_MOVE_ON(1, "don't move on"), MOVE_ON(2, "move on");
+        NO_DECISION(0, "no decision"), INCOMPLETE(1, "incomplete"), OFFTOPIC(2, "offtopic"), PASSTOJUDGES(3, "pass to judges");
 
         int attributeValue;
         String description;
@@ -42,6 +50,14 @@ public class JudgingSystemActions {
             }
 
             return NO_DECISION;
+        }
+
+        public int getAttributeValue(){
+            return this.attributeValue;
+        }
+
+        public String getDescription(){
+            return description;
         }
     }
 }

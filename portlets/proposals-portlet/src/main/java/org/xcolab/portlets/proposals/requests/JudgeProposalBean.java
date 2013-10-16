@@ -7,7 +7,9 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,14 +20,25 @@ public class JudgeProposalBean {
     private Long fellowRating;
     private JudgingSystemActions.JudgeAction judgeAction;
     private JudgingSystemActions.FellowAction fellowAction;
+    private String judgeComment;
+    private List<Long> selectedJudges;
 
     public JudgeProposalBean(ProposalWrapper wrapper) throws PortalException, SystemException {
+
         judgeRating = wrapper.getJudgeRating();
         fellowRating = wrapper.getFellowRating();
 
-
         judgeAction = wrapper.getJudgeAction();
         fellowAction = wrapper.getFellowAction();
+
+    }
+
+    public JudgeProposalBean(){
+        // testing
+        fellowRating = 2l;
+        fellowAction = JudgingSystemActions.FellowAction.NO_DECISION;
+        selectedJudges = new ArrayList<Long>();
+        selectedJudges.add(1223815l);
     }
 
     public Long getJudgeRating() {
@@ -59,4 +72,21 @@ public class JudgeProposalBean {
     public void setFellowAction(JudgingSystemActions.FellowAction fellowAction) {
         this.fellowAction = fellowAction;
     }
+
+    public String getJudgeComment() {
+        return judgeComment;
+    }
+
+    public void setJudgeComment(String judgeComment) {
+        this.judgeComment = judgeComment;
+    }
+
+    public List<Long> getSelectedJudges() {
+        return selectedJudges;
+    }
+
+    public void setSelectedJudges(List<Long> selectedJudges) {
+        this.selectedJudges = selectedJudges;
+    }
+
 }

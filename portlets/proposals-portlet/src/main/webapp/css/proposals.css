@@ -92,7 +92,7 @@ div.sponsorLogo img {
 
 /** PROPOSAL DETAILS **/
 
-.contributors td {
+.contributors td, .judgingForm td {
 	width: 525px;
 }
 
@@ -213,3 +213,15 @@ div.sponsorLogo img {
     height: 33px;
     margin-top: 2px;
 }
+
+.judgingForm tr.odd td{
+    background:#f2f1e9;
+}
+
+.judgingForm td{
+    text-align: center;
+    vertical-align: middle;
+}
+
+.judging_left { float:left; width:474px; margin-top:50px;}
+.judging_right { float:left; width:454px; margin:50px 0 0 56px;}
