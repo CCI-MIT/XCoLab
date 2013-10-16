@@ -13,10 +13,10 @@ function ChartTabRenderer(outputs) {
 		var targetContainer = $(target);
 
 		var errorMessages = [];
-		var errorMessagesContainer = jQuery("<div></div>");
-		targetContainer.append(errorMessagesContainer);
-		var chartContainer = jQuery("<div></div>");
-		targetContainer.append(chartContainer);
+		var errorMessagesContainer = jQuery("<ul class='chartMessagePlaceholder' style='display: none;'></ul>").appendTo(targetContainer);
+		var chartWrapper = jQuery("<div class='chartContainer'></div>").appendTo(targetContainer);
+		var chartContainer = jQuery("<div class='chartPlaceholder '></div>").appendTo(chartWrapper);
+		var legendContainer = jQuery("<div></div>").appendTo(chartWrapper);
 		
 		var valuesCombined = [];
 		
@@ -75,7 +75,8 @@ function ChartTabRenderer(outputs) {
 			});
 			
 			if (shouldShow) {
-				
+
+				yaxis.label = singleSerie.variable.metaData.units[1];
 				var parseFunc = null;
 				if (singleSerie.variable.metaData.profiles[1] == 'java.lang.Integer') parseFunc = parseInt;
 				else parseFunc = parseFloat;
@@ -187,16 +188,16 @@ function ChartTabRenderer(outputs) {
 		    	},
 		    	legend : {
 		    		show :true,
-		    		location :'nw',
-		    		placement: 'insideGrid',
-		    		marginTop: "320px",
-		    		yoffset :320,
-		    		xoffset:0
+		    		location :'s',
+		    		placement: 'outside',
+		    		marginTop : '300px'
 		    	}
 		};
 		
 		if (valuesCombined.length > 0) {
 			chartContainer.jqplot(valuesCombined, plotOptions);
+			
+			chartContainer.find("table.jqplot-table-legend").appendTo(legendContainer).removeAttr('style');
 		}
 		
 		
@@ -217,5 +218,7 @@ function ChartTabRenderer(outputs) {
 	this.renderContents = function(container) {
 		renderChart(container, outputs);
 	};
+	
+	
 	
 }

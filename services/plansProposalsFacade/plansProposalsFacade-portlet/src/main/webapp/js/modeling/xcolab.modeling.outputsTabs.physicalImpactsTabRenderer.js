@@ -10,7 +10,7 @@ function PhysicalImpactsTabRenderer(physicalImpacts) {
 	
 	this.renderContents = function(container) {
 		var physicalImpactsContainer = jQuery("<div id='freeOutputPhysical'></div>").appendTo(container);
-		physicalImpactsContainer.append("<h1>Physical impacts</h1>");
+		container.append("<div class='clearfix'></div>");
 		var navigation = jQuery("<ul class='chart_sub-menu'></ul>");
 		var impactVisible = true, impactIdx = 0;
 		

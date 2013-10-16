@@ -11,7 +11,7 @@ var individualSliderInputRenderer = {
 	canRender: function(input) {
 		return input.displayItemType == 'INDIVIDUAL' && input.widgetType == 'SLIDER'; 
 	},
-	render: function(target, input, modeling, idx, parent) {
+	renderEdit: function(target, input, modeling, idx, parent) {
 		var min = parseFloat(input.metaData.min[0]);
 		var max = parseFloat(input.metaData.max[0]);
 		var defaultVal = parseFloat(input.metaData['default'][0]);
@@ -40,10 +40,11 @@ var individualSliderInputRenderer = {
 			sliderMin = this.SLIDER_MIN;
 			interval = (max-min)/(sliderMax - sliderMin);
 		} 
-		var inputContainer = jQuery("<table></table>").appendTo(target);
+		var inputContainer = jQuery("<table class='control_definition sliderDef'></table>").appendTo(target);
+
 		if (typeof(parent) == 'undefined' || parent.groupType == 'TAB') {
 			// this input has no parent or its parent is a tab, it should display it's name as an input section header
-			inputContainer.append("<tr><td><div class='actInputDef control_title'><span>" + (idx+1) + ".</span> " + input.name + "</div></td></tr>");
+			inputContainer.append("<tr><td colspan='2'><div class='actInputDef control_title'><span>" + (idx+1) + ".</span> " + input.name + "</div></td></tr>");
 		}
 		var inputRow = jQuery("<tr></tr>").appendTo(inputContainer);
 		
@@ -58,7 +59,7 @@ var individualSliderInputRenderer = {
 			jQuery("<td class='sliderCol'></td>").append(slider).append(minMaxLabels).appendTo(inputRow);
 		}
 		else {
-			jQuery("<td class='valueCol'></td>").append(slider).appendTo(inputRow);
+			jQuery("<td class='sliderCol'></td>").append(slider).appendTo(inputRow);
 		}
 		
 		
@@ -120,6 +121,21 @@ var individualSliderInputRenderer = {
 		});
 		
 		console.log('rendered slider', 'current value', currentValue, sliderVal, min, max, sliderMin, sliderMax, input);
+	},
+	renderView: function(target, input, modeling, idx, parent) {
+		var inputContainer = jQuery("<div class='actInputDef'></div>").appendTo(target);
+		if (typeof(parent) == 'undefined' || parent.groupType == 'TAB') {
+			// this input has no parent or its parent is a tab, it should display it's name as an input section header
+			inputContainer.append("<div><span class='input_def_header'>" + input.name + "</span></div>");
+		}
+		inputContainer.append("<span class='actInputDef'><span class='input_def_inner_label'>" + input.metaData.labels[0] + "</span> " + modeling.formatInputValue(input, modeling.getInputValue(input)) + "</span>");
+	},
+	render: function(target, input, modeling, idx, parent) {
+		var renderFunc = this.renderView;
+		if (XCoLab.modeling.inEditMode) {
+			renderFunc = this.renderEdit;
+		}
+		renderFunc(target, input, modeling, idx, parent);
 	}
 };
 

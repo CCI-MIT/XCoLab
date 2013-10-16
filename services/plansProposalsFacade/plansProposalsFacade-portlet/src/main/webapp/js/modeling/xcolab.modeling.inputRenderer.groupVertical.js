@@ -5,28 +5,35 @@ if (typeof(XCoLab.modeling) == 'undefined')
 if (typeof(XCoLab.modeling.serieRenderers) == 'undefined')
 	XCoLab.modeling.serieRenderers = [];
 
-var groupInputRenderer = {
+var groupInputVerticalRenderer = {
 
 	canRender: function(input) {
-		return input.displayItemType == 'GROUP' && input.groupType == 'HORIZONTAL'; 
+		return input.displayItemType == 'GROUP' && input.groupType == 'VERTICAL'; 
 	},
-	render: function(target, input, modeling, idx) {
-		console.log('rendering group vertical input', input);
-		var verticalGroupTable = jQuery("<table class='inputDefTable'></table>");
-		
-		verticalGroupTable.append("<tr><td><div class='actInputDef control_title'><span>" + (idx+1) + ".</span> " + input.name + "</div></td></tr>");
-		verticalGroupTable.appendTo(target);
-		var verticalGroupContainer = jQuery("<table></table>");
-		var groupRow = jQuery("<tr></tr>");
-		verticalGroupContainer.append(groupRow);
+	renderEdit: function(target, input, modeling, idx) {
+		var verticalGroupContainer = jQuery("<div></div>");
 		target.append(verticalGroupContainer);
 		var self = this;
 		jQuery.each(input.inputs, function(idx, childInput) {
-			var itemCell = jQuery("<td></td>");
-			groupRow.append(itemCell);
-			modeling.getInputRenderer(childInput).render(itemCell, childInput, modeling, idx, self);
+			modeling.getInputRenderer(childInput).render(verticalGroupContainer, childInput, modeling, input);
 		});
+	},
+	renderView: function(target, input, modeling, idx) {
+		var verticalGroupContainer = jQuery("<div></div>").appendTo(target);
+		jQuery.each(input.inputs, function(idx, childInput) {
+			var inputContainer = jQuery("<div></div>").appendTo(verticalGroupContainer);
+			modeling.getInputRenderer(childInput).render(inputContainer, childInput, modeling, input);
+		});
+		
+	},
+	render: function(target, input, modeling, idx, parent) {
+		var renderFunc = this.renderView;
+		if (XCoLab.modeling.inEditMode) {
+			renderFunc = this.renderEdit;
+		}
+		renderFunc(target, input, modeling, idx, parent);
 	}
+	
 };
 
-XCoLab.modeling.inputRenderers.push(groupInputRenderer);
+XCoLab.modeling.inputRenderers.push(groupInputVerticalRenderer);

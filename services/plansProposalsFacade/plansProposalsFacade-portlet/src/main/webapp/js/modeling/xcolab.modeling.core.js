@@ -9,6 +9,7 @@ XCoLab['modeling'] = {
 		inputRenderers: [],
 		defaultInputRenderer: { render: function(target, input) { console.log('no renderer found for input', input); } },
 		simulationId: 10,
+		inEditMode: false, // edit or view 
 		
 		/**
 		 * returns true if value is valid, false otherwise, 
@@ -103,38 +104,17 @@ XCoLab['modeling'] = {
 				data: {scenarioId: scenarioId}, 
 				dataType: 'jsonp',
 			}).done(function(data, textStatus, jqXHR) {
-				console.log('received data', data);
+				//console.log('received data', data);
 				modeling.simulationId = data.modelId;
 
-				jQuery.each(data.inputs, function(idx, input) {
-					modeling.getInputRenderer(input).render(modeling.container, input, modeling, idx);
-					
-				});
-				modeling.container.find(".act-edit_right").remove();
-				var container = jQuery("<div class='act-edit_right'></div>");
-				modeling.container.append(container);
-				modeling.outputsRenderer.render(container, data);
-				/*
-				jQuery.each(data.outputs, function(idx, serie) {
-					modeling.container.append('<h2>' + this.name + "</h2>");
-					var renderer = null;
-					jQuery(modeling.serieRenderers).each(function(idx, rendererCandidate) {
-						if (rendererCandidate.canRender(serie)) {
-							renderer = rendererCandidate;
-						}
-					});
-					
-					if (renderer == null) {
-						console.log("can't find renderer for " + this.name);
-					}
-					else {
-						renderer.render(modeling.container, serie);
-					}
-					
-				});
-				*/
-
+				var event = jQuery.Event( "scenarioFetched" );
+				event.scenario = data;
+				jQuery(document).trigger(event);
 				
+				/*
+				modeling.inputsRenderer.render(modeling.container, data);
+				modeling.outputsRenderer.render(modeling.container, data);
+				*/
 				
 			}).fail(function(data, textStatus, errorThrown) {
 				console.log('fail' , data);
@@ -145,7 +125,7 @@ XCoLab['modeling'] = {
 		runSimulation: function() {
 			var values = {}; 
 			jQuery(".valueBinding").each(function(idx, item) { values[$(item).attr('data-id')] = $(item).val(); });
-			;
+			
 			jQuery.ajax({
 				url: this.runModelUrl, 
 				data: {modelId: this.simulationId, inputs: JSON.stringify(values)}, 
@@ -158,8 +138,43 @@ XCoLab['modeling'] = {
 			
 			
 		},
-		init: function(containerSelector) {
+		init: function(containerSelector, mode) {
+			this.inEditMode = mode == 'edit';
 			this.container = $(containerSelector);
+			this.outputsRenderer.container = this.container;
+			this.inputsRenderer.container = this.container;
+			var runTheModelTrigger = jQuery("<div class='runSimulationButton_bdr'>" + 
+					"<a href='javascript:;' class='runSimulationButton'><div class='runSimulationButtonHighlight'>" +
+					"<span>RUN</span> the model</div></a><div>").appendTo(this.container);
+			
+			var self = this;
+			runTheModelTrigger.click(function() {
+				var values = {};
+				jQuery(".valueBinding").each(function() {
+					values[jQuery(this).attr('data-id')] = jQuery(this).val();
+				});
+				
+				jQuery(document).trigger("fetchingScenario");
+				
+				jQuery.ajax({
+					url: self.runModelUrl, 
+					data: {modelId: self.simulationId, inputs: JSON.stringify(values)}, 
+					dataType: 'jsonp',
+				}).done(function(data) {
+					self.simulationId = data.modelId;
+					console.log("model run!", data);
+					var event = jQuery.Event( "scenarioFetched" );
+					event.scenario = data;
+					jQuery(document).trigger(event);
+				}).fail(function(a, b, c) {
+					console.log("model run failed :(", a, b, c);
+				});
+				
+			});
+			
+			this.headerRenderer.render(this.container);
+			
+			
 		}
 
 		
