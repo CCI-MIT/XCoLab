@@ -18,6 +18,7 @@ import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -196,21 +197,32 @@ public class ProposalWrapper {
     }
 
     public Long getJudgeRating() throws SystemException, PortalException {
-        return getAttributeValueLong(ProposalAttributeKeys.JUDGE_RATING, 0);
+        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_RATING, 0,0);
     }
 
     public Long getFellowRating() throws SystemException, PortalException {
-        return getAttributeValueLong(ProposalAttributeKeys.FELLOW_RATING, 0);
+        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_RATING, 0,0);
     }
 
     public JudgingSystemActions.JudgeAction getJudgeAction() throws SystemException, PortalException {
-        Long action = getAttributeValueLong(ProposalAttributeKeys.JUDGE_ACTION, 0);
+        Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_ACTION, 0,0);
         return JudgingSystemActions.JudgeAction.fromInt(action.intValue());
     }
 
     public JudgingSystemActions.FellowAction getFellowAction() throws SystemException, PortalException {
-        Long action = getAttributeValueLong(ProposalAttributeKeys.FELLOW_ACTION, 0);
+        Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_ACTION, 0,0);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
+    }
+
+    public List<Long> getSelectedJudges(){
+        List<Long> selectedJudges = new ArrayList<Long>();
+        String s;
+        try{
+            s = getContestPhaseAttributeValueString(ProposalAttributeKeys.SELECTED_JUDGES,0,null);
+        } catch (Exception e) { return selectedJudges;}
+        if (s == null) return selectedJudges;
+        for (String element : s.split(";")) selectedJudges.add(Long.parseLong(element));
+        return selectedJudges;
     }
 
     public String getTeam() throws PortalException, SystemException {
@@ -300,7 +312,6 @@ public class ProposalWrapper {
     private String getAttributeValueString(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
         ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
         return pa == null ? defaultVal : pa.getStringValue();
-        
     }
 
     private long getAttributeValueLong(String attributeName, long defaultVal) throws PortalException, SystemException {
@@ -330,7 +341,30 @@ public class ProposalWrapper {
         }
     }
 
+    private String getContestPhaseAttributeValueString(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
+        ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
+        return pa == null ? defaultVal : pa.getStringValue();
+    }
 
+    private long getContestPhaseAttributeValueLong(String attributeName, long additionalId, long defaultVal) throws PortalException, SystemException {
+        ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
+        return pa == null ? defaultVal : pa.getNumericValue();
+    }
+
+    private double getContestPhaseAttributeValueReal(String attributeName, long additionalId, double defaultVal) throws PortalException, SystemException {
+        ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
+        return pa == null ? defaultVal : pa.getRealValue();
+    }
+
+    private ProposalContestPhaseAttribute getContestPhaseAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
+        try {
+            return ProposalContestPhaseAttributeLocalServiceUtil
+                    .getProposalContestPhaseAttribute(proposal.getProposalId(),contestPhase.getContestPhasePK(),attributeName);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
     
     public String getAuthorName() throws PortalException, SystemException {
         String authorName = getTeam();

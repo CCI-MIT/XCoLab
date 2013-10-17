@@ -30,15 +30,12 @@ public class JudgeProposalBean {
 
         judgeAction = wrapper.getJudgeAction();
         fellowAction = wrapper.getFellowAction();
+        selectedJudges = wrapper.getSelectedJudges();
 
     }
 
     public JudgeProposalBean(){
-        // testing
-        fellowRating = 2l;
-        fellowAction = JudgingSystemActions.FellowAction.NO_DECISION;
-        selectedJudges = new ArrayList<Long>();
-        selectedJudges.add(1223815l);
+
     }
 
     public Long getJudgeRating() {

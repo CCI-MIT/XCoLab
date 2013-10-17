@@ -33,5 +33,6 @@ public class ProposalAttributeKeys {
     public static final String JUDGE_ACTION = "JUDGE_ACTION";
     public static final String FELLOW_RATING = "FELLOW_RATING";
     public static final String FELLOW_ACTION = "FELLOW_ACTION";
+    public static final String SELECTED_JUDGES = "SELECTED_JUDGES";
 
 }
