@@ -12,6 +12,7 @@
 	
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
 	<div id="modelsOutputContainer"></div>
+	<input type="text" class="modelingScenarioId hidden"/>
 	<script>
 		XCoLab.modeling.init('#modelsOutputContainer', 'edit');
 		<c:choose>
@@ -22,6 +23,11 @@
 			XCoLab.modeling.loadModel(${modelId});
 			</c:otherwise>
 		</c:choose>
+		
+
+		jQuery(document).on("scenarioFetched", function(event) {
+			jQuery("#modelsOutputContainer .modelingScenarioId").val(event.scenario.scenarioId);
+		});
 	</script>
 	
 </jsp:root>

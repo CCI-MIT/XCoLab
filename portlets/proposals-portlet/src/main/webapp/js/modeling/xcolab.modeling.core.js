@@ -26,6 +26,7 @@ XCoLab.modeling = {
 		inputRenderers: [],
 		defaultInputRenderer: { render: function(target, input) { console.log('no renderer found for input', input); } },
 		simulationId: 10,
+		scenarioId: 0,
 		inEditMode: false, // edit or view 
 		
 		/**
@@ -162,6 +163,7 @@ XCoLab.modeling = {
 				dataType: 'jsonp',
 			}).done(function(data, textStatus, jqXHR) {
 				modeling.simulationId = data.modelId;
+				this.scenarioId = data.scenarioId;
 
 				var event = jQuery.Event( "scenarioFetched" );
 				event.scenario = data;
@@ -192,6 +194,7 @@ XCoLab.modeling = {
 				dataType: 'jsonp',
 			}).done(function(data) {
 				this.simulationId = data.modelId;
+				this.scenarioId = data.scenarioId;
 				var event = jQuery.Event( "scenarioFetched" );
 				event.scenario = data;
 				jQuery(document).trigger(event);
@@ -223,8 +226,6 @@ XCoLab.modeling = {
 
 			}
 			initActTooltips();
-
-			
 		}
 
 		

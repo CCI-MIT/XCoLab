@@ -378,7 +378,6 @@ public class ProposalWrapper {
     }
     
     public Long getScenarioId() throws PortalException, SystemException {
-        //return getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, getModelId(), 0);
-        return getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, 0, 0);
+        return getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, getModelId(), 0);
     }
 }

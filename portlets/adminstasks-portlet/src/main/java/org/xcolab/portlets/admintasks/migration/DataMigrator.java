@@ -55,7 +55,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
  */
 public class DataMigrator implements Runnable {
     List<String> reference;
-    private boolean TESTING = true;
+    private boolean TESTING = false;
     public boolean STOP = false;
 
 

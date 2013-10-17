@@ -12,6 +12,53 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
 		<modeling:simulationEdit scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
-	</div>
+	
+	<portlet:actionURL var="updateProposalScenarioURL">
+		<portlet:param name="action_forwardToPage" value="proposalDetails_ACTIONSIMPACTS" />
+		<portlet:param name="contestId" value="${contest.contestPK }" />
+		<portlet:param name="planId" value="${proposal.proposalId }" />
+		<portlet:param name="action" value="updateProposalScenario" />
+	</portlet:actionURL>
+	
+	<form action="${updateProposalScenarioURL }" id="updateProposalScenarioForm" method="post">
+		<input type="text" id="proposalScenarioId" name="scenarioId" class="hidden" />
+	</form>
 
+
+    <div class="admin-overlay-wrap">
+        <div class="admin-overlay">
+            <div class="inner">
+                <div class="admin-left">
+                    <p>
+                    	<c:choose>
+                    		<c:when test="${proposal.currentVersion le 1}">
+                            	You are currently editing a new proposal
+                            </c:when>
+                            <c:otherwise>
+                            	You are editing a proposal
+                            </c:otherwise>
+                        </c:choose>
+                    	<br />
+                    	<c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
+                    </p>
+                    <div class="blue-button"><a href="javascript:;" id="saveChangesButton">SAVE changes</a></div>
+                    <div class="gray-button">
+                    	<proposalsPortlet:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="DISCARD changes" tab="${currentTab }" />
+                    </div>
+                </div>
+                <div class="admin-right">
+                    <p>&#160;</p>
+                </div>
+            </div>
+        </div>
+	</div>
+	<script>
+		jQuery("#saveChangesButton").click(function() {
+			jQuery("#proposalScenarioId").val(jQuery(".modelingScenarioId").val());
+			jQuery("#updateProposalScenarioForm").submit();
+		});
+	
+	</script>
+	
+	</div>
 </jsp:root>
