@@ -14,7 +14,7 @@ function loadHistory(page){
 
 
 function addVersionToTable(data, even){
-    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td style="width: 400px;"><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '/version/' + data.version + '">' + getDateFormat(new Date(data.date)) + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td></tr>');
+    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td style="width: 400px;"><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '/version/' + data.version + '">' + moment(data.date).format("MM/DD/YYYY hh:mm A") + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td></tr>');
 }
 
 function addPagination(prev,next,currentPage,totalPages){
@@ -47,15 +47,4 @@ function visibilityCallback(){
     $( "#versions" ).slideUp(0);
     $('#versions').removeClass('hidden');
     $( "#versions" ).slideDown( "slow");
-}
-
-function getDateFormat(date){
-    var ret = date.getMonth() + '/' + date.getDay() + '/' + date.getFullYear() + ' ';
-    var hours = date.getHours();
-    var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    ret += hours + ':' + minutes + ' ' + ampm;
-    return ret;
 }
