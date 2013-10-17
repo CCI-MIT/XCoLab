@@ -482,6 +482,18 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         _contestLocalService.unsubscribe(contestPK, userId);
     }
 
+    public java.util.List<java.lang.Long> getModelIds(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getModelIds(contestPK);
+    }
+
+    public java.lang.Long getDefaultModelId(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getDefaultModelId(contestPK);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

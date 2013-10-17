@@ -158,6 +158,7 @@ create index IX_4941177 on xcolab_ProposalAttribute (proposalId, version, versio
 create index IX_F612A28C on xcolab_ProposalAttribute (proposalId, version, versionWhenCreated, name, additionalId);
 
 create index IX_68DFE42A on xcolab_ProposalContestPhaseAttribute (proposalId, contestPhaseId);
+create index IX_8F351DBF on xcolab_ProposalContestPhaseAttribute (proposalId, contestPhaseId, name, additionalId);
 
 create index IX_2AAA1DDB on xcolab_ProposalSupporter (proposalId);
 create index IX_1DCA0834 on xcolab_ProposalSupporter (userId);

@@ -59,6 +59,8 @@ import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
+import edu.mit.cci.roma.client.Simulation;
+
 /**
  * The implementation of the contest local service.
  *
@@ -454,6 +456,24 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 proposalsProcessed.add(proposal.getProposalId());
             }
         }
+    }
+    
+    public List<Long> getModelIds(long contestPK) throws SystemException, PortalException {
+        Contest contest = getContest(contestPK);
+        PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
+        
+        List<Long> ret = new ArrayList<>();
+        for (Simulation s: planTypeLocalService.getAvailableModels(planType)) {
+            ret.add(s.getId());
+        }
+        
+        return ret;
+    }
+    
+    public Long getDefaultModelId(long contestPK) throws PortalException, SystemException {
+        Contest contest = getContest(contestPK);
+        PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
+        return planType.getDefaultModelId();
     }
     
     private void reindex(Contest contest) {

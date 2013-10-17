@@ -1,3 +1,9 @@
+var serieErrorPolicy = {
+	NO_DISPLAY_WITH_MSG: 'NO_DISPLAY_WITH_MSG',
+	NORMAL: 'NORMAL',
+	DISPLAY_AVAILBLE_NO_MSG: 'DISPLAY_AVAILBLE_NO_MSG'
+};
+
 function ChartTabRenderer(outputs) {
 	this.outputs = outputs;
 	

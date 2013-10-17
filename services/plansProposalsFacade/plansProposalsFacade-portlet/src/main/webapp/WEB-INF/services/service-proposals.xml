@@ -86,7 +86,6 @@
     <entity name="Proposal2Phase" local-service="true" >
     	<column name="proposalId" type="long" primary="true" />
     	<column name="contestPhaseId" type="long" primary="true" />
-    	<column name="ribbonTypeId" type="long" />
     	<column name="versionFrom" type="int" />
     	<column name="versionTo" type="int" />
     	<column name="sortWeight" type="int" />
@@ -154,6 +153,36 @@
     	<column name="ribbon" type="int" />
     	<column name="hoverText" type="String" />
     	<column name="description" type="String" />
+    	<column name="copyOnPromote" type="boolean" />
+    </entity>
+    
+    <entity name="ProposalContestPhaseAttribute" local-service="true">
+    	<column name="id" type="long" primary="true" />
+    	<column name="proposalId" type="long" />
+    	<column name="contestPhaseId" type="long" />
+    	
+    	<column name="name" type="String" />
+    	<column name="additionalId" type="long" />
+    	
+    	<column name="numericValue" type="long" />
+    	<column name="stringValue" type="String" />
+    	<column name="realValue" type="double" />
+		
+		<finder return-type="ProposalContestPhaseAttribute" name="ProposalIdContestPhaseIdNameAdditionalId">
+    		<finder-column name="proposalId" />
+    		<finder-column name="contestPhaseId" />
+    		<finder-column name="name" />
+    		<finder-column name="additionalId" />
+    	</finder>
+    	
+    	<finder return-type="Collection" name="ProposalIdContestPhaseId">
+    		<finder-column name="proposalId" />
+    		<finder-column name="contestPhaseId" />
+    	</finder>
+    </entity>
+    
+    <entity name="ProposalContestPhaseAttributeType" local-service="true" >
+    	<column name="name" type="String" primary="true" />
     	<column name="copyOnPromote" type="boolean" />
     </entity>
     

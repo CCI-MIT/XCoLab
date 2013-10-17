@@ -1,29 +1,28 @@
-if (typeof(XCoLab) == 'undefined') 
-	throw new "XCoLab isn't defined";
-if (typeof(XCoLab.modeling) == 'undefined')
-	throw new "XCoLab.modeling isn't defined"; 
-if (typeof(XCoLab.modeling.serieRenderers) == 'undefined')
-	XCoLab.modeling.serieRenderers = [];
-
 var serieErrorPolicy = {
 	NO_DISPLAY_WITH_MSG: 'NO_DISPLAY_WITH_MSG',
 	NORMAL: 'NORMAL',
 	DISPLAY_AVAILBLE_NO_MSG: 'DISPLAY_AVAILBLE_NO_MSG'
 };
 
-var chartSerieRenderer = {
-
-	canRender: function(serie) {
-		return serie.chartType == 'TIME_SERIES' && serie.series.length > 0;
-	},
-	render: function(target, serie) {
+function ChartTabRenderer(outputs) {
+	this.outputs = outputs;
+	
+	this.getName = function() {
+		return outputs.name;
+	};
+	
+	this.getOrder = function() {
+		return 1;
+	};
+	
+	function renderChart(target, serie) {
 		var targetContainer = $(target);
 
 		var errorMessages = [];
-		var errorMessagesContainer = jQuery("<div></div>");
-		targetContainer.append(errorMessagesContainer);
-		var chartContainer = jQuery("<div></div>");
-		targetContainer.append(chartContainer);
+		var errorMessagesContainer = jQuery("<ul class='chartMessagePlaceholder' style='display: none;'></ul>").appendTo(targetContainer);
+		var chartWrapper = jQuery("<div class='chartContainer'></div>").appendTo(targetContainer);
+		var chartContainer = jQuery("<div class='chartPlaceholder '></div>").appendTo(chartWrapper);
+		var legendContainer = jQuery("<div></div>").appendTo(chartWrapper);
 		
 		var valuesCombined = [];
 		
@@ -82,7 +81,8 @@ var chartSerieRenderer = {
 			});
 			
 			if (shouldShow) {
-				
+
+				yaxis.label = singleSerie.variable.metaData.units[1];
 				var parseFunc = null;
 				if (singleSerie.variable.metaData.profiles[1] == 'java.lang.Integer') parseFunc = parseInt;
 				else parseFunc = parseFloat;
@@ -194,16 +194,16 @@ var chartSerieRenderer = {
 		    	},
 		    	legend : {
 		    		show :true,
-		    		location :'nw',
-		    		placement: 'insideGrid',
-		    		marginTop: "320px",
-		    		yoffset :320,
-		    		xoffset:0
+		    		location :'s',
+		    		placement: 'outside',
+		    		marginTop : '300px'
 		    	}
 		};
 		
 		if (valuesCombined.length > 0) {
 			chartContainer.jqplot(valuesCombined, plotOptions);
+			
+			chartContainer.find("table.jqplot-table-legend").appendTo(legendContainer).removeAttr('style');
 		}
 		
 		
@@ -220,7 +220,11 @@ var chartSerieRenderer = {
 			errorMessagesContainer.show();
 		}
 	}
-};
-
-XCoLab.modeling.serieRenderers.push(chartSerieRenderer);
-
+	
+	this.renderContents = function(container) {
+		renderChart(container, outputs);
+	};
+	
+	
+	
+}

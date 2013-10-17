@@ -53,8 +53,8 @@
 
 
 /* actions EDIT page */
-.acthead-l.edit { padding-bottom:0;}
-.acthead-r.edit { padding-bottom:0; margin-left:250px;}
+.acthead-l.edit { padding-bottom:0; height: 40px;}
+.acthead-r.edit { padding-bottom:0; margin-left:250px; height: 40px}
 .acthead-r .runmodel { float:right; margin-top:-5px;}
 
 .act-edit_left { float:left; width:495px;}
@@ -108,7 +108,7 @@
 .control_t2 {float:left; width:47px; padding-top:5px;}
 .control_input { background:url(../images/control-input.gif) no-repeat; width:53px; height:34px; padding-right:6px; text-align:right; border:none; font-size:18px; color:#000;}
 .control_div { clear:both; height:2px; background:#f3f3ed; margin-bottom:10px;}
-
+.act_tooltip { display: none; }
 
 
 

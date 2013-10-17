@@ -492,6 +492,18 @@ public class ContestLocalServiceUtil {
         getService().unsubscribe(contestPK, userId);
     }
 
+    public static java.util.List<java.lang.Long> getModelIds(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getModelIds(contestPK);
+    }
+
+    public static java.lang.Long getDefaultModelId(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getDefaultModelId(contestPK);
+    }
+
     public static void clearService() {
         _service = null;
     }

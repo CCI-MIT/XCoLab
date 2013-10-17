@@ -72,6 +72,8 @@
 	<import class="com.ext.portlet.model.Proposal2Phase" />
 	<import class="com.ext.portlet.model.ProposalAttribute" />
 	<import class="com.ext.portlet.model.ProposalAttributeType" />
+	<import class="com.ext.portlet.model.ProposalContestPhaseAttribute" />
+	<import class="com.ext.portlet.model.ProposalContestPhaseAttributeType" />
 	<import class="com.ext.portlet.model.ProposalSupporter" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
@@ -824,7 +826,6 @@
 			<key-property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="contestPhaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
-		<property name="ribbonTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="versionFrom" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="versionTo" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="sortWeight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
@@ -850,6 +851,26 @@
 			<generator class="assigned" />
 		</id>
 		<property name="visibleInVersionHistory" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl" table="xcolab_ProposalContestPhaseAttribute">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="contestPhaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="additionalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl" table="xcolab_ProposalContestPhaseAttributeType">
+		<cache usage="read-write" />
+		<id name="name" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
 		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalSupporterImpl" table="xcolab_ProposalSupporter">

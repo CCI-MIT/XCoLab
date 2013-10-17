@@ -626,7 +626,6 @@ create table xcolab_Proposal (
 create table xcolab_Proposal2Phase (
 	proposalId LONG not null,
 	contestPhaseId LONG not null,
-	ribbonTypeId LONG,
 	versionFrom INTEGER,
 	versionTo INTEGER,
 	sortWeight INTEGER,
@@ -656,14 +655,15 @@ create table xcolab_ProposalContestPhaseAttribute (
 	id_ LONG not null primary key,
 	proposalId LONG,
 	contestPhaseId LONG,
-	typeId LONG
+	name VARCHAR(75) null,
+	additionalId LONG,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE
 );
 
 create table xcolab_ProposalContestPhaseAttributeType (
-	id_ LONG not null primary key,
-	ribbon VARCHAR(75) null,
-	hoverText VARCHAR(75) null,
-	description VARCHAR(75) null,
+	name VARCHAR(75) not null primary key,
 	copyOnPromote BOOLEAN
 );
 

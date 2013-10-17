@@ -8,8 +8,10 @@ import com.ext.portlet.JudgingSystemActions;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
@@ -21,6 +23,7 @@ import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -341,8 +344,13 @@ public class ProposalWrapper {
     
     private ContestPhaseRibbonType getRibbonType() throws PortalException, SystemException {
         if (contestPhaseRibbonType == null) {
-            if (proposal2Phase != null && proposal2Phase.getRibbonTypeId() > 0) {
-                contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(proposal2Phase.getRibbonTypeId());
+            try {
+                long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), 
+                        contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+                contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
+            }
+            catch (NoSuchProposalContestPhaseAttributeException e) {
+                // ignore
             }
         }
         return contestPhaseRibbonType;
@@ -363,5 +371,14 @@ public class ProposalWrapper {
         }
         return this.membershipRequests;
 
+    }
+    
+    public Long getModelId() throws PortalException, SystemException {
+        return ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
+    }
+    
+    public Long getScenarioId() throws PortalException, SystemException {
+        //return getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, getModelId(), 0);
+        return getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, 0, 0);
     }
 }

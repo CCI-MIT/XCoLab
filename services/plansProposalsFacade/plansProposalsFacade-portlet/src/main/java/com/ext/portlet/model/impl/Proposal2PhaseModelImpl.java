@@ -45,13 +45,12 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     public static final Object[][] TABLE_COLUMNS = {
             { "proposalId", Types.BIGINT },
             { "contestPhaseId", Types.BIGINT },
-            { "ribbonTypeId", Types.BIGINT },
             { "versionFrom", Types.INTEGER },
             { "versionTo", Types.INTEGER },
             { "sortWeight", Types.INTEGER },
             { "autopromoteCandidate", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Proposal2Phase (proposalId LONG not null,contestPhaseId LONG not null,ribbonTypeId LONG,versionFrom INTEGER,versionTo INTEGER,sortWeight INTEGER,autopromoteCandidate BOOLEAN,primary key (proposalId, contestPhaseId))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Proposal2Phase (proposalId LONG not null,contestPhaseId LONG not null,versionFrom INTEGER,versionTo INTEGER,sortWeight INTEGER,autopromoteCandidate BOOLEAN,primary key (proposalId, contestPhaseId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Proposal2Phase";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -79,7 +78,6 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     private long _contestPhaseId;
     private long _originalContestPhaseId;
     private boolean _setOriginalContestPhaseId;
-    private long _ribbonTypeId;
     private int _versionFrom;
     private int _versionTo;
     private int _sortWeight;
@@ -101,7 +99,6 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
 
         model.setProposalId(soapModel.getProposalId());
         model.setContestPhaseId(soapModel.getContestPhaseId());
-        model.setRibbonTypeId(soapModel.getRibbonTypeId());
         model.setVersionFrom(soapModel.getVersionFrom());
         model.setVersionTo(soapModel.getVersionTo());
         model.setSortWeight(soapModel.getSortWeight());
@@ -194,15 +191,6 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     }
 
     @JSON
-    public long getRibbonTypeId() {
-        return _ribbonTypeId;
-    }
-
-    public void setRibbonTypeId(long ribbonTypeId) {
-        _ribbonTypeId = ribbonTypeId;
-    }
-
-    @JSON
     public int getVersionFrom() {
         return _versionFrom;
     }
@@ -263,7 +251,6 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
 
         proposal2PhaseImpl.setProposalId(getProposalId());
         proposal2PhaseImpl.setContestPhaseId(getContestPhaseId());
-        proposal2PhaseImpl.setRibbonTypeId(getRibbonTypeId());
         proposal2PhaseImpl.setVersionFrom(getVersionFrom());
         proposal2PhaseImpl.setVersionTo(getVersionTo());
         proposal2PhaseImpl.setSortWeight(getSortWeight());
@@ -331,8 +318,6 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
 
         proposal2PhaseCacheModel.contestPhaseId = getContestPhaseId();
 
-        proposal2PhaseCacheModel.ribbonTypeId = getRibbonTypeId();
-
         proposal2PhaseCacheModel.versionFrom = getVersionFrom();
 
         proposal2PhaseCacheModel.versionTo = getVersionTo();
@@ -346,14 +331,12 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{proposalId=");
         sb.append(getProposalId());
         sb.append(", contestPhaseId=");
         sb.append(getContestPhaseId());
-        sb.append(", ribbonTypeId=");
-        sb.append(getRibbonTypeId());
         sb.append(", versionFrom=");
         sb.append(getVersionFrom());
         sb.append(", versionTo=");
@@ -368,7 +351,7 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Proposal2Phase");
@@ -381,10 +364,6 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
         sb.append(
             "<column><column-name>contestPhaseId</column-name><column-value><![CDATA[");
         sb.append(getContestPhaseId());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>ribbonTypeId</column-name><column-value><![CDATA[");
-        sb.append(getRibbonTypeId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>versionFrom</column-name><column-value><![CDATA[");

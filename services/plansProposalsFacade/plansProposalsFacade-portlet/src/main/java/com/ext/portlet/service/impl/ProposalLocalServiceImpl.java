@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.services.EventBusService;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
@@ -18,6 +19,7 @@ import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
@@ -887,6 +889,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             return false;
         }
     }
+
     
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>

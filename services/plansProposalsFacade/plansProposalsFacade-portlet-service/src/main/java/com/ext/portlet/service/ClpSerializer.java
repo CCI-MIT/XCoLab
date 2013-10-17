@@ -69,6 +69,8 @@ import com.ext.portlet.model.Proposal2PhaseClp;
 import com.ext.portlet.model.ProposalAttributeClp;
 import com.ext.portlet.model.ProposalAttributeTypeClp;
 import com.ext.portlet.model.ProposalClp;
+import com.ext.portlet.model.ProposalContestPhaseAttributeClp;
+import com.ext.portlet.model.ProposalContestPhaseAttributeTypeClp;
 import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
@@ -435,6 +437,16 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ProposalAttributeTypeClp.class.getName())) {
             return translateInputProposalAttributeType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    ProposalContestPhaseAttributeClp.class.getName())) {
+            return translateInputProposalContestPhaseAttribute(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    ProposalContestPhaseAttributeTypeClp.class.getName())) {
+            return translateInputProposalContestPhaseAttributeType(oldModel);
         }
 
         if (oldModelClassName.equals(ProposalSupporterClp.class.getName())) {
@@ -5185,40 +5197,33 @@ public class ClpSerializer {
 
                 method1.invoke(newModel, value1);
 
-                Method method2 = newModelClass.getMethod("setRibbonTypeId",
-                        new Class[] { Long.TYPE });
+                Method method2 = newModelClass.getMethod("setVersionFrom",
+                        new Class[] { Integer.TYPE });
 
-                Long value2 = new Long(oldCplModel.getRibbonTypeId());
+                Integer value2 = new Integer(oldCplModel.getVersionFrom());
 
                 method2.invoke(newModel, value2);
 
-                Method method3 = newModelClass.getMethod("setVersionFrom",
+                Method method3 = newModelClass.getMethod("setVersionTo",
                         new Class[] { Integer.TYPE });
 
-                Integer value3 = new Integer(oldCplModel.getVersionFrom());
+                Integer value3 = new Integer(oldCplModel.getVersionTo());
 
                 method3.invoke(newModel, value3);
 
-                Method method4 = newModelClass.getMethod("setVersionTo",
+                Method method4 = newModelClass.getMethod("setSortWeight",
                         new Class[] { Integer.TYPE });
 
-                Integer value4 = new Integer(oldCplModel.getVersionTo());
+                Integer value4 = new Integer(oldCplModel.getSortWeight());
 
                 method4.invoke(newModel, value4);
 
-                Method method5 = newModelClass.getMethod("setSortWeight",
-                        new Class[] { Integer.TYPE });
-
-                Integer value5 = new Integer(oldCplModel.getSortWeight());
-
-                method5.invoke(newModel, value5);
-
-                Method method6 = newModelClass.getMethod("setAutopromoteCandidate",
+                Method method5 = newModelClass.getMethod("setAutopromoteCandidate",
                         new Class[] { Boolean.TYPE });
 
-                Boolean value6 = new Boolean(oldCplModel.getAutopromoteCandidate());
+                Boolean value5 = new Boolean(oldCplModel.getAutopromoteCandidate());
 
-                method6.invoke(newModel, value6);
+                method5.invoke(newModel, value5);
 
                 return newModel;
             } catch (Exception e) {
@@ -5358,6 +5363,132 @@ public class ClpSerializer {
                 Boolean value2 = new Boolean(oldCplModel.getCopyOnPromote());
 
                 method2.invoke(newModel, value2);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputProposalContestPhaseAttribute(
+        BaseModel<?> oldModel) {
+        ProposalContestPhaseAttributeClp oldCplModel = (ProposalContestPhaseAttributeClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setProposalId",
+                        new Class[] { Long.TYPE });
+
+                Long value1 = new Long(oldCplModel.getProposalId());
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setContestPhaseId",
+                        new Class[] { Long.TYPE });
+
+                Long value2 = new Long(oldCplModel.getContestPhaseId());
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setName",
+                        new Class[] { String.class });
+
+                String value3 = oldCplModel.getName();
+
+                method3.invoke(newModel, value3);
+
+                Method method4 = newModelClass.getMethod("setAdditionalId",
+                        new Class[] { Long.TYPE });
+
+                Long value4 = new Long(oldCplModel.getAdditionalId());
+
+                method4.invoke(newModel, value4);
+
+                Method method5 = newModelClass.getMethod("setNumericValue",
+                        new Class[] { Long.TYPE });
+
+                Long value5 = new Long(oldCplModel.getNumericValue());
+
+                method5.invoke(newModel, value5);
+
+                Method method6 = newModelClass.getMethod("setStringValue",
+                        new Class[] { String.class });
+
+                String value6 = oldCplModel.getStringValue();
+
+                method6.invoke(newModel, value6);
+
+                Method method7 = newModelClass.getMethod("setRealValue",
+                        new Class[] { Double.TYPE });
+
+                Double value7 = new Double(oldCplModel.getRealValue());
+
+                method7.invoke(newModel, value7);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputProposalContestPhaseAttributeType(
+        BaseModel<?> oldModel) {
+        ProposalContestPhaseAttributeTypeClp oldCplModel = (ProposalContestPhaseAttributeTypeClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setName",
+                        new Class[] { String.class });
+
+                String value0 = oldCplModel.getName();
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setCopyOnPromote",
+                        new Class[] { Boolean.TYPE });
+
+                Boolean value1 = new Boolean(oldCplModel.getCopyOnPromote());
+
+                method1.invoke(newModel, value1);
 
                 return newModel;
             } catch (Exception e) {
@@ -5890,6 +6021,16 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalAttributeTypeImpl")) {
             return translateOutputProposalAttributeType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl")) {
+            return translateOutputProposalContestPhaseAttribute(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl")) {
+            return translateOutputProposalContestPhaseAttributeType(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -10261,40 +10402,34 @@ public class ClpSerializer {
 
                 newModel.setContestPhaseId(value1);
 
-                Method method2 = oldModelClass.getMethod("getRibbonTypeId");
+                Method method2 = oldModelClass.getMethod("getVersionFrom");
 
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
+                Integer value2 = (Integer) method2.invoke(oldModel,
+                        (Object[]) null);
 
-                newModel.setRibbonTypeId(value2);
+                newModel.setVersionFrom(value2);
 
-                Method method3 = oldModelClass.getMethod("getVersionFrom");
+                Method method3 = oldModelClass.getMethod("getVersionTo");
 
                 Integer value3 = (Integer) method3.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setVersionFrom(value3);
+                newModel.setVersionTo(value3);
 
-                Method method4 = oldModelClass.getMethod("getVersionTo");
+                Method method4 = oldModelClass.getMethod("getSortWeight");
 
                 Integer value4 = (Integer) method4.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setVersionTo(value4);
+                newModel.setSortWeight(value4);
 
-                Method method5 = oldModelClass.getMethod("getSortWeight");
-
-                Integer value5 = (Integer) method5.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setSortWeight(value5);
-
-                Method method6 = oldModelClass.getMethod(
+                Method method5 = oldModelClass.getMethod(
                         "getAutopromoteCandidate");
 
-                Boolean value6 = (Boolean) method6.invoke(oldModel,
+                Boolean value5 = (Boolean) method5.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setAutopromoteCandidate(value6);
+                newModel.setAutopromoteCandidate(value5);
 
                 return newModel;
             } catch (Exception e) {
@@ -10426,6 +10561,121 @@ public class ClpSerializer {
                         (Object[]) null);
 
                 newModel.setCopyOnPromote(value2);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputProposalContestPhaseAttribute(
+        BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                ProposalContestPhaseAttributeClp newModel = new ProposalContestPhaseAttributeClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setId(value0);
+
+                Method method1 = oldModelClass.getMethod("getProposalId");
+
+                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
+
+                newModel.setProposalId(value1);
+
+                Method method2 = oldModelClass.getMethod("getContestPhaseId");
+
+                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
+
+                newModel.setContestPhaseId(value2);
+
+                Method method3 = oldModelClass.getMethod("getName");
+
+                String value3 = (String) method3.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setName(value3);
+
+                Method method4 = oldModelClass.getMethod("getAdditionalId");
+
+                Long value4 = (Long) method4.invoke(oldModel, (Object[]) null);
+
+                newModel.setAdditionalId(value4);
+
+                Method method5 = oldModelClass.getMethod("getNumericValue");
+
+                Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
+
+                newModel.setNumericValue(value5);
+
+                Method method6 = oldModelClass.getMethod("getStringValue");
+
+                String value6 = (String) method6.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setStringValue(value6);
+
+                Method method7 = oldModelClass.getMethod("getRealValue");
+
+                Double value7 = (Double) method7.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setRealValue(value7);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputProposalContestPhaseAttributeType(
+        BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                ProposalContestPhaseAttributeTypeClp newModel = new ProposalContestPhaseAttributeTypeClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getName");
+
+                String value0 = (String) method0.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setName(value0);
+
+                Method method1 = oldModelClass.getMethod("getCopyOnPromote");
+
+                Boolean value1 = (Boolean) method1.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setCopyOnPromote(value1);
 
                 return newModel;
             } catch (Exception e) {

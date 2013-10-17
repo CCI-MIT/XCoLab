@@ -451,7 +451,7 @@ public class DataMigrator implements Runnable {
             if (pmr.getPlanVersion() == plan.getVersion()){
                 try{
                     PlanType planType = PlanItemLocalServiceUtil.getPlanType(plan);
-                    ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SCENARIO_ID,planType.getModelId(),null,pmr.getScenarioId(),0);
+                    ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SCENARIO_ID,planType.getDefaultModelId(),null,pmr.getScenarioId(),0);
                     
                     Map<String, String> attributes = getAttributes(plan); 
                     

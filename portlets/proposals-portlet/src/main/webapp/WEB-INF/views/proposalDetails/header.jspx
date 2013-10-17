@@ -68,7 +68,7 @@
 		<div class="inner">
 			<div class="edit-prop">
 				<div class="edit-prop-butts">
-					<proposalsPortlet:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="Edit" edit="true" />
+					<proposalsPortlet:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="Edit" edit="true" tab="${currentTab }"/>
 				</div>
 			</div>
 		</div>

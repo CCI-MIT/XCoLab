@@ -25,11 +25,14 @@ import com.liferay.portal.kernel.exception.SystemException;
 public class ProposalModelTabController extends BaseProposalTabController {
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ACTIONSIMPACTS"})
-    public String show(Model model) 
+    public String show(Model model, @RequestParam(required = false) boolean edit) 
             throws PortalException, SystemException {
         
         model.addAttribute("currentTab", ProposalTab.ACTIONSIMPACTS);
         
+        if (edit) {
+            return "proposalModel_edit";
+        }
         return "proposalModel";
     }
     

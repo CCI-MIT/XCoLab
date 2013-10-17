@@ -2,12 +2,14 @@ package org.xcolab.portlets.admintasks.migration.persistence;
 
 import java.util.List;
 
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -47,9 +49,8 @@ public class NewPersistenceQueries {
 
     public static boolean associateProposalWithRibbon(long proposalId, long typeId, long contestPhaseId){
         try{
-            Proposal2Phase proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhaseId);
-            proposal2Phase.setRibbonTypeId(typeId);
-            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(proposal2Phase);
+            ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
+                    ProposalContestPhaseAttributeKeys.RIBBON, typeId);
         } catch (Exception e){
             e.printStackTrace();
             return false;

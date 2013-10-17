@@ -58,6 +58,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private MethodKey _isSubscribedMethodKey48;
     private MethodKey _subscribeMethodKey49;
     private MethodKey _unsubscribeMethodKey50;
+    private MethodKey _getModelIdsMethodKey51;
+    private MethodKey _getDefaultModelIdMethodKey52;
 
     public ContestLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -226,6 +228,12 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         _unsubscribeMethodKey50 = new MethodKey(_classLoaderProxy.getClassName(),
                 "unsubscribe", long.class, long.class);
+
+        _getModelIdsMethodKey51 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getModelIds", long.class);
+
+        _getDefaultModelIdMethodKey52 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getDefaultModelId", long.class);
     }
 
     public com.ext.portlet.model.Contest addContest(
@@ -1624,6 +1632,66 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     " is not a valid exception");
             }
         }
+    }
+
+    public java.util.List<java.lang.Long> getModelIds(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getModelIdsMethodKey51,
+                contestPK);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.lang.Long getDefaultModelId(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getDefaultModelIdMethodKey52,
+                contestPK);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.Long) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {
