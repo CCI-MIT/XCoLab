@@ -14,7 +14,7 @@ function loadHistory(page){
 
 
 function addVersionToTable(data, even){
-    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td style="width: 400px;"><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '/version/' + data.version + '">' + moment.unix(data.date).format("MM/DD/YYYY hh:mm A") + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td></tr>');
+    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td style="width: 400px;"><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '/version/' + data.version + '">' + moment.unix(data.date / 1000).format("MM/DD/YYYY hh:mm A") + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td></tr>');
 }
 
 function addPagination(prev,next,currentPage,totalPages){
