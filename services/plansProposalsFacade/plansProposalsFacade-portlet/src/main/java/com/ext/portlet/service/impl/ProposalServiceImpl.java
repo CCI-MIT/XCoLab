@@ -50,7 +50,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
             proposalVersionsArray.put(proposalVersionJsonObj);
             
             proposalVersionJsonObj.put("version", proposalVersion.getVersion());
-            proposalVersionJsonObj.put("date", proposalVersion.getCreateDate());
+            proposalVersionJsonObj.put("date", proposalVersion.getCreateDate().getTime());
             proposalVersionJsonObj.put("author", converUserToJson(proposalVersion.getAuthorId()));
             proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
         }
