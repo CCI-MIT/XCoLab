@@ -46,30 +46,50 @@ public class JudgeProposalActionController {
                                  ActionResponse response, @Valid JudgeProposalBean judgeProposalBean,
                                  BindingResult result)
             throws PortalException, SystemException, ProposalsAuthorizationException {
-        // SAVE TO DB
-        System.out.println("TEST");
+        long proposalId = proposalsContext.getProposal(request).getProposalId();
+        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        long userId = request.getRemoteUser() == null ? -1 : Long.parseLong(request.getRemoteUser());
+        // save judge rating
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_RATING,userId, judgeProposalBean.getJudgeRating() , null);
+        // save judge action
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_ACTION,userId, judgeProposalBean.getJudgeAction().getAttributeValue() , null);
+        // save judge comment
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_COMMENT,userId, -1 , judgeProposalBean.getJudgeComment());
     }
 
     @RequestMapping(params = {"action=saveFellowRating"})
     public void saveFellowRating(ActionRequest request, Model model,
                                  ActionResponse response, @Valid JudgeProposalBean judgeProposalBean,
                                  BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException {
-        // SAVE TO DB
-
-        // save selection of judges
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        long userId = request.getRemoteUser() == null ? -1 : Long.parseLong(request.getRemoteUser());
+        // save selection of judges
         persistSelectedJudges(proposalId, contestPhaseId, judgeProposalBean.getSelectedJudges());
-
         // save fellow rating
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.FELLOW_RATING,userId,judgeProposalBean.getFellowRating(), null);
+        // save fellow action
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.FELLOW_ACTION,userId,judgeProposalBean.getFellowAction().getAttributeValue(), null);
+    }
 
+    private boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, long numericValue, String stringValue){
+        ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(proposalId,contestPhaseId,attributeName, additionalId);
 
+        attribute.setAdditionalId(additionalId);
+        if (numericValue != -1) attribute.setNumericValue(numericValue);
+        if (stringValue != null) attribute.setStringValue(stringValue);
 
-
+        try {
+            ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attribute);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private boolean persistSelectedJudges(long proposalId, long contestPhaseId, List<Long> selectedJudges){
-        ProposalContestPhaseAttribute judges = getProposalContestPhaseAttributeCreateIfNotExists(proposalId,contestPhaseId,ProposalAttributeKeys.SELECTED_JUDGES);
+        ProposalContestPhaseAttribute judges = getProposalContestPhaseAttributeCreateIfNotExists(proposalId,contestPhaseId,ProposalAttributeKeys.SELECTED_JUDGES,0);
 
         String s = "";
         for (Long l : selectedJudges) s += l + ";";
@@ -84,9 +104,9 @@ public class JudgeProposalActionController {
         return true;
     }
 
-    private ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(long proposalId, long contestPhaseId, String attributeName){
+    private ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(long proposalId, long contestPhaseId, String attributeName, long additionalId){
         try {
-            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName);
+            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName,additionalId);
         } catch (NoSuchProposalContestPhaseAttributeException e) {
             try {
                 ProposalContestPhaseAttribute attribute = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(

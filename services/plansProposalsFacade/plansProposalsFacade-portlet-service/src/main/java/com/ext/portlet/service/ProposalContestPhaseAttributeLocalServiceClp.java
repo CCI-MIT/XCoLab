@@ -26,7 +26,7 @@ public class ProposalContestPhaseAttributeLocalServiceClp
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _getProposalContestPhaseAttributesMethodKey17;
-    private MethodKey _getProposalContestPhaseAttributesMethodKey18;
+    private MethodKey _getProposalContestPhaseAttributeMethodKey18;
     private MethodKey _getProposalContestPhaseAttributeMethodKey19;
     private MethodKey _setProposalContestPhaseAttributeMethodKey20;
     private MethodKey _setProposalContestPhaseAttributeMethodKey21;
@@ -104,8 +104,8 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         _getProposalContestPhaseAttributesMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getProposalContestPhaseAttributes", long.class, long.class);
 
-        _getProposalContestPhaseAttributesMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposalContestPhaseAttributes", long.class, long.class,
+        _getProposalContestPhaseAttributeMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getProposalContestPhaseAttribute", long.class, long.class,
                 java.lang.String.class, long.class);
 
         _getProposalContestPhaseAttributeMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
@@ -591,14 +591,14 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         return (java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute>) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttributes(
+    public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttribute(
         long proposalId, long contestPhaseId, java.lang.String attributeName,
         long additionalId)
         throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalContestPhaseAttributesMethodKey18,
+        MethodHandler methodHandler = new MethodHandler(_getProposalContestPhaseAttributeMethodKey18,
                 proposalId, contestPhaseId,
                 ClpSerializer.translateInput(attributeName), additionalId);
 

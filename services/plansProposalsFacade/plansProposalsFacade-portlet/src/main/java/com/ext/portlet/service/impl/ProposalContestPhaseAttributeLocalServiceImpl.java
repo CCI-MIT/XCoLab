@@ -46,10 +46,10 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @param contestPhaseId id of a phase
      * @param attributeName name of attribute
      * @param additionalId additional id to find attribute
-     * @return list of proposal phase attributes
+     * @return proposal phase attribute
      * @throws SystemException in case of LR error
      */
-    public ProposalContestPhaseAttribute getProposalContestPhaseAttributes(long proposalId, long contestPhaseId, String attributeName,long additionalId) throws SystemException, NoSuchProposalContestPhaseAttributeException {
+    public ProposalContestPhaseAttribute getProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName,long additionalId) throws SystemException, NoSuchProposalContestPhaseAttributeException {
         return proposalContestPhaseAttributePersistence.findByProposalIdContestPhaseIdNameAdditionalId(proposalId, contestPhaseId,attributeName, additionalId);
     }
     

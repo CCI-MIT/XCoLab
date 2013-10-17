@@ -40,6 +40,7 @@ public class ProposalWrapper {
     private final Contest contest;
     private final ContestPhase contestPhase;
     private final Proposal2Phase proposal2Phase;
+    private final long currentUserId;
     private ContestPhaseRibbonType contestPhaseRibbonType;
     
     private List<ProposalTeamMemberWrapper> members;
@@ -52,6 +53,7 @@ public class ProposalWrapper {
         this.contest = null;
         this.contestPhase = null;
         this.proposal2Phase = null;
+        this.currentUserId = -1;
     }
 
 
@@ -61,6 +63,7 @@ public class ProposalWrapper {
         this.contest = null;
         this.contestPhase = null;
         this.proposal2Phase = null;
+        this.currentUserId = -1;
     }
     
     public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
@@ -69,6 +72,16 @@ public class ProposalWrapper {
         this.contest = contest;
         this.contestPhase = contestPhase;
         this.proposal2Phase = proposal2Phase;
+        this.currentUserId = -1;
+    }
+
+    public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase, long currentUserId) {
+        this.proposal = proposal;
+        this.version = version;
+        this.contest = contest;
+        this.contestPhase = contestPhase;
+        this.proposal2Phase = proposal2Phase;
+        this.currentUserId = currentUserId;
     }
 
     public Class<?> getModelClass() {
@@ -197,21 +210,25 @@ public class ProposalWrapper {
     }
 
     public Long getJudgeRating() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_RATING, 0,0);
+        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_RATING, currentUserId,0);
     }
 
     public Long getFellowRating() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_RATING, 0,0);
+        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_RATING, currentUserId,0);
     }
 
     public JudgingSystemActions.JudgeAction getJudgeAction() throws SystemException, PortalException {
-        Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_ACTION, 0,0);
+        Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_ACTION, currentUserId,0);
         return JudgingSystemActions.JudgeAction.fromInt(action.intValue());
     }
 
     public JudgingSystemActions.FellowAction getFellowAction() throws SystemException, PortalException {
-        Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_ACTION, 0,0);
+        Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_ACTION, currentUserId,0);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
+    }
+
+    public String getJudgeComment() throws SystemException, PortalException {
+        return getContestPhaseAttributeValueString(ProposalAttributeKeys.JUDGE_COMMENT, currentUserId,"");
     }
 
     public List<Long> getSelectedJudges(){
@@ -359,7 +376,7 @@ public class ProposalWrapper {
     private ProposalContestPhaseAttribute getContestPhaseAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
         try {
             return ProposalContestPhaseAttributeLocalServiceUtil
-                    .getProposalContestPhaseAttribute(proposal.getProposalId(),contestPhase.getContestPhasePK(),attributeName);
+                    .getProposalContestPhaseAttribute(proposal.getProposalId(),contestPhase.getContestPhasePK(),attributeName,additionalId);
         }
         catch (Exception e) {
             return null;

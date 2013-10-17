@@ -243,11 +243,11 @@ public interface ProposalContestPhaseAttributeLocalService
     * @param contestPhaseId id of a phase
     * @param attributeName name of attribute
     * @param additionalId additional id to find attribute
-    * @return list of proposal phase attributes
+    * @return proposal phase attribute
     * @throws SystemException in case of LR error
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttributes(
+    public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttribute(
         long proposalId, long contestPhaseId, java.lang.String attributeName,
         long additionalId)
         throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,

@@ -45,7 +45,6 @@ public class ProposalsContextImpl implements ProposalsContext {
     public static final String CONTEST_ID_PARAM = "contestId";
     public static final String CONTEST_PHASE_ID_PARAM = "phaseId";
     public static final String VERSION_PARAM = "version";
-    
 
     public ProposalsContextImpl() {
     }
@@ -136,7 +135,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
         final Long phaseId = (Long) ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         final Integer version = (Integer) ParamUtil.getInteger(request, VERSION_PARAM);
-        
+        final Long userId = Long.parseLong(request.getRemoteUser() == null ? "-1" : request.getRemoteUser());
         
         Contest contest = null;
         ContestPhase contestPhase = null;
@@ -169,11 +168,11 @@ public class ProposalsContextImpl implements ProposalsContext {
                 if (proposal != null) {
                     ProposalWrapper proposalWrapper = null;
                     if (version != null && version > 0) {
-                        proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
+                        proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase, userId);
                     }
                     else {
                         proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
-                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
+                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase, userId);
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
               
@@ -181,7 +180,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             }
         }
         
-        
+
         request.setAttribute(PROPOSAL_ATTRIBUTE, proposal);
         request.setAttribute(CONTEST_ATTRIBUTE, contest);
         request.setAttribute(CONTEST_PHASE_ATTRIBUTE, contestPhase);

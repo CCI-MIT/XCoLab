@@ -27,14 +27,6 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     public String showJudgesPanel(PortletRequest request, Model model) 
             throws PortalException, SystemException {
 
-        ProposalWrapper pw = new ProposalWrapper(
-                proposalsContext.getProposal(request),
-                proposalsContext.getProposal(request).getCurrentVersion(),
-                proposalsContext.getContest(request),
-                proposalsContext.getContestPhase(request),
-                proposalsContext.getProposal2Phase(request)
-        );
-
         model.addAttribute("currentTab", ProposalTab.JUDGE);
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
         model.addAttribute("judgeProposalBean", new JudgeProposalBean(proposalsContext.getProposalWrapped(request)));

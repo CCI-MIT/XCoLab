@@ -52,11 +52,7 @@
                         </tbody>
                     </table>
                     <h3>Promotion</h3>
-                    <form:select path="fellowAction">
-                        <c:forEach var="option" items="${judgingOptions}" >
-                            <option value="${option}" label="${option.description}"/>
-                        </c:forEach>
-                    </form:select>
+                    <form:select path="fellowAction" id="fellowAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description" />
 
 
                     <h3>Select judges</h3>

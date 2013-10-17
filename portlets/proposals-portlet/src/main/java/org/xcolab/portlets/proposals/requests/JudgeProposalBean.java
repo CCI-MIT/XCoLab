@@ -32,6 +32,8 @@ public class JudgeProposalBean {
         fellowAction = wrapper.getFellowAction();
         selectedJudges = wrapper.getSelectedJudges();
 
+        judgeComment = wrapper.getJudgeComment();
+
     }
 
     public JudgeProposalBean(){
@@ -61,6 +63,16 @@ public class JudgeProposalBean {
     public void setJudgeAction(JudgingSystemActions.JudgeAction judgeAction) {
         this.judgeAction = judgeAction;
     }
+
+    public void setJudgeAction(int judgeAction) {
+        this.judgeAction = JudgingSystemActions.JudgeAction.fromInt(judgeAction);
+    }
+
+    public void setFellowAction(int fellowAction) {
+        this.fellowAction = JudgingSystemActions.FellowAction.fromInt(fellowAction);
+    }
+
+
 
     public JudgingSystemActions.FellowAction getFellowAction() {
         return fellowAction;
