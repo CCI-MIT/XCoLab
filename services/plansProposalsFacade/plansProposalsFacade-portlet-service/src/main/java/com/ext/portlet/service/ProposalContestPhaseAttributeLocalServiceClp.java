@@ -26,12 +26,13 @@ public class ProposalContestPhaseAttributeLocalServiceClp
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _getProposalContestPhaseAttributesMethodKey17;
-    private MethodKey _getProposalContestPhaseAttributeMethodKey18;
-    private MethodKey _setProposalContestPhaseAttributeMethodKey19;
+    private MethodKey _getProposalContestPhaseAttributesMethodKey18;
+    private MethodKey _getProposalContestPhaseAttributeMethodKey19;
     private MethodKey _setProposalContestPhaseAttributeMethodKey20;
     private MethodKey _setProposalContestPhaseAttributeMethodKey21;
     private MethodKey _setProposalContestPhaseAttributeMethodKey22;
-    private MethodKey _deleteProposalContestPhaseAttributeMethodKey23;
+    private MethodKey _setProposalContestPhaseAttributeMethodKey23;
+    private MethodKey _deleteProposalContestPhaseAttributeMethodKey24;
 
     public ProposalContestPhaseAttributeLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -103,28 +104,32 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         _getProposalContestPhaseAttributesMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getProposalContestPhaseAttributes", long.class, long.class);
 
-        _getProposalContestPhaseAttributeMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getProposalContestPhaseAttributesMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getProposalContestPhaseAttributes", long.class, long.class,
+                java.lang.String.class, long.class);
+
+        _getProposalContestPhaseAttributeMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getProposalContestPhaseAttribute", long.class, long.class,
                 java.lang.String.class);
 
-        _setProposalContestPhaseAttributeMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+        _setProposalContestPhaseAttributeMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setProposalContestPhaseAttribute", long.class, long.class,
                 java.lang.String.class, long.class);
 
-        _setProposalContestPhaseAttributeMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
+        _setProposalContestPhaseAttributeMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setProposalContestPhaseAttribute", long.class, long.class,
                 java.lang.String.class, java.lang.String.class);
 
-        _setProposalContestPhaseAttributeMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+        _setProposalContestPhaseAttributeMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setProposalContestPhaseAttribute", long.class, long.class,
                 java.lang.String.class, double.class);
 
-        _setProposalContestPhaseAttributeMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+        _setProposalContestPhaseAttributeMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
                 "setProposalContestPhaseAttribute", long.class, long.class,
                 java.lang.String.class, long.class, java.lang.String.class,
                 double.class);
 
-        _deleteProposalContestPhaseAttributeMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
+        _deleteProposalContestPhaseAttributeMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
                 "deleteProposalContestPhaseAttribute", long.class, long.class,
                 java.lang.String.class);
     }
@@ -586,13 +591,46 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         return (java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute>) ClpSerializer.translateOutput(returnObj);
     }
 
+    public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttributes(
+        long proposalId, long contestPhaseId, java.lang.String attributeName,
+        long additionalId)
+        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getProposalContestPhaseAttributesMethodKey18,
+                proposalId, contestPhaseId,
+                ClpSerializer.translateInput(attributeName), additionalId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.ext.portlet.NoSuchProposalContestPhaseAttributeException) {
+                throw (com.ext.portlet.NoSuchProposalContestPhaseAttributeException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalContestPhaseAttribute) ClpSerializer.translateOutput(returnObj);
+    }
+
     public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttribute(
         long proposalId, long contestPhaseId, java.lang.String attributeName)
         throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalContestPhaseAttributeMethodKey18,
+        MethodHandler methodHandler = new MethodHandler(_getProposalContestPhaseAttributeMethodKey19,
                 proposalId, contestPhaseId,
                 ClpSerializer.translateInput(attributeName));
 
@@ -621,7 +659,7 @@ public class ProposalContestPhaseAttributeLocalServiceClp
     public void setProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName, long value)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_setProposalContestPhaseAttributeMethodKey19,
+        MethodHandler methodHandler = new MethodHandler(_setProposalContestPhaseAttributeMethodKey20,
                 proposalId, contestPhaseId,
                 ClpSerializer.translateInput(attributeName), value);
 
@@ -645,7 +683,7 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         long contestPhaseId, java.lang.String attributeName,
         java.lang.String value)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_setProposalContestPhaseAttributeMethodKey20,
+        MethodHandler methodHandler = new MethodHandler(_setProposalContestPhaseAttributeMethodKey21,
                 proposalId, contestPhaseId,
                 ClpSerializer.translateInput(attributeName),
                 ClpSerializer.translateInput(value));
@@ -669,7 +707,7 @@ public class ProposalContestPhaseAttributeLocalServiceClp
     public void setProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName, double value)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_setProposalContestPhaseAttributeMethodKey21,
+        MethodHandler methodHandler = new MethodHandler(_setProposalContestPhaseAttributeMethodKey22,
                 proposalId, contestPhaseId,
                 ClpSerializer.translateInput(attributeName), value);
 
@@ -693,7 +731,7 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         long contestPhaseId, java.lang.String attributeName, long longValue,
         java.lang.String stringValue, double realValue)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_setProposalContestPhaseAttributeMethodKey22,
+        MethodHandler methodHandler = new MethodHandler(_setProposalContestPhaseAttributeMethodKey23,
                 proposalId, contestPhaseId,
                 ClpSerializer.translateInput(attributeName), longValue,
                 ClpSerializer.translateInput(stringValue), realValue);
@@ -717,7 +755,7 @@ public class ProposalContestPhaseAttributeLocalServiceClp
     public void deleteProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteProposalContestPhaseAttributeMethodKey23,
+        MethodHandler methodHandler = new MethodHandler(_deleteProposalContestPhaseAttributeMethodKey24,
                 proposalId, contestPhaseId,
                 ClpSerializer.translateInput(attributeName));
 
