@@ -13,6 +13,8 @@
 	<script src="//cdn.jsdelivr.net/jqplot/1.0.8/plugins/jqplot.canvasAxisLabelRenderer.js"><!-- --></script>
 	
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.core.js"><!-- --></script>
+	<script src="/proposals-portlet/js/modeling/xcolab.modeling.baseRenderers.js"><!-- --></script>
+	
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputRenderer.groupVertical.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputRenderer.groupHorizontal.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputRenderer.groupTab.js"><!-- --></script>

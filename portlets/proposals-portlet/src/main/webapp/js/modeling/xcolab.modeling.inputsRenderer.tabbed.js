@@ -4,18 +4,32 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	throw new "XCoLab.modeling isn't defined"; 
 
 
-XCoLab.modeling.inputsRenderer = new function() {
-	var self = this;
-	this.scenarioId = null;
-	this.modelId = null;
+(function() {
+	function DefaultInputsRenderer(modelingWidget) {
+		this.modelingWidget = modelingWidget;		
+		this.modelId = -1;
+		var that = this;
+		
+		jQuery(modelingWidget).on('scenarioFetched', function(event) {
+			that.render(modelingWidget.container, event.scenario);
+		});
+		
+		jQuery(modelingWidget).on('modelFetched', function(event) {
+			that.render(modelingWidget.container, event.model);
+		});
+	}
 	
-	function renderEdit(container, model) {
-		
+	DefaultInputsRenderer.prototype = new XCoLab.modeling.BaseXCoLabModelingRenderer();
+	
+	
+	DefaultInputsRenderer.prototype.containerHtml = "<div class='act_left act_left-list'></div>";
+	DefaultInputsRenderer.prototype.containerHtmlEdit = "<div class='act-edit_left'></div>";
+
+	DefaultInputsRenderer.prototype.renderEdit = function(container, model) {
+		this.modelId = model.modelId;
 		var hasTabs = false;
-		
 		var tabHeaders = [];
-		
-		
+		var modelingWidget = this.modelingWidget;
 		jQuery.each(model.inputs, function(idx, input) {
 			if ('groupType' in input && input.groupType == 'TAB') {
 				hasTabs = true;
@@ -30,29 +44,29 @@ XCoLab.modeling.inputsRenderer = new function() {
 			jQuery('#inputTabTrigger_' + idx).addClass('c');
 		}
 		
-		var inputsContainer = jQuery("<div class='act" + (XCoLab.modeling.inEditMode ? '-edit' : '') + "_left'></div>").appendTo(container);
 		if (hasTabs) {
 			// render tab headers
-			var headerContainer = jQuery("<div class='act" + (XCoLab.modeling.inEditMode ? '-edit' : '') + "_left-top'></div>").appendTo(inputsContainer);
+			var headerContainer = jQuery("<div class='act-edit_left-top'></div>").appendTo(container);
 			
 			jQuery.each(tabHeaders, function(idx, name) {
 				var tabTrigger = jQuery("<div class='rounded_button blugrid inputTabTrigger' id='inputTabTrigger_" + idx + "'><a href='javascript:;'>" + name + "</a></div>");
 				tabTrigger.click(function () { showTab(idx); });
 				headerContainer.append(tabTrigger);
 			});
+			
 			headerContainer.append("<div class='clearfix'></div>");
-			if (XCoLab.modeling.inEditMode) {
-				inputsContainer.append("<div class='actions_chart-head-shade'></div>");
-			}
+			container.append("<div class='actions_chart-head-shade'></div>");
 		}
 
 		jQuery.each(model.inputs, function(idx, input) {
-			XCoLab.modeling.getInputRenderer(input).render(inputsContainer, input, XCoLab.modeling, idx);
+			modelingWidget.getInputRenderer(input).render(container, input, modelingWidget, idx);
 			if (hasTabs) {
 				jQuery('#inputTabContent_' + idx).hide();
 			}
 			else {
-				jQuery(inputsContainer.append("<div class='control_div'></div>"));
+				if (idx < model.inputs.length - 1) {
+					jQuery(container.append("<div class='control_div'></div>"));
+				}
 			}
 			
 			
@@ -60,35 +74,23 @@ XCoLab.modeling.inputsRenderer = new function() {
 		if (hasTabs) {
 			showTab(0);
 		}
-			 
 	};
 	
-	function renderView(container, model) {
+	DefaultInputsRenderer.prototype.renderView = function(container, model) {
+		var that = this;
 		var inputsContainer = jQuery("<div class='act_left act_left-list'></div>").appendTo(container);
 		jQuery.each(model.inputs, function(idx, input) {
 			var inputContainer = jQuery("<div></div>").appendTo(inputsContainer);
-			XCoLab.modeling.getInputRenderer(input).render(inputContainer, input, XCoLab.modeling, idx);
+			that.modelingWidget.getInputRenderer(input).render(inputContainer, input, that.modelingWidget, idx);
 		});
-		
+	};
+	DefaultInputsRenderer.prototype.render = function(container, scenario) {
+		if (scenario.modelId != this.modelId) {
+			XCoLab.modeling.BaseXCoLabModelingRenderer.prototype.render.apply(this, [container, scenario]);
+		}
 	};
 	
-	this.render = function(container, model) {
-		if ('modelId' in model && self.modelId == model.modelId) {
-			// if we are showing inputs from the same model, don't rerender them
-			return;
-		}
-		self.modelId = model.modelId;
-		
-		var renderFunc = renderView;
-		if (XCoLab.modeling.inEditMode) {
-			renderFunc = renderEdit;
-		}
-		renderFunc.apply(this, [container, model]);
-	};
-	
-	jQuery(document).on("scenarioFetched", function(event) {
-		self.render(self.container, event.scenario);
+	XCoLab.modeling.inputsRenderers.push(function (modelingWidget) {
+		return new DefaultInputsRenderer(modelingWidget);
 	});
-	
-	
-};
+}());

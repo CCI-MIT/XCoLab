@@ -13,13 +13,13 @@
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
 	<div id="modelsOutputContainer"></div>
 	<script>
-		XCoLab.modeling.init('#modelsOutputContainer', 'view');
+		var modeling = XCoLab.modeling('#modelsOutputContainer', {edit: false});
 		<c:choose>
 			<c:when test="${not empty scenarioId and scenarioId > 0}">
-				XCoLab.modeling.loadScenario(${scenarioId});
+				modeling.loadScenario(${scenarioId});
 			</c:when>
 			<c:otherwise>
-			XCoLab.modeling.loadModel(${modelId});
+				modeling.loadModel(${modelId});
 			</c:otherwise>
 		</c:choose>
 	</script>

@@ -1,38 +1,31 @@
 if (typeof(XCoLab) == 'undefined') 
 	throw new "XCoLab isn't defined";
 if (typeof(XCoLab.modeling) == 'undefined')
-	throw new "XCoLab.modeling isn't defined"; 
-if (typeof(XCoLab.modeling.serieRenderers) == 'undefined')
-	XCoLab.modeling.serieRenderers = [];
+	throw new "XCoLab.modeling isn't defined";
 
-var groupInputVerticalRenderer = {
-
-	canRender: function(input) {
-		return input.displayItemType == 'GROUP' && input.groupType == 'VERTICAL'; 
-	},
-	renderEdit: function(target, input, modeling, idx) {
-		var verticalGroupContainer = jQuery("<div></div>");
-		target.append(verticalGroupContainer);
-		jQuery.each(input.inputs, function(idx, childInput) {
-			modeling.getInputRenderer(childInput).render(verticalGroupContainer, childInput, modeling, input);
-		});
-	},
-	renderView: function(target, input, modeling, idx) {
-		var verticalGroupContainer = jQuery("<div></div>").appendTo(target);
-		jQuery.each(input.inputs, function(idx, childInput) {
-			var inputContainer = jQuery("<div></div>").appendTo(verticalGroupContainer);
-			modeling.getInputRenderer(childInput).render(inputContainer, childInput, modeling, input);
-		});
-		
-	},
-	render: function(target, input, modeling, idx, parent) {
-		var renderFunc = this.renderView;
-		if (XCoLab.modeling.inEditMode) {
-			renderFunc = this.renderEdit;
-		}
-		renderFunc.apply(this, [target, input, modeling, idx, parent]);
+(function() {
+	function DefaultGroupVerticalRenderer(modelingWidget) {
 	}
 	
-};
+	DefaultGroupVerticalRenderer.prototype = new XCoLab.modeling.BaseXCoLabModelingItemRenderer();
+	DefaultGroupVerticalRenderer.prototype.containerHtml = "<div></div>";
+	
+	DefaultGroupVerticalRenderer.prototype.canRender = function(input) {
+		return input.displayItemType == 'GROUP' && input.groupType == 'VERTICAL'; 
+	};
 
-XCoLab.modeling.inputRenderers.push(groupInputVerticalRenderer);
+	DefaultGroupVerticalRenderer.prototype.renderEdit = function(container, input, modelingWidget, idx, parent) {
+		jQuery.each(input.inputs, function(idx, childInput) {
+			modelingWidget.getInputRenderer(childInput).render(container, childInput, modelingWidget, input);
+		});
+	};
+	
+	DefaultGroupVerticalRenderer.prototype.renderView = function(container, input, modelingWidget, idx, parent) {
+		jQuery.each(input.inputs, function(idx, childInput) {
+			var inputContainer = jQuery("<div></div>").appendTo(container);
+			modelingWidget.getInputRenderer(childInput).render(inputContainer, childInput, modeling, input);
+		});
+	};
+
+	XCoLab.modeling.inputItemRenderers.push(new DefaultGroupVerticalRenderer());
+}());

@@ -12,21 +12,22 @@
 	
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
 	<div id="modelsOutputContainer"></div>
-	<input type="text" class="modelingScenarioId hidden"/>
+	
+	<input type="text" id="modelingScenarioId" class="hidden"/>
 	<script>
-		XCoLab.modeling.init('#modelsOutputContainer', 'edit');
+		var modeling = XCoLab.modeling('#modelsOutputContainer', {edit: true});
 		<c:choose>
 			<c:when test="${not empty scenarioId and scenarioId > 0}">
-				XCoLab.modeling.loadScenario(${scenarioId});
+				modeling.loadScenario(${scenarioId});
 			</c:when>
 			<c:otherwise>
-			XCoLab.modeling.loadModel(${modelId});
+				modeling.loadModel(${modelId});
 			</c:otherwise>
 		</c:choose>
 		
 
-		jQuery(document).on("scenarioFetched", function(event) {
-			jQuery("#modelsOutputContainer .modelingScenarioId").val(event.scenario.scenarioId);
+		jQuery(modeling).on("scenarioFetched", function(event) {
+			jQuery("#modelingScenarioId").val(event.scenario.scenarioId);
 		});
 	</script>
 	

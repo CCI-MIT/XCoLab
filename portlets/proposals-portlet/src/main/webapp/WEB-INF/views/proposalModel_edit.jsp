@@ -54,7 +54,8 @@
 	</div>
 	<script>
 		jQuery("#saveChangesButton").click(function() {
-			jQuery("#proposalScenarioId").val(jQuery(".modelingScenarioId").val());
+			jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
+			
 			jQuery("#updateProposalScenarioForm").submit();
 		});
 	

@@ -2,57 +2,41 @@ if (typeof(XCoLab) == 'undefined')
 	throw new "XCoLab isn't defined";
 if (typeof(XCoLab.modeling) == 'undefined')
 	throw new "XCoLab.modeling isn't defined"; 
-if (typeof(XCoLab.modeling.serieRenderers) == 'undefined')
-	XCoLab.modeling.serieRenderers = [];
 
-var groupInputRenderer = {
+(function() {
+	/**
+	 * Renderer for horizontal group
+	 */
+	function DefaultGroupHorizontalInputRenderer(modelingWidget) {
+	}
+	
+	DefaultGroupHorizontalInputRenderer.prototype = new XCoLab.modeling.BaseXCoLabModelingItemRenderer();
+	DefaultGroupHorizontalInputRenderer.prototype.containerHtml = "<div class='actInputDef'></div>";
+	DefaultGroupHorizontalInputRenderer.prototype.containerHtmlEdit = "<table class='inputDefTable'></table>";
 
-	canRender: function(input) {
+	DefaultGroupHorizontalInputRenderer.prototype.canRender = function(input) {
 		return input.displayItemType == 'GROUP' && input.groupType == 'HORIZONTAL'; 
-	},
-	renderEdit: function(target, input, modeling, idx) {
-		var verticalGroupTable = jQuery("<table class='inputDefTable'></table>");
-		
-		verticalGroupTable.append("<tr><td><div class='actInputDef control_title'><span>" + (idx+1) + ".</span> " + input.name +
-				"<div class='act_tooltip'><div class='act_tt-wrap'><div class='act_tt-txt'>" +
-				input.description + 
-				"</div></div><div class='act_tt-bot'></div></div>" +		
-				"</div></td></tr>");
-		
-		verticalGroupTable.appendTo(target);
-		var verticalGroupContainer = jQuery("<table></table>");
+	};
+
+	DefaultGroupHorizontalInputRenderer.prototype.renderEdit = function(container, input, modelingWidget, idx, parent) {
+		var verticalGroupContainer = jQuery("<table></table>").appendTo(container);
 		var groupRow = jQuery("<tr></tr>");
 		verticalGroupContainer.append(groupRow);
-		target.append(verticalGroupContainer);
 		
 		jQuery.each(input.inputs, function(idx, childInput) {
 			var itemCell = jQuery("<td></td>");
 			groupRow.append(itemCell);
-			modeling.getInputRenderer(childInput).render(itemCell, childInput, modeling, idx, input);
+			modelingWidget.getInputRenderer(childInput).render(itemCell, childInput, modelingWidget, idx, input);
 		});
-	},
-	renderView: function(target, input, modeling, idx) {
-		var groupContainer = jQuery("<div class='actInputDef'></div>").appendTo(target);
-		groupContainer.append("<div><span class='input_def_header'>" + input.name + "</span></div>");
-		
-		groupContainer.append("<div class='act_tooltip'><div class='act_tt-wrap'><div class='act_tt-txt'>"
-				+ input.description + 
-				"</div></div><div class='act_tt-bot'></div></div>");
-
-
+	};
+	
+	DefaultGroupHorizontalInputRenderer.prototype.renderView = function(container, input, modeling, idx, parent) {
 		jQuery.each(input.inputs, function(idx, childInput) {
-			modeling.getInputRenderer(childInput).render(groupContainer, childInput, modeling, idx, input);
-			groupContainer.append(" ");
+			modeling.getInputRenderer(childInput).render(container, childInput, modeling, idx, input);
+			container.append(" ");
 		});
-		
-	},
-	render: function(target, input, modeling, idx, parent) {
-		var renderFunc = this.renderView;
-		if (XCoLab.modeling.inEditMode) {
-			renderFunc = this.renderEdit;
-		}
-		renderFunc.apply(this, [target, input, modeling, idx, parent]);
-	}
-};
+	};
+	
 
-XCoLab.modeling.inputRenderers.push(groupInputRenderer);
+	XCoLab.modeling.inputItemRenderers.push(new DefaultGroupHorizontalInputRenderer());
+}());

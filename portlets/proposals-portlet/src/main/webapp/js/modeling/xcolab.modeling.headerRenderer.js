@@ -3,15 +3,32 @@ if (typeof(XCoLab) == 'undefined')
 if (typeof(XCoLab.modeling) == 'undefined')
 	throw new "XCoLab.modeling isn't defined"; 
 
-
-XCoLab.modeling.headerRenderer = new function() {
-	var self = this;
-	this.scenarioId = null;
-	this.modelId = null;
+(function() {
+	/**
+	 * A header renderer for modeling widget
+	 */
+	function DefaultHeaderRenderer(modelingWidget) {
+		this.modelingWidget = modelingWidget;		
+		this.render(modelingWidget.container);
+		var that = this;
+		
+		jQuery(modelingWidget).on("valueChanged", function() {
+			that.container.find(".runSimulationButtonHighlight").effect("highlight", {}, 2000);
+		});
+	}
 	
-	function renderEdit(container) {
+	
+	DefaultHeaderRenderer.prototype = new XCoLab.modeling.BaseXCoLabModelingRenderer();
+	DefaultHeaderRenderer.prototype.constructor = DefaultHeaderRenderer.prototype;
+	
+	DefaultHeaderRenderer.prototype.containerHtml = "<div class='modelingWidgetHeader'></div>";
+
+	DefaultHeaderRenderer.prototype.renderEdit = function(container) {
+		
+		var that = this;
+		this.container = container;
 		container.append('<div class="act_left">' + 
-				'<div class="acthead-l">Actions</div>' + 
+			'<div class="acthead-l">Actions</div>' + 
 			'</div> <!-- /act_left -->' +
 			'<div class="act_right">' + 
 			'<div class="acthead-r edit">' + 
@@ -20,28 +37,21 @@ XCoLab.modeling.headerRenderer = new function() {
 			'<div class="runSimulationButtonHighlight">' +
 			'<span>RUN</span> the model' +
 			'</div>' + 
-			'</a></div></div></div></div> <!-- /act_right -->');
-		container.append("<div class='clearfix'></div>");
-		container.append("<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
+			'</a></div></div></div></div> <!-- /act_right -->' + 
+			'<div class="clearfix"></div>' +
+			"<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
 		
-		container.find(".runmodel").click(function() { XCoLab.modeling.runTheModel(); });
+		container.find(".runmodel").click(function() { that.modelingWidget.runTheModel(); });
 	};
 	
-	function renderView(container) {
-		container.append("<div class='act_left'><div class='acthead-l'>Actions</div></div>");
-		container.append("<div class='act_right'><div class='acthead-r'>Impacts</div></div>");
-		container.append("<div class='clearfix'></div>");
-		container.append("<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
+	DefaultHeaderRenderer.prototype.renderView = function(container) {
+		container.append("<div class='act_left'><div class='acthead-l'>Actions</div></div>" + 
+			"<div class='act_right'><div class='acthead-r'>Impacts</div></div>" + 
+			"<div class='clearfix'></div>" + 
+			"<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
 	};
 	
-	this.render = function(container) {
-		
-		var renderFunc = renderView;
-		if (XCoLab.modeling.inEditMode) {
-			renderFunc = renderEdit;
-		}
-		renderFunc.apply(this, [container]);
-	};
-	
-	
-};
+	XCoLab.modeling.headerRenderers.push(function (modelingWidget) {
+		return new DefaultHeaderRenderer(modelingWidget);
+	});
+}());
