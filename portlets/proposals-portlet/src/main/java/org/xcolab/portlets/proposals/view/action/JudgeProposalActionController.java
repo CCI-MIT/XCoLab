@@ -48,13 +48,12 @@ public class JudgeProposalActionController {
             throws PortalException, SystemException, ProposalsAuthorizationException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-        long userId = request.getRemoteUser() == null ? -1 : Long.parseLong(request.getRemoteUser());
         // save judge rating
-        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_RATING,userId, judgeProposalBean.getJudgeRating() , null);
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_RATING,0, judgeProposalBean.getJudgeRating() , null);
         // save judge action
-        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_ACTION,userId, judgeProposalBean.getJudgeAction().getAttributeValue() , null);
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_ACTION,0, judgeProposalBean.getJudgeAction().getAttributeValue() , null);
         // save judge comment
-        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_COMMENT,userId, -1 , judgeProposalBean.getJudgeComment());
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_COMMENT,0, -1 , judgeProposalBean.getJudgeComment());
     }
 
     @RequestMapping(params = {"action=saveFellowRating"})
@@ -63,13 +62,14 @@ public class JudgeProposalActionController {
                                  BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-        long userId = request.getRemoteUser() == null ? -1 : Long.parseLong(request.getRemoteUser());
         // save selection of judges
         persistSelectedJudges(proposalId, contestPhaseId, judgeProposalBean.getSelectedJudges());
         // save fellow rating
-        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.FELLOW_RATING,userId,judgeProposalBean.getFellowRating(), null);
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.FELLOW_RATING,0,judgeProposalBean.getFellowRating(), null);
         // save fellow action
-        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.FELLOW_ACTION,userId,judgeProposalBean.getFellowAction().getAttributeValue(), null);
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.FELLOW_ACTION,0,judgeProposalBean.getFellowAction().getAttributeValue(), null);
+        // save fellow comment
+        persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.FELLOW_COMMENT,0, -1 , judgeProposalBean.getFellowComment());
     }
 
     private boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, long numericValue, String stringValue){

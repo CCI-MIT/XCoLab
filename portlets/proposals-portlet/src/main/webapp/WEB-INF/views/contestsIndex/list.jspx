@@ -9,7 +9,7 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	
 	<div class="blueheaderbar tooltips">
-        <div class="contest">
+        <div class="contest" style="${proposalsPermissions.canJudgeActions ? 'width: 272px;' : ''}">
         	<portlet:renderURL var="sortURL">
         		<portlet:param name="sortColumn" value="CONTEST_NAME" />
 				<portlet:param name="showActiveContests" value="${showActiveContests }" />
@@ -93,6 +93,19 @@
             <div class="tooltip">click to sort by who<br />this issue affects<div class="tt-arrow"><!--  --></div></div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHO" />
         </div>
+        <c:if test="${proposalsPermissions.canJudgeActions}">
+            <div class="proposal">
+                <a href="#" style="background: none; margin-top: 9px;">Judge</a>
+                <div class="tooltip">see if judges are done<br />with this contest<div class="tt-arrow"><!--  --></div></div>
+            </div>
+            <div class="proposal">
+                <c:if test="${proposalsPermissions.canFellowActions}">
+                    <a href="#" style="background: none; margin-top: 9px;">Fellow</a>
+                    <div class="tooltip">see if fellows are done<br />with this contest<div class="tt-arrow"><!--  --></div></div>
+                </c:if>
+            </div>
+        </c:if>
+
     </div>
     <div class="shadebar"><!--  --></div>
     <c:if test="${not empty contestsSorted.contestsFeatured }">

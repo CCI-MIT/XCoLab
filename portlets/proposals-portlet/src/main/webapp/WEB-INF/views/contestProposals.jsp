@@ -36,7 +36,7 @@
 				</div>
 		</div>
 	<div class="blueheaderbar tooltips">
-				<div class="proposalname">
+				<div class="proposalname" style="${proposalsPermissions.canJudgeActions ? 'width:554px;' : ''}">
 					<div style="display: inline-block">
 						<portlet:renderURL var="sortURL">
         					<portlet:param name="contestId" value="${contest.contestPK }" />
@@ -154,6 +154,18 @@
 					</div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
 				</div>
+
+        <c:if test="${proposalsPermissions.canJudgeActions}">
+            <div class="contributor" style="width: 95px;">
+
+                <a href="#">Judge Fellow</a>
+                <div class="tooltip">
+                    Judge or fellow actions
+                    <div class="tt-arrow"><!-- --></div>
+                </div>
+            </div>
+        </c:if>
+
 			</div>
 			<proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }" showShadebar="true"/>
 			<proposalsPortlet:proposalsList proposals="${proposals.proposalsNormal }" showShadebar="${fn:length(proposals.proposalsWithRibbons) > 0 }"/>

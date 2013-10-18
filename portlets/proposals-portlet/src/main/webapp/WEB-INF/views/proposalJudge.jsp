@@ -18,7 +18,7 @@
 	<div id="content">
 
 
-        <h1>Judge Rating</h1>
+        <h1>Rating</h1>
         <portlet:actionURL var="saveJudgeRatingURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE" />
             <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -52,11 +52,8 @@
                         </tbody>
                     </table>
                     <h3>Promotion</h3>
-                    <form:select path="judgeAction">
-                        <c:forEach var="option" items="${judgingOptions}" >
-                            <option value="${option}" label="${option.description}"/>
-                        </c:forEach>
-                    </form:select>
+                    <form:select path="judgeAction" items="${judgingOptions}" itemLabel="description"/>
+
                     <h3>Comment</h3>
                     <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
 
@@ -82,8 +79,8 @@
             </div>
         </div>
 
-
-
+        <h1>Comments</h1>
+        <discussionsTagFiles:discussionComments discussionId="${discussionId }" />
 
 
 	</div>

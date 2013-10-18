@@ -135,15 +135,12 @@ public class ProposalsContextImpl implements ProposalsContext {
         final Long contestId = (Long) ParamUtil.getLong(request, CONTEST_ID_PARAM);
         final Long phaseId = (Long) ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         final Integer version = (Integer) ParamUtil.getInteger(request, VERSION_PARAM);
-        final Long userId = Long.parseLong(request.getRemoteUser() == null ? "-1" : request.getRemoteUser());
         
         Contest contest = null;
         ContestPhase contestPhase = null;
         Proposal proposal = null;
         Proposal2Phase proposal2Phase = null;
-        
-        
-        
+
         if (contestId != null && contestId > 0) {
             contest = ContestLocalServiceUtil.getContest(contestId);
             if (phaseId != null && phaseId > 0) {
@@ -168,11 +165,11 @@ public class ProposalsContextImpl implements ProposalsContext {
                 if (proposal != null) {
                     ProposalWrapper proposalWrapper = null;
                     if (version != null && version > 0) {
-                        proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase, userId);
+                        proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
                     }
                     else {
                         proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
-                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase, userId);
+                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
               

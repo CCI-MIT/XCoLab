@@ -7,6 +7,8 @@
             <action-key>CAN_EDIT</action-key>
             <action-key>CAN_ADMIN</action-key>
             <action-key>CAN_ADMIN_ALL</action-key>
+            <action-key>CAN_FELLOW_ACTIONS</action-key>
+            <action-key>CAN_JUDGE_ACTIONS</action-key>
         </supports>
         <community-defaults>
             <action-key>CAN_VIEW</action-key>

@@ -1,10 +1,30 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProposalTabWrapper {
     private ProposalTab tab;
     private String displayName;
     private int activityCount;
-    
+
+
+    public static List<ProposalTabWrapper> createAll(ProposalsPermissions permissions){
+        List<ProposalTabWrapper> tabs = new ArrayList<ProposalTabWrapper>();
+
+        int i=0;
+        for (ProposalTab tab: ProposalTab.values()) {
+            if (tab == ProposalTab.ADMIN && !permissions.getCanAdmin()) continue;
+            if (tab == ProposalTab.JUDGE && (!permissions.getCanJudgeActions() || !permissions.getCanFellowActions())) continue;
+            if (tab == ProposalTab.FELLOW && !permissions.getCanFellowActions()) continue;
+            tabs.add(new ProposalTabWrapper(tab, i++));
+        }
+        return tabs;
+    }
+
+
     public ProposalTabWrapper(ProposalTab tab, int activityCount) {
         super();
         this.tab = tab;

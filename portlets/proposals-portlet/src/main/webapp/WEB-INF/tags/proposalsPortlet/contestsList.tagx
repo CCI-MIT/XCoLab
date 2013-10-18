@@ -13,7 +13,7 @@
 	<table class="contestlist table">
 		<c:forEach var="contest" items="${contests }">
 			<tr>
-				<td class="column contestName">
+				<td class="column contestName" style="${proposalsPermissions.canJudgeActions ? 'width: 263px;' : ''}">
             		<div class="contestFlag">
             			<c:if test="${not empty contest.flagText }">
             				<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
@@ -45,9 +45,51 @@
         			<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where }" />
         		</td>
         		<td class="column contest who g">
-        			<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who }" />
-        		</td>
-        	</tr>
+                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who }"/>
+                </td>
+
+
+                <c:if test="${proposalsPermissions.canJudgeActions}">
+                    <td class="column contestCommentsCount">
+                   <span class="fieldWithTooltip">
+                    <c:choose>
+                        <c:when test="${not contest.judgeStatus}">
+                            <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                        </c:when>
+                        <c:otherwise>
+                            <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                        </c:otherwise>
+                    </c:choose>
+                    </span>
+
+                        <div class="tooltip">
+                            123
+                        </div>
+                    </td>
+                    <td class="column contestCommentsCount g">
+
+                        <c:if test="${proposalsPermissions.canFellowActions}">
+                                                   <span class="fieldWithTooltip">
+                    <c:choose>
+                        <c:when test="${not contest.fellowStatus}">
+                            <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                        </c:when>
+                        <c:otherwise>
+                            <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                        </c:otherwise>
+                    </c:choose>
+                    </span>
+
+                            <div class="tooltip">
+                                123
+                            </div>
+                        </c:if>
+
+                    </td>
+                </c:if>
+
+
+            </tr>
 		</c:forEach>
 	</table>
 </jsp:root>

@@ -8,15 +8,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.ext.portlet.NoSuchContestPhaseException;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -406,6 +399,36 @@ public class ContestWrapper {
             }
         }
         return judges;
+    }
+
+    /**
+     * Determine if judges are done with proposal
+     * @return 0 if judge action is incomplete, 1 judge actions completed
+     */
+    public boolean getJudgeStatus(){
+        try{
+            ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
+            for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
+                Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == 0) return false;
+            }
+        } catch (Exception e) { return false; }
+       return true;
+    }
+
+    /**
+     * Determine if fellow are done with proposal
+     * @return 0 if fellow action is incomplete, 1 fellow action completed
+     */
+    public boolean getFellowStatus(){
+        try{
+            ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
+            for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
+                Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getFellowStatus() == 0) return false;
+            }
+        } catch (Exception e) { return false; }
+        return true;
     }
 
 }

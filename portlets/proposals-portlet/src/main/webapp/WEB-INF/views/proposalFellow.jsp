@@ -18,7 +18,7 @@
     <div id="content">
 
 
-        <h1>Fellow Rating</h1>
+        <h1>Rating</h1>
         <portlet:actionURL var="saveFellowRatingURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_FELLOW" />
             <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -52,7 +52,9 @@
                         </tbody>
                     </table>
                     <h3>Promotion</h3>
-                    <form:select path="fellowAction" id="fellowAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description" />
+
+
+                    <form:select path="fellowAction" items="${judgingOptions}" itemLabel="description"/>
 
 
                     <h3>Select judges</h3>
@@ -69,6 +71,9 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <h3>Comment</h3>
+                    <form:textarea id="fellowComment" cssClass="commentbox" path="fellowComment" style="width:100%;"/>
 
                     <div class="blue-button" style="display:block; float:right;">
                         <a href="javascript:;" class="requestMembershipSubmitButton" onclick="jQuery(this).parents('form').submit();">Save</a>
@@ -92,8 +97,8 @@
             </div>
         </div>
 
-
-
+        <h1>Comments</h1>
+        <discussionsTagFiles:discussionComments discussionId="${discussionId }" />
 
 
     </div>

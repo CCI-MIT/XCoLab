@@ -21,6 +21,7 @@ public class JudgeProposalBean {
     private JudgingSystemActions.JudgeAction judgeAction;
     private JudgingSystemActions.FellowAction fellowAction;
     private String judgeComment;
+    private String fellowComment;
     private List<Long> selectedJudges;
 
     public JudgeProposalBean(ProposalWrapper wrapper) throws PortalException, SystemException {
@@ -33,6 +34,7 @@ public class JudgeProposalBean {
         selectedJudges = wrapper.getSelectedJudges();
 
         judgeComment = wrapper.getJudgeComment();
+        fellowComment = wrapper.getFellowComment();
 
     }
 
@@ -64,16 +66,6 @@ public class JudgeProposalBean {
         this.judgeAction = judgeAction;
     }
 
-    public void setJudgeAction(int judgeAction) {
-        this.judgeAction = JudgingSystemActions.JudgeAction.fromInt(judgeAction);
-    }
-
-    public void setFellowAction(int fellowAction) {
-        this.fellowAction = JudgingSystemActions.FellowAction.fromInt(fellowAction);
-    }
-
-
-
     public JudgingSystemActions.FellowAction getFellowAction() {
         return fellowAction;
     }
@@ -96,6 +88,14 @@ public class JudgeProposalBean {
 
     public void setSelectedJudges(List<Long> selectedJudges) {
         this.selectedJudges = selectedJudges;
+    }
+
+    public String getFellowComment() {
+        return fellowComment;
+    }
+
+    public void setFellowComment(String fellowComment) {
+        this.fellowComment = fellowComment;
     }
 
 }

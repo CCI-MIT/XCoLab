@@ -203,12 +203,20 @@ public class ProposalsPermissions {
         return contestPhase == null ? false : ContestLocalServiceUtil.isSubscribed(contestPhase.getContestPK(), user.getUserId());
     }
 
-    
     private boolean getRequestedMembership() throws PortalException, SystemException {
         if (! user.isDefaultUser()) {
             return ProposalLocalServiceUtil.hasUserRequestedMembership(proposal.getProposalId(), user.getUserId());
         }
         return false;
-        
     }
+
+    public boolean getCanFellowActions() {
+        return permissionChecker.hasPermission(groupId, portletId, primKey, ProposalsActions.CAN_FELLOW_ACTIONS);
+    }
+
+    public boolean getCanJudgeActions() {
+        return permissionChecker.hasPermission(groupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS);
+    }
+
+
 }
