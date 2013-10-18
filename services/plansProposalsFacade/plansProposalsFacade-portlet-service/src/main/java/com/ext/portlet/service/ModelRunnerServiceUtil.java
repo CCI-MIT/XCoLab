@@ -32,7 +32,10 @@ public class ModelRunnerServiceUtil {
     }
 
     public static com.liferay.portal.kernel.json.JSONObject getModel(
-        long modelId) {
+        long modelId)
+        throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
         return getService().getModel(modelId);
     }
 

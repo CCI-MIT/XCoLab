@@ -45,7 +45,10 @@ public class ModelRunnerServiceClp implements ModelRunnerService {
         return (com.liferay.portal.kernel.json.JSONObject) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.liferay.portal.kernel.json.JSONObject getModel(long modelId) {
+    public com.liferay.portal.kernel.json.JSONObject getModel(long modelId)
+        throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
         Object returnObj = null;
 
         MethodHandler methodHandler = new MethodHandler(_getModelMethodKey1,
@@ -54,6 +57,18 @@ public class ModelRunnerServiceClp implements ModelRunnerService {
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof com.ext.portlet.models.ui.IllegalUIConfigurationException) {
+                throw (com.ext.portlet.models.ui.IllegalUIConfigurationException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof java.io.IOException) {
+                throw (java.io.IOException) t;
+            }
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {

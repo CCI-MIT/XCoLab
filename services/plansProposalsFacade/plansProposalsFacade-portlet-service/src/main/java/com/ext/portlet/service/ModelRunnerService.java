@@ -35,7 +35,10 @@ public interface ModelRunnerService {
         long scenarioId);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.liferay.portal.kernel.json.JSONObject getModel(long modelId);
+    public com.liferay.portal.kernel.json.JSONObject getModel(long modelId)
+        throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException;
 
     public com.liferay.portal.kernel.json.JSONObject runModel(long modelId,
         java.lang.String inputs)

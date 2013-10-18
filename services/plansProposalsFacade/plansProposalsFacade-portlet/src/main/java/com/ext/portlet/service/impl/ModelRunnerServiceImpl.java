@@ -81,8 +81,11 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     }
 
     @JSONWebService
-    public JSONObject getModel(long modelId) {
-        return JSONFactoryUtil.createJSONObject();
+    public JSONObject getModel(long modelId) throws SystemException, IllegalUIConfigurationException, IOException {
+
+        Simulation simulation = repository.getSimulation(modelId);
+        
+        return convertModel(simulation);
     }
 
     @JSONWebService
@@ -128,4 +131,26 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
         return jsonObject;
         
     }
+
+    private JSONObject convertModel(Simulation simulation) throws SystemException, IllegalUIConfigurationException, IOException {
+
+        ModelDisplay display = ModelUIFactory.getInstance().getDisplay(simulation);
+        JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+        
+        jsonObject.put("modelId", simulation.getId());
+
+        JSONArray outputsArray = JSONFactoryUtil.createJSONArray();
+        for (ModelOutputDisplayItem item : display.getOutputs()) {
+            outputsArray.put(item.toJson());
+        }
+        jsonObject.put("outputs", outputsArray);
+
+        JSONArray inputsArray = JSONFactoryUtil.createJSONArray();
+        for (ModelInputDisplayItem item : display.getInputs()) {
+            inputsArray.put(item.toJson());
+        }
+        jsonObject.put("inputs", inputsArray);
+        return jsonObject;
+    }
+
 }

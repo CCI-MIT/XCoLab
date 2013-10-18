@@ -3,46 +3,73 @@ if (typeof(XCoLab) == 'undefined')
 if (typeof(XCoLab.modeling) == 'undefined')
 	throw new "XCoLab.modeling isn't defined"; 
 
-
-XCoLab.modeling.outputsRenderer = new function() {
-	var self = this;
-	
-	
-	this.render = function(container, scenario) {
-		this.container = container;
-		this.scenario = scenario;
+(function() {
+	function DefaultOutputsRenderer(modelingWidget) {
+		this.modelingWidget = modelingWidget;		
+		this.modelId = -1;
+		var that = this;
 		
+		jQuery(modelingWidget).on('scenarioFetched', function(event) {
+			modelingWidget.container.find(".outputsContainer").remove();
+			that.render(modelingWidget.container, event.scenario);
+		});
+
+		jQuery(modelingWidget).on('modelFetched', function(event) {
+			modelingWidget.container.find(".outputsContainer").remove();
+			that.render(modelingWidget.container, event.model);
+		});
+
+		jQuery(modelingWidget).on("fetchingScenario", function(event) {
+			modelingWidget.container.find('.outputsContainer').block();
+		});
+
+	}
+	
+	DefaultOutputsRenderer.prototype = new XCoLab.modeling.BaseXCoLabModelingRenderer();
+	DefaultOutputsRenderer.prototype.containerHtmlEdit = "<div class='outputsContainer act-edit_right'></div>";
+	DefaultOutputsRenderer.prototype.containerHtml = "<div class='outputsContainer act_right'></div>";
+	
+	DefaultOutputsRenderer.prototype.renderTabs = function(container, scenario) {
+		
+		if (!('scenarioId' in scenario)) {
+			container.append(
+				"<div class='actions-edit_chart'>" +
+					"<div class='runTheModelToSee_container'>" +
+						"<div class='runTheModelToSee'>" +
+							"<div class='runTheModelToSee_box'>" +
+								'Use the "RUN the model" button to show results' +
+							"</div>" +
+						"</div>" +
+					"</div>" +
+				"</div>");	
+			return;
+		}
+		
+		var modelingWidget = this.modelingWidget;
 		// group physical outputs series
 		var tabsToRender = []; 
-		var physicalOutputs = {};
-
-		container.find(".outputsContainer").remove();
-		
-		container = jQuery("<div class='outputsContainer act" + (XCoLab.modeling.inEditMode ? '-edit' : '') + "_right'></div>").appendTo(container);
+		var physicalOutputs = {chartType: 'PHYSICAL_IMPACTS', name: "Physical impacts", outputs: {}};
 		
 		jQuery.each(scenario.outputs, function(idx, output) {
 			if (output.series.length == 0) {
 				return;
 			} 
-				
+		
 			if (output.chartType == 'FREE' ) {
 				// group outputs by name
-				if (!(output.name in physicalOutputs)) {
-					physicalOutputs[output.name] = [];
+				if (!(output.name in physicalOutputs.outputs)) {
+					physicalOutputs.outputs[output.name] = [];
 				}
-				physicalOutputs[output.name].push(output);
-			}
-			else if (output.chartType == 'TIME_SERIES') {
-				tabsToRender.push(new ChartTabRenderer(output));
+				physicalOutputs.outputs[output.name].push(output);
 			}
 			else {
-				throw new "Unknown chart type";
+				tabsToRender.push({renderer: modelingWidget.getOutputRenderer(output), output: {outputs: output}});
 			}
 		});
-		tabsToRender.push(new PhysicalImpactsTabRenderer(physicalOutputs));
+		tabsToRender.push({renderer: modelingWidget.getOutputRenderer(physicalOutputs), output: physicalOutputs});
 
-		var headerContainer = jQuery("<div class='actions" + (XCoLab.modeling.inEditMode ? '-edit' : '') + "_chart-head-bg'></div>");
-		var contentsContainer = jQuery("<div class='actions" + (XCoLab.modeling.inEditMode ? '-edit' : '') + "_chart'></div>");
+		var headerContainer = jQuery("<div class='actions" + (this.modelingWidget.inEditMode ? '-edit' : '') + "_chart-head-bg'></div>");
+		var contentsContainer = jQuery("<div class='actions" + (this.modelingWidget.inEditMode ? '-edit' : '') + "_chart'></div>");
 		
 		function showTab(idx, tab) {
 			jQuery('.outputTab').hide();
@@ -51,7 +78,7 @@ XCoLab.modeling.outputsRenderer = new function() {
 			
 			if (container.find('#outputTab_' + idx).length == 0) {
 				var outputTabContainer = jQuery("<div class='outputTab' id='outputTab_" + idx + "'></div>").appendTo(contentsContainer);
-				tab.renderContents(outputTabContainer);
+				tab.renderer.render(outputTabContainer, tab.output.outputs, modelingWidget, idx);
 			}
 			
 			jQuery('#outputTab_' + idx).show();
@@ -60,7 +87,7 @@ XCoLab.modeling.outputsRenderer = new function() {
 
 		jQuery.each(tabsToRender, function(idx, tab) {
 			var tabTriggerContainer = jQuery("<div class='rounded_button blugrid outputTabTrigger' id='outputTabTrigger_" + idx + "'></div>").appendTo(headerContainer);
-			tabTriggerContainer.append("<a href='javascript:;'>" + tab.getName() + "</a>");
+			tabTriggerContainer.append("<a href='javascript:;'>" + tab.renderer.getName(tab.output.outputs) + "</a>");
 			tabTriggerContainer.click(function() {
 				showTab(idx, tab);
 			});
@@ -68,20 +95,19 @@ XCoLab.modeling.outputsRenderer = new function() {
 		});
 		headerContainer.append("<div class='clearfix'></div>");
 		headerContainer.appendTo(container);
-		container.append("<div class='actions" + (XCoLab.modeling.inEditMode ? '-edit' : '') + "_chart-head-shade'></div>");
+		container.append("<div class='actions" + (this.modelingWidget.inEditMode ? '-edit' : '') + "_chart-head-shade'></div>");
 		contentsContainer.appendTo(container);
 		
 		// show first tab
 		showTab(0, tabsToRender[0]);
 	};
 	
-	jQuery(document).on("fetchingScenario", function(event) {
-		jQuery(self.container.find('.outputsContainer').block());
-		
-	});
-
-	jQuery(document).on("scenarioFetched", function(event) {
-		self.render(self.container, event.scenario);
-	});
+	DefaultOutputsRenderer.prototype.renderView = function() { this.renderTabs.apply(this, arguments); };
+	DefaultOutputsRenderer.prototype.renderEdit = function() { this.renderTabs.apply(this, arguments); };
 	
-};
+	
+	
+	XCoLab.modeling.outputsRenderers.push(function (modelingWidget) {
+		return new DefaultOutputsRenderer(modelingWidget);
+	});
+}());

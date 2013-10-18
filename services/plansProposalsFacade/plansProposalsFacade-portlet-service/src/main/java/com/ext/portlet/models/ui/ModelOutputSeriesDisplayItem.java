@@ -15,6 +15,7 @@ import com.ext.portlet.model.ModelOutputItem;
 import com.ext.portlet.service.ModelOutputItemLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -236,7 +237,15 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
     @Override
     public JSONObject toJson() {
         JSONObject jsonObject = super.toJson();
-        jsonObject.put("variable", ModelUIFactory.convertToJson(getVariable()));
+        if (getVariable() != null) {
+            jsonObject.put("variable", ModelUIFactory.convertToJson(getVariable()));
+        }
+        else {
+
+            JSONObject variableObj = JSONFactoryUtil.createJSONObject();
+            jsonObject.put("variable", variableObj);
+            variableObj.put("metaData", ModelUIFactory.convertToJson(getMetaData()));
+        }
         jsonObject.put("outputType", "SERIES");
         jsonObject.put("labelFormatString", getLabelFormatString());
         Long associatedMetaDataId = getAssociatedMetaDataId();

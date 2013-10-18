@@ -1,13 +1,28 @@
-function PhysicalImpactsTabRenderer(physicalImpacts) {
-	this.getName = function() {
+if (typeof(XCoLab) == 'undefined') 
+	throw new "XCoLab isn't defined";
+if (typeof(XCoLab.modeling) == 'undefined')
+	throw new "XCoLab.modeling isn't defined"; 
+
+(function() {
+	function DefaulPhysicalImpactsRenderer() {
+	}
+	
+	DefaulPhysicalImpactsRenderer.prototype.getName = function() {
 		return "Physical impacts";
 	};
 	
-	this.getOrder = function() {
-		return 1<<31;
+	DefaulPhysicalImpactsRenderer.prototype.getOrder = function() {
+		return 1<<30;
+	};
+
+	DefaulPhysicalImpactsRenderer.prototype.canRender = function(output) {
+		return output.chartType == 'PHYSICAL_IMPACTS';
 	};
 	
-	this.renderContents = function(container) {
+
+
+	DefaulPhysicalImpactsRenderer.prototype.render = function(container, output, modelingWidget, parent) {
+		console.log("output", output);
 		var physicalImpactsContainer = jQuery("<div id='freeOutputPhysical'></div>").appendTo(container);
 		container.append("<div class='clearfix'></div>");
 		var navigation = jQuery("<ul class='chart_sub-menu'></ul>");
@@ -20,7 +35,7 @@ function PhysicalImpactsTabRenderer(physicalImpacts) {
 			physicalImpactsContainer.find('#impactTrigger_' + itemNumber).addClass('c');
 		}
 		
-		jQuery.each(physicalImpacts, function(name, groupedSeries) {
+		jQuery.each(output, function(name, groupedSeries) {
 			var itemTrigger = jQuery("<li class='impactTrigger " + (impactVisible ? 'c' : '') + "' id='impactTrigger_" + impactIdx + "'><a>" + name + "</a></li>").appendTo(navigation);
 			var itemId = impactIdx;
 			itemTrigger.click(function() { showItem(itemId); });
@@ -32,7 +47,7 @@ function PhysicalImpactsTabRenderer(physicalImpacts) {
 		impactIdx = 0;
 		impactVisible = true;
 		physicalImpactsContainer.append(navigation);
-		jQuery.each(physicalImpacts, function(idx, groupedSeries) {
+		jQuery.each(output, function(idx, groupedSeries) {
 			jQuery.each(groupedSeries, function(idx, series) {
 				html.push("<div class='physicalImpactContent chart_sub-description " + (impactVisible ? '' : 'hidden') + "' id='impact_" + impactIdx + "'>");
 				jQuery.each(series.series, function(singleSerieIdx, singleSerie) {
@@ -50,4 +65,9 @@ function PhysicalImpactsTabRenderer(physicalImpacts) {
 		
 		physicalImpactsContainer.append("<div class='clearfix'></div>");
 	};
-}
+	
+	
+	
+
+	XCoLab.modeling.outputItemRenderers.push(new DefaulPhysicalImpactsRenderer());
+})();

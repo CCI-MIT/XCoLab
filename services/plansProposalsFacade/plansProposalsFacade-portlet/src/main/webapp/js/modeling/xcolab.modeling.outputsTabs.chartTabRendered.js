@@ -1,34 +1,48 @@
-var serieErrorPolicy = {
-	NO_DISPLAY_WITH_MSG: 'NO_DISPLAY_WITH_MSG',
-	NORMAL: 'NORMAL',
-	DISPLAY_AVAILBLE_NO_MSG: 'DISPLAY_AVAILBLE_NO_MSG'
-};
+if (typeof(XCoLab) == 'undefined') 
+	throw new "XCoLab isn't defined";
+if (typeof(XCoLab.modeling) == 'undefined')
+	throw new "XCoLab.modeling isn't defined"; 
 
-function ChartTabRenderer(outputs) {
-	this.outputs = outputs;
+(function() {
+	var serieErrorPolicy = {
+		NO_DISPLAY_WITH_MSG: 'NO_DISPLAY_WITH_MSG',
+		NORMAL: 'NORMAL',
+		DISPLAY_AVAILBLE_NO_MSG: 'DISPLAY_AVAILBLE_NO_MSG'
+	};
+
 	
-	this.getName = function() {
-		return outputs.name;
+	function DefaulChartRenderer() {
+	}
+	
+	DefaulChartRenderer.prototype.getName = function(output) {
+		return output.name;
 	};
 	
-	this.getOrder = function() {
-		return 1;
+	DefaulChartRenderer.prototype.getOrder = function() {
+		return 1<<30;
+	};
+
+	DefaulChartRenderer.prototype.canRender = function(output) {
+		return output.chartType == 'TIME_SERIES';
 	};
 	
-	function renderChart(target, serie) {
-		var targetContainer = $(target);
+
+
+	DefaulChartRenderer.prototype.render = function(container, output, modelingWidget, parent) {
+		
+		
 
 		var errorMessages = [];
-		var errorMessagesContainer = jQuery("<ul class='chartMessagePlaceholder' style='display: none;'></ul>").appendTo(targetContainer);
-		var chartWrapper = jQuery("<div class='chartContainer'></div>").appendTo(targetContainer);
+		var errorMessagesContainer = jQuery("<ul class='chartMessagePlaceholder' style='display: none;'></ul>").appendTo(container);
+		var chartWrapper = jQuery("<div class='chartContainer'></div>").appendTo(container);
 		var chartContainer = jQuery("<div class='chartPlaceholder '></div>").appendTo(chartWrapper);
 		var legendContainer = jQuery("<div></div>").appendTo(chartWrapper);
 		
 		var valuesCombined = [];
 		
 
-		var indexMin = parseInt(serie.index.metaData.min[0]);
-		var indexMax = parseInt(serie.index.metaData.max[0]);
+		var indexMin = parseInt(output.index.metaData.min[0]);
+		var indexMax = parseInt(output.index.metaData.max[0]);
 		
 		var min = null;
 		var max = null;
@@ -45,8 +59,6 @@ function ChartTabRenderer(outputs) {
 			}
 		}
 		
-		var chartType = 'NORMAL';
-		
 		var yaxis = {labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer};
 		var xaxis = {autoscale: false, tickOptions:{formatString:'%d'}, ticks: xaxisTicks, labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer, label: 'Year'};
 		
@@ -56,13 +68,13 @@ function ChartTabRenderer(outputs) {
 		var seriesWithErrors = {rangeErrorPolicy: [], invalidErrorPolicy: []};
 		var confidenceIntervalsByDescribedId = {};
 		
-		serie.series = serie.series.sort(function (s1, s2) {
+		output.series = output.series.sort(function (s1, s2) {
 			if (('associatedMetaDataId' in s1) && !('associatedMetaDataId' in s2)) return -1;
 			if (('associatedMetaDataId' in s2) && !('associatedMetaDataId' in s1)) return 1;
 			return s1.order - s2.order;
 		});
 		
-		jQuery.each(serie.series, function(idx, singleSerie) {
+		jQuery.each(output.series, function(idx, singleSerie) {
 			
 			var shouldShow = true;
 			
@@ -208,8 +220,8 @@ function ChartTabRenderer(outputs) {
 		
 		
 		jQuery.each({indexedOutOfRangeError: 'rangeErrorPolicy', indexedInvalidError: 'invalidErrorPolicy'}, function(key, val) {
-			if (serie[key] && serie[key]['message'] && seriesWithErrors[val].length > 0) {
-				errorMessages.push(serie[key].message.replace("%outputs", seriesWithErrors[val].join(", ")));
+			if (output[key] && output[key]['message'] && seriesWithErrors[val].length > 0) {
+				errorMessages.push(output[key].message.replace("%outputs", seriesWithErrors[val].join(", ")));
 			}
 		}); 
 		
@@ -219,12 +231,10 @@ function ChartTabRenderer(outputs) {
 		if (errorMessages.length > 0) {
 			errorMessagesContainer.show();
 		}
-	}
-	
-	this.renderContents = function(container) {
-		renderChart(container, outputs);
 	};
 	
 	
 	
-}
+
+	XCoLab.modeling.outputItemRenderers.push(new DefaulChartRenderer());
+})();

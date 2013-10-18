@@ -24,7 +24,10 @@ public class ModelRunnerServiceWrapper implements ModelRunnerService,
         return _modelRunnerService.getScenario(scenarioId);
     }
 
-    public com.liferay.portal.kernel.json.JSONObject getModel(long modelId) {
+    public com.liferay.portal.kernel.json.JSONObject getModel(long modelId)
+        throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
         return _modelRunnerService.getModel(modelId);
     }
 

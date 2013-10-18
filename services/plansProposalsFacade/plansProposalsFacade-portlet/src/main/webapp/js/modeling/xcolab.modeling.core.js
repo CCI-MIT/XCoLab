@@ -37,18 +37,28 @@ function ModelingWidget(selector, options) {
 	if (! ('modelId' in options) && !('scenarioId' in options)) {
 		throw "Modeling widget has to have modelId or scenarioId defined"; 
 	}
-	if (!('headerRenderer' in options) || !('inputsRenderer' in options) || !('outputsRenderer' in options)) {
-		throw "Missing renderers (headerRenderer, inputsRenderer, outputsRenderer have to be defined)";
+	if (!('renderers' in options) || options.renderers.length == 0) {
+		throw "Missing renderers";
 	}
 	this.inEditMode = 'edit' in options ? options.edit : false;
 	
-	this.headerRenderer = new options.headerRenderer(this);
-	this.inputsRenderer = new options.inputsRenderer(this);
-	this.outputsRenderer = new options.outputsRenderer(this);
+	var that = this;
+	this.renderers = [];
+	jQuery(options.renderers).each(function(idx, renderer) {
+		that.renderers.push(new renderer(that));
+	});
 	
-	this.headerRenderer.render(this.container);
-
 	initActTooltips(this.container);
+	
+
+	jQuery(this).on('scenarioFetched', function(event) {
+		that.modelId = event.scenario.modelId;
+	});
+
+	jQuery(this).on('modelFetched', function(event) {
+		that.modelId = event.model.modelId;
+	});
+	
 }
 
 ModelingWidget.prototype.getScenarioUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/get-scenario';
@@ -146,15 +156,31 @@ ModelingWidget.prototype.formatInputValue = function(input, value) {
  * @return renderer for an input
  */		
 ModelingWidget.prototype.getInputRenderer = function(input) {
-
-	
 	var renderer = null;
-	jQuery(this.inputRenderers).each(function(idx, rendererCandidate) {
+	jQuery(XCoLab.modeling.inputItemRenderers).each(function(idx, rendererCandidate) {
 		if (rendererCandidate.canRender(input)) {
 			renderer = rendererCandidate;
 		}
 	});
-	return renderer != null ? renderer : function(target, input) { console.log('no renderer found for input', input); };
+	return renderer != null ? renderer : { render: function(container, input) {console.log('no renderer found for input', input);}};
+};
+
+/**
+ * Returns a renderer for given output, if concrete renderer can't be found
+ * a default renderer is returned (default renderer doesn't present anything
+ * to the user)
+ * 
+ * @param output output for which renderer should be returned
+ * @return renderer for an output
+ */		
+ModelingWidget.prototype.getOutputRenderer = function(output) {
+	var renderer = null;
+	jQuery(XCoLab.modeling.outputItemRenderers).each(function(idx, rendererCandidate) {
+		if (rendererCandidate.canRender(output)) {
+			renderer = rendererCandidate;
+		}
+	});
+	return renderer != null ? renderer : { getName : function() { return output.name; }, render: function(container, output) {console.log('no renderer found for output', output);}};
 };
 
 /**
@@ -185,6 +211,7 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
 	console.debug('loading scenario', scenarioId);
 	var modelingWidget = this;
 
+	jQuery(modelingWidget).trigger("fetchingScenario");
 	jQuery.ajax({
 		url: this.getScenarioUrl, 
 		data: {scenarioId: scenarioId}, 
@@ -209,46 +236,80 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
  * Runs the current model.
  */
 ModelingWidget.prototype.runTheModel = function() {
+	var modelingWidget = this;
+	
 	var values = {};
 	this.container.find(".valueBinding").each(function() {
 		values[jQuery(this).attr('data-id')] = jQuery(this).val();
 	});
 	
-	jQuery(document).trigger("fetchingScenario");
+	jQuery(modelingWidget).trigger("fetchingScenario");
 	
+	
+	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId);
 	jQuery.ajax({
-		url: this.runModelUrl, 
-		data: {modelId: this.simulationId, inputs: JSON.stringify(values)}, 
+		url: modelingWidget.runModelUrl, 
+		data: {modelId: modelingWidget.modelId, inputs: JSON.stringify(values)}, 
 		dataType: 'jsonp',
 	}).done(function(data) {
-		this.simulationId = data.modelId;
 		var event = jQuery.Event( "scenarioFetched" );
 		event.scenario = data;
-		jQuery(document).trigger(event);
+		jQuery(modelingWidget).trigger(event);
 	}).fail(function(a, b, c) {
 		console.log("model run failed :(", a, b, c);
 	});
 };
 
+/**
+ * Loads model with given id. When scenario is loaded "modelFetched" 
+ * event is triggered.
+ * 
+ * @param modelId id of a model
+ * 
+ */
+ModelingWidget.prototype.loadModel = function(modelId) {
+	console.debug('loading scenario', modelId);
+	var modelingWidget = this;
+
+	jQuery(modelingWidget).trigger("fetchingModel");
+	jQuery.ajax({
+		url: this.getModelUrl, 
+		data: {modelId: modelId}, 
+		dataType: 'jsonp',
+	}).done(function(data, textStatus, jqXHR) {
+		console.debug('model loaded', modelId, data, textStatus, jqXHR);
+		
+		var event = jQuery.Event( "modelFetched" );
+		event.model = data;
+		jQuery(modelingWidget).trigger(event);
+		
+	}).fail(function(data, textStatus, errorThrown) {
+		console.debug("can't load model", scenarioId, data, textStatus, errorThrown);
+		var event = jQuery.Event( "modelFetchingError" );
+		event.scenario = data;
+		jQuery(modelingWidget).trigger(event);
+		
+	});
+};
 
 
 XCoLab.modeling = function(selector, options) {
-	
+	options.renderers = 'renderers' in options ? options.renderers : [];
 	if (!('headerRenderer' in options)) { 
-		options.headerRenderer = XCoLab.modeling.headerRenderers[0];
-	}
-	if (!('outputsRenderer' in options)) { 
-		options.outputsRenderer = XCoLab.modeling.headerRenderers[0];
+		options.renderers.push(XCoLab.modeling.headerRenderers[0]);
 	}
 	if (!('inputsRenderer' in options)) { 
-		options.inputsRenderer = XCoLab.modeling.headerRenderers[0];
+		options.renderers.push(XCoLab.modeling.inputsRenderers[0]);
+	}
+	if (!('outputsRenderer' in options)) { 
+		options.renderers.push(XCoLab.modeling.outputsRenderers[0]);
 	}
 	return new ModelingWidget(selector, options);
 };
 
-XCoLab.modeling.outputEntityRenderers = [];
+XCoLab.modeling.outputItemRenderers = [];
 XCoLab.modeling.outputsRenderers = [];
-XCoLab.modeling.inputEntityRenderers = [];
+XCoLab.modeling.inputItemRenderers = [];
 XCoLab.modeling.inputsRenderers = [];
 XCoLab.modeling.headerRenderers = [];
 
