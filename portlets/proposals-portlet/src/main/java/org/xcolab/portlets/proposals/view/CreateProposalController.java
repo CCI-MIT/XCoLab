@@ -21,7 +21,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 @Controller
 @RequestMapping("view")
-public class CreateProposalController {
+public class CreateProposalController extends BaseProposalsController {
     
     @Autowired
     private ProposalsContext proposalsContext;
@@ -41,6 +41,8 @@ public class CreateProposalController {
         model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped));
         
         model.addAttribute("proposal", proposalWrapped);
+
+        setSeoTexts(request, "Create proposal in " + proposalsContext.getContest(request), null, null);
         
         return "proposalDetails_edit";
     }

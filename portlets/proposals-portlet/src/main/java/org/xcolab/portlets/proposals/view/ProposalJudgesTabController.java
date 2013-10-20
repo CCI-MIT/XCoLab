@@ -12,6 +12,7 @@ import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -26,8 +27,9 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     @RequestMapping(params = {"pageToDisplay=proposalDetails_JUDGE"})
     public String showJudgesPanel(PortletRequest request, Model model) 
             throws PortalException, SystemException {
-
-        model.addAttribute("currentTab", ProposalTab.JUDGE);
+        
+        setCommonModelAndPageAttributes(request, model, ProposalTab.JUDGE);
+        
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
         model.addAttribute("judgeProposalBean", new JudgeProposalBean(proposalsContext.getProposalWrapped(request)));
         model.addAttribute("judgingOptions", JudgingSystemActions.JudgeAction.values());
@@ -40,7 +42,9 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
 
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getFellowDiscussionId());
-        model.addAttribute("currentTab", ProposalTab.FELLOW);
+
+        setCommonModelAndPageAttributes(request, model, ProposalTab.FELLOW);
+        
         model.addAttribute("judgeProposalBean", new JudgeProposalBean(proposalsContext.getProposalWrapped(request)));
 
 

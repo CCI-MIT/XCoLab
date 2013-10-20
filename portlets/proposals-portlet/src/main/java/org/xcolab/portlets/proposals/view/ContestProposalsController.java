@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 @Controller
 @RequestMapping("view")
-public class ContestProposalsController {
+public class ContestProposalsController extends BaseProposalsController {
     
     @Autowired
     private ProposalsContext proposalsContext;
@@ -54,6 +54,8 @@ public class ContestProposalsController {
         
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
+        
+        setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
         
         return "contestProposals";
     }

@@ -206,6 +206,9 @@ jQuery(function() {
 		trigger.parent().parent().find(".addprophelp").slideToggle("fast");
 	});
 	
+	// tooltips
+	initTooltips();
+	
 	initializeTextEditors();
 });
 

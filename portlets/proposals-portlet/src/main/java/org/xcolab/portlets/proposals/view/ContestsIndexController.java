@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 @Controller
 @RequestMapping("view")
-public class ContestsIndexController {
+public class ContestsIndexController extends BaseProposalsController {
 
     private final static String COOKIE_VIEW_TYPE = "cc_contests_viewType";
     private final static String VIEW_TYPE_GRID = "GRID";
@@ -65,6 +65,8 @@ public class ContestsIndexController {
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showActiveContests", showActiveContests);
+
+        setSeoTexts(request, showActiveContests ? "Active contests" : "Prior contests", null, null);
         
         return "contestsIndex";
     }

@@ -48,7 +48,6 @@
             }
         </style>
 
-        <script>var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};</script>
 
         <div class="prop-left">
 

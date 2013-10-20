@@ -87,7 +87,6 @@ public class ContestPhaseWrapper {
     public ContestStatus getStatus() throws PortalException, SystemException {
         if (status == null) {
             String statusStr = ContestPhaseLocalServiceUtil.getContestStatusStr(contestPhase);
-            System.out.println(statusStr);
             if (statusStr != null) {
                 status = ContestStatus.valueOf(statusStr);
             }

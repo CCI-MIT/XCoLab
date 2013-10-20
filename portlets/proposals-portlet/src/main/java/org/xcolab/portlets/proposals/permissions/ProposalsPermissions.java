@@ -95,10 +95,19 @@ public class ProposalsPermissions {
         if (user.isDefaultUser()) 
             return false;
         
-        // TODO - 
-        //return contestStatus.isCanCreate();
-        return true;
+        return contestStatus.isCanCreate();
     }
+    
+    public boolean getCanAssignRibbon() {
+        if (user.isDefaultUser()) 
+            return false;
+        
+        if (getCanAdminAll()) 
+            return true;
+        return false;
+    }
+    
+    
     
     public boolean getCanSeeRequestMembershipButton() throws SystemException, PortalException {
         return user.isDefaultUser() || getCanRequestMembership();

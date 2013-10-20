@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -33,8 +34,8 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         //findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
         
         model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalsContext.getProposalWrapped(request)));
-        
-        model.addAttribute("currentTab", ProposalTab.DESCRIPTION);
+
+        setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
         
         if (edit) {
             return "proposalDetails_edit";

@@ -23,7 +23,6 @@ public class DiscussionCategoryGroupWrapper {
         long commentsThread = discussionCategoryGroup.getCommentsThread();
         if (commentsThread > 0) {
             DiscussionMessage thread = DiscussionMessageLocalServiceUtil.getMessageByMessageId(commentsThread);
-            System.out.println(thread);
             for (DiscussionMessage msg: DiscussionMessageLocalServiceUtil.getThreadMessages(commentsThread)) {
                 comments.add(new DiscussionMessageWrapper(msg));
             }

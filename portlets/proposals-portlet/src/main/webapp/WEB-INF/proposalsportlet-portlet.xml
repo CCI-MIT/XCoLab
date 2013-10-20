@@ -49,6 +49,7 @@
 					</property>
 					<property name="mapAll" value="true" />
 				</bean>
+				<bean class="org.xcolab.portlets.proposals.view.interceptors.ValidateTabPermissionsInterceptor" />
     		</list>
     	</property>
     	

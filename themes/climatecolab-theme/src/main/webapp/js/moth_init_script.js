@@ -505,11 +505,18 @@ function initTooltips() {
     
     jQuery(".tooltips div a, .fieldWithTooltip").mouseover(function() {
         var self = jQuery(this);
-        var tooltip = findTooltip(jQuery(this));
+        var tooltip = findTooltip(self);
         
         tooltip.parent().css("position", "relative"); 
         tooltip.show();
-        tooltip.css({top: - tooltip.outerHeight() - 10, left: (self.outerWidth() - tooltip.outerWidth()) / 2});
+        
+        var offsets = {top: - tooltip.outerHeight() - 10, left: (self.outerWidth() - tooltip.outerWidth()) / 2};
+        if (self.hasClass('fieldWithTooltip')) {
+        	delete offsets.top;
+        	delete offsets.left;
+        }
+        
+        tooltip.css(offsets);
     });
     jQuery(".tooltips div a, .fieldWithTooltip").mouseleave(function() {
         findTooltip(jQuery(this)).hide();

@@ -217,8 +217,8 @@
 
 /*  ADMIN  --------------------------------------------------- */
 
-.admin_left { float:left; width:474px; margin-top:50px;}
-.admin_right { float:left; width:454px; margin:50px 0 0 56px;}
+.admin_left { float:left; width:474px; }
+.admin_right { float:left; width:454px; margin:0px 0 0 56px;}
 /*.admin_left h2, .admin_right h2 { font-size:18px; color:#2498b3; line-height:normal;}*/
 .admin_box { background:#efeee3; padding:18px 20px; margin:10px 0 40px 0;}
 .admin_box span { padding-left:25px; font-style:italic;}

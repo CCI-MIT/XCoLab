@@ -7,6 +7,7 @@
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+	<script>var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};</script>
 	<div class="proposal-head">
 		<div class="inner">
 			<div class="headline">
@@ -37,6 +38,11 @@
 					<h1>${proposal.name}</h1>
 				</div>
 			</div>
+			<c:if test="${not proposal.visible }">
+				<h3 class='portlet-msg-error'>
+					This proposal has been deleted!
+				</h3>
+			</c:if>
 			<div class="prop-tabs">
 				<ul>
 					<c:forEach var="singleTab" items="${tabs }">
@@ -63,15 +69,16 @@
 		<!-- /inner -->
 	</div>
 	<!-- /proposal-head -->	
-	
-	<div class="edit-prop-wrap">
-		<div class="inner">
-			<div class="edit-prop">
-				<div class="edit-prop-butts">
-					<proposalsPortlet:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
+	<c:if test="${currentTabWrapped.canEdit }">
+		<div class="edit-prop-wrap">
+			<div class="inner">
+				<div class="edit-prop">
+					<div class="edit-prop-butts">
+						<proposalsPortlet:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</c:if>
 
 </jsp:root>

@@ -35,7 +35,7 @@
 					
 				</div>
 		</div>
-	<div class="blueheaderbar tooltips">
+			<div class="blueheaderbar tooltips">
 				<div class="proposalname" style="${proposalsPermissions.canJudgeActions ? 'width:554px;' : ''}">
 					<div style="display: inline-block">
 						<portlet:renderURL var="sortURL">

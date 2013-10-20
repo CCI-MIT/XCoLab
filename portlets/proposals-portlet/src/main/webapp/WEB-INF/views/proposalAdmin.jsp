@@ -19,12 +19,93 @@
     </style>
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
-
-
-    <h1>admin tab</h1>
-
     <div id="content">
-        <div class="admin_left"><h2>LEFT</h2></div>
+        <div class="admin_left">
+        <c:set var="addBlueClass" value='false' />
+        
+		<c:if test="${proposalsPermissions.canAdmin }">
+        	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            	<strong>This proposal can be edited by:</strong>
+            	<div>            		
+            		<portlet:actionURL var="deleteProposalURL">
+                    	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
+	                    <portlet:param name="contestId" value="${contest.contestPK }" />
+    	                <portlet:param name="planId" value="${proposal.proposalId }" />
+        	            <portlet:param name="action" value="toggleProposalOpen" />
+            		</portlet:actionURL >
+            		<form action="${deleteProposalURL }" method="post">
+            			<![CDATA[
+            				<input type='radio' value='false' name='planOpen' ${not proposal.open ? "checked='checked'" : ''} />Team members only<br />
+            				<input type='radio' value='true' name='planOpen' ${proposal.open ? "checked='checked'" : ''} />Anyone<br />
+            			]]>
+            		
+            			<div class="blue-button">
+                			<a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                    		    Save
+                    		</a>
+                    	</div>
+            		</form>
+            	</div>
+        	</div>
+        	<c:set var="addBlueClass" value='${not addBlueClass }' />
+        </c:if>
+        
+        <c:if test="${proposalsPermissions.canAssignRibbon }">
+        	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            	<strong>Proposal ribbon in contest phase</strong>
+            	<div><!--  -->
+            		<portlet:actionURL var="assignRibbonURL">
+                    	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
+	                    <portlet:param name="contestId" value="${contest.contestPK }" />
+    	                <portlet:param name="planId" value="${proposal.proposalId }" />
+        	            <portlet:param name="action" value="assignRibbon" />
+            		</portlet:actionURL >
+            		<form action="${assignRibbonURL }" method="post">
+            			<select name="ribbon">
+            				<option value="-1">no ribbon</option>
+            				<c:forEach var="ribbon" items="${availableRibbons }">
+            					<c:choose>
+            						<c:when test="${proposal.ribbon == ribbon.ribbon }">
+            							<option value="${ribbon.id }" selected="selected">${ribbon.ribbon} - ${ribbon.hoverText }</option>
+            						</c:when>
+            						<c:otherwise>
+            							<option value="${ribbon.id }">${ribbon.ribbon} - ${ribbon.hoverText }</option>
+            						</c:otherwise>
+            					</c:choose>	
+            				</c:forEach>
+            			</select>
+            			<input type="submit" value="Save" /> 
+            		</form>
+            	</div>
+        	</div>
+        	<c:set var="addBlueClass" value='${not addBlueClass }' />
+        </c:if>
+        
+        <c:if test="${proposalsPermissions.canDelete }">
+        	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            	<strong>Owner actions</strong>
+            	<div>            		
+            		<portlet:actionURL var="deleteProposalURL">
+                    	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
+	                    <portlet:param name="contestId" value="${contest.contestPK }" />
+    	                <portlet:param name="planId" value="${proposal.proposalId }" />
+        	            <portlet:param name="action" value="deleteProposal" />
+        	            <portlet:param name="delete" value="true" />
+            		</portlet:actionURL >
+            		<form action="${deleteProposalURL }" method="post" id="deleteProposalForm">
+            			<div class="blue-button">
+                			<a href="javascript:;" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
+                    		    DELETE plan
+                    		</a>
+                    	</div>
+            		</form>
+            	</div>
+        	</div>
+        	<c:set var="addBlueClass" value='${not addBlueClass }' />
+        </c:if>
+        
+        
+        </div>
         <div class="admin_right">
             <div class="addpropbox">
                 <strong>Membership requests</strong>
@@ -62,7 +143,26 @@
                         <c:set var="count" value="${count + 1}" scope="page"/>
                     </c:forEach>
 
-                <div id="manage_membership_request_dialog"></div>
+                <div id="manage_membership_request_dialog"><!--  --></div>
+            </div>
+            
+        	<div class="addpropbox blue">
+		        <strong>History</strong>
+            	<div id="versions" class="versionsContainer hidden">
+                	<div class="versions">
+                    	<div class="historyTable">
+                        	<table>
+                            	<tbody class="ui-datatable-data ui-widget-content">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <script>
+            		jQuery(function() {
+            			triggerHistoryVisibility();
+            		});
+            	</script>
             </div>
         </div>
     </div>

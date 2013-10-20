@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
 import org.xcolab.services.EventBusService;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
@@ -166,6 +168,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             p2p.setVersionFrom(proposal.getCurrentVersion());
             p2p.setVersionTo(-1);
             proposal2PhaseLocalService.addProposal2Phase(p2p);
+            eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal, 
+                    contestPhaseLocalService.getContestPhase(contestPhaseId)));
         }
         
 
@@ -201,6 +205,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
             String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
+        ProposalAttribute oldAttribute = null;
 
         int currentVersion = proposal.getCurrentVersion();
         int newVersion = currentVersion + 1;
@@ -219,6 +224,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 attribute.setVersion(newVersion);
                 proposalAttributeLocalService.updateProposalAttribute(attribute);
             }
+            else {
+                oldAttribute = attribute;
+            }
         }
         
         // set new value for provided attribute
@@ -230,6 +238,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // create newly created version descriptor
         createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId);
         updateProposal(proposal);
+        
+        eventBus.post(new ProposalAttributeUpdatedEvent(proposal, attributeName, oldAttribute, attribute));
         
         return attribute;
     }

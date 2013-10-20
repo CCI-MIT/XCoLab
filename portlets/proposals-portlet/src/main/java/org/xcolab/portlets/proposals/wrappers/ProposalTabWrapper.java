@@ -1,41 +1,26 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import javax.portlet.PortletRequest;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.utils.ProposalsContext;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 
 public class ProposalTabWrapper {
     private ProposalTab tab;
     private String displayName;
-    private int activityCount;
-
-
-    public static List<ProposalTabWrapper> createAll(ProposalsPermissions permissions){
-        List<ProposalTabWrapper> tabs = new ArrayList<ProposalTabWrapper>();
-
-        int i=0;
-        for (ProposalTab tab: ProposalTab.values()) {
-            if (tab == ProposalTab.ADMIN && !permissions.getCanAdmin()) continue;
-            if (tab == ProposalTab.JUDGE && (!permissions.getCanJudgeActions() || !permissions.getCanFellowActions())) continue;
-            if (tab == ProposalTab.FELLOW && !permissions.getCanFellowActions()) continue;
-            tabs.add(new ProposalTabWrapper(tab, i++));
-        }
-        return tabs;
-    }
-
-
-    public ProposalTabWrapper(ProposalTab tab, int activityCount) {
+    private final PortletRequest request;
+    private final ProposalsContext context;
+    private final ProposalsPermissions permissions;
+    
+    public ProposalTabWrapper(ProposalTab tab, PortletRequest request, ProposalsContext context) throws PortalException, SystemException {
         super();
         this.tab = tab;
-        this.activityCount = activityCount;
-    }
-
-    public ProposalTabWrapper(ProposalTab tab, int activityCount, String displayName) {
-        super();
-        this.tab = tab;
-        this.activityCount = activityCount;
-        this.displayName = displayName;
+        this.request = request;
+        this.context = context;
+        this.permissions = context.getPermissions(request);
     }
     
     public ProposalTab getTab() {
@@ -45,10 +30,7 @@ public class ProposalTabWrapper {
         this.tab = tab;
     }
     public int getActivityCount() {
-        return activityCount;
-    }
-    public void setActivityCount(int activityCount) {
-        this.activityCount = activityCount;
+        return tab.getActivityCount(context, request);
     }
 
     public String getName() {
@@ -68,5 +50,13 @@ public class ProposalTabWrapper {
     
     public boolean isDefaultTab() {
         return tab.isDefault();
+    }
+    
+    public boolean getCanEdit() {
+        return tab.getCanEdit(permissions, context, request);
+    }
+    
+    public boolean getCanAccess() {
+        return tab.getCanAccess(permissions, context, request);
     }
 }
