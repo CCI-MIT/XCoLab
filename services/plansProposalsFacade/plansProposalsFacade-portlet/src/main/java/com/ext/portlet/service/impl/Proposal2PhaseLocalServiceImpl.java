@@ -1,7 +1,11 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
+import java.util.List;
+
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -33,5 +37,14 @@ public class Proposal2PhaseLocalServiceImpl
     
     public Proposal2Phase getByProposalIdContestPhaseId(long proposalId, long contestPhaseId) throws PortalException, SystemException {
         return getProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
+    }
+    
+    public Contest getCurrentContestForProposal(long proposalId) throws SystemException, PortalException {
+        List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
+        if (proposal2Phases.isEmpty()) {
+            throw new SystemException("Proposal " + proposalId + " isn't associated with any contest");
+        }
+        ContestPhase phase = contestPhaseLocalService.getContestPhase(proposal2Phases.get(proposal2Phases.size()-1).getContestPhaseId());
+        return contestLocalService.getContest(phase.getContestPK());
     }
 }

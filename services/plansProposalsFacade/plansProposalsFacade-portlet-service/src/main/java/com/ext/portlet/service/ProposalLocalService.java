@@ -588,9 +588,11 @@ public interface ProposalLocalService extends PersistedModelLocalService {
     * @param proposalId id of a proposal
     * @param userId id of a supported to be added
     * @throws SystemException in case of an LR error
+    * @throws PortalException
     */
     public void addSupporter(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * <p>Retracts support from a proposal</p>
@@ -598,9 +600,11 @@ public interface ProposalLocalService extends PersistedModelLocalService {
     * @param proposalId id of a proposal
     * @param userId id of a supported to be removed
     * @throws SystemException in case of an LR error
+    * @throws PortalException
     */
     public void removeSupporter(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * <p>Returns list of users that have voted for a proposal in given contest phase</p>

@@ -8,6 +8,7 @@
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>plans</friendly-url-mapping>
 		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
+		<social-activity-interpreter-class>org.xcolab.portlets.proposals.view.ProposalsSocialActivityInterpreter</social-activity-interpreter-class>
 		<instanceable>false</instanceable>
 		<header-portlet-css>/css/proposals.css</header-portlet-css>
 		<header-portlet-javascript>/js/proposals.js</header-portlet-javascript>

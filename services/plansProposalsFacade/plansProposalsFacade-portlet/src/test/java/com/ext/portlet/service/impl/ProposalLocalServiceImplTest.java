@@ -42,7 +42,7 @@ public class ProposalLocalServiceImplTest {
 	    ctx = new ArrayApplicationContext(new String[] { 
 	            "META-INF/test-spring.xml",
 	            "META-INF/counter-spring.xml",
-	            "META-INF/hibernate-spring.xml", "META-INF/base-spring.xml",
+	            "META-INF/hibernate-spring.xml", "META-INF/base-spring.xml", "META-INF/ext-spring.xml",
 	            "META-INF/portlet-spring.xml", "META-INF/infrastructure-spring.xml", "META-INF/util-spring.xml", "META-INF/management-spring.xml",
 	            "META-INF/portlet-spring-override.xml"});
         

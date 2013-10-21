@@ -1,6 +1,6 @@
-package org.xcolab.proposals.events;
+package org.xcolab.proposals.events.handlers;
 
-import org.xcolab.services.EventBusService;
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ActivitySubscriptionLocalService;
@@ -19,20 +19,13 @@ import com.liferay.portal.model.User;
  * @author janusz
  *
  */
-public class SubscribeProposalForAllContestSubscribersEventHandler {
-
-    @BeanReference(type = EventBusService.class) 
-    private EventBusService eventBus;
+public class SubscribeProposalForAllContestSubscribersEventHandler extends BaseEventHandler {
 
     @BeanReference(type = ActivitySubscriptionLocalService.class) 
     private ActivitySubscriptionLocalService activitySubscriptionLocalService;
 
     @BeanReference(type = ProposalLocalService.class) 
     private ProposalLocalService proposalLocalService;
-    
-    public void afterPropertiesSet() {
-        eventBus.register(this);
-    }
     
     @Subscribe
     public void handleProposalCreatedEvent(ProposalAssociatedWithContestPhaseEvent event) throws PortalException, SystemException {

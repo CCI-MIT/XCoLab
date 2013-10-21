@@ -9,10 +9,11 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
+import org.xcolab.proposals.events.ProposalSupporterAdded;
+import org.xcolab.proposals.events.ProposalSupporterRemoved;
 import org.xcolab.services.EventBusService;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
@@ -21,7 +22,6 @@ import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
@@ -239,7 +239,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId);
         updateProposal(proposal);
         
-        eventBus.post(new ProposalAttributeUpdatedEvent(proposal, attributeName, oldAttribute, attribute));
+        eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId), 
+                attributeName, oldAttribute, attribute));
         
         return attribute;
     }
@@ -566,14 +567,17 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId id of a proposal
      * @param userId id of a supported to be added
      * @throws SystemException in case of an LR error
+     * @throws PortalException 
      */
     @Transactional
-    public void addSupporter(long proposalId, long userId) throws SystemException {
+    public void addSupporter(long proposalId, long userId) throws SystemException, PortalException {
         ProposalSupporter supporter = 
                 proposalSupporterLocalService.createProposalSupporter(new ProposalSupporterPK(proposalId, userId));
         
         supporter.setCreateDate(new Date());
         proposalSupporterLocalService.addProposalSupporter(supporter);
+
+        eventBus.post(new ProposalSupporterAdded(getProposal(proposalId), userLocalService.getUser(userId)));
     }
     
     /**
@@ -581,13 +585,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId id of a proposal
      * @param userId id of a supported to be removed
      * @throws SystemException in case of an LR error
+     * @throws PortalException 
      */
     @Transactional
-    public void removeSupporter(long proposalId, long userId) throws SystemException {
+    public void removeSupporter(long proposalId, long userId) throws SystemException, PortalException {
         ProposalSupporter supporter = 
                 proposalSupporterLocalService.createProposalSupporter(new ProposalSupporterPK(proposalId, userId));
         
         proposalSupporterLocalService.deleteProposalSupporter(supporter);
+        eventBus.post(new ProposalSupporterRemoved(getProposal(proposalId), userLocalService.getUser(userId)));
     }
     
     /**

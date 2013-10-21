@@ -2,25 +2,21 @@ package org.xcolab.proposals.events;
 
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
+import com.liferay.portal.model.User;
 
-public class ProposalAttributeUpdatedEvent {
-    private final Proposal proposal;
+public class ProposalAttributeUpdatedEvent  extends BaseProposalUserActivityEvent {
     private final String attributeName;
     private final ProposalAttribute oldAttribute;
     private final ProposalAttribute newAttribute;
     
-    public ProposalAttributeUpdatedEvent(Proposal proposal, String attributeName, ProposalAttribute oldAttribute,
+    public ProposalAttributeUpdatedEvent(Proposal proposal, User user, String attributeName, ProposalAttribute oldAttribute,
             ProposalAttribute newAttribute) {
-        super();
-        this.proposal = proposal;
+        super(proposal, user);
         this.attributeName = attributeName;
         this.oldAttribute = oldAttribute;
         this.newAttribute = newAttribute;
     }
     
-    public Proposal getProposal() {
-        return proposal;
-    }
     public String getAttributeName() {
         return attributeName;
     }

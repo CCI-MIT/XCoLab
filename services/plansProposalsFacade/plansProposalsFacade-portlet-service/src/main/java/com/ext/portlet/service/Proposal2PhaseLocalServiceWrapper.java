@@ -258,6 +258,13 @@ public class Proposal2PhaseLocalServiceWrapper
             contestPhaseId);
     }
 
+    public com.ext.portlet.model.Contest getCurrentContestForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.getCurrentContestForProposal(proposalId);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

@@ -263,6 +263,13 @@ public class Proposal2PhaseLocalServiceUtil {
                    .getByProposalIdContestPhaseId(proposalId, contestPhaseId);
     }
 
+    public static com.ext.portlet.model.Contest getCurrentContestForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getCurrentContestForProposal(proposalId);
+    }
+
     public static void clearService() {
         _service = null;
     }

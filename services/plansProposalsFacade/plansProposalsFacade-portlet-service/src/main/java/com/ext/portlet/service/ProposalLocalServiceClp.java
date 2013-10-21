@@ -1377,13 +1377,18 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     public void addSupporter(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_addSupporterMethodKey38,
                 proposalId, userId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1398,13 +1403,18 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     public void removeSupporter(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         MethodHandler methodHandler = new MethodHandler(_removeSupporterMethodKey39,
                 proposalId, userId);
 
         try {
             _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }

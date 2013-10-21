@@ -8,12 +8,11 @@
 	
 	<bean id="org.xcolab.services.EventBusService" class="org.xcolab.services.EventBusServiceImpl" />
 	
-	<bean id="org.xcolab.proposals.events.SubscribeProposalForAllContestSubscribersEventHandler" 
-		class="org.xcolab.proposals.events.SubscribeProposalForAllContestSubscribersEventHandler" />
+	<bean id="org.xcolab.proposals.events.handlers.SubscribeProposalForAllContestSubscribersEventHandler" 
+		class="org.xcolab.proposals.events.handlers.SubscribeProposalForAllContestSubscribersEventHandler" />
+		
+		
+	<bean id="org.xcolab.proposals.events.handlers.ProposalAttributeUpdatedSocialActivityHandler" 
+		class="org.xcolab.proposals.events.handlers.ProposalAttributeUpdatedSocialActivityHandler" />
 	
-	<!-- 
-	<bean id="com.ext.portlet.service.ProposalLocalService" class="com.ext.portlet.service.impl.ProposalLocalServiceImpl">
-		<constructor-arg name="portalServicesHelper" ref="com.ext.utils.PortalServicesHelperImpl" />
-	</bean>
-	 -->
 </beans>

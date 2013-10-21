@@ -28,6 +28,9 @@
 	
 	</bean>
 	
+	<bean id="com.liferay.portal.service.UserLocalService" class="com.ext.portlet.service.impl.mock.UserLocalServiceMock" />
+	<bean id="com.liferay.portal.service.SocialActivityLocalService" class="com.ext.portlet.service.impl.mock.SocialActivityLocalServiceMock" />
+	
 	<!-- 
 	<bean id="portalClassLoader" class="com.liferay.portal.service.MockContextProvider" factory-method="getClassLoader" />
 	<bean id="portletClassLoader" class="com.liferay.portal.service.MockContextProvider" factory-method="getClassLoader" />
