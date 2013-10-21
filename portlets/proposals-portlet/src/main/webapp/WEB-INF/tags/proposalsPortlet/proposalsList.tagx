@@ -27,7 +27,7 @@
             </div>
             </c:if>
             <div class="row1">
-                <div class="title-author" style="${proposalsPermissions.canFellowActions ? 'width:532px;' : ''}">
+                <div class="title-author" style="${proposalsPermissions.canJudgeActions ? 'width:532px;' : ''}">
                     <h4>
                     	<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
                         /&#160;
@@ -74,46 +74,60 @@
 
                 <c:if test="${proposalsPermissions.canJudgeActions}">
                     <div class="fellow-judge-action">
-
-
-                   <span class="fieldWithTooltip" style="margin-right: 15px;">
-                    <c:choose>
-                        <c:when test="${proposal.judgeStatus == 0}">
-                            <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
-                        </c:when>
-                        <c:when test="${proposal.judgeStatus == 1}">
-                            <img src="/climatecolab-theme/images/icon_question-x.png"/>
-                        </c:when>
-                        <c:otherwise>
-                            <img src="/climatecolab-theme/images/icon_question-chk.png"/>
-                        </c:otherwise>
-                    </c:choose>
-                    </span>
+                        <span class="fieldWithTooltip">
+                        <c:choose>
+                            <c:when test="${proposal.judgeStatus == 0}">
+                                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
+                            </c:when>
+                            <c:when test="${proposal.judgeStatus == 1}">
+                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                            </c:when>
+                            <c:otherwise>
+                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                            </c:otherwise>
+                        </c:choose>
+                        </span>
                         <div class="tooltip">
-                            123
+                            <c:choose>
+                                <c:when test="${proposal.fellowStatus == 0}">
+                                    No decision yet.
+                                </c:when>
+                                <c:when test="${proposal.fellowStatus == 1}">
+                                    Proposal will not proceed to next round.
+                                </c:when>
+                                <c:otherwise>
+                                    Proposal will proceed to next round.
+                                </c:otherwise>
+                            </c:choose>
                         </div>
-
-
-                    <c:if test="${proposalsPermissions.canFellowActions}">
-                                              <span class="fieldWithTooltip">
-                    <c:choose>
-                        <c:when test="${proposal.fellowStatus == 0}">
-                            <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
-                        </c:when>
-                        <c:when test="${proposal.fellowStatus == 1}">
-                            <img src="/climatecolab-theme/images/icon_question-x.png"/>
-                        </c:when>
-                        <c:otherwise>
-                            <img src="/climatecolab-theme/images/icon_question-chk.png"/>
-                        </c:otherwise>
-                    </c:choose>
-                    </span>
+                        <c:if test="${proposalsPermissions.canFellowActions}">
+                        <span class="fieldWithTooltip" style="margin-left: 15px;">
+                        <c:choose>
+                            <c:when test="${proposal.fellowStatus == 0}">
+                                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
+                            </c:when>
+                            <c:when test="${proposal.fellowStatus == 1}">
+                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                            </c:when>
+                            <c:otherwise>
+                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                            </c:otherwise>
+                        </c:choose>
+                        </span>
                         <div class="tooltip">
-                            123
+                            <c:choose>
+                                <c:when test="${proposal.fellowStatus == 0}">
+                                    No decision yet.
+                                </c:when>
+                                <c:when test="${proposal.fellowStatus == 1}">
+                                    Proposal will not proceed to next round.
+                                </c:when>
+                                <c:otherwise>
+                                    Proposal will proceed to next round.
+                                </c:otherwise>
+                            </c:choose>
                         </div>
-
-
-                    </c:if>
+                        </c:if>
                     </div>
                 </c:if>
 

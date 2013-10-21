@@ -156,9 +156,8 @@
 				</div>
 
         <c:if test="${proposalsPermissions.canJudgeActions}">
-            <div class="contributor" style="width: 95px;">
-
-                <a href="#">Judge Fellow</a>
+            <div class="judgefellow">
+                <a href="#">Judge</a><c:if test="${proposalsPermissions.canFellowActions}"><a href="#" style="padding-left: 5px;">Fellow</a></c:if>
                 <div class="tooltip">
                     Judge or fellow actions
                     <div class="tt-arrow"><!-- --></div>

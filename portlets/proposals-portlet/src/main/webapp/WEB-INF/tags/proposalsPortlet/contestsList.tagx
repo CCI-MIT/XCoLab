@@ -63,26 +63,39 @@
                     </span>
 
                         <div class="tooltip">
-                            123
+                            <c:choose>
+                                <c:when test="${not contest.judgeStatus}">
+                                    Judge's decision incomplete.
+                                </c:when>
+                                <c:otherwise>
+                                    Judge's decision completed.
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </td>
                     <td class="column contestCommentsCount g">
 
                         <c:if test="${proposalsPermissions.canFellowActions}">
-                                                   <span class="fieldWithTooltip">
-                    <c:choose>
-                        <c:when test="${not contest.fellowStatus}">
-                            <img src="/climatecolab-theme/images/icon_question-x.png"/>
-                        </c:when>
-                        <c:otherwise>
-                            <img src="/climatecolab-theme/images/icon_question-chk.png"/>
-                        </c:otherwise>
-                    </c:choose>
-                    </span>
-
-                            <div class="tooltip">
-                                123
-                            </div>
+                        <span class="fieldWithTooltip">
+                            <c:choose>
+                                <c:when test="${not contest.fellowStatus}">
+                                    <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                        <div class="tooltip">
+                            <c:choose>
+                                <c:when test="${not contest.fellowStatus}">
+                                    Fellow decision incomplete.
+                                </c:when>
+                                <c:otherwise>
+                                    Fellow decision completed.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                         </c:if>
 
                     </td>

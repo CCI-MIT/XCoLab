@@ -443,6 +443,7 @@ public class ProposalWrapper {
      */
     public int getJudgeStatus(){
         try{
+            if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC) return 1; // don't move on if fellows disregarded proposal
             if (getJudgeAction() == JudgingSystemActions.JudgeAction.NO_DECISION) return 0;
             if (getJudgeRating() == 0) return 0;
             if (getJudgeComment() == null || getJudgeComment().length() == 0) return 0;
