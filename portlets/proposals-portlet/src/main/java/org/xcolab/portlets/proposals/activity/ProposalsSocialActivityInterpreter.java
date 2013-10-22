@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.view;
+package org.xcolab.portlets.proposals.activity;
 
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 

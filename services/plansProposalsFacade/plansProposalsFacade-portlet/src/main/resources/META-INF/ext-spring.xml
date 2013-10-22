@@ -12,7 +12,7 @@
 		class="org.xcolab.proposals.events.handlers.SubscribeProposalForAllContestSubscribersEventHandler" />
 		
 		
-	<bean id="org.xcolab.proposals.events.handlers.ProposalAttributeUpdatedSocialActivityHandler" 
-		class="org.xcolab.proposals.events.handlers.ProposalAttributeUpdatedSocialActivityHandler" />
+	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" 
+		class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" />
 	
 </beans>

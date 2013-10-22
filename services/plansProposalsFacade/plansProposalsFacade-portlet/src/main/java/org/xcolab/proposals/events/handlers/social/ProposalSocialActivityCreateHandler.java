@@ -1,7 +1,6 @@
 package org.xcolab.proposals.events.handlers.social;
 
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-import org.xcolab.proposals.events.handlers.ProposalAttributeUpdatedSocialActivityHandler;
 
 import com.ext.portlet.ProposalActivityKeys;
 import com.ext.portlet.model.Proposal;
@@ -29,6 +28,6 @@ public class ProposalSocialActivityCreateHandler extends BaseProposalSocialActiv
         }
     }
     
-    private final static Log _log = LogFactoryUtil.getLog(ProposalAttributeUpdatedSocialActivityHandler.class);
+    private final static Log _log = LogFactoryUtil.getLog(ProposalSocialActivityAttributeUpdateHandler.class);
 
 }

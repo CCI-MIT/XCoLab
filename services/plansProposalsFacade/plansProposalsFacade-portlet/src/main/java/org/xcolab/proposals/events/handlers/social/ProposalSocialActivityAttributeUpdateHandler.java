@@ -1,7 +1,6 @@
-package org.xcolab.proposals.events.handlers;
+package org.xcolab.proposals.events.handlers.social;
 
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
-import org.xcolab.proposals.events.handlers.social.BaseProposalSocialActivityEventHandler;
 
 import com.ext.portlet.ProposalActivityKeys;
 import com.ext.portlet.model.Proposal;
@@ -11,7 +10,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-public class ProposalAttributeUpdatedSocialActivityHandler extends BaseProposalSocialActivityEventHandler {
+public class ProposalSocialActivityAttributeUpdateHandler extends BaseProposalSocialActivityEventHandler {
     
 
     @Subscribe
@@ -29,5 +28,5 @@ public class ProposalAttributeUpdatedSocialActivityHandler extends BaseProposalS
         }
     }
     
-    private final static Log _log = LogFactoryUtil.getLog(ProposalAttributeUpdatedSocialActivityHandler.class);
+    private final static Log _log = LogFactoryUtil.getLog(ProposalSocialActivityAttributeUpdateHandler.class);
 }
