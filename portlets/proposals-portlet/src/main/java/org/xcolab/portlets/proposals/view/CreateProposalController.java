@@ -1,3 +1,4 @@
+
 package org.xcolab.portlets.proposals.view;
 
 import javax.portlet.RenderRequest;
@@ -34,6 +35,7 @@ public class CreateProposalController extends BaseProposalsController {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         
         Proposal proposal = ProposalLocalServiceUtil.createProposal(0);
+        proposal.setVisible(true);
         proposal.setAuthorId(themeDisplay.getUserId());
         
         ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request), proposalsContext.getContestPhase(request), null);

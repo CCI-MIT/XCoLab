@@ -95,7 +95,8 @@ public class ProposalsPermissions {
         if (user.isDefaultUser()) 
             return false;
         
-        return contestStatus.isCanCreate();
+        //TODO return contestStatus.isCanCreate();
+        return true;
     }
     
     public boolean getCanAssignRibbon() {
@@ -153,7 +154,8 @@ public class ProposalsPermissions {
     }
     
     public boolean isVotingEnabled() {
-        return contestPhase == null ? false : ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase) && contestStatus.isCanVote(); 
+        //return contestPhase == null ? false : ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase) && contestStatus.isCanVote();
+        return true;
     }
     
     public boolean getCanVote() {

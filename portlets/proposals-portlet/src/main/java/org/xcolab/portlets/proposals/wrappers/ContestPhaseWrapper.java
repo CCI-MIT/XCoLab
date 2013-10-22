@@ -103,10 +103,7 @@ public class ContestPhaseWrapper {
     }
 
     public boolean isActive() {
-        Date now = new Date();
-        if (contestPhase.getPhaseStartDate() != null && contestPhase.getPhaseEndDate() != null) 
-            return contestPhase.getPhaseStartDate().before(now) && contestPhase.getPhaseEndDate().after(now);
-        return false;
+        return ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase);
     }
     
     public long getMilisecondsTillEnd() {

@@ -21,6 +21,8 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -67,8 +69,17 @@ public class AddUpdateProposalDetailsActionController {
         else {
             // create
             createNew = true;
-            proposal = new ProposalWrapper(ProposalLocalServiceUtil.create(proposalsContext.getUser(request).getUserId(), 
-                    proposalsContext.getContestPhase(request).getContestPhasePK())) ;
+            Proposal newProposal = ProposalLocalServiceUtil.create(proposalsContext.getUser(request).getUserId(), 
+                    proposalsContext.getContestPhase(request).getContestPhasePK());
+            Proposal2Phase newProposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(newProposal.getProposalId(), 
+                    proposalsContext.getContestPhase(request).getContestPhasePK());
+            
+            proposal = new ProposalWrapper(
+                    newProposal,  
+                    0, 
+                    proposalsContext.getContest(request), 
+                    proposalsContext.getContestPhase(request), 
+                    newProposal2Phase) ;
         }
         
         
