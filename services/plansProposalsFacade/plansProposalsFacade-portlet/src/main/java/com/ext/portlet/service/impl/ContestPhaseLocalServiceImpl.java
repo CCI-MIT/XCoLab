@@ -113,9 +113,14 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         if (contestPhase.getPhaseInactiveOverride()) {
             return contestPhase.getPhaseInactiveOverride();
         }
-        if (contestPhase.getPhaseStartDate() != null && contestPhase.getPhaseEndDate() != null) {
+        if (contestPhase.getPhaseStartDate() != null) {
             java.util.Date now = new java.util.Date();
-            return now.after(contestPhase.getPhaseStartDate()) && now.before(contestPhase.getPhaseEndDate());
+            if (now.after(contestPhase.getPhaseStartDate())) {
+                if (contestPhase.getPhaseEndDate() != null) {
+                    return now.before(contestPhase.getPhaseEndDate());
+                }
+                return true;
+            }
         }
         return false;
     }

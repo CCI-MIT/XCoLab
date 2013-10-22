@@ -14,5 +14,8 @@
 		
 	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" 
 		class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" />
+	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityCreateHandler"
+		class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityCreateHandler" />
+		
 	
 </beans>
