@@ -4,6 +4,7 @@ import com.ext.portlet.service.ModelRunnerServiceUtil;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 
 import java.rmi.RemoteException;
 
@@ -75,7 +76,7 @@ public class ModelRunnerServiceSoap {
                     inputs);
 
             return returnValue.toString();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             _log.error(e, e);
 
             throw new RemoteException(e.getMessage());
