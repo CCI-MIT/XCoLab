@@ -174,12 +174,12 @@ public class ProposalsPermissions {
     }
 
     public boolean getIsTeamMember() throws SystemException, PortalException {
-        return proposal == null ? false :  ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId()) && !user.isDefaultUser();
+        return proposal != null && proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId()) && !user.isDefaultUser() : false;
     }
 
 
     private boolean hasVotedOnThisProposal() throws SystemException {
-        return proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.hasUserVoted(proposal.getProposalId(), contestPhase.getContestPhasePK(), user.getUserId()) : false;
+        return proposal != null && proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.hasUserVoted(proposal.getProposalId(), contestPhase.getContestPhasePK(), user.getUserId()) : false;
     }
 
     private boolean isOwner() {
@@ -187,11 +187,11 @@ public class ProposalsPermissions {
     }
     
     private boolean isSupporter() throws PortalException, SystemException {
-        return proposal == null ? false :  proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.isSupporter(proposal.getProposalId(), user.getUserId()) : false;
+        return proposal != null && proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.isSupporter(proposal.getProposalId(), user.getUserId()) : false;
     }
 
     private boolean isProposalOpen() throws SystemException, PortalException {
-        return proposal == null ? false : proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.isOpen(proposal.getProposalId()) : false;
+        return proposal != null && proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.isOpen(proposal.getProposalId()) : false;
     }
     
 
@@ -205,7 +205,7 @@ public class ProposalsPermissions {
     }
 
     private boolean isSubscribedToProposal() throws PortalException, SystemException {
-        return proposal == null ? false :  proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.isSubscribed(proposal.getProposalId(), user.getUserId()) : false;
+        return proposal != null && proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.isSubscribed(proposal.getProposalId(), user.getUserId()) : false;
     }
 
     private boolean isSubscribedToContest() throws PortalException, SystemException {
