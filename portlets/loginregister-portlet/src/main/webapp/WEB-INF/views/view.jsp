@@ -22,6 +22,8 @@
 			<h1>Join the CoLab</h1>
 		</div>
 
+        <p><a href="https://www.regonline.com/builder/site/Default.aspx?EventID=1285844">To register for the Crowds & Climate Conference, click here</a></p>
+        
 		<div class="is-required">
 			<img src="/climatecolab-theme/images/reg-star.png" width="8"
 				height="7" align="texttop" /> is a required field.
