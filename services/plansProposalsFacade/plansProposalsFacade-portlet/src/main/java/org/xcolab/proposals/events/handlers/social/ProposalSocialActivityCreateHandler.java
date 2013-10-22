@@ -1,7 +1,7 @@
-package org.xcolab.proposals.events.handlers;
+package org.xcolab.proposals.events.handlers.social;
 
-import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
-import org.xcolab.proposals.events.handlers.social.BaseProposalSocialActivityEventHandler;
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.proposals.events.handlers.ProposalAttributeUpdatedSocialActivityHandler;
 
 import com.ext.portlet.ProposalActivityKeys;
 import com.ext.portlet.model.Proposal;
@@ -11,15 +11,15 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-public class ProposalAttributeUpdatedSocialActivityHandler extends BaseProposalSocialActivityEventHandler {
-    
+public class ProposalSocialActivityCreateHandler extends BaseProposalSocialActivityEventHandler {
+
 
     @Subscribe
-    public void handleEvent(ProposalAttributeUpdatedEvent event) throws PortalException, SystemException {
+    public void handleEvent(ProposalAssociatedWithContestPhaseEvent event) throws PortalException, SystemException {
         try {
             socialActivityService.addActivity(event.getUser().getUserId(), getDefaultGroup().getGroupId(),
-                    Proposal.class.getName(), event.getProposal().getProposalId(), ProposalActivityKeys.ATTRIBUTE_UPDATE.ordinal(), 
-                    event.getAttributeName() + "," + event.getNewAttribute().getAdditionalId(), 0);
+                    Proposal.class.getName(), event.getProposal().getProposalId(), ProposalActivityKeys.PROPOSAL_CREATE.ordinal(), 
+                    null, 0);
         }
         catch (PortalException e) {
             _log.error("Can't add social activity", e);
@@ -30,4 +30,5 @@ public class ProposalAttributeUpdatedSocialActivityHandler extends BaseProposalS
     }
     
     private final static Log _log = LogFactoryUtil.getLog(ProposalAttributeUpdatedSocialActivityHandler.class);
+
 }

@@ -169,7 +169,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             p2p.setVersionTo(-1);
             proposal2PhaseLocalService.addProposal2Phase(p2p);
             eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal, 
-                    contestPhaseLocalService.getContestPhase(contestPhaseId)));
+                    contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
         }
         
 

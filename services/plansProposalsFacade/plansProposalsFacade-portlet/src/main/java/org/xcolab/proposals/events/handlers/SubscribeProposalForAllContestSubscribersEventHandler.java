@@ -23,9 +23,6 @@ public class SubscribeProposalForAllContestSubscribersEventHandler extends BaseE
 
     @BeanReference(type = ActivitySubscriptionLocalService.class) 
     private ActivitySubscriptionLocalService activitySubscriptionLocalService;
-
-    @BeanReference(type = ProposalLocalService.class) 
-    private ProposalLocalService proposalLocalService;
     
     @Subscribe
     public void handleProposalCreatedEvent(ProposalAssociatedWithContestPhaseEvent event) throws PortalException, SystemException {
