@@ -22,6 +22,7 @@ public class ContestWrapper {
     private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
     private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
     private List<ContestPhaseWrapper> phases;
+    private ContestPhaseWrapper activePhase;
 
     private List<ContestTeamRoleWrapper> contestTeamMembersByRole;
     
@@ -287,8 +288,11 @@ public class ContestWrapper {
         return ContestLocalServiceUtil.getVotesCount(contest);
     }
     
-    public ContestPhase getActivePhase() throws NoSuchContestPhaseException, SystemException {
-        return ContestLocalServiceUtil.getActivePhase(contest);
+    public ContestPhaseWrapper getActivePhase() throws NoSuchContestPhaseException, SystemException {
+        if (activePhase == null) {
+            activePhase = new ContestPhaseWrapper(ContestLocalServiceUtil.getActivePhase(contest));
+        }
+        return activePhase;
     }
 
     public List<OntologyTerm> getWho() throws PortalException, SystemException {

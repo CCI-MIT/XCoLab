@@ -157,7 +157,7 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanVote() {
-        return ! user.isDefaultUser() && isVotingEnabled();
+        return ! user.isDefaultUser() && isVotingEnabled() && (proposal != null && proposal.getProposalId() > 0);
     }
     
     public boolean getCanAdmin() {

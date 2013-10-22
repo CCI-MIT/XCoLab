@@ -107,7 +107,7 @@ public class ContestPhaseWrapper {
     }
     
     public long getMilisecondsTillEnd() {
-        return contestPhase.getPhaseEndDate().getTime() - System.currentTimeMillis();
+        return contestPhase.getPhaseEndDate() != null ? contestPhase.getPhaseEndDate().getTime() - System.currentTimeMillis() : -1;
     }
     
     public String getName() throws PortalException, SystemException {
