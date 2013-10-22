@@ -55,7 +55,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
  */
 public class DataMigrator implements Runnable {
     List<String> reference;
-    private boolean TESTING = false;
+    private boolean TESTING = true;
     public boolean STOP = false;
 
 
@@ -195,7 +195,7 @@ public class DataMigrator implements Runnable {
         // set create date
         proposal.setCreateDate(plans.get(0).getUpdated());
 
-        // set user group
+        // set initial user group and discussion
         proposal.setGroupId(currentPlanMeta.getPlanGroupId());
         proposal.setDiscussionId(currentPlanMeta.getCategoryGroupId());
 
@@ -255,6 +255,19 @@ public class DataMigrator implements Runnable {
                     e.printStackTrace();
                 }
             }
+
+            // migrate team name
+            try {
+                PlanAttribute teamAttribute = PlanItemLocalServiceUtil.getPlanAttribute(plan, "TEAM");
+                if (teamAttribute != null) {
+                    String teamName = teamAttribute.getAttributeValue();
+                    ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.TEAM, teamName);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
             createProposalAttributesFromPlan(plan,proposal);
             createVotesFromPlan(plan,proposal);
             // copy supporters (fans)
@@ -265,6 +278,10 @@ public class DataMigrator implements Runnable {
 
             // add supporters
             copySupporters(plan,proposal);
+
+            // refresh discussion id, group id, updated date
+            copyMetaInfo(plan,proposal);
+
         }
     }
 
@@ -622,6 +639,37 @@ public class DataMigrator implements Runnable {
         }
         // }
         return planAttributes;
+
+    }
+
+
+
+    private void copyMetaInfo(PlanItem plan, Proposal p){
+        // get updated proposal
+        try {
+            p = ProposalLocalServiceUtil.getProposal(p.getProposalId());
+        } catch (Exception e){
+            pushAjaxUpdate("Error while updating Proposal " + e);
+        }
+        PlanMeta currentPlanMeta = null;
+        // get current plan meta for setting proposal entity attributes
+        try{
+            currentPlanMeta = PlanMetaLocalServiceUtil.getCurrentForPlan(plan);
+        } catch (Exception e){
+            pushAjaxUpdate("Error while getting PlanMeta " + plan.getId() + ": " + e);
+            return;
+        }
+        if (currentPlanMeta == null) return;
+        if (currentPlanMeta.getCategoryGroupId() == 0) return;
+        p.setDiscussionId(currentPlanMeta.getCategoryGroupId());
+        p.setGroupId(currentPlanMeta.getPlanGroupId());
+        p.setUpdatedDate(currentPlanMeta.getCreated());
+        // update proposal
+        try {
+            ProposalLocalServiceUtil.updateProposal(p);
+        } catch (Exception e){
+            pushAjaxUpdate("Error while updating Proposal " + e);
+        }
 
     }
 }
