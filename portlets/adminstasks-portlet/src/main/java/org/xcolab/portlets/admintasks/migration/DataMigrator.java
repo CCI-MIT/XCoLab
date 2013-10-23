@@ -652,18 +652,20 @@ public class DataMigrator implements Runnable {
             pushAjaxUpdate("Error while updating Proposal " + e);
         }
         PlanMeta currentPlanMeta = null;
+        PlanItem currentPlanItem = null;
         // get current plan meta for setting proposal entity attributes
         try{
             currentPlanMeta = PlanMetaLocalServiceUtil.getCurrentForPlan(plan);
+            currentPlanItem = PlanItemLocalServiceUtil.getAllVersions(plan).get(0);
         } catch (Exception e){
             pushAjaxUpdate("Error while getting PlanMeta " + plan.getId() + ": " + e);
             return;
         }
-        if (currentPlanMeta == null) return;
-        if (currentPlanMeta.getCategoryGroupId() == 0) return;
-        p.setDiscussionId(currentPlanMeta.getCategoryGroupId());
-        p.setGroupId(currentPlanMeta.getPlanGroupId());
-        p.setUpdatedDate(currentPlanMeta.getCreated());
+        if (currentPlanMeta != null) {
+            p.setDiscussionId(currentPlanMeta.getCategoryGroupId());
+            p.setGroupId(currentPlanMeta.getPlanGroupId());
+        }
+        if (currentPlanItem != null) p.setUpdatedDate(currentPlanItem.getUpdated());
         // update proposal
         try {
             ProposalLocalServiceUtil.updateProposal(p);
