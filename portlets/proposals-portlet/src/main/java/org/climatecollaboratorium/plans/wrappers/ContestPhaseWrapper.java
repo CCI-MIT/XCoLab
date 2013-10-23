@@ -124,8 +124,10 @@ public class ContestPhaseWrapper implements Serializable {
     public boolean isActive() {
         return ContestPhaseLocalServiceUtil.getPhaseActive(phase);
     }
-    
 
+    public boolean isPhaseActiveOverride() {
+        return phase.getPhaseActiveOverride();
+    }
     
     public boolean getHasNextPhase() {
         boolean hasNext = false;

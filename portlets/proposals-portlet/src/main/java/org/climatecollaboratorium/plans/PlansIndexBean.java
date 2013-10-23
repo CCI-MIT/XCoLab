@@ -82,8 +82,7 @@ public class PlansIndexBean implements Serializable {
 	private List<PlanIndexItemWrapper> plansFeatured = new ArrayList<PlanIndexItemWrapper>();
 	private List<PlanIndexItemWrapper> plansWithProperName = new ArrayList<PlanIndexItemWrapper>();
 	private List<PlanIndexItemWrapper> plansUntitled = new ArrayList<PlanIndexItemWrapper>();
-	// TODO: transient here is evil
-	private transient DataPaginator dataPaginator;
+	private DataPaginator dataPaginator;
 	private EventBus eventBus;
 	private List<HandlerRegistration> handlerRegistrations = new ArrayList<HandlerRegistration>();
 

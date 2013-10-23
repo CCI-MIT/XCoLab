@@ -170,7 +170,7 @@
 			</h2>
 			<div class="right">
 				<f:subview
-					rendered="#{contest.contestState == 'ACTIVE' and plansIndex.contestPhase.status == 'OPEN_FOR_SUBMISSION' and plansIndex.contestPhase.active}">
+					rendered="#{plansIndex.contestPhase.status == 'OPEN_FOR_SUBMISSION' and (contest.contestState == 'ACTIVE' and plansIndex.contestPhase.active or plansIndex.contestPhase.phaseActiveOverride)}">
 					<ice:form>
 						<div class="blue-button">
 							<ice:commandLink
