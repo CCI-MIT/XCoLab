@@ -27,7 +27,7 @@
             </div>
             </c:if>
             <div class="row1">
-                <div class="title-author" style="${proposalsPermissions.canJudgeActions ? 'width:532px;' : ''}">
+                <div class="title-author" style="${proposalsPermissions.canJudgeActions ? (proposal.featured ? 'width:503px;' : 'width:532px;')  : ''}">
                     <h4>
                     	<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
                         /&#160;
