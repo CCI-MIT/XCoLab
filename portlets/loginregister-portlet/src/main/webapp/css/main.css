@@ -35,3 +35,10 @@ th.second {
 .cke_editor_shortBio {
 	width: 100%;
 }
+
+.is-required {
+    margin:0 !important;
+}
+#fileUploadForm {
+    height:0;
+}
