@@ -25,6 +25,7 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _createMethodKey17;
+    private MethodKey _findByProposalIdContestPhaseIdUserIdMethodKey18;
 
     public ProposalVoteLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -94,6 +95,9 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
 
         _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "create", long.class, long.class);
+
+        _findByProposalIdContestPhaseIdUserIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "findByProposalIdContestPhaseIdUserId", long.class, long.class);
     }
 
     public com.ext.portlet.model.ProposalVote addProposalVote(
@@ -537,6 +541,37 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         try {
             returnObj = _classLoaderProxy.invoke(methodHandler);
         } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.model.ProposalVote findByProposalIdContestPhaseIdUserId(
+        long contestPhaseId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_findByProposalIdContestPhaseIdUserIdMethodKey18,
+                contestPhaseId, userId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.ext.portlet.NoSuchProposalVoteException) {
+                throw (com.ext.portlet.NoSuchProposalVoteException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {

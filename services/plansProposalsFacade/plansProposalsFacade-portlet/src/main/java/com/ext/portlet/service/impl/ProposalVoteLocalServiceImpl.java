@@ -30,5 +30,9 @@ public class ProposalVoteLocalServiceImpl
         return createProposalVote(new ProposalVotePK(contestPhaseId, userID));
     }
 
+    public ProposalVote findByProposalIdContestPhaseIdUserId(long contestPhaseId, long userId) throws com.ext.portlet.NoSuchProposalVoteException,
+    com.liferay.portal.kernel.exception.SystemException {
+        return proposalVotePersistence.findByContestPhaseIdUserId(contestPhaseId, userId);
+    }
 
 }

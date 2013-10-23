@@ -1,8 +1,15 @@
 package org.xcolab.proposals.events.handlers.social;
 
+import org.xcolab.proposals.events.BaseProposalUserActivityEvent;
 import org.xcolab.proposals.events.handlers.BaseEventHandler;
 
+import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.model.Proposal;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalService;
 
 public class BaseProposalSocialActivityEventHandler extends BaseEventHandler {
@@ -10,5 +17,18 @@ public class BaseProposalSocialActivityEventHandler extends BaseEventHandler {
     @BeanReference(type = SocialActivityLocalService.class)
     protected SocialActivityLocalService socialActivityService;
     
-    
+    protected void addSocialActivity(BaseProposalUserActivityEvent event, ProposalActivityKeys type, String extraData) {
+        try {
+            socialActivityService.addActivity(event.getUser().getUserId(), getDefaultGroup().getGroupId(),
+                    Proposal.class.getName(), event.getProposal().getProposalId(), type.ordinal(), extraData, 0);
+        }
+        catch (PortalException e) {
+            _log.error("Can't add social activity", e);
+        }
+        catch (SystemException e) {
+            _log.error("Can't add social activity", e);
+        }
+    }
+
+    private final static Log _log = LogFactoryUtil.getLog(BaseProposalSocialActivityEventHandler.class);
 }

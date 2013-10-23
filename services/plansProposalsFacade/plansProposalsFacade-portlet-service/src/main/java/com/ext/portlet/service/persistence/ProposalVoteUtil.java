@@ -554,6 +554,55 @@ public class ProposalVoteUtil {
     }
 
     /**
+    * Returns the proposal vote where contestPhaseId = &#63; and userId = &#63; or throws a {@link com.ext.portlet.NoSuchProposalVoteException} if it could not be found.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param userId the user ID
+    * @return the matching proposal vote
+    * @throws com.ext.portlet.NoSuchProposalVoteException if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote findByContestPhaseIdUserId(
+        long contestPhaseId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhaseIdUserId(contestPhaseId, userId);
+    }
+
+    /**
+    * Returns the proposal vote where contestPhaseId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param userId the user ID
+    * @return the matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByContestPhaseIdUserId(
+        long contestPhaseId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestPhaseIdUserId(contestPhaseId, userId);
+    }
+
+    /**
+    * Returns the proposal vote where contestPhaseId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param userId the user ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByContestPhaseIdUserId(
+        long contestPhaseId, long userId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestPhaseIdUserId(contestPhaseId, userId,
+            retrieveFromCache);
+    }
+
+    /**
     * Returns all the proposal votes.
     *
     * @return the proposal votes
@@ -639,6 +688,20 @@ public class ProposalVoteUtil {
     }
 
     /**
+    * Removes the proposal vote where contestPhaseId = &#63; and userId = &#63; from the database.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param userId the user ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByContestPhaseIdUserId(long contestPhaseId,
+        long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByContestPhaseIdUserId(contestPhaseId, userId);
+    }
+
+    /**
     * Removes all the proposal votes from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -685,6 +748,20 @@ public class ProposalVoteUtil {
     public static int countByUserId(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByUserId(userId);
+    }
+
+    /**
+    * Returns the number of proposal votes where contestPhaseId = &#63; and userId = &#63;.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param userId the user ID
+    * @return the number of matching proposal votes
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByContestPhaseIdUserId(long contestPhaseId,
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByContestPhaseIdUserId(contestPhaseId, userId);
     }
 
     /**

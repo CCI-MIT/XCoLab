@@ -146,6 +146,11 @@
     		<finder-column name="userId" />
     	</finder>
     	
+    	<finder return-type="ProposalVote" name="ContestPhaseIdUserId">
+    		<finder-column name="contestPhaseId" />
+    		<finder-column name="userId" />
+    	</finder>
+    	
     </entity>
     
     <entity name="ContestPhaseRibbonType" local-service="true">

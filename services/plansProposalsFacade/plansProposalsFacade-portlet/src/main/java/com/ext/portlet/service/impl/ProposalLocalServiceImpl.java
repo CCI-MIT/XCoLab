@@ -9,8 +9,12 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
-import org.xcolab.proposals.events.ProposalSupporterAdded;
-import org.xcolab.proposals.events.ProposalSupporterRemoved;
+import org.xcolab.proposals.events.ProposalMemberAddedEvent;
+import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
+import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
+import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
+import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
+import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
@@ -577,7 +581,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         supporter.setCreateDate(new Date());
         proposalSupporterLocalService.addProposalSupporter(supporter);
 
-        eventBus.post(new ProposalSupporterAdded(getProposal(proposalId), userLocalService.getUser(userId)));
+        eventBus.post(new ProposalSupporterAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
     }
     
     /**
@@ -593,7 +597,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 proposalSupporterLocalService.createProposalSupporter(new ProposalSupporterPK(proposalId, userId));
         
         proposalSupporterLocalService.deleteProposalSupporter(supporter);
-        eventBus.post(new ProposalSupporterRemoved(getProposal(proposalId), userLocalService.getUser(userId)));
+        eventBus.post(new ProposalSupporterRemovedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
     }
     
     /**
@@ -642,7 +646,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     throws SystemException, PortalException {
         
         // retract any vote that user has given to any proposal in context of provided phase
-        removeVote(contestPhaseId, userId);
+        boolean voted = hasUserVoted(proposalId, contestPhaseId, userId);
+        if (voted) {
+            removeVote(contestPhaseId, userId);
+        }
 
         // add vote to a proposal
         ProposalVote vote = proposalVoteLocalService.createProposalVote(new ProposalVotePK(contestPhaseId, userId));
@@ -650,6 +657,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         vote.setProposalId(proposalId);
         
         proposalVoteLocalService.addProposalVote(vote);
+        eventBus.post(new ProposalVotedOnEvent(getProposal(proposalId), userLocalService.getUser(userId), voted));
     }
     
     /**
@@ -662,11 +670,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Transactional
     public void removeVote(long contestPhaseId, long userId) throws SystemException, PortalException {
         try {
-            proposalVoteLocalService.deleteProposalVote(
-                    proposalVoteLocalService.getProposalVote(new ProposalVotePK(contestPhaseId, userId)));
+            ProposalVote proposalVote = proposalVoteLocalService.findByProposalIdContestPhaseIdUserId(contestPhaseId, userId);
+            proposalVoteLocalService.deleteProposalVote(proposalVote);
+            eventBus.post(new ProposalRemovedVoteEvent(getProposal(proposalVote.getProposalId()), userLocalService.getUser(userId)));
+            
         } catch (NoSuchProposalVoteException e) {
             // ignore
+            return;
         }
+        
     }
     
     /**
@@ -754,6 +766,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public void removeUserFromTeam(long proposalId, long userId) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
         GroupLocalServiceUtil.unsetUserGroups(userId,new long[]{proposal.getGroupId()});
+        
+        eventBus.post(new ProposalMemberRemovedEvent(proposal, userLocalService.getUser(userId)));
     }
 
 
@@ -791,6 +805,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         if (hasUserRequestedMembership(proposalId, userId)) {
             MembershipRequestLocalServiceUtil.updateStatus(userId, request.getMembershipRequestId(), reply, 
                     MembershipRequestConstants.STATUS_APPROVED, true, null);
+            eventBus.post(new ProposalMemberAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
         }
     }
     

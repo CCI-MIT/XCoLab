@@ -225,4 +225,9 @@ public interface ProposalVoteLocalService extends PersistedModelLocalService {
 
     public com.ext.portlet.model.ProposalVote create(long contestPhaseId,
         long userID);
+
+    public com.ext.portlet.model.ProposalVote findByProposalIdContestPhaseIdUserId(
+        long contestPhaseId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

@@ -1,11 +1,15 @@
 package org.xcolab.portlets.proposals.activity;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.xcolab.portlets.proposals.activity.generators.DefaultFeedEntryGenerator;
+import org.xcolab.portlets.proposals.utils.ProposalsURLGenerator;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import com.ext.portlet.ProposalActivityKeys;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -18,25 +22,44 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 
 public class ProposalsSocialActivityInterpreter extends BaseSocialActivityInterpreter 
 implements ICollabActivityInterpreter {
-    private final static String[] CLASS_NAMES = new String[] { Proposal.class.getName() };
+    
+    private Map<ProposalActivityKeys, ProposalActivityFeedEntryGenerator> feedGenerators = 
+            new HashMap<ProposalActivityKeys, ProposalActivityFeedEntryGenerator>();
 
-    @Override
-    public String[] getClassNames() {
-        return CLASS_NAMES;
+    public static final String hyperlink = "<a href=\"%s\">%s</a>";
+    
+    public ProposalsSocialActivityInterpreter() {
+        feedGenerators.put(ProposalActivityKeys.ATTRIBUTE_UPDATE, new DefaultFeedEntryGenerator("Proposal updated", "updated proposal"));
+        feedGenerators.put(ProposalActivityKeys.PROPOSAL_CREATE, new DefaultFeedEntryGenerator("Created proposal", "created proposal"));
+        feedGenerators.put(ProposalActivityKeys.SUPPORTER_ADD, new DefaultFeedEntryGenerator("New proposal supporter", "is supporting proposal"));
+        feedGenerators.put(ProposalActivityKeys.SUPPORTER_REMOVE, new DefaultFeedEntryGenerator("New proposal supporter", "retracted support for proposal"));
+        feedGenerators.put(ProposalActivityKeys.USER_ADD, new DefaultFeedEntryGenerator("New proposal member", "became a team member of proposal"));
+        feedGenerators.put(ProposalActivityKeys.USER_REMOVE, new DefaultFeedEntryGenerator("Proposal member removed", "is no longer a team member of proposal"));
+        feedGenerators.put(ProposalActivityKeys.VOTE, new DefaultFeedEntryGenerator("Proposal vote", "voted for proposal"));
+        feedGenerators.put(ProposalActivityKeys.VOTE_RETRACT, new DefaultFeedEntryGenerator("Vote retracted", "retracted vote for proposal"));
+        feedGenerators.put(ProposalActivityKeys.VOTE_SWITCH, new DefaultFeedEntryGenerator("Vote switched", "voted for proposal"));
+        
     }
 
     @Override
     protected SocialActivityFeedEntry doInterpret(SocialActivity activity, ThemeDisplay themeDisplay) throws Exception {
-        ProposalActivityKeys activityType = ProposalActivityKeys.values()[activity.getType()];
-        String title = activityType.name();
-        String body = "";
-        /*
-        if (msgMap.containsKey(activityType)) {
-            body = String.format(msgMap.get(activityType),getUser(activity),getPlan(activity));
+        
+        if (ProposalActivityKeys.values().length <= activity.getType()) {
+            String message = "Unknown proposal activity type " + activity.getType();
+            _log.error(message);
+            throw new ProposalActivityException(message);
         }
-        */
-
-        return new SocialActivityFeedEntry("", title, body);
+        
+        ProposalActivityKeys activityKey = ProposalActivityKeys.values()[activity.getType()];
+        
+        ProposalActivityFeedEntryGenerator generator = feedGenerators.get(activityKey);
+        if (generator == null) {
+            String message = "Can't find a feed entry generator for activity " + activityKey.name();
+            _log.error(message);
+            throw new ProposalActivityException(message);
+        }
+        
+        return generator.generateFeedEntry(activity);
     }
 
     @Override
@@ -45,7 +68,8 @@ implements ICollabActivityInterpreter {
         try {
             Proposal rawProposal = ProposalLocalServiceUtil.getProposal(classPK);
             ProposalWrapper proposal = new ProposalWrapper(rawProposal);
-            return "Proposal: " + String.format(hyperlink, getProposalURL(proposal), proposal.getName());
+            return "Proposal: " + String.format(hyperlink, ProposalsURLGenerator.getProposalURL(rawProposal), proposal.getName());
+            
         } catch (SystemException e) {
             _log.error("Can't find plan for id: " + classPK, e);
         } catch (PortalException e) {
@@ -55,13 +79,15 @@ implements ICollabActivityInterpreter {
         return "";
     }
     
-    private static String getProposalURL(ProposalWrapper p) throws SystemException, PortalException {
-        return String.format("/web/guest/plans/-/plans/contestId/" + 
-                Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestPK() + "/planId/" + p.getProposalId());
+    private final static String[] CLASS_NAMES = new String[] { Proposal.class.getName() };
+
+    @Override
+    public String[] getClassNames() {
+        return CLASS_NAMES;
     }
 
-    public static String hyperlink = "<a href=\"%s\">%s</a>";
     
     private final static Log _log = LogFactoryUtil.getLog(ProposalsSocialActivityInterpreter.class);
+    
 
 }
