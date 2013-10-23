@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
@@ -12,20 +14,6 @@ import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseRibbonType;
-import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -451,5 +439,28 @@ public class ProposalWrapper {
             if (getJudgeAction() == JudgingSystemActions.JudgeAction.MOVE_ON) return 2;
         } catch (Exception e){ return 0; }
         return 0;
+    }
+
+    public boolean getIsLatestVersion(){
+        try{
+            return getCurrentVersion() == version;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public ProposalVersion getSelectedVersion(){
+        try{
+            for (ProposalVersion pv : ProposalVersionLocalServiceUtil.getByProposalId(proposal.getProposalId(),0,Integer.MAX_VALUE)){
+               if (pv.getVersion() == version) return pv;
+            }
+        } catch (Exception e) { return null; }
+        return null;
+    }
+
+    public User getUserForSelectedVersion(){
+        try{
+            return UserLocalServiceUtil.getUser(getSelectedVersion().getAuthorId());
+        } catch (Exception e) { return null; }
     }
 }
