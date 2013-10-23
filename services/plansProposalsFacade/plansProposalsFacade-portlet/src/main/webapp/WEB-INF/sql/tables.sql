@@ -119,7 +119,8 @@ create table xcolab_DiscussionCategoryGroup (
 	id_ LONG not null primary key,
 	description TEXT null,
 	url VARCHAR(1024) null,
-	commentsThread LONG
+	commentsThread LONG,
+	isQuiet BOOLEAN
 );
 
 create table xcolab_DiscussionMessage (

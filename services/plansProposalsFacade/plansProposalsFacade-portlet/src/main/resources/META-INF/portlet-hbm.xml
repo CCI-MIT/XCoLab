@@ -222,6 +222,7 @@
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="commentsThread" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="isQuiet" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.DiscussionMessageImpl" table="xcolab_DiscussionMessage">
 		<cache usage="read-write" />

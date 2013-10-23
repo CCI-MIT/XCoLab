@@ -21,10 +21,11 @@ public class DiscussionCategoryGroupCacheModel implements CacheModel<DiscussionC
     public String description;
     public String url;
     public long commentsThread;
+    public boolean isQuiet;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(id);
@@ -34,6 +35,8 @@ public class DiscussionCategoryGroupCacheModel implements CacheModel<DiscussionC
         sb.append(url);
         sb.append(", commentsThread=");
         sb.append(commentsThread);
+        sb.append(", isQuiet=");
+        sb.append(isQuiet);
         sb.append("}");
 
         return sb.toString();
@@ -57,6 +60,7 @@ public class DiscussionCategoryGroupCacheModel implements CacheModel<DiscussionC
         }
 
         discussionCategoryGroupImpl.setCommentsThread(commentsThread);
+        discussionCategoryGroupImpl.setIsQuiet(isQuiet);
 
         discussionCategoryGroupImpl.resetOriginalValues();
 

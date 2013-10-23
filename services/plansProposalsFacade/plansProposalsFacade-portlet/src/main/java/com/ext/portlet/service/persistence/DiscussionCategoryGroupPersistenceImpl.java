@@ -540,6 +540,7 @@ public class DiscussionCategoryGroupPersistenceImpl extends BasePersistenceImpl<
         discussionCategoryGroupImpl.setDescription(discussionCategoryGroup.getDescription());
         discussionCategoryGroupImpl.setUrl(discussionCategoryGroup.getUrl());
         discussionCategoryGroupImpl.setCommentsThread(discussionCategoryGroup.getCommentsThread());
+        discussionCategoryGroupImpl.setIsQuiet(discussionCategoryGroup.isIsQuiet());
 
         return discussionCategoryGroupImpl;
     }

@@ -153,6 +153,7 @@
 			<hint name="max-length">1024</hint>
 		</field>
 		<field name="commentsThread" type="long" />
+		<field name="isQuiet" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.DiscussionMessage">
 		<field name="pk" type="long" />
