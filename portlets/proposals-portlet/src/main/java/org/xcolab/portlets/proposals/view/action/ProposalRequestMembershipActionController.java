@@ -67,7 +67,7 @@ public class ProposalRequestMembershipActionController {
         }
 
         if (membershipRequest == null) return;
-        if (comment == null || comment.equalsIgnoreCase("Optional response")) comment = "";
+        if (comment == null || comment.equalsIgnoreCase("Optional response")) comment = "no comments";
         if (approve.equalsIgnoreCase("APPROVE")){
             ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
         } else if (approve.equalsIgnoreCase("DENY")){
