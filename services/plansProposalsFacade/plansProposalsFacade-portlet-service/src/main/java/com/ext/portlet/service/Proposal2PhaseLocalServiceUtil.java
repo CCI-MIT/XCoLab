@@ -277,6 +277,19 @@ public class Proposal2PhaseLocalServiceUtil {
         return getService().getForVersion(proposalVersion);
     }
 
+    public static java.util.List<java.lang.Long> getContestPhasesForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestPhasesForProposal(proposalId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getActiveContestPhasesForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getActiveContestPhasesForProposal(proposalId);
+    }
+
     public static void clearService() {
         _service = null;
     }

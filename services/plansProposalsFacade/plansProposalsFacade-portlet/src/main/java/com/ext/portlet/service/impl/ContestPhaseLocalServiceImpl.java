@@ -3,19 +3,29 @@ package com.ext.portlet.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
+import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseColumn;
 import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -170,10 +180,35 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     public String getName(ContestPhase contestPhase) throws PortalException, SystemException {
         return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getName();
     }
+    public void promoteProposal(long proposalId, long nextPhaseId) throws SystemException, PortalException {
+        Integer currentProposalVersion = ProposalVersionLocalServiceUtil.getProposalVersionsCount();
+        if(currentProposalVersion < 0) throw new SystemException("Proposal not found");
+
+        ContestPhase nextPhase = getContestPhase(nextPhaseId);
+        if(nextPhase == null) throw new SystemException("phase not found");
+
+        //find phase the proposal is in currently in contest c
+        List<ContestPhase> currentPhases = Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(proposalId);
+
+        for(ContestPhase ph : currentPhases) {
+            if(ph.getContestPK() == nextPhase.getContestPK()) { //this active contestphase is in our target contest
+                //set end version of previous phase to now
+                Proposal2Phase o = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, ph.getContestPhasePK());
+                o.setVersionTo(currentProposalVersion);
+                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(o);
+
+                break;
+            }
+        }
+
+        Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposalId, nextPhaseId);
+        p2p.setVersionFrom(currentProposalVersion);
+        Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+    }
 
     /**
      * Method responsible for autopromotion of proposals between phases.
-     * 
+     *
      * @throws SystemException
      * @throws PortalException
      */
@@ -185,20 +220,50 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 try {
                     _log.info("promoting phase " + phase.getContestPhasePK());
                     ContestPhase nextPhase = getNextContestPhase(phase);
-                    PlanItemLocalServiceUtil.promotePlans(phase.getContestPhasePK(), nextPhase.getContestPhasePK());
+                    for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(nextPhase.getContestPhasePK())) {
+                        promoteProposal(p.getProposalId(), nextPhase.getContestPK());
+
+                        //PlanItemLocalServiceUtil.promotePlans(phase.getContestPhasePK(), nextPhase.getContestPhasePK());
+                    }
 
                     // update phase for which promotion was done (mark it as
                     // "promotion done")
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
                     _log.info("done promoting phase " + phase.getContestPhasePK());
-                } catch (SystemException | PortalException e ) {
+                } catch (SystemException | PortalException e) {
                     _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
                     continue;
                 }
             }
         }
 
+        //Judging-based promotion
+        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote("PROMOTE_JUDGED")) {
+            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
+                _log.info("promoting phase " + phase.getContestPhasePK()+" (judging)");
+                ContestPhase nextPhase = getNextContestPhase(phase);
+                List<Proposal> toPromote = new LinkedList<>();
+                for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(nextPhase.getContestPhasePK())) {
+                    ProposalContestPhaseAttribute data = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), nextPhase.getContestPhasePK(), ProposalAttributeKeys.JUDGE_ACTION);
+                    Long intData = (data == null) ? JudgingSystemActions.JudgeAction.NO_DECISION.getAttributeValue() : data.getNumericValue();
+
+                    if (JudgingSystemActions.JudgeAction.fromInt(intData.intValue()) == JudgingSystemActions.JudgeAction.MOVE_ON) {
+                        toPromote.add(p);
+                    }
+                }
+                if (toPromote.size() > 0) {
+                    _log.info("found " + toPromote.size() + " proposals to promote");
+                    //PlanItemLocalServiceUtil.promotePlans(toPromote, nextPhase.getContestPhasePK());
+                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
+                    updateContestPhase(phase);
+                }
+                _log.info("done promoting phase " + phase.getContestPhasePK());
+            }
+        }
+
+
     }
+    
 
 }

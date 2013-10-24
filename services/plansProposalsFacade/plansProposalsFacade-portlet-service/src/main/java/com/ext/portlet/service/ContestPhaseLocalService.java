@@ -297,6 +297,10 @@ public interface ContestPhaseLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    public void promoteProposal(long proposalId, long nextPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     /**
     * Method responsible for autopromotion of proposals between phases.
     *

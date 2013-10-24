@@ -272,6 +272,19 @@ public class Proposal2PhaseLocalServiceWrapper
         return _proposal2PhaseLocalService.getForVersion(proposalVersion);
     }
 
+    public java.util.List<java.lang.Long> getContestPhasesForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.getContestPhasesForProposal(proposalId);
+    }
+
+    public java.util.List<com.ext.portlet.model.ContestPhase> getActiveContestPhasesForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.getActiveContestPhasesForProposal(proposalId);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

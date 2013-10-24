@@ -28,6 +28,8 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
     private MethodKey _getByProposalIdContestPhaseIdMethodKey18;
     private MethodKey _getCurrentContestForProposalMethodKey19;
     private MethodKey _getForVersionMethodKey20;
+    private MethodKey _getContestPhasesForProposalMethodKey21;
+    private MethodKey _getActiveContestPhasesForProposalMethodKey22;
 
     public Proposal2PhaseLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -108,6 +110,12 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
 
         _getForVersionMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getForVersion", com.ext.portlet.model.ProposalVersion.class);
+
+        _getContestPhasesForProposalMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getContestPhasesForProposal", long.class);
+
+        _getActiveContestPhasesForProposalMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getActiveContestPhasesForProposal", long.class);
     }
 
     public com.ext.portlet.model.Proposal2Phase addProposal2Phase(
@@ -653,6 +661,63 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         }
 
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<java.lang.Long> getContestPhasesForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getContestPhasesForProposalMethodKey21,
+                proposalId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.model.ContestPhase> getActiveContestPhasesForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getActiveContestPhasesForProposalMethodKey22,
+                proposalId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ContestPhase>) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

@@ -1,11 +1,14 @@
 package com.ext.portlet.service.impl;
 
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
-import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -60,5 +63,32 @@ public class Proposal2PhaseLocalServiceImpl
                 return p2p;
         }
         throw new SystemException("Proposal " + proposalVersion.getProposalId() + " isn't associated with any contest phase");
+    }
+    
+    public List<Long> getContestPhasesForProposal(long proposalId) throws SystemException {
+        List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalId);
+        List<Long> ret = new LinkedList<>();
+
+        for(Proposal2Phase p2p : proposal2Phases) {
+            ret.add(p2p.getContestPhaseId());
+        }
+
+        return ret;
+    }
+
+    public List<ContestPhase> getActiveContestPhasesForProposal(long proposalId) throws SystemException, PortalException {
+        List<Long> allPhases = getContestPhasesForProposal(proposalId);
+        List<ContestPhase> ret = new LinkedList<>();
+        Date now = new Date();
+        for(Long pId : allPhases) {
+            ContestPhase p = ContestPhaseLocalServiceUtil.getContestPhase(pId);
+            if(p.getPhaseActiveOverride() && !p.getPhaseInactiveOverride()) { //take care of overrides
+                if(p.getPhaseStartDate().before(now) && (p.getPhaseEndDate() ==null || p.getPhaseEndDate().after(now))) {
+                    //apparently we are right in the window this proposal. yay!
+                    ret.add(p);
+                }
+            }
+        }
+        return ret;
     }
 }

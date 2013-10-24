@@ -243,4 +243,15 @@ public interface Proposal2PhaseLocalService extends PersistedModelLocalService {
         com.ext.portlet.model.ProposalVersion proposalVersion)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<java.lang.Long> getContestPhasesForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ContestPhase> getActiveContestPhasesForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }
