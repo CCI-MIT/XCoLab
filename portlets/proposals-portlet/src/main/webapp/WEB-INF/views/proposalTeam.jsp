@@ -62,10 +62,14 @@
 
 
 
-                <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
+                <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
                     <td><proposalsPortlet:proposalTeamMember member="${member }" /></td>
                     <td>${member.memberType }</td>
-                    <td><a href="${removeUserFromTeam }">Remove</a></td>
+                    <td>
+                        <c:if test="${member.memberType != 'Owner'}">
+                            <a href="${removeUserFromTeam }">Remove</a>
+                        </c:if>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
