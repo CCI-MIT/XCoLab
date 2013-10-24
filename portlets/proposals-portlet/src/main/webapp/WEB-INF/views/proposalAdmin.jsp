@@ -74,7 +74,11 @@
             					</c:choose>	
             				</c:forEach>
             			</select>
-            			<input type="submit" value="Save" /> 
+                        <div class="blue-button" style="display:block;">
+                            <a href="javascript:;" onclick="$(this).parents('form:first').submit();">
+                                Save
+                            </a>
+                        </div>
             		</form>
             	</div>
         	</div>
