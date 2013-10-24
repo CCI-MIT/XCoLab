@@ -595,9 +595,9 @@ public class AdminTasksBean {
 
                 }
             }
-            
+
             /*
-            
+
             for (DiscussionCategoryGroup discussion: discussions) {
                 DiscussionMessage commentsThread = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion);
                 for (DiscussionCategoryGroup secondDiscussion: discussions) {
@@ -612,9 +612,9 @@ public class AdminTasksBean {
                     for (DiscussionMessage msg: DiscussionMessageLocalServiceUtil.getThreadMessages(commentsThread)) {
                         // check if such message is in child comments thread
 
-                        DiscussionMessage secondCommentsThread = 
+                        DiscussionMessage secondCommentsThread =
                                 DiscussionCategoryGroupLocalServiceUtil.getCommentThread(secondDiscussion);
-                        
+
                         boolean found = false;
                         if (secondCommentsThread != null) {
                             for (DiscussionMessage msg2: DiscussionMessageLocalServiceUtil.getThreadMessages(secondCommentsThread)) {
@@ -627,14 +627,14 @@ public class AdminTasksBean {
                             System.out.println("second comments is null");
                         }
                         if (found) continue;
-                        
+
                         System.out.println("Should copy message: " + msg);
-                        
+
                         DiscussionMessage newMessage = (DiscussionMessage) msg.clone();
-                        
+
                         newMessage.setPk(CounterLocalServiceUtil.increment(DiscussionMessage.class.getName()));
                         newMessage.setMessageId(CounterLocalServiceUtil.increment(DiscussionMessage.class.getName() + ".discussion"));
-                        
+
                         newMessage.setCategoryGroupId(secondDiscussion.getId());
                         newMessage.setNew(true);
 
@@ -642,21 +642,21 @@ public class AdminTasksBean {
                             System.out.println(" ** creating new thread");
                             // if there was no comments thread available, add one
                             newMessage.setThreadId(0);
-                            secondDiscussion.setCommentsThread(newMessage.getMessageId());  
+                            secondDiscussion.setCommentsThread(newMessage.getMessageId());
                             DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(secondDiscussion);
                         }
                         else {
                             // we had a thread, add new message to it
-                            
+
                             newMessage.setThreadId(secondCommentsThread.getMessageId());
                         }
                         System.out.println("copied message: " + newMessage);
                         DiscussionMessageLocalServiceUtil.addDiscussionMessage(newMessage);
-                        
+
                         // clone msg and add it to secondCommentsThread
                         //DiscussionMessage clonedMsg = msg.clone();
                     }
-                    
+
                 }
             }
             */
@@ -669,6 +669,16 @@ public class AdminTasksBean {
     }
 
 
+
+    public void promoteProposal() {
+        try {
+            ContestPhaseLocalServiceUtil.promoteProposal(2583, 1300001);
+        } catch (PortalException e) {
+            e.printStackTrace();
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void migrateDBSchema(){
 
@@ -703,6 +713,4 @@ public class AdminTasksBean {
         SessionRenderer.render("migration");
         SessionRenderer.removeCurrentSession("migration");
     }
-
-
 }
