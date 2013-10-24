@@ -104,7 +104,7 @@
         				<portlet:actionURL var="addCommentURL">
 	        				<portlet:param name="action" value="addDiscussionMessage" />
     	    			</portlet:actionURL>
-        				<form id="addCommentForm" action="${addCommentURL }" method="post">
+        				<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
         					<input name="discussionId" class="title text hidden" maxlength="255" value="${discussion.discussionId }"/>
 	       					<input name="title" class="title text hidden" maxlength="255" />
     	   					<textarea id="messageContent" name="description"  class="commentbox commentContent" ><!--  --></textarea>
