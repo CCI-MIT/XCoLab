@@ -102,7 +102,7 @@ public class AddUpdateProposalDetailsActionController {
         for (ProposalSectionWrapper section: proposal.getSections()) {
             String newSectionContent = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
             
-            if (newSectionContent != null && !newSectionContent.equals(section.getContent())) {
+            if (newSectionContent != null && !newSectionContent.trim().equals(section.getContent())) {
                 ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newSectionContent);
             }
         }

@@ -35,10 +35,10 @@ public class ProposalSectionWrapper {
     public String getContent() throws PortalException, SystemException {
         try {
             if (version != null && version > 0) {
-                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, "SECTION", definition.getId()).getStringValue();
+                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, "SECTION", definition.getId()).getStringValue().trim();
             }
             else {
-                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId()).getStringValue();
+                return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId()).getStringValue().trim();
             }
         }
         catch (NoSuchProposalAttributeException e) {

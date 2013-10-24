@@ -27,7 +27,10 @@
 		
 
 		jQuery(modeling).on("scenarioFetched", function(event) {
-			jQuery("#modelingScenarioId").val(event.scenario.scenarioId);
+			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
+			
+		}).on("valueChanged", function(event) {
+			jQuery("#modelingScenarioId").addClass("editorDirty");
 		});
 	</script>
 	

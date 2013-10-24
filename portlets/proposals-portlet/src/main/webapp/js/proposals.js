@@ -87,6 +87,10 @@ function updateCharacterCounter(input, editor) {
     }
 }
 
+function markEditorDirty(editor) {
+	editor.addClass('editorDirty');
+}
+
 function initializeTextEditors() {
 	jQuery("input[type='text'], textarea").each(function() {
 		if (jQuery(this).hasClass('rteInitialized')) {
@@ -109,21 +113,6 @@ function initializeTextEditors() {
 			thiz.attr({validateLength: false});
 		}
 		
-		eventsToBind = {
-				keypress: function(event) {
-                    if (! shouldAllowMoreCharacters(thiz)) {
-                        //event.preventDefault();
-                    }
-                    if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
-                        updateCharacterCounter(thiz);
-                    }
-                },
-                keyup: function(event) {
-                    if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
-                        updateCharacterCounter(thiz);
-                    }
-                }
-        };
 		if (thiz.hasClass("rte")) {
         
 			var editor = CKEDITOR.replace(thiz.attr("id"));
@@ -136,6 +125,7 @@ function initializeTextEditors() {
 					if (editor == null) return;
             	
 					if (editor &&  editor.document && editor.document['$'] && (editor.checkDirty() || !editor.updatedCharCount)) {
+						markEditorDirty(thiz);
 						updateCharacterCounter(thiz, editor);
 						editor.updatedCharCount = true;
 						editor.resetDirty();
@@ -160,6 +150,24 @@ function initializeTextEditors() {
 			setTimeout(function() { updateCharacterCounter(thiz, editor); }, 2000);
         }
 		else {
+			eventsToBind = {
+					keypress: function(event) {
+	                    if (! shouldAllowMoreCharacters(thiz)) {
+	                        //event.preventDefault();
+	                    }
+	                    if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
+	                        updateCharacterCounter(thiz);
+	                    }
+	                },
+	                keyup: function(event) {
+	                    if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
+	                        updateCharacterCounter(thiz);
+	                    }
+	                },
+	                change: function(event) {
+	                	markEditorDirty(thiz);
+	                }
+	        };
 			thiz.bind(eventsToBind);
 		}
 		jQuery(this).addClass('rteInitialized');
@@ -199,6 +207,25 @@ function validatePlanEditForm() {
     
     return isValid;
 };
+
+function enableDirtyCheck() {
+	window.oldOnBeforeUnload = window.onbeforeunload;
+
+	window.onbeforeunload = function() {
+		if (jQuery(".editorDirty").length > 0) {
+			return 'You have modified this page but have not saved your changes.';
+		}
+		return null;
+	};
+}
+
+function disableDirtyCheck() {
+	if ('oldOnBeforeUnload' in window) {
+		window.onbeforeunload = window.oldOnBeforeUnload;
+	}
+	delete window.onbeforeunload;
+}
+
 
 jQuery(function() {
 	jQuery(".addpropform .helpTrigger").click(function() {

@@ -279,6 +279,7 @@
     
     function saveIfValid() {
     	if (validatePlanEditForm()) {
+    		disableDirtyCheck();
 			jQuery("#editForm").submit();
     	}
     }
@@ -300,6 +301,8 @@
 		
 		jQuery("#closeAcceptTos").click(closeAcceptTosPopup);
 		jQuery("#tosAccepted").click(tosAcceptedSave);
+		
+		enableDirtyCheck();
 	});
 			
 </script>
