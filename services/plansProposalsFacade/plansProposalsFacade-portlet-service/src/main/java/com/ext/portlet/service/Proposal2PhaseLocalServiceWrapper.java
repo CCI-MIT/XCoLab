@@ -265,6 +265,13 @@ public class Proposal2PhaseLocalServiceWrapper
         return _proposal2PhaseLocalService.getCurrentContestForProposal(proposalId);
     }
 
+    public com.ext.portlet.model.Proposal2Phase getForVersion(
+        com.ext.portlet.model.ProposalVersion proposalVersion)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.getForVersion(proposalVersion);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

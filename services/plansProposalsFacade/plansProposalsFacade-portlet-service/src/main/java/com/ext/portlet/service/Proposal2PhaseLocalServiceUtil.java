@@ -270,6 +270,13 @@ public class Proposal2PhaseLocalServiceUtil {
         return getService().getCurrentContestForProposal(proposalId);
     }
 
+    public static com.ext.portlet.model.Proposal2Phase getForVersion(
+        com.ext.portlet.model.ProposalVersion proposalVersion)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getForVersion(proposalVersion);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -1,6 +1,11 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -53,6 +58,9 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
             proposalVersionJsonObj.put("date", proposalVersion.getCreateDate().getTime());
             proposalVersionJsonObj.put("author", converUserToJson(proposalVersion.getAuthorId()));
             proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
+            try{
+                proposalVersionJsonObj.put("contestPhase", getContestPhaseName(proposalVersion));
+            } catch(SystemException se) { proposalVersionJsonObj.put("contestPhase", "null");}
         }
         return result;
     }
@@ -66,5 +74,17 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         userJsonObj.put("fullName", user.getFullName());
         
         return userJsonObj;
+    }
+
+    private JSONObject getContestPhaseName(ProposalVersion proposalVersion) throws PortalException, SystemException{
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(
+                Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId());
+        ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType());
+
+        JSONObject contestPhaseJsonObj = JSONFactoryUtil.createJSONObject();
+        contestPhaseJsonObj.put("id", contestPhase.getPrimaryKey());
+        contestPhaseJsonObj.put("type", contestPhaseType.getName());
+
+        return contestPhaseJsonObj;
     }
 }

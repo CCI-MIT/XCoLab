@@ -237,4 +237,10 @@ public interface Proposal2PhaseLocalService extends PersistedModelLocalService {
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.Proposal2Phase getForVersion(
+        com.ext.portlet.model.ProposalVersion proposalVersion)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

@@ -1063,5 +1063,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
 
 
+
+
+
     private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
 }

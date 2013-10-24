@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import java.util.List;
 
+import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;
@@ -46,5 +47,18 @@ public class Proposal2PhaseLocalServiceImpl
         }
         ContestPhase phase = contestPhaseLocalService.getContestPhase(proposal2Phases.get(proposal2Phases.size()-1).getContestPhaseId());
         return contestLocalService.getContest(phase.getContestPK());
+    }
+
+    public Proposal2Phase getForVersion(ProposalVersion proposalVersion) throws SystemException, PortalException {
+        List<Proposal2Phase> proposal2Phases = proposal2PhasePersistence.findByProposalId(proposalVersion.getProposalId());
+        for (Proposal2Phase p2p : proposal2Phases){
+            // closed phases
+            if (p2p.getVersionFrom() <= proposalVersion.getVersion() && p2p.getVersionTo() >= proposalVersion.getVersion())
+                return p2p;
+            // open phase
+            if (p2p.getVersionFrom() <= proposalVersion.getVersion() && p2p.getVersionTo() == -1)
+                return p2p;
+        }
+        throw new SystemException("Proposal " + proposalVersion.getProposalId() + " isn't associated with any contest phase");
     }
 }
