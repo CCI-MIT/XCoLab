@@ -53,6 +53,20 @@ import java.rmi.RemoteException;
 public class ProposalServiceSoap {
     private static Log _log = LogFactoryUtil.getLog(ProposalServiceSoap.class);
 
+    public static java.lang.String getProposalVersions(long contestPhaseId,
+        long proposalId, int start, int end) throws RemoteException {
+        try {
+            com.liferay.portal.kernel.json.JSONObject returnValue = ProposalServiceUtil.getProposalVersions(contestPhaseId,
+                    proposalId, start, end);
+
+            return returnValue.toString();
+        } catch (Exception e) {
+            _log.error(e, e);
+
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
     public static java.lang.String getProposalVersions(long proposalId,
         int start, int end) throws RemoteException {
         try {

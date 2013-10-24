@@ -1,6 +1,6 @@
 var itemsPerPage = 10;
 function loadHistory(page){
-    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage), { get_param: 'value' }, function(data) {
+    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestPhaseId/' + getPhaseId() + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage), { get_param: 'value' }, function(data) {
         $('#versions > div > div > table > tbody').empty();
         var even = true;
         $.each(data.versions, function(index, attr) {
@@ -14,7 +14,7 @@ function loadHistory(page){
 
 
 function addVersionToTable(data, even){
-    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td style="width: 400px;"><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '/version/' + data.version + '">' + moment.unix(data.date / 1000).format("MM/DD/YYYY hh:mm A") + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td></tr>');
+    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td style="width: 200px;"><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '/version/' + data.version + '">' + moment.unix(data.date / 1000).format("MM/DD/YYYY hh:mm A") + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="/web/guest/plans/-/plans/contestId/' + contestId + '/phaseId/' + data.contestPhase.id + '">' + data.contestPhase.name + '</a></em></td></tr>');
 }
 
 function addPagination(prev,next,currentPage,totalPages){
@@ -23,7 +23,7 @@ function addPagination(prev,next,currentPage,totalPages){
     output += ' Page ' + (currentPage + 1) + ' of ' + (totalPages+1) + ' ';
     if (next) output += '<a href="javascript:;" onClick="loadHistory(' + (currentPage + 1) + ');" class="blue-arrow-right"></a>';
     output += '</span>';
-    $('#versions > div > div > table > tbody').append('<tr><td colspan="2" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
+    $('#versions > div > div > table > tbody').append('<tr><td colspan="3" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
 
 function triggerHistoryVisibility(){
@@ -47,4 +47,12 @@ function visibilityCallback(){
     $( "#versions" ).slideUp(0);
     $('#versions').removeClass('hidden');
     $( "#versions" ).slideDown( "slow");
+}
+
+function getPhaseId(){
+    var url = window.document.URL.toString().split("/");
+    for (var i = 0; i < url.length; i++) {
+        if(url[i] == 'phaseId') return url[i+1];
+    }
+    return -1;
 }

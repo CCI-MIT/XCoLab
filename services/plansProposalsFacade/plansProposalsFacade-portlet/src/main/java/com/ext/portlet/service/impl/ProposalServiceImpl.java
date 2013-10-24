@@ -3,6 +3,7 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
@@ -17,6 +18,9 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The implementation of the proposal remote service.
@@ -39,21 +43,48 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalServiceUtil} to access the proposal remote service.
      */
+
+
+    /* TODO IMPROVE CODE QUALITY */
     @JSONWebService
-    public JSONObject getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
+    public JSONObject getProposalVersions(long contestPhaseId, long proposalId, int start, int end) throws PortalException, SystemException {
+        Proposal2Phase p2p = null;
+        if (contestPhaseId > 0) p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId,contestPhaseId);
+
         JSONObject result = JSONFactoryUtil.createJSONObject();
         result.put("proposalId", proposalId);
         result.put("start", start);
         result.put("end", end);
-        result.put("totalCount", ProposalVersionLocalServiceUtil.countByProposalId(proposalId));
-        
+
+        if (p2p == null) result.put("totalCount", ProposalVersionLocalServiceUtil.countByProposalId(proposalId));
+        else {
+            if (p2p.getVersionTo() < 0) {
+                result.put("totalCount", ProposalVersionLocalServiceUtil.countByProposalId(proposalId));
+            }
+            else result.put("totalCount", p2p.getVersionTo() - p2p.getVersionFrom());
+        }
+
         JSONArray proposalVersionsArray = JSONFactoryUtil.createJSONArray();
         result.put("versions", proposalVersionsArray);
-        
-        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, start, end)) {
+        int offset = 0;
+        int counter = 0;
+        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
+            if (p2p != null
+                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || proposalVersion.getVersion() > p2p.getVersionTo())   /* TODO DISCUSS VERSIONING - create new versions when phase transitions? */
+                    ) {
+                continue;
+            }
+            if (offset < start){
+                offset++;
+                continue;
+            }
+            if (counter > (end-start)) continue;
+            counter++;
+
+
             JSONObject proposalVersionJsonObj = JSONFactoryUtil.createJSONObject();
             proposalVersionsArray.put(proposalVersionJsonObj);
-            
+
             proposalVersionJsonObj.put("version", proposalVersion.getVersion());
             proposalVersionJsonObj.put("date", proposalVersion.getCreateDate().getTime());
             proposalVersionJsonObj.put("author", converUserToJson(proposalVersion.getAuthorId()));
@@ -63,6 +94,11 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
             } catch(SystemException se) { proposalVersionJsonObj.put("contestPhase", "null");}
         }
         return result;
+    }
+
+    @JSONWebService
+    public JSONObject getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
+        return  getProposalVersions(-1, proposalId, start, end);
     }
     
     private JSONObject converUserToJson(long userId) throws PortalException, SystemException {
@@ -83,7 +119,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
 
         JSONObject contestPhaseJsonObj = JSONFactoryUtil.createJSONObject();
         contestPhaseJsonObj.put("id", contestPhase.getPrimaryKey());
-        contestPhaseJsonObj.put("type", contestPhaseType.getName());
+        contestPhaseJsonObj.put("name", contestPhaseType.getName());
 
         return contestPhaseJsonObj;
     }

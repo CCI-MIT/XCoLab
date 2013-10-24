@@ -27,6 +27,14 @@ public class ProposalServiceUtil {
      * Never modify this class directly. Add custom service methods to {@link com.ext.portlet.service.impl.ProposalServiceImpl} and rerun ServiceBuilder to regenerate this class.
      */
     public static com.liferay.portal.kernel.json.JSONObject getProposalVersions(
+        long contestPhaseId, long proposalId, int start, int end)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getProposalVersions(contestPhaseId, proposalId, start, end);
+    }
+
+    public static com.liferay.portal.kernel.json.JSONObject getProposalVersions(
         long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
