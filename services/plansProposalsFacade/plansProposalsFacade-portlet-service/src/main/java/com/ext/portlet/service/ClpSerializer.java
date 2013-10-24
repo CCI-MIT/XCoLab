@@ -1402,6 +1402,13 @@ public class ClpSerializer {
 
                 method3.invoke(newModel, value3);
 
+                Method method4 = newModelClass.getMethod("setIsQuiet",
+                        new Class[] { Boolean.TYPE });
+
+                Boolean value4 = new Boolean(oldCplModel.getIsQuiet());
+
+                method4.invoke(newModel, value4);
+
                 return newModel;
             } catch (Exception e) {
                 _log.error(e, e);
@@ -6931,6 +6938,13 @@ public class ClpSerializer {
                 Long value3 = (Long) method3.invoke(oldModel, (Object[]) null);
 
                 newModel.setCommentsThread(value3);
+
+                Method method4 = oldModelClass.getMethod("getIsQuiet");
+
+                Boolean value4 = (Boolean) method4.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setIsQuiet(value4);
 
                 return newModel;
             } catch (Exception e) {

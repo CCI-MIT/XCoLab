@@ -118,6 +118,33 @@ public class DiscussionCategoryGroupWrapper implements DiscussionCategoryGroup,
         _discussionCategoryGroup.setCommentsThread(commentsThread);
     }
 
+    /**
+    * Returns the is quiet of this discussion category group.
+    *
+    * @return the is quiet of this discussion category group
+    */
+    public boolean getIsQuiet() {
+        return _discussionCategoryGroup.getIsQuiet();
+    }
+
+    /**
+    * Returns <code>true</code> if this discussion category group is is quiet.
+    *
+    * @return <code>true</code> if this discussion category group is is quiet; <code>false</code> otherwise
+    */
+    public boolean isIsQuiet() {
+        return _discussionCategoryGroup.isIsQuiet();
+    }
+
+    /**
+    * Sets whether this discussion category group is is quiet.
+    *
+    * @param isQuiet the is quiet of this discussion category group
+    */
+    public void setIsQuiet(boolean isQuiet) {
+        _discussionCategoryGroup.setIsQuiet(isQuiet);
+    }
+
     public boolean isNew() {
         return _discussionCategoryGroup.isNew();
     }
