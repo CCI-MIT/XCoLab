@@ -14,7 +14,12 @@ import java.util.Map;
 import java.util.Set;
 
 import com.ext.portlet.service.*;
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.model.User;
+import com.liferay.portlet.social.model.SocialActivity;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.xcolab.portlets.admintasks.migration.persistence.NewPersistenceCleaner;
 import org.xcolab.portlets.admintasks.migration.persistence.NewPersistenceQueries;
 import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
@@ -71,6 +76,7 @@ public class DataMigrator implements Runnable {
     private final static Set<String> regionsOtherDeveloping = new HashSet<String>(
             Arrays.asList(regionsOtherDevelopingArr));
 
+    private int counter = 0;
     
     public DataMigrator(List<String> reference){
         this.reference = reference;
@@ -234,7 +240,7 @@ public class DataMigrator implements Runnable {
                     if (regionAttribute != null) {
                         String region = regionAttribute.getAttributeValue();
                         ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.REGION, region);
-
+                        updateSocialActivityDate(plan.getUpdated(),proposal);
                         String regionEconomy = "Other Developing";
                         
                         
@@ -245,10 +251,12 @@ public class DataMigrator implements Runnable {
                         }
                         
                         ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.REGION_ECONOMY, regionEconomy);
+                        updateSocialActivityDate(plan.getUpdated(),proposal);
                     }
                     PlanAttribute subregionAttribute = PlanItemLocalServiceUtil.getPlanAttribute(plan, "SUBREGION");
                     if (subregionAttribute != null) {
                         ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.SUBREGION, subregionAttribute.getAttributeValue());
+                        updateSocialActivityDate(plan.getUpdated(),proposal);
                     }
                 }
                 catch (Exception e) {
@@ -262,6 +270,7 @@ public class DataMigrator implements Runnable {
                 if (teamAttribute != null) {
                     String teamName = teamAttribute.getAttributeValue();
                     ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.TEAM, teamName);
+                    updateSocialActivityDate(plan.getUpdated(),proposal);
                 }
             }
             catch (Exception e) {
@@ -469,7 +478,7 @@ public class DataMigrator implements Runnable {
                 try{
                     PlanType planType = PlanItemLocalServiceUtil.getPlanType(plan);
                     ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SCENARIO_ID,planType.getDefaultModelId(),null,pmr.getScenarioId(),0);
-                    
+                    updateSocialActivityDate(pmr.getCreated(),p);
                     Map<String, String> attributes = getAttributes(plan); 
                     
                     
@@ -482,6 +491,7 @@ public class DataMigrator implements Runnable {
                         if (attributes.containsKey(attributeToCopy.getValue())) {
                             ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attributeToCopy.getKey(),
                                     planType.getModelId(), attributes.get(attributeToCopy.getValue()),0, 0);
+                            updateSocialActivityDate(pmr.getCreated(),p);
                         }
                     }
                     
@@ -507,6 +517,7 @@ public class DataMigrator implements Runnable {
                 try{
                     if(attribute.equalsIgnoreCase("PLAN_OPENED") || attribute.equalsIgnoreCase("PLAN_CLOSED"))
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.OPEN,0,null,planMeta.getOpen() ? 1 : 0,0);
+                        updateSocialActivityDate(plan.getUpdated(),p);
                         updateLatestVersionDate(p,plan.getUpdated());
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);
@@ -529,6 +540,7 @@ public class DataMigrator implements Runnable {
             try{
                 ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SECTION,
                         planSection.getPlanSectionDefinitionId(),planSection.getContent(),0,0);
+                updateSocialActivityDate(plan.getUpdated(),p);
                 updateLatestVersionDate(p,plan.getUpdated());
             } catch (Exception e){
                 pushAjaxUpdate("Error while setting Section " + plan.getPlanId() + ": " + e);
@@ -546,15 +558,23 @@ public class DataMigrator implements Runnable {
         for(PlanDescription planDescription : planDescriptions) {
             if (planDescription.getPlanVersion() == plan.getVersion()){
                 try{
-                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME))
+                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getName(),0,0);
-                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.DESCRIPTION))
+                        updateSocialActivityDate(planDescription.getCreated(),p);
+                    }
+                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.DESCRIPTION)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getDescription(),0,0);
-                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.PITCH))
+                        updateSocialActivityDate(planDescription.getCreated(),p);
+                    }
+                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.PITCH)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getPitch(),0,0);
-                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID))
+                        updateSocialActivityDate(planDescription.getCreated(),p);
+                    }
+                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,null,planDescription.getImage(),0);
-                    updateLatestVersionDate(p,plan.getUpdated());
+                        updateSocialActivityDate(planDescription.getCreated(),p);
+                        updateLatestVersionDate(p,plan.getUpdated());
+                    }
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);
                 }
@@ -674,4 +694,20 @@ public class DataMigrator implements Runnable {
         }
 
     }
+
+    private void updateSocialActivityDate(Date date, Proposal p){
+        try{
+            Thread.sleep(50);  /* TODO find a better solution*/
+            List<SocialActivity> activities = SocialActivityLocalServiceUtil.
+                    getActivities(0,ClassNameLocalServiceUtil.getClassNameId(Proposal.class),p.getProposalId(),0,Integer.MAX_VALUE);
+            SocialActivity activity = activities.get(0);
+            activity.setCreateDate(date.getTime() + counter);
+            counter = (counter + 1) % 100;
+            SocialActivityLocalServiceUtil.updateSocialActivity(activity);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+     }
+
 }

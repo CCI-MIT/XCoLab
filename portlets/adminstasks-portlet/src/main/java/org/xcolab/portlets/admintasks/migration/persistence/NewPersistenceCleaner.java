@@ -20,6 +20,9 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import com.liferay.portlet.social.model.SocialActivity;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,7 +54,8 @@ public class NewPersistenceCleaner {
                 deleteAllProposal2Phase() &
                 deleteAllProposalVotes() &
                 deleteAllProposalSupporters() &
-                deleteAllContestPhaseRibbonTypes();
+                deleteAllContestPhaseRibbonTypes() &
+                deleteAllSocialActivitiesRelatedToNewEntities();
         if (dbSuccess) pushAjaxUpdate("Successfully cleaned DB");
         else pushAjaxUpdate("Error while cleaning DB");
 
@@ -179,6 +183,20 @@ public class NewPersistenceCleaner {
         return true;
     }
 
+    private boolean deleteAllSocialActivitiesRelatedToNewEntities(){
+        try {
+            pushAjaxUpdate("Deleting " + SocialActivityLocalServiceUtil.getActivitiesCount(ClassNameLocalServiceUtil.getClassNameId(Proposal.class)) + " Social Activities");
+            for (SocialActivity a : SocialActivityLocalServiceUtil.getActivities(ClassNameLocalServiceUtil.getClassNameId(Proposal.class),0,Integer.MAX_VALUE)) {
+                SocialActivityLocalServiceUtil.deleteActivity(a);
+            }
+        }
+        catch (Exception e) {
+            pushAjaxUpdate("Error while cleaning DB: " + e);
+            return false;
+        }
+        return true;
+    }
+
     private boolean deleteAllContestPhaseRibbonTypes(){
         try {
             pushAjaxUpdate("Deleting " + ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypesCount() + " ContestPhaseRibbonTypes");
@@ -198,4 +216,6 @@ public class NewPersistenceCleaner {
         reference.add(message);
         SessionRenderer.render("migration");
     }
+
+
 }

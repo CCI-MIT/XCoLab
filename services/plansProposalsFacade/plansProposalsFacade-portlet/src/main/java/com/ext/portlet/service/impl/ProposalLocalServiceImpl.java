@@ -149,14 +149,20 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup("Proposal " + proposalId + " judges discussion");
+        judgesDiscussion.setIsQuiet(true);
+        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(judgesDiscussion);
         proposal.setJudgeDiscussionId(judgesDiscussion.getId());
 
         DiscussionCategoryGroup advisorsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " judges discussion");
+                .createDiscussionCategoryGroup("Proposal " + proposalId + " advisors discussion");
+        advisorsDiscussion.setIsQuiet(true);
+        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(advisorsDiscussion);
         proposal.setAdvisorDiscussionId(advisorsDiscussion.getId());
 
         DiscussionCategoryGroup fellowsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " judges discussion");
+                .createDiscussionCategoryGroup("Proposal " + proposalId + " fellows discussion");
+        fellowsDiscussion.setIsQuiet(true);
+        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(fellowsDiscussion);
         proposal.setFellowDiscussionId(fellowsDiscussion.getId());
 
         // create group

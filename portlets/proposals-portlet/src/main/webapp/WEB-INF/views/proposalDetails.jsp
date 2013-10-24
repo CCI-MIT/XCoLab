@@ -53,9 +53,22 @@
 
             <div class="edit-prop-wrap" style="width:616px; padding-top: 0px">
                 <div class="inner">
-                    <div class="edit-prop-butts" style="line-height: normal; float: none;">
-                        <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show history</a>
+                    <div style="display:inline-block; width: 616px;">
+                        <div class="edit-prop-butts" style="line-height: normal;">
+                            <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show history</a>
+                        </div>
+                        <c:if test="${not proposal.isLatestVersion }">
+                            <div class="lastedited">
+                                Currently viewing version from <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/DD/YYYY hh:mm A"));</script> by
+                                <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}" text="${proposal.userForSelectedVersion.screenName}" />
+                            </div>
+                            <div class="edit-prop-butts" style="line-height: normal; float: right; margin-right: -5px;">
+                                <a href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}" >Go to current</a>
+                            </div>
+                        </c:if>
+
                     </div>
+
                     <div id="versions" class="versionsContainer hidden">
                         <div class="versions">
                             <div class="historyTable">

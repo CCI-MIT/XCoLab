@@ -201,6 +201,7 @@
 			<basic name="description" />
 			<basic name="url" />
 			<basic name="commentsThread" />
+			<basic name="isQuiet" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>

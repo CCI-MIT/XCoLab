@@ -79,7 +79,7 @@
             </div>
         </div>
 
-        <h1>Comments</h1>
+        <div style="padding-top:40px; clear:both;"></div>
         <discussionsTagFiles:discussionComments discussionId="${discussionId }" />
 
 
