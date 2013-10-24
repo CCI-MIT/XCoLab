@@ -35,18 +35,18 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 /**
  * The implementation of the contest phase local service.
- * 
+ * <p/>
  * <p>
  * All custom service methods should be put in this class. Whenever methods are
  * added, rerun ServiceBuilder to copy their definitions into the
  * {@link com.ext.portlet.service.ContestPhaseLocalService} interface.
- * 
+ * <p/>
  * <p>
  * This is a local service. Methods of this service will not have security
  * checks based on the propagated JAAS credentials because this service can only
  * be accessed from within the same VM.
  * </p>
- * 
+ *
  * @author Brian Wing Shun Chan
  * @see com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl
  * @see com.ext.portlet.service.ContestPhaseLocalServiceUtil
@@ -149,7 +149,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true,
                     new OrderByComparator() {
 
-                        private final String[] ORDERY_BY_FIELDS = new String[] { "PhaseStartDate" };
+                        private final String[] ORDERY_BY_FIELDS = new String[]{"PhaseStartDate"};
 
                         @Override
                         public String[] getOrderByFields() {
@@ -171,7 +171,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return contestPhasePersistence.findByContestIdStartEnd(contest.getContestPK(), now, now);
     }
 
-    /** from ContestPhaseImpl **/
+    /**
+     * from ContestPhaseImpl *
+     */
 
     public Contest getContest(ContestPhase contestPhase) throws SystemException, PortalException {
         return ContestLocalServiceUtil.getContest(contestPhase.getContestPK());
@@ -180,29 +182,44 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     public String getName(ContestPhase contestPhase) throws PortalException, SystemException {
         return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getName();
     }
+
     public void promoteProposal(long proposalId, long nextPhaseId) throws SystemException, PortalException {
         Integer currentProposalVersion = ProposalVersionLocalServiceUtil.getProposalVersionsCount();
-        if(currentProposalVersion < 0) throw new SystemException("Proposal not found");
+        if (currentProposalVersion < 0) throw new SystemException("Proposal not found");
 
         ContestPhase nextPhase = getContestPhase(nextPhaseId);
-        if(nextPhase == null) throw new SystemException("phase not found");
+        if (nextPhase == null) throw new SystemException("phase not found");
 
         //find phase the proposal is in currently in contest c
-        List<ContestPhase> currentPhases = Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(proposalId);
+        List<Long> phases = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId);
+        List<ContestPhase> candidatePhase = new LinkedList<>();
 
-        for(ContestPhase ph : currentPhases) {
-            if(ph.getContestPK() == nextPhase.getContestPK()) { //this active contestphase is in our target contest
-                //set end version of previous phase to now
-                Proposal2Phase o = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, ph.getContestPhasePK());
-                o.setVersionTo(currentProposalVersion);
-                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(o);
-
-                break;
+        for (Long phId : phases) {
+            ContestPhase ph = getContestPhase(phId);
+            if (ph.getContestPK() == nextPhase.getContestPK()) { //this contestphase is in our target contest
+                candidatePhase.add(ph);
             }
+        }
+
+        if (candidatePhase.size() > 0) {
+            //candidate phase now contains all contestphases the proposal has been submitted to of the target contest
+            //we now need to find the one that is closest to the next phase in order to provide a smooth promotion
+            //set end version of previous phase to now
+            ContestPhase closestPhase = candidatePhase.get(0);
+            for(ContestPhase current : candidatePhase) {
+                if(current.getPhaseStartDate().after(closestPhase.getPhaseStartDate())) {
+                    closestPhase = current;
+                }
+            }
+
+            Proposal2Phase o = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, closestPhase.getContestPhasePK());
+            o.setVersionTo(currentProposalVersion);
+            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(o);
         }
 
         Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposalId, nextPhaseId);
         p2p.setVersionFrom(currentProposalVersion);
+        p2p.setVersionTo(-1);
         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
     }
 
@@ -241,7 +258,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         //Judging-based promotion
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote("PROMOTE_JUDGED")) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
-                _log.info("promoting phase " + phase.getContestPhasePK()+" (judging)");
+                _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
                 ContestPhase nextPhase = getNextContestPhase(phase);
                 List<Proposal> toPromote = new LinkedList<>();
                 for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(nextPhase.getContestPhasePK())) {
@@ -264,6 +281,6 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
 
     }
-    
+
 
 }
