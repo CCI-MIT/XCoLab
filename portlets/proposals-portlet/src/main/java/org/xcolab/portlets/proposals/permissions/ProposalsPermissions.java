@@ -2,10 +2,12 @@ package org.xcolab.portlets.proposals.permissions;
 
 import javax.portlet.PortletRequest;
 
-import org.xcolab.portlets.proposals.utils.ProposalsActions; 
+import com.liferay.portal.model.MembershipRequestConstants;
+import org.xcolab.portlets.proposals.utils.ProposalsActions;
 
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
+import com.liferay.portal.model.MembershipRequest;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
@@ -18,6 +20,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+
+import java.util.List;
 
 public class ProposalsPermissions {
     private final PermissionChecker permissionChecker;
@@ -225,6 +229,13 @@ public class ProposalsPermissions {
 
     public boolean getCanJudgeActions() {
         return permissionChecker.hasPermission(groupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS);
+    }
+
+    public boolean getUserHasOpenMembershipRequest() throws PortalException, SystemException {
+        for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())){
+            if (mr.getUserId() == user.getUserId() && mr.getStatusId() == MembershipRequestConstants.STATUS_PENDING) return true;
+        }
+        return false;
     }
 
 

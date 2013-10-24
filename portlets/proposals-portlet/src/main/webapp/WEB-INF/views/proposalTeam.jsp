@@ -19,7 +19,7 @@
             <h2>
                 <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
             </h2>
-            <c:if test="${!proposalsPermissions.isTeamMember}">
+            <c:if test="${!proposalsPermissions.isTeamMember and !proposalsPermissions.userHasOpenMembershipRequest}">
                 <div class="prop-butt-popover">
                     <img src="/climatecolab-theme/images/icon-request-membership.png"
                          width="24" height="22" alt="request membership" class="request-membership-icon"/>
