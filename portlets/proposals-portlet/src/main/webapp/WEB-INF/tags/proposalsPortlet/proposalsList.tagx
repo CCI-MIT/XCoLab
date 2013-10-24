@@ -89,11 +89,16 @@
                         </span>
                         <div class="tooltip">
                             <c:choose>
-                                <c:when test="${proposal.fellowStatus == 0}">
+                                <c:when test="${proposal.judgeStatus == 0}">
                                     No decision yet.
                                 </c:when>
-                                <c:when test="${proposal.fellowStatus == 1}">
-                                    Proposal will not proceed to next round.
+                                <c:when test="${proposal.judgeStatus == 1}">
+                                    <c:if test="${proposal.fellowStatus lt 2}">
+                                        Fellows decided that proposal will not proceed to next round.
+                                    </c:if>
+                                    <c:if test="${proposal.fellowStatus eq 2}">
+                                        Proposal will not proceed to next round.
+                                    </c:if>
                                 </c:when>
                                 <c:otherwise>
                                     Proposal will proceed to next round.

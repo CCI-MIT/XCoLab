@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.JudgingSystemActions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -31,11 +32,25 @@ public enum ProposalTab {
                 }
                 private Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
     }
-            
             , ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
     TEAM("Contributors", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.membersCount),
     COMMENTS("Comments", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.commentsCount),
-    JUDGE("Judge", ProposalTabCanAccessAlgorithm.judgeAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
+    JUDGE("Judge",
+            new ProposalTabCanAccessAlgorithm() {
+        @Override
+        public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context,
+                                 PortletRequest request) {
+            // check if user has permission and if proposal has been passed to judges
+            boolean isPassedToJudges = false;
+            try{
+                isPassedToJudges = context.getProposalWrapped(request).getFellowAction() == JudgingSystemActions.FellowAction.PASSTOJUDGES;
+            } catch (Exception e){
+                _log.error("Can't access proposals model id", e);
+            }
+            return ProposalTabCanAccessAlgorithm.judgeAccess.canAccess(permissions,context,request) && isPassedToJudges;
+        }
+        private Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
+    }, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     FELLOW("Fellow", ProposalTabCanAccessAlgorithm.fellowAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero);
     
