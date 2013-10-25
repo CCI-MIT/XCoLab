@@ -7,39 +7,32 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<jsp:directive.include file="./init.jspx" />
-	<div id="content">
-		<jsp:directive.include file="./contestProposals/header.jspx" />
-		<jsp:directive.include file="./contestProposals/header_contest_details.jspx" />
+    <jsp:directive.include file="./init.jspx"/>
+    <div id="content">
+        <jsp:directive.include file="./contestProposals/header.jspx"/>
+        <jsp:directive.include file="./contestProposals/header_contest_details.jspx"/>
 
-		<div class="headline subhead">
-			<h2>
-				<span>${fn:length(proposals.proposals)}</span> proposals
-			</h2>
-			<!--  TODO should check if user can see createProposalButton -->
-				<div class="right">
-					<div class="blue-button">
-						<c:choose>
-							<c:when test="${proposalsPermissions.canCreate }">
-								<a href="/web/guest/plans/-/plans/contestId/${contest.contestPK }/createProposal" >
-									<span>CREATE</span> proposal
-								</a>
-							</c:when>
-							<c:otherwise>
-								<a href="${proposalsPermissions.canCreate ? createProposalURL : '#'}" onclick="if(!deferUntilLogin()) return false;">
-									<span>CREATE</span> proposal
-								</a>
-							</c:otherwise>
-						</c:choose>
-					</div>
-					
-				</div>
-		</div>
-			<div class="blueheaderbar tooltips">
-				<div class="proposalname" style="${proposalsPermissions.canJudgeActions ? 'width:554px;' : ''}">
-					<div style="display: inline-block">
-						<portlet:renderURL var="sortURL">
-        					<portlet:param name="contestId" value="${contest.contestPK }" />
+        <div class="headline subhead">
+            <h2>
+                <span>${fn:length(proposals.proposals)}</span> proposals
+            </h2>
+            <!--  TODO should check if user can see createProposalButton -->
+            <div class="right">
+                <c:if test="${proposalsPermissions.canCreate }">
+                    <div class="blue-button">
+                        <a href="/web/guest/plans/-/plans/contestId/${contest.contestPK }/createProposal"
+                           onclick="if(!deferUntilLogin()) return false;">
+                            <span>CREATE</span> proposal
+                        </a>
+                    </div>
+                </c:if>
+            </div>
+        </div>
+        <div class="blueheaderbar tooltips">
+            <div class="proposalname" style="${proposalsPermissions.canJudgeActions ? 'width:554px;' : ''}">
+                <div style="display: inline-block">
+                    <portlet:renderURL var="sortURL">
+                        <portlet:param name="contestId" value="${contest.contestPK }" />
         					<portlet:param name="pageToDisplay" value="contestProposals" />
         					<portlet:param name="sortColumn" value="NAME" />
         					<portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />

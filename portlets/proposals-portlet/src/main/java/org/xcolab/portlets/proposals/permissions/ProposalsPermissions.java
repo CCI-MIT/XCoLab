@@ -96,9 +96,6 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanCreate() {
-        if (user.isDefaultUser()) 
-            return false;
-        
         return contestStatus.isCanCreate();
     }
     
