@@ -17,6 +17,7 @@ public class ContestPhaseWrapper {
     private ContestStatus status;
     
     public ContestPhaseWrapper(ContestPhase contestPhase) {
+        if(contestPhase == null) throw new IllegalArgumentException("contestphase must not be null");
         this.contestPhase = contestPhase;
     }
 

@@ -290,7 +290,9 @@ public class ContestWrapper {
     
     public ContestPhaseWrapper getActivePhase() throws NoSuchContestPhaseException, SystemException {
         if (activePhase == null) {
-            activePhase = new ContestPhaseWrapper(ContestLocalServiceUtil.getActivePhase(contest));
+            ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
+            if(phase == null) return null;
+            activePhase = new ContestPhaseWrapper(phase);
         }
         return activePhase;
     }
