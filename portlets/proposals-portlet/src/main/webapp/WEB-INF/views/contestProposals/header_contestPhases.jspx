@@ -32,10 +32,27 @@
         					</c:choose>
   						</span>
 					</span>
-					<div class="tooltip">
-						<c:if test="${not empty phase.phaseStatusDescription}">
-							${phase.phaseStatusDescription }
-						</c:if>
+                    <c:choose>
+                        <c:when test="${status.index == 0}">
+                            <c:set var="customStyle" scope="session" value="top: -108px; left: -30px;"/>
+                        </c:when>
+                        <c:when test="${status.index == 1}">
+                            <c:set var="customStyle" scope="session" value="top: -102px; left: -30px;"/>
+                        </c:when>
+                        <c:when test="${status.index == 2}">
+                            <c:set var="customStyle" scope="session" value="top: -102px; left: -30px;"/>
+                        </c:when>
+                        <c:when test="${status.index == 3}">
+                            <c:set var="customStyle" scope="session" value="top: -117px; left: -17px;"/>
+                        </c:when>
+                        <c:when test="${status.index == 4}">
+                            <c:set var="customStyle" scope="session" value="top: -87px; left: -50px;"/>
+                        </c:when>
+                    </c:choose>
+                    <div class="tooltip" style="${customStyle}">
+                        <c:if test="${not empty phase.phaseStatusDescription}">
+                            ${phase.phaseStatusDescription }
+                        </c:if>
 						<c:if test="${not empty phase.phaseStartDate }">
 							<fmt:setLocale value="en_US" />
 							<fmt:setTimeZone value="America/New_York" />  
