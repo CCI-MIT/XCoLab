@@ -135,8 +135,9 @@ public class ContestBean implements Serializable {
 		try {
 			for (Simulation sim : PlanTypeLocalServiceUtil
 					.getAvailableModels(planType)) {
-
-				availableModels.add(new SelectItem(sim.getId(), sim.getName()));
+			    if (sim != null) {
+			        availableModels.add(new SelectItem(sim.getId(), sim.getName()));
+			    }
 			}
 		} catch (Exception e) {
 			_log.error(e);
