@@ -18,9 +18,9 @@
             </h2>
             <!--  TODO should check if user can see createProposalButton -->
             <div class="right">
-                <c:if test="${proposalsPermissions.canCreate }">
+                <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
                     <div class="blue-button">
-                        <a href="/web/guest/plans/-/plans/contestId/${contest.contestPK }/createProposal"
+                        <a href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                            onclick="if(!deferUntilLogin()) return false;">
                             <span>CREATE</span> proposal
                         </a>

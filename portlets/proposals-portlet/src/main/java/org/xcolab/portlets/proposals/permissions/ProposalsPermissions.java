@@ -96,8 +96,18 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanCreate() {
+        // guests aren't allowed to edit
+        if (user.isDefaultUser())
+            return false;
+
+        return getIsCreationAllowedByPhase();
+    }
+
+    public boolean getIsCreationAllowedByPhase() {
         return contestStatus.isCanCreate();
     }
+
+
     
     public boolean getCanAssignRibbon() {
         if (user.isDefaultUser()) 
