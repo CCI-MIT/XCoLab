@@ -15,6 +15,7 @@ public class ProposalAttributeUpdatedEvent  extends BaseProposalUserActivityEven
         this.attributeName = attributeName;
         this.oldAttribute = oldAttribute;
         this.newAttribute = newAttribute;
+        setUpdatedDate(proposal.getUpdatedDate());
     }
     
     public String getAttributeName() {

@@ -321,7 +321,7 @@ public class ContestPhaseLocalServiceUtil {
     }
 
     /**
-    * from ContestPhaseImpl
+    * from ContestPhaseImpl *
     */
     public static com.ext.portlet.model.Contest getContest(
         com.ext.portlet.model.ContestPhase contestPhase)

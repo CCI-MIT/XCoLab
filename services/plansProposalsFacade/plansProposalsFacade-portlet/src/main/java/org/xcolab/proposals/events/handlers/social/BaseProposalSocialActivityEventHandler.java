@@ -19,7 +19,7 @@ public class BaseProposalSocialActivityEventHandler extends BaseEventHandler {
     
     protected void addSocialActivity(BaseProposalUserActivityEvent event, ProposalActivityKeys type, String extraData) {
         try {
-            socialActivityService.addActivity(event.getUser().getUserId(), getDefaultGroup().getGroupId(),
+            socialActivityService.addActivity(event.getUser().getUserId(), getDefaultGroup().getGroupId(), event.getUpdatedDate(),
                     Proposal.class.getName(), event.getProposal().getProposalId(), type.ordinal(), extraData, 0);
         }
         catch (PortalException e) {

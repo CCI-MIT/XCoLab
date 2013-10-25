@@ -314,7 +314,7 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     /**
-    * from ContestPhaseImpl
+    * from ContestPhaseImpl *
     */
     public com.ext.portlet.model.Contest getContest(
         com.ext.portlet.model.ContestPhase contestPhase)

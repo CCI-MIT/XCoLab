@@ -214,6 +214,38 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Transactional
     public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
             String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
+        return setAttribute(authorId, proposalId, attributeName, additionalId, stringValue, numericValue, realValue, new Date());
+    }
+
+    /**
+     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
+     * <p>The algorithm for setting an attribute value is as follows:</p>
+     * <ol>
+     *  <li>new proposal version is created</li>
+     *  <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
+     *      it is copied to the new version</li>
+     *  <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
+     * </ol>
+     *
+     * @param authorId id of a change author
+     * @param proposalId id of a proposal
+     * @param attributeName name of an attribute
+     * @param additionalId additional id for an attribute
+     * @param stringValue string value for an attribute
+     * @param numericValue numeric value for an attribute
+     * @param doubleValue double value for an attribute
+     * @param updatedDate date of update
+     *
+     * @return ProposalAttribute that represents newly set attribute
+     *
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     *
+     * @author patrickhiesel
+     */
+    @Transactional
+    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
+                                          String stringValue, long numericValue, double realValue, Date updatedDate) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
         ProposalAttribute oldAttribute = null;
 
@@ -238,20 +270,20 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 oldAttribute = attribute;
             }
         }
-        
+
         // set new value for provided attribute
         ProposalAttribute attribute = setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
 
         proposal.setCurrentVersion(newVersion);
-        proposal.setUpdatedDate(new Date());
-        
+        proposal.setUpdatedDate(updatedDate);
+
         // create newly created version descriptor
         createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId);
         updateProposal(proposal);
-        
-        eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId), 
+
+        eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId),
                 attributeName, oldAttribute, attribute));
-        
+
         return attribute;
     }
     

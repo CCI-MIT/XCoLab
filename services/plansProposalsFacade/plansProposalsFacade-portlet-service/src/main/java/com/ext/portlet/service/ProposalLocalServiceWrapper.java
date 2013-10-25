@@ -304,6 +304,40 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
+    * <p>The algorithm for setting an attribute value is as follows:</p>
+    * <ol>
+    *  <li>new proposal version is created</li>
+    *  <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
+    *      it is copied to the new version</li>
+    *  <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
+    * </ol>
+    *
+    * @param authorId id of a change author
+    * @param proposalId id of a proposal
+    * @param attributeName name of an attribute
+    * @param additionalId additional id for an attribute
+    * @param stringValue string value for an attribute
+    * @param numericValue numeric value for an attribute
+    * @param doubleValue double value for an attribute
+    * @param updatedDate date of update
+    * @return ProposalAttribute that represents newly set attribute
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    * @author patrickhiesel
+    */
+    public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
+        long proposalId, java.lang.String attributeName, long additionalId,
+        java.lang.String stringValue, long numericValue, double realValue,
+        java.util.Date updatedDate)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.setAttribute(authorId, proposalId,
+            attributeName, additionalId, stringValue, numericValue, realValue,
+            updatedDate);
+    }
+
+    /**
     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
     * it uses nulls/zeros for unspecified values</p>
     *

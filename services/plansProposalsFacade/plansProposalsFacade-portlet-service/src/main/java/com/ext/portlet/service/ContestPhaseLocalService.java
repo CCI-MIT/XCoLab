@@ -283,7 +283,7 @@ public interface ContestPhaseLocalService extends PersistedModelLocalService {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * from ContestPhaseImpl
+    * from ContestPhaseImpl *
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.Contest getContest(

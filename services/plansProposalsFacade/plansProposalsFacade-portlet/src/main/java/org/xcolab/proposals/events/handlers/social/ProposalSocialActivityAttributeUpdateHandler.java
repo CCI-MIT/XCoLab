@@ -12,6 +12,8 @@ public class ProposalSocialActivityAttributeUpdateHandler extends BaseProposalSo
 
     @Subscribe
     public void handleEvent(ProposalAttributeUpdatedEvent event) throws PortalException, SystemException {
+
+
         addSocialActivity(
                 event, 
                 ProposalActivityKeys.ATTRIBUTE_UPDATE,
