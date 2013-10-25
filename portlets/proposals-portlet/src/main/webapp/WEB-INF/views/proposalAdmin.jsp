@@ -66,10 +66,10 @@
             				<c:forEach var="ribbon" items="${availableRibbons }">
             					<c:choose>
             						<c:when test="${proposal.ribbon == ribbon.ribbon }">
-            							<option value="${ribbon.id }" selected="selected">${ribbon.ribbon} - ${ribbon.hoverText }</option>
+            							<option value="${ribbon.id }" selected="selected">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
             						</c:when>
             						<c:otherwise>
-            							<option value="${ribbon.id }">${ribbon.ribbon} - ${ribbon.hoverText }</option>
+            							<option value="${ribbon.id }">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
             						</c:otherwise>
             					</c:choose>	
             				</c:forEach>
