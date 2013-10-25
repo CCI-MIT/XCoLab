@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
@@ -262,9 +263,8 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
                 ContestPhase nextPhase = getNextContestPhase(phase);
-                List<Proposal> toPromote = new LinkedList<>();
-                for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(nextPhase.getContestPhasePK())) {
-                    ProposalContestPhaseAttribute data = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), nextPhase.getContestPhasePK(), ProposalAttributeKeys.JUDGE_ACTION);
+                for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                    ProposalContestPhaseAttribute data = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalAttributeKeys.JUDGE_ACTION);
                     Long intData = (data == null) ? JudgingSystemActions.JudgeAction.NO_DECISION.getAttributeValue() : data.getNumericValue();
 
                     if (JudgingSystemActions.JudgeAction.fromInt(intData.intValue()) == JudgingSystemActions.JudgeAction.MOVE_ON) {
@@ -276,9 +276,13 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 _log.info("done promoting phase " + phase.getContestPhasePK());
             }
         }
-
-
     }
 
-
+    private ProposalContestPhaseAttribute getAttribute(long proposalId, long phaseId, String key) {
+        try {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, phaseId, key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
