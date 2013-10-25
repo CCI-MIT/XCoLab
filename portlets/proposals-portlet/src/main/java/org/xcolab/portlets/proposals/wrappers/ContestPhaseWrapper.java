@@ -95,10 +95,12 @@ public class ContestPhaseWrapper {
     }
 
     public boolean getCanVote() throws PortalException, SystemException {
+        if(getStatus() == null) return false;
         return getStatus().isCanVote();
     }
 
     public boolean getCanEdit() throws PortalException, SystemException {
+        if(getStatus() == null) return false;
         return getStatus().isCanEdit();
     }
 
