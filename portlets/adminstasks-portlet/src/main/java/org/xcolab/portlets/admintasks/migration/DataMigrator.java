@@ -400,7 +400,13 @@ public class DataMigrator implements Runnable {
         for (PlanItem planVersion : planVersions) {
             if (planVersion.getUpdateType().equalsIgnoreCase("CREATED")){
                 // ignore use just for transferring from one phase to another
-                
+                boolean oldContest = false; // old contests have inconsistencies, therefore migrate all attributes to assure proper migration
+                try{
+                    if(!ContestLocalServiceUtil.isActive(PlanItemLocalServiceUtil.getContest(plan)))
+                    {
+                        setAttributeRelatedToPlanDescription(planVersion,proposal,"ALL");
+                    }
+                } catch (Exception e) { e.printStackTrace(); }
             } else if (planVersion.getUpdateType().equalsIgnoreCase("MODEL_UPDATED")){
                 // IGNORE because modelID is deprecated
             } else if (planVersion.getUpdateType().equalsIgnoreCase("SCENARIO_UPDATED")){
@@ -536,26 +542,34 @@ public class DataMigrator implements Runnable {
     }
 
     private void setAttributeRelatedToPlanDescription(PlanItem plan, Proposal p, String attribute){
+
+
         List<PlanDescription> planDescriptions = null;
         try{
             planDescriptions = PlanDescriptionLocalServiceUtil.getAllForPlan(plan);
         } catch(Exception e){
             pushAjaxUpdate("Error while getting description record " + plan.getPlanId() + ": " + e);
         }
+
+        boolean oldContest = false; // old contests have inconsistencies, therefore migrate all attributes to assure proper migration
+        try{
+            oldContest = !ContestLocalServiceUtil.isActive(PlanItemLocalServiceUtil.getContest(plan)) && (planDescriptions.size() == 1);
+        } catch (Exception e) { e.printStackTrace(); }
+
         for(PlanDescription planDescription : planDescriptions) {
-            if (planDescription.getPlanVersion() == plan.getVersion()){
+            if (planDescription.getPlanVersion() == plan.getVersion() || oldContest){
                 try{
-                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME)){
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getName(),0,0,dateFix(planDescription.getCreated()));
+                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME) || oldContest){
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.NAME,0,planDescription.getName(),0,0,dateFix(planDescription.getCreated()));
                     }
-                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.DESCRIPTION)){
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getDescription(),0,0,dateFix(planDescription.getCreated()));
+                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.DESCRIPTION) || oldContest){
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.DESCRIPTION,0,planDescription.getDescription(),0,0,dateFix(planDescription.getCreated()));
                     }
-                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.PITCH)){
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,planDescription.getPitch(),0,0,dateFix(planDescription.getCreated()));
+                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.PITCH) || oldContest){
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.PITCH,0,planDescription.getPitch(),0,0,dateFix(planDescription.getCreated()));
                     }
-                    else if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID)){
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attribute,0,null,planDescription.getImage(),0,dateFix(planDescription.getCreated()));
+                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID) || oldContest){
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.IMAGE_ID,0,null,planDescription.getImage(),0,dateFix(planDescription.getCreated()));
                         updateLatestVersionDate(p,plan.getUpdated());
                     }
                 } catch(Exception e){
