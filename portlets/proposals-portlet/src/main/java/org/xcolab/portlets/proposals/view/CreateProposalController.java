@@ -4,6 +4,7 @@ package org.xcolab.portlets.proposals.view;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +32,9 @@ public class CreateProposalController extends BaseProposalsController {
     public String showContestProposals(RenderRequest request, RenderResponse response, 
             @RequestParam Long contestId, Model model) 
             throws PortalException, SystemException {
-        
+
+        if(!proposalsContext.getPermissions(request).getCanCreate()) throw new IllegalAccessError("creation not allowed");
+
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         
         Proposal proposal = ProposalLocalServiceUtil.createProposal(0);
