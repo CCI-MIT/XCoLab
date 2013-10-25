@@ -184,8 +184,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public void promoteProposal(long proposalId, long nextPhaseId) throws SystemException, PortalException {
-        Integer currentProposalVersion = ProposalVersionLocalServiceUtil.getProposalVersionsCount();
-        if (currentProposalVersion < 0) throw new SystemException("Proposal not found");
+        Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposalId);
+        if (currentProposalVersion == null || currentProposalVersion < 0)
+            throw new SystemException("Proposal not found");
 
         ContestPhase nextPhase = getContestPhase(nextPhaseId);
         if (nextPhase == null) throw new SystemException("phase not found");
@@ -201,25 +202,28 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             }
         }
 
+        boolean isBoundedVersion = false;
         if (candidatePhase.size() > 0) {
             //candidate phase now contains all contestphases the proposal has been submitted to of the target contest
             //we now need to find the one that is closest to the next phase in order to provide a smooth promotion
             //set end version of previous phase to now
             ContestPhase closestPhase = candidatePhase.get(0);
-            for(ContestPhase current : candidatePhase) {
-                if(current.getPhaseStartDate().after(closestPhase.getPhaseStartDate())) {
+            for (ContestPhase current : candidatePhase) {
+                if (current.getPhaseStartDate().after(closestPhase.getPhaseStartDate())) {
                     closestPhase = current;
                 }
             }
 
             Proposal2Phase o = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, closestPhase.getContestPhasePK());
-            o.setVersionTo(currentProposalVersion);
-            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(o);
+            if (o.getVersionTo() < 0) {
+                o.setVersionTo(currentProposalVersion.intValue());
+                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(o);
+            } else isBoundedVersion = true;
         }
 
         Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposalId, nextPhaseId);
-        p2p.setVersionFrom(currentProposalVersion);
-        p2p.setVersionTo(-1);
+        p2p.setVersionFrom(currentProposalVersion.intValue());
+        p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
     }
 
@@ -237,10 +241,8 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 try {
                     _log.info("promoting phase " + phase.getContestPhasePK());
                     ContestPhase nextPhase = getNextContestPhase(phase);
-                    for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(nextPhase.getContestPhasePK())) {
-                        promoteProposal(p.getProposalId(), nextPhase.getContestPK());
-
-                        //PlanItemLocalServiceUtil.promotePlans(phase.getContestPhasePK(), nextPhase.getContestPhasePK());
+                    for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                        promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
 
                     // update phase for which promotion was done (mark it as
@@ -266,15 +268,11 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     Long intData = (data == null) ? JudgingSystemActions.JudgeAction.NO_DECISION.getAttributeValue() : data.getNumericValue();
 
                     if (JudgingSystemActions.JudgeAction.fromInt(intData.intValue()) == JudgingSystemActions.JudgeAction.MOVE_ON) {
-                        toPromote.add(p);
+                        promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
                 }
-                if (toPromote.size() > 0) {
-                    _log.info("found " + toPromote.size() + " proposals to promote");
-                    //PlanItemLocalServiceUtil.promotePlans(toPromote, nextPhase.getContestPhasePK());
-                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
-                    updateContestPhase(phase);
-                }
+                phase.setContestPhaseAutopromote("PROMOTE_DONE");
+                updateContestPhase(phase);
                 _log.info("done promoting phase " + phase.getContestPhasePK());
             }
         }
