@@ -230,11 +230,19 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanFellowActions() {
-        return permissionChecker.hasPermission(scopeGroupId, portletId, primKey, ProposalsActions.CAN_FELLOW_ACTIONS);
+        long contestGroupId;
+        try{
+            contestGroupId = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getGroupId();
+        } catch (Exception e) { return false; }
+        return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_FELLOW_ACTIONS) || getCanAdminAll();
     }
 
     public boolean getCanJudgeActions() {
-        return permissionChecker.hasPermission(scopeGroupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS);
+        long contestGroupId;
+        try{
+            contestGroupId = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getGroupId();
+        } catch (Exception e) { return false; }
+        return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS) || getCanAdminAll();
     }
 
     public boolean getUserHasOpenMembershipRequest() throws PortalException, SystemException {
