@@ -20,6 +20,10 @@
             <div class="right">
                 <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
                     <div class="blue-button">
+                        <portlet:renderURL var="createProposalURL">
+                            <portlet:param name="contestId" value="${contest.contestPK }" />
+                            <portlet:param name="pageToDisplay" value="createProposal" />
+                        </portlet:renderURL>
                         <a href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                            onclick="if(!deferUntilLogin()) return false;">
                             <span>CREATE</span> proposal
