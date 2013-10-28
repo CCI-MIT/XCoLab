@@ -6,9 +6,9 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-    <jsp:directive.include file="./init.jspx" />
+    <jsp:directive.include file="./init.jspx"/>
 
-    <jsp:directive.include file="./proposalDetails/header.jspx" />
+    <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
     <div id="content">
 
@@ -34,7 +34,7 @@
                 background-color: #fff;
             }
 
-            .historyTable table{
+            .historyTable table {
                 width: 617px;
                 margin-top: 10px;
             }
@@ -54,16 +54,28 @@
             <div class="edit-prop-wrap" style="width:616px; padding-top: 0px">
                 <div class="inner">
                     <div style="display:inline-block; width: 616px;">
+                        <c:if test="${not proposal.isLatestVersion }">
+                            <div class="edit-prop-butts" style="line-height: normal;">
+                                <a href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}">Go
+                                    to current</a>
+                            </div>
+                        </c:if>
+
                         <div class="edit-prop-butts" style="line-height: normal;">
-                            <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show history</a>
+                            <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show
+                                history</a>
                         </div>
                         <c:if test="${not proposal.isLatestVersion }">
                             <div class="lastedited">
-                                Currently viewing version from <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/DD/YYYY hh:mm A"));</script> by
-                                <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}" text="${proposal.userForSelectedVersion.screenName}" />
-                            </div>
-                            <div class="edit-prop-butts" style="line-height: normal; float: right; margin-right: -5px;">
-                                <a href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}" >Go to current</a>
+                                Currently viewing version from
+                                <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/
+                                DD / YYYY
+                                hh:mm
+                                A
+                                "));</script>
+                                by
+                                <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}"
+                                                                 text="${proposal.userForSelectedVersion.screenName}"/>
                             </div>
                         </c:if>
 
@@ -84,7 +96,9 @@
 
             <c:if test="${not empty proposal.pitch }">
                 <h2>Pitch</h2>
+
                 <p class="intro">${proposal.pitch}</p>
+
                 <div class="div1"><!--  --></div>
             </c:if>
 
@@ -96,6 +110,7 @@
                 <c:otherwise>
                     <c:forEach var="section" items="${proposal.sections }" varStatus="status">
                         <h3>${section.title }</h3>
+
                         <p>${section.content }</p>
 
                         <c:if test="${not status.last }">
@@ -105,7 +120,7 @@
                 </c:otherwise>
             </c:choose>
         </div>
-        <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
+        <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
     </div>
 
 </jsp:root>
