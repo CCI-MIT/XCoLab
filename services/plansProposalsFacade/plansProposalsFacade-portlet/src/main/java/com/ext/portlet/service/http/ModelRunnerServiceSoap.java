@@ -48,7 +48,7 @@ public class ModelRunnerServiceSoap {
             com.liferay.portal.kernel.json.JSONObject returnValue = ModelRunnerServiceUtil.getScenario(scenarioId);
 
             return returnValue.toString();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             _log.error(e, e);
 
             throw new RemoteException(e.getMessage());
@@ -61,7 +61,7 @@ public class ModelRunnerServiceSoap {
             com.liferay.portal.kernel.json.JSONObject returnValue = ModelRunnerServiceUtil.getModel(modelId);
 
             return returnValue.toString();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             _log.error(e, e);
 
             throw new RemoteException(e.getMessage());
@@ -75,7 +75,7 @@ public class ModelRunnerServiceSoap {
                     inputs);
 
             return returnValue.toString();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             _log.error(e, e);
 
             throw new RemoteException(e.getMessage());
