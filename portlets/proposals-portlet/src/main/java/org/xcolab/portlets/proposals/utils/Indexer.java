@@ -15,8 +15,6 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchPlanItemException;
-import com.ext.portlet.model.PlanItem;
-import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -34,7 +32,6 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -63,13 +60,13 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void delete(Object obj) throws SearchException {
-        PlanItem plan;
+        Proposal plan;
         try {
-            plan = PlanItemLocalServiceUtil.getPlan((Long) obj);
+            plan = ProposalLocalServiceUtil.getProposal((Long)obj)
             SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, getDocument(plan).getUID());
         } catch (NoSuchPlanItemException e) {
             _log.error("Can't remove plan from index: " + obj, e);
-        } catch (SystemException e) {
+        } catch (SystemException | PortalException e) {
             _log.error("Can't remove plan from index: " + obj, e);
         }
 
