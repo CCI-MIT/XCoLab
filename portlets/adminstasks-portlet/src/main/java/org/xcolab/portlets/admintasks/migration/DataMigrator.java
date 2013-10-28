@@ -446,22 +446,6 @@ public class DataMigrator implements Runnable {
         }
     }
 
-    private void updateLatestVersionDate(Proposal proposal, Date date){
-        try{
-            ProposalVersion latestVersion = NewPersistenceQueries.getLatestVersionForProposal(proposal);
-            if (latestVersion != null){
-                latestVersion.setCreateDate(date);
-                ProposalVersionLocalServiceUtil.updateProposalVersion(latestVersion);
-            } else {
-                System.out.println("Could not update Version at proposalId: " + proposal.getProposalId());
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            pushAjaxUpdate("Could not find latest version for proposal: " + proposal.getProposalId());
-            return;
-        }
-    }
-
     private void setAttributeRelatedToScenario(PlanItem plan, Proposal p, String attribute){
         List<PlanModelRun> pmrs = null;
         try{
@@ -489,8 +473,6 @@ public class DataMigrator implements Runnable {
                                     planType.getModelId(), attributes.get(attributeToCopy.getValue()),0, 0,dateFix(pmr.getCreated()));
                         }
                     }
-                    
-                    updateLatestVersionDate(p,plan.getUpdated());
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting ScenarioID " + plan.getPlanId() + ": " + e);
                 }
@@ -512,7 +494,6 @@ public class DataMigrator implements Runnable {
                 try{
                     if(attribute.equalsIgnoreCase("PLAN_OPENED") || attribute.equalsIgnoreCase("PLAN_CLOSED"))
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.OPEN,0,null,planMeta.getOpen() ? 1 : 0,0,dateFix(plan.getUpdated()));
-                        updateLatestVersionDate(p,plan.getUpdated());
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);
                 }
@@ -534,7 +515,6 @@ public class DataMigrator implements Runnable {
             try{
                 ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SECTION,
                         planSection.getPlanSectionDefinitionId(),planSection.getContent(),0,0,dateFix(plan.getUpdated()));
-                updateLatestVersionDate(p,plan.getUpdated());
             } catch (Exception e){
                 pushAjaxUpdate("Error while setting Section " + plan.getPlanId() + ": " + e);
             }
@@ -570,7 +550,6 @@ public class DataMigrator implements Runnable {
                     }
                     if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID) || oldContest){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.IMAGE_ID,0,null,planDescription.getImage(),0,dateFix(planDescription.getCreated()));
-                        updateLatestVersionDate(p,plan.getUpdated());
                     }
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);

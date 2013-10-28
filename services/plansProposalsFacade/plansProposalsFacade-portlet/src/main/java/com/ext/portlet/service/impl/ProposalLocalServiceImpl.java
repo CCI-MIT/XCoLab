@@ -278,7 +278,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setUpdatedDate(updatedDate);
 
         // create newly created version descriptor
-        createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId);
+        createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId,updatedDate);
         updateProposal(proposal);
 
         eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId),
@@ -1081,6 +1081,24 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Transactional
     private void createPlanVersionDescription(long authorId, long proposalId, int version, String updateType,
             long additionalId) throws SystemException {
+        createPlanVersionDescription(authorId, proposalId, version, updateType, additionalId, new Date());
+    }
+
+
+    /**
+     * <p>Creates new plan version descriptor</p>
+     *
+     * @param authorId id of a change author
+     * @param proposalId id of a proposal
+     * @param version proposal version
+     * @param updateType name of updated attribute
+     * @param additionalId additional id of an updated attribute
+     * @param updatedDate date when this version has been created
+     * @throws SystemException
+     */
+    @Transactional
+    private void createPlanVersionDescription(long authorId, long proposalId, int version, String updateType,
+                                              long additionalId, Date updatedDate) throws SystemException {
 
         ProposalVersion proposalVersion = proposalVersionLocalService.createProposalVersion(new ProposalVersionPK(
                 proposalId, version));
@@ -1088,7 +1106,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposalVersion.setAuthorId(authorId);
         proposalVersion.setUpdateType(updateType);
         proposalVersion.setUpdateAdditionalId(additionalId);
-        proposalVersion.setCreateDate(new Date());
+        proposalVersion.setCreateDate(updatedDate);
 
         proposalVersionLocalService.addProposalVersion(proposalVersion);
     }
