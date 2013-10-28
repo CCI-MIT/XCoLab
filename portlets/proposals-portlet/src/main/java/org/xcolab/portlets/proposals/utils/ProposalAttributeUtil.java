@@ -1,0 +1,66 @@
+package org.xcolab.portlets.proposals.utils;
+
+import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.NoSuchProposalException;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
+/**
+ * @author pdeboer
+ *         First created on 28/10/13 at 11:36
+ */
+public class ProposalAttributeUtil {
+    Proposal proposal;
+
+    public ProposalAttributeUtil(Proposal proposal) {
+        this.proposal = proposal;
+    }
+
+    public boolean hasAttribute(String name) throws PortalException, SystemException {
+        return getAttributeOrNull(name, 0) != null;
+    }
+
+    public String attributeString(String name) throws PortalException, SystemException {
+        return getAttributeValueString(name, "");
+    }
+
+    public String getAttributeValueString(String attributeName, String defaultVal) throws PortalException, SystemException {
+        return getAttributeValueString(attributeName, 0, defaultVal);
+    }
+
+
+    public String getAttributeValueString(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
+        ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
+        return pa == null ? defaultVal : pa.getStringValue();
+    }
+
+    public long getAttributeValueLong(String attributeName, long defaultVal) throws PortalException, SystemException {
+        return getAttributeValueLong(attributeName, 0, defaultVal);
+    }
+
+    public long getAttributeValueLong(String attributeName, long additionalId, long defaultVal) throws PortalException, SystemException {
+        ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
+        return pa == null ? defaultVal : pa.getNumericValue();
+
+    }
+
+    public double getAttributeValueReal(String attributeName, long additionalId, double defaultVal) throws PortalException, SystemException {
+        ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
+        return pa == null ? defaultVal : pa.getRealValue();
+    }
+
+    public ProposalAttribute getAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
+        try {
+            return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), attributeName, additionalId);
+        }
+        catch (NoSuchProposalAttributeException e) {
+            return null;
+        }
+        catch (NoSuchProposalException e) {
+            return null;
+        }
+    }
+}

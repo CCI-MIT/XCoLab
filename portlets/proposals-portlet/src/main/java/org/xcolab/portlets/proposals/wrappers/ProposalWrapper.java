@@ -21,6 +21,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portal.model.MembershipRequest;
+import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 
 public class ProposalWrapper {
     private final Proposal proposal;
@@ -34,20 +35,14 @@ public class ProposalWrapper {
     private List<ProposalSectionWrapper> sections;
     private List<MembershipRequestWrapper> membershipRequests;
 
+    private ProposalAttributeUtil proposalAttributeUtil;
+
     public ProposalWrapper(Proposal proposal) {
-        this.proposal = proposal;
-        this.version = proposal.getCurrentVersion();
-        this.contest = null;
-        this.contestPhase = null;
-        this.proposal2Phase = null;
+        this(proposal, proposal.getCurrentVersion());
     }
 
     public ProposalWrapper(Proposal proposal, int version) {
-        this.proposal = proposal;
-        this.version = version;
-        this.contest = null;
-        this.contestPhase = null;
-        this.proposal2Phase = null;
+        this(proposal, version, null, null, null);
     }
     
     public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
@@ -56,6 +51,8 @@ public class ProposalWrapper {
         this.contest = contest;
         this.contestPhase = contestPhase;
         this.proposal2Phase = proposal2Phase;
+
+        proposalAttributeUtil = new ProposalAttributeUtil(proposal);
     }
 
     public Class<?> getModelClass() {
@@ -151,16 +148,16 @@ public class ProposalWrapper {
     }
     
     public String getPitch() throws PortalException, SystemException {
-        return getAttributeValueString(ProposalAttributeKeys.PITCH, "");
+        return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.PITCH, "");
     }
 
 
     public String getName() throws PortalException, SystemException {
-        return getAttributeValueString(ProposalAttributeKeys.NAME, "");
+        return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.NAME, "");
     } 
     
     public String getDescription() throws PortalException, SystemException {
-        return getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
+        return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     } 
     
     public boolean isFeatured() throws PortalException, SystemException {
@@ -221,7 +218,7 @@ public class ProposalWrapper {
     }
 
     public String getTeam() throws PortalException, SystemException {
-        return getAttributeValueString(ProposalAttributeKeys.TEAM, "");
+        return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.TEAM, "");
     }
     
     public User getAuthor() throws PortalException, SystemException {
@@ -258,7 +255,7 @@ public class ProposalWrapper {
     }
     
     public long getImageId() throws PortalException, SystemException {
-        return getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
+        return proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
      
     
@@ -290,51 +287,7 @@ public class ProposalWrapper {
     public List<User> getSupporters() throws PortalException, SystemException {
         return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
     }
-    
-    public boolean hasAttribute(String name) throws PortalException, SystemException {
-        return getAttributeOrNull(name, 0) != null;
-    }
 
-    public String attributeString(String name) throws PortalException, SystemException {
-        return getAttributeValueString(name, "");
-    }
-    
-    private String getAttributeValueString(String attributeName, String defaultVal) throws PortalException, SystemException {
-        return getAttributeValueString(attributeName, 0, defaultVal);
-    }
-
-    
-    private String getAttributeValueString(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
-        ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
-        return pa == null ? defaultVal : pa.getStringValue();
-    }
-
-    private long getAttributeValueLong(String attributeName, long defaultVal) throws PortalException, SystemException {
-        return getAttributeValueLong(attributeName, 0, defaultVal);
-    }
-
-    private long getAttributeValueLong(String attributeName, long additionalId, long defaultVal) throws PortalException, SystemException {
-        ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
-        return pa == null ? defaultVal : pa.getNumericValue();
-        
-    }
-
-    private double getAttributeValueReal(String attributeName, long additionalId, double defaultVal) throws PortalException, SystemException {
-        ProposalAttribute pa = getAttributeOrNull(attributeName, additionalId);
-        return pa == null ? defaultVal : pa.getRealValue();
-    }
-    
-    private ProposalAttribute getAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
-        try {
-            return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), attributeName, additionalId);
-        }
-        catch (NoSuchProposalAttributeException e) {
-            return null;
-        }
-        catch (NoSuchProposalException e) {
-            return null;
-        }
-    }
 
     private String getContestPhaseAttributeValueString(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
         ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
@@ -407,7 +360,7 @@ public class ProposalWrapper {
     }
     
     public Long getScenarioId() throws PortalException, SystemException {
-        return getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, getModelId(), 0);
+        return proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, getModelId(), 0);
     }
 
     /**
@@ -462,5 +415,9 @@ public class ProposalWrapper {
         try{
             return UserLocalServiceUtil.getUser(getSelectedVersion().getAuthorId());
         } catch (Exception e) { return null; }
+    }
+
+    public ProposalAttributeUtil getProposalAttributeUtil() {
+        return proposalAttributeUtil;
     }
 }

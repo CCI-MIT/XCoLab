@@ -5,6 +5,7 @@
 	<portlet>
 		<portlet-name>proposals-portlet</portlet-name>
 		<icon>/icon.png</icon>
+        <indexer-class>org.xcolab.portlets.proposals.utils.Indexer</indexer-class>
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>plans</friendly-url-mapping>
 		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
