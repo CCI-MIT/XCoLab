@@ -2,6 +2,7 @@ package org.xcolab.portlets.admintasks.migration.persistence;
 
 import java.util.List;
 
+import com.liferay.portal.model.Group;
 import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.Plan2Proposal;
 import com.ext.portlet.model.Proposal;
@@ -21,6 +22,7 @@ import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 
@@ -55,7 +57,8 @@ public class NewPersistenceCleaner {
                 deleteAllProposalVotes() &
                 deleteAllProposalSupporters() &
                 deleteAllContestPhaseRibbonTypes() &
-                deleteAllSocialActivitiesRelatedToNewEntities();
+                deleteAllSocialActivitiesRelatedToNewEntities() &
+                deleteNewGroups();
         if (dbSuccess) pushAjaxUpdate("Successfully cleaned DB");
         else pushAjaxUpdate("Error while cleaning DB");
 
@@ -83,6 +86,25 @@ public class NewPersistenceCleaner {
         }
         return true;
     }
+
+    private boolean deleteNewGroups(){
+        pushAjaxUpdate("Deleting groups");
+        try{
+            for (Group g : GroupLocalServiceUtil.getGroups(0,Integer.MAX_VALUE)){
+                if (g.getName().indexOf("Proposal_") == 0) {
+                    GroupLocalServiceUtil.class.getMethod("deleteGroup",Group.class).invoke(null,g);
+                    //GroupLocalServiceUtil.deleteGroup(g);
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            pushAjaxUpdate("Error: " + e.toString());
+            return false;
+        }
+        pushAjaxUpdate("Done deleting groups");
+        return true;
+    }
+
 
     private boolean deleteAllProposalVersions(){
         int numberOfProposalVersions = 0;

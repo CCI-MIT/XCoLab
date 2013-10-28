@@ -104,6 +104,40 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
     public ProposalLocalServiceImpl() {
     }
+
+    /**
+     * <p>
+     * Creates new proposal, initializes it and associates it with contest phase. All related entities are
+     * created:
+     * </p>
+     * <ul>
+     * <li>liferay group</li>
+     * <li>discussion for proposal comments</li>
+     * <li>discussion for judges</li>
+     * <li>discussion for advisors</li>
+     * <li>discussion for</li>
+     * </ul>
+     * <p>
+     * Creation of all entities is wrapped into a transaction.
+     * </p>
+     *
+     * @param authorId
+     *            id of proposal author
+     * @param contestPhaseId
+     *            id of a contestPhase
+     * @return created proposal
+     * @throws SystemException
+     *             in case of a Liferay error
+     * @throws PortalException
+     *             in case of a Liferay error
+     *
+     * @author janusz
+     */
+    @Transactional
+    public Proposal create(long authorId, long contestPhaseId) throws SystemException, PortalException {
+        long proposalId = portalServicesHelper.getCounterLocalService().increment(Proposal.class.getName());
+        return create(authorId, contestPhaseId,proposalId);
+    }
     
     /**
      * <p>
@@ -134,9 +168,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @author janusz
      */
     @Transactional
-    public Proposal create(long authorId, long contestPhaseId) throws SystemException, PortalException {
+    public Proposal create(long authorId, long contestPhaseId, long proposalId) throws SystemException, PortalException {
 
-        long proposalId = portalServicesHelper.getCounterLocalService().increment(Proposal.class.getName());
         Proposal proposal = createProposal(proposalId);
         proposal.setVisible(true);
         proposal.setAuthorId(authorId);

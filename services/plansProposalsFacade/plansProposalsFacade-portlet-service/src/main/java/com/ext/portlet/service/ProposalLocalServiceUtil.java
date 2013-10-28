@@ -280,6 +280,40 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
+    * <p>
+    * Creates new proposal, initializes it and associates it with contest phase. All related entities are
+    * created:
+    * </p>
+    * <ul>
+    * <li>liferay group</li>
+    * <li>discussion for proposal comments</li>
+    * <li>discussion for judges</li>
+    * <li>discussion for advisors</li>
+    * <li>discussion for</li>
+    * </ul>
+    * <p>
+    * Creation of all entities is wrapped into a transaction.
+    * </p>
+    *
+    * @param authorId
+    id of proposal author
+    * @param contestPhaseId
+    id of a contestPhase
+    * @return created proposal
+    * @throws SystemException
+    in case of a Liferay error
+    * @throws PortalException
+    in case of a Liferay error
+    * @author janusz
+    */
+    public static com.ext.portlet.model.Proposal create(long authorId,
+        long contestPhaseId, long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().create(authorId, contestPhaseId, proposalId);
+    }
+
+    /**
     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
     * <p>The algorithm for setting an attribute value is as follows:</p>
     * <ol>
