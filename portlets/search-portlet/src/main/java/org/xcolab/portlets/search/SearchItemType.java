@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
@@ -11,13 +13,6 @@ import org.apache.lucene.util.Version;
 import org.climatecollaboratorium.facelets.discussions.activity.NavigationUrl;
 
 import com.ext.portlet.NoSuchDiscussionMessageException;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.model.PlanItem;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -33,8 +28,7 @@ public enum SearchItemType {
                     String idStr = doc.get(Field.ENTRY_CLASS_PK);
                     try {
                     	Long id = Long.parseLong(idStr);
-                    	PlanItem p = PlanItemLocalServiceUtil.getPlan(id);
-                    	return "/web/guest/plans/-/plans/contestId/" + PlanItemLocalServiceUtil.getContest(p).getContestPK() + "/planId/" + id; 
+                    	return "/web/guest/plans/-/plans/contestId/" + Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(id).getContestPK() + "/planId/" + id;
                     }
                     catch (Exception e) {
                     	// ignore
