@@ -4,10 +4,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.plans.PlanConstants;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
+
+import com.ext.portlet.service.*;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.userprofile.entity.Badge;
-import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.model.Proposal;
 
 
 /**
@@ -23,43 +32,34 @@ public class BadgeBean implements Serializable{
 
     private long userID; // USER the Badges belong to
     private java.util.List<Badge> badges;
-    private java.util.List<PlanItem> currentUsersPlans;
 
 
     public BadgeBean(long userID){
         this.userID = userID;
         badges = new ArrayList<Badge>();
-        fetchBadges();
+        try{
+            fetchBadges();
+        } catch (Exception e){ e.printStackTrace(); }
     }
 
 
 
-    private void fetchBadges(){
-        List<PlanItem> plans;
-        try{
-            plans = PlanItemLocalServiceUtil.getPlansForUser(this.userID);
-            if (plans == null) return;
-        } catch(Exception e) { return; };
+    private void fetchBadges() throws SystemException,PortalException{
+        List<Proposal> proposals;
 
         // Iterate over all plans
-        for(Iterator<PlanItem> i = plans.iterator(); i.hasNext(); ) {
-            PlanItem plan = i.next();
-
-            int planRibbon = -1;
-            try {
-                planRibbon = PlanItemLocalServiceUtil.getRibbon(plan);
-            } catch (Exception e) { }
+        for(Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE)) {
+            if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(),userID)) continue;
+            ContestPhaseRibbonType ribbon = getRibbonType(p);
+            int planRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
 
             if (planRibbon > 0) {
                 // Plan won a contest
                 try {
-                    String badgeText = PlanItemLocalServiceUtil.getPlanAttribute(plan,
-                            PlanConstants.Attribute.PLAN_RIBBON_TEXT.toString()).getAttributeValue();
-                    long contestId = PlanItemLocalServiceUtil.getContest(plan).getContestPK();
-                    String planTitle = PlanItemLocalServiceUtil.getPlanAttribute(plan,
-                            PlanConstants.Attribute.NAME.toString()).getAttributeValue();
-
-                    badges.add(new Badge(planRibbon, badgeText, plan.getPlanId(), planTitle, contestId));
+                    String badgeText = ribbon.getHoverText();
+                    long contestId = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestPK(); //PlanItemLocalServiceUtil.getContest(plan).getContestPK();
+                    String planTitle =  ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
+                    badges.add(new Badge(planRibbon, badgeText, p.getProposalId(), planTitle, contestId));
                 } catch (Exception e) { }
             }
         }
@@ -72,5 +72,21 @@ public class BadgeBean implements Serializable{
     @Override
     public String toString(){
         return badges.toString();
+    }
+
+    private ContestPhaseRibbonType getRibbonType(Proposal p) throws PortalException, SystemException {
+        ContestPhaseRibbonType contestPhaseRibbonType = null;
+        List<Long> phasesForProposal =  Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phasesForProposal.get(phasesForProposal.size() - 1));
+        try {
+            long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),
+                    contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+            contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
+        }
+        catch (NoSuchProposalContestPhaseAttributeException e) {
+            // ignore
+        }
+
+        return contestPhaseRibbonType;
     }
 }

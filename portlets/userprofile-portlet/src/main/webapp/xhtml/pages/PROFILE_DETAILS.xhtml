@@ -85,10 +85,7 @@
                     <div class="badge-big badge-#{badge.badgeType}">
 
                         <span class="badge-title">
-                            <collab:planLink planId="#{badge.planId}"
-                                             contestId="#{badge.contestId}"
-                                             text="#{badge.badgeTitle}"
-                                             style="#{badge.badgeTitle.length() gt 8 ? 'top: 26px;' : ''};"   />
+                            <a href="/web/guest/plans/-/plans/contestId/#{badge.contestId}/planId/#{badge.planId}" style="#{badge.badgeTitle.length() gt 8 ? 'top: 26px;' : ''};">#{badge.badgeTitle}</a>
                         </span>
 
                         <div class="badge-text" style="#{badge.badgeText.length() gt 15 ? 'font-size: 7px;' : ''}">#{badge.badgeText}</div>
