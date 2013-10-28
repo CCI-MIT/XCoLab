@@ -72,7 +72,7 @@ public class NewPersistenceCleaner {
             pushAjaxUpdate("Deleting " + numberOfProposals + " Proposal(s)");
             List<Proposal> proposals = ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE);
             for(Proposal p : proposals) {
-                ProposalLocalServiceUtil.deleteProposal(p);
+                ProposalLocalServiceUtil.deleteProposal(p.getProposalId());
             }
             numberOfProposals = ProposalLocalServiceUtil.getProposalsCount();
 
