@@ -36,7 +36,7 @@
                         		<proposalsPortlet:userLinkSimple userId="${proposal.author.userId}" text="${proposal.author.screenName}" />
                         	</c:when>
                         	<c:otherwise>
-                            	${singleProposal.team}
+                            	${proposal.team}
                         	</c:otherwise>
                         </c:choose>
                     </h4>
