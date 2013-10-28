@@ -21,8 +21,6 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import java.util.List;
-
 public class ProposalsPermissions {
     private final PermissionChecker permissionChecker;
     private final String portletId;
@@ -37,6 +35,7 @@ public class ProposalsPermissions {
     private final Proposal proposal;
     private final ContestPhase contestPhase;
     private final ContestStatus contestStatus;
+    private final long scopeGroupId;
     
     public ProposalsPermissions(PortletRequest request, Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -44,6 +43,7 @@ public class ProposalsPermissions {
         permissionChecker = themeDisplay.getPermissionChecker();
         portletId = (String) request.getAttribute(WebKeys.PORTLET_ID);
         primKey = themeDisplay.getPortletDisplay().getResourcePK();
+        scopeGroupId = themeDisplay.getScopeGroupId();
         
         if (contestPhase != null) {
             String statusStr = 
@@ -207,8 +207,7 @@ public class ProposalsPermissions {
     
 
     private boolean getCanAdminAll() {
-        boolean adminAll =  permissionChecker.hasPermission(groupId, portletId, primKey, ProposalsActions.CAN_ADMIN_ALL);
-        return adminAll;
+        return permissionChecker.hasPermission(scopeGroupId, portletId, primKey, ProposalsActions.CAN_ADMIN_ALL);
     }
     
     private boolean isProposalMember() throws SystemException {
@@ -231,11 +230,19 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanFellowActions() {
-        return permissionChecker.hasPermission(groupId, portletId, primKey, ProposalsActions.CAN_FELLOW_ACTIONS);
+        long contestGroupId;
+        try{
+            contestGroupId = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getGroupId();
+        } catch (Exception e) { return false; }
+        return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_FELLOW_ACTIONS) || getCanAdminAll();
     }
 
     public boolean getCanJudgeActions() {
-        return permissionChecker.hasPermission(groupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS);
+        long contestGroupId;
+        try{
+            contestGroupId = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getGroupId();
+        } catch (Exception e) { return false; }
+        return permissionChecker.hasPermission(contestGroupId, portletId, primKey, ProposalsActions.CAN_JUDGE_ACTIONS) || getCanAdminAll();
     }
 
     public boolean getUserHasOpenMembershipRequest() throws PortalException, SystemException {
