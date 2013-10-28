@@ -693,7 +693,7 @@ public class DataMigrator implements Runnable {
     }
 
     private Date dateFix(Date d){
-        counter = (++counter) % 200;
+        counter = (++counter) % 300;
         return new Date(d.getTime() + counter);
     }
 }
