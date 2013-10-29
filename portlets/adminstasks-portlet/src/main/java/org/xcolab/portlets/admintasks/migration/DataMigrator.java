@@ -517,6 +517,7 @@ public class DataMigrator implements Runnable {
                         planSection.getPlanSectionDefinitionId(),planSection.getContent(),0,0,dateFix(plan.getUpdated()));
             } catch (Exception e){
                 pushAjaxUpdate("Error while setting Section " + plan.getPlanId() + ": " + e);
+                e.printStackTrace();
             }
         }
     }
