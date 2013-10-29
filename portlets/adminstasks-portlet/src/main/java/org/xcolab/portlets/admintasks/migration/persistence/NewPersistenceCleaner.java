@@ -82,6 +82,7 @@ public class NewPersistenceCleaner {
             }
         } catch (Exception e){
             pushAjaxUpdate("Error while cleaning DB: " + e);
+            e.printStackTrace();
             return false;
         }
         return true;
