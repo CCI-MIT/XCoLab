@@ -128,7 +128,9 @@ public class UserWrapper implements Serializable {
                 .getUserActivities(user.getUserId(), 0, maxActivitiesCount)) {
             ;// userActivitiesCount - maxActivitiesCount, userActivitiesCount))
             // {
-            userActivities.add(new UserActivityBean(activity));
+            UserActivityBean a = new UserActivityBean(activity);
+            if(!a.getBody().equals(""))
+                userActivities.add(a);
         }
     }
 
