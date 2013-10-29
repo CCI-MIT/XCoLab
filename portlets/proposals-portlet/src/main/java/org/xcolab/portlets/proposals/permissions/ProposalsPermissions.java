@@ -86,13 +86,14 @@ public class ProposalsPermissions {
         return planIsEditable && (isProposalOpen() || isProposalMember());         
     }
     
-    public boolean getCanDelete() {
+    public boolean getCanDelete() throws SystemException {
         if (user.isDefaultUser()) 
             return false;
         
         if (getCanAdminAll()) 
             return true;
-        return false;
+
+        return planIsEditable && isProposalMember();
     }
     
     public boolean getCanCreate() {
