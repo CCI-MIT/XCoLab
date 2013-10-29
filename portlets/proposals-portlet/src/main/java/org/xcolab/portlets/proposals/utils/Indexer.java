@@ -63,7 +63,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         Long id = -1L;
         if(obj instanceof Long) {
             id = (Long) obj;
-        }else {
+        }else if(obj instanceof Proposal) {
             Proposal p = (Proposal) obj;
             id = p.getProposalId();
         }
