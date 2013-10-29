@@ -5,6 +5,7 @@ import com.ext.portlet.service.base.ProposalSupporterLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
 import com.ext.portlet.service.persistence.ProposalSupporterUtil;
 import com.liferay.portal.PortalException;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
@@ -15,10 +16,10 @@ import java.util.List;
 
 /**
  * The implementation of the proposal supporter local service.
- *
+ * <p/>
  * <p>
  * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.ext.portlet.service.ProposalSupporterLocalService} interface.
- *
+ * <p/>
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
@@ -28,7 +29,7 @@ import java.util.List;
  * @see com.ext.portlet.service.ProposalSupporterLocalServiceUtil
  */
 public class ProposalSupporterLocalServiceImpl
-    extends ProposalSupporterLocalServiceBaseImpl {
+        extends ProposalSupporterLocalServiceBaseImpl {
     /*
      * NOTE FOR DEVELOPERS:
      *
@@ -40,10 +41,11 @@ public class ProposalSupporterLocalServiceImpl
     }
 
 
-
     public List<ProposalSupporter> getProposals(long userId) throws PortalException, com.liferay.portal.kernel.exception.SystemException {
-        System.err.println("portlet classloader used");
-        DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, PortalClassLoaderUtil.getClassLoader());
+        System.err.println("portlet classloader used 3");
+        final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
+        DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, (ClassLoader) PortletBeanLocatorUtil.locate(
+                ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
         dq.add(PropertyFactoryUtil.forName("userId").eq(userId));
         return ProposalSupporterUtil.findWithDynamicQuery(dq);
     }
