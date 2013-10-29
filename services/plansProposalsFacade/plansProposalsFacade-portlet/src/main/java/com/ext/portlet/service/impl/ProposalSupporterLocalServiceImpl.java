@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class ProposalSupporterLocalServiceImpl
 
     public List<ProposalSupporter> getProposals(long userId) throws PortalException, com.liferay.portal.kernel.exception.SystemException {
         System.err.println("portlet classloader used");
-        DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, PortletClassLoaderUtil.getClassLoader());
+        DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, PortalClassLoaderUtil.getClassLoader());
         dq.add(PropertyFactoryUtil.forName("userId").eq(userId));
         return ProposalSupporterUtil.findWithDynamicQuery(dq);
     }

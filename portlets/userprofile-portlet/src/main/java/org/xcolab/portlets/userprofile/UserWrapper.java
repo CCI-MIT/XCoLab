@@ -113,7 +113,15 @@ public class UserWrapper implements Serializable {
             realName = firstName;
         }
 
-        addProposalSupporters(supportedPlans);
+        supportedPlans.clear();
+        for(Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
+            ProposalSupporter ps = (ProposalSupporter) o;
+            try {
+                supportedPlans.add(new SupportedPlanBean(ps));
+            } catch (PortalException e) {
+                e.printStackTrace();
+            }
+        }
 
         userActivities.clear();
         for (SocialActivity activity : SocialActivityLocalServiceUtil
@@ -121,21 +129,6 @@ public class UserWrapper implements Serializable {
             ;// userActivitiesCount - maxActivitiesCount, userActivitiesCount))
             // {
             userActivities.add(new UserActivityBean(activity));
-        }
-    }
-
-
-    private void addProposalSupporters(List<SupportedPlanBean> supportedPlans) throws SystemException {
-        supportedPlans.clear();
-        DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, PortletClassLoaderUtil.getClassLoader());
-        dq.add(PropertyFactoryUtil.forName("userId").eq(user.getUserId()));
-        for(Object o : ProposalSupporterLocalServiceUtil.dynamicQuery(dq)) {
-            ProposalSupporter ps = (ProposalSupporter) o;
-            try {
-                supportedPlans.add(new SupportedPlanBean(ps));
-            } catch (PortalException e) {
-                e.printStackTrace();
-            }
         }
     }
 

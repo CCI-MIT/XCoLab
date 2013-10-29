@@ -26,6 +26,7 @@ public class ProposalSupporterLocalServiceClp
     private MethodKey _getBeanIdentifierMethodKey15;
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _createMethodKey17;
+    private MethodKey _getProposalsMethodKey18;
 
     public ProposalSupporterLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -98,6 +99,9 @@ public class ProposalSupporterLocalServiceClp
 
         _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
                 "create", long.class, long.class);
+
+        _getProposalsMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getProposals", long.class);
     }
 
     public com.ext.portlet.model.ProposalSupporter addProposalSupporter(
@@ -550,6 +554,37 @@ public class ProposalSupporterLocalServiceClp
         }
 
         return (com.ext.portlet.model.ProposalSupporter) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposals(
+        long userId)
+        throws com.liferay.portal.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getProposalsMethodKey18,
+                userId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.PortalException) {
+                throw (com.liferay.portal.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalSupporter>) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

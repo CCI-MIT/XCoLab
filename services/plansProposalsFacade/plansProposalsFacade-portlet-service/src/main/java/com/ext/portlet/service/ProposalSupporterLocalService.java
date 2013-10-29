@@ -226,4 +226,10 @@ public interface ProposalSupporterLocalService
 
     public com.ext.portlet.model.ProposalSupporter create(long proposalID,
         long userID);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposals(
+        long userId)
+        throws com.liferay.portal.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

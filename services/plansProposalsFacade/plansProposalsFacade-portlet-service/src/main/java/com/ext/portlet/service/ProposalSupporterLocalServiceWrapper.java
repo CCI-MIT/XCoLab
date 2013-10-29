@@ -251,6 +251,13 @@ public class ProposalSupporterLocalServiceWrapper
         return _proposalSupporterLocalService.create(proposalID, userID);
     }
 
+    public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposals(
+        long userId)
+        throws com.liferay.portal.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalSupporterLocalService.getProposals(userId);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

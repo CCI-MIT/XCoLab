@@ -255,6 +255,13 @@ public class ProposalSupporterLocalServiceUtil {
         return getService().create(proposalID, userID);
     }
 
+    public static java.util.List<com.ext.portlet.model.ProposalSupporter> getProposals(
+        long userId)
+        throws com.liferay.portal.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getProposals(userId);
+    }
+
     public static void clearService() {
         _service = null;
     }
