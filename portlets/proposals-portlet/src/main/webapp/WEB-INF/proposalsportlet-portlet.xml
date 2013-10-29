@@ -40,6 +40,7 @@
 					<property name="ignoreOnError">
 						<list>
 							<value>action_forwardToPage</value>
+                            <value>action</value>
 						</list>
 					</property>
 					<property name="ignoreOnSuccess">
