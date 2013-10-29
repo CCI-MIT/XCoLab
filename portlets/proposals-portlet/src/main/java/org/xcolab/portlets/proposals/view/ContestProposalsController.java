@@ -48,7 +48,9 @@ public class ContestProposalsController extends BaseProposalsController {
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
         for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-            proposals.add(new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)); 
+            ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p);
+            if(proposalWrapper.getVisible())
+                proposals.add(proposalWrapper);
         }
 
         
