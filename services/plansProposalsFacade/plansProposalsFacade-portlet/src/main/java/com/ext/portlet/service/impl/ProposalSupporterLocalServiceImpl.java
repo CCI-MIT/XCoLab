@@ -3,6 +3,14 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.base.ProposalSupporterLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
+import com.ext.portlet.service.persistence.ProposalSupporterUtil;
+import com.liferay.portal.PortalException;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+
+import java.util.List;
 
 /**
  * The implementation of the proposal supporter local service.
@@ -30,4 +38,12 @@ public class ProposalSupporterLocalServiceImpl
         return createProposalSupporter(new ProposalSupporterPK(proposalID, userID));
     }
 
+
+
+    public List<ProposalSupporter> getProposals(long userId) throws PortalException, com.liferay.portal.kernel.exception.SystemException {
+        System.err.println("portlet classloader used");
+        DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, PortletClassLoaderUtil.getClassLoader());
+        dq.add(PropertyFactoryUtil.forName("userId").eq(userId));
+        return ProposalSupporterUtil.findWithDynamicQuery(dq);
+    }
 }
