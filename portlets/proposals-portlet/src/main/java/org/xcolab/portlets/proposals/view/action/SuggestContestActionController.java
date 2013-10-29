@@ -44,13 +44,12 @@ public class SuggestContestActionController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void sendContestSuggestion(String message, User u) throws MailEngineException, AddressException, NumberFormatException, PortalException, SystemException {
         String messageSubject = "New contest suggestion";
         String messageBody = message;
-        String[] receipients = new String[] {"hiesel@MIT.edu"}; // "janusz.parfieniuk@gmail.com", "pdeboer@MIT.EDU", "rjl@MIT.EDU",
+        String[] receipients = new String[] {"janusz.parfieniuk@gmail.com", "pdeboer@MIT.EDU", "rjl@MIT.EDU","hiesel@MIT.edu"};
         InternetAddress[] addressTo = new InternetAddress[receipients.length];
         for (int i=0; i < receipients.length; i++) {
             addressTo[i] = new InternetAddress(receipients[i]);
