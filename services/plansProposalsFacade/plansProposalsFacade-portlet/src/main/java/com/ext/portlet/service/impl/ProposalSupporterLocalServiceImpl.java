@@ -46,11 +46,13 @@ public class ProposalSupporterLocalServiceImpl
 
     public List<ProposalSupporter> getProposals(long userId) throws PortalException, com.liferay.portal.kernel.exception.SystemException {
         try {
+
+
             System.err.println("portlet classloader used 3");
             final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
             DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, (ClassLoader) PortletBeanLocatorUtil.locate(
                     ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
-            dq.add(PropertyFactoryUtil.forName("userId").eq(userId));
+            dq.add(PropertyFactoryUtil.forName("UserId").eq(userId));
             return (List<ProposalSupporter>) ProposalSupporterLocalServiceUtil.dynamicQuery(dq);
         } catch (Throwable e) {
             System.out.println("got exception:"+e.getMessage());
