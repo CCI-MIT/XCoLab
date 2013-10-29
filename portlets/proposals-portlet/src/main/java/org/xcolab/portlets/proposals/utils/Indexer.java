@@ -60,9 +60,17 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
     @Override
     public void delete(Object obj) throws SearchException {
-        Proposal plan;
+        Long id = -1L;
+        if(obj instanceof Long) {
+            id = (Long) obj;
+        }else {
+            Proposal p = (Proposal) obj;
+            id = p.getProposalId();
+        }
+
+        if(id <0) _log.error("id should never be below 0. PAAANIIIIC!!!");
         try {
-            plan = ProposalLocalServiceUtil.getProposal((Long)obj);
+            Proposal plan = ProposalLocalServiceUtil.getProposal(id);
             SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, getDocument(plan).getUID());
         } catch (NoSuchPlanItemException e) {
             _log.error("Can't remove plan from index: " + obj, e);
