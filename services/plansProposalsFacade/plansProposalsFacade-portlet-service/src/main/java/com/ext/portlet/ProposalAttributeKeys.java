@@ -1,7 +1,6 @@
 package com.ext.portlet;
 
 public class ProposalAttributeKeys {
-    //TODO: huh, whats that? please contact PDB and delete this comment
     public static final String TEAM = "TEAM";
 
     /**
