@@ -185,6 +185,7 @@ public class DataMigrator implements Runnable {
         try{
             for (Long l : list){
                 PlanItem pi = PlanItemLocalServiceUtil.getPlan(l);
+                if (PlanDescriptionLocalServiceUtil.getCurrentForPlan(pi).getName().contains("Untitled Plan")) continue;
                 if (pi.getState().equalsIgnoreCase("DELETED")) continue;
                 List<PlanItem> right = new ArrayList<PlanItem>();
                 right.add(pi);
