@@ -80,15 +80,9 @@ public class DataMigrator implements Runnable {
     public void run() {
         setPermissions();
 
-
-        getPlansWithoutGroups();
-        return;
-
-          /*
-
-
         if (!(new NewPersistenceCleaner(reference).deleteAllRecordsForNewEntities())) return;
 
+        //--
         List<Pair<Long,List<PlanItem>>> groupedPlans = getAllDistinctPlanGroupIds();
         pushAjaxUpdate("Creating new Proposals");
         pushAjaxUpdate("0%");
@@ -109,9 +103,26 @@ public class DataMigrator implements Runnable {
             createNewPlan(pair.getLeft(),pair.getRight());
             if (counter > (groupedPlans.size()/10) && TESTING) break;
         }
+        //--
+        //--
+        List<Pair<Long,List<PlanItem>>> plansWithoutGroups = getPlansWithoutGroups();
+        pushAjaxUpdate("Creating new Proposals Without Groups");
+        pushAjaxUpdate("0%");
+        counter = 0;
+
+        for(Iterator<Pair<Long,List<PlanItem>>> i = plansWithoutGroups.iterator(); i.hasNext(); ) {
+            if (STOP) break;
+            if (++counter > 0 && (counter % (plansWithoutGroups.size() / 33)) == 0) updateLastAjaxUpdate((100 * counter / plansWithoutGroups.size()) + "%");
+            Pair<Long,List<PlanItem>> pair = i.next();
+            createNewPlan(pair.getLeft(),pair.getRight());
+            if (counter > (plansWithoutGroups.size()/10) && TESTING) break;
+        }
+        //--
+
+
 
         pushAjaxUpdate("-- MIGRATION FINISHED --");
-        */
+
     }
 
     private void setPermissions(){
@@ -167,9 +178,23 @@ public class DataMigrator implements Runnable {
     }
 
 
-    private List<PlanItem> getPlansWithoutGroups(){
-        OldPersistenceQueries.getPlanItemsWithoutGroups();
-        return null;
+    private List<Pair<Long,List<PlanItem>>> getPlansWithoutGroups(){
+        List<Long> list = OldPersistenceQueries.getPlanItemsWithoutGroups();
+        Collections.sort(list);
+        List<Pair<Long,List<PlanItem>>> plans = new ArrayList<Pair<Long,List<PlanItem>>>();
+        try{
+            for (Long l : list){
+                PlanItem pi = PlanItemLocalServiceUtil.getPlan(l);
+                if (pi.getState().equalsIgnoreCase("DELETED")) continue;
+                List<PlanItem> right = new ArrayList<PlanItem>();
+                right.add(pi);
+                plans.add(new Pair<Long, List<PlanItem>>(-1L,right));
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return plans;
     }
 
     private void createNewPlan(long groupID, List<PlanItem> plans){
