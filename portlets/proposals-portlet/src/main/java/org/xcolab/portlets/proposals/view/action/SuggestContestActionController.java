@@ -1,20 +1,24 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.ProposalAttributeKeys;
+import com.liferay.portal.model.User;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.validation.Valid;
+import com.liferay.util.mail.MailEngine;
+import java.awt.event.ActionEvent;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,10 +37,28 @@ public class SuggestContestActionController {
 
     @RequestMapping(params = {"action=suggestContest"})
     public void suggestContest(ActionRequest request, Model model,
-                                ActionResponse response, @Valid JudgeProposalBean judgeProposalBean,
+                                ActionResponse response, @RequestParam("newContestText") String newContestText,
                                 BindingResult result)
-         throws PortalException, SystemException, ProposalsAuthorizationException {
+         throws PortalException, SystemException {
+        try {
+            sendContestSuggestion(newContestText, proposalsContext.getUser(request));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    public void sendContestSuggestion(String message, User u) throws MailEngineException, AddressException, NumberFormatException, PortalException, SystemException {
+        String messageSubject = "New contest suggestion";
+        String messageBody = message;
+        String[] receipients = new String[] {"hiesel@MIT.edu"}; // "janusz.parfieniuk@gmail.com", "pdeboer@MIT.EDU", "rjl@MIT.EDU",
+        InternetAddress[] addressTo = new InternetAddress[receipients.length];
+        for (int i=0; i < receipients.length; i++) {
+            addressTo[i] = new InternetAddress(receipients[i]);
+        }
+        InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
+        InternetAddress replyTo[] = {new InternetAddress(u.getEmailAddress())};
+        MailEngine.send(addressFrom, addressTo, null, null, null, messageSubject, messageBody, false, replyTo, null, null);
     }
 
 

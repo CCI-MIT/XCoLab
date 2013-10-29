@@ -121,5 +121,10 @@
         <generated-parameter name="planId">{planId}</generated-parameter>
         <generated-parameter name="phaseId">{phaseId}</generated-parameter>
     </route>
+
+    <route>
+        <pattern>/</pattern>
+        <generated-parameter name="pageToDisplay">contestIndex</generated-parameter>
+    </route>
     
 </routes>
