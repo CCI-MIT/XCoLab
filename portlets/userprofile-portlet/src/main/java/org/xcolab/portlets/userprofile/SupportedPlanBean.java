@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.ext.portlet.NoSuchPlanItemException;
-import com.ext.portlet.model.PlanFan;
-import com.ext.portlet.model.PlanItem;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.model.*;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -16,28 +19,28 @@ public class SupportedPlanBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private PlanFan supportedPlanInfo;
-    private PlanItem supportedPlan;
+	private ProposalSupporter supportedPlanInfo;
+    private Proposal proposal;
     
-    public SupportedPlanBean(PlanFan supportedPlanInfo) throws NoSuchPlanItemException, SystemException {
-        this.supportedPlanInfo = supportedPlanInfo;
-        supportedPlan = PlanItemLocalServiceUtil.getPlan(supportedPlanInfo.getPlanId());
+    public SupportedPlanBean(ProposalSupporter ps) throws SystemException, PortalException {
+        this.supportedPlanInfo = ps;
+        this.proposal = ProposalLocalServiceUtil.getProposal(ps.getProposalId());
     }
     
-    public String getPlanName() throws SystemException {
-        return PlanItemLocalServiceUtil.getName(supportedPlan);
+    public String getPlanName() throws SystemException, PortalException {
+        return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
     }
     
     public Date getCreatedDate() {
-        return supportedPlanInfo.getCreated();
+        return supportedPlanInfo.getCreateDate();
     }
     
     public Long getPlanId() {
-        return supportedPlan.getPlanId();
+        return proposal.getProposalId();
     }
     
     public Long getContestId() throws PortalException, SystemException {
-        return PlanItemLocalServiceUtil.getContest(supportedPlan).getContestPK();
+        return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
     }
     
     

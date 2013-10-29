@@ -69,6 +69,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         }
 
         if(id <0) _log.error("id should never be below 0. PAAANIIIIC!!!");
+
         try {
             Proposal plan = ProposalLocalServiceUtil.getProposal(id);
             SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, getDocument(plan).getUID());

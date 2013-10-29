@@ -17,6 +17,14 @@ import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
 import javax.mail.internet.InternetAddress;
 
+import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.ext.portlet.service.persistence.ProposalSupporterUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.util.mail.MailEngine;
 import org.apache.commons.io.FileUtils;
 import org.icefaces.ace.component.fileentry.FileEntry;
@@ -105,11 +113,7 @@ public class UserWrapper implements Serializable {
             realName = firstName;
         }
 
-        supportedPlans.clear();
-        for (PlanFan supportedPlanInfo : PlanFanLocalServiceUtil
-                .getPlanFansForUser(user.getUserId())) {
-            supportedPlans.add(new SupportedPlanBean(supportedPlanInfo));
-        }
+        addProposalSupporters(supportedPlans);
 
         userActivities.clear();
         for (SocialActivity activity : SocialActivityLocalServiceUtil
@@ -120,6 +124,20 @@ public class UserWrapper implements Serializable {
         }
     }
 
+
+    private void addProposalSupporters(List<SupportedPlanBean> supportedPlans) throws SystemException {
+        supportedPlans.clear();
+        DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, PortletClassLoaderUtil.getClassLoader());
+        dq.add(PropertyFactoryUtil.forName("userId").eq(user.getUserId()));
+        for(Object o : ProposalSupporterLocalServiceUtil.dynamicQuery(dq)) {
+            ProposalSupporter ps = (ProposalSupporter) o;
+            try {
+                supportedPlans.add(new SupportedPlanBean(ps));
+            } catch (PortalException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public Boolean getAttendsConference() {
         return attendsConference;
