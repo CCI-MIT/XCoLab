@@ -80,6 +80,13 @@ public class DataMigrator implements Runnable {
     public void run() {
         setPermissions();
 
+
+        getPlansWithoutGroups();
+        return;
+
+          /*
+
+
         if (!(new NewPersistenceCleaner(reference).deleteAllRecordsForNewEntities())) return;
 
         List<Pair<Long,List<PlanItem>>> groupedPlans = getAllDistinctPlanGroupIds();
@@ -104,6 +111,7 @@ public class DataMigrator implements Runnable {
         }
 
         pushAjaxUpdate("-- MIGRATION FINISHED --");
+        */
     }
 
     private void setPermissions(){
@@ -158,11 +166,13 @@ public class DataMigrator implements Runnable {
         return results;
     }
 
-    private void createNewPlan(long groupID, List<PlanItem> plans){
 
-        if (groupID == 1001501){
-            System.out.println("..");
-        }
+    private List<PlanItem> getPlansWithoutGroups(){
+        OldPersistenceQueries.getPlanItemsWithoutGroups();
+        return null;
+    }
+
+    private void createNewPlan(long groupID, List<PlanItem> plans){
 
         // sort plans by create date
         Collections.sort(plans, new Comparator<PlanItem>() {
