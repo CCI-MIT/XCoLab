@@ -36,12 +36,11 @@ public class SuggestContestActionController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = {"action=suggestContest"})
-    public void suggestContest(ActionRequest request, Model model,
-                                ActionResponse response, @RequestParam("newContestText") String newContestText,
-                                BindingResult result)
+    public void suggestContest(ActionRequest request,
+                                ActionResponse response, @RequestParam("suggestContestText") String suggestContestText)
          throws PortalException, SystemException {
         try {
-            sendContestSuggestion(newContestText, proposalsContext.getUser(request));
+            sendContestSuggestion(suggestContestText, proposalsContext.getUser(request));
         } catch (Exception e) {
             e.printStackTrace();
         }
