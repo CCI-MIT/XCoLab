@@ -129,7 +129,7 @@ public class UserWrapper implements Serializable {
             ;// userActivitiesCount - maxActivitiesCount, userActivitiesCount))
             // {
             UserActivityBean a = new UserActivityBean(activity);
-            if(!a.getBody().equals(""))
+            if(a.getBody() !=null && !a.getBody().equals(""))
                 userActivities.add(a);
         }
     }
