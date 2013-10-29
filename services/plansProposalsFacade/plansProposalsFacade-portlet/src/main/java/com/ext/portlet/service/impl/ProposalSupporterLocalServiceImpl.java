@@ -49,8 +49,9 @@ public class ProposalSupporterLocalServiceImpl
         try {
             System.err.println("portlet classloader used 3");
             final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
-            DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class);
-            dq.add(PropertyFactoryUtil.forName("userId").eq(userId));
+            DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, (ClassLoader) PortletBeanLocatorUtil.locate(
+                    ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
+            dq.add(PropertyFactoryUtil.forName("primaryKey.userId").eq(userId));
             return (List<ProposalSupporter>) ProposalSupporterLocalServiceUtil.dynamicQuery(dq);
         } catch (Throwable e) {
             System.out.println("got exception:"+e.getMessage());
