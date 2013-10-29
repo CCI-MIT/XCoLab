@@ -68,7 +68,6 @@ public class AutoregisterConferencePeople implements MessageListener {
     private void registerUser(ConferenceUser u) {
         try {
             String email = u.geteMail();
-            if (emailExists(email)) email = u.getSecondaryEmail();
             if (!emailExists(email)) {
                 UserAccountGenerator userAccountGenerator = new UserAccountGenerator();
                 String screenName = userAccountGenerator.generateUsername(u.getFirstName(), u.getLastName());
