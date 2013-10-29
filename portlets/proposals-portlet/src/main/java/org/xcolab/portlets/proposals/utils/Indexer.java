@@ -37,13 +37,10 @@ import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 /**
- *
  * Indexes a proposal
  * taken from previous proposals portlet and adapted to new environment: https://github.com/jintrone/XCoLab/blob/20b3f27a6f9e9f346ebc6675dcf58fa7052b9ae2/portlets/proposals-portlet/src/main/java/org/climatecollaboratorium/plans/utils/Indexer.java
  *
- *
  * @author pdeboer
- *
  */
 public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
@@ -61,14 +58,14 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
     @Override
     public void delete(Object obj) throws SearchException {
         Long id = -1L;
-        if(obj instanceof Long) {
+        if (obj instanceof Long) {
             id = (Long) obj;
-        }else if(obj instanceof Proposal) {
+        } else if (obj instanceof Proposal) {
             Proposal p = (Proposal) obj;
             id = p.getProposalId();
         }
 
-        if(id <0) _log.error("id should never be below 0. PAAANIIIIC!!!");
+        if (id < 0) _log.error("id should never be below 0. PAAANIIIIC!!!");
 
         try {
             Proposal plan = ProposalLocalServiceUtil.getProposal(id);
@@ -249,7 +246,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         long companyId = GetterUtil.getLong(ids[0]);
         List<Proposal> proposals = null;
         try {
-            proposals = ProposalLocalServiceUtil.getProposals(Integer.MIN_VALUE,Integer.MAX_VALUE);
+            proposals = ProposalLocalServiceUtil.getProposals(Integer.MIN_VALUE, Integer.MAX_VALUE);
         } catch (SystemException e) {
             _log.error("Can't reindex plans", e);
             throw new SearchException("Can't reindex plans", e);

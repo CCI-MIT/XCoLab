@@ -47,6 +47,6 @@ public class ProposalSupporterLocalServiceImpl
         DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, (ClassLoader) PortletBeanLocatorUtil.locate(
                 ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
         dq.add(PropertyFactoryUtil.forName("userId").eq(userId));
-        return ProposalSupporterUtil.findWithDynamicQuery(dq);
+        return (List<ProposalSupporter>) dynamicQuery(dq);
     }
 }
