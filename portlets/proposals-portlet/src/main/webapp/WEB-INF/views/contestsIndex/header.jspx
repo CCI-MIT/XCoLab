@@ -74,7 +74,6 @@
         </div>
 
         <portlet:actionURL var="suggestContestURL">
-            <portlet:param name="action_forwardToPage" value="showContestsIndex" />
             <portlet:param name="action" value="suggestContest" />
         </portlet:actionURL>
         <form action="${suggestContestURL}" method="post">

@@ -4,10 +4,7 @@ import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.*;
 import org.xcolab.portlets.admintasks.migration.Pair;
 
 import java.util.List;
@@ -92,6 +89,21 @@ public class OldPersistenceQueries {
             return null;
         }
         return planItems;
+    }
+
+    public static List<Long> getPlanItemsWithoutGroups(){
+        DynamicQuery plansInGroups = DynamicQueryFactoryUtil.forClass(PlanItemGroup.class, portletClassLoader);
+        plansInGroups.setProjection(ProjectionFactoryUtil.property("planId"));
+        DynamicQuery planItems = DynamicQueryFactoryUtil.forClass(PlanItem.class, portletClassLoader);
+        planItems.add(PropertyFactoryUtil.forName("planId").notIn(plansInGroups));
+        planItems.setProjection(ProjectionFactoryUtil.distinct(ProjectionFactoryUtil.property("planId")));
+
+        try{
+            return PlanItemLocalServiceUtil.dynamicQuery(planItems);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
