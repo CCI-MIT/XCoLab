@@ -46,6 +46,7 @@
 					<property name="ignoreOnSuccess">
 						<list>
 							<value>action_errorForwardToPage</value>
+                            <value>action</value>
 						</list>
 					</property>
 					<property name="mapAll" value="true" />
