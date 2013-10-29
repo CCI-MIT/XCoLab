@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
@@ -52,7 +53,7 @@ public class ProposalSupporterLocalServiceImpl
             final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
             DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, (ClassLoader) PortletBeanLocatorUtil.locate(
                     ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
-            dq.add(PropertyFactoryUtil.forName("UserId").eq(userId));
+            dq.add(RestrictionsFactoryUtil.eq("userId", userId+""));
             return (List<ProposalSupporter>) ProposalSupporterLocalServiceUtil.dynamicQuery(dq);
         } catch (Throwable e) {
             System.out.println("got exception:"+e.getMessage());
