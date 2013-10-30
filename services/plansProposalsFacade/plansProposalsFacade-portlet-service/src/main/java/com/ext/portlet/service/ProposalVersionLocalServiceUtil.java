@@ -277,6 +277,13 @@ public class ProposalVersionLocalServiceUtil {
         return getService().getByProposalId(proposalId, start, end);
     }
 
+    public static com.ext.portlet.model.ProposalVersion getByProposalIdVersion(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByProposalIdVersion(proposalId, version);
+    }
+
     public static void clearService() {
         _service = null;
     }

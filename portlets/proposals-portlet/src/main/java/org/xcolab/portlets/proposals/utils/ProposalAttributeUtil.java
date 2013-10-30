@@ -14,9 +14,11 @@ import com.liferay.portal.kernel.exception.SystemException;
  */
 public class ProposalAttributeUtil {
     Proposal proposal;
+    int version;
 
-    public ProposalAttributeUtil(Proposal proposal) {
+    public ProposalAttributeUtil(Proposal proposal, int version) {
         this.proposal = proposal;
+        this.version = version;
     }
 
     public boolean hasAttribute(String name) throws PortalException, SystemException {
@@ -54,12 +56,9 @@ public class ProposalAttributeUtil {
 
     public ProposalAttribute getAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
         try {
-            return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), attributeName, additionalId);
+            return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, attributeName, additionalId);
         }
         catch (NoSuchProposalAttributeException e) {
-            return null;
-        }
-        catch (NoSuchProposalException e) {
             return null;
         }
     }

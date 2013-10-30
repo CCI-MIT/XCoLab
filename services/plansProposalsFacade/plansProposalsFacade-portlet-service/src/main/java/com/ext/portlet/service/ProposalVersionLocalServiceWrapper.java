@@ -274,6 +274,14 @@ public class ProposalVersionLocalServiceWrapper
             end);
     }
 
+    public com.ext.portlet.model.ProposalVersion getByProposalIdVersion(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalVersionLocalService.getByProposalIdVersion(proposalId,
+            version);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

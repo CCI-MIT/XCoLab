@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.base.ProposalVersionLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.ProposalVersionPK;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 /**
@@ -48,5 +50,10 @@ public class ProposalVersionLocalServiceImpl
      */
     public List<ProposalVersion> getByProposalId(long proposalId, int start, int end) throws SystemException {
         return proposalVersionPersistence.findByProposalId(proposalId, start, end);
+    }
+
+    public ProposalVersion getByProposalIdVersion(long proposalId, int version) throws SystemException, PortalException{
+        ProposalVersionPK pk = new ProposalVersionPK(proposalId,version);
+        return proposalVersionPersistence.findByPrimaryKey(pk);
     }
 }

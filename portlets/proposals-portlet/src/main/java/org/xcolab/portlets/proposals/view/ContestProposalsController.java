@@ -37,8 +37,7 @@ public class ContestProposalsController extends BaseProposalsController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = "pageToDisplay=contestProposals")
-    public String showContestProposals(RenderRequest request, RenderResponse response, 
-            @RequestParam Long contestId, @RequestParam(required = false, value="phaseId") Long contestPhaseId,
+    public String showContestProposals(RenderRequest request, RenderResponse response,
             final SortFilterPage sortFilterPage, Model model) 
             throws PortalException, SystemException {
         
@@ -49,7 +48,7 @@ public class ContestProposalsController extends BaseProposalsController {
         for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
 
-            ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p);
+            ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
             if(proposalWrapper.getVisible())
                 proposals.add(proposalWrapper);
         }

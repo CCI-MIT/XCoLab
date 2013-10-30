@@ -246,4 +246,10 @@ public interface ProposalVersionLocalService extends PersistedModelLocalService 
     public java.util.List<com.ext.portlet.model.ProposalVersion> getByProposalId(
         long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalVersion getByProposalIdVersion(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

@@ -27,6 +27,7 @@ public class ProposalVersionLocalServiceClp
     private MethodKey _setBeanIdentifierMethodKey16;
     private MethodKey _countByProposalIdMethodKey17;
     private MethodKey _getByProposalIdMethodKey18;
+    private MethodKey _getByProposalIdVersionMethodKey19;
 
     public ProposalVersionLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -102,6 +103,9 @@ public class ProposalVersionLocalServiceClp
 
         _getByProposalIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getByProposalId", long.class, int.class, int.class);
+
+        _getByProposalIdVersionMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getByProposalIdVersion", long.class, int.class);
     }
 
     public com.ext.portlet.model.ProposalVersion addProposalVersion(
@@ -584,6 +588,37 @@ public class ProposalVersionLocalServiceClp
         }
 
         return (java.util.List<com.ext.portlet.model.ProposalVersion>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public com.ext.portlet.model.ProposalVersion getByProposalIdVersion(
+        long proposalId, int version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getByProposalIdVersionMethodKey19,
+                proposalId, version);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ProposalVersion) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

@@ -58,7 +58,7 @@
                     <proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.commentsCount}" hashString="plans%3Dtab%3ACOMMENTS" />
                 </div>
                 <div class="modbox">
-                    <fmt:formatDate value="${proposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" />
+                    <fmt:formatDate value="${proposal.lastModifiedDateForContestPhase}" type="date" dateStyle="short" timeZone="America/New_York" />
                 </div>
                 <div class="conbox">
                 	<c:choose>

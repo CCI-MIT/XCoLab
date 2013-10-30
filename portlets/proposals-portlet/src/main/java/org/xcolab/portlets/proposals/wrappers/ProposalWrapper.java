@@ -7,11 +7,10 @@ import java.util.List;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
+import com.ext.portlet.service.persistence.ProposalVersionPK;
 import org.apache.commons.lang3.StringUtils;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -52,7 +51,7 @@ public class ProposalWrapper {
         this.contestPhase = contestPhase;
         this.proposal2Phase = proposal2Phase;
 
-        proposalAttributeUtil = new ProposalAttributeUtil(proposal);
+        proposalAttributeUtil = new ProposalAttributeUtil(proposal,version);
     }
 
     public Class<?> getModelClass() {
@@ -238,6 +237,11 @@ public class ProposalWrapper {
     
     public Date getLastModifiedDate() {
         return proposal.getUpdatedDate();
+    }
+
+    public Date getLastModifiedDateForContestPhase() throws PortalException, SystemException {
+        if (proposal2Phase.getVersionTo() == -1) return getLastModifiedDate();
+        return ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposal.getProposalId(),version).getCreateDate();
     }
     
     public boolean isOpen() throws PortalException, SystemException {
