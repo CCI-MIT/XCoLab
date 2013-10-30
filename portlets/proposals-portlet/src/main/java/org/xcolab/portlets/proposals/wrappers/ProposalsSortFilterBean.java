@@ -30,6 +30,7 @@ public class ProposalsSortFilterBean {
         
         // sort proposals
         if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("NAME")) proposalComparator = ProposalsColumn.NAME.getComparator();
             if (sortFilterPage.getSortColumn().equalsIgnoreCase("AUTHOR")) proposalComparator = ProposalsColumn.AUTHOR.getComparator();
             if (sortFilterPage.getSortColumn().equalsIgnoreCase("COMMENTS")) proposalComparator = ProposalsColumn.COMMENTS.getComparator();
             if (sortFilterPage.getSortColumn().equalsIgnoreCase("CONTRIBUTORS")) proposalComparator = ProposalsColumn.CONTRIBUTORS.getComparator();
@@ -45,7 +46,7 @@ public class ProposalsSortFilterBean {
             proposalComparator = ProposalsColumn.valueOf(sortFilterPage.getSortColumn()).getComparator();
         }
         else {
-            proposalComparator = ProposalsColumn.MODIFIED.getComparator();
+            proposalComparator = ProposalsColumn.NAME.getComparator();
         }
         
         
