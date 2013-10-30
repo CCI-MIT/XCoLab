@@ -34,7 +34,6 @@ import com.ext.portlet.model.PlanVote;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.plans.PlanConstants;
 import com.icesoft.faces.async.render.SessionRenderer;
@@ -82,11 +81,27 @@ public class DataMigrator implements Runnable {
 
         if (!(new NewPersistenceCleaner(reference).deleteAllRecordsForNewEntities())) return;
 
+
+        //--
+        List<Pair<Long,List<PlanItem>>> plansWithoutGroups = getPlansWithoutGroups();
+        pushAjaxUpdate("Creating new Proposals Without Groups");
+        pushAjaxUpdate("0%");
+        int counter = 0;
+
+        for(Iterator<Pair<Long,List<PlanItem>>> i = plansWithoutGroups.iterator(); i.hasNext(); ) {
+            if (STOP) break;
+            if (++counter > 0 && (counter % (plansWithoutGroups.size() / 33)) == 0) updateLastAjaxUpdate((100 * counter / plansWithoutGroups.size()) + "%");
+            Pair<Long,List<PlanItem>> pair = i.next();
+            createNewPlan(pair.getLeft(),pair.getRight());
+            if (counter > (plansWithoutGroups.size()/10) && TESTING) break;
+        }
+        //--
+
         //--
         List<Pair<Long,List<PlanItem>>> groupedPlans = getAllDistinctPlanGroupIds();
         pushAjaxUpdate("Creating new Proposals");
         pushAjaxUpdate("0%");
-        int counter = 0;
+        counter = 0;
 
         boolean skippedFirstRecords = false;
         for(Iterator<Pair<Long,List<PlanItem>>> i = groupedPlans.iterator(); i.hasNext(); ) {
@@ -104,20 +119,7 @@ public class DataMigrator implements Runnable {
             if (counter > (groupedPlans.size()/10) && TESTING) break;
         }
         //--
-        //--
-        List<Pair<Long,List<PlanItem>>> plansWithoutGroups = getPlansWithoutGroups();
-        pushAjaxUpdate("Creating new Proposals Without Groups");
-        pushAjaxUpdate("0%");
-        counter = 0;
 
-        for(Iterator<Pair<Long,List<PlanItem>>> i = plansWithoutGroups.iterator(); i.hasNext(); ) {
-            if (STOP) break;
-            if (++counter > 0 && (counter % (plansWithoutGroups.size() / 33)) == 0) updateLastAjaxUpdate((100 * counter / plansWithoutGroups.size()) + "%");
-            Pair<Long,List<PlanItem>> pair = i.next();
-            createNewPlan(pair.getLeft(),pair.getRight());
-            if (counter > (plansWithoutGroups.size()/10) && TESTING) break;
-        }
-        //--
 
 
 
@@ -319,7 +321,7 @@ public class DataMigrator implements Runnable {
             createRibbons(plan, proposal);
 
             // add supporters
-            copySupporters(plan,proposal);
+            copySubscribers(plan,proposal);
 
             // refresh discussion id, group id, updated date
             copyMetaInfo(plan,proposal);
@@ -353,33 +355,7 @@ public class DataMigrator implements Runnable {
 
     }
 
-    private void createSupporters(PlanItem plan, Proposal proposal, List<Long> proposalSupporter){
-        List<PlanFan> planFans = null;
-        long contestPhase = 0;
-        try{
-            planFans = PlanFanLocalServiceUtil.getPlanFansForPlan(plan.getPlanId());
-        } catch (Exception e){
-            pushAjaxUpdate("Error while getting Fans " + plan.getPlanId() + ": " + e);
-            return;
-        }
 
-        for (PlanFan planFan : planFans){
-            // add supporter if not already added
-            if (!proposalSupporter.contains(planFan.getUserId()) && planFan.getDeleted() == null){
-                ProposalSupporter supporter = ProposalSupporterLocalServiceUtil.create(proposal.getProposalId(),planFan.getUserId());
-                supporter.setCreateDate(planFan.getCreated());
-                try{
-                    ProposalSupporterLocalServiceUtil.addProposalSupporter(supporter);
-                } catch (Exception e){
-                    pushAjaxUpdate("Error while persisting Supporters " + plan.getPlanId() + ": " + e);
-                    return;
-                }
-                proposalSupporter.add(planFan.getUserId());
-            }
-        }
-
-
-    }
 
     private void createPlan2ProposalMapping(PlanItem plan, Proposal proposal){
         Plan2Proposal plan2Proposal = Plan2ProposalLocalServiceUtil.createPlan2Proposal(plan.getPlanId());
@@ -574,35 +550,40 @@ public class DataMigrator implements Runnable {
             pushAjaxUpdate("Error while getting description record " + plan.getPlanId() + ": " + e);
         }
 
-        boolean oldContest = false; // old contests have inconsistencies, therefore migrate all attributes to assure proper migration
-        try{
-            oldContest = !ContestLocalServiceUtil.isActive(PlanItemLocalServiceUtil.getContest(plan)) && (planDescriptions.size() == 1);
-        } catch (Exception e) { e.printStackTrace(); }
-
+        Collections.reverse(planDescriptions);
+        int i = -1;
         for(PlanDescription planDescription : planDescriptions) {
-            if (planDescription.getPlanVersion() == plan.getVersion() || oldContest){
+            if (planDescription.getPlanVersion() == plan.getVersion() || planDescriptions.size() == 1){
+                boolean nameChanged = (planDescription.getName() != null) && (i==-1 || (planDescription.getName().compareTo(planDescriptions.get(i).getName()) != 0));
+                boolean descriptionChanged = (planDescription.getDescription() != null) && (i==-1 || (planDescription.getDescription().compareTo(planDescriptions.get(i).getDescription()) != 0));
+                boolean pitchChanged = (planDescription.getPitch() != null) && (i==-1 || (planDescription.getPitch().compareTo(planDescriptions.get(i).getPitch()) != 0));
+                boolean imageChanged = (planDescription.getImage() != 0) && (i==-1 || (planDescription.getImage() != planDescriptions.get(i).getImage()));
+                if (plan.getPlanId() == 15302){
+                    System.out.println("..");
+                }
                 try{
-                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME) || oldContest){
+                    if(nameChanged){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.NAME,0,planDescription.getName(),0,0,dateFix(planDescription.getCreated()),false);
                     }
-                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.DESCRIPTION) || oldContest){
+                    if(descriptionChanged){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.DESCRIPTION,0,planDescription.getDescription(),0,0,dateFix(planDescription.getCreated()),false);
                     }
-                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.PITCH) || oldContest){
+                    if(pitchChanged){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.PITCH,0,planDescription.getPitch(),0,0,dateFix(planDescription.getCreated()),false);
                     }
-                    if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID) || oldContest){
+                    if(imageChanged){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.IMAGE_ID,0,null,planDescription.getImage(),0,dateFix(planDescription.getCreated()),false);
                     }
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);
                 }
-                break;
+                //break;
             }
+            i++;
         }
     }
 
-    private void copySupporters(PlanItem plan, Proposal p){
+    private void copySubscribers(PlanItem plan, Proposal p){
         List<User> subscribers = null;
         try{
             subscribers = ActivitySubscriptionLocalServiceUtil.getSubscribedUsers(PlanItem.class,plan.getPlanId());
@@ -615,7 +596,32 @@ public class DataMigrator implements Runnable {
                 ProposalLocalServiceUtil.subscribe(p.getProposalId(),u.getUserId());
             } catch (Exception e){ e.printStackTrace(); }
         }
+    }
 
+    private void createSupporters(PlanItem plan, Proposal proposal, List<Long> proposalSupporter){
+        List<PlanFan> planFans = null;
+        long contestPhase = 0;
+        try{
+            planFans = PlanFanLocalServiceUtil.getPlanFansForPlan(plan.getPlanId());
+        } catch (Exception e){
+            pushAjaxUpdate("Error while getting Fans " + plan.getPlanId() + ": " + e);
+            return;
+        }
+
+        for (PlanFan planFan : planFans){
+            // add supporter if not already added
+            if (!proposalSupporter.contains(planFan.getUserId()) && planFan.getDeleted() == null){
+                ProposalSupporter supporter = ProposalSupporterLocalServiceUtil.create(proposal.getProposalId(),planFan.getUserId());
+                supporter.setCreateDate(planFan.getCreated());
+                try{
+                    ProposalSupporterLocalServiceUtil.addProposalSupporter(supporter);
+                } catch (Exception e){
+                    pushAjaxUpdate("Error while persisting Supporters " + plan.getPlanId() + ": " + e);
+                    return;
+                }
+                proposalSupporter.add(planFan.getUserId());
+            }
+        }
     }
 
     private void createRibbons(PlanItem plan, Proposal p){
