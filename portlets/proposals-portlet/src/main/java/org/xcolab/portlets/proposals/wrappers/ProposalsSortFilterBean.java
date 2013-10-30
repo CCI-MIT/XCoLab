@@ -46,7 +46,7 @@ public class ProposalsSortFilterBean {
             proposalComparator = ProposalsColumn.valueOf(sortFilterPage.getSortColumn()).getComparator();
         }
         else {
-            proposalComparator = ProposalsColumn.NAME.getComparator();
+            proposalComparator = ProposalsColumn.MODIFIED.getComparator();
         }
         
         
