@@ -225,7 +225,7 @@ public class DataMigrator implements Runnable {
         
         Proposal proposal = null;
         try {
-            proposal = ProposalLocalServiceUtil.create(authorID,0,plans.get(plans.size()-1).getPlanId());
+            proposal = ProposalLocalServiceUtil.create(authorID,0,plans.get(plans.size()-1).getPlanId(),false);
         } catch (Exception e){
             pushAjaxUpdate("Error while creating Proposal " + groupID + ": " + e);
         }
@@ -249,6 +249,11 @@ public class DataMigrator implements Runnable {
         // Loop through all plans - each representing one contest phase
         boolean isFirstInGroup = true;
         for(PlanItem plan :  plans) {
+
+            if (plan.getPlanId() == 12740){
+                System.out.println("..");
+            }
+
             // get updated proposal
             try {
                 proposal = ProposalLocalServiceUtil.getProposal(proposal.getProposalId());
@@ -271,7 +276,7 @@ public class DataMigrator implements Runnable {
                     PlanAttribute regionAttribute = PlanItemLocalServiceUtil.getPlanAttribute(plan, "REGION");
                     if (regionAttribute != null) {
                         String region = regionAttribute.getAttributeValue();
-                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.REGION, 0L, region,0,0,dateFix(plan.getUpdated()));
+                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.REGION, 0L, region,0,0,dateFix(plan.getUpdated()),false);
                         String regionEconomy = "Other Developing";
                         
                         
@@ -281,11 +286,11 @@ public class DataMigrator implements Runnable {
                             regionEconomy = "Rapidly Developing";
                         }
                         
-                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.REGION_ECONOMY, 0L,  regionEconomy,0,0,dateFix(plan.getUpdated()));
+                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.REGION_ECONOMY, 0L,  regionEconomy,0,0,dateFix(plan.getUpdated()),false);
                     }
                     PlanAttribute subregionAttribute = PlanItemLocalServiceUtil.getPlanAttribute(plan, "SUBREGION");
                     if (subregionAttribute != null) {
-                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.SUBREGION, 0L, subregionAttribute.getAttributeValue(),0,0,dateFix(plan.getUpdated()));
+                        ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.SUBREGION, 0L, subregionAttribute.getAttributeValue(),0,0,dateFix(plan.getUpdated()),false);
                     }
                 }
                 catch (Exception e) {
@@ -298,7 +303,7 @@ public class DataMigrator implements Runnable {
                 PlanAttribute teamAttribute = PlanItemLocalServiceUtil.getPlanAttribute(plan, "TEAM");
                 if (teamAttribute != null) {
                     String teamName = teamAttribute.getAttributeValue();
-                    ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.TEAM, 0L, teamName,0,0,dateFix(plan.getUpdated()));
+                    ProposalLocalServiceUtil.setAttribute(authorID, proposal.getProposalId(), ProposalAttributeKeys.TEAM, 0L, teamName,0,0,dateFix(plan.getUpdated()),false);
                 }
             }
             catch (Exception e) {
@@ -360,7 +365,7 @@ public class DataMigrator implements Runnable {
 
         for (PlanFan planFan : planFans){
             // add supporter if not already added
-            if (!proposalSupporter.contains(planFan.getUserId())){
+            if (!proposalSupporter.contains(planFan.getUserId()) && planFan.getDeleted() == null){
                 ProposalSupporter supporter = ProposalSupporterLocalServiceUtil.create(proposal.getProposalId(),planFan.getUserId());
                 supporter.setCreateDate(planFan.getCreated());
                 try{
@@ -495,7 +500,7 @@ public class DataMigrator implements Runnable {
             if (pmr.getPlanVersion() == plan.getVersion()){
                 try{
                     PlanType planType = PlanItemLocalServiceUtil.getPlanType(plan);
-                    ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SCENARIO_ID,planType.getDefaultModelId(),null,pmr.getScenarioId(),0,dateFix(pmr.getCreated()));
+                    ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SCENARIO_ID,planType.getDefaultModelId(),null,pmr.getScenarioId(),0,dateFix(pmr.getCreated()),false);
                     Map<String, String> attributes = getAttributes(plan); 
                     
                     
@@ -507,7 +512,7 @@ public class DataMigrator implements Runnable {
                     for (Map.Entry<String, String> attributeToCopy: planAttributesToCopy.entrySet()) {
                         if (attributes.containsKey(attributeToCopy.getValue())) {
                             ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),attributeToCopy.getKey(),
-                                    planType.getModelId(), attributes.get(attributeToCopy.getValue()),0, 0,dateFix(pmr.getCreated()));
+                                    planType.getModelId(), attributes.get(attributeToCopy.getValue()),0, 0,dateFix(pmr.getCreated()),false);
                         }
                     }
                 } catch(Exception e){
@@ -530,7 +535,7 @@ public class DataMigrator implements Runnable {
             if (planMeta.getPlanVersion() == plan.getVersion()){
                 try{
                     if(attribute.equalsIgnoreCase("PLAN_OPENED") || attribute.equalsIgnoreCase("PLAN_CLOSED"))
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.OPEN,0,null,planMeta.getOpen() ? 1 : 0,0,dateFix(plan.getUpdated()));
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.OPEN,0,null,planMeta.getOpen() ? 1 : 0,0,dateFix(plan.getUpdated()),false);
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);
                 }
@@ -551,7 +556,7 @@ public class DataMigrator implements Runnable {
         for(PlanSection planSection :  planSections) {
             try{
                 ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.SECTION,
-                        planSection.getPlanSectionDefinitionId(),planSection.getContent(),0,0,dateFix(plan.getUpdated()));
+                        planSection.getPlanSectionDefinitionId(),planSection.getContent(),0,0,dateFix(plan.getUpdated()),false);
             } catch (Exception e){
                 pushAjaxUpdate("Error while setting Section " + plan.getPlanId() + ": " + e);
                 e.printStackTrace();
@@ -578,16 +583,16 @@ public class DataMigrator implements Runnable {
             if (planDescription.getPlanVersion() == plan.getVersion() || oldContest){
                 try{
                     if(attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME) || oldContest){
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.NAME,0,planDescription.getName(),0,0,dateFix(planDescription.getCreated()));
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.NAME,0,planDescription.getName(),0,0,dateFix(planDescription.getCreated()),false);
                     }
                     if(attribute.equalsIgnoreCase(ProposalAttributeKeys.DESCRIPTION) || oldContest){
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.DESCRIPTION,0,planDescription.getDescription(),0,0,dateFix(planDescription.getCreated()));
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.DESCRIPTION,0,planDescription.getDescription(),0,0,dateFix(planDescription.getCreated()),false);
                     }
                     if(attribute.equalsIgnoreCase(ProposalAttributeKeys.PITCH) || oldContest){
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.PITCH,0,planDescription.getPitch(),0,0,dateFix(planDescription.getCreated()));
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.PITCH,0,planDescription.getPitch(),0,0,dateFix(planDescription.getCreated()),false);
                     }
                     if(attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID) || oldContest){
-                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.IMAGE_ID,0,null,planDescription.getImage(),0,dateFix(planDescription.getCreated()));
+                        ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.IMAGE_ID,0,null,planDescription.getImage(),0,dateFix(planDescription.getCreated()),false);
                     }
                 } catch(Exception e){
                     pushAjaxUpdate("Error while setting Attribute " + plan.getPlanId() + ": " + e);

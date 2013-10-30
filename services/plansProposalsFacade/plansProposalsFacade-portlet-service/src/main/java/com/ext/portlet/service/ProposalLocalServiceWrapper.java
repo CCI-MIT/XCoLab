@@ -300,10 +300,11 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @author janusz
     */
     public com.ext.portlet.model.Proposal create(long authorId,
-        long contestPhaseId, long proposalId)
+        long contestPhaseId, long proposalId, boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposalLocalService.create(authorId, contestPhaseId, proposalId);
+        return _proposalLocalService.create(authorId, contestPhaseId,
+            proposalId, publishActivity);
     }
 
     /**
@@ -322,7 +323,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param additionalId additional id for an attribute
     * @param stringValue string value for an attribute
     * @param numericValue numeric value for an attribute
-    * @param doubleValue double value for an attribute
+    * @param realValue double value for an attribute
     * @return ProposalAttribute that represents newly set attribute
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
@@ -353,7 +354,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param additionalId additional id for an attribute
     * @param stringValue string value for an attribute
     * @param numericValue numeric value for an attribute
-    * @param doubleValue double value for an attribute
+    * @param realValue double value for an attribute
     * @param updatedDate date of update
     * @return ProposalAttribute that represents newly set attribute
     * @throws PortalException in case of an LR error
@@ -363,12 +364,12 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue, long numericValue, double realValue,
-        java.util.Date updatedDate)
+        java.util.Date updatedDate, boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.setAttribute(authorId, proposalId,
             attributeName, additionalId, stringValue, numericValue, realValue,
-            updatedDate);
+            updatedDate, publishActivity);
     }
 
     /**
@@ -378,7 +379,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param authorId
     * @param proposalId
     * @param attributeName
-    * @param additionalId
     * @param stringValue
     * @return
     * @throws PortalException
@@ -422,7 +422,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param authorId
     * @param proposalId
     * @param attributeName
-    * @param additionalId
     * @param stringValue
     * @return
     * @throws PortalException
@@ -466,7 +465,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param authorId
     * @param proposalId
     * @param attributeName
-    * @param additionalId
     * @param numericValue
     * @return
     * @throws PortalException
@@ -509,7 +507,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param authorId
     * @param proposalId
     * @param attributeName
-    * @param additionalId
     * @param realValue
     * @return
     * @throws PortalException
@@ -726,6 +723,21 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Adds supporter to a proposal</p>
+    *
+    * @param proposalId id of a proposal
+    * @param userId id of a supported to be added
+    * @throws SystemException in case of an LR error
+    * @throws PortalException
+    */
+    public void addSupporter(long proposalId, long userId,
+        boolean publishActivity)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.addSupporter(proposalId, userId, publishActivity);
+    }
+
+    /**
     * <p>Retracts support from a proposal</p>
     *
     * @param proposalId id of a proposal
@@ -784,6 +796,25 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _proposalLocalService.addVote(proposalId, contestPhaseId, userId);
+    }
+
+    /**
+    * <p>Adds a user vote to a proposal in context of given contest phase. If user has already voted
+    * for different proposal in this phase, then that vote is removed first. User has only one vote
+    * in one contestPhase.</p>
+    *
+    * @param proposalId id of a proposal
+    * @param contestPhaseId id of a contest phase
+    * @param userId id of an user
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public void addVote(long proposalId, long contestPhaseId, long userId,
+        boolean publishActivity)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.addVote(proposalId, contestPhaseId, userId,
+            publishActivity);
     }
 
     /**

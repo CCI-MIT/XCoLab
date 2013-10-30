@@ -136,7 +136,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Transactional
     public Proposal create(long authorId, long contestPhaseId) throws SystemException, PortalException {
         long proposalId = portalServicesHelper.getCounterLocalService().increment(Proposal.class.getName());
-        return create(authorId, contestPhaseId,proposalId);
+        return create(authorId, contestPhaseId,proposalId, true);
     }
     
     /**
@@ -168,7 +168,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @author janusz
      */
     @Transactional
-    public Proposal create(long authorId, long contestPhaseId, long proposalId) throws SystemException, PortalException {
+    public Proposal create(long authorId, long contestPhaseId, long proposalId, boolean publishActivity) throws SystemException, PortalException {
 
         Proposal proposal = createProposal(proposalId);
         proposal.setVisible(true);
@@ -211,7 +211,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             p2p.setVersionFrom(proposal.getCurrentVersion());
             p2p.setVersionTo(-1);
             proposal2PhaseLocalService.addProposal2Phase(p2p);
-            eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal, 
+            if (publishActivity) eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal,
                     contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
         }
         
@@ -235,7 +235,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param additionalId additional id for an attribute
      * @param stringValue string value for an attribute
      * @param numericValue numeric value for an attribute
-     * @param doubleValue double value for an attribute
+     * @param realValue double value for an attribute
      * 
      * @return ProposalAttribute that represents newly set attribute
      * 
@@ -247,7 +247,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Transactional
     public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
             String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, stringValue, numericValue, realValue, new Date());
+        return setAttribute(authorId, proposalId, attributeName, additionalId, stringValue, numericValue, realValue, new Date(), true);
     }
 
     /**
@@ -266,7 +266,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param additionalId additional id for an attribute
      * @param stringValue string value for an attribute
      * @param numericValue numeric value for an attribute
-     * @param doubleValue double value for an attribute
+     * @param realValue double value for an attribute
      * @param updatedDate date of update
      *
      * @return ProposalAttribute that represents newly set attribute
@@ -278,7 +278,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Transactional
     public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
-                                          String stringValue, long numericValue, double realValue, Date updatedDate) throws PortalException, SystemException {
+                                          String stringValue, long numericValue, double realValue, Date updatedDate, boolean publishActivity) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
         ProposalAttribute oldAttribute = null;
 
@@ -314,7 +314,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId,updatedDate);
         updateProposal(proposal);
 
-        eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId),
+        if (publishActivity) eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId),
                 attributeName, oldAttribute, attribute));
 
         return attribute;
@@ -326,7 +326,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param authorId
      * @param proposalId
      * @param attributeName
-     * @param additionalId
      * @param stringValue
      * @return
      * @throws PortalException
@@ -359,7 +358,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param authorId
      * @param proposalId
      * @param attributeName
-     * @param additionalId
      * @param stringValue
      * @return
      * @throws PortalException
@@ -391,7 +389,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param authorId
      * @param proposalId
      * @param attributeName
-     * @param additionalId
      * @param numericValue
      * @return
      * @throws PortalException
@@ -423,7 +420,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param authorId
      * @param proposalId
      * @param attributeName
-     * @param additionalId
      * @param realValue
      * @return
      * @throws PortalException
@@ -646,13 +642,25 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Transactional
     public void addSupporter(long proposalId, long userId) throws SystemException, PortalException {
-        ProposalSupporter supporter = 
+        addSupporter(proposalId, userId, true);
+    }
+
+    /**
+     * <p>Adds supporter to a proposal</p>
+     * @param proposalId id of a proposal
+     * @param userId id of a supported to be added
+     * @throws SystemException in case of an LR error
+     * @throws PortalException
+     */
+    @Transactional
+    public void addSupporter(long proposalId, long userId, boolean publishActivity) throws SystemException, PortalException {
+        ProposalSupporter supporter =
                 proposalSupporterLocalService.createProposalSupporter(new ProposalSupporterPK(proposalId, userId));
-        
+
         supporter.setCreateDate(new Date());
         proposalSupporterLocalService.addProposalSupporter(supporter);
 
-        eventBus.post(new ProposalSupporterAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+        if (publishActivity) eventBus.post(new ProposalSupporterAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
     }
     
     /**
@@ -715,7 +723,24 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Transactional
     public void addVote(long proposalId, long contestPhaseId, long userId) 
     throws SystemException, PortalException {
-        
+        addVote(proposalId, contestPhaseId, userId, true);
+    }
+
+    /**
+     * <p>Adds a user vote to a proposal in context of given contest phase. If user has already voted
+     * for different proposal in this phase, then that vote is removed first. User has only one vote
+     * in one contestPhase.</p>
+     *
+     * @param proposalId id of a proposal
+     * @param contestPhaseId id of a contest phase
+     * @param userId id of an user
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    @Transactional
+    public void addVote(long proposalId, long contestPhaseId, long userId, boolean publishActivity)
+            throws SystemException, PortalException {
+
         // retract any vote that user has given to any proposal in context of provided phase
         boolean voted = hasUserVoted(proposalId, contestPhaseId, userId);
         if (voted) {
@@ -726,9 +751,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         ProposalVote vote = proposalVoteLocalService.createProposalVote(new ProposalVotePK(contestPhaseId, userId));
         vote.setCreateDate(new Date());
         vote.setProposalId(proposalId);
-        
+
         proposalVoteLocalService.addProposalVote(vote);
-        eventBus.post(new ProposalVotedOnEvent(getProposal(proposalId), userLocalService.getUser(userId), voted));
+        if (publishActivity) eventBus.post(new ProposalVotedOnEvent(getProposal(proposalId), userLocalService.getUser(userId), voted));
     }
     
     /**
@@ -1143,11 +1168,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         proposalVersionLocalService.addProposalVersion(proposalVersion);
     }
-
-
-
-
-
 
     private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
 }
