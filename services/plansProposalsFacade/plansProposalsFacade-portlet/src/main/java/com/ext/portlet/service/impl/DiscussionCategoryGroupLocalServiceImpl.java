@@ -2,8 +2,11 @@ package com.ext.portlet.service.impl;
 
 import java.util.List;
 
+import org.climatecollaboratorium.facelets.discussions.activity.DiscussionActivityKeys;
+
 import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.NoSuchDiscussionMessageException;
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
@@ -12,9 +15,16 @@ import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.base.DiscussionCategoryGroupLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.CompanyLocalService;
+import com.liferay.portal.service.GroupLocalService;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 /**
  * The implementation of the discussion category group local service.
@@ -37,6 +47,16 @@ public class DiscussionCategoryGroupLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil} to access the discussion category group local service.
      */
+
+    private static final String DEFAULT_GROUP_NAME = "Guest";
+    
+
+    @BeanReference(type = CompanyLocalService.class) 
+    protected CompanyLocalService companyLocalService;
+    
+    @BeanReference(type = GroupLocalService.class) 
+    protected GroupLocalService groupLocalService;
+    
     
     public DiscussionCategoryGroup createDiscussionCategoryGroup(String description) throws SystemException {
         Long id = CounterLocalServiceUtil.increment(DiscussionCategoryGroup.class.getName());
@@ -105,6 +125,21 @@ public class DiscussionCategoryGroupLocalServiceImpl
             DiscussionMessage thread = getCommentThread(dcg);
             comment = DiscussionMessageLocalServiceUtil.addThreadMessage(thread, title, description, author);
         }
+        
+       
+        Group scopeGroup = groupLocalService.getGroup(
+                companyLocalService.getCompanyByWebId(PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID)).getCompanyId(),
+                DEFAULT_GROUP_NAME);
+
+        if (! dcg.isIsQuiet()) {
+            SocialActivityLocalServiceUtil.addActivity(author.getUserId(), scopeGroup.getGroupId(),
+                    DiscussionCategoryGroup.class.getName(), dcg.getId(), 
+                    DiscussionActivityKeys.ADD_DISCUSSION_COMMENT.id(), 
+                    ActivityUtil.getExtraDataForIds(dcg.getId(), 
+                    comment.getThreadId() > 0 ? comment.getThreadId() : comment.getMessageId(),
+                    comment.getMessageId()), 0);
+        }
+        
         return comment;
     }
     
