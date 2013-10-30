@@ -69,6 +69,20 @@ public enum ProposalsColumn {
             }
         }
     }),
+    JUDGESTATUS(new Comparator<ProposalWrapper>() {
+
+        @Override
+        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+            return (o1.getJudgeStatus() - o2.getJudgeStatus());
+        }
+    }),
+    FELLOWSTATUS(new Comparator<ProposalWrapper>() {
+
+        @Override
+        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+            return (o1.getFellowStatus() - o2.getFellowStatus());
+        }
+    }),
     MODIFIED(new Comparator<ProposalWrapper>() {
 
         @Override
@@ -82,13 +96,13 @@ public enum ProposalsColumn {
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
             try {
                 if (o1.isOpen()) return o2.isOpen() ? 0 : -1;
-                else return o2.isOpen() ? -1 : 0;
+                else return o2.isOpen() ? 1 : 0;
             }
             catch (Exception e) {
                 return (int) (o1.getProposalId() - o2.getProposalId());
             }
         }
-    });;
+    });
     
     private final Comparator<ProposalWrapper> proposalsComparator;
     

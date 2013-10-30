@@ -44,14 +44,13 @@ public class ContestProposalsController extends BaseProposalsController {
         
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
-        
+
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
         for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-            proposals.add(new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)); 
+            proposals.add(new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p));
         }
 
-        
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
         
@@ -59,4 +58,7 @@ public class ContestProposalsController extends BaseProposalsController {
         
         return "contestProposals";
     }
+
 }
+
+

@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="blueheaderbar tooltips">
-            <div class="proposalname" style="${proposalsPermissions.canJudgeActions ? 'width:554px;' : ''}">
+            <div class="proposalname" style="${proposalsPermissions.canJudgeActions ? 'width:544px;' : ''}">
                 <div style="display: inline-block">
                     <portlet:renderURL var="sortURL">
                         <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -154,7 +154,27 @@
 
         <c:if test="${proposalsPermissions.canJudgeActions}">
             <div class="judgefellow">
-                <a href="#">Judge</a><c:if test="${proposalsPermissions.canFellowActions}"><a href="#" style="padding-left: 5px;">Fellow</a></c:if>
+                <portlet:renderURL var="sortURL">
+                    <portlet:param name="contestId" value="${contest.contestPK }" />
+                    <portlet:param name="pageToDisplay" value="contestProposals" />
+                    <portlet:param name="sortColumn" value="JUDGESTATUS" />
+                    <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
+                    <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'JUDGESTATUS' ? not sortFilterPage.sortAscending : true }" />
+                </portlet:renderURL>
+
+                <a href="${sortURL }">Judge</a>
+                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="JUDGESTATUS" />
+                <c:if test="${proposalsPermissions.canFellowActions}">
+                    <portlet:renderURL var="sortURL">
+                        <portlet:param name="contestId" value="${contest.contestPK }" />
+                        <portlet:param name="pageToDisplay" value="contestProposals" />
+                        <portlet:param name="sortColumn" value="FELLOWSTATUS" />
+                        <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
+                        <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'FELLOWSTATUS' ? not sortFilterPage.sortAscending : true }" />
+                    </portlet:renderURL>
+                    <a href="${sortURL }" style="padding-left: 5px;">Fellow</a>
+                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="FELLOWSTATUS" />
+                </c:if>
                 <div class="tooltip">
                     Judge or fellow actions
                     <div class="tt-arrow"><!-- --></div>

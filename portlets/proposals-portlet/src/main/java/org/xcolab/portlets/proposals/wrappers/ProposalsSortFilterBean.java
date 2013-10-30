@@ -30,7 +30,14 @@ public class ProposalsSortFilterBean {
         
         // sort proposals
         if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
-            
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("AUTHOR")) proposalComparator = ProposalsColumn.AUTHOR.getComparator();
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("COMMENTS")) proposalComparator = ProposalsColumn.COMMENTS.getComparator();
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("CONTRIBUTORS")) proposalComparator = ProposalsColumn.CONTRIBUTORS.getComparator();
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("MODIFIED")) proposalComparator = ProposalsColumn.MODIFIED.getComparator();
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("SUPPORTERS")) proposalComparator = ProposalsColumn.SUPPORTERS.getComparator();
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("VOTES")) proposalComparator = ProposalsColumn.VOTES.getComparator();
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("JUDGESTATUS")) proposalComparator = ProposalsColumn.JUDGESTATUS.getComparator();
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("FELLOWSTATUS")) proposalComparator = ProposalsColumn.FELLOWSTATUS.getComparator();
         }
 
         
@@ -45,17 +52,19 @@ public class ProposalsSortFilterBean {
         Collections.sort(this.proposals, new Comparator<ProposalWrapper>() {
             @Override
             public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-                try {
-                    int ribbonDiff = o2.getRibbon() - o1.getRibbon();
-                    if (ribbonDiff != 0) {
-                        return ribbonDiff;
+                if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
+                    try {
+                        int ribbonDiff = o1.getRibbon() - o2.getRibbon();
+                        if (ribbonDiff != 0) {
+                            return ribbonDiff;
+                        }
+                    }
+                    catch (Exception e) {
+                        _log.error("can't compare proposals", e);
                     }
                 }
-                catch (Exception e) {
-                    _log.error("can't compare proposals", e);
-                }
                 int ret = proposalComparator.compare(o1, o2);
-                
+
                 return sortFilterPage.isSortAscending() ? ret : - ret;
             }
         });
