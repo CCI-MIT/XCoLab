@@ -31,6 +31,7 @@ import com.ext.portlet.model.PlanModelRun;
 import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.model.PlanType;
 import com.ext.portlet.model.PlanVote;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalSupporter;
@@ -121,8 +122,8 @@ public class DataMigrator implements Runnable {
         }
         //--
 
-
-
+        pushAjaxUpdate("-- APPLYING INCONSISTENCY FIXES --");
+        promoteProposalsInOldContestByOnePhase(5);  // contest 2010
 
         pushAjaxUpdate("-- MIGRATION FINISHED --");
 
@@ -328,6 +329,9 @@ public class DataMigrator implements Runnable {
             copyMetaInfo(plan,proposal);
 
         }
+
+        OldPersistenceQueries.updateSocialActivityClassPKToProposalId(groupID, plans);
+
     }
 
     private void createVotesFromPlan(PlanItem plan, Proposal proposal){
@@ -661,6 +665,43 @@ public class DataMigrator implements Runnable {
 
     }
 
+    // fix for promotion in old contests
+
+    private void promoteProposalsInOldContestByOnePhase(long contestPhaseIdFrom){
+
+        try{
+            ContestPhase current = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseIdFrom);
+            ContestPhase next =  ContestPhaseLocalServiceUtil.getNextContestPhase(current);
+
+            List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(current.getContestPhasePK());
+            for (Proposal p : proposals){
+                Proposal2Phase currentp2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(p.getProposalId(),current.getContestPhasePK());
+                currentp2p.setVersionTo(p.getCurrentVersion());
+                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(currentp2p);
+
+                Proposal2Phase newp2p = Proposal2PhaseLocalServiceUtil.create(p.getProposalId(),next.getContestPhasePK());
+                newp2p.setSortWeight(1);
+                newp2p.setAutopromoteCandidate(false);
+                newp2p.setVersionFrom(p.getCurrentVersion());
+                newp2p.setVersionTo(-1);
+
+                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(newp2p);
+            }
+
+        } catch (Exception e){ e.printStackTrace(); }
+
+
+
+
+
+    }
+
+
+
+
+
+
+
     private void pushAjaxUpdate(String message){
         reference.add(message);
         SessionRenderer.render("migration");
@@ -725,4 +766,9 @@ public class DataMigrator implements Runnable {
         counter = (++counter) % 300;
         return new Date(d.getTime() + counter);
     }
+
+
+
+
+
 }

@@ -1,4 +1,4 @@
-UPDATE SocialActivity set classNameId = '1367803' where classNameId = '38302';
+UPDATE SocialActivity set classNameId = '1367003' where classNameId = '38302';
 
 -- delete PUBLISH_UPDATES and EDIT_POSITIONS
 -- 14. PROMOTE_PLAN - remove
