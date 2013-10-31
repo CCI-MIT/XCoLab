@@ -318,7 +318,7 @@ public class ActivitySubscriptionLocalServiceImpl
                         .replaceAll("'/web/guest", "'http://climatecolab.org/web/guest").replaceAll("\n", "\n<br />");
                 
                 
-                Set<User> receipients = new HashSet<User>();
+                Set<User> recipients = new HashSet<User>();
                 Map<Long, ActivitySubscription> subscriptionsPerUser = new HashMap<>();
                 
                 for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
@@ -328,21 +328,21 @@ public class ActivitySubscriptionLocalServiceImpl
                         continue;
                     }
                     User user = UserLocalServiceUtil.getUser(subscription.getReceiverId());
-                    receipients.add(user);
+                    recipients.add(user);
                     // map users to subscriptions for unregistration links
                     subscriptionsPerUser.put(user.getUserId(), subscription);
                 }
-                for (User receipient : receipients) {
+                for (User recipient : recipients) {
                     
-                    if (MessageUtil.getMessagingPreferences(receipient.getUserId()).getEmailOnActivity()) {
-                        InternetAddress toEmail = new InternetAddress(receipient.getEmailAddress());
+                    if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity()) {
+                        InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress());
                         String message = messageTemplate
-                                .replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(receipient));
+                                .replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient));
                         
                         // add link to unsubscribe
                         message += 
                                 "<br /><br /><a href='" + 
-                                NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(receipient.getUserId())) + 
+                                NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())) +
                                 "'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
                         MailEngine.send(fromEmail, toEmail, subject, message, true);
                     }

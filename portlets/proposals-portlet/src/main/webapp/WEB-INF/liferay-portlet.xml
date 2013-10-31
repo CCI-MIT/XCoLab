@@ -6,17 +6,17 @@
 		<portlet-name>proposals-portlet</portlet-name>
 		<icon>/icon.png</icon>
         <indexer-class>org.xcolab.portlets.proposals.utils.Indexer</indexer-class>
-		<scheduler-entry>
-			<scheduler-event-listener-class>org.xcolab.utils.SendEmailNotifications</scheduler-event-listener-class>
-			<trigger>
-				<simple>
-					<simple-trigger-value>1</simple-trigger-value>
-					<time-unit>minute</time-unit>
-				</simple>
-			</trigger>
-		</scheduler-entry>
-		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
-		<friendly-url-mapping>plans</friendly-url-mapping>
+        <scheduler-entry>
+            <scheduler-event-listener-class>org.xcolab.utils.SendEmailNotifications</scheduler-event-listener-class>
+            <trigger>
+                <simple>
+                    <simple-trigger-value>1</simple-trigger-value>
+                    <time-unit>minute</time-unit>
+                </simple>
+            </trigger>
+        </scheduler-entry>
+        <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+        <friendly-url-mapping>plans</friendly-url-mapping>
 		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
 		<social-activity-interpreter-class>org.xcolab.portlets.proposals.activity.ProposalsSocialActivityInterpreter</social-activity-interpreter-class>
 		<instanceable>false</instanceable>

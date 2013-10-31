@@ -12,6 +12,7 @@ public class SendEmailNotifications implements MessageListener {
 
     @Override
     public void receive(Message message) throws MessageListenerException {
+        System.out.println("sending email notifications");
         try {
             ActivitySubscriptionLocalServiceUtil.sendEmailNotifications();
         }
