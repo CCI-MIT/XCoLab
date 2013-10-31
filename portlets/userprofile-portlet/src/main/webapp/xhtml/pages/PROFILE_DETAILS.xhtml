@@ -148,7 +148,7 @@
                     </ice:form> <f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
                         <a style="margin-top: 6px; display: block;" href="javascript:;"
                            onclick="if (! deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
-                            #{currentUser.firstName} a Message </a>
+                            <strong>#{currentUser.firstName}</strong> a Message </a>
                     </f:subview></td></tr>
 				</table>
 			</div>
