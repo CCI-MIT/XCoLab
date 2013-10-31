@@ -16,10 +16,12 @@ import com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil;
 import com.ext.portlet.Activity.SubscriptionType;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ActivitySubscription;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.base.ActivitySubscriptionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionUtil;
 import com.ext.utils.NotificationUnregisterUtils;
+import com.ext.utils.SocialActivityMessageLimitationHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -46,10 +48,10 @@ import com.liferay.util.mail.MailEngineException;
 
 /**
  * The implementation of the activity subscription local service.
- *
+ * <p/>
  * <p>
  * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.ext.portlet.service.ActivitySubscriptionLocalService} interface.
- *
+ * <p/>
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
@@ -59,25 +61,25 @@ import com.liferay.util.mail.MailEngineException;
  * @see com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil
  */
 public class ActivitySubscriptionLocalServiceImpl
-    extends ActivitySubscriptionLocalServiceBaseImpl {
+        extends ActivitySubscriptionLocalServiceBaseImpl {
     /*
      * NOTE FOR DEVELOPERS:
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil} to access the activity subscription local service.
      */
-    
+
     private Date lastEmailNotification = new Date();
     private final static String PROPERTY_CREATE_DATE = "createDate";
 
     private final static Log _log = LogFactoryUtil.getLog(ActivitySubscriptionLocalServiceImpl.class);
     private final static long DEFAULT_COMPANY_ID = 10112L;
-    
 
-    public List<ActivitySubscription>  getActivitySubscriptions(Class clasz, Long classPK, Integer type, String extraData)
+
+    public List<ActivitySubscription> getActivitySubscriptions(Class clasz, Long classPK, Integer type, String extraData)
             throws PortalException, SystemException {
         return ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraData(PortalUtil.getClassNameId(clasz), classPK, type, extraData);
     }
-    
+
     public List<ActivitySubscription> findByUser(Long userId) throws SystemException {
         return ActivitySubscriptionUtil.findByreceiverId(userId);
     }
@@ -86,49 +88,47 @@ public class ActivitySubscriptionLocalServiceImpl
             throws PortalException, SystemException {
         List<ActivitySubscription> ret = ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK,
                 type, extraData, userId);
-        return ret != null && !ret.isEmpty(); 
+        return ret != null && !ret.isEmpty();
     }
-    
+
     public boolean isSubscribed(Long userId, Class clasz, Long classPK, Integer type, String extraData)
-    throws PortalException, SystemException {
+            throws PortalException, SystemException {
         return isSubscribed(userId, PortalUtil.getClassNameId(clasz), classPK, type, extraData);
     }
-    
+
     public void deleteSubscription(Long userId, Long classNameId, Long classPK, Integer type, String extraData) throws SystemException {
         deleteSubscription(userId, classNameId, classPK, type, extraData, false);
     }
-    
+
     @Transactional
     public void deleteSubscription(Long userId, Long classNameId, Long classPK, Integer type, String extraData, boolean automatic) throws SystemException {
-        List<ActivitySubscription> subscriptions = 
-            ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type, extraData, userId);
-        for (ActivitySubscription subscription: subscriptions) {
+        List<ActivitySubscription> subscriptions =
+                ActivitySubscriptionUtil.findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type, extraData, userId);
+        for (ActivitySubscription subscription : subscriptions) {
             if (automatic) {
                 // we are removing automatic subscriptions only
                 if (subscription.getAutomaticSubscriptionCounter() == 1) {
                     delete(subscription);
-                }
-                else if (subscription.getAutomaticSubscriptionCounter() > 1) {
+                } else if (subscription.getAutomaticSubscriptionCounter() > 1) {
                     // decrement automatic subscription counter as this subscription can be still
                     // valid (ie it has been added as a result of regional->global link and because
                     // user is susbscribed to a contest)
-                    subscription.setAutomaticSubscriptionCounter(subscription.getAutomaticSubscriptionCounter() -1);
+                    subscription.setAutomaticSubscriptionCounter(subscription.getAutomaticSubscriptionCounter() - 1);
                     updateActivitySubscription(subscription);
                 }
-            }
-            else {
+            } else {
                 // remove subscription as it's probably requested directly by the user 
                 delete(subscription);
             }
         }
     }
-    
+
 
     public void deleteSubscription(Long userId, Class clasz, Long classPK, Integer type, String extraData, boolean automatic) throws SystemException {
         deleteSubscription(userId, PortalUtil.getClassNameId(clasz), classPK, type, extraData, automatic);
     }
 
-    
+
     public void deleteSubscription(Long userId, Class clasz, Long classPK, Integer type, String extraData) throws SystemException {
         deleteSubscription(userId, clasz, classPK, type, extraData, false);
     }
@@ -137,15 +137,15 @@ public class ActivitySubscriptionLocalServiceImpl
             throws PortalException, SystemException {
         addSubscription(classNameId, classPK, type, extraData, userId, false);
     }
-    
+
     @Transactional
     public void addSubscription(Long classNameId, Long classPK, Integer type, String extraData, Long userId, boolean automatic)
             throws PortalException, SystemException {
 
         List<ActivitySubscription> subscriptions = ActivitySubscriptionUtil
                 .findByClassNameIdClassPKTypeExtraDataReceiverId(classNameId, classPK, type, extraData, userId);
-        
-        if (! subscriptions.isEmpty()) {
+
+        if (!subscriptions.isEmpty()) {
             // subscription exists
             ActivitySubscription subscription = subscriptions.get(0);
             if (automatic && subscription.getAutomaticSubscriptionCounter() > 0) {
@@ -176,7 +176,7 @@ public class ActivitySubscriptionLocalServiceImpl
             throws PortalException, SystemException {
         addSubscription(clasz, classPK, type, extraData, userId, false);
     }
-    
+
     public void addSubscription(Class clasz, Long classPK, Integer type, String extraData, Long userId, boolean automatic)
             throws PortalException, SystemException {
         Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
@@ -195,7 +195,7 @@ public class ActivitySubscriptionLocalServiceImpl
 
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(SocialActivity.class);
         Criterion crit = null;
-        
+
         for (ActivitySubscription sub : subscriptions) {
             //Map<String, Number> criterion = new HashMap<String, Number>();
             Criterion criterion = RestrictionsFactoryUtil.eq("classNameId", sub.getClassNameId());
@@ -205,7 +205,7 @@ public class ActivitySubscriptionLocalServiceImpl
             if (sub.getType() >= 0) {
                 RestrictionsFactoryUtil.and(criterion, RestrictionsFactoryUtil.eq("type", sub.getType()));
             }
-            
+
             if (sub.getExtraData() != null && sub.getExtraData().length() > 0) {
                 criterion = RestrictionsFactoryUtil.and(criterion,
                         RestrictionsFactoryUtil.ilike("extraData", sub.getExtraData() + "%"));
@@ -230,62 +230,61 @@ public class ActivitySubscriptionLocalServiceImpl
 
     }
 
-    
-    
 
     public void store(ActivitySubscription activitySubscription) throws SystemException {
         if (activitySubscription.isNew()) {
             ActivitySubscriptionLocalServiceUtil.addActivitySubscription(activitySubscription);
-        }
-        else {
+        } else {
             ActivitySubscriptionLocalServiceUtil.updateActivitySubscription(activitySubscription);
         }
     }
 
-    
+
     public String getName(ActivitySubscription activitySubscription) {
         return ActivitySubscriptionNameGeneratorServiceUtil.getName(activitySubscription);
     }
-    
+
     public SubscriptionType getSubscriptionType(ActivitySubscription activitySubscription) {
         return SubscriptionType.getSubscriptionType(activitySubscription);
     }
-    
-    
+
+
     public void delete(ActivitySubscription activitySubscription) throws SystemException {
         ActivitySubscriptionLocalServiceUtil.deleteActivitySubscription(activitySubscription);
     }
-    
-    
-    
+
+
     public void sendEmailNotifications() throws SystemException, PortalException {
         synchronized (lastEmailNotification) {
             DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SocialActivity.class);
             Criterion criterionCreateDate = RestrictionsFactoryUtil.gt(PROPERTY_CREATE_DATE, lastEmailNotification.getTime());
 
             dynamicQuery.add(criterionCreateDate);
-            List<Object> result = SocialActivityLocalServiceUtil.dynamicQuery(dynamicQuery);
-            
-            
-            for (Object activityObj: result) {
-                SocialActivity activity = (SocialActivity) activityObj;
+            List<Object> activityObjects = SocialActivityLocalServiceUtil.dynamicQuery(dynamicQuery);
+
+            //clean list of activities first in order not to send out activities concerning the same proposal multiple times
+            SocialActivityMessageLimitationHelper h = new SocialActivityMessageLimitationHelper(Proposal.class);
+
+            List<SocialActivity> res = h.process(activityObjects);
+            for (SocialActivity activity : res) {
                 sendNotifications(activity);
             }
             lastEmailNotification = new Date();
         }
     }
+
     public List<User> getSubscribedUsers(Class clasz, long classPK) throws PortalException, SystemException {
         return getSubscribedUsers(ClassNameLocalServiceUtil.getClassNameId(clasz), classPK);
     }
-    
+
     public List<User> getSubscribedUsers(long classNameId, long classPK) throws PortalException, SystemException {
         List<User> users = new ArrayList<>();
-        for (ActivitySubscription subscription: activitySubscriptionPersistence.findByClassNameIdClassPK(classNameId, classPK)) {
+        for (ActivitySubscription subscription : activitySubscriptionPersistence.findByClassNameIdClassPK(classNameId, classPK)) {
             users.add(userLocalService.getUser(subscription.getReceiverId()));
         }
         return users;
     }
-    
+
     private final String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
             + "To configure your notification preferences, visit your <a href=\"USER_PROFILE_LINK\">profile</a> page";
 
@@ -294,7 +293,7 @@ public class ActivitySubscriptionLocalServiceImpl
     private final String USER_PROFILE_LINK_TEMPLATE = "http://climatecolab.org/web/guest/member/-/member/userId/USER_ID";
 
     private final String USER_ID_PLACEHOLDER = "USER_ID";
-    
+
     private void sendNotifications(SocialActivity activity) throws SystemException, PortalException {
         try {
             DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
@@ -316,11 +315,11 @@ public class ActivitySubscriptionLocalServiceImpl
 
                 messageTemplate = messageTemplate.replaceAll("\"/web/guest", "\"http://climatecolab.org/web/guest")
                         .replaceAll("'/web/guest", "'http://climatecolab.org/web/guest").replaceAll("\n", "\n<br />");
-                
-                
+
+
                 Set<User> recipients = new HashSet<User>();
                 Map<Long, ActivitySubscription> subscriptionsPerUser = new HashMap<>();
-                
+
                 for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
                     ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
 
@@ -333,17 +332,17 @@ public class ActivitySubscriptionLocalServiceImpl
                     subscriptionsPerUser.put(user.getUserId(), subscription);
                 }
                 for (User recipient : recipients) {
-                    
+
                     if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity()) {
                         InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress());
                         String message = messageTemplate
                                 .replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient));
-                        
+
                         // add link to unsubscribe
-                        message += 
-                                "<br /><br /><a href='" + 
-                                NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())) +
-                                "'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
+                        message +=
+                                "<br /><br /><a href='" +
+                                        NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())) +
+                                        "'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
                         MailEngine.send(fromEmail, toEmail, subject, message, true);
                     }
 
@@ -361,6 +360,7 @@ public class ActivitySubscriptionLocalServiceImpl
         }
 
     }
+
     private String getMailBody(SocialActivityFeedEntry entry) {
         try {
             return (String) entry.getClass().getMethod("getMailBody").invoke(entry);
