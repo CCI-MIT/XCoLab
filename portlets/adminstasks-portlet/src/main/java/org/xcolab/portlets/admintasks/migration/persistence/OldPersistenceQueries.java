@@ -5,8 +5,12 @@ import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.xcolab.portlets.admintasks.migration.Pair;
+import com.liferay.portlet.social.model.SocialActivity;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -106,5 +110,19 @@ public class OldPersistenceQueries {
         }
     }
 
+
+    public static void updateSocialActivityClassPKToProposalId (long groupID, List<PlanItem> plans){
+        for (PlanItem pi : plans){
+            try{
+                List<SocialActivity> sa =  SocialActivityLocalServiceUtil.getActivities(0,ClassNameLocalServiceUtil.getClassNameId(PlanItem.class),pi.getPlanId(),0,Integer.MAX_VALUE);
+                for (SocialActivity s : sa){
+                    s.setClassPK(plans.get(plans.size()-1).getPlanId());
+                    SocialActivityLocalServiceUtil.updateSocialActivity(s);
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

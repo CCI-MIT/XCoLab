@@ -57,7 +57,7 @@ public class NewPersistenceCleaner {
                 deleteAllProposalVotes() &
                 deleteAllProposalSupporters() &
                 deleteAllContestPhaseRibbonTypes() &
-                deleteAllSocialActivitiesRelatedToNewEntities() &
+                //deleteAllSocialActivitiesRelatedToNewEntities() &
                 deleteNewGroups();
         if (dbSuccess) pushAjaxUpdate("Successfully cleaned DB");
         else pushAjaxUpdate("Error while cleaning DB");
