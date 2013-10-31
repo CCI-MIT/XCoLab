@@ -115,6 +115,7 @@ public class DataMigrator implements Runnable {
 
             if (++counter > 0 && (counter % (groupedPlans.size() / 33)) == 0) updateLastAjaxUpdate((100 * counter / groupedPlans.size()) + "%");
             Pair<Long,List<PlanItem>> pair = i.next();
+
             createNewPlan(pair.getLeft(),pair.getRight());
             if (counter > (groupedPlans.size()/10) && TESTING) break;
         }
@@ -207,7 +208,7 @@ public class DataMigrator implements Runnable {
         Collections.sort(plans, new Comparator<PlanItem>() {
 
             public int compare(PlanItem o1, PlanItem o2) {
-                return o1.getUpdated().compareTo(o2.getUpdated());
+                return (int) (o1.getPlanId() - o2.getPlanId());
             }
             
         });
