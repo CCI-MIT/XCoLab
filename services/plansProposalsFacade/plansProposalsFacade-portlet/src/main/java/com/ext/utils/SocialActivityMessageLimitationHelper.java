@@ -30,7 +30,7 @@ public class SocialActivityMessageLimitationHelper {
 
     private String getKey(SocialActivity sa) {
         if (limitedClassesIds.contains(sa.getClassNameId())) {
-            return ""+sa.getClassNameId();
+            return sa.getClassNameId()+"_"+sa.getClassPK();
         }
         else{
             return "0_" + sa.getActivityId();
