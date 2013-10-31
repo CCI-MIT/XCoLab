@@ -2,14 +2,7 @@ package com.ext.portlet.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
@@ -63,10 +56,10 @@ import edu.mit.cci.roma.client.Simulation;
 
 /**
  * The implementation of the contest local service.
- *
+ * <p/>
  * <p>
  * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.ext.portlet.service.ContestLocalService} interface.
- *
+ * <p/>
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
@@ -86,33 +79,33 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private Random rand = new Random();
 
     private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
-    
+
     public Contest getContestByActiveFlag(boolean contestActive) throws NoSuchContestException, SystemException {
         return contestPersistence.findBycontestActive(contestActive);
     }
-    
+
     public Contest createNewContest(Long userId, String name) throws SystemException, PortalException {
         Contest c = ContestLocalServiceUtil.createContest(CounterLocalServiceUtil.increment(Contest.class.getName()));
-        
+
 
         c.setAuthorId(userId);
         c.setContestName(name);
         c.setContestShortName(name);
-        
+
         setGroupAndDiscussionForContest(c);
-        
+
         store(c);
         return c;
     }
-    
+
     public void updateContestGroupsAndDiscussions() throws SystemException, PortalException {
-        for (Contest c: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+        for (Contest c : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
             if (c.getGroupId() <= 0) {
                 setGroupAndDiscussionForContest(c);
             }
         }
     }
-    
+
     private void setGroupAndDiscussionForContest(Contest c) throws PortalException, SystemException {
 
         ServiceContext groupServiceContext = new ServiceContext();
@@ -125,17 +118,17 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         group = GroupServiceUtil.add.addGroup("CONTEST:  " + c.getContestShortName(), String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
                     GroupConstants.TYPE_COMMUNITY_RESTRICTED, null, true, groupServiceContext);
         */
-        group = GroupLocalServiceUtil.addGroup(c.getAuthorId(), null, 0, "CONTEST:  " + c.getContestShortName(), 
-                String.format(DEFAULT_GROUP_DESCRIPTION, groupName),  
+        group = GroupLocalServiceUtil.addGroup(c.getAuthorId(), null, 0, "CONTEST:  " + c.getContestShortName(),
+                String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
-        
+
         DiscussionCategoryGroup categoryGroup = DiscussionCategoryGroupLocalServiceUtil
                 .createDiscussionCategoryGroup(c.getContestName() + " discussion");
 
         categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + c.getContestPK() + "/page/discussion");
-        
+
         DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
-        
+
         // set up permissions
 
         Long companyId = group.getCompanyId();
@@ -146,24 +139,24 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         Role guest = RoleLocalServiceUtil.getRole(companyId, RoleConstants.GUEST);
         Role moderator = RoleLocalServiceUtil.getRole(companyId, "Moderator");
 
-        String[] ownerActions = { DiscussionActions.ADMIN.name(), DiscussionActions.ADD_CATEGORY.name(),
+        String[] ownerActions = {DiscussionActions.ADMIN.name(), DiscussionActions.ADD_CATEGORY.name(),
                 DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
                 DiscussionActions.ADMIN_CATEGORIES.name(), DiscussionActions.ADMIN_MESSAGES.name(),
-                DiscussionActions.ADD_COMMENT.name() };
+                DiscussionActions.ADD_COMMENT.name()};
 
-        String[] adminActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
+        String[] adminActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
                 DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
-                DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name() };
+                DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name()};
 
-        String[] moderatorActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
+        String[] moderatorActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
                 DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
-                DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name() };
+                DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name()};
 
-        String[] memberActions = { DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADD_COMMENT.name() };
+        String[] memberActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
+                DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADD_COMMENT.name()};
 
-        String[] userActions = { DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
-                DiscussionActions.ADD_COMMENT.name() };
+        String[] userActions = {DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
+                DiscussionActions.ADD_COMMENT.name()};
 
         String[] guestActions = {};
 
@@ -186,36 +179,37 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
         store(c);
     }
-    
+
     public List<Contest> findByActiveFeatured(boolean active, boolean featured) throws SystemException {
         return contestPersistence.findByActiveFeatured(active, featured);
     }
-    
+
     public List<Contest> findByActiveFlag(boolean active, int flag) throws SystemException {
         return contestPersistence.findByActiveFlag(active, flag);
     }
+
     public List<Contest> findByActiveFlagText(boolean active, String flagText) throws SystemException {
         return contestPersistence.findByActiveFlagText(active, flagText);
     }
-    
 
-    /** Methods from ContestImpl **/
+
+    /**
+     * Methods from ContestImpl *
+     */
     public List<ContestPhase> getPhases(Contest contest) {
         try {
             return ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
-        }
-        catch (SystemException e) {
+        } catch (SystemException e) {
             _log.error(e);
             return new ArrayList<ContestPhase>();
-            
+
         }
     }
 
     public PlanType getPlanType(Contest contest) throws SystemException, PortalException {
         try {
             return (PlanType) ClpSerializer.translateOutput(PlanTypeLocalServiceUtil.getPlanType(contest.getPlanTypeId()));
-        }
-        catch (PortalException | SystemException e) {
+        } catch (PortalException | SystemException e) {
             _log.error(e);
             return null;
         }
@@ -223,99 +217,97 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public List<ContestPhase> getActivePhases(Contest contest) throws SystemException, PortalException {
         List<ContestPhase> result = getPhases(contest);
-        for (Iterator<ContestPhase> i=result.iterator();i.hasNext();) {
-           if (!ContestPhaseLocalServiceUtil.getPhaseActive(i.next())) {
-               i.remove();
-           }
+        for (Iterator<ContestPhase> i = result.iterator(); i.hasNext(); ) {
+            if (!ContestPhaseLocalServiceUtil.getPhaseActive(i.next())) {
+                i.remove();
+            }
         }
         return result;
     }
-    
+
     public ContestPhase getActivePhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
-        
-        for (ContestPhase phase: getPhases(contest)) {
+
+        for (ContestPhase phase : getPhases(contest)) {
             if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
         }
         return null;
     }
-    
+
     public ContestPhase getActiveOrLastPhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
-        ContestPhase phaseToReturn = null;
-        for (ContestPhase phase: getPhases(contest)) {
-            phaseToReturn = phase;
+        ContestPhase lastPhase = null;
+        for (ContestPhase phase : getPhases(contest)) {
+            if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) lastPhase = phase;
             if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
         }
-        return phaseToReturn;
+        return lastPhase;
     }
-    
+
     public boolean isActive(Contest contest) throws SystemException {
         try {
             ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
             return true;
-        }
-        catch (NoSuchContestPhaseException e) {
+        } catch (NoSuchContestPhaseException e) {
             // ignore
         }
         return false;
     }
-    
-    public List<Long> getDebatesIds(Contest contest) throws SystemException  {
+
+    public List<Long> getDebatesIds(Contest contest) throws SystemException {
         List<Long> ret = new ArrayList<Long>();
-        for (ContestDebate pos: ContestDebateLocalServiceUtil.getContestDebates(contest.getContestPK())) {
+        for (ContestDebate pos : ContestDebateLocalServiceUtil.getContestDebates(contest.getContestPK())) {
             ret.add(pos.getDebateId());
         }
         return ret;
     }
-    
+
     public Integer getTotalVotes(Contest contest) throws SystemException {
         return PlanVoteLocalServiceUtil.countPlanVotes(contest);
     }
-    
+
     public void updateDefaultPlanDescription(Contest contest, String description) throws SystemException {
         contest.setDefaultPlanDescription(description);
         ContestLocalServiceUtil.updateContest(contest);
     }
-    
+
     public void store(Contest contest) throws SystemException {
         if (contest.isNew()) {
             if (contest.getContestPK() <= 0L) {
                 contest.setContestPK(CounterLocalServiceUtil.increment(Contest.class.getName()));
             }
             ContestLocalServiceUtil.addContest(contest);
-        }
-        else {
+        } else {
             ContestLocalServiceUtil.updateContest(contest);
         }
 
         reindex(contest);
     }
-    
+
     public PlanTemplate getPlanTemplate(Contest contest) throws PortalException, SystemException {
         if (contest.getPlanTemplateId() > 0) {
             return PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
         }
         return null;
     }
-    
+
     public FocusArea getFocusArea(Contest contest) throws PortalException, SystemException {
         if (contest.getFocusAreaId() > 0) {
             return FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
         }
         return null;
     }
-    
+
     public Image getLogo(Contest contest) throws PortalException, SystemException {
-        return contest.getContestLogoId() > 0 ? 
-                ImageLocalServiceUtil.getImage(contest.getContestLogoId()) : 
+        return contest.getContestLogoId() > 0 ?
+                ImageLocalServiceUtil.getImage(contest.getContestLogoId()) :
                 null;
     }
-    
+
     public Image getSponsorLogo(Contest contest) throws PortalException, SystemException {
-        return contest.getSponsorLogoId() > 0 ? 
-                ImageLocalServiceUtil.getImage(contest.getSponsorLogoId()) : 
+        return contest.getSponsorLogoId() > 0 ?
+                ImageLocalServiceUtil.getImage(contest.getSponsorLogoId()) :
                 null;
     }
-    
+
     public void setLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
 //        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
 //        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
@@ -324,7 +316,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 //        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
 //        contest.setContestLogoId(i.getImageId());
     }
-    
+
     public void setSponsorLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
 //        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
 //        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
@@ -333,7 +325,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 //        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
 //        contest.setSponsorLogoId(i.getImageId());
     }
-    
+
     public String getLogoPath(Contest contest) throws PortalException, SystemException {
         Image i = getLogo(contest);
         if (i != null) {
@@ -341,7 +333,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
         return "";
     }
-    
+
     public String getSponsorLogoPath(Contest contest) throws PortalException, SystemException {
         Image i = getSponsorLogo(contest);
         if (i != null) {
@@ -349,61 +341,62 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
         return "";
     }
-    
-    
+
+
     public long getProposalsCount(Contest contest) throws PortalException, SystemException {
         // first - get current phase
         ContestPhase activePhase = getActivePhase(contest);
         if (activePhase == null) {
             List<ContestPhase> phases = getPhases(contest);
-            if (phases != null && ! phases.isEmpty()) {
+            if (phases != null && !phases.isEmpty()) {
                 activePhase = phases.get(phases.size() - 1);
             }
         }
-        if (activePhase == null) 
+        if (activePhase == null)
             return 0;
         return PlanItemLocalServiceUtil.countPlansByContestPhase(activePhase);
     }
-    
+
     public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest) throws PortalException, SystemException {
-        DiscussionCategoryGroup dcg = 
-            DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
+        DiscussionCategoryGroup dcg =
+                DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
         return dcg;
     }
-    
+
     public long getCommentsCount(Contest contest) throws PortalException, SystemException {
         return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest));
     }
-    
+
     public long getProposalsCommentsCount(Contest contest) throws SystemException, PortalException {
         long proposalsCommentsCount = 0;
-        for (PlanItem pi: PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
+        for (PlanItem pi : PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
             proposalsCommentsCount += PlanItemLocalServiceUtil.getCommentsCount(pi);
         }
         return proposalsCommentsCount;
     }
-    
+
     public long getVotesCount(Contest contest) throws SystemException, PortalException {
         long commentsCount = 0;
-        for (PlanItem pi: PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
+        for (PlanItem pi : PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
             commentsCount += PlanItemLocalServiceUtil.getVotes(pi);
         }
-        
+
         return commentsCount;
     }
-    
+
     public long getTotalComments(Contest contest) throws PortalException, SystemException {
         return getCommentsCount(contest) + getProposalsCommentsCount(contest);
     }
-    
+
     public List<ContestTeamMember> getTeamMembers(Contest contest) throws SystemException {
         return ContestTeamMemberLocalServiceUtil.findForContest(contest.getContestPK());
     }
-    
+
     /**
      * <p>Returns true if user is subscribed to a contest, false otherwise</p>
+     *
      * @param contestPK id of a contest
-     * @param userId id of a user
+     * @param userId    id of a user
      * @return true if user is subscribed to a contest, false otherwise
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
@@ -411,11 +404,12 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public boolean isSubscribed(long contestPK, long userId) throws PortalException, SystemException {
         return ActivitySubscriptionLocalServiceUtil.isSubscribed(userId, Contest.class, contestPK, 0, "");
     }
-    
+
     /**
      * <p>Subscribes user to contest</p>
+     *
      * @param contestPK id of a contest
-     * @param userId id of a user
+     * @param userId    id of a user
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
@@ -424,8 +418,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         ActivitySubscriptionLocalServiceUtil.addSubscription(Contest.class, contestPK, 0, "", userId);
         Set<Long> proposalsProcessed = new HashSet<Long>();
         // automatically subscribe user to all proposals in the phase but
-        for (ContestPhase contestPhase: ContestPhaseLocalServiceUtil.getPhasesForContest(contestPK)) {
-            for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+        for (ContestPhase contestPhase : ContestPhaseLocalServiceUtil.getPhasesForContest(contestPK)) {
+            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
                 if (!proposalsProcessed.contains(proposal.getProposalId())) {
                     ProposalLocalServiceUtil.subscribe(proposal.getProposalId(), userId, true);
                 }
@@ -433,11 +427,12 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             }
         }
     }
-    
+
     /**
      * <p>Subscribes user to contest</p>
+     *
      * @param contestPK id of a contest
-     * @param userId id of a user
+     * @param userId    id of a user
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
@@ -447,8 +442,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
         Set<Long> proposalsProcessed = new HashSet<Long>();
         // unsubscribe user from all proposals in the phase to which he was automatically registered  
-        for (ContestPhase contestPhase: contestPhaseLocalService.getPhasesForContest(contestPK)) {
-            for (Proposal proposal: proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+        for (ContestPhase contestPhase : contestPhaseLocalService.getPhasesForContest(contestPK)) {
+            for (Proposal proposal : proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
                 // remove automatic subscription from proposal
                 if (!proposalsProcessed.contains(proposal.getProposalId())) {
                     proposalLocalService.unsubscribe(proposal.getProposalId(), userId, true);
@@ -457,25 +452,25 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             }
         }
     }
-    
+
     public List<Long> getModelIds(long contestPK) throws SystemException, PortalException {
         Contest contest = getContest(contestPK);
         PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
-        
+
         List<Long> ret = new ArrayList<>();
-        for (Simulation s: planTypeLocalService.getAvailableModels(planType)) {
+        for (Simulation s : planTypeLocalService.getAvailableModels(planType)) {
             ret.add(s.getId());
         }
-        
+
         return ret;
     }
-    
+
     public Long getDefaultModelId(long contestPK) throws PortalException, SystemException {
         Contest contest = getContest(contestPK);
         PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
         return planType.getDefaultModelId();
     }
-    
+
     private void reindex(Contest contest) {
         Indexer indexer = IndexerRegistryUtil.getIndexer(Contest.class);
 
