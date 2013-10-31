@@ -10,7 +10,7 @@ import java.util.*;
  *         First created on 30/10/13 at 22:25
  */
 public class SocialActivityMessageLimitationHelper {
-    Set<Long> limitedClassesIds;
+    Set<Long> limitedClassesIds = new HashSet<>();
 
     public SocialActivityMessageLimitationHelper(Class... limitedClasses) {
         for (Class c : limitedClasses) {
