@@ -562,16 +562,16 @@ public class DataMigrator implements Runnable {
                     System.out.println("..");
                 }
                 try{
-                    if(nameChanged){
+                    if(nameChanged || attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.NAME,0,planDescription.getName(),0,0,dateFix(planDescription.getCreated()),false);
                     }
-                    if(descriptionChanged){
+                    if(descriptionChanged || attribute.equalsIgnoreCase(ProposalAttributeKeys.DESCRIPTION)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.DESCRIPTION,0,planDescription.getDescription(),0,0,dateFix(planDescription.getCreated()),false);
                     }
-                    if(pitchChanged){
+                    if(pitchChanged || attribute.equalsIgnoreCase(ProposalAttributeKeys.PITCH)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.PITCH,0,planDescription.getPitch(),0,0,dateFix(planDescription.getCreated()),false);
                     }
-                    if(imageChanged){
+                    if(imageChanged || attribute.equalsIgnoreCase(ProposalAttributeKeys.IMAGE_ID)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.IMAGE_ID,0,null,planDescription.getImage(),0,dateFix(planDescription.getCreated()),false);
                     }
                 } catch(Exception e){
