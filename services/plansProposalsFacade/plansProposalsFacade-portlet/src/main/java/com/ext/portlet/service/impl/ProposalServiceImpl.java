@@ -20,6 +20,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,10 +45,13 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalServiceUtil} to access the proposal remote service.
      */
 
+    private final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     /* TODO IMPROVE CODE QUALITY */
     @JSONWebService
     public JSONObject getProposalVersions(long contestPhaseId, long proposalId, int start, int end) throws PortalException, SystemException {
+        Date oldDate = new Date();
+
         Proposal2Phase p2p = null;
         if (contestPhaseId > 0) p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId,contestPhaseId);
 
@@ -56,43 +60,62 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         result.put("start", start);
         result.put("end", end);
 
-        if (p2p == null) result.put("totalCount", ProposalVersionLocalServiceUtil.countByProposalId(proposalId));
-        else {
-            if (p2p.getVersionTo() < 0) {
-                result.put("totalCount", ProposalVersionLocalServiceUtil.countByProposalId(proposalId));
-            }
-            else result.put("totalCount", p2p.getVersionTo() - p2p.getVersionFrom());
-        }
-
-        JSONArray proposalVersionsArray = JSONFactoryUtil.createJSONArray();
-        result.put("versions", proposalVersionsArray);
+        // COUNT VERSIONS
+        int numberOfVersions = 0;
         int offset = 0;
         int counter = 0;
         for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
             if (p2p != null
-                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || proposalVersion.getVersion() > p2p.getVersionTo())   /* TODO DISCUSS VERSIONING - create new versions when phase transitions? */
+                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || proposalVersion.getVersion() > p2p.getVersionTo())
                     ) {
                 continue;
             }
-            if (offset < start){
-                offset++;
+
+            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+                numberOfVersions++;
+                oldDate = proposalVersion.getCreateDate();
+            }
+        }
+        result.put("totalCount", numberOfVersions);
+
+
+        JSONArray proposalVersionsArray = JSONFactoryUtil.createJSONArray();
+        result.put("versions", proposalVersionsArray);
+        offset = 0;
+        counter = 0;
+        oldDate = new Date();
+        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
+            if (p2p != null
+                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || proposalVersion.getVersion() > p2p.getVersionTo())
+                    ) {
                 continue;
             }
-            if (counter > (end-start)) continue;
-            counter++;
+            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+                if (counter > (end-start)) {
+                    oldDate = proposalVersion.getCreateDate();
+                    continue;
+                }
+                if (offset < start){
+                    offset++;
+                    oldDate = proposalVersion.getCreateDate();
+                    continue;
+                }
+                JSONObject proposalVersionJsonObj = JSONFactoryUtil.createJSONObject();
+                proposalVersionsArray.put(proposalVersionJsonObj);
 
-
-            JSONObject proposalVersionJsonObj = JSONFactoryUtil.createJSONObject();
-            proposalVersionsArray.put(proposalVersionJsonObj);
-
-            proposalVersionJsonObj.put("version", proposalVersion.getVersion());
-            proposalVersionJsonObj.put("date", proposalVersion.getCreateDate().getTime());
-            proposalVersionJsonObj.put("author", converUserToJson(proposalVersion.getAuthorId()));
-            proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
-            try{
-                proposalVersionJsonObj.put("contestPhase", getContestPhaseName(proposalVersion));
-            } catch(SystemException se) { proposalVersionJsonObj.put("contestPhase", "null");}
+                proposalVersionJsonObj.put("version", proposalVersion.getVersion());
+                proposalVersionJsonObj.put("date", proposalVersion.getCreateDate().getTime());
+                proposalVersionJsonObj.put("author", converUserToJson(proposalVersion.getAuthorId()));
+                proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
+                try{
+                    proposalVersionJsonObj.put("contestPhase", getContestPhaseName(proposalVersion));
+                } catch(SystemException se) { proposalVersionJsonObj.put("contestPhase", "null");}
+                counter++;
+                oldDate = proposalVersion.getCreateDate();
+            }
         }
+
+
         return result;
     }
 

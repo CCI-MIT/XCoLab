@@ -893,6 +893,10 @@ display: inline;
 	
 }
 
+.historyTable .ui-datatable-highlighted a {
+    color: #66b035 !important;
+}
+
 .closepopuplogin {
 	position: absolute;
     top: 10px;

@@ -14,7 +14,7 @@ function loadHistory(page){
 
 
 function addVersionToTable(data, even){
-    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td style="width: 200px;"><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '/version/' + data.version + '">' + moment.unix(data.date / 1000).format("MM/DD/YYYY hh:mm A") + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="/web/guest/plans/-/plans/contestId/' + contestId + '/phaseId/' + data.contestPhase.id + '">' + data.contestPhase.name + '</a></em></td></tr>');
+    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (data.version == getVersion() ? ' ui-datatable-highlighted' : '') + '"><td style="width: 200px;"><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '/version/' + data.version + '">' + moment.unix(data.date / 1000).format("MM/DD/YYYY hh:mm A") + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="/web/guest/plans/-/plans/contestId/' + contestId + '/phaseId/' + data.contestPhase.id + '">' + data.contestPhase.name + '</a></em></td></tr>');
 }
 
 function addPagination(prev,next,currentPage,totalPages){
@@ -40,6 +40,7 @@ function triggerHistoryVisibility(){
     }
 }
 
+
 function visibilityCallback(){
     if (!$('#versions').hasClass('hidden')) return;
     $( "#versions" ).slideUp(0);         // fix to enable first slide out
@@ -53,6 +54,14 @@ function getPhaseId(){
     var url = window.document.URL.toString().split("/");
     for (var i = 0; i < url.length; i++) {
         if(url[i] == 'phaseId') return url[i+1];
+    }
+    return -1;
+}
+
+function getVersion(){
+    var url = window.document.URL.toString().split("/");
+    for (var i = 0; i < url.length; i++) {
+        if(url[i] == 'version') return url[i+1];
     }
     return -1;
 }
