@@ -118,7 +118,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         group = GroupServiceUtil.add.addGroup("CONTEST:  " + c.getContestShortName(), String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
                     GroupConstants.TYPE_COMMUNITY_RESTRICTED, null, true, groupServiceContext);
         */
-        group = GroupLocalServiceUtil.addGroup(c.getAuthorId(), null, 0, "CONTEST:  " + c.getContestShortName(),
+        group = GroupLocalServiceUtil.addGroup(c.getAuthorId(), null, c.getContestPK(), "CONTEST:  " + c.getContestPK(),
                 String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
 
