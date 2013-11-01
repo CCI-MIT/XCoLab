@@ -125,7 +125,7 @@
         </div>
 
         <div class="prop-contest">
-            <strong>Contest:</strong>  
+            <strong>Contest: </strong>
             <proposalsPortlet:contestLink contestId="${contest.contestPK }" text="${ contest.contestShortName }"/><br />
             ${contest.contestName}
         </div>
