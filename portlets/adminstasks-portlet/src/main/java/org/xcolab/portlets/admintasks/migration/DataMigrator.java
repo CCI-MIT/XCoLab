@@ -124,7 +124,7 @@ public class DataMigrator implements Runnable {
 
         pushAjaxUpdate("-- APPLYING INCONSISTENCY FIXES --");
         promoteProposalsInOldContestByOnePhase(5);  // contest 2010
-
+        fixMinorInconsistencies();
         pushAjaxUpdate("-- MIGRATION FINISHED --");
 
     }
@@ -213,6 +213,10 @@ public class DataMigrator implements Runnable {
             }
             
         });
+
+
+
+
         PlanMeta currentPlanMeta = null;
         Proposal2Phase latestP2P = null;
         long currentContestPhase = 0;
@@ -253,10 +257,6 @@ public class DataMigrator implements Runnable {
         // Loop through all plans - each representing one contest phase
         boolean isFirstInGroup = true;
         for(PlanItem plan :  plans) {
-
-            if (plan.getPlanId() == 12740){
-                System.out.println("..");
-            }
 
             // get updated proposal
             try {
@@ -356,8 +356,6 @@ public class DataMigrator implements Runnable {
                 return;
             }
         }
-
-
     }
 
 
@@ -555,17 +553,20 @@ public class DataMigrator implements Runnable {
             pushAjaxUpdate("Error while getting description record " + plan.getPlanId() + ": " + e);
         }
 
+        boolean oldContest = false; // old contests have inconsistencies, therefore migrate all attributes to assure proper migration
+        try{
+            oldContest = !ContestLocalServiceUtil.isActive(PlanItemLocalServiceUtil.getContest(plan)) && (planDescriptions.size() == 1) || (PlanItemLocalServiceUtil.getContest(plan).getContestPK() == 3);
+        } catch (Exception e) { e.printStackTrace(); }
+
         Collections.reverse(planDescriptions);
         int i = -1;
         for(PlanDescription planDescription : planDescriptions) {
-            if (planDescription.getPlanVersion() == plan.getVersion() || planDescriptions.size() == 1){
+            if (planDescription.getPlanVersion() == plan.getVersion() || planDescriptions.size() == 1 || oldContest){
                 boolean nameChanged = (planDescription.getName() != null) && (i==-1 || (planDescription.getName().compareTo(planDescriptions.get(i).getName()) != 0));
                 boolean descriptionChanged = (planDescription.getDescription() != null) && (i==-1 || (planDescription.getDescription().compareTo(planDescriptions.get(i).getDescription()) != 0));
                 boolean pitchChanged = (planDescription.getPitch() != null) && (i==-1 || (planDescription.getPitch().compareTo(planDescriptions.get(i).getPitch()) != 0));
                 boolean imageChanged = (planDescription.getImage() != 0) && (i==-1 || (planDescription.getImage() != planDescriptions.get(i).getImage()));
-                if (plan.getPlanId() == 15302){
-                    System.out.println("..");
-                }
+
                 try{
                     if(nameChanged || attribute.equalsIgnoreCase(ProposalAttributeKeys.NAME)){
                         ProposalLocalServiceUtil.setAttribute(plan.getUpdateAuthorId(),p.getProposalId(),ProposalAttributeKeys.NAME,0,planDescription.getName(),0,0,dateFix(planDescription.getCreated()),false);
@@ -689,11 +690,18 @@ public class DataMigrator implements Runnable {
             }
 
         } catch (Exception e){ e.printStackTrace(); }
+    }
 
+    private void fixMinorInconsistencies(){
+        try{
+            // delted and wrong version: this proposal "doesnt show up in production /web/guest/plans/-/plans/contestId/2/phaseId/3/planId/12201"
+            PlanItem pi = PlanItemLocalServiceUtil.getPlanItem(33110);
+            pi.setVersion(9);
+            PlanItemLocalServiceUtil.updatePlanItem(pi);
 
-
-
-
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
