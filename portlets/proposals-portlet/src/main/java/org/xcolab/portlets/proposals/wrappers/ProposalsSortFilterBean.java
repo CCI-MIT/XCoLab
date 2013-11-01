@@ -47,6 +47,7 @@ public class ProposalsSortFilterBean {
         }
         else {
             proposalComparator = ProposalsColumn.MODIFIED.getComparator();
+            sortFilterPage.setSortAscending(!sortFilterPage.isSortAscending()); // default sort is date DESC
         }
         
         

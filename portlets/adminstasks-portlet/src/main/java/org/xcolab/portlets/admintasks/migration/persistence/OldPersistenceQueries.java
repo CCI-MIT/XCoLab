@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.admintasks.migration.Pair;
 import com.liferay.portlet.social.model.SocialActivity;
 
@@ -119,6 +120,24 @@ public class OldPersistenceQueries {
                     s.setClassPK(plans.get(plans.size()-1).getPlanId());
                     SocialActivityLocalServiceUtil.updateSocialActivity(s);
                 }
+
+                // discussions
+                sa =  SocialActivityLocalServiceUtil.getActivities(0,39202,pi.getPlanId(),0,Integer.MAX_VALUE);
+                String extraData = "";
+                long planId = plans.get(plans.size()-1).getPlanId();
+                Proposal proposal = ProposalLocalServiceUtil.getProposal(planId);
+                for (SocialActivity s : sa){
+                    s.setClassPK(proposal.getDiscussionId());
+                    if (StringUtils.isNotBlank(s.getExtraData())){
+                        extraData = proposal.getDiscussionId() + "," + s.getExtraData().split(",")[1] + "," + s.getExtraData().split(",")[2];
+                        s.setExtraData(extraData);
+                    }
+                    SocialActivityLocalServiceUtil.updateSocialActivity(s);
+                }
+                DiscussionCategoryGroup group = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(pi.getPlanId());
+                group.setUrl(group.getUrl().replaceAll("[0-9]*#plans=tab:comments",planId + "/tab/COMMENTS"));
+                DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(group);
+
             } catch (Exception e){
                 e.printStackTrace();
             }
