@@ -134,10 +134,11 @@ public class OldPersistenceQueries {
                     }
                     SocialActivityLocalServiceUtil.updateSocialActivity(s);
                 }
-                DiscussionCategoryGroup group = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(pi.getPlanId());
-                group.setUrl(group.getUrl().replaceAll("[0-9]*#plans=tab:comments",planId + "/tab/COMMENTS"));
-                DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(group);
-
+                if (sa.size() > 0){ // only if there are social activities meaning there was a discussion
+                    DiscussionCategoryGroup group = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(pi.getPlanId());
+                    group.setUrl(group.getUrl().replaceAll("[0-9]*#plans=tab:comments",planId + "/tab/COMMENTS"));
+                    DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(group);
+                }
             } catch (Exception e){
                 e.printStackTrace();
             }
