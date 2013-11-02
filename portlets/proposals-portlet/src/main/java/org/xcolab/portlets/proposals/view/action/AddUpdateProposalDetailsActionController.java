@@ -7,6 +7,8 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,15 +86,15 @@ public class AddUpdateProposalDetailsActionController {
         
         
         if (updateProposalSectionsBean.getName() != null && (proposal.getName() == null || !updateProposalSectionsBean.getName().equals(proposal.getName()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, updateProposalSectionsBean.getName()); 
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, removeHtml(updateProposalSectionsBean.getName()));
         }
         
         if (updateProposalSectionsBean.getPitch() != null && (proposal.getName() == null || !updateProposalSectionsBean.getPitch().equals(proposal.getPitch()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, updateProposalSectionsBean.getPitch()); 
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, xssClean(updateProposalSectionsBean.getPitch()));
         }
 
         if (updateProposalSectionsBean.getTeam() != null && !updateProposalSectionsBean.getTeam().equals(proposal.getTeam())) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, updateProposalSectionsBean.getTeam()); 
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, removeHtml(updateProposalSectionsBean.getTeam()));
         }
 
         if (updateProposalSectionsBean.getImageId() > 0 && updateProposalSectionsBean.getImageId() != proposal.getImageId()) {
@@ -103,7 +105,7 @@ public class AddUpdateProposalDetailsActionController {
             String newSectionContent = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
             
             if (newSectionContent != null && !newSectionContent.trim().equals(section.getContent())) {
-                ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newSectionContent);
+                ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), xssClean(newSectionContent));
             }
         }
         
@@ -114,6 +116,21 @@ public class AddUpdateProposalDetailsActionController {
             request.setAttribute("ACTION_REDIRECTING", true);
             response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + proposal.getProposalId());
         }
+    }
+
+    private String removeHtml(String data) {
+        return Jsoup.clean(data, Whitelist.none());
+    }
+
+    private String xssClean(String sectionData) {
+        //http://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer
+        Whitelist w = Whitelist.relaxed();
+        w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
+        w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
+
+        String xssCleaned = Jsoup.clean(sectionData, w);
+
+        return xssCleaned;
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
