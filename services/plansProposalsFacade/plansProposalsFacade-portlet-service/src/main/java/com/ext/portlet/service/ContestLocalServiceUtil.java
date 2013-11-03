@@ -312,6 +312,13 @@ public class ContestLocalServiceUtil {
         return getService().getActivePhase(contest);
     }
 
+    public static com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
+        com.ext.portlet.model.Contest contest)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getActiveOrLastPhase(contest);
+    }
+
     public static boolean isActive(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().isActive(contest);
@@ -440,6 +447,61 @@ public class ContestLocalServiceUtil {
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getTeamMembers(contest);
+    }
+
+    /**
+    * <p>Returns true if user is subscribed to a contest, false otherwise</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @return true if user is subscribed to a contest, false otherwise
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public static boolean isSubscribed(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().isSubscribed(contestPK, userId);
+    }
+
+    /**
+    * <p>Subscribes user to contest</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public static void subscribe(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().subscribe(contestPK, userId);
+    }
+
+    /**
+    * <p>Subscribes user to contest</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public static void unsubscribe(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().unsubscribe(contestPK, userId);
+    }
+
+    public static java.util.List<java.lang.Long> getModelIds(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getModelIds(contestPK);
+    }
+
+    public static java.lang.Long getDefaultModelId(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getDefaultModelId(contestPK);
     }
 
     public static void clearService() {

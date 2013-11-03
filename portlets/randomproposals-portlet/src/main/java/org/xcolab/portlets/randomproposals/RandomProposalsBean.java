@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.ext.portlet.model.PlanItem;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.ContestPhaseRibbonType;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -19,10 +22,10 @@ public class RandomProposalsBean {
         setBaseImagePath(Helper.getThemeDisplay().getPathImage() + "/proposal?img_id=");
     }
     
-    public List<PlanItemWrapper> getProposals() throws PortalException, SystemException {
+    public List<ProposalWrapper> getProposals() throws PortalException, SystemException {
         
-        List<PlanItem> availablePlans = new ArrayList<>();
-        List<PlanItemWrapper> ret = new ArrayList<>();
+        List<Proposal> availablePlans = new ArrayList<>();
+        List<ProposalWrapper> ret = new ArrayList<>();
         
         Long[] selectedPhases = preferencesBean.getSelectedPhases();
         if (selectedPhases == null) return null;
@@ -30,17 +33,17 @@ public class RandomProposalsBean {
 
         if (flagFilters == null || flagFilters.length == 0) {
             for (Long contestPhasePk: selectedPhases) {
-                    availablePlans.addAll(ContestPhaseLocalServiceUtil.getPlans(ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePk)));
+                    availablePlans.addAll(ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhasePk));
                 }
         }
         else {
             for (Long contestPhasePk: selectedPhases) {
-                for (PlanItem plan: ContestPhaseLocalServiceUtil.getPlans(ContestPhaseLocalServiceUtil.getContestPhase(contestPhasePk))) {
-                    Integer ribbon = PlanItemLocalServiceUtil.getRibbon(plan);
-                    if (ribbon == null) continue;
+                for (Proposal p: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhasePk)) {
+                    if (getRibbonType(p) == null || getRibbonType(p).getRibbon() == 0) continue;
+                    int ribbon = getRibbonType(p).getRibbon();
                     for (Long flag: flagFilters) {
                         if (ribbon == flag.intValue()) {
-                            availablePlans.add(plan);
+                            availablePlans.add(p);
                             break;
                         }
                     }
@@ -50,11 +53,13 @@ public class RandomProposalsBean {
         
         Collections.shuffle(availablePlans);
         for (int i=0; i < availablePlans.size() && i < preferencesBean.getFeedSize(); i++) {
-            ret.add(new PlanItemWrapper(availablePlans.get(i)));
+            ret.add(new ProposalWrapper(availablePlans.get(i)));
         }
         
         return ret;
     }
+
+
 
     public PreferencesBean getPreferencesBean() {
         return preferencesBean;
@@ -70,6 +75,22 @@ public class RandomProposalsBean {
 
     public void setBaseImagePath(String baseImagePath) {
         this.baseImagePath = baseImagePath;
+    }
+
+    private ContestPhaseRibbonType getRibbonType(Proposal p) throws PortalException, SystemException {
+       ContestPhaseRibbonType contestPhaseRibbonType = null;
+       List<Long> phasesForProposal =  Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
+       ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phasesForProposal.get(phasesForProposal.size()-1));
+            try {
+                long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),
+                        contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+                contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
+            }
+            catch (NoSuchProposalContestPhaseAttributeException e) {
+                // ignore
+            }
+
+        return contestPhaseRibbonType;
     }
 
 }

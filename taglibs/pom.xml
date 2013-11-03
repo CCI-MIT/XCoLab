@@ -17,6 +17,7 @@
 	
   <modules>
       <module>colabIceFacelets</module>
+      <module>colabJspTags</module>
   </modules>
 
 </project>

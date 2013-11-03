@@ -14,7 +14,6 @@ import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import com.ext.portlet.model.PlanItem;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -137,10 +136,6 @@ public class Helper {
         PortletRequest pReq = (PortletRequest) ec.getRequest();
         PortletPreferences prefs = pReq.getPreferences();
         return prefs;
-    }
-
-    public static String getPlanURL(PlanItem p) {
-        return "/web/guest/plans#planId=" + p.getPlanId();
     }
 
     public static String getUrlParameterKey(String key) {

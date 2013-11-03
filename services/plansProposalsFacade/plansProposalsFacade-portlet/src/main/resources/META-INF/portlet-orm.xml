@@ -15,6 +15,7 @@
 			<basic name="type">
 				<column name="TYPE_" />
 			</basic>
+			<basic name="automaticSubscriptionCounter" />
 			<basic name="extraData" />
 			<basic name="receiverId" />
 			<basic name="createDate">
@@ -131,6 +132,19 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestPhaseRibbonTypeModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="ribbon" />
+			<basic name="hoverText" />
+			<basic name="description" />
+			<basic name="copyOnPromote" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestPhaseTypeModelImpl">
 		<attributes>
 			<id name="id">
@@ -187,6 +201,7 @@
 			<basic name="description" />
 			<basic name="url" />
 			<basic name="commentsThread" />
+			<basic name="isQuiet" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
@@ -535,6 +550,14 @@
 			<basic name="termId" />
 			<basic name="classNameId" />
 			<basic name="classPK" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.Plan2ProposalModelImpl">
+		<attributes>
+			<id name="planId" />
+			<basic name="proposalId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
@@ -927,6 +950,132 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalModelImpl">
+		<attributes>
+			<id name="proposalId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="updatedDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="currentVersion" />
+			<basic name="authorId" />
+			<basic name="visible" />
+			<basic name="discussionId" />
+			<basic name="judgeDiscussionId" />
+			<basic name="fellowDiscussionId" />
+			<basic name="advisorDiscussionId" />
+			<basic name="groupId" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.Proposal2PhaseModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.Proposal2PhasePK" />
+		<attributes>
+			<id name="proposalId" />
+			<id name="contestPhaseId" />
+			<basic name="versionFrom" />
+			<basic name="versionTo" />
+			<basic name="sortWeight" />
+			<basic name="autopromoteCandidate" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalAttributeModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="proposalId" />
+			<basic name="version" />
+			<basic name="versionWhenCreated" />
+			<basic name="name" />
+			<basic name="additionalId" />
+			<basic name="numericValue" />
+			<basic name="stringValue" />
+			<basic name="realValue" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalAttributeTypeModelImpl">
+		<attributes>
+			<id name="name" />
+			<basic name="visibleInVersionHistory" />
+			<basic name="copyOnPromote" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="proposalId" />
+			<basic name="contestPhaseId" />
+			<basic name="name" />
+			<basic name="additionalId" />
+			<basic name="numericValue" />
+			<basic name="stringValue" />
+			<basic name="realValue" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeModelImpl">
+		<attributes>
+			<id name="name" />
+			<basic name="copyOnPromote" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalSupporterModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ProposalSupporterPK" />
+		<attributes>
+			<id name="proposalId" />
+			<id name="userId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalVersionModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ProposalVersionPK" />
+		<attributes>
+			<id name="proposalId" />
+			<id name="version" />
+			<basic name="authorId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="updateType" />
+			<basic name="updateAdditionalId" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalVoteModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ProposalVotePK" />
+		<attributes>
+			<id name="contestPhaseId" />
+			<id name="userId" />
+			<basic name="proposalId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<entity class="com.ext.portlet.model.impl.ActivitySubscriptionImpl" name="ActivitySubscription">
 		<table name="xcolab_ActivitySubscription" />
 		<attributes />
@@ -949,6 +1098,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestPhaseColumnImpl" name="ContestPhaseColumn">
 		<table name="xcolab_ContestPhaseColumn" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestPhaseRibbonTypeImpl" name="ContestPhaseRibbonType">
+		<table name="xcolab_ContestPhaseRibbonType" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestPhaseTypeImpl" name="ContestPhaseType">
@@ -1071,6 +1224,10 @@
 		<table name="xcolab_OntologyTermEntity" />
 		<attributes />
 	</entity>
+	<entity class="com.ext.portlet.model.impl.Plan2ProposalImpl" name="Plan2Proposal">
+		<table name="xcolab_Plan2Proposal" />
+		<attributes />
+	</entity>
 	<entity class="com.ext.portlet.model.impl.PlanAttributeImpl" name="PlanAttribute">
 		<table name="xcolab_PlanAttribute" />
 		<attributes />
@@ -1177,6 +1334,42 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.PlanVoteImpl" name="PlanVote">
 		<table name="xcolab_PlanVote" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalImpl" name="Proposal">
+		<table name="xcolab_Proposal" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.Proposal2PhaseImpl" name="Proposal2Phase">
+		<table name="xcolab_Proposal2Phase" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalAttributeImpl" name="ProposalAttribute">
+		<table name="xcolab_ProposalAttribute" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalAttributeTypeImpl" name="ProposalAttributeType">
+		<table name="xcolab_ProposalAttributeType" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl" name="ProposalContestPhaseAttribute">
+		<table name="xcolab_ProposalContestPhaseAttribute" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl" name="ProposalContestPhaseAttributeType">
+		<table name="xcolab_ProposalContestPhaseAttributeType" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalSupporterImpl" name="ProposalSupporter">
+		<table name="xcolab_ProposalSupporter" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalVersionImpl" name="ProposalVersion">
+		<table name="xcolab_ProposalVersion" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalVoteImpl" name="ProposalVote">
+		<table name="xcolab_ProposalVote" />
 		<attributes />
 	</entity>
 </entity-mappings>

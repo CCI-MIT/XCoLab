@@ -400,6 +400,11 @@ public class DiscussionMessageLocalServiceWrapper
         _discussionMessageLocalService.removeFlag(dMessage, flagType);
     }
 
+    public boolean hasFlag(long messageId, java.lang.String flag)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.hasFlag(messageId, flag);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

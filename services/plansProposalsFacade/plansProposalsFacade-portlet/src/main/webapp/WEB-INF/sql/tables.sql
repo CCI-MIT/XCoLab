@@ -3,6 +3,7 @@ create table xcolab_ActivitySubscription (
 	classNameId LONG,
 	classPK LONG,
 	type_ INTEGER,
+	automaticSubscriptionCounter INTEGER,
 	extraData TEXT null,
 	receiverId LONG,
 	createDate DATE null,
@@ -78,6 +79,14 @@ create table xcolab_ContestPhaseColumn (
 	defaultSort BOOLEAN
 );
 
+create table xcolab_ContestPhaseRibbonType (
+	id_ LONG not null primary key,
+	ribbon INTEGER,
+	hoverText VARCHAR(75) null,
+	description VARCHAR(75) null,
+	copyOnPromote BOOLEAN
+);
+
 create table xcolab_ContestPhaseType (
 	id_ LONG not null primary key,
 	name VARCHAR(1024) null,
@@ -110,7 +119,8 @@ create table xcolab_DiscussionCategoryGroup (
 	id_ LONG not null primary key,
 	description TEXT null,
 	url VARCHAR(1024) null,
-	commentsThread LONG
+	commentsThread LONG,
+	isQuiet BOOLEAN
 );
 
 create table xcolab_DiscussionMessage (
@@ -336,6 +346,11 @@ create table xcolab_OntologyTermEntity (
 	termId LONG,
 	classNameId LONG,
 	classPK LONG
+);
+
+create table xcolab_Plan2Proposal (
+	planId LONG not null primary key,
+	proposalId LONG
 );
 
 create table xcolab_PlanAttribute (
@@ -593,4 +608,87 @@ create table xcolab_PlansUserSettings (
 	sortDirection VARCHAR(75) null,
 	filterEnabled BOOLEAN,
 	filterPositionsAll BOOLEAN
+);
+
+create table xcolab_Proposal (
+	proposalId LONG not null primary key,
+	createDate DATE null,
+	updatedDate DATE null,
+	currentVersion INTEGER,
+	authorId LONG,
+	visible BOOLEAN,
+	discussionId LONG,
+	judgeDiscussionId LONG,
+	fellowDiscussionId LONG,
+	advisorDiscussionId LONG,
+	groupId LONG
+);
+
+create table xcolab_Proposal2Phase (
+	proposalId LONG not null,
+	contestPhaseId LONG not null,
+	versionFrom INTEGER,
+	versionTo INTEGER,
+	sortWeight INTEGER,
+	autopromoteCandidate BOOLEAN,
+	primary key (proposalId, contestPhaseId)
+);
+
+create table xcolab_ProposalAttribute (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	version INTEGER,
+	versionWhenCreated INTEGER,
+	name VARCHAR(75) null,
+	additionalId LONG,
+	numericValue LONG,
+	stringValue TEXT null,
+	realValue DOUBLE
+);
+
+create table xcolab_ProposalAttributeType (
+	name VARCHAR(75) not null primary key,
+	visibleInVersionHistory BOOLEAN,
+	copyOnPromote BOOLEAN
+);
+
+create table xcolab_ProposalContestPhaseAttribute (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	contestPhaseId LONG,
+	name VARCHAR(75) null,
+	additionalId LONG,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE
+);
+
+create table xcolab_ProposalContestPhaseAttributeType (
+	name VARCHAR(75) not null primary key,
+	copyOnPromote BOOLEAN
+);
+
+create table xcolab_ProposalSupporter (
+	proposalId LONG not null,
+	userId LONG not null,
+	createDate DATE null,
+	primary key (proposalId, userId)
+);
+
+create table xcolab_ProposalVersion (
+	proposalId LONG not null,
+	version INTEGER not null,
+	authorId LONG,
+	createDate DATE null,
+	updateType VARCHAR(75) null,
+	updateAdditionalId LONG,
+	primary key (proposalId, version)
+);
+
+create table xcolab_ProposalVote (
+	proposalId LONG,
+	contestPhaseId LONG not null,
+	userId LONG not null,
+	createDate DATE null,
+	primary key (contestPhaseId, userId)
 );

@@ -24,12 +24,12 @@ public class ContestsAdmin {
         return ret;
     }
     
-    public void editCotnestActionListener(ActionEvent e) {
+    public void editContestActionListener(ActionEvent e) {
         editedContest = (ContestWrapper) e.getComponent().getAttributes().get("contest");
     }
     
-    public String addContest() throws SystemException {
-        editedContest = new ContestWrapper(ContestLocalServiceUtil.createContest(0));
+    public String addContest() throws Exception {
+        editedContest = new ContestWrapper(ContestLocalServiceUtil.createNewContest(10144L, "created contest"));
         return "editContest";
     }
     

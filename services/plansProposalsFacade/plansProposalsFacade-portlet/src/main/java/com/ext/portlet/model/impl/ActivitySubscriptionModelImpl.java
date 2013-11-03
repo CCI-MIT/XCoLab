@@ -53,12 +53,13 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
             { "classNameId", Types.BIGINT },
             { "classPK", Types.BIGINT },
             { "type_", Types.INTEGER },
+            { "automaticSubscriptionCounter", Types.INTEGER },
             { "extraData", Types.VARCHAR },
             { "receiverId", Types.BIGINT },
             { "createDate", Types.TIMESTAMP },
             { "modifiedDate", Types.TIMESTAMP }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ActivitySubscription (pk LONG not null primary key,classNameId LONG,classPK LONG,type_ INTEGER,extraData TEXT null,receiverId LONG,createDate DATE null,modifiedDate DATE null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ActivitySubscription (pk LONG not null primary key,classNameId LONG,classPK LONG,type_ INTEGER,automaticSubscriptionCounter INTEGER,extraData TEXT null,receiverId LONG,createDate DATE null,modifiedDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ActivitySubscription";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -93,6 +94,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     private int _type;
     private int _originalType;
     private boolean _setOriginalType;
+    private int _automaticSubscriptionCounter;
     private String _extraData;
     private String _originalExtraData;
     private long _receiverId;
@@ -121,6 +123,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         model.setClassNameId(soapModel.getClassNameId());
         model.setClassPK(soapModel.getClassPK());
         model.setType(soapModel.getType());
+        model.setAutomaticSubscriptionCounter(soapModel.getAutomaticSubscriptionCounter());
         model.setExtraData(soapModel.getExtraData());
         model.setReceiverId(soapModel.getReceiverId());
         model.setCreateDate(soapModel.getCreateDate());
@@ -251,6 +254,16 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     }
 
     @JSON
+    public int getAutomaticSubscriptionCounter() {
+        return _automaticSubscriptionCounter;
+    }
+
+    public void setAutomaticSubscriptionCounter(
+        int automaticSubscriptionCounter) {
+        _automaticSubscriptionCounter = automaticSubscriptionCounter;
+    }
+
+    @JSON
     public String getExtraData() {
         if (_extraData == null) {
             return StringPool.BLANK;
@@ -350,6 +363,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         activitySubscriptionImpl.setClassNameId(getClassNameId());
         activitySubscriptionImpl.setClassPK(getClassPK());
         activitySubscriptionImpl.setType(getType());
+        activitySubscriptionImpl.setAutomaticSubscriptionCounter(getAutomaticSubscriptionCounter());
         activitySubscriptionImpl.setExtraData(getExtraData());
         activitySubscriptionImpl.setReceiverId(getReceiverId());
         activitySubscriptionImpl.setCreateDate(getCreateDate());
@@ -437,6 +451,8 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
 
         activitySubscriptionCacheModel.type = getType();
 
+        activitySubscriptionCacheModel.automaticSubscriptionCounter = getAutomaticSubscriptionCounter();
+
         activitySubscriptionCacheModel.extraData = getExtraData();
 
         String extraData = activitySubscriptionCacheModel.extraData;
@@ -468,7 +484,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{pk=");
         sb.append(getPk());
@@ -478,6 +494,8 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         sb.append(getClassPK());
         sb.append(", type=");
         sb.append(getType());
+        sb.append(", automaticSubscriptionCounter=");
+        sb.append(getAutomaticSubscriptionCounter());
         sb.append(", extraData=");
         sb.append(getExtraData());
         sb.append(", receiverId=");
@@ -492,7 +510,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ActivitySubscription");
@@ -513,6 +531,10 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         sb.append(
             "<column><column-name>type</column-name><column-value><![CDATA[");
         sb.append(getType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>automaticSubscriptionCounter</column-name><column-value><![CDATA[");
+        sb.append(getAutomaticSubscriptionCounter());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>extraData</column-name><column-value><![CDATA[");

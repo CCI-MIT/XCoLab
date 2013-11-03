@@ -231,11 +231,14 @@ public class MessageWrapper implements Serializable {
             filteredDescription = ContentFilterHelper.filterContent(description);
             Helper.sendInfoMessage("Comment \"" + title + "\" has been added.");
 
+            /*
             ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                     DiscussionCategoryGroup.class.getName(), discussionBean.getDiscussionId(), 
                     DiscussionActivityKeys.ADD_DISCUSSION_COMMENT.id(), 
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryGroupId(), getThreadId(wrapped), wrapped.getMessageId()), 0);
+                    
+            */
         }
         }
         catch (Exception ex) {

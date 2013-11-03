@@ -32,6 +32,7 @@ import java.util.Locale;
 import javax.portlet.PortletURL;
 
 import com.ext.portlet.model.DiscussionMessage;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -229,6 +230,15 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         for (DiscussionMessage message : messages) {
             
             if (message.getDeleted() != null) continue;
+            try {
+                if (DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(message.getCategoryGroupId()).isIsQuiet()) {
+                    continue;
+                }
+            } catch (PortalException e1) {
+                _log.error("Can't find discussion category group: " + message.getCategoryGroupId(), e1);
+            } catch (SystemException e1) {
+                _log.error("Can't find discussion category group: " + message.getCategoryGroupId(), e1);
+            }
             try {
                 
                 Document document = getDocument(message);

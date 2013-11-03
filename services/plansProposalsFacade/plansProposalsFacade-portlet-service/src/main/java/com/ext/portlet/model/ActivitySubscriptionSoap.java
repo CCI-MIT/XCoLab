@@ -18,6 +18,7 @@ public class ActivitySubscriptionSoap implements Serializable {
     private long _classNameId;
     private long _classPK;
     private int _type;
+    private int _automaticSubscriptionCounter;
     private String _extraData;
     private long _receiverId;
     private Date _createDate;
@@ -34,6 +35,7 @@ public class ActivitySubscriptionSoap implements Serializable {
         soapModel.setClassNameId(model.getClassNameId());
         soapModel.setClassPK(model.getClassPK());
         soapModel.setType(model.getType());
+        soapModel.setAutomaticSubscriptionCounter(model.getAutomaticSubscriptionCounter());
         soapModel.setExtraData(model.getExtraData());
         soapModel.setReceiverId(model.getReceiverId());
         soapModel.setCreateDate(model.getCreateDate());
@@ -119,6 +121,15 @@ public class ActivitySubscriptionSoap implements Serializable {
 
     public void setType(int type) {
         _type = type;
+    }
+
+    public int getAutomaticSubscriptionCounter() {
+        return _automaticSubscriptionCounter;
+    }
+
+    public void setAutomaticSubscriptionCounter(
+        int automaticSubscriptionCounter) {
+        _automaticSubscriptionCounter = automaticSubscriptionCounter;
     }
 
     public String getExtraData() {

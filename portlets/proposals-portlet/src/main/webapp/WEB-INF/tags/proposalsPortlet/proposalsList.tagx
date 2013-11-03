@@ -1,0 +1,146 @@
+<jsp:root 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:jsp="http://java.sun.com/JSP/Page"  
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	version="2.0">
+
+<jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
+<jsp:directive.attribute name="showShadebar" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If shadebar should be shown" />
+
+<c:if test="${showShadebar }">
+	<div class="shadebar"><!--  --></div>
+</c:if>
+<c:forEach var="proposal" items="${proposals }">
+<div class="propbox ${proposal.featured ? 'featured' : ''}">
+					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">
+            <div class="ribbonPlaceholder">
+                <span class="fieldWithTooltip">
+                    <br />
+                    <img src="/climatecolab-theme/images/icon-prize${proposal.ribbon}.png" />
+                </span>
+                <div class="tooltip">
+                    ${proposal.ribbonText}
+                </div>
+            </div>
+            </c:if>
+            <div class="row1">
+                <div class="title-author" style="${proposalsPermissions.canJudgeActions ? (proposal.featured ? 'width:503px;' : 'width:532px;')  : ''}">
+                    <h4>
+                    	<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
+                        /&#160;
+                        <c:choose>
+                        	<c:when test="${empty proposal.team}">
+                        		<proposalsPortlet:userLinkSimple userId="${proposal.author.userId}" text="${proposal.author.screenName}" />
+                        	</c:when>
+                        	<c:otherwise>
+                            	${proposal.team}
+                        	</c:otherwise>
+                        </c:choose>
+                    </h4>
+                    <div class="clear" ><!--  --></div>
+                </div>
+                <c:choose>
+                	<c:when test="${contestPhase.canVote}">
+                		<div class="voteboxsmall">
+    	            		<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
+    	        		</div>
+    	        	</c:when>
+    	        	<c:otherwise>
+    	        		<div class="thumbbox">
+                			<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.supportersCount}" hashString="plans%3Dtab%3ATEAM"/>
+                		</div>
+                	</c:otherwise>
+               	</c:choose>
+                <div class="commbox">
+                    <proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.commentsCount}" hashString="plans%3Dtab%3ACOMMENTS" />
+                </div>
+                <div class="modbox">
+                    <fmt:formatDate value="${proposal.lastModifiedDateForContestPhase}" type="date" dateStyle="short" timeZone="America/New_York" />
+                </div>
+                <div class="conbox">
+                	<c:choose>
+                		<c:when test="${proposal.open}">
+	                        anyone
+	                    </c:when>
+	                    <c:otherwise>
+                        	team only
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+
+                <c:if test="${proposalsPermissions.canJudgeActions}">
+                    <div class="fellow-judge-action">
+                        <span class="fieldWithTooltip">
+                        <c:choose>
+                            <c:when test="${proposal.judgeStatus == 0}">
+                                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
+                            </c:when>
+                            <c:when test="${proposal.judgeStatus == 1}">
+                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                            </c:when>
+                            <c:otherwise>
+                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                            </c:otherwise>
+                        </c:choose>
+                        </span>
+                        <div class="tooltip">
+                            <c:choose>
+                                <c:when test="${proposal.judgeStatus == 0}">
+                                    No decision yet.
+                                </c:when>
+                                <c:when test="${proposal.judgeStatus == 1}">
+                                    <c:if test="${proposal.fellowStatus lt 2}">
+                                        Fellows decided that proposal will not proceed to next round.
+                                    </c:if>
+                                    <c:if test="${proposal.fellowStatus eq 2}">
+                                        Proposal will not proceed to next round.
+                                    </c:if>
+                                </c:when>
+                                <c:otherwise>
+                                    Proposal will proceed to next round.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <c:if test="${proposalsPermissions.canFellowActions}">
+                        <span class="fieldWithTooltip" style="margin-left: 15px;">
+                        <c:choose>
+                            <c:when test="${proposal.fellowStatus == 0}">
+                                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
+                            </c:when>
+                            <c:when test="${proposal.fellowStatus == 1}">
+                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                            </c:when>
+                            <c:otherwise>
+                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                            </c:otherwise>
+                        </c:choose>
+                        </span>
+                        <div class="tooltip">
+                            <c:choose>
+                                <c:when test="${proposal.fellowStatus == 0}">
+                                    No decision yet.
+                                </c:when>
+                                <c:when test="${proposal.fellowStatus == 1}">
+                                    Proposal will not proceed to next round.
+                                </c:when>
+                                <c:otherwise>
+                                    Proposal will proceed to next round.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        </c:if>
+                    </div>
+                </c:if>
+
+
+            </div>
+            <div class="row2">${proposal.pitch}</div>
+        </div> <!-- /proposal -->
+</c:forEach>
+	
+
+</jsp:root>

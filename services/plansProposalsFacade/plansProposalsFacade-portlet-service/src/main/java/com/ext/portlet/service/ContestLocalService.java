@@ -271,6 +271,12 @@ public interface ContestLocalService extends PersistedModelLocalService {
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
+        com.ext.portlet.model.Contest contest)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean isActive(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -373,4 +379,52 @@ public interface ContestLocalService extends PersistedModelLocalService {
     public java.util.List<com.ext.portlet.model.ContestTeamMember> getTeamMembers(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns true if user is subscribed to a contest, false otherwise</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @return true if user is subscribed to a contest, false otherwise
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isSubscribed(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Subscribes user to contest</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void subscribe(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Subscribes user to contest</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void unsubscribe(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<java.lang.Long> getModelIds(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Long getDefaultModelId(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

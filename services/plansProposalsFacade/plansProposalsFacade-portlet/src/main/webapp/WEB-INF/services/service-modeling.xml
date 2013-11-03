@@ -7,6 +7,9 @@
 
 <service-builder package-path="com.ext.portlet.models">
 
+	<!-- entity without columns to create remote services/local services that will provide API for running models -->
+	<entity name="ModelRunner" remote-service="true" local-service="true" />
+
     <entity name="ModelDiscussion" remote-service="true" local-service="true">
         <!-- PK field -->
         <column name="modelDiscussionId" type="long" primary="true"/>

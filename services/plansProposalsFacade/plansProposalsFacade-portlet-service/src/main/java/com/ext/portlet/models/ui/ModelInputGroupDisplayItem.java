@@ -22,6 +22,9 @@ import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -395,5 +398,22 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     
     public void setParentGroupId(Long groupId) throws SystemException, PortalException, IOException {
         setParent(new ModelInputGroupDisplayItem(ModelInputGroupLocalServiceUtil.getModelInputGroup(groupId)));
+    }
+
+    
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = super.toJson();
+        jsonObject.put("groupType", getGroupType().name());
+        jsonObject.put("groupId", getGroupId());
+        jsonObject.put("parentGroupId", getParentGroupId());
+        JSONArray childInputs = JSONFactoryUtil.createJSONArray();
+        
+        for (ModelInputDisplayItem input: getAllItems()) {
+            childInputs.put(input.toJson());
+        }
+        jsonObject.put("inputs", childInputs);
+        
+        return jsonObject;    
     }
 }

@@ -128,6 +128,25 @@ public class ActivitySubscriptionWrapper implements ActivitySubscription,
     }
 
     /**
+    * Returns the automatic subscription counter of this activity subscription.
+    *
+    * @return the automatic subscription counter of this activity subscription
+    */
+    public int getAutomaticSubscriptionCounter() {
+        return _activitySubscription.getAutomaticSubscriptionCounter();
+    }
+
+    /**
+    * Sets the automatic subscription counter of this activity subscription.
+    *
+    * @param automaticSubscriptionCounter the automatic subscription counter of this activity subscription
+    */
+    public void setAutomaticSubscriptionCounter(
+        int automaticSubscriptionCounter) {
+        _activitySubscription.setAutomaticSubscriptionCounter(automaticSubscriptionCounter);
+    }
+
+    /**
     * Returns the extra data of this activity subscription.
     *
     * @return the extra data of this activity subscription

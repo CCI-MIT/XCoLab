@@ -17,6 +17,14 @@ import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
 import javax.mail.internet.InternetAddress;
 
+import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.ext.portlet.service.persistence.ProposalSupporterUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.util.mail.MailEngine;
 import org.apache.commons.io.FileUtils;
 import org.icefaces.ace.component.fileentry.FileEntry;
@@ -109,9 +117,13 @@ public class UserWrapper implements Serializable {
         }
 
         supportedPlans.clear();
-        for (PlanFan supportedPlanInfo : PlanFanLocalServiceUtil
-                .getPlanFansForUser(user.getUserId())) {
-            supportedPlans.add(new SupportedPlanBean(supportedPlanInfo));
+        for(Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
+            ProposalSupporter ps = (ProposalSupporter) o;
+            try {
+                supportedPlans.add(new SupportedPlanBean(ps));
+            } catch (PortalException e) {
+                e.printStackTrace();
+            }
         }
 
         userActivities.clear();
@@ -119,7 +131,9 @@ public class UserWrapper implements Serializable {
                 .getUserActivities(user.getUserId(), 0, maxActivitiesCount)) {
             ;// userActivitiesCount - maxActivitiesCount, userActivitiesCount))
             // {
-            userActivities.add(new UserActivityBean(activity));
+            UserActivityBean a = new UserActivityBean(activity);
+            if(a.getBody() !=null && !a.getBody().equals(""))
+                userActivities.add(a);
         }
 
         profileWasComplete = profileIsComplete();
@@ -132,7 +146,6 @@ public class UserWrapper implements Serializable {
 
         return true;
     }
-
 
     public Boolean getAttendsConference() {
         return attendsConference;

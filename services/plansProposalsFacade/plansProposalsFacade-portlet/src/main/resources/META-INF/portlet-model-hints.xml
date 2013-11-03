@@ -6,6 +6,7 @@
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />
 		<field name="type" type="int" />
+		<field name="automaticSubscriptionCounter" type="int" />
 		<field name="extraData" type="String">
 			<hint name="max-length">4096</hint>
 		</field>
@@ -103,6 +104,13 @@
 		<field name="columnWeight" type="int" />
 		<field name="defaultSort" type="boolean" />
 	</model>
+	<model name="com.ext.portlet.model.ContestPhaseRibbonType">
+		<field name="id" type="long" />
+		<field name="ribbon" type="int" />
+		<field name="hoverText" type="String" />
+		<field name="description" type="String" />
+		<field name="copyOnPromote" type="boolean" />
+	</model>
 	<model name="com.ext.portlet.model.ContestPhaseType">
 		<field name="id" type="long" />
 		<field name="name" type="String">
@@ -145,6 +153,7 @@
 			<hint name="max-length">1024</hint>
 		</field>
 		<field name="commentsThread" type="long" />
+		<field name="isQuiet" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.DiscussionMessage">
 		<field name="pk" type="long" />
@@ -436,6 +445,10 @@
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />
 	</model>
+	<model name="com.ext.portlet.model.Plan2Proposal">
+		<field name="planId" type="long" />
+		<field name="proposalId" type="long" />
+	</model>
 	<model name="com.ext.portlet.model.PlanAttribute">
 		<field name="attributeId" type="long" />
 		<field name="planId" type="long" />
@@ -677,6 +690,78 @@
 		<field name="userId" type="long" />
 		<field name="contestId" type="long" />
 		<field name="planId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.Proposal">
+		<field name="proposalId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="updatedDate" type="Date" />
+		<field name="currentVersion" type="int" />
+		<field name="authorId" type="long" />
+		<field name="visible" type="boolean" />
+		<field name="discussionId" type="long" />
+		<field name="judgeDiscussionId" type="long" />
+		<field name="fellowDiscussionId" type="long" />
+		<field name="advisorDiscussionId" type="long" />
+		<field name="groupId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.Proposal2Phase">
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="versionFrom" type="int" />
+		<field name="versionTo" type="int" />
+		<field name="sortWeight" type="int" />
+		<field name="autopromoteCandidate" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalAttribute">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="version" type="int" />
+		<field name="versionWhenCreated" type="int" />
+		<field name="name" type="String" />
+		<field name="additionalId" type="long" />
+		<field name="numericValue" type="long" />
+		<field name="stringValue" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="realValue" type="double" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalAttributeType">
+		<field name="name" type="String" />
+		<field name="visibleInVersionHistory" type="boolean" />
+		<field name="copyOnPromote" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalContestPhaseAttribute">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="name" type="String" />
+		<field name="additionalId" type="long" />
+		<field name="numericValue" type="long" />
+		<field name="stringValue" type="String" />
+		<field name="realValue" type="double" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalContestPhaseAttributeType">
+		<field name="name" type="String" />
+		<field name="copyOnPromote" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalSupporter">
+		<field name="proposalId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalVersion">
+		<field name="proposalId" type="long" />
+		<field name="version" type="int" />
+		<field name="authorId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="updateType" type="String" />
+		<field name="updateAdditionalId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalVote">
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
 	</model>
 </model-hints>

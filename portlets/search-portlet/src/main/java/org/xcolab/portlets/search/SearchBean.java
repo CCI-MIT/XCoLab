@@ -46,9 +46,8 @@ public class SearchBean extends DataSource implements Serializable {
     private SearchItemType selectedSearchItemType;
     private EventBus eventBus;
     private List<HandlerRegistration> handlerRegistrations = new ArrayList<HandlerRegistration>();
-    //TODO PDB: dont make them transient
-    private transient DataPaginator paginator1 = new DataPaginator();
-    private transient DataPaginator paginator2 = new DataPaginator();
+    private DataPaginator paginator1 = new DataPaginator();
+    private DataPaginator paginator2 = new DataPaginator();
     
     private final static Log _log = LogFactoryUtil.getLog(SearchBean.class); 
     

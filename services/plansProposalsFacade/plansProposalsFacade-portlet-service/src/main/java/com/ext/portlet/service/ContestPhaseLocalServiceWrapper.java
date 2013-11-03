@@ -300,6 +300,12 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         return _contestPhaseLocalService.getPhasesForContest(contest);
     }
 
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContest(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getPhasesForContest(contestPK);
+    }
+
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
         throws com.ext.portlet.NoSuchContestPhaseException,
@@ -308,7 +314,7 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     /**
-    * from ContestPhaseImpl
+    * from ContestPhaseImpl *
     */
     public com.ext.portlet.model.Contest getContest(
         com.ext.portlet.model.ContestPhase contestPhase)
@@ -322,6 +328,12 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseLocalService.getName(contestPhase);
+    }
+
+    public void promoteProposal(long proposalId, long nextPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestPhaseLocalService.promoteProposal(proposalId, nextPhaseId);
     }
 
     /**

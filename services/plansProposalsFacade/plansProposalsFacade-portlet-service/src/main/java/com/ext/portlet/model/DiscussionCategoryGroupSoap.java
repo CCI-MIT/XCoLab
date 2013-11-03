@@ -17,6 +17,7 @@ public class DiscussionCategoryGroupSoap implements Serializable {
     private String _description;
     private String _url;
     private long _commentsThread;
+    private boolean _isQuiet;
 
     public DiscussionCategoryGroupSoap() {
     }
@@ -29,6 +30,7 @@ public class DiscussionCategoryGroupSoap implements Serializable {
         soapModel.setDescription(model.getDescription());
         soapModel.setUrl(model.getUrl());
         soapModel.setCommentsThread(model.getCommentsThread());
+        soapModel.setIsQuiet(model.getIsQuiet());
 
         return soapModel;
     }
@@ -110,5 +112,17 @@ public class DiscussionCategoryGroupSoap implements Serializable {
 
     public void setCommentsThread(long commentsThread) {
         _commentsThread = commentsThread;
+    }
+
+    public boolean getIsQuiet() {
+        return _isQuiet;
+    }
+
+    public boolean isIsQuiet() {
+        return _isQuiet;
+    }
+
+    public void setIsQuiet(boolean isQuiet) {
+        _isQuiet = isQuiet;
     }
 }

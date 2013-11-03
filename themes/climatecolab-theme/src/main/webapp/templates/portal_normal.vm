@@ -80,7 +80,7 @@
 <body class="$css_class $page.getName($locale).toLowerCase() $body_style_class">
 
 #if ($permissionChecker.isOmniadmin())
-	<link rel='stylesheet' href='$css_folder/dockbar.css' />
+	<link rel='stylesheet' href='$css_folder/dockbar.css?tt=$themeTimestamp' />
 	#dockbar()
 #end
 

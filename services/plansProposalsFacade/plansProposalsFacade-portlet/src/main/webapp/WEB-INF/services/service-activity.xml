@@ -13,6 +13,7 @@
 		<column name="classNameId" type="long" />
 		<column name="classPK" type="long" />
 		<column name="type" type="int" />
+		<column name="automaticSubscriptionCounter" type="int" />
         
         
         <!--  TODO WRITE COMMENT -->
@@ -32,6 +33,11 @@
 		<finder name="receiverId" return-type="Collection">
 			<finder-column name="receiverId" />
 		</finder>
+		
+        <finder name="ClassNameIdClassPK" return-type="Collection">
+            <finder-column name="classNameId" />
+            <finder-column name="classPK" />
+        </finder>
         
         <finder name="ClassNameIdClassPKReceiverId" return-type="Collection">
             <finder-column name="classNameId" />

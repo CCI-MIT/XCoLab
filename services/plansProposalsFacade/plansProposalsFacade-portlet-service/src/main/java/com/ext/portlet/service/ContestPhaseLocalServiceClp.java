@@ -33,10 +33,12 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     private MethodKey _getNextContestPhaseMethodKey23;
     private MethodKey _getPhaseActiveMethodKey24;
     private MethodKey _getPhasesForContestMethodKey25;
-    private MethodKey _getActivePhaseForContestMethodKey26;
-    private MethodKey _getContestMethodKey27;
-    private MethodKey _getNameMethodKey28;
-    private MethodKey _autoPromoteProposalsMethodKey29;
+    private MethodKey _getPhasesForContestMethodKey26;
+    private MethodKey _getActivePhaseForContestMethodKey27;
+    private MethodKey _getContestMethodKey28;
+    private MethodKey _getNameMethodKey29;
+    private MethodKey _promoteProposalMethodKey30;
+    private MethodKey _autoPromoteProposalsMethodKey31;
 
     public ContestPhaseLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -127,16 +129,22 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         _getPhasesForContestMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getPhasesForContest", com.ext.portlet.model.Contest.class);
 
-        _getActivePhaseForContestMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getPhasesForContestMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getPhasesForContest", long.class);
+
+        _getActivePhaseForContestMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getActivePhaseForContest", com.ext.portlet.model.Contest.class);
 
-        _getContestMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getContestMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getContest", com.ext.portlet.model.ContestPhase.class);
 
-        _getNameMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getNameMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getName", com.ext.portlet.model.ContestPhase.class);
 
-        _autoPromoteProposalsMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
+        _promoteProposalMethodKey30 = new MethodKey(_classLoaderProxy.getClassName(),
+                "promoteProposal", long.class, long.class);
+
+        _autoPromoteProposalsMethodKey31 = new MethodKey(_classLoaderProxy.getClassName(),
                 "autoPromoteProposals");
     }
 
@@ -824,13 +832,39 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         return (java.util.List<com.ext.portlet.model.ContestPhase>) ClpSerializer.translateOutput(returnObj);
     }
 
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContest(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getPhasesForContestMethodKey26,
+                contestPK);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ContestPhase>) ClpSerializer.translateOutput(returnObj);
+    }
+
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
         throws com.ext.portlet.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getActivePhaseForContestMethodKey26,
+        MethodHandler methodHandler = new MethodHandler(_getActivePhaseForContestMethodKey27,
                 ClpSerializer.translateInput(contest));
 
         try {
@@ -861,7 +895,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getContestMethodKey27,
+        MethodHandler methodHandler = new MethodHandler(_getContestMethodKey28,
                 ClpSerializer.translateInput(contestPhase));
 
         try {
@@ -892,7 +926,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getNameMethodKey28,
+        MethodHandler methodHandler = new MethodHandler(_getNameMethodKey29,
                 ClpSerializer.translateInput(contestPhase));
 
         try {
@@ -917,10 +951,36 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    public void promoteProposal(long proposalId, long nextPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        MethodHandler methodHandler = new MethodHandler(_promoteProposalMethodKey30,
+                proposalId, nextPhaseId);
+
+        try {
+            _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
     public void autoPromoteProposals()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_autoPromoteProposalsMethodKey29);
+        MethodHandler methodHandler = new MethodHandler(_autoPromoteProposalsMethodKey31);
 
         try {
             _classLoaderProxy.invoke(methodHandler);

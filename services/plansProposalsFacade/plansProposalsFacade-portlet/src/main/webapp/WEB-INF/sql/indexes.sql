@@ -1,3 +1,4 @@
+create index IX_FD6093DD on xcolab_ActivitySubscription (classNameId, classPK);
 create index IX_61FA63BB on xcolab_ActivitySubscription (classNameId, classPK, receiverId);
 create index IX_20164EB2 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData);
 create index IX_C2ED8710 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData, receiverId);
@@ -32,6 +33,7 @@ create index IX_1A115E3F on xcolab_DiscussionMessage (subject, categoryGroupId);
 create index IX_FDE36548 on xcolab_DiscussionMessage (threadId);
 
 create index IX_63652E37 on xcolab_DiscussionMessageFlag (messageId);
+create unique index IX_BEA683B1 on xcolab_DiscussionMessageFlag (messageId, flagType);
 
 create index IX_4849B8A9 on xcolab_EmailList (name);
 create index IX_55E95283 on xcolab_EmailList (name, email);
@@ -87,6 +89,8 @@ create index IX_4AE95AB4 on xcolab_OntologyTermEntity (classNameId);
 create index IX_7AF843AF on xcolab_OntologyTermEntity (classNameId, classPK);
 create index IX_EF334F35 on xcolab_OntologyTermEntity (termId);
 create index IX_BA88C839 on xcolab_OntologyTermEntity (termId, classNameId);
+
+create index IX_84EB676C on xcolab_Plan2Proposal (proposalId);
 
 create index IX_FAAC13FD on xcolab_PlanAttribute (attributeName, attributeValue);
 create index IX_EF85A9DB on xcolab_PlanAttribute (planId);
@@ -144,3 +148,25 @@ create index IX_4E60E847 on xcolab_PlanVote (planId);
 create index IX_C1242E47 on xcolab_PlansFilterPosition (userId, planTypeId);
 
 create index IX_95AABD4 on xcolab_PlansUserSettings (userId, planTypeId);
+
+create index IX_DBA8038D on xcolab_Proposal2Phase (contestPhaseId);
+create index IX_D273A4B8 on xcolab_Proposal2Phase (proposalId);
+
+create index IX_8FF24CAD on xcolab_ProposalAttribute (proposalId, version);
+create unique index IX_F4926C2 on xcolab_ProposalAttribute (proposalId, version, name, additionalId);
+create index IX_4941177 on xcolab_ProposalAttribute (proposalId, version, versionWhenCreated);
+create index IX_F612A28C on xcolab_ProposalAttribute (proposalId, version, versionWhenCreated, name, additionalId);
+
+create index IX_68DFE42A on xcolab_ProposalContestPhaseAttribute (proposalId, contestPhaseId);
+create index IX_8F351DBF on xcolab_ProposalContestPhaseAttribute (proposalId, contestPhaseId, name, additionalId);
+
+create index IX_2AAA1DDB on xcolab_ProposalSupporter (proposalId);
+create index IX_1DCA0834 on xcolab_ProposalSupporter (userId);
+
+create index IX_59E3C2F7 on xcolab_ProposalVersion (proposalId);
+
+create index IX_A4D26028 on xcolab_ProposalVote (contestPhaseId, userId);
+create index IX_EA28CF99 on xcolab_ProposalVote (proposalId);
+create index IX_43559ACF on xcolab_ProposalVote (proposalId, contestPhaseId);
+create index IX_562EB409 on xcolab_ProposalVote (proposalId, contestPhaseId, userId);
+create index IX_497348F2 on xcolab_ProposalVote (userId);

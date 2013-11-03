@@ -19,6 +19,9 @@ import com.ext.portlet.model.ModelOutputChartOrder;
 import com.ext.portlet.service.ModelOutputChartOrderLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -363,6 +366,24 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     public int getUniqueId() {
         return hashCode();
     }
+    
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = super.toJson();
+        JSONArray jsonSeriesArray = JSONFactoryUtil.createJSONArray();
+        for (ModelOutputSeriesDisplayItem serie: getSeries()) {
+            jsonSeriesArray.put(serie.toJson());
+        }
+        jsonObject.put("series", jsonSeriesArray);
+        if (getIndexVariable() != null) {
+            jsonObject.put("index", ModelUIFactory.convertToJson(getIndexVariable()));
+        }
 
+        convertErrorBehaviorToJson(jsonObject, "indexedOutOfRangeError", getOutOfRangeErrorBehavior());
+        convertErrorBehaviorToJson(jsonObject, "indexedInvalidError", getInvalidErrorBehavior());
+        
+        return jsonObject;
+    }
 
+ 
 }

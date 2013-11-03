@@ -9,6 +9,7 @@ package com.ext.portlet.models.ui;
 import java.io.Serializable;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
@@ -79,5 +80,17 @@ public abstract class ModelInputDisplayItem extends ModelDisplayItem implements 
      */
     public void setType(ModelInputWidgetType type) throws SystemException{
         // by default do nothing, in individual display item appropriate action should be taken
+    }
+    
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = super.toJson();
+        
+        jsonObject.put("description", getDescription());
+        
+        jsonObject.put("displayItemType", getDisplayItemType().name());
+        jsonObject.put("widgetType", getType().name());
+        
+        return jsonObject;    
     }
 }

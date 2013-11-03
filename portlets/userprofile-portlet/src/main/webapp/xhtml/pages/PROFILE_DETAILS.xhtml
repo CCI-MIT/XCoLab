@@ -86,10 +86,7 @@
                     <div class="badge-big badge-#{badge.badgeType}">
 
                         <span class="badge-title">
-                            <collab:planLink planId="#{badge.planId}"
-                                             contestId="#{badge.contestId}"
-                                             text="#{badge.badgeTitle}"
-                                             style="#{badge.badgeTitle.length() gt 8 ? 'top: 26px;' : ''};"   />
+                            <a href="/web/guest/plans/-/plans/contestId/#{badge.contestId}/planId/#{badge.planId}" style="#{badge.badgeTitle.length() gt 8 ? 'top: 26px;' : ''};">#{badge.badgeTitle}</a>
                         </span>
 
                         <div class="badge-text" style="#{badge.badgeText.length() gt 15 ? 'font-size: 7px;' : ''}#{fn:substring(badge.badgeText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">#{badge.badgeText}</div>
@@ -152,7 +149,7 @@
                     </ice:form> <f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
                         <a style="margin-top: 6px; display: block;" href="javascript:;"
                            onclick="if (! deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
-                            #{currentUser.firstName} a Message </a>
+                            <strong>#{currentUser.firstName}</strong> a Message </a>
                     </f:subview></td></tr>
 				</table>
 			</div>
@@ -181,7 +178,7 @@
 
 		</ice:dataTable>
 		<f:subview rendered="#{empty currentUser.supportedPlans}">
-            #{currentUser.firstName} does not support any proposal.
+            #{currentUser.firstName} has not supported any proposal yet.
         </f:subview>
 
 
@@ -299,7 +296,7 @@
 		style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
 		<div class="savechanges-wrap ">
 			<div class="savechanges">
-				<h4>Send #{currentUser.realName} a message</h4>
+				<h4>Send <strong>#{currentUser.realName}</strong> a message</h4>
 				<ice:panelGroup>
 					<ice:form>
 						<ice:panelGroup>

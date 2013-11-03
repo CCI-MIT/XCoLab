@@ -114,6 +114,7 @@
 		<module>portlets</module>
 		<module>taglibs</module>
         <module>themes</module>
+        <module>hooks</module>
 	</modules>
 	<properties>
 		<liferay.version>6.1.0</liferay.version>

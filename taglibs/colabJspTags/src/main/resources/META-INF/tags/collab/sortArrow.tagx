@@ -1,0 +1,20 @@
+<jsp:root 
+  xmlns:c="http://java.sun.com/jsp/jstl/core" 
+  xmlns:jsp="http://java.sun.com/JSP/Page"  
+  version="2.0">
+  <jsp:directive.attribute name="sortAscending" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Ascending" />
+  <jsp:directive.attribute name="sortColumn" type="java.lang.String" required="true" rtexprvalue="true" description="Sort column" />
+  <jsp:directive.attribute name="currentColumn" type="java.lang.String" required="true" rtexprvalue="true" description="Current column" />
+  <c:if test="${sortColumn == currentColumn }">
+  	<div class="sort-arrow">
+  		<c:choose>
+  			<c:when test="${sortAscending }">
+				&amp;nbsp;<img src="/climatecolab-theme/images/sort-arrow-up.png" />
+			</c:when>
+			<c:otherwise>
+				&amp;nbsp;<img src="/climatecolab-theme/images/sort-arrow-down.png" />
+			</c:otherwise>
+  		</c:choose>
+  	</div>
+  </c:if>
+</jsp:root>

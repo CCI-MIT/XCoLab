@@ -7,6 +7,8 @@
 package com.ext.portlet.models.ui;
 
 import com.liferay.portal.SystemException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -97,5 +99,14 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
     
     public void setVisible(boolean visible) throws SystemException {
        _log.warn("Setting visibility on scalar items is not currently supported");
+    }
+
+   // @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+        jsonObject.put("id", md.getId());
+        jsonObject.put("outputType", "SCALAR");
+        
+        return jsonObject;
     }
 }

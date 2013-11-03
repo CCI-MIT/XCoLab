@@ -13,6 +13,7 @@ import com.ext.portlet.model.ModelInputItem;
 import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
@@ -147,6 +148,33 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
 
     public String getProperty(ModelWidgetProperty prop) {
         return ModelInputItemLocalServiceUtil.getPropertyMap(item).get(prop.toString());
+    }
+    
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = super.toJson();
+        
+        
+        
+        jsonObject.put("description", getDescription());
+        jsonObject.put("groupId", getGroupId());
+        if (getVariable() != null) {
+            jsonObject.put("value", ModelUIFactory.convertToJson(getVariable()));
+        }
+        if (getMetaData() != null) {
+            jsonObject.put("metaData", ModelUIFactory.convertToJson(getMetaData()));
+        }
+        
+        String maxLabel = getProperty(ModelWidgetProperty.Slider.MAX_LABEL);
+        String minLabel = getProperty(ModelWidgetProperty.Slider.MIN_LABEL);
+        
+        if (maxLabel != null) {
+            jsonObject.put("maxLabel", maxLabel);
+        }
+        if (minLabel != null) {
+            jsonObject.put("minLabel", minLabel);
+        }
+        return jsonObject;    
     }
 
 }

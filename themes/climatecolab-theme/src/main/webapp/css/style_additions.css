@@ -41,6 +41,7 @@
 .actions_chart-head { width:734px; min-height:85px; padding:0;}
 .actions_chart-head-bg { width:704px; padding:15px; background:url(../images/actions_charttop-bg.gif);}
 .actions_chart-head-shade { position:absolute; z-index:5;  width:734px; height:5px; background:url(../images/actions_charttop-shade.png) repeat-x;}
+.act-edit_left .actions_chart-head-shade {width: 480px;}
 .actions_chart { width:734px; background:url(../images/actions_chart-bg.gif);}
 .actions_chart_y-axis {float:left; width:50px; line-height:normal; font:11px Verdana, sans-serif; color:#656562;}
 .actions_chart_y-axis li { list-style:none; padding:10px 0 0 12px; }
@@ -52,8 +53,8 @@
 
 
 /* actions EDIT page */
-.acthead-l.edit { padding-bottom:0;}
-.acthead-r.edit { padding-bottom:0; margin-left:250px;}
+.acthead-l.edit { padding-bottom:0; height: 40px;}
+.acthead-r.edit { padding-bottom:0; margin-left:250px; height: 40px}
 .acthead-r .runmodel { float:right; margin-top:-5px;}
 
 .act-edit_left { float:left; width:495px;}
@@ -72,12 +73,13 @@
 .actions-edit_chart_x-axis { clear:both; height:40px; margin-left:50px; line-height:normal; font:11px Verdana, sans-serif; color:#656562;}
 .actions-edit_chart_x-axis li { float:left; list-style:none; padding:10px 10px 0 0; }
 
-.chart_sub-menu { float:left; width:130px; list-style:none; margin-top:15px; line-height:normal;}
-.chart_sub-menu li, #content .chart_sub-menu li { width:130px; vertical-align:middle; background: none; list-style: none;}
-.chart_sub-menu li a { width:110px; padding:10px 0 10px 20px; margin:1px 0; display:inline-block; font-family:Verdana, Geneva, sans-serif; font-size:12px; background:url(../images/actions_chart-list-shade.png) repeat-y #fff;}
+.chart_sub-menu { float:left; width:180px; list-style:none; margin-top:15px; line-height:normal;}
+.chart_sub-menu li, #content .chart_sub-menu li { width:180px; vertical-align:middle; background: none; list-style: none; margin-left: 0; cursor: pointer;}
+.chart_sub-menu li a { width:160px; padding:10px 0 10px 20px; margin:1px 0; display:inline-block; font-family:Verdana, Geneva, sans-serif; font-size:12px; background:url(../images/actions_chart-list-shade.png) repeat-y #fff;}
 .chart_sub-menu li a:hover { padding:11px 0 11px 20px; margin:0; background:#a6a59c; color:#fff;}
 .chart_sub-menu li.c a, #content .chart_sub-menu li.c a { padding:11px 0 11px 20px; margin:0; background:#a6a59c; color:#fff;}
-.chart_sub-description { float:left; width:295px; margin:30px 0 50px 50px; font-family:Verdana, Geneva, sans-serif; font-size:13px; line-height:21px;}
+.chart_sub-description { float:left; width:295px; margin:30px 0 0 50px; font-family:Verdana, Geneva, sans-serif; font-size:13px; line-height:21px;}
+.actions-edit_chart .chart_sub-description {width:210px;}
 .chart_sub-description span { font-size:14px; font-weight:bold;}
 
 .actions-edit_key { font:12px Verdana, sans-serif; margin:15px 0 15px 5px; }
@@ -106,7 +108,7 @@
 .control_t2 {float:left; width:47px; padding-top:5px;}
 .control_input { background:url(../images/control-input.gif) no-repeat; width:53px; height:34px; padding-right:6px; text-align:right; border:none; font-size:18px; color:#000;}
 .control_div { clear:both; height:2px; background:#f3f3ed; margin-bottom:10px;}
-
+.act_tooltip { display: none; }
 
 
 
@@ -124,16 +126,6 @@
 .rounded_button.blugrid.c a { background:#fff; color:#2498b3;}
 
 
-
-tr.jqplot-table-legend { display: inline; float: left; }
-
-.jqplot-table-legend-swatch {border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; -khtml-border-radius:3px;}
-
-table.jqplot-table-legend, table.jqplot-cursor-legend { border: 0; background: transparent; font: 12px Verdana, Geneva, sans-serif; }
-
-td.jqplot-table-legend {vertical-align: top; }
-
-td.jqplot-table-legend > div {border: 0;}
 
 .ui-slider {
     font-family: Verdana, Arial, sans-serif;
@@ -206,6 +198,7 @@ td.jqplot-table-legend > div {border: 0;}
     
 .control_div {
     margin-top: 10px;
+    margin-right: 20px;
 }
 .control_definition { font:11px Verdana, sans-serif; color:#727272;}
 
@@ -224,8 +217,8 @@ td.jqplot-table-legend > div {border: 0;}
 
 /*  ADMIN  --------------------------------------------------- */
 
-.admin_left { float:left; width:474px; margin-top:50px;}
-.admin_right { float:left; width:454px; margin:50px 0 0 56px;}
+.admin_left { float:left; width:474px; }
+.admin_right { float:left; width:454px; margin:0px 0 0 56px;}
 /*.admin_left h2, .admin_right h2 { font-size:18px; color:#2498b3; line-height:normal;}*/
 .admin_box { background:#efeee3; padding:18px 20px; margin:10px 0 40px 0;}
 .admin_box span { padding-left:25px; font-style:italic;}
@@ -900,6 +893,10 @@ display: inline;
 	
 }
 
+.historyTable .ui-datatable-highlighted a {
+    color: #66b035 !important;
+}
+
 .closepopuplogin {
 	position: absolute;
     top: 10px;
@@ -1189,4 +1186,8 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 /* hide network connection lost message */
 .liferay-faces-bridge-body > iframe, .ice-status-indicator {
 	display: none;
+}
+
+#freeOutputPhysical {
+	padding-bottom: 20px;
 }

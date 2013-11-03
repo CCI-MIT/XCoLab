@@ -14,7 +14,8 @@
         <column name="description" type="String" />
         <column name="url" type="String" />
         <column name="commentsThread" type="long" />
-	</entity>
+	<column name="isQuiet" type="boolean" />
+    </entity>
     
     <entity name="DiscussionCategory" local-service='true'>
         <column name="pk" type="long" primary="true" />
@@ -110,6 +111,11 @@
         
         <finder name="MessageId" return-type="Collection">
             <finder-column name="messageId" />
+        </finder>
+        
+        <finder name="MessageIdFlagType" unique="true" return-type="DiscussionMessageFlag">
+            <finder-column name="messageId" />
+            <finder-column name="flagType" />
         </finder>
     </entity>
 </service-builder>

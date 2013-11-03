@@ -20,6 +20,22 @@
             <ice:messages globalOnly="false" layout="table" />
             <ice:outputConnectionStatus />
             <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+
+                <ice:panelTab label="Migration">
+
+                    <ice:commandButton action="#{adminTask.migrateDBSchema}" value="Start Migration"/>
+                    <ice:commandButton action="#{adminTask.stopDBMigration}" value="Stop Migration"/>
+
+                    <ice:commandButton action="#{adminTask.startDBIntegrityCheck}" value="Start Checking Data Integrity"/>
+                    <ice:commandButton action="#{adminTask.stopDBIntegrityCheck}" value="Stop Checking Data Integrity"/>
+
+                    <h:dataTable id="messages" value="#{adminTask.messages}" var="m">
+                        <h:column>
+                            <h:outputText value="#{m}" />
+                        </h:column>
+                    </h:dataTable>
+                </ice:panelTab>
+
                 <ice:panelTab label="Commons">
                     <ul>
                         <li><ice:commandButton action="#{adminTask.fixWikiPermissions}" value="Fix wiki permissions"/></li>
@@ -32,6 +48,8 @@
                         <li><ice:commandButton action="#{adminTask.synchronizeComments}" value="synchronize comments" /></li>
                         <li><ice:commandButton action="#{adminTask.upPlanAttributeIdCounter}" value="Up plan attribute id counter" /></li>
                         <li><ice:commandButton action="#{adminTask.copyProposalsToCompletedPhase}" value="Copy propsals to completed phase" /></li>
+                        <li><ice:commandButton action="#{adminTask.promoteProposal}" value="Promote single proposal" /></li>
+
                     </ul>
                 </ice:panelTab>
             </ice:panelTabSet>

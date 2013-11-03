@@ -301,6 +301,8 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .modified a {padding-top:10px; height:27px; display:inline-block;}
 .blueheaderbar .contributor {float:left; width:106px; height:37px;}
 .blueheaderbar .contributor a {padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .judgefellow {float:left; height:37px; width: 108px; position: relative; text-align: center;}
+.blueheaderbar .judgefellow a {padding-top:10px; height:27px; display:inline-block;}
 
 /* contest page */
 .blueheaderbar .contestbar {padding:11px 0 0 14px; position: relative;}
@@ -646,7 +648,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .edit-prop-butts a, .edit-prop-butts span {height:20px; padding:3px 10px 0; margin-right:5px; display:inline-block; background:#0f558a; font-size:14px; color:#fff;  -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;}
 .edit-prop-butts span { background:#b4b4b4; font-weight: 700;}
 
-.lastedited {float:left; height:19px; padding-top:4px;}
+.lastedited {float:left; height:19px; font-size: 13px;}
 
 /* proposal columns */
 .prop-left {float:left; width:616px; margin-right:38px; line-height:24px;}
@@ -756,6 +758,10 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .uploadbox {float:left; width:50px; height:50px; border:1px dashed #000; margin-right:20px;}
 
 .addprophelp {background:url(../images/icon-addprop-arrow.png) no-repeat 0px 3px; float:right; width:454px; padding:0 0 5px 11px; color:#545454;}
+
+.blue-arrow-right { display: inline-block; width: 18px; height: 18px; background: url(/climatecolab-theme/images/arrows.png) 18px 0; vertical-align: top;}
+.blue-arrow-left { display: inline-block; width: 18px; height: 18px; background: url(/climatecolab-theme/images/arrows.png) 0 0; vertical-align: top;}
+
 /* ------------------------------------------------------------------------------------------------------- */
 
 

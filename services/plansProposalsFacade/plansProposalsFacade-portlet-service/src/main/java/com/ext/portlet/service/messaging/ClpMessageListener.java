@@ -11,6 +11,8 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeServiceUtil;
 import com.ext.portlet.service.ContestPhaseServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeServiceUtil;
@@ -67,12 +69,16 @@ import com.ext.portlet.service.ModelOutputItemLocalServiceUtil;
 import com.ext.portlet.service.ModelOutputItemServiceUtil;
 import com.ext.portlet.service.ModelPositionLocalServiceUtil;
 import com.ext.portlet.service.ModelPositionServiceUtil;
+import com.ext.portlet.service.ModelRunnerLocalServiceUtil;
+import com.ext.portlet.service.ModelRunnerServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermServiceUtil;
+import com.ext.portlet.service.Plan2ProposalLocalServiceUtil;
+import com.ext.portlet.service.Plan2ProposalServiceUtil;
 import com.ext.portlet.service.PlanAttributeFilterLocalServiceUtil;
 import com.ext.portlet.service.PlanAttributeFilterServiceUtil;
 import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
@@ -127,6 +133,24 @@ import com.ext.portlet.service.PlansFilterPositionServiceUtil;
 import com.ext.portlet.service.PlansFilterServiceUtil;
 import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
 import com.ext.portlet.service.PlansUserSettingsServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeServiceUtil;
+import com.ext.portlet.service.ProposalAttributeTypeLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeTypeServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeTypeServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalServiceUtil;
+import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.ext.portlet.service.ProposalSupporterServiceUtil;
+import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
+import com.ext.portlet.service.ProposalVersionServiceUtil;
+import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
+import com.ext.portlet.service.ProposalVoteServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -162,6 +186,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestPhaseColumnLocalServiceUtil.clearService();
 
             ContestPhaseColumnServiceUtil.clearService();
+            ContestPhaseRibbonTypeLocalServiceUtil.clearService();
+
+            ContestPhaseRibbonTypeServiceUtil.clearService();
             ContestPhaseTypeLocalServiceUtil.clearService();
 
             ContestPhaseTypeServiceUtil.clearService();
@@ -243,6 +270,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ModelPositionLocalServiceUtil.clearService();
 
             ModelPositionServiceUtil.clearService();
+            ModelRunnerLocalServiceUtil.clearService();
+
+            ModelRunnerServiceUtil.clearService();
             OntologySpaceLocalServiceUtil.clearService();
 
             OntologySpaceServiceUtil.clearService();
@@ -252,6 +282,9 @@ public class ClpMessageListener extends BaseMessageListener {
             OntologyTermEntityLocalServiceUtil.clearService();
 
             OntologyTermEntityServiceUtil.clearService();
+            Plan2ProposalLocalServiceUtil.clearService();
+
+            Plan2ProposalServiceUtil.clearService();
             PlanAttributeLocalServiceUtil.clearService();
 
             PlanAttributeServiceUtil.clearService();
@@ -333,6 +366,33 @@ public class ClpMessageListener extends BaseMessageListener {
             PlanVoteLocalServiceUtil.clearService();
 
             PlanVoteServiceUtil.clearService();
+            ProposalLocalServiceUtil.clearService();
+
+            ProposalServiceUtil.clearService();
+            Proposal2PhaseLocalServiceUtil.clearService();
+
+            Proposal2PhaseServiceUtil.clearService();
+            ProposalAttributeLocalServiceUtil.clearService();
+
+            ProposalAttributeServiceUtil.clearService();
+            ProposalAttributeTypeLocalServiceUtil.clearService();
+
+            ProposalAttributeTypeServiceUtil.clearService();
+            ProposalContestPhaseAttributeLocalServiceUtil.clearService();
+
+            ProposalContestPhaseAttributeServiceUtil.clearService();
+            ProposalContestPhaseAttributeTypeLocalServiceUtil.clearService();
+
+            ProposalContestPhaseAttributeTypeServiceUtil.clearService();
+            ProposalSupporterLocalServiceUtil.clearService();
+
+            ProposalSupporterServiceUtil.clearService();
+            ProposalVersionLocalServiceUtil.clearService();
+
+            ProposalVersionServiceUtil.clearService();
+            ProposalVoteLocalServiceUtil.clearService();
+
+            ProposalVoteServiceUtil.clearService();
         }
     }
 }

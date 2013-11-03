@@ -18,6 +18,7 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
     private String _description;
     private String _url;
     private long _commentsThread;
+    private boolean _isQuiet;
 
     public DiscussionCategoryGroupClp() {
     }
@@ -78,6 +79,18 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
         _commentsThread = commentsThread;
     }
 
+    public boolean getIsQuiet() {
+        return _isQuiet;
+    }
+
+    public boolean isIsQuiet() {
+        return _isQuiet;
+    }
+
+    public void setIsQuiet(boolean isQuiet) {
+        _isQuiet = isQuiet;
+    }
+
     public void persist() throws SystemException {
         if (this.isNew()) {
             DiscussionCategoryGroupLocalServiceUtil.addDiscussionCategoryGroup(this);
@@ -101,6 +114,7 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
         clone.setDescription(getDescription());
         clone.setUrl(getUrl());
         clone.setCommentsThread(getCommentsThread());
+        clone.setIsQuiet(getIsQuiet());
 
         return clone;
     }
@@ -147,7 +161,7 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(getId());
@@ -157,13 +171,15 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
         sb.append(getUrl());
         sb.append(", commentsThread=");
         sb.append(getCommentsThread());
+        sb.append(", isQuiet=");
+        sb.append(getIsQuiet());
         sb.append("}");
 
         return sb.toString();
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(16);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.DiscussionCategoryGroup");
@@ -184,6 +200,10 @@ public class DiscussionCategoryGroupClp extends BaseModelImpl<DiscussionCategory
         sb.append(
             "<column><column-name>commentsThread</column-name><column-value><![CDATA[");
         sb.append(getCommentsThread());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>isQuiet</column-name><column-value><![CDATA[");
+        sb.append(getIsQuiet());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

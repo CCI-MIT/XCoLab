@@ -272,13 +272,18 @@ public interface ContestPhaseLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhasesForContest(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
         throws com.ext.portlet.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * from ContestPhaseImpl
+    * from ContestPhaseImpl *
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.Contest getContest(
@@ -289,6 +294,10 @@ public interface ContestPhaseLocalService extends PersistedModelLocalService {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getName(
         com.ext.portlet.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void promoteProposal(long proposalId, long nextPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

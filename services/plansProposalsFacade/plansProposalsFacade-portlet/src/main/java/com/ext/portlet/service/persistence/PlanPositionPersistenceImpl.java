@@ -10,6 +10,7 @@ import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
 import com.ext.portlet.service.persistence.ContestPhasePersistence;
+import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
 import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
@@ -40,6 +41,7 @@ import com.ext.portlet.service.persistence.ModelPositionPersistence;
 import com.ext.portlet.service.persistence.OntologySpacePersistence;
 import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
 import com.ext.portlet.service.persistence.OntologyTermPersistence;
+import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
 import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
 import com.ext.portlet.service.persistence.PlanAttributePersistence;
 import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
@@ -67,6 +69,15 @@ import com.ext.portlet.service.persistence.PlanVotePersistence;
 import com.ext.portlet.service.persistence.PlansFilterPersistence;
 import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
 import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
+import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
+import com.ext.portlet.service.persistence.ProposalAttributePersistence;
+import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
+import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
+import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
+import com.ext.portlet.service.persistence.ProposalPersistence;
+import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
+import com.ext.portlet.service.persistence.ProposalVersionPersistence;
+import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -196,6 +207,8 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
     protected ContestPhasePersistence contestPhasePersistence;
     @BeanReference(type = ContestPhaseColumnPersistence.class)
     protected ContestPhaseColumnPersistence contestPhaseColumnPersistence;
+    @BeanReference(type = ContestPhaseRibbonTypePersistence.class)
+    protected ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence;
     @BeanReference(type = ContestPhaseTypePersistence.class)
     protected ContestPhaseTypePersistence contestPhaseTypePersistence;
     @BeanReference(type = ContestTeamMemberPersistence.class)
@@ -256,6 +269,8 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
     protected OntologyTermPersistence ontologyTermPersistence;
     @BeanReference(type = OntologyTermEntityPersistence.class)
     protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
+    @BeanReference(type = Plan2ProposalPersistence.class)
+    protected Plan2ProposalPersistence plan2ProposalPersistence;
     @BeanReference(type = PlanAttributePersistence.class)
     protected PlanAttributePersistence planAttributePersistence;
     @BeanReference(type = PlanAttributeFilterPersistence.class)
@@ -310,6 +325,24 @@ public class PlanPositionPersistenceImpl extends BasePersistenceImpl<PlanPositio
     protected PlanTypeColumnPersistence planTypeColumnPersistence;
     @BeanReference(type = PlanVotePersistence.class)
     protected PlanVotePersistence planVotePersistence;
+    @BeanReference(type = ProposalPersistence.class)
+    protected ProposalPersistence proposalPersistence;
+    @BeanReference(type = Proposal2PhasePersistence.class)
+    protected Proposal2PhasePersistence proposal2PhasePersistence;
+    @BeanReference(type = ProposalAttributePersistence.class)
+    protected ProposalAttributePersistence proposalAttributePersistence;
+    @BeanReference(type = ProposalAttributeTypePersistence.class)
+    protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
+    @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
+    protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
+    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
+    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
+    @BeanReference(type = ProposalSupporterPersistence.class)
+    protected ProposalSupporterPersistence proposalSupporterPersistence;
+    @BeanReference(type = ProposalVersionPersistence.class)
+    protected ProposalVersionPersistence proposalVersionPersistence;
+    @BeanReference(type = ProposalVotePersistence.class)
+    protected ProposalVotePersistence proposalVotePersistence;
     @BeanReference(type = ResourcePersistence.class)
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)

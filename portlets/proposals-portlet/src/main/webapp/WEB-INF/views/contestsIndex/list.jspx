@@ -1,0 +1,120 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	
+	<div class="blueheaderbar tooltips">
+        <div class="contest" style="${proposalsPermissions.canJudgeActions ? 'width: 272px;' : ''}">
+        	<portlet:renderURL var="sortURL">
+        		<portlet:param name="sortColumn" value="CONTEST_NAME" />
+				<portlet:param name="showActiveContests" value="${showActiveContests }" />
+        		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CONTEST_NAME' ? not sortFilterPage.sortAscending : true }" />
+        	</portlet:renderURL>
+           	<a href="${sortURL }">Contest</a>
+           	<div class="tooltip">
+           		click to sort by contest title <div class="tt-arrow"><!--  --></div>
+           	</div>
+			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTEST_NAME" />
+        </div>
+        <div class="proposal">
+        	<portlet:renderURL var="sortURL">
+        		<portlet:param name="sortColumn" value="PROPOSALS_COUNT" />
+				<portlet:param name="showActiveContests" value="${showActiveContests }" />
+        		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'PROPOSALS_COUNT' ? not sortFilterPage.sortAscending : true }" />
+        	</portlet:renderURL>
+        	<a href="${sortURL}"><!--  --> </a>
+        	
+            <div class="tooltip">
+            	click to sort by<br />number of proposals<div class="tt-arrow"><!--  --></div>
+            </div>
+			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="PROPOSALS_COUNT" />
+        </div>
+        	<c:choose>
+        		<c:when test="${contest.activePhase.canVote }">
+            		<div class="voteslist">
+        				<portlet:renderURL var="sortURL">
+        					<portlet:param name="sortColumn" value="VOTES_COUNT" />
+							<portlet:param name="showActiveContests" value="${showActiveContests }" />
+        					<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'VOTES_COUNT' ? not sortFilterPage.sortAscending : true }" />
+        				</portlet:renderURL>
+            			<a href="${sortURL }"> <!--  --></a>
+                		<div class="tooltip">click to sort by number of votes<div class="tt-arrow"><!--  --></div></div>
+            			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES_COUNT" />
+            		</div>
+            	</c:when>
+            	<c:otherwise>
+            		<div class="comment">
+        				<portlet:renderURL var="sortURL">
+        					<portlet:param name="sortColumn" value="COMMENTS_COUNT" />
+							<portlet:param name="showActiveContests" value="${showActiveContests }" />
+        					<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'COMMENTS_COUNT' ? not sortFilterPage.sortAscending : true }" />
+        				</portlet:renderURL>
+            			<a href="${sortURL }"> <!--  --></a>
+                		<div class="tooltip">click to sort by number of comments<div class="tt-arrow"><!--  --></div></div>
+            			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS_COUNT" />
+            		</div>
+            	</c:otherwise>
+            </c:choose>
+        
+
+        <div class="what">
+        	<portlet:renderURL var="sortURL">
+        		<portlet:param name="sortColumn" value="WHAT" />
+				<portlet:param name="showActiveContests" value="${showActiveContests }" />
+        		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'WHAT' ? not sortFilterPage.sortAscending : true }" />
+			</portlet:renderURL>
+        	<a href="${sortURL }"> What</a>
+            <div class="tooltip">click to sort by actions<div class="tt-arrow"><!--  --></div></div>
+            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHAT" />
+        </div>
+        <div class="where">
+        	<portlet:renderURL var="sortURL">
+        		<portlet:param name="sortColumn" value="WHERE" />
+        		<portlet:param name="showActiveContests" value="${showActiveContests }" />
+        		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'WHERE' ? not sortFilterPage.sortAscending : true }" />
+			</portlet:renderURL>
+        	<a href="${sortURL }"> Where</a>
+            <div class="tooltip">click to sort by<br />geographical area<div class="tt-arrow"><!--  --></div></div>
+            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHERE" />
+        </div>
+        <div class="who">
+        	<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'WHO' ? not sortFilterPage.sortAscending : true }" />
+        	<portlet:renderURL var="sortURL">
+        		<portlet:param name="sortColumn" value="WHO" />
+				<portlet:param name="showActiveContests" value="${showActiveContests }" />
+        		<portlet:param name="sortAscending" value="${sortAscending}" />
+			</portlet:renderURL>
+        	<a href="${sortURL }"> Who</a>
+            <div class="tooltip">click to sort by who<br />this issue affects<div class="tt-arrow"><!--  --></div></div>
+            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHO" />
+        </div>
+        <c:if test="${proposalsPermissions.canJudgeActions}">
+            <div class="proposal">
+                <a href="#" style="background: none; margin-top: 9px;">Judge</a>
+                <div class="tooltip">see if judges are done<br />with this contest<div class="tt-arrow"><!--  --></div></div>
+            </div>
+            <div class="proposal">
+                <c:if test="${proposalsPermissions.canFellowActions}">
+                    <a href="#" style="background: none; margin-top: 9px;">Fellow</a>
+                    <div class="tooltip">see if fellows are done<br />with this contest<div class="tt-arrow"><!--  --></div></div>
+                </c:if>
+            </div>
+        </c:if>
+
+    </div>
+    <div class="shadebar"><!--  --></div>
+    <c:if test="${not empty contestsSorted.contestsFeatured }">
+    	<proposalsPortlet:contestsList contests="${contestsSorted.contestsFeatured }" />
+    </c:if>
+    <c:if test="${not empty contestsSorted.contestsNormal }">
+    	<c:if test="${not empty contestsSorted.contestsFeatured}">
+    		<div class="shadebar"><!--  --></div>
+    	</c:if>
+    	<proposalsPortlet:contestsList contests="${contestsSorted.contestsNormal }" />
+    </c:if>
+</jsp:root>

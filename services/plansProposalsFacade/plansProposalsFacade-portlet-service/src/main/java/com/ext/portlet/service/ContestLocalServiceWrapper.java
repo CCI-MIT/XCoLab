@@ -304,6 +304,13 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getActivePhase(contest);
     }
 
+    public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
+        com.ext.portlet.model.Contest contest)
+        throws com.ext.portlet.NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getActiveOrLastPhase(contest);
+    }
+
     public boolean isActive(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.isActive(contest);
@@ -430,6 +437,61 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getTeamMembers(contest);
+    }
+
+    /**
+    * <p>Returns true if user is subscribed to a contest, false otherwise</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @return true if user is subscribed to a contest, false otherwise
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public boolean isSubscribed(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.isSubscribed(contestPK, userId);
+    }
+
+    /**
+    * <p>Subscribes user to contest</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void subscribe(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestLocalService.subscribe(contestPK, userId);
+    }
+
+    /**
+    * <p>Subscribes user to contest</p>
+    *
+    * @param contestPK id of a contest
+    * @param userId id of a user
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public void unsubscribe(long contestPK, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestLocalService.unsubscribe(contestPK, userId);
+    }
+
+    public java.util.List<java.lang.Long> getModelIds(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getModelIds(contestPK);
+    }
+
+    public java.lang.Long getDefaultModelId(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getDefaultModelId(contestPK);
     }
 
     /**

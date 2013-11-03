@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+>
+	<bean id="liferayHibernateSessionFactory" class="com.liferay.portal.spring.hibernate.PortletHibernateConfiguration">
+		<property name="dataSource" ref="liferayDataSource" />
+	</bean>
+	
+	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
+    	<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+    	<property name="url" value="jdbc:hsqldb:test_lportal" />
+  	</bean>
+  	
+	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="liferayDataSource">
+    	<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+    	<property name="url" value="jdbc:hsqldb:mem:testdb" />
+  	</bean>
+	        <bean id="liferaySessionFactory" class="com.liferay.portal.dao.orm.hibernate.SessionFactoryImpl">
+                <property name="sessionFactoryClassLoader">
+                        <bean class="com.liferay.portal.kernel.util.PortalClassLoaderUtil" factory-method="getClassLoader" />
+                </property>
+                <property name="sessionFactoryImplementor" ref="liferayHibernateSessionFactory" />
+        </bean>
+        <bean id="liferayTransactionManager" class="com.liferay.portal.spring.transaction.TransactionManagerFactory" factory-method="createTransactionManager">
+                <constructor-arg ref="liferayDataSource" />
+                <constructor-arg ref="liferayHibernateSessionFactory" />
+        </bean>
+	<!-- 
+	<bean id="liferayTransactionManager" class="com.liferay.portal.kernel.util.InfrastructureUtil" factory-method="getTransactionManager" />
+	 -->
+	 
+
+	<bean id="com.liferay.portal.kernel.util.InfrastructureUtil" class="com.liferay.portal.kernel.util.InfrastructureUtil">
+		<property name="dataSource" ref="liferayDataSource" />
+		<property name="transactionManager" ref="liferayTransactionManager" />
+	</bean>
+</beans>

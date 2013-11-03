@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
@@ -14,7 +13,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.model.PlanAttribute;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanItemGroup;
 import com.ext.portlet.model.PlanSection;
@@ -26,7 +24,7 @@ import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
-import com.ext.utils.UserAccountGenerator;
+import com.icesoft.faces.async.render.SessionRenderer;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.NoSuchResourceException;
@@ -47,10 +45,20 @@ import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
+import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
+import org.xcolab.portlets.admintasks.migration.DataMigrator;
 
 public class AdminTasksBean {
     private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
 
+    private DataMigrator dataMigrator;
+    private DataIntegrityChecker dataIntegrityChecker;
+    private List<String> messages;
+    private Thread dataMigrationThread;
+    private Thread dataIntegrityCheckerThread;
+    public List<String> getMessages(){
+        return messages;
+    }
 
     public String populateFirstEmptySectionWithDescription() throws SystemException, PortalException {
         for (PlanItem plan : PlanItemLocalServiceUtil.getPlans()) {
@@ -587,9 +595,9 @@ public class AdminTasksBean {
 
                 }
             }
-            
+
             /*
-            
+
             for (DiscussionCategoryGroup discussion: discussions) {
                 DiscussionMessage commentsThread = DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion);
                 for (DiscussionCategoryGroup secondDiscussion: discussions) {
@@ -604,9 +612,9 @@ public class AdminTasksBean {
                     for (DiscussionMessage msg: DiscussionMessageLocalServiceUtil.getThreadMessages(commentsThread)) {
                         // check if such message is in child comments thread
 
-                        DiscussionMessage secondCommentsThread = 
+                        DiscussionMessage secondCommentsThread =
                                 DiscussionCategoryGroupLocalServiceUtil.getCommentThread(secondDiscussion);
-                        
+
                         boolean found = false;
                         if (secondCommentsThread != null) {
                             for (DiscussionMessage msg2: DiscussionMessageLocalServiceUtil.getThreadMessages(secondCommentsThread)) {
@@ -619,14 +627,14 @@ public class AdminTasksBean {
                             System.out.println("second comments is null");
                         }
                         if (found) continue;
-                        
+
                         System.out.println("Should copy message: " + msg);
-                        
+
                         DiscussionMessage newMessage = (DiscussionMessage) msg.clone();
-                        
+
                         newMessage.setPk(CounterLocalServiceUtil.increment(DiscussionMessage.class.getName()));
                         newMessage.setMessageId(CounterLocalServiceUtil.increment(DiscussionMessage.class.getName() + ".discussion"));
-                        
+
                         newMessage.setCategoryGroupId(secondDiscussion.getId());
                         newMessage.setNew(true);
 
@@ -634,27 +642,75 @@ public class AdminTasksBean {
                             System.out.println(" ** creating new thread");
                             // if there was no comments thread available, add one
                             newMessage.setThreadId(0);
-                            secondDiscussion.setCommentsThread(newMessage.getMessageId());  
+                            secondDiscussion.setCommentsThread(newMessage.getMessageId());
                             DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(secondDiscussion);
                         }
                         else {
                             // we had a thread, add new message to it
-                            
+
                             newMessage.setThreadId(secondCommentsThread.getMessageId());
                         }
                         System.out.println("copied message: " + newMessage);
                         DiscussionMessageLocalServiceUtil.addDiscussionMessage(newMessage);
-                        
+
                         // clone msg and add it to secondCommentsThread
                         //DiscussionMessage clonedMsg = msg.clone();
                     }
-                    
+
                 }
             }
             */
         }
 
+
+
+
+
     }
 
 
+
+    public void promoteProposal() {
+        try {
+            ContestPhaseLocalServiceUtil.promoteProposal(2583, 1300001);
+        } catch (PortalException e) {
+            e.printStackTrace();
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void migrateDBSchema(){
+
+        SessionRenderer.addCurrentSession("migration");
+        messages = new ArrayList<String>();
+        dataMigrator = new DataMigrator(messages);
+        dataMigrationThread = new Thread(dataMigrator);
+        dataMigrationThread.start();
+
+    }
+
+    public void stopDBMigration(){
+        dataMigrator.STOP = true;
+        if (messages!=null) messages.add("Migration STOPPED");
+        SessionRenderer.render("migration");
+        SessionRenderer.removeCurrentSession("migration");
+    }
+
+    public void startDBIntegrityCheck(){
+
+        SessionRenderer.addCurrentSession("migration");
+        messages = new ArrayList<String>();
+        dataIntegrityChecker =  new DataIntegrityChecker(messages);
+        dataIntegrityCheckerThread = new Thread(dataIntegrityChecker);
+        dataIntegrityCheckerThread.start();
+
+    }
+
+    public void stopDBIntegrityCheck(){
+        dataIntegrityChecker.STOP = true;
+        if (messages!=null) messages.add("Migration STOPPED");
+        SessionRenderer.render("migration");
+        SessionRenderer.removeCurrentSession("migration");
+    }
 }

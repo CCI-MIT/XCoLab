@@ -50,9 +50,10 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
             { "id_", Types.BIGINT },
             { "description", Types.VARCHAR },
             { "url", Types.VARCHAR },
-            { "commentsThread", Types.BIGINT }
+            { "commentsThread", Types.BIGINT },
+            { "isQuiet", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_DiscussionCategoryGroup (id_ LONG not null primary key,description TEXT null,url VARCHAR(1024) null,commentsThread LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_DiscussionCategoryGroup (id_ LONG not null primary key,description TEXT null,url VARCHAR(1024) null,commentsThread LONG,isQuiet BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_DiscussionCategoryGroup";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -74,6 +75,7 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
     private String _description;
     private String _url;
     private long _commentsThread;
+    private boolean _isQuiet;
     private transient ExpandoBridge _expandoBridge;
     private DiscussionCategoryGroup _escapedModelProxy;
 
@@ -94,6 +96,7 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         model.setDescription(soapModel.getDescription());
         model.setUrl(soapModel.getUrl());
         model.setCommentsThread(soapModel.getCommentsThread());
+        model.setIsQuiet(soapModel.getIsQuiet());
 
         return model;
     }
@@ -183,6 +186,19 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         _commentsThread = commentsThread;
     }
 
+    @JSON
+    public boolean getIsQuiet() {
+        return _isQuiet;
+    }
+
+    public boolean isIsQuiet() {
+        return _isQuiet;
+    }
+
+    public void setIsQuiet(boolean isQuiet) {
+        _isQuiet = isQuiet;
+    }
+
     @Override
     public DiscussionCategoryGroup toEscapedModel() {
         if (_escapedModelProxy == null) {
@@ -217,6 +233,7 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         discussionCategoryGroupImpl.setDescription(getDescription());
         discussionCategoryGroupImpl.setUrl(getUrl());
         discussionCategoryGroupImpl.setCommentsThread(getCommentsThread());
+        discussionCategoryGroupImpl.setIsQuiet(getIsQuiet());
 
         discussionCategoryGroupImpl.resetOriginalValues();
 
@@ -291,12 +308,14 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
 
         discussionCategoryGroupCacheModel.commentsThread = getCommentsThread();
 
+        discussionCategoryGroupCacheModel.isQuiet = getIsQuiet();
+
         return discussionCategoryGroupCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(getId());
@@ -306,13 +325,15 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         sb.append(getUrl());
         sb.append(", commentsThread=");
         sb.append(getCommentsThread());
+        sb.append(", isQuiet=");
+        sb.append(getIsQuiet());
         sb.append("}");
 
         return sb.toString();
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(16);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.DiscussionCategoryGroup");
@@ -333,6 +354,10 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         sb.append(
             "<column><column-name>commentsThread</column-name><column-value><![CDATA[");
         sb.append(getCommentsThread());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>isQuiet</column-name><column-value><![CDATA[");
+        sb.append(getIsQuiet());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");
