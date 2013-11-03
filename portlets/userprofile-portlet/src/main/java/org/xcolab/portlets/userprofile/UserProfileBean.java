@@ -198,7 +198,11 @@ public class UserProfileBean implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<UserActivityBean>();
             for (SocialActivity activity: ActivitySubscriptionLocalServiceUtil.getActivities(wrappedUser.getUserId(), 0, 200)) {
-                subscribedActivities.add(new UserActivityBean(activity));
+                try {
+                    subscribedActivities.add(new UserActivityBean(activity));
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                }
             }
             
         }
