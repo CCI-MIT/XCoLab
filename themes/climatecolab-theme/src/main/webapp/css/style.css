@@ -557,11 +557,12 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 
 /* contest boxes - rounded corners ------------- */
-.contestbox {width:452px; height:152px; border:4px solid #e8e7dc; background:#fff; padding:9px 8px; margin-bottom:24px; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; position:relative;}
+.contestbox {width:452px; height:152px; border:4px solid #e8e7dc; background:#fff; padding:9px 8px; margin-bottom:24px; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; position:relative; float: left;}
 .contestbox .img-wrap {float:left; width:169px;}
 .contestbox .text-wrap {float:left; width:283px; font-size: 14px; padding-top:3px; line-height:20px; color:#545454; position:relative;}
 .contestbox h3 {margin-bottom:8px; color:#404040;}
 .contestbox .count {position:absolute; top:128px; left:0; color:#969696;}
+.contest-featured-seperator {width: 50%; border-bottom: 1px solid gray; float: left; margin: 0 25% 24px 25%; height: 0px;}
 
 .prop {float:left; display:inline; padding-right:18px;}
 .comm {float:left; display:inline;}
