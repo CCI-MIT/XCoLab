@@ -29,8 +29,9 @@ public class DeleteProposalActionController {
         
         if (proposalsContext.getPermissions(request).getCanDelete()) {
             Proposal proposal = proposalsContext.getProposal(request);
-            proposal.setVisible(!delete);
-            ProposalLocalServiceUtil.updateProposal(proposal);
+
+            ProposalLocalServiceUtil.setVisibility(proposal.getProposalId(), !delete,
+                    proposalsContext.getUser(request).getUserId());
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to delete proposal ");

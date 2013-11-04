@@ -246,7 +246,7 @@ public interface ContestLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Methods from ContestImpl
+    * Methods from ContestImpl *
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ContestPhase> getPhases(
@@ -384,7 +384,7 @@ public interface ContestLocalService extends PersistedModelLocalService {
     * <p>Returns true if user is subscribed to a contest, false otherwise</p>
     *
     * @param contestPK id of a contest
-    * @param userId id of a user
+    * @param userId    id of a user
     * @return true if user is subscribed to a contest, false otherwise
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
@@ -398,7 +398,7 @@ public interface ContestLocalService extends PersistedModelLocalService {
     * <p>Subscribes user to contest</p>
     *
     * @param contestPK id of a contest
-    * @param userId id of a user
+    * @param userId    id of a user
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -410,7 +410,7 @@ public interface ContestLocalService extends PersistedModelLocalService {
     * <p>Subscribes user to contest</p>
     *
     * @param contestPK id of a contest
-    * @param userId id of a user
+    * @param userId    id of a user
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
