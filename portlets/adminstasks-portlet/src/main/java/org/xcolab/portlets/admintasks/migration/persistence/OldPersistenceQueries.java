@@ -144,4 +144,35 @@ public class OldPersistenceQueries {
         }
     }
 
+    public static void fixSocialActivitiesErrors(){
+        int errorCounter = 0;
+        try {
+            List<SocialActivity> sa = SocialActivityLocalServiceUtil.getActivities(39202L,0,Integer.MAX_VALUE);
+            for (SocialActivity s : sa){
+                try{
+                    if (StringUtils.isNotBlank(s.getExtraData())){
+                        Proposal p = ProposalLocalServiceUtil.getProposal(s.getClassPK());
+                        long threadId = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(p.getDiscussionId()).getCommentsThread();
+                        List<DiscussionMessage> messages = DiscussionMessageLocalServiceUtil.getThreadMessages(threadId);
+                        long messageId = threadId;
+                        for (DiscussionMessage dm : messages)
+                            if (dm.getAuthorId() == s.getUserId()) messageId = dm.getMessageId();
+
+                        s.setExtraData(s.getExtraData().split(",")[0] + "," + threadId + "," + messageId);
+                        SocialActivityLocalServiceUtil.updateSocialActivity(s);
+                    }
+                } catch (Exception e){
+                    SocialActivityLocalServiceUtil.deleteActivity(s.getActivityId());
+                    errorCounter++;
+                }
+
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("Errors: " + errorCounter);
+
+
+    }
+
 }

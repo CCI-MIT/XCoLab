@@ -47,6 +47,7 @@ import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 import edu.emory.mathcs.backport.java.util.Collections;
 import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
 import org.xcolab.portlets.admintasks.migration.DataMigrator;
+import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
 
 public class AdminTasksBean {
     private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
@@ -712,5 +713,9 @@ public class AdminTasksBean {
         if (messages!=null) messages.add("Migration STOPPED");
         SessionRenderer.render("migration");
         SessionRenderer.removeCurrentSession("migration");
+    }
+
+    public void socialFix(){
+        OldPersistenceQueries.fixSocialActivitiesErrors();
     }
 }

@@ -28,6 +28,7 @@
 
                     <ice:commandButton action="#{adminTask.startDBIntegrityCheck}" value="Start Checking Data Integrity"/>
                     <ice:commandButton action="#{adminTask.stopDBIntegrityCheck}" value="Stop Checking Data Integrity"/>
+                    <ice:commandButton action="#{adminTask.socialFix}" value="Social Fix"/>
 
                     <h:dataTable id="messages" value="#{adminTask.messages}" var="m">
                         <h:column>
