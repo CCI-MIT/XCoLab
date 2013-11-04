@@ -25,7 +25,7 @@
                             <portlet:param name="pageToDisplay" value="createProposal" />
                         </portlet:renderURL>
                         <a href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
-                           onclick="if(!deferUntilLogin()) return false;">
+                           onclick="if(!deferUntilLoginTargeted('${createProposalURL}')) return false;">
                             <span>CREATE</span> proposal
                         </a>
                     </div>

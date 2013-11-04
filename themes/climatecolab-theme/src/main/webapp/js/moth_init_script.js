@@ -196,7 +196,6 @@ function deferUntilLogin(fn) {
         return true;
     } else {
     	jQuery('#popup_login').show();
-    	jQuery.scrollTo(jQuery("#popup_login"));
     	jQuery("#signInForm_form input[name=redirect]").val(location.toString());
     }
 }
@@ -209,19 +208,14 @@ function showForgotPasswordPopup() {
 function deferUntilLoginTargeted(loc) {
 
     if (Liferay.ThemeDisplay.isSignedIn()) {
-        window.location = loc;
+        return true;
     } else {
-    	jQuery('.popup_login').show();
-    	jQuery.scrollTo(jQuery(".popup_login"));
-    	/*
-    	var loginregister = "/web/guest/loginregister?p_p_id=loginregister";
+        jQuery('#popup_login').show();
         if (loc!=null) {
-          loginregister += "&redirect=" + escape(loc);
+            jQuery("#signInForm_form input[name=redirect]").val(loc);
         } else {
-    	    loginregister += "&redirect=" + escape(window.location);
+            jQuery("#signInForm_form input[name=redirect]").val(location.toString());
         }
-    	window.location = loginregister;
-    	*/
     }
 
 }
