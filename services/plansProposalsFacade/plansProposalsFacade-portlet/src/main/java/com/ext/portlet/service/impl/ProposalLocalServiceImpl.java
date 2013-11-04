@@ -211,7 +211,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
     @Transactional
     public void setVisibility(Long proposalId, Boolean visibility, Long authorId) throws SystemException, PortalException {
-        //TODO: throws exception if visibility reverted from false to true. not that important right now, but might be of use eventually
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
         proposal.setVisible(visibility);
         ProposalLocalServiceUtil.updateProposal(proposal);

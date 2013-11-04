@@ -28,6 +28,8 @@ public class DeleteProposalActionController {
                     throws PortalException, SystemException, ProposalsAuthorizationException {
         
         if (proposalsContext.getPermissions(request).getCanDelete()) {
+            //TODO: Undelete doesnt work
+
             Proposal proposal = proposalsContext.getProposal(request);
 
             ProposalLocalServiceUtil.setVisibility(proposal.getProposalId(), !delete,
