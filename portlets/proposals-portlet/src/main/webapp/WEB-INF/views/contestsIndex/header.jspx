@@ -76,7 +76,7 @@
         <portlet:actionURL var="suggestContestURL">
             <portlet:param name="action" value="suggestContest" />
         </portlet:actionURL>
-        <form action="${suggestContestURL}" method="post">
+        <form method="post">
             <div id="suggestContestPopupContainer" style="display: none;">
                 <div class="popup-wrap p1" id="suggestContestPopup">
                     <div class="popup"><h4>Please review the&#160;<a
@@ -87,7 +87,7 @@
                         <div class="lrContentPlaceholder lfr-column " id="suggestContestPopupContent">
                                <div><textarea name="suggestContestText" class="portlet-form-input-field" style="display: block; width: 100%; height: 80px;">Your suggestion</textarea></div>
                                 <center>
-                                    <div class="blue-button"><a class="iceCmdLnk" href="javascript:;" onclick="$(this).parents('form:first').submit();">Send</a></div>
+                                    <div class="blue-button"><a class="iceCmdLnk" href="javascript:;" onclick=" $(this).parents('form:first').get(0).setAttribute('action', '${suggestContestURL}'); $(this).parents('form:first').submit();">Send</a></div>
                                     <div class="blue-button"><a href="javascript:;"
                                                                 onclick="$('#suggestContestPopupContainer').hide();">Cancel</a>
                                     </div>
