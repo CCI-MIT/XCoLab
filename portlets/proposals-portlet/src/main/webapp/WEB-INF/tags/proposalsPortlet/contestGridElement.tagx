@@ -30,8 +30,13 @@
 
 			</div>
         </div>
-        <c:if test="${not empty contest.flag}">
-            <div class="contestFlag-${contest.flag} ${fn:toLowerCase(fn:replace(contest.flagText, ' ', ''))} ${contest.flagText}"><!--  --></div>
+        <c:if test="${not empty contest.flagText}">
+
+            <div class="contest-flag-container">
+                <span class="contest-flag-left contest-flag-${contest.flag}-left">&#160;</span>
+                <span class="contest-flag-middle contest-flag-${contest.flag}-middle">${contest.flagText}</span>
+                <span class="contest-flag-right contest-flag-${contest.flag}-right">&#160;</span>
+            </div>
         </c:if>
      </div> <!-- /contestbox -->
 </jsp:root>

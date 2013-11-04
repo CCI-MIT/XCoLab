@@ -762,6 +762,16 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .blue-arrow-right { display: inline-block; width: 18px; height: 18px; background: url(/climatecolab-theme/images/arrows.png) 18px 0; vertical-align: top;}
 .blue-arrow-left { display: inline-block; width: 18px; height: 18px; background: url(/climatecolab-theme/images/arrows.png) 0 0; vertical-align: top;}
 
+.contest-flag-container{ position: absolute; top: 115px; left: -20px; }
+.contest-flag-left{width: 12px; height: 36px; display: block; float: left;}
+.contest-flag-middle{ float: left; height: 36px; font-family: "proxima-nova", "proxima-nova-1", Arial, Helvetica, sans-serif; font-weight: bold;  color: #ffffff; padding: 9px;}
+.contest-flag-right{ width: 12px; height: 36px; display: block; float: left;}
+.contest-flag-left{ background: url(/climatecolab-theme/images/banner-green-left.png) repeat-x; }
+.contest-flag-1-middle{ background: url(/climatecolab-theme/images/banner-green-middle.png) repeat-x; }
+.contest-flag-1-right{ background: url(/climatecolab-theme/images/banner-green-right.png) repeat-x; }
+.contest-flag-2-left{ background: url(/climatecolab-theme/images/banner-grey-left.png) repeat-x; }
+.contest-flag-2-middle{ background: url(/climatecolab-theme/images/banner-grey-middle.png) repeat-x; }
+.contest-flag-2-right{ background: url(/climatecolab-theme/images/banner-grey-right.png) repeat-x; }
 /* ------------------------------------------------------------------------------------------------------- */
 
 
