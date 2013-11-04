@@ -57,7 +57,7 @@ public class BadgeBean implements Serializable{
                 // Plan won a contest
                 try {
                     String badgeText = ribbon.getHoverText();
-                    long contestId = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestPK(); //PlanItemLocalServiceUtil.getContest(plan).getContestPK();
+                    long contestId = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestPK();
                     String planTitle =  ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
                     badges.add(new Badge(planRibbon, badgeText, p.getProposalId(), planTitle, contestId));
                 } catch (Exception e) { }

@@ -70,9 +70,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         try {
             Proposal plan = ProposalLocalServiceUtil.getProposal(id);
             SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, getDocument(plan).getUID());
-        } catch (NoSuchPlanItemException e) {
-            _log.error("Can't remove plan from index: " + obj, e);
-        } catch (SystemException | PortalException e) {
+        } catch (Throwable e) {
             _log.error("Can't remove plan from index: " + obj, e);
         }
 
@@ -199,9 +197,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         if (obj instanceof Long) {
             try {
                 p = ProposalLocalServiceUtil.getProposal((Long) obj);
-            } catch (NoSuchPlanItemException e) {
-                _log.error("Can't reindex plan " + p.getProposalId(), e);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 _log.error("Can't reindex plan " + p.getProposalId(), e);
             }
 
@@ -210,21 +206,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
                 Method m = obj.getClass().getMethod("getProposalId");
                 Long planId = (Long) m.invoke(obj);
                 p = ProposalLocalServiceUtil.getProposal(planId);
-            } catch (NoSuchPlanItemException e) {
-                _log.error("Can't reindex plan " + obj, e);
-            } catch (SystemException e) {
-                _log.error("Can't reindex plan " + obj, e);
-            } catch (IllegalAccessException e) {
-                _log.error("Can't reindex plan " + obj, e);
-            } catch (IllegalArgumentException e) {
-                _log.error("Can't reindex plan " + obj, e);
-            } catch (InvocationTargetException e) {
-                _log.error("Can't reindex plan " + obj, e);
-            } catch (NoSuchMethodException e) {
-                _log.error("Can't reindex plan " + obj, e);
-            } catch (SecurityException e) {
-                _log.error("Can't reindex plan " + obj, e);
-            } catch (PortalException e) {
+            } catch (Throwable e) {
                 _log.error("Can't reindex plan " + obj, e);
             }
         }
