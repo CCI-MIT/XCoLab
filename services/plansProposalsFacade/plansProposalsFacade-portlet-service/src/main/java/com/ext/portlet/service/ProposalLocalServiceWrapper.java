@@ -254,15 +254,11 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * Creation of all entities is wrapped into a transaction.
     * </p>
     *
-    * @param authorId
-    id of proposal author
-    * @param contestPhaseId
-    id of a contestPhase
+    * @param authorId       id of proposal author
+    * @param contestPhaseId id of a contestPhase
     * @return created proposal
-    * @throws SystemException
-    in case of a Liferay error
-    * @throws PortalException
-    in case of a Liferay error
+    * @throws SystemException in case of a Liferay error
+    * @throws PortalException in case of a Liferay error
     * @author janusz
     */
     public com.ext.portlet.model.Proposal create(long authorId,
@@ -288,15 +284,11 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * Creation of all entities is wrapped into a transaction.
     * </p>
     *
-    * @param authorId
-    id of proposal author
-    * @param contestPhaseId
-    id of a contestPhase
+    * @param authorId       id of proposal author
+    * @param contestPhaseId id of a contestPhase
     * @return created proposal
-    * @throws SystemException
-    in case of a Liferay error
-    * @throws PortalException
-    in case of a Liferay error
+    * @throws SystemException in case of a Liferay error
+    * @throws PortalException in case of a Liferay error
     * @author janusz
     */
     public com.ext.portlet.model.Proposal create(long authorId,
@@ -307,23 +299,30 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
             proposalId, publishActivity);
     }
 
+    public void setVisibility(java.lang.Long proposalId,
+        java.lang.Boolean visibility, java.lang.Long authorId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.setVisibility(proposalId, visibility, authorId);
+    }
+
     /**
     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
     * <p>The algorithm for setting an attribute value is as follows:</p>
     * <ol>
-    *  <li>new proposal version is created</li>
-    *  <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
-    *      it is copied to the new version</li>
-    *  <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
+    * <li>new proposal version is created</li>
+    * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
+    * it is copied to the new version</li>
+    * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
     * </ol>
     *
-    * @param authorId id of a change author
-    * @param proposalId id of a proposal
+    * @param authorId      id of a change author
+    * @param proposalId    id of a proposal
     * @param attributeName name of an attribute
-    * @param additionalId additional id for an attribute
-    * @param stringValue string value for an attribute
-    * @param numericValue numeric value for an attribute
-    * @param realValue double value for an attribute
+    * @param additionalId  additional id for an attribute
+    * @param stringValue   string value for an attribute
+    * @param numericValue  numeric value for an attribute
+    * @param realValue     double value for an attribute
     * @return ProposalAttribute that represents newly set attribute
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
@@ -342,20 +341,20 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
     * <p>The algorithm for setting an attribute value is as follows:</p>
     * <ol>
-    *  <li>new proposal version is created</li>
-    *  <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
-    *      it is copied to the new version</li>
-    *  <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
+    * <li>new proposal version is created</li>
+    * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
+    * it is copied to the new version</li>
+    * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
     * </ol>
     *
-    * @param authorId id of a change author
-    * @param proposalId id of a proposal
+    * @param authorId      id of a change author
+    * @param proposalId    id of a proposal
     * @param attributeName name of an attribute
-    * @param additionalId additional id for an attribute
-    * @param stringValue string value for an attribute
-    * @param numericValue numeric value for an attribute
-    * @param realValue double value for an attribute
-    * @param updatedDate date of update
+    * @param additionalId  additional id for an attribute
+    * @param stringValue   string value for an attribute
+    * @param numericValue  numeric value for an attribute
+    * @param realValue     double value for an attribute
+    * @param updatedDate   date of update
     * @return ProposalAttribute that represents newly set attribute
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
@@ -540,7 +539,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Returns all attributes for given version of a proposal.</p>
     *
     * @param proposalId id of a proposal
-    * @param version version number of a proposal
+    * @param version    version number of a proposal
     * @return list of proposal attributes for current version of a proposal
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
@@ -556,9 +555,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * <p>Returns an attribute for current version of a proposal.</p>
     *
-    * @param proposalId id of a proposal
+    * @param proposalId    id of a proposal
     * @param attributeName name of an attribute
-    * @param additionalId additionalId of an attribute
+    * @param additionalId  additionalId of an attribute
     * @return proposal attribute
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
@@ -575,10 +574,10 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * <p>Returns an attribute for concrete version of a proposal.</p>
     *
-    * @param proposalId id of a proposal
-    * @param version version of a proposal
+    * @param proposalId    id of a proposal
+    * @param version       version of a proposal
     * @param attributeName name of an attribute
-    * @param additionalId additionalId of an attribute
+    * @param additionalId  additionalId of an attribute
     * @return proposal attribute
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
@@ -613,7 +612,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Returns a concrete proposal version descriptor.</p>
     *
     * @param proposalId id of a proposal
-    * @param version version of a proposal
+    * @param version    version of a proposal
     * @return proposal version descriptor
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
@@ -712,7 +711,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Adds supporter to a proposal</p>
     *
     * @param proposalId id of a proposal
-    * @param userId id of a supported to be added
+    * @param userId     id of a supported to be added
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
@@ -726,7 +725,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Adds supporter to a proposal</p>
     *
     * @param proposalId id of a proposal
-    * @param userId id of a supported to be added
+    * @param userId     id of a supported to be added
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
@@ -741,7 +740,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Retracts support from a proposal</p>
     *
     * @param proposalId id of a proposal
-    * @param userId id of a supported to be removed
+    * @param userId     id of a supported to be removed
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
@@ -754,7 +753,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * <p>Returns list of users that have voted for a proposal in given contest phase</p>
     *
-    * @param proposalId proposal id
+    * @param proposalId     proposal id
     * @param contestPhaseId contest phase id
     * @return list of proposal voters
     * @throws PortalException in case of an LR error
@@ -770,7 +769,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * <p>Return number of users that have voted for a proposal in given contest phase</p>
     *
-    * @param proposalId proposal id
+    * @param proposalId     proposal id
     * @param contestPhaseId contest phase id
     * @return number of votes
     * @throws PortalException in case of an LR error
@@ -786,9 +785,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * for different proposal in this phase, then that vote is removed first. User has only one vote
     * in one contestPhase.</p>
     *
-    * @param proposalId id of a proposal
+    * @param proposalId     id of a proposal
     * @param contestPhaseId id of a contest phase
-    * @param userId id of an user
+    * @param userId         id of an user
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
@@ -803,9 +802,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * for different proposal in this phase, then that vote is removed first. User has only one vote
     * in one contestPhase.</p>
     *
-    * @param proposalId id of a proposal
+    * @param proposalId     id of a proposal
     * @param contestPhaseId id of a contest phase
-    * @param userId id of an user
+    * @param userId         id of an user
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
@@ -821,7 +820,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Retracts user vote in context of a contest phase.</p>
     *
     * @param contestPhaseId id of a contest phase
-    * @param userId id of an user
+    * @param userId         id of an user
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
@@ -849,7 +848,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Tells if user is a member of a proposal team</p>
     *
     * @param proposalId id of a proposal
-    * @param userId id of an user
+    * @param userId     id of an user
     * @return true if user is a member of given proposal team, false otherwise
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
@@ -893,8 +892,8 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Sends a request to join proposal teamp</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
-    * @param comment optional comment
+    * @param userId     user id
+    * @param comment    optional comment
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -909,7 +908,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Remove a user from a proposal team</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
+    * @param userId     user id
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -923,7 +922,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Denies user as a member of proposal team</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
+    * @param userId     user id
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -939,7 +938,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Approves user as a member of proposal team</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
+    * @param userId     user id
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -957,7 +956,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Tells if user has requested membership of given plan</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
+    * @param userId     user id
     * @return true if user has requested membership, false otherwise
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
@@ -973,7 +972,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Adds user to a proposal team if proposal is open and user is not a member already</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
+    * @param userId     user id
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -988,7 +987,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Returns true if user is subscribed to given proposal</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
+    * @param userId     user id
     * @return true if user has subscribed to a proposal, false otherwise
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
@@ -1003,7 +1002,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Subscribes user to a proposal</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
+    * @param userId     user id
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -1019,8 +1018,8 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * (ie. when new proposal is created in a contest to which user is subscribed). </p>
     *
     * @param proposalId proposal id
-    * @param userId user id
-    * @param automatic if this is an automatic subscription
+    * @param userId     user id
+    * @param automatic  if this is an automatic subscription
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -1034,7 +1033,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <p>Unsubscribes user from given proposal</p>
     *
     * @param proposalId proposal id
-    * @param userId user id
+    * @param userId     user id
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -1051,8 +1050,8 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * is decreased by 1 for this subscription and if it reaches 0 then subscription is removed. </p>
     *
     * @param proposalId proposal id
-    * @param userId user id
-    * @param automatic if this is an automatic subscription
+    * @param userId     user id
+    * @param automatic  if this is an automatic subscription
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -1065,9 +1064,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * <p>Returns true if user has voted for given proposal in context of a contest phase</p>
     *
-    * @param proposalId proposal id
+    * @param proposalId     proposal id
     * @param contestPhaseId contest phase id
-    * @param userId user id
+    * @param userId         user id
     * @return true if user has voted for proposal in context of a contest phase
     * @throws SystemException
     */
