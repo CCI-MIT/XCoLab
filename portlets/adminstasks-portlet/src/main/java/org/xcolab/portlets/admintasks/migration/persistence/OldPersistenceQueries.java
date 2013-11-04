@@ -162,7 +162,7 @@ public class OldPersistenceQueries {
                         SocialActivityLocalServiceUtil.updateSocialActivity(s);
                     }
                 } catch (Exception e){
-                    SocialActivityLocalServiceUtil.deleteActivity(s.getActivityId());
+                    //SocialActivityLocalServiceUtil.deleteActivity(s.getActivityId());
                     errorCounter++;
                 }
 
