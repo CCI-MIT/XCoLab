@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import org.xcolab.portlets.plansadmin.wrappers.PlanTemplateWrapper;
 
 import com.ext.portlet.model.PlanTemplate;
@@ -35,7 +36,7 @@ public class PlanTemplatesAdmin implements Serializable {
     }
     
     public String createNew() throws PortalException, SystemException {
-        edited = new PlanTemplateWrapper(PlanTemplateLocalServiceUtil.createPlanTemplate(0));
+        edited = new PlanTemplateWrapper(PlanTemplateLocalServiceUtil.createPlanTemplate(CounterLocalServiceUtil.increment(PlanTemplate.class.getName())));
         
         return "editPlanTemplate";
     }

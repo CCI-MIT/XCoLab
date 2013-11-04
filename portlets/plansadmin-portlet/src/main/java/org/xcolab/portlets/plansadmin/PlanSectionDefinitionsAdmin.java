@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import org.xcolab.portlets.plansadmin.wrappers.PlanSectionDefinitionWrapper;
 
 import com.ext.portlet.model.PlanSectionDefinition;
@@ -33,8 +34,8 @@ public class PlanSectionDefinitionsAdmin implements Serializable {
         edited = (PlanSectionDefinitionWrapper) e.getComponent().getAttributes().get("definition");
     }
     
-    public String createNew() {
-        edited = new PlanSectionDefinitionWrapper(PlanSectionDefinitionLocalServiceUtil.createPlanSectionDefinition(0));
+    public String createNew() throws SystemException {
+        edited = new PlanSectionDefinitionWrapper(PlanSectionDefinitionLocalServiceUtil.createPlanSectionDefinition(CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName())));
         
         return "editPlanSectionDefinition";
     }
