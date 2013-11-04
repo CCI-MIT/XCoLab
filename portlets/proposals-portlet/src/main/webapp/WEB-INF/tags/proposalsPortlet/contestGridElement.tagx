@@ -5,7 +5,8 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	version="2.0">
 	<jsp:directive.attribute name="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper" required="true" rtexprvalue="true" description="Contest" />
-	<div class="contestbox">
+    <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
+	<div class="contestbox" style="${ (index % 2 == 0) ? 'margin-right: 25px;' : ''}">
 		<div class="img-wrap">
         	<a href="/web/guest/plans/-/plans/contestId/${contest.contestPK}">
             	<img src="/image/contest?img_id=${contest.contestLogoId}" width="151" height="151" alt="${contest.contestShortName }" />
@@ -30,8 +31,13 @@
 
 			</div>
         </div>
-        <c:if test="${not empty contest.flag}">
-            <div class="contestFlag-${contest.flag} ${fn:toLowerCase(fn:replace(contest.flagText, ' ', ''))} ${contest.flagText}"><!--  --></div>
+        <c:if test="${not empty contest.flagText}">
+
+            <div class="contest-flag-container">
+                <span class="contest-flag-left contest-flag-${contest.flag}-left">&#160;</span>
+                <span class="contest-flag-middle contest-flag-${contest.flag}-middle">${contest.flagText}</span>
+                <span class="contest-flag-right contest-flag-${contest.flag}-right">&#160;</span>
+            </div>
         </c:if>
      </div> <!-- /contestbox -->
 </jsp:root>

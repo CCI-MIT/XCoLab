@@ -12,17 +12,13 @@ import org.xcolab.portlets.proposals.utils.ContestsColumn;
 
 public class ContestsSortFilterBean {
     private final List<ContestWrapper> contests;
-    private final SortFilterPage sortFilterPage;
     private ContestsColumn sortColumn;
-    
-    private List<ContestWrapper> contestsPartA = new ArrayList<ContestWrapper>();
-    private List<ContestWrapper> contestsPartB = new ArrayList<ContestWrapper>();
+
     private List<ContestWrapper> contestsFeatured = new ArrayList<ContestWrapper>();
     private List<ContestWrapper> contestsNormal = new ArrayList<ContestWrapper>();
 
     public ContestsSortFilterBean(List<ContestWrapper> contests, final SortFilterPage sortFilterPage) {
         super();
-        this.sortFilterPage = sortFilterPage;
         List<ContestWrapper> filteredContests = contests;
         
         // filter contests
@@ -62,32 +58,10 @@ public class ContestsSortFilterBean {
                 return sortFilterPage.isSortAscending() ? ret : - ret;
             }
         });
-        boolean addToA = true;
         for (ContestWrapper contest: this.contests) {
             if (contest.isFeatured()) contestsFeatured.add(contest);
             else contestsNormal.add(contest);
-            
-            if (addToA) contestsPartA.add(contest);
-            else contestsPartB.add(contest);
-            
-            addToA = !addToA;
         }
-    }
-
-    public List<ContestWrapper> getContestsPartA() {
-        return contestsPartA;
-    }
-
-    public void setContestsPartA(List<ContestWrapper> contestsPartA) {
-        this.contestsPartA = contestsPartA;
-    }
-
-    public List<ContestWrapper> getContestsPartB() {
-        return contestsPartB;
-    }
-
-    public void setContestsPartB(List<ContestWrapper> contestsPartB) {
-        this.contestsPartB = contestsPartB;
     }
 
     public List<ContestWrapper> getContestsFeatured() {
