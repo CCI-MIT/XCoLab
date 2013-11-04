@@ -562,7 +562,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .contestbox .text-wrap {float:left; width:283px; font-size: 14px; padding-top:3px; line-height:20px; color:#545454; position:relative;}
 .contestbox h3 {margin-bottom:8px; color:#404040;}
 .contestbox .count {position:absolute; top:128px; left:0; color:#969696;}
-.contest-featured-seperator {width: 50%; border-bottom: 1px solid gray; float: left; margin: 24px 25% 40px 25%; height: 0px;}
+.contest-featured-seperator {width: 50%; border-bottom: 1px solid gray; float: left; margin: 20px 25% 44px 25%; height: 0px;}
 
 .prop {float:left; display:inline; padding-right:18px;}
 .comm {float:left; display:inline;}
