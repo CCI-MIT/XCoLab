@@ -214,10 +214,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         //TODO: throws exception if visibility reverted from false to true. not that important right now, but might be of use eventually
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
         proposal.setVisible(visibility);
+        ProposalLocalServiceUtil.updateProposal(proposal);
 
         setAttribute(authorId, proposalId, ProposalAttributeKeys.VISIBLE, (visibility) ? 1l : 0l);
 
-        ProposalLocalServiceUtil.updateProposal(proposal);
     }
 
     /**
