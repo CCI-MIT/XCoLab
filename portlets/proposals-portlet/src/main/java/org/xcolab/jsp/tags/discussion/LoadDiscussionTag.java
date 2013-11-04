@@ -32,7 +32,7 @@ public class LoadDiscussionTag extends BodyTagSupport {
         try {
             DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
             PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
-            
+            Object o = pageContext.getRequest().getAttribute("scrollDown");
             if (portletRequest == null) {
                 throw new JspException("Can't find portlet request");
             }
