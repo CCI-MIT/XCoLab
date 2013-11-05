@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import org.xcolab.portlets.ontology.wrappers.FocusAreaWrapper;
 
 import com.ext.portlet.model.FocusArea;
@@ -37,5 +38,6 @@ public class FocusAreaAdminBean {
         
         area = new FocusAreaWrapper(areaId);
     }
+
 
 }
