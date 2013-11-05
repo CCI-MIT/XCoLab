@@ -433,6 +433,7 @@
     
     <entity name="PlanSectionDefinition" local-service="true">
         <column name="id" type="long" primary="true" />
+        <column name="type" type="String" />
         <column name="adminTitle" type="String" />
         <column name="title" type="String" />
         <column name="defaultText" type="String" />
@@ -447,6 +448,7 @@
         <column name="planSectionDefinitionId" type="long"  />
         <column name="planId" type="long" />
         <column name="content" type="String" />
+        <column name="numericValue" type="long" />
         <column name="created" type="Date" />
         
         <column name="version" type="long" />

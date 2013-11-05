@@ -18,6 +18,7 @@ import java.io.Serializable;
 public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDefinition>,
     Serializable {
     public long id;
+    public String type;
     public String adminTitle;
     public String title;
     public String defaultText;
@@ -28,10 +29,12 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(id);
+        sb.append(", type=");
+        sb.append(type);
         sb.append(", adminTitle=");
         sb.append(adminTitle);
         sb.append(", title=");
@@ -55,6 +58,12 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         PlanSectionDefinitionImpl planSectionDefinitionImpl = new PlanSectionDefinitionImpl();
 
         planSectionDefinitionImpl.setId(id);
+
+        if (type == null) {
+            planSectionDefinitionImpl.setType(StringPool.BLANK);
+        } else {
+            planSectionDefinitionImpl.setType(type);
+        }
 
         if (adminTitle == null) {
             planSectionDefinitionImpl.setAdminTitle(StringPool.BLANK);

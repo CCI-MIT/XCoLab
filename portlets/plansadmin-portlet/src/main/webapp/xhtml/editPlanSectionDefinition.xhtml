@@ -12,7 +12,7 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:collab="http://climatecollaboratorium.org/facelets"
     >
-    <ice:portlet><ice:form>
+    <ice:portlet>
     <style>
             label {
                 font-weight: bold;
@@ -50,20 +50,25 @@
         </style>
         <h1>#{planSectionDefinitionsAdmin.edited.definition}</h1>
         <h1>Edit PlanSectionDefinition #{planSectionDefinitionsAdmin.edited.definition.title}</h1>
-        <ice:panelGrid cellspacing="0" columnClasses="col1, col2" rowClasses="odd, even" cellpadding="5" columns="2">
         
+        <h1>${planSectionDefinitionsAdmin.edited.type}</h1>
+        <ice:form>
+        	<ice:panelGrid cellspacing="0" columnClasses="col1, col2" rowClasses="odd, even" cellpadding="5" columns="2">
+        
+          	 	<ice:outputLabel value="Section type" />
+           		<ice:selectOneMenu valueChangeListener="#{planSectionDefinitionsAdmin.edited.typeChanged}" value="#{planSectionDefinitionsAdmin.edited.type}" partialSubmit="true">
+             		<f:selectItems value="#{planSectionDefinitionsAdmin.edited.availableTypes}" />
+           		</ice:selectOneMenu>
+        	</ice:panelGrid>
+        </ice:form>
+        <ice:form>
+        
+        <ice:panelGrid cellspacing="0" columnClasses="col1, col2" rowClasses="odd, even" cellpadding="5" columns="2">
            <ice:outputLabel value="Admin title" />
            <ice:inputText value="#{planSectionDefinitionsAdmin.edited.definition.adminTitle}" styleClass="inputWide"  />
            
            <ice:outputLabel value="Title" />
            <ice:inputText value="#{planSectionDefinitionsAdmin.edited.definition.title}" styleClass="inputWide"  />
-           
-           <ice:outputLabel value="Default text" />
-           <ice:inputTextarea value="#{planSectionDefinitionsAdmin.edited.definition.defaultText}" styleClass="defaultText" />
-           
-           <ice:outputLabel value="Help text" />
-           <ice:inputTextarea value="#{planSectionDefinitionsAdmin.edited.definition.helpText}" styleClass="defaultText" />
-           
            
            <ice:outputLabel value="Characters limit (set to 0 to be unlimited)" />
            <ice:inputText value="#{planSectionDefinitionsAdmin.edited.definition.characterLimit}" />
@@ -76,9 +81,13 @@
            
            <ice:outputLabel value="Locked" />
            <ice:selectBooleanCheckbox value="#{planSectionDefinitionsAdmin.edited.definition.locked}" />
-           
-           <!-- <ice:inputTextarea value="#{planSectionDefinitionsAdmin.edited.definition.defaultText}" styleClass="defaultText" />-->
-           
+       </ice:panelGrid>
+       <f:subview rendered="${planSectionDefinitionsAdmin.edited.type == 'TEXT'}">
+       	<ui:include src="./sectionTypes/sectionType_TEXT.xhtml" />
+       </f:subview>
+        	
+        
+        <ice:panelGrid cellspacing="0" columnClasses="col1, col2" rowClasses="odd, even" cellpadding="5" columns="2">
            <ice:outputText />
            <ice:commandButton value="Save" action="#{planSectionDefinitionsAdmin.edited.save}" />
         

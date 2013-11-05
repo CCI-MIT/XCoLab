@@ -118,6 +118,24 @@ public class PlanSectionWrapper implements PlanSection,
     }
 
     /**
+    * Returns the numeric value of this plan section.
+    *
+    * @return the numeric value of this plan section
+    */
+    public long getNumericValue() {
+        return _planSection.getNumericValue();
+    }
+
+    /**
+    * Sets the numeric value of this plan section.
+    *
+    * @param numericValue the numeric value of this plan section
+    */
+    public void setNumericValue(long numericValue) {
+        _planSection.setNumericValue(numericValue);
+    }
+
+    /**
     * Returns the created of this plan section.
     *
     * @return the created of this plan section

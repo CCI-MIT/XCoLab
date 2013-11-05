@@ -52,12 +52,13 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
             { "planSectionDefinitionId", Types.BIGINT },
             { "planId", Types.BIGINT },
             { "content", Types.CLOB },
+            { "numericValue", Types.BIGINT },
             { "created", Types.TIMESTAMP },
             { "version", Types.BIGINT },
             { "planVersion", Types.BIGINT },
             { "updateAuthorId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSection (id_ LONG not null primary key,planSectionDefinitionId LONG,planId LONG,content TEXT null,created DATE null,version LONG,planVersion LONG,updateAuthorId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSection (id_ LONG not null primary key,planSectionDefinitionId LONG,planId LONG,content TEXT null,numericValue LONG,created DATE null,version LONG,planVersion LONG,updateAuthorId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanSection";
     public static final String ORDER_BY_JPQL = " ORDER BY planSection.id DESC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanSection.id_ DESC";
@@ -90,6 +91,7 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     private long _originalPlanId;
     private boolean _setOriginalPlanId;
     private String _content;
+    private long _numericValue;
     private Date _created;
     private long _version;
     private long _planVersion;
@@ -116,6 +118,7 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
         model.setPlanSectionDefinitionId(soapModel.getPlanSectionDefinitionId());
         model.setPlanId(soapModel.getPlanId());
         model.setContent(soapModel.getContent());
+        model.setNumericValue(soapModel.getNumericValue());
         model.setCreated(soapModel.getCreated());
         model.setVersion(soapModel.getVersion());
         model.setPlanVersion(soapModel.getPlanVersion());
@@ -231,6 +234,15 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     }
 
     @JSON
+    public long getNumericValue() {
+        return _numericValue;
+    }
+
+    public void setNumericValue(long numericValue) {
+        _numericValue = numericValue;
+    }
+
+    @JSON
     public Date getCreated() {
         return _created;
     }
@@ -316,6 +328,7 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
         planSectionImpl.setPlanSectionDefinitionId(getPlanSectionDefinitionId());
         planSectionImpl.setPlanId(getPlanId());
         planSectionImpl.setContent(getContent());
+        planSectionImpl.setNumericValue(getNumericValue());
         planSectionImpl.setCreated(getCreated());
         planSectionImpl.setVersion(getVersion());
         planSectionImpl.setPlanVersion(getPlanVersion());
@@ -411,6 +424,8 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
             planSectionCacheModel.content = null;
         }
 
+        planSectionCacheModel.numericValue = getNumericValue();
+
         Date created = getCreated();
 
         if (created != null) {
@@ -430,7 +445,7 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
@@ -440,6 +455,8 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
         sb.append(getPlanId());
         sb.append(", content=");
         sb.append(getContent());
+        sb.append(", numericValue=");
+        sb.append(getNumericValue());
         sb.append(", created=");
         sb.append(getCreated());
         sb.append(", version=");
@@ -454,7 +471,7 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSection");
@@ -475,6 +492,10 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
         sb.append(
             "<column><column-name>content</column-name><column-value><![CDATA[");
         sb.append(getContent());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>numericValue</column-name><column-value><![CDATA[");
+        sb.append(getNumericValue());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>created</column-name><column-value><![CDATA[");

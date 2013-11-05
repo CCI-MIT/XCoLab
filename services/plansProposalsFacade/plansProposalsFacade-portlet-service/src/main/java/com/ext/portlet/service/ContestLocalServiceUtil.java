@@ -284,7 +284,7 @@ public class ContestLocalServiceUtil {
     }
 
     /**
-    * Methods from ContestImpl
+    * Methods from ContestImpl *
     */
     public static java.util.List<com.ext.portlet.model.ContestPhase> getPhases(
         com.ext.portlet.model.Contest contest) {
@@ -453,7 +453,7 @@ public class ContestLocalServiceUtil {
     * <p>Returns true if user is subscribed to a contest, false otherwise</p>
     *
     * @param contestPK id of a contest
-    * @param userId id of a user
+    * @param userId    id of a user
     * @return true if user is subscribed to a contest, false otherwise
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
@@ -468,7 +468,7 @@ public class ContestLocalServiceUtil {
     * <p>Subscribes user to contest</p>
     *
     * @param contestPK id of a contest
-    * @param userId id of a user
+    * @param userId    id of a user
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
@@ -482,7 +482,7 @@ public class ContestLocalServiceUtil {
     * <p>Subscribes user to contest</p>
     *
     * @param contestPK id of a contest
-    * @param userId id of a user
+    * @param userId    id of a user
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */

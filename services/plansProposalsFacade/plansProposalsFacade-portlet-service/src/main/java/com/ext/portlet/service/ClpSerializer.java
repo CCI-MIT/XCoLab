@@ -4207,33 +4207,40 @@ public class ClpSerializer {
 
                 method3.invoke(newModel, value3);
 
-                Method method4 = newModelClass.getMethod("setCreated",
-                        new Class[] { Date.class });
+                Method method4 = newModelClass.getMethod("setNumericValue",
+                        new Class[] { Long.TYPE });
 
-                Date value4 = oldCplModel.getCreated();
+                Long value4 = new Long(oldCplModel.getNumericValue());
 
                 method4.invoke(newModel, value4);
 
-                Method method5 = newModelClass.getMethod("setVersion",
-                        new Class[] { Long.TYPE });
+                Method method5 = newModelClass.getMethod("setCreated",
+                        new Class[] { Date.class });
 
-                Long value5 = new Long(oldCplModel.getVersion());
+                Date value5 = oldCplModel.getCreated();
 
                 method5.invoke(newModel, value5);
 
-                Method method6 = newModelClass.getMethod("setPlanVersion",
+                Method method6 = newModelClass.getMethod("setVersion",
                         new Class[] { Long.TYPE });
 
-                Long value6 = new Long(oldCplModel.getPlanVersion());
+                Long value6 = new Long(oldCplModel.getVersion());
 
                 method6.invoke(newModel, value6);
 
-                Method method7 = newModelClass.getMethod("setUpdateAuthorId",
+                Method method7 = newModelClass.getMethod("setPlanVersion",
                         new Class[] { Long.TYPE });
 
-                Long value7 = new Long(oldCplModel.getUpdateAuthorId());
+                Long value7 = new Long(oldCplModel.getPlanVersion());
 
                 method7.invoke(newModel, value7);
+
+                Method method8 = newModelClass.getMethod("setUpdateAuthorId",
+                        new Class[] { Long.TYPE });
+
+                Long value8 = new Long(oldCplModel.getUpdateAuthorId());
+
+                method8.invoke(newModel, value8);
 
                 return newModel;
             } catch (Exception e) {
@@ -4270,54 +4277,61 @@ public class ClpSerializer {
 
                 method0.invoke(newModel, value0);
 
-                Method method1 = newModelClass.getMethod("setAdminTitle",
+                Method method1 = newModelClass.getMethod("setType",
                         new Class[] { String.class });
 
-                String value1 = oldCplModel.getAdminTitle();
+                String value1 = oldCplModel.getType();
 
                 method1.invoke(newModel, value1);
 
-                Method method2 = newModelClass.getMethod("setTitle",
+                Method method2 = newModelClass.getMethod("setAdminTitle",
                         new Class[] { String.class });
 
-                String value2 = oldCplModel.getTitle();
+                String value2 = oldCplModel.getAdminTitle();
 
                 method2.invoke(newModel, value2);
 
-                Method method3 = newModelClass.getMethod("setDefaultText",
+                Method method3 = newModelClass.getMethod("setTitle",
                         new Class[] { String.class });
 
-                String value3 = oldCplModel.getDefaultText();
+                String value3 = oldCplModel.getTitle();
 
                 method3.invoke(newModel, value3);
 
-                Method method4 = newModelClass.getMethod("setHelpText",
+                Method method4 = newModelClass.getMethod("setDefaultText",
                         new Class[] { String.class });
 
-                String value4 = oldCplModel.getHelpText();
+                String value4 = oldCplModel.getDefaultText();
 
                 method4.invoke(newModel, value4);
 
-                Method method5 = newModelClass.getMethod("setCharacterLimit",
-                        new Class[] { Integer.TYPE });
+                Method method5 = newModelClass.getMethod("setHelpText",
+                        new Class[] { String.class });
 
-                Integer value5 = new Integer(oldCplModel.getCharacterLimit());
+                String value5 = oldCplModel.getHelpText();
 
                 method5.invoke(newModel, value5);
 
-                Method method6 = newModelClass.getMethod("setFocusAreaId",
-                        new Class[] { Long.TYPE });
+                Method method6 = newModelClass.getMethod("setCharacterLimit",
+                        new Class[] { Integer.TYPE });
 
-                Long value6 = new Long(oldCplModel.getFocusAreaId());
+                Integer value6 = new Integer(oldCplModel.getCharacterLimit());
 
                 method6.invoke(newModel, value6);
 
-                Method method7 = newModelClass.getMethod("setLocked",
-                        new Class[] { Boolean.TYPE });
+                Method method7 = newModelClass.getMethod("setFocusAreaId",
+                        new Class[] { Long.TYPE });
 
-                Boolean value7 = new Boolean(oldCplModel.getLocked());
+                Long value7 = new Long(oldCplModel.getFocusAreaId());
 
                 method7.invoke(newModel, value7);
+
+                Method method8 = newModelClass.getMethod("setLocked",
+                        new Class[] { Boolean.TYPE });
+
+                Boolean value8 = new Boolean(oldCplModel.getLocked());
+
+                method8.invoke(newModel, value8);
 
                 return newModel;
             } catch (Exception e) {
@@ -9503,29 +9517,35 @@ public class ClpSerializer {
 
                 newModel.setContent(value3);
 
-                Method method4 = oldModelClass.getMethod("getCreated");
+                Method method4 = oldModelClass.getMethod("getNumericValue");
 
-                Date value4 = (Date) method4.invoke(oldModel, (Object[]) null);
+                Long value4 = (Long) method4.invoke(oldModel, (Object[]) null);
 
-                newModel.setCreated(value4);
+                newModel.setNumericValue(value4);
 
-                Method method5 = oldModelClass.getMethod("getVersion");
+                Method method5 = oldModelClass.getMethod("getCreated");
 
-                Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
+                Date value5 = (Date) method5.invoke(oldModel, (Object[]) null);
 
-                newModel.setVersion(value5);
+                newModel.setCreated(value5);
 
-                Method method6 = oldModelClass.getMethod("getPlanVersion");
+                Method method6 = oldModelClass.getMethod("getVersion");
 
                 Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
 
-                newModel.setPlanVersion(value6);
+                newModel.setVersion(value6);
 
-                Method method7 = oldModelClass.getMethod("getUpdateAuthorId");
+                Method method7 = oldModelClass.getMethod("getPlanVersion");
 
                 Long value7 = (Long) method7.invoke(oldModel, (Object[]) null);
 
-                newModel.setUpdateAuthorId(value7);
+                newModel.setPlanVersion(value7);
+
+                Method method8 = oldModelClass.getMethod("getUpdateAuthorId");
+
+                Long value8 = (Long) method8.invoke(oldModel, (Object[]) null);
+
+                newModel.setUpdateAuthorId(value8);
 
                 return newModel;
             } catch (Exception e) {
@@ -9558,53 +9578,60 @@ public class ClpSerializer {
 
                 newModel.setId(value0);
 
-                Method method1 = oldModelClass.getMethod("getAdminTitle");
+                Method method1 = oldModelClass.getMethod("getType");
 
                 String value1 = (String) method1.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setAdminTitle(value1);
+                newModel.setType(value1);
 
-                Method method2 = oldModelClass.getMethod("getTitle");
+                Method method2 = oldModelClass.getMethod("getAdminTitle");
 
                 String value2 = (String) method2.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setTitle(value2);
+                newModel.setAdminTitle(value2);
 
-                Method method3 = oldModelClass.getMethod("getDefaultText");
+                Method method3 = oldModelClass.getMethod("getTitle");
 
                 String value3 = (String) method3.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setDefaultText(value3);
+                newModel.setTitle(value3);
 
-                Method method4 = oldModelClass.getMethod("getHelpText");
+                Method method4 = oldModelClass.getMethod("getDefaultText");
 
                 String value4 = (String) method4.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setHelpText(value4);
+                newModel.setDefaultText(value4);
 
-                Method method5 = oldModelClass.getMethod("getCharacterLimit");
+                Method method5 = oldModelClass.getMethod("getHelpText");
 
-                Integer value5 = (Integer) method5.invoke(oldModel,
+                String value5 = (String) method5.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setCharacterLimit(value5);
+                newModel.setHelpText(value5);
 
-                Method method6 = oldModelClass.getMethod("getFocusAreaId");
+                Method method6 = oldModelClass.getMethod("getCharacterLimit");
 
-                Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
-
-                newModel.setFocusAreaId(value6);
-
-                Method method7 = oldModelClass.getMethod("getLocked");
-
-                Boolean value7 = (Boolean) method7.invoke(oldModel,
+                Integer value6 = (Integer) method6.invoke(oldModel,
                         (Object[]) null);
 
-                newModel.setLocked(value7);
+                newModel.setCharacterLimit(value6);
+
+                Method method7 = oldModelClass.getMethod("getFocusAreaId");
+
+                Long value7 = (Long) method7.invoke(oldModel, (Object[]) null);
+
+                newModel.setFocusAreaId(value7);
+
+                Method method8 = oldModelClass.getMethod("getLocked");
+
+                Boolean value8 = (Boolean) method8.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setLocked(value8);
 
                 return newModel;
             } catch (Exception e) {

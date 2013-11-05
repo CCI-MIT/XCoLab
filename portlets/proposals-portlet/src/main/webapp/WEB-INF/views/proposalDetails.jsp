@@ -109,10 +109,10 @@
                 </c:when>
                 <c:otherwise>
                     <c:forEach var="section" items="${proposal.sections }" varStatus="status">
-                        <h3>${section.title }</h3>
-
-                        <p>${section.content }</p>
-
+                    	<h3>${section.title }</h3>
+                    	
+                    	<proposalsPortlet:proposalSectionContent section="${section }" />
+                    	
                         <c:if test="${not status.last }">
                             <div class="div2"><!--  --></div>
                         </c:if>

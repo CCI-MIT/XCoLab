@@ -719,6 +719,7 @@ public class PlanSectionPersistenceImpl extends BasePersistenceImpl<PlanSection>
         planSectionImpl.setPlanSectionDefinitionId(planSection.getPlanSectionDefinitionId());
         planSectionImpl.setPlanId(planSection.getPlanId());
         planSectionImpl.setContent(planSection.getContent());
+        planSectionImpl.setNumericValue(planSection.getNumericValue());
         planSectionImpl.setCreated(planSection.getCreated());
         planSectionImpl.setVersion(planSection.getVersion());
         planSectionImpl.setPlanVersion(planSection.getPlanVersion());

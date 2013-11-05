@@ -773,6 +773,7 @@
 			<basic name="planSectionDefinitionId" />
 			<basic name="planId" />
 			<basic name="content" />
+			<basic name="numericValue" />
 			<basic name="created">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
@@ -788,6 +789,9 @@
 			<id name="id">
 				<column name="ID_" />
 			</id>
+			<basic name="type">
+				<column name="TYPE_" />
+			</basic>
 			<basic name="adminTitle" />
 			<basic name="title" />
 			<basic name="defaultText" />

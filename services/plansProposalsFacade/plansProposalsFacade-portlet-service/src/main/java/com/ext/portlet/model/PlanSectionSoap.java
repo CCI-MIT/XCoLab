@@ -18,6 +18,7 @@ public class PlanSectionSoap implements Serializable {
     private long _planSectionDefinitionId;
     private long _planId;
     private String _content;
+    private long _numericValue;
     private Date _created;
     private long _version;
     private long _planVersion;
@@ -33,6 +34,7 @@ public class PlanSectionSoap implements Serializable {
         soapModel.setPlanSectionDefinitionId(model.getPlanSectionDefinitionId());
         soapModel.setPlanId(model.getPlanId());
         soapModel.setContent(model.getContent());
+        soapModel.setNumericValue(model.getNumericValue());
         soapModel.setCreated(model.getCreated());
         soapModel.setVersion(model.getVersion());
         soapModel.setPlanVersion(model.getPlanVersion());
@@ -115,6 +117,14 @@ public class PlanSectionSoap implements Serializable {
 
     public void setContent(String content) {
         _content = content;
+    }
+
+    public long getNumericValue() {
+        return _numericValue;
+    }
+
+    public void setNumericValue(long numericValue) {
+        _numericValue = numericValue;
     }
 
     public Date getCreated() {

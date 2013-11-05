@@ -492,6 +492,7 @@ create table xcolab_PlanSection (
 	planSectionDefinitionId LONG,
 	planId LONG,
 	content TEXT null,
+	numericValue LONG,
 	created DATE null,
 	version LONG,
 	planVersion LONG,
@@ -500,6 +501,7 @@ create table xcolab_PlanSection (
 
 create table xcolab_PlanSectionDefinition (
 	id_ LONG not null primary key,
+	type_ VARCHAR(75) null,
 	adminTitle VARCHAR(1024) null,
 	title VARCHAR(1024) null,
 	defaultText TEXT null,

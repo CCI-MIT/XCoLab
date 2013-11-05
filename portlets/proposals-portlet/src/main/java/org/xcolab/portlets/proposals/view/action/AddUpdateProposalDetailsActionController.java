@@ -7,6 +7,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
@@ -102,10 +104,21 @@ public class AddUpdateProposalDetailsActionController {
         }
         
         for (ProposalSectionWrapper section: proposal.getSections()) {
-            String newSectionContent = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
-            
-            if (newSectionContent != null && !newSectionContent.trim().equals(section.getContent())) {
-                ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), xssClean(newSectionContent));
+            String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
+            if (section.getType() == PlanSectionTypeKeys.TEXT) {
+                if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
+                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), xssClean(newSectionValue));
+                }
+            }
+            if (section.getType() == PlanSectionTypeKeys.ONTOLOGY_REFERENCE) {
+                // value 
+                if (StringUtils.isNumeric(newSectionValue)) {
+                    long newNumericVal = Long.parseLong(newSectionValue);
+                    if (newNumericVal != section.getNumericValue()) {
+                        ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), 
+                                proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericVal);
+                    }
+                }
             }
         }
         

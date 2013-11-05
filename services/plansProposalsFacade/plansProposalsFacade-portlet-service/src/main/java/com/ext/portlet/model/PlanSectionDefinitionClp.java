@@ -15,6 +15,7 @@ import java.lang.reflect.Proxy;
 public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinition>
     implements PlanSectionDefinition {
     private long _id;
+    private String _type;
     private String _adminTitle;
     private String _title;
     private String _defaultText;
@@ -56,6 +57,14 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     public void setId(long id) {
         _id = id;
+    }
+
+    public String getType() {
+        return _type;
+    }
+
+    public void setType(String type) {
+        _type = type;
     }
 
     public String getAdminTitle() {
@@ -138,6 +147,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         PlanSectionDefinitionClp clone = new PlanSectionDefinitionClp();
 
         clone.setId(getId());
+        clone.setType(getType());
         clone.setAdminTitle(getAdminTitle());
         clone.setTitle(getTitle());
         clone.setDefaultText(getDefaultText());
@@ -191,10 +201,12 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
+        sb.append(", type=");
+        sb.append(getType());
         sb.append(", adminTitle=");
         sb.append(getAdminTitle());
         sb.append(", title=");
@@ -215,7 +227,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -224,6 +236,10 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         sb.append(
             "<column><column-name>id</column-name><column-value><![CDATA[");
         sb.append(getId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>type</column-name><column-value><![CDATA[");
+        sb.append(getType());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>adminTitle</column-name><column-value><![CDATA[");

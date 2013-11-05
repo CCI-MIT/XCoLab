@@ -103,6 +103,20 @@ public interface PlanSectionModel extends BaseModel<PlanSection> {
     public void setContent(String content);
 
     /**
+     * Returns the numeric value of this plan section.
+     *
+     * @return the numeric value of this plan section
+     */
+    public long getNumericValue();
+
+    /**
+     * Sets the numeric value of this plan section.
+     *
+     * @param numericValue the numeric value of this plan section
+     */
+    public void setNumericValue(long numericValue);
+
+    /**
      * Returns the created of this plan section.
      *
      * @return the created of this plan section

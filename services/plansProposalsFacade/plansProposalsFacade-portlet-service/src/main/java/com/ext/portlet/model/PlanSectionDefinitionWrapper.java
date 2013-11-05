@@ -65,6 +65,24 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     }
 
     /**
+    * Returns the type of this plan section definition.
+    *
+    * @return the type of this plan section definition
+    */
+    public java.lang.String getType() {
+        return _planSectionDefinition.getType();
+    }
+
+    /**
+    * Sets the type of this plan section definition.
+    *
+    * @param type the type of this plan section definition
+    */
+    public void setType(java.lang.String type) {
+        _planSectionDefinition.setType(type);
+    }
+
+    /**
     * Returns the admin title of this plan section definition.
     *
     * @return the admin title of this plan section definition
