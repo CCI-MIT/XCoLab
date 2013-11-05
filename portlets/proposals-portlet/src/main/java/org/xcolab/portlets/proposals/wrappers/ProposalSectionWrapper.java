@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
+import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
@@ -108,6 +109,9 @@ public class ProposalSectionWrapper {
             }
         }
         catch (NoSuchProposalAttributeException e) {
+            return null;
+        }
+        catch (NoSuchProposalException e) {
             return null;
         }
         

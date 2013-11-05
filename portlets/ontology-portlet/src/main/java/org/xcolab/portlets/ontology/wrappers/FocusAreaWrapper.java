@@ -10,6 +10,7 @@ import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -20,7 +21,7 @@ public class FocusAreaWrapper {
     
     public FocusAreaWrapper(Long areaId) throws PortalException, SystemException {
         if (areaId == null || areaId <= 0) {
-            area = FocusAreaLocalServiceUtil.createFocusArea(0);
+            area = FocusAreaLocalServiceUtil.createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
         }
         else {
             area = FocusAreaLocalServiceUtil.getFocusArea(areaId);
