@@ -29,7 +29,7 @@
             <div class="row1">
                 <div class="title-author" style="${proposalsPermissions.canJudgeActions ? (proposal.featured ? 'width:503px;' : 'width:532px;')  : ''}">
                     <h4>
-                    	<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
+                    	<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
                         /&#160;
                         <c:choose>
                         	<c:when test="${empty proposal.team}">
@@ -45,17 +45,17 @@
                 <c:choose>
                 	<c:when test="${contestPhase.canVote}">
                 		<div class="voteboxsmall">
-    	            		<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
+    	            		<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
     	        		</div>
     	        	</c:when>
     	        	<c:otherwise>
     	        		<div class="thumbbox">
-                			<proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.supportersCount}" hashString="plans%3Dtab%3ATEAM"/>
+                			<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.supportersCount}" hashString="plans%3Dtab%3ATEAM"/>
                 		</div>
                 	</c:otherwise>
                	</c:choose>
                 <div class="commbox">
-                    <proposalsPortlet:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.commentsCount}" hashString="plans%3Dtab%3ACOMMENTS" />
+                    <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.commentsCount}" hashString="plans%3Dtab%3ACOMMENTS" />
                 </div>
                 <div class="modbox">
                     <fmt:formatDate value="${proposal.lastModifiedDateForContestPhase}" type="date" dateStyle="short" timeZone="America/New_York" />

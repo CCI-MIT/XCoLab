@@ -45,4 +45,10 @@
     <path>/META-INF/tags/collab/sortArrow.tagx</path>
   </tag-file>
 
+    <tag-file>
+        <description>Proposal Link</description>
+        <name>proposalLink</name>
+        <path>/META-INF/tags/collab/proposalLink.tagx</path>
+    </tag-file>
+
 </taglib>  

@@ -6,7 +6,8 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+    xmlns:collab="http://climatecolab.org/tags/collab_1.0">
 <jsp:directive.include file="./init.jspx" />
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
@@ -43,7 +44,7 @@
                     </p>
                     <div class="blue-button"><a href="javascript:;" id="saveChangesButton">SAVE changes</a></div>
                     <div class="gray-button">
-                    	<proposalsPortlet:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="DISCARD changes" tab="${currentTab }" />
+                    	<collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="DISCARD changes" tab="${currentTab }" />
                     </div>
                 </div>
                 <div class="admin-right">

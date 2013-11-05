@@ -5,7 +5,8 @@
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+    xmlns:collab="http://climatecolab.org/tags/collab_1.0">
 <jsp:directive.include file="./init.jspx" />
 
 <script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js" ><!-- --></script>
@@ -201,7 +202,7 @@
                     <div class="gray-button">
                     <c:choose>
                     	<c:when test="${proposal.currentVersion > 0 }">
-                    		<proposalsPortlet:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="DISCARD changes" />
+                    		<collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="DISCARD changes" />
                     	</c:when>
                     	<c:otherwise>
                     		<!--  proposal creation, return to contest proposals page on discard -->
