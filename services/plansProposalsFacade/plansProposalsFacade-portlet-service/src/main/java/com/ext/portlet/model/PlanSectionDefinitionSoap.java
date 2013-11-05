@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class PlanSectionDefinitionSoap implements Serializable {
     private long _id;
+    private String _type;
     private String _adminTitle;
     private String _title;
     private String _defaultText;
@@ -30,6 +31,7 @@ public class PlanSectionDefinitionSoap implements Serializable {
         PlanSectionDefinitionSoap soapModel = new PlanSectionDefinitionSoap();
 
         soapModel.setId(model.getId());
+        soapModel.setType(model.getType());
         soapModel.setAdminTitle(model.getAdminTitle());
         soapModel.setTitle(model.getTitle());
         soapModel.setDefaultText(model.getDefaultText());
@@ -94,6 +96,14 @@ public class PlanSectionDefinitionSoap implements Serializable {
 
     public void setId(long id) {
         _id = id;
+    }
+
+    public String getType() {
+        return _type;
+    }
+
+    public void setType(String type) {
+        _type = type;
     }
 
     public String getAdminTitle() {

@@ -534,6 +534,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
         planSectionDefinitionImpl.setPrimaryKey(planSectionDefinition.getPrimaryKey());
 
         planSectionDefinitionImpl.setId(planSectionDefinition.getId());
+        planSectionDefinitionImpl.setType(planSectionDefinition.getType());
         planSectionDefinitionImpl.setAdminTitle(planSectionDefinition.getAdminTitle());
         planSectionDefinitionImpl.setTitle(planSectionDefinition.getTitle());
         planSectionDefinitionImpl.setDefaultText(planSectionDefinition.getDefaultText());

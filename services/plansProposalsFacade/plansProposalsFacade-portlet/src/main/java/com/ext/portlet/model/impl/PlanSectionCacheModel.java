@@ -23,6 +23,7 @@ public class PlanSectionCacheModel implements CacheModel<PlanSection>,
     public long planSectionDefinitionId;
     public long planId;
     public String content;
+    public long numericValue;
     public long created;
     public long version;
     public long planVersion;
@@ -30,7 +31,7 @@ public class PlanSectionCacheModel implements CacheModel<PlanSection>,
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(id);
@@ -40,6 +41,8 @@ public class PlanSectionCacheModel implements CacheModel<PlanSection>,
         sb.append(planId);
         sb.append(", content=");
         sb.append(content);
+        sb.append(", numericValue=");
+        sb.append(numericValue);
         sb.append(", created=");
         sb.append(created);
         sb.append(", version=");
@@ -65,6 +68,8 @@ public class PlanSectionCacheModel implements CacheModel<PlanSection>,
         } else {
             planSectionImpl.setContent(content);
         }
+
+        planSectionImpl.setNumericValue(numericValue);
 
         if (created == Long.MIN_VALUE) {
             planSectionImpl.setCreated(null);

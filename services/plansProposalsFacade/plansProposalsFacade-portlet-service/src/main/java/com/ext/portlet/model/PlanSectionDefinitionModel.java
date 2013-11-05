@@ -58,6 +58,21 @@ public interface PlanSectionDefinitionModel extends BaseModel<PlanSectionDefinit
     public void setId(long id);
 
     /**
+     * Returns the type of this plan section definition.
+     *
+     * @return the type of this plan section definition
+     */
+    @AutoEscape
+    public String getType();
+
+    /**
+     * Sets the type of this plan section definition.
+     *
+     * @param type the type of this plan section definition
+     */
+    public void setType(String type);
+
+    /**
      * Returns the admin title of this plan section definition.
      *
      * @return the admin title of this plan section definition
