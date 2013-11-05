@@ -7,6 +7,9 @@ import java.util.List;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
@@ -47,11 +50,25 @@ public class PlanSectionDefinitionWrapper implements Serializable {
         PlanSectionDefinitionLocalServiceUtil.store(definition);
     }
     
+    public void typeChanged(ValueChangeEvent e) throws NumberFormatException, PortalException, SystemException {
+        definition.setType(e.getNewValue().toString());
+    }
+    
     public List<SelectItem> getAvailableFocusAreas() throws SystemException {
         List<SelectItem> ret = new ArrayList<SelectItem>();
         
         for (FocusArea fa: FocusAreaLocalServiceUtil.getFocusAreas(0, Integer.MAX_VALUE)) {
             ret.add(new SelectItem(fa.getId(), fa.getName()));
+        }
+        return ret;
+    }
+    
+    
+    public List<SelectItem> getAvailableTypes() throws SystemException {
+        List<SelectItem> ret = new ArrayList<SelectItem>();
+        
+        for (PlanSectionTypeKeys key: PlanSectionTypeKeys.values()) {
+            ret.add(new SelectItem(key.name(), key.name()));
         }
         return ret;
     }
@@ -71,6 +88,19 @@ public class PlanSectionDefinitionWrapper implements Serializable {
     
     public String getTitle() {
         return definition.getTitle();
+    }
+    
+    public PlanSectionTypeKeys getType() {
+        if (StringUtils.isNotBlank(definition.getType())) {
+            return PlanSectionTypeKeys.valueOf(definition.getType());
+        }
+        return PlanSectionTypeKeys.TEXT;
+    }
+    
+    public void setType(String type) {
+        if (StringUtils.isNotBlank(type)) {
+            definition.setType(type);
+        }
     }
     
 }

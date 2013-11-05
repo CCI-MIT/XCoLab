@@ -580,6 +580,7 @@
 		<field name="content" type="String">
 			<hint name="max-length">2000000</hint>
 		</field>
+		<field name="numericValue" type="long" />
 		<field name="created" type="Date" />
 		<field name="version" type="long" />
 		<field name="planVersion" type="long" />
@@ -587,6 +588,7 @@
 	</model>
 	<model name="com.ext.portlet.model.PlanSectionDefinition">
 		<field name="id" type="long" />
+		<field name="type" type="String" />
 		<field name="adminTitle" type="String">
 			<hint name="max-length">1024</hint>
 		</field>

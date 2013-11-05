@@ -669,6 +669,7 @@
 		<property name="planSectionDefinitionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="created" type="org.hibernate.type.TimestampType" />
 		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="planVersion" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -679,6 +680,7 @@
 		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
 		<property name="adminTitle" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="title" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="defaultText" type="com.liferay.portal.dao.orm.hibernate.StringType" />

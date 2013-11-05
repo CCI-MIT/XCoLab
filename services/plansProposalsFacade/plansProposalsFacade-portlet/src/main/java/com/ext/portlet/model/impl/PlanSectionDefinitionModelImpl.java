@@ -48,6 +48,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
     public static final String TABLE_NAME = "xcolab_PlanSectionDefinition";
     public static final Object[][] TABLE_COLUMNS = {
             { "id_", Types.BIGINT },
+            { "type_", Types.VARCHAR },
             { "adminTitle", Types.VARCHAR },
             { "title", Types.VARCHAR },
             { "defaultText", Types.CLOB },
@@ -56,7 +57,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
             { "focusAreaId", Types.BIGINT },
             { "locked", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,locked BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,locked BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanSectionDefinition";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -75,6 +76,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
             PlanSectionDefinition.class
         };
     private long _id;
+    private String _type;
     private String _adminTitle;
     private String _title;
     private String _defaultText;
@@ -99,6 +101,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         PlanSectionDefinition model = new PlanSectionDefinitionImpl();
 
         model.setId(soapModel.getId());
+        model.setType(soapModel.getType());
         model.setAdminTitle(soapModel.getAdminTitle());
         model.setTitle(soapModel.getTitle());
         model.setDefaultText(soapModel.getDefaultText());
@@ -158,6 +161,19 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     public void setId(long id) {
         _id = id;
+    }
+
+    @JSON
+    public String getType() {
+        if (_type == null) {
+            return StringPool.BLANK;
+        } else {
+            return _type;
+        }
+    }
+
+    public void setType(String type) {
+        _type = type;
     }
 
     @JSON
@@ -274,6 +290,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         PlanSectionDefinitionImpl planSectionDefinitionImpl = new PlanSectionDefinitionImpl();
 
         planSectionDefinitionImpl.setId(getId());
+        planSectionDefinitionImpl.setType(getType());
         planSectionDefinitionImpl.setAdminTitle(getAdminTitle());
         planSectionDefinitionImpl.setTitle(getTitle());
         planSectionDefinitionImpl.setDefaultText(getDefaultText());
@@ -337,6 +354,14 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
         planSectionDefinitionCacheModel.id = getId();
 
+        planSectionDefinitionCacheModel.type = getType();
+
+        String type = planSectionDefinitionCacheModel.type;
+
+        if ((type != null) && (type.length() == 0)) {
+            planSectionDefinitionCacheModel.type = null;
+        }
+
         planSectionDefinitionCacheModel.adminTitle = getAdminTitle();
 
         String adminTitle = planSectionDefinitionCacheModel.adminTitle;
@@ -380,10 +405,12 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
+        sb.append(", type=");
+        sb.append(getType());
         sb.append(", adminTitle=");
         sb.append(getAdminTitle());
         sb.append(", title=");
@@ -404,7 +431,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PlanSectionDefinition");
@@ -413,6 +440,10 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         sb.append(
             "<column><column-name>id</column-name><column-value><![CDATA[");
         sb.append(getId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>type</column-name><column-value><![CDATA[");
+        sb.append(getType());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>adminTitle</column-name><column-value><![CDATA[");
