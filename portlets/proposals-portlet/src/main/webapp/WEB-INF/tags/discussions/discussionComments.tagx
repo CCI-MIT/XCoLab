@@ -65,12 +65,18 @@
                         			</a>
 								</td>
 								<td class="the-comment ${message.expertReview ? 'expertReview' : ''}">
-									<div class="content">
+									<div id="message_${message.messageId}" class="content">
 										${message.body }
 									</div>
 									<c:if test="${discussionPermissions.canAdminMessages }">
 										<div class="commentsActions">
-											<portlet:actionURL var="toggleExpertReviewURL">
+
+                                            <portlet:actionURL var="editCommentURL">
+                                                <portlet:param name="action" value="editComment" />
+                                            </portlet:actionURL>
+                                            <a href="javascript:;" onclick="editComment(${message.messageId},'${editCommentURL}');">Edit</a>
+                                            |
+                                            <portlet:actionURL var="toggleExpertReviewURL">
 												<portlet:param name="action" value="toggleDiscussionMessageFlag" />
 												<portlet:param name="flag" value="EXPERT_REVIEW" />
 												<portlet:param name="discussionId" value="${discussion.id}" />
@@ -151,7 +157,21 @@
             function enableAddComment() {
                 jQuery("#thecomment .addCommentButton").removeAttr('disabled');
             }
+            <![CDATA[
+            function editComment(messageId, url){
+                var comment = $('#message_' + messageId).text();
+                $('#message_' + messageId).empty();
+                var formContent = '<form method="post" action="' + url + '">';
+                formContent += '<textarea name="comment" style="width: 100%; height: 150px;">' + comment + '</textarea>';
+                formContent += '<input name="messageId" type="hidden" value="' + messageId + '"/>';
+                formContent += '<div class="blue-button" style="margin-left: 320px; margin-top: 10px;"><a onclick=" $(this).parents(\'form:first\').submit()" type="submit" href="javascript:;">Save</a></div>';
+                formContent += '</form>';
+                $('#message_' + messageId).append(formContent);
+                $('#message_' + messageId).next().remove();
+            }
+            ]]>
         	</script>
+
 		</discussions:loadDiscussion>
 
 

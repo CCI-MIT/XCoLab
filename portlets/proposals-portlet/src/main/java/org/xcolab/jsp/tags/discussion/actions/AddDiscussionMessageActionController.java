@@ -1,8 +1,6 @@
 package org.xcolab.jsp.tags.discussion.actions;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
