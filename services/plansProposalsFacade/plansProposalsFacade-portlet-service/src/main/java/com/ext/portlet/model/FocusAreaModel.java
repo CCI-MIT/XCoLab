@@ -72,6 +72,20 @@ public interface FocusAreaModel extends BaseModel<FocusArea> {
      */
     public void setName(String name);
 
+    /**
+     * Returns the order of this focus area.
+     *
+     * @return the order of this focus area
+     */
+    public int getOrder();
+
+    /**
+     * Sets the order of this focus area.
+     *
+     * @param order the order of this focus area
+     */
+    public void setOrder(int order);
+
     public boolean isNew();
 
     public void setNew(boolean n);

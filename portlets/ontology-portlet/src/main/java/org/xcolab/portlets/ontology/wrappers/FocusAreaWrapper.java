@@ -68,4 +68,12 @@ public class FocusAreaWrapper {
         }
         
     }
+    
+    public int getOrder() {
+        return area.getOrder();
+    }
+    
+    public void setOrder(int order) {
+        area.setOrder(order);
+    }
 }

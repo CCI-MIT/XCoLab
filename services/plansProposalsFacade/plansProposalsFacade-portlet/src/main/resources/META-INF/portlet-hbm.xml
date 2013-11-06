@@ -268,6 +268,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="order" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="order_" />
 	</class>
 	<class name="com.ext.portlet.model.impl.FocusAreaOntologyTermImpl" table="xcolab_FocusAreaOntologyTerm">
 		<cache usage="read-write" />

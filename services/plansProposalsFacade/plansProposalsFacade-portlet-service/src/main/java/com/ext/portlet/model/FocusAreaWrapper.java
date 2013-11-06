@@ -80,6 +80,24 @@ public class FocusAreaWrapper implements FocusArea, ModelWrapper<FocusArea> {
         _focusArea.setName(name);
     }
 
+    /**
+    * Returns the order of this focus area.
+    *
+    * @return the order of this focus area
+    */
+    public int getOrder() {
+        return _focusArea.getOrder();
+    }
+
+    /**
+    * Sets the order of this focus area.
+    *
+    * @param order the order of this focus area
+    */
+    public void setOrder(int order) {
+        _focusArea.setOrder(order);
+    }
+
     public boolean isNew() {
         return _focusArea.isNew();
     }

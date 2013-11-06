@@ -266,6 +266,9 @@
 				<column name="ID_" />
 			</id>
 			<basic name="name" />
+			<basic name="order">
+				<column name="ORDER_" />
+			</basic>
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>

@@ -15,6 +15,7 @@ import java.util.List;
 public class FocusAreaSoap implements Serializable {
     private long _id;
     private String _name;
+    private int _order;
 
     public FocusAreaSoap() {
     }
@@ -24,6 +25,7 @@ public class FocusAreaSoap implements Serializable {
 
         soapModel.setId(model.getId());
         soapModel.setName(model.getName());
+        soapModel.setOrder(model.getOrder());
 
         return soapModel;
     }
@@ -86,5 +88,13 @@ public class FocusAreaSoap implements Serializable {
 
     public void setName(String name) {
         _name = name;
+    }
+
+    public int getOrder() {
+        return _order;
+    }
+
+    public void setOrder(int order) {
+        _order = order;
     }
 }

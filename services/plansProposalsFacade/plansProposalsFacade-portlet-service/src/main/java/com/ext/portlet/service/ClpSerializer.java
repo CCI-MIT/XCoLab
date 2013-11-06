@@ -1693,6 +1693,13 @@ public class ClpSerializer {
 
                 method1.invoke(newModel, value1);
 
+                Method method2 = newModelClass.getMethod("setOrder",
+                        new Class[] { Integer.TYPE });
+
+                Integer value2 = new Integer(oldCplModel.getOrder());
+
+                method2.invoke(newModel, value2);
+
                 return newModel;
             } catch (Exception e) {
                 _log.error(e, e);
@@ -7215,6 +7222,13 @@ public class ClpSerializer {
                         (Object[]) null);
 
                 newModel.setName(value1);
+
+                Method method2 = oldModelClass.getMethod("getOrder");
+
+                Integer value2 = (Integer) method2.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setOrder(value2);
 
                 return newModel;
             } catch (Exception e) {

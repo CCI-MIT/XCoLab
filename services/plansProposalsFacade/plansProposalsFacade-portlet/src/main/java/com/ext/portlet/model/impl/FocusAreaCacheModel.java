@@ -18,15 +18,18 @@ import java.io.Serializable;
 public class FocusAreaCacheModel implements CacheModel<FocusArea>, Serializable {
     public long id;
     public String name;
+    public int order;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
         sb.append("{id=");
         sb.append(id);
         sb.append(", name=");
         sb.append(name);
+        sb.append(", order=");
+        sb.append(order);
         sb.append("}");
 
         return sb.toString();
@@ -42,6 +45,8 @@ public class FocusAreaCacheModel implements CacheModel<FocusArea>, Serializable 
         } else {
             focusAreaImpl.setName(name);
         }
+
+        focusAreaImpl.setOrder(order);
 
         focusAreaImpl.resetOriginalValues();
 

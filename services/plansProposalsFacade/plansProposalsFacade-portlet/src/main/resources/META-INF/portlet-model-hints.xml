@@ -199,6 +199,7 @@
 		<field name="name" type="String">
 			<hint name="max-length">256</hint>
 		</field>
+		<field name="order" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.FocusAreaOntologyTerm">
 		<field name="focusAreaId" type="long" />

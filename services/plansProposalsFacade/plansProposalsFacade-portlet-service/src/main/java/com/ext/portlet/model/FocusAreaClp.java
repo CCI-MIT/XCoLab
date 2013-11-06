@@ -15,6 +15,7 @@ import java.lang.reflect.Proxy;
 public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea {
     private long _id;
     private String _name;
+    private int _order;
 
     public FocusAreaClp() {
     }
@@ -59,6 +60,14 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
         _name = name;
     }
 
+    public int getOrder() {
+        return _order;
+    }
+
+    public void setOrder(int order) {
+        _order = order;
+    }
+
     public void persist() throws SystemException {
         if (this.isNew()) {
             FocusAreaLocalServiceUtil.addFocusArea(this);
@@ -79,20 +88,27 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
 
         clone.setId(getId());
         clone.setName(getName());
+        clone.setOrder(getOrder());
 
         return clone;
     }
 
     public int compareTo(FocusArea focusArea) {
-        long primaryKey = focusArea.getPrimaryKey();
+        int value = 0;
 
-        if (getPrimaryKey() < primaryKey) {
-            return -1;
-        } else if (getPrimaryKey() > primaryKey) {
-            return 1;
+        if (getOrder() < focusArea.getOrder()) {
+            value = -1;
+        } else if (getOrder() > focusArea.getOrder()) {
+            value = 1;
         } else {
-            return 0;
+            value = 0;
         }
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override
@@ -125,19 +141,21 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
         sb.append("{id=");
         sb.append(getId());
         sb.append(", name=");
         sb.append(getName());
+        sb.append(", order=");
+        sb.append(getOrder());
         sb.append("}");
 
         return sb.toString();
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(10);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.FocusArea");
@@ -150,6 +168,10 @@ public class FocusAreaClp extends BaseModelImpl<FocusArea> implements FocusArea 
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
         sb.append(getName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>order</column-name><column-value><![CDATA[");
+        sb.append(getOrder());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

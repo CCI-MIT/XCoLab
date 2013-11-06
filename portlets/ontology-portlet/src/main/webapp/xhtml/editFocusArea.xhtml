@@ -41,6 +41,9 @@
             <ice:outputLabel for="#{focusAreaAdmin.area.area.name}" >Focus area name:</ice:outputLabel><br />
             <ice:inputText value="#{focusAreaAdmin.area.area.name}"  style="width: 80%;" /><br />
             
+            <ice:outputLabel for="#{focusAreaAdmin.area.area.name}" >Order:</ice:outputLabel><br />
+            <ice:inputText value="#{focusAreaAdmin.area.area.order}"  /><br />
+            
             <h2>Choose spaces</h2>
             
             <ice:panelSeries var="space" value="#{focusAreaAdmin.area.ontologySpaces}">

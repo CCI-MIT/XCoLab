@@ -157,7 +157,8 @@ create table xcolab_EmailList (
 
 create table xcolab_FocusArea (
 	id_ LONG not null primary key,
-	name VARCHAR(256) null
+	name VARCHAR(256) null,
+	order_ INTEGER
 );
 
 create table xcolab_FocusAreaOntologyTerm (

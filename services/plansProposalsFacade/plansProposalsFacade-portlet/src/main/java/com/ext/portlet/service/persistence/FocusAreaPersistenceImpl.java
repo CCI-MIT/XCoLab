@@ -580,6 +580,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
 
         focusAreaImpl.setId(focusArea.getId());
         focusAreaImpl.setName(focusArea.getName());
+        focusAreaImpl.setOrder(focusArea.getOrder());
 
         return focusAreaImpl;
     }
@@ -742,7 +743,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
         }
 
         if (result == null) {
-            StringBundler query = new StringBundler(2);
+            StringBundler query = new StringBundler(3);
 
             query.append(_SQL_SELECT_FOCUSAREA_WHERE);
 
@@ -755,6 +756,8 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
                     query.append(_FINDER_COLUMN_NAME_NAME_2);
                 }
             }
+
+            query.append(FocusAreaModelImpl.ORDER_BY_JPQL);
 
             String sql = query.toString();
 
@@ -884,7 +887,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
 
                 sql = query.toString();
             } else {
-                sql = _SQL_SELECT_FOCUSAREA;
+                sql = _SQL_SELECT_FOCUSAREA.concat(FocusAreaModelImpl.ORDER_BY_JPQL);
             }
 
             Session session = null;

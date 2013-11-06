@@ -48,10 +48,13 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
     public static final String TABLE_NAME = "xcolab_FocusArea";
     public static final Object[][] TABLE_COLUMNS = {
             { "id_", Types.BIGINT },
-            { "name", Types.VARCHAR }
+            { "name", Types.VARCHAR },
+            { "order_", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_FocusArea (id_ LONG not null primary key,name VARCHAR(256) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_FocusArea (id_ LONG not null primary key,name VARCHAR(256) null,order_ INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_FocusArea";
+    public static final String ORDER_BY_JPQL = " ORDER BY focusArea.order ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_FocusArea.order_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -74,6 +77,7 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
     private long _id;
     private String _name;
     private String _originalName;
+    private int _order;
     private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
     private FocusArea _escapedModelProxy;
@@ -92,6 +96,7 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
 
         model.setId(soapModel.getId());
         model.setName(soapModel.getName());
+        model.setOrder(soapModel.getOrder());
 
         return model;
     }
@@ -168,6 +173,17 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
         return GetterUtil.getString(_originalName);
     }
 
+    @JSON
+    public int getOrder() {
+        return _order;
+    }
+
+    public void setOrder(int order) {
+        _columnBitmask = -1L;
+
+        _order = order;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -204,6 +220,7 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
 
         focusAreaImpl.setId(getId());
         focusAreaImpl.setName(getName());
+        focusAreaImpl.setOrder(getOrder());
 
         focusAreaImpl.resetOriginalValues();
 
@@ -211,15 +228,21 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
     }
 
     public int compareTo(FocusArea focusArea) {
-        long primaryKey = focusArea.getPrimaryKey();
+        int value = 0;
 
-        if (getPrimaryKey() < primaryKey) {
-            return -1;
-        } else if (getPrimaryKey() > primaryKey) {
-            return 1;
+        if (getOrder() < focusArea.getOrder()) {
+            value = -1;
+        } else if (getOrder() > focusArea.getOrder()) {
+            value = 1;
         } else {
-            return 0;
+            value = 0;
         }
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override
@@ -273,24 +296,28 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
             focusAreaCacheModel.name = null;
         }
 
+        focusAreaCacheModel.order = getOrder();
+
         return focusAreaCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
         sb.append("{id=");
         sb.append(getId());
         sb.append(", name=");
         sb.append(getName());
+        sb.append(", order=");
+        sb.append(getOrder());
         sb.append("}");
 
         return sb.toString();
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(10);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.FocusArea");
@@ -303,6 +330,10 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
         sb.append(getName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>order</column-name><column-value><![CDATA[");
+        sb.append(getOrder());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");
