@@ -86,6 +86,14 @@ public class ContestWrapper {
 	public void setFlagText(String flagText) {
 		contest.setFlagText(flagText);
 	}
+	
+	public boolean getContestActive() {
+	    return contest.getContestActive();
+	}
+	
+	public void setContestActive(boolean contestActive) {
+	    contest.setContestActive(contestActive);
+	}
 
 	/*
 	 * public String getFlagTooltip() { return

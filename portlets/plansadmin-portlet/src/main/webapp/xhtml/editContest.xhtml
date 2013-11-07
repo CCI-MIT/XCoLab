@@ -89,6 +89,10 @@
              <f:selectItems value="#{contestsAdmin.editedContest.availableFocusAreas}" />
            </ice:selectOneMenu>
            
+           
+           <ice:outputLabel value="Active" />
+           <ice:selectBooleanCheckbox value="#{contestsAdmin.editedContest.contestActive}" />
+           
            <ice:outputLabel value="Featured" />
            <ice:selectBooleanCheckbox value="#{contestsAdmin.editedContest.featured}" />
            
