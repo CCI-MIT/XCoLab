@@ -336,7 +336,7 @@ public class ContestWrapper {
     private List<OntologyTerm> getTermFromSpace(String space)
             throws PortalException, SystemException {
 
-        if (!ontologySpaceCache.containsKey(space)) {
+        if (!ontologySpaceCache.containsKey(space) && getFocusAreaId() > 0) {
             if (! faCache.containsKey(contest.getFocusAreaId())) {
                 FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest
                         .getFocusAreaId());
