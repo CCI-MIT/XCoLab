@@ -102,9 +102,9 @@
     </div>
     <c:choose>
         <c:when test="${showActiveContests }">
-            <div style="margin-bottom: 10px; font-size: 17px;">
+            <!-- <div style="margin-bottom: 10px; font-size: 17px;">
                 Winners have been selected! Click on a contest to view winners, finalists, and all submitted proposals.
-	    	</div>
+	    	</div> -->
 	    </c:when>
 	    <c:otherwise>
             <div id="archivedContestsMarkerContainer">
