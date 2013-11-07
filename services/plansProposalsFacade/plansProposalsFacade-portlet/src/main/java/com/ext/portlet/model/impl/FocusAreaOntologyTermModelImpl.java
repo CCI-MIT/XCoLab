@@ -44,10 +44,13 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
     public static final String TABLE_NAME = "xcolab_FocusAreaOntologyTerm";
     public static final Object[][] TABLE_COLUMNS = {
             { "focusAreaId", Types.BIGINT },
-            { "ontologyTermId", Types.BIGINT }
+            { "ontologyTermId", Types.BIGINT },
+            { "order_", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_FocusAreaOntologyTerm (focusAreaId LONG not null,ontologyTermId LONG not null,primary key (focusAreaId, ontologyTermId))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_FocusAreaOntologyTerm (focusAreaId LONG not null,ontologyTermId LONG not null,order_ INTEGER,primary key (focusAreaId, ontologyTermId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_FocusAreaOntologyTerm";
+    public static final String ORDER_BY_JPQL = " ORDER BY focusAreaOntologyTerm.order ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_FocusAreaOntologyTerm.order_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -71,6 +74,7 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
     private long _originalFocusAreaId;
     private boolean _setOriginalFocusAreaId;
     private long _ontologyTermId;
+    private int _order;
     private long _columnBitmask;
     private FocusAreaOntologyTerm _escapedModelProxy;
 
@@ -89,6 +93,7 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
 
         model.setFocusAreaId(soapModel.getFocusAreaId());
         model.setOntologyTermId(soapModel.getOntologyTermId());
+        model.setOrder(soapModel.getOrder());
 
         return model;
     }
@@ -165,6 +170,17 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
         _ontologyTermId = ontologyTermId;
     }
 
+    @JSON
+    public int getOrder() {
+        return _order;
+    }
+
+    public void setOrder(int order) {
+        _columnBitmask = -1L;
+
+        _order = order;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -186,6 +202,7 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
 
         focusAreaOntologyTermImpl.setFocusAreaId(getFocusAreaId());
         focusAreaOntologyTermImpl.setOntologyTermId(getOntologyTermId());
+        focusAreaOntologyTermImpl.setOrder(getOrder());
 
         focusAreaOntologyTermImpl.resetOriginalValues();
 
@@ -193,9 +210,21 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
     }
 
     public int compareTo(FocusAreaOntologyTerm focusAreaOntologyTerm) {
-        FocusAreaOntologyTermPK primaryKey = focusAreaOntologyTerm.getPrimaryKey();
+        int value = 0;
 
-        return getPrimaryKey().compareTo(primaryKey);
+        if (getOrder() < focusAreaOntologyTerm.getOrder()) {
+            value = -1;
+        } else if (getOrder() > focusAreaOntologyTerm.getOrder()) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override
@@ -245,24 +274,28 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
 
         focusAreaOntologyTermCacheModel.ontologyTermId = getOntologyTermId();
 
+        focusAreaOntologyTermCacheModel.order = getOrder();
+
         return focusAreaOntologyTermCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
         sb.append("{focusAreaId=");
         sb.append(getFocusAreaId());
         sb.append(", ontologyTermId=");
         sb.append(getOntologyTermId());
+        sb.append(", order=");
+        sb.append(getOrder());
         sb.append("}");
 
         return sb.toString();
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(10);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.FocusAreaOntologyTerm");
@@ -275,6 +308,10 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
         sb.append(
             "<column><column-name>ontologyTermId</column-name><column-value><![CDATA[");
         sb.append(getOntologyTermId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>order</column-name><column-value><![CDATA[");
+        sb.append(getOrder());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

@@ -164,6 +164,7 @@ create table xcolab_FocusArea (
 create table xcolab_FocusAreaOntologyTerm (
 	focusAreaId LONG not null,
 	ontologyTermId LONG not null,
+	order_ INTEGER,
 	primary key (focusAreaId, ontologyTermId)
 );
 

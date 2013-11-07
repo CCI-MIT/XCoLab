@@ -18,15 +18,18 @@ public class FocusAreaOntologyTermCacheModel implements CacheModel<FocusAreaOnto
     Serializable {
     public long focusAreaId;
     public long ontologyTermId;
+    public int order;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
         sb.append("{focusAreaId=");
         sb.append(focusAreaId);
         sb.append(", ontologyTermId=");
         sb.append(ontologyTermId);
+        sb.append(", order=");
+        sb.append(order);
         sb.append("}");
 
         return sb.toString();
@@ -37,6 +40,7 @@ public class FocusAreaOntologyTermCacheModel implements CacheModel<FocusAreaOnto
 
         focusAreaOntologyTermImpl.setFocusAreaId(focusAreaId);
         focusAreaOntologyTermImpl.setOntologyTermId(ontologyTermId);
+        focusAreaOntologyTermImpl.setOrder(order);
 
         focusAreaOntologyTermImpl.resetOriginalValues();
 

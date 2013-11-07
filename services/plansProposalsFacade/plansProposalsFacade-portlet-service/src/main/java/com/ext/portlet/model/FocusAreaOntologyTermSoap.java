@@ -17,6 +17,7 @@ import java.util.List;
 public class FocusAreaOntologyTermSoap implements Serializable {
     private long _focusAreaId;
     private long _ontologyTermId;
+    private int _order;
 
     public FocusAreaOntologyTermSoap() {
     }
@@ -27,6 +28,7 @@ public class FocusAreaOntologyTermSoap implements Serializable {
 
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setOntologyTermId(model.getOntologyTermId());
+        soapModel.setOrder(model.getOrder());
 
         return soapModel;
     }
@@ -93,5 +95,13 @@ public class FocusAreaOntologyTermSoap implements Serializable {
 
     public void setOntologyTermId(long ontologyTermId) {
         _ontologyTermId = ontologyTermId;
+    }
+
+    public int getOrder() {
+        return _order;
+    }
+
+    public void setOrder(int order) {
+        _order = order;
     }
 }

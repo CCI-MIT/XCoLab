@@ -1,6 +1,7 @@
 package com.ext.portlet.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.ext.portlet.NoSuchOntologyTermException;
@@ -10,8 +11,8 @@ import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.persistence.FocusAreaOntologyTermPK;
 import com.ext.portlet.service.base.FocusAreaLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.FocusAreaOntologyTermPK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -77,6 +78,7 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
         }*/
         FocusAreaOntologyTerm faot = FocusAreaOntologyTermLocalServiceUtil.createFocusAreaOntologyTerm(
                 new FocusAreaOntologyTermPK(focusArea.getId(), termId));
+        faot.setOrder((int) new Date().getTime());
         FocusAreaOntologyTermLocalServiceUtil.store(faot);
         store(focusArea);
     }

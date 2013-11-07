@@ -72,6 +72,20 @@ public interface FocusAreaOntologyTermModel extends BaseModel<FocusAreaOntologyT
      */
     public void setOntologyTermId(long ontologyTermId);
 
+    /**
+     * Returns the order of this focus area ontology term.
+     *
+     * @return the order of this focus area ontology term
+     */
+    public int getOrder();
+
+    /**
+     * Sets the order of this focus area ontology term.
+     *
+     * @param order the order of this focus area ontology term
+     */
+    public void setOrder(int order);
+
     public boolean isNew();
 
     public void setNew(boolean n);

@@ -204,6 +204,7 @@
 	<model name="com.ext.portlet.model.FocusAreaOntologyTerm">
 		<field name="focusAreaId" type="long" />
 		<field name="ontologyTermId" type="long" />
+		<field name="order" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.LandingPage">
 		<field name="id" type="long" />

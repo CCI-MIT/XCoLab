@@ -276,6 +276,7 @@
 			<key-property name="focusAreaId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="ontologyTermId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
+		<property name="order" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="order_" />
 	</class>
 	<class name="com.ext.portlet.model.impl.LandingPageImpl" table="xcolab_LandingPage">
 		<cache usage="read-write" />

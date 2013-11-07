@@ -595,6 +595,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
         focusAreaOntologyTermImpl.setFocusAreaId(focusAreaOntologyTerm.getFocusAreaId());
         focusAreaOntologyTermImpl.setOntologyTermId(focusAreaOntologyTerm.getOntologyTermId());
+        focusAreaOntologyTermImpl.setOrder(focusAreaOntologyTerm.getOrder());
 
         return focusAreaOntologyTermImpl;
     }
@@ -769,7 +770,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_FOCUSAREAONTOLOGYTERM_WHERE);
@@ -779,6 +780,9 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            }
+            else {
+                query.append(FocusAreaOntologyTermModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -994,6 +998,9 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
                 }
             }
         }
+        else {
+            query.append(FocusAreaOntologyTermModelImpl.ORDER_BY_JPQL);
+        }
 
         String sql = query.toString();
 
@@ -1095,7 +1102,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
                 sql = query.toString();
             } else {
-                sql = _SQL_SELECT_FOCUSAREAONTOLOGYTERM;
+                sql = _SQL_SELECT_FOCUSAREAONTOLOGYTERM.concat(FocusAreaOntologyTermModelImpl.ORDER_BY_JPQL);
             }
 
             Session session = null;

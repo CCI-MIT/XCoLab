@@ -98,6 +98,11 @@
         <!-- PK field -->
         <column name="focusAreaId" type="long" primary="true" />
         <column name="ontologyTermId" type="long" primary="true" />
+        <column name="order" type="int" />
+        
+        <order>
+        	<order-column name="order" />
+        </order>
         
         <finder name="FocusAreaId" return-type="Collection">
             <finder-column name="focusAreaId" />

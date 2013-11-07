@@ -83,6 +83,24 @@ public class FocusAreaOntologyTermWrapper implements FocusAreaOntologyTerm,
         _focusAreaOntologyTerm.setOntologyTermId(ontologyTermId);
     }
 
+    /**
+    * Returns the order of this focus area ontology term.
+    *
+    * @return the order of this focus area ontology term
+    */
+    public int getOrder() {
+        return _focusAreaOntologyTerm.getOrder();
+    }
+
+    /**
+    * Sets the order of this focus area ontology term.
+    *
+    * @param order the order of this focus area ontology term
+    */
+    public void setOrder(int order) {
+        _focusAreaOntologyTerm.setOrder(order);
+    }
+
     public boolean isNew() {
         return _focusAreaOntologyTerm.isNew();
     }
