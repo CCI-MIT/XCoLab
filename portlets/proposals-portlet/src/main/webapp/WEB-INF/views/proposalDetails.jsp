@@ -68,11 +68,9 @@
                         <c:if test="${not proposal.isLatestVersion }">
                             <div class="lastedited">
                                 Currently viewing version from
-                                <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/
-                                DD / YYYY
-                                hh:mm
-                                A
-                                "));</script>
+                                <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format(
+                                		"MM/DD/YYYY hh:mm A"));
+                                </script>
                                 by
                                 <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}"
                                                                  text="${proposal.userForSelectedVersion.screenName}"/>
