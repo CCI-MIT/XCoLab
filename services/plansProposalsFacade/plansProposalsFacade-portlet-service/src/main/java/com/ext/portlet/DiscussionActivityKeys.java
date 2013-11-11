@@ -4,7 +4,7 @@
  * or the license.txt file included in this distribution for the full text of the license.
  */
 
-package org.climatecollaboratorium.facelets.discussions.activity;
+package com.ext.portlet;
 
 import com.ext.portlet.Activity.SubscriberFactory;
 import com.ext.portlet.Activity.SubscriptionProvider;

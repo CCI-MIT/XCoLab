@@ -2,8 +2,7 @@ package com.ext.portlet.service.impl;
 
 import java.util.List;
 
-import org.climatecollaboratorium.facelets.discussions.activity.DiscussionActivityKeys;
-
+import com.ext.portlet.DiscussionActivityKeys;
 import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.Activity.ActivityUtil;

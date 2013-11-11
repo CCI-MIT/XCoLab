@@ -1,11 +1,24 @@
 package org.xcolab.portlets.admintasks;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+
+import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
+import org.xcolab.portlets.admintasks.migration.DataMigrator;
+import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
 
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.DiscussionActions;
@@ -36,18 +49,31 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.*;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.ClassName;
+import com.liferay.portal.model.Group;
+import com.liferay.portal.model.Permission;
+import com.liferay.portal.model.Resource;
+import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.RoleConstants;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.service.*;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.PermissionLocalServiceUtil;
+import com.liferay.portal.service.ResourceLocalServiceUtil;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.SocialActivity;
+import com.liferay.portlet.social.model.SocialActivityFeedEntry;
+import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
-import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
-import org.xcolab.portlets.admintasks.migration.DataMigrator;
-import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
 
 public class AdminTasksBean {
     private Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
@@ -717,5 +743,50 @@ public class AdminTasksBean {
 
     public void socialFix(){
         OldPersistenceQueries.fixSocialActivitiesErrors();
+    }
+    
+    
+    public void fixSocialActivitiesErrors() throws SystemException, PortalException {
+        PrincipalThreadLocal.setName(10144L);
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        Map map = ec.getRequestMap();
+        ThemeDisplay td = (ThemeDisplay) map.get(WebKeys.THEME_DISPLAY);
+        int badCount = 0;
+        Set<String> removeEmptyActivitiesWithClass = new HashSet<String>();
+        removeEmptyActivitiesWithClass.add("com.ext.portlet");
+        removeEmptyActivitiesWithClass.add("com.ext.portlet.debaterevision.model.DebateItem");
+        removeEmptyActivitiesWithClass.add("com.liferay.portlet.wiki.model.WikiPage");
+        removeEmptyActivitiesWithClass.add("com.liferay.portlet.messageboards.model.MBMessage");
+        removeEmptyActivitiesWithClass.add("com.ext.portlet.debates.action.EditDebateMessageAction");
+        removeEmptyActivitiesWithClass.add("com.ext.portlet.debaterevision.model.Debate");
+        removeEmptyActivitiesWithClass.add("com.ext.portlet.model.DiscussionMessage");
+        removeEmptyActivitiesWithClass.add("com.ext.portlet.debaterevision.model.DebateCategory");
+        removeEmptyActivitiesWithClass.add("com.ext.portlet.model.DiscussionCategoryGroup");
+        removeEmptyActivitiesWithClass.add("com.liferay.portlet.blogs.model.BlogsEntry");
+        
+        for (SocialActivity activity: SocialActivityLocalServiceUtil.getSocialActivities(0, Integer.MAX_VALUE)) {
+            try {
+                //System.out.println("processing activity: " + activity.getActivityId());
+                String className = ClassNameLocalServiceUtil.getClassName(activity.getClassNameId()).getClassName();
+                /*if (className.equals("com.liferay.portlet.wiki.model.WikiPage")) {
+                    System.out.println("\t\t\t" + activity);
+                }*/
+                SocialActivityFeedEntry interpreted = SocialActivityInterpreterLocalServiceUtil.interpret(activity, td);
+                if (interpreted  == null) {
+                    badCount++;
+                    System.out.println("Can't interpret activity: " + activity.getActivityId() + "\n\t\t" + new Date(activity.getCreateDate()) + "\t" + className);
+                    System.out.println("\t\t\t" + activity);
+                    if (removeEmptyActivitiesWithClass.contains(className)) {
+                        SocialActivityLocalServiceUtil.deleteActivity(activity);
+                    }
+                }
+            }
+            catch (Exception e) {
+                badCount++;
+                System.out.println("Can't interpret activity: " + new Date(activity.getCreateDate()) + "\t" + ClassNameLocalServiceUtil.getClassName(activity.getClassNameId()).getClassName());
+            }
+        }
+        System.out.println("Bad activities count: " + badCount);
     }
 }

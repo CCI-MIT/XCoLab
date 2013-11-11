@@ -134,11 +134,11 @@
 			<div class="prop-avatar" style="font-size: 13px">
                 <strong>REGION</strong><br />
                 <c:if test="${proposal.proposalAttributeUtil.hasAttribute('REGION_ECONOMY') }">
-                	<em>Economy:</em> ${proposal.attributeString('REGION_ECONOMY')}<br />
+                	<em>Economy:</em> ${proposal.proposalAttributeUtil.attributeString('REGION_ECONOMY')}<br />
                 </c:if>
-                <em>Transnational group/large country:</em> ${proposal.attributeString('REGION')}<br />
+                <em>Transnational group/large country:</em> ${proposal.proposalAttributeUtil.attributeString('REGION')}<br />
                 <c:if test="${proposal.proposalAttributeUtil.hasAttribute('SUBREGION') }">
-                    <em>Country within transnational group:</em> ${proposal.attributeString('SUBREGION')}
+                    <em>Country within transnational group:</em> ${proposal.proposalAttributeUtil.attributeString('SUBREGION')}
                 </c:if>  
         	</div>
         </c:if>
@@ -148,16 +148,16 @@
             <div class="div3"></div>
             <div class="prop-results">
             	<c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
-                	<div><strong>CO2 concentration</strong><br />${proposal.attributeString('SCENARIO_CO2_CONCENTRATION')} ppm in 2100</div>
+                	<div><strong>CO2 concentration</strong><br />${proposal.proposalAttributeUtil.attributeString('SCENARIO_CO2_CONCENTRATION')} ppm in 2100</div>
                 </c:if>
             	<c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_MITIGATION_COST_NO_ERRORS')}">
-                	<div><strong>Temperature Increase</strong><br />${proposal.attributeString('SCENARIO_MITIGATION_COST_NO_ERRORS')} &amp;deg;C</div>
+                	<div><strong>Temperature Increase</strong><br />${proposal.proposalAttributeUtil.attributeString('SCENARIO_MITIGATION_COST_NO_ERRORS')} &amp;deg;C</div>
                 </c:if>
             	<c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
-                	<div><strong>Mitigation Costs</strong><br />${proposal.attributeString('SCENARIO_CO2_CONCENTRATION')} %GDP in 2100</div>
+                	<div><strong>Mitigation Costs</strong><br />${proposal.proposalAttributeUtil.attributeString('SCENARIO_CO2_CONCENTRATION')} %GDP in 2100</div>
                 </c:if>
             	<c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_DAMAGE_COST')}">
-                	<div><strong>Damage Costs</strong><br />${proposal.attributeString('SCENARIO_DAMAGE_COST')} %GDP in 2100</div>
+                	<div><strong>Damage Costs</strong><br />${proposal.proposalAttributeUtil.attributeString('SCENARIO_DAMAGE_COST')} %GDP in 2100</div>
                 </c:if>
                 
             </div>
