@@ -345,7 +345,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public long getProposalsCount(Contest contest) throws PortalException, SystemException {
         // first - get current phase
-        ContestPhase activePhase = getActivePhase(contest);
+        ContestPhase activePhase = getActiveOrLastPhase(contest);
         if (activePhase == null) {
             List<ContestPhase> phases = getPhases(contest);
             if (phases != null && !phases.isEmpty()) {
@@ -354,7 +354,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
         if (activePhase == null)
             return 0;
-        return PlanItemLocalServiceUtil.countPlansByContestPhase(activePhase);
+        
+        return proposalLocalService.countProposalsInContestPhase(activePhase.getContestPhasePK());
     }
 
     public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest) throws PortalException, SystemException {

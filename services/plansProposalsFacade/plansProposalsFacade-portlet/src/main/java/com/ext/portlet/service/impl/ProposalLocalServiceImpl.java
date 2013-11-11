@@ -38,6 +38,10 @@ import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.ext.utils.PortalServicesHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -552,6 +556,27 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             proposals.add(proposalPersistence.findByPrimaryKey(proposal2Phase.getProposalId()));
         }
         return proposals;
+    }
+    
+    /**
+     * <p>Returns count of proposals associated with given contest phase</p>
+     *
+     * @param contestPhaseId id of a contest phase
+     * @return count of proposals from given contest phase
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public long countProposalsInContestPhase(long contestPhaseId) throws PortalException, SystemException {
+        
+        final DynamicQuery phaseProposals = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
+        phaseProposals.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
+        phaseProposals.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
+        
+        final DynamicQuery proposalsInPhaseNotDeleted = DynamicQueryFactoryUtil.forClass(Proposal.class, "proposal");
+        proposalsInPhaseNotDeleted.add(PropertyFactoryUtil.forName("proposal.proposalId").in(phaseProposals))
+            .add(PropertyFactoryUtil.forName("proposal.visible").eq(true));
+        
+        return dynamicQueryCount(proposalsInPhaseNotDeleted);
     }
 
     /**

@@ -669,6 +669,20 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
+    * <p>Returns count of proposals associated with given contest phase</p>
+    *
+    * @param contestPhaseId id of a contest phase
+    * @return count of proposals from given contest phase
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public static long countProposalsInContestPhase(long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().countProposalsInContestPhase(contestPhaseId);
+    }
+
+    /**
     * <p>Returns list of proposal team members</p>
     *
     * @param proposalId proposal id

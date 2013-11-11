@@ -584,6 +584,18 @@ public interface ProposalLocalService extends PersistedModelLocalService {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * <p>Returns count of proposals associated with given contest phase</p>
+    *
+    * @param contestPhaseId id of a contest phase
+    * @return count of proposals from given contest phase
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public long countProposalsInContestPhase(long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * <p>Returns list of proposal team members</p>
     *
     * @param proposalId proposal id

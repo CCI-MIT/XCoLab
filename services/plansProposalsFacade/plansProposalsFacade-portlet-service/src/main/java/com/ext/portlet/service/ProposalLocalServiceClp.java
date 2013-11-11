@@ -44,34 +44,35 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private MethodKey _getProposalVersionMethodKey34;
     private MethodKey _getProposalsInContestPhaseMethodKey35;
     private MethodKey _getProposalsInContestPhaseMethodKey36;
-    private MethodKey _getMembersMethodKey37;
-    private MethodKey _getSupportersMethodKey38;
-    private MethodKey _getSupportersCountMethodKey39;
-    private MethodKey _isSupporterMethodKey40;
-    private MethodKey _addSupporterMethodKey41;
+    private MethodKey _countProposalsInContestPhaseMethodKey37;
+    private MethodKey _getMembersMethodKey38;
+    private MethodKey _getSupportersMethodKey39;
+    private MethodKey _getSupportersCountMethodKey40;
+    private MethodKey _isSupporterMethodKey41;
     private MethodKey _addSupporterMethodKey42;
-    private MethodKey _removeSupporterMethodKey43;
-    private MethodKey _getVotersMethodKey44;
-    private MethodKey _getVotesCountMethodKey45;
-    private MethodKey _addVoteMethodKey46;
+    private MethodKey _addSupporterMethodKey43;
+    private MethodKey _removeSupporterMethodKey44;
+    private MethodKey _getVotersMethodKey45;
+    private MethodKey _getVotesCountMethodKey46;
     private MethodKey _addVoteMethodKey47;
-    private MethodKey _removeVoteMethodKey48;
-    private MethodKey _getCommentsCountMethodKey49;
-    private MethodKey _isUserAMemberMethodKey50;
-    private MethodKey _isOpenMethodKey51;
-    private MethodKey _getMembershipRequestsMethodKey52;
-    private MethodKey _addMembershipRequestMethodKey53;
-    private MethodKey _removeUserFromTeamMethodKey54;
-    private MethodKey _dennyMembershipRequestMethodKey55;
-    private MethodKey _approveMembershipRequestMethodKey56;
-    private MethodKey _hasUserRequestedMembershipMethodKey57;
-    private MethodKey _joinIfNotAMemberAndProposalIsOpenMethodKey58;
-    private MethodKey _isSubscribedMethodKey59;
-    private MethodKey _subscribeMethodKey60;
+    private MethodKey _addVoteMethodKey48;
+    private MethodKey _removeVoteMethodKey49;
+    private MethodKey _getCommentsCountMethodKey50;
+    private MethodKey _isUserAMemberMethodKey51;
+    private MethodKey _isOpenMethodKey52;
+    private MethodKey _getMembershipRequestsMethodKey53;
+    private MethodKey _addMembershipRequestMethodKey54;
+    private MethodKey _removeUserFromTeamMethodKey55;
+    private MethodKey _dennyMembershipRequestMethodKey56;
+    private MethodKey _approveMembershipRequestMethodKey57;
+    private MethodKey _hasUserRequestedMembershipMethodKey58;
+    private MethodKey _joinIfNotAMemberAndProposalIsOpenMethodKey59;
+    private MethodKey _isSubscribedMethodKey60;
     private MethodKey _subscribeMethodKey61;
-    private MethodKey _unsubscribeMethodKey62;
+    private MethodKey _subscribeMethodKey62;
     private MethodKey _unsubscribeMethodKey63;
-    private MethodKey _hasUserVotedMethodKey64;
+    private MethodKey _unsubscribeMethodKey64;
+    private MethodKey _hasUserVotedMethodKey65;
 
     public ProposalLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -208,92 +209,95 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                 "getProposalsInContestPhase", long.class,
                 java.lang.String.class, boolean.class, int.class, int.class);
 
-        _getMembersMethodKey37 = new MethodKey(_classLoaderProxy.getClassName(),
+        _countProposalsInContestPhaseMethodKey37 = new MethodKey(_classLoaderProxy.getClassName(),
+                "countProposalsInContestPhase", long.class);
+
+        _getMembersMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getMembers", long.class);
 
-        _getSupportersMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getSupportersMethodKey39 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getSupporters", long.class);
 
-        _getSupportersCountMethodKey39 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getSupportersCountMethodKey40 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getSupportersCount", long.class);
 
-        _isSupporterMethodKey40 = new MethodKey(_classLoaderProxy.getClassName(),
+        _isSupporterMethodKey41 = new MethodKey(_classLoaderProxy.getClassName(),
                 "isSupporter", long.class, long.class);
 
-        _addSupporterMethodKey41 = new MethodKey(_classLoaderProxy.getClassName(),
+        _addSupporterMethodKey42 = new MethodKey(_classLoaderProxy.getClassName(),
                 "addSupporter", long.class, long.class);
 
-        _addSupporterMethodKey42 = new MethodKey(_classLoaderProxy.getClassName(),
+        _addSupporterMethodKey43 = new MethodKey(_classLoaderProxy.getClassName(),
                 "addSupporter", long.class, long.class, boolean.class);
 
-        _removeSupporterMethodKey43 = new MethodKey(_classLoaderProxy.getClassName(),
+        _removeSupporterMethodKey44 = new MethodKey(_classLoaderProxy.getClassName(),
                 "removeSupporter", long.class, long.class);
 
-        _getVotersMethodKey44 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getVotersMethodKey45 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getVoters", long.class, long.class);
 
-        _getVotesCountMethodKey45 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getVotesCountMethodKey46 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getVotesCount", long.class, long.class);
 
-        _addVoteMethodKey46 = new MethodKey(_classLoaderProxy.getClassName(),
+        _addVoteMethodKey47 = new MethodKey(_classLoaderProxy.getClassName(),
                 "addVote", long.class, long.class, long.class);
 
-        _addVoteMethodKey47 = new MethodKey(_classLoaderProxy.getClassName(),
+        _addVoteMethodKey48 = new MethodKey(_classLoaderProxy.getClassName(),
                 "addVote", long.class, long.class, long.class, boolean.class);
 
-        _removeVoteMethodKey48 = new MethodKey(_classLoaderProxy.getClassName(),
+        _removeVoteMethodKey49 = new MethodKey(_classLoaderProxy.getClassName(),
                 "removeVote", long.class, long.class);
 
-        _getCommentsCountMethodKey49 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getCommentsCountMethodKey50 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getCommentsCount", long.class);
 
-        _isUserAMemberMethodKey50 = new MethodKey(_classLoaderProxy.getClassName(),
+        _isUserAMemberMethodKey51 = new MethodKey(_classLoaderProxy.getClassName(),
                 "isUserAMember", long.class, long.class);
 
-        _isOpenMethodKey51 = new MethodKey(_classLoaderProxy.getClassName(),
+        _isOpenMethodKey52 = new MethodKey(_classLoaderProxy.getClassName(),
                 "isOpen", long.class);
 
-        _getMembershipRequestsMethodKey52 = new MethodKey(_classLoaderProxy.getClassName(),
+        _getMembershipRequestsMethodKey53 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getMembershipRequests", long.class);
 
-        _addMembershipRequestMethodKey53 = new MethodKey(_classLoaderProxy.getClassName(),
+        _addMembershipRequestMethodKey54 = new MethodKey(_classLoaderProxy.getClassName(),
                 "addMembershipRequest", long.class, long.class,
                 java.lang.String.class);
 
-        _removeUserFromTeamMethodKey54 = new MethodKey(_classLoaderProxy.getClassName(),
+        _removeUserFromTeamMethodKey55 = new MethodKey(_classLoaderProxy.getClassName(),
                 "removeUserFromTeam", long.class, long.class);
 
-        _dennyMembershipRequestMethodKey55 = new MethodKey(_classLoaderProxy.getClassName(),
+        _dennyMembershipRequestMethodKey56 = new MethodKey(_classLoaderProxy.getClassName(),
                 "dennyMembershipRequest", long.class, long.class, long.class,
                 java.lang.String.class, long.class);
 
-        _approveMembershipRequestMethodKey56 = new MethodKey(_classLoaderProxy.getClassName(),
+        _approveMembershipRequestMethodKey57 = new MethodKey(_classLoaderProxy.getClassName(),
                 "approveMembershipRequest", long.class, java.lang.Long.class,
                 com.liferay.portal.model.MembershipRequest.class,
                 java.lang.String.class, java.lang.Long.class);
 
-        _hasUserRequestedMembershipMethodKey57 = new MethodKey(_classLoaderProxy.getClassName(),
+        _hasUserRequestedMembershipMethodKey58 = new MethodKey(_classLoaderProxy.getClassName(),
                 "hasUserRequestedMembership", long.class, long.class);
 
-        _joinIfNotAMemberAndProposalIsOpenMethodKey58 = new MethodKey(_classLoaderProxy.getClassName(),
+        _joinIfNotAMemberAndProposalIsOpenMethodKey59 = new MethodKey(_classLoaderProxy.getClassName(),
                 "joinIfNotAMemberAndProposalIsOpen", long.class, long.class);
 
-        _isSubscribedMethodKey59 = new MethodKey(_classLoaderProxy.getClassName(),
+        _isSubscribedMethodKey60 = new MethodKey(_classLoaderProxy.getClassName(),
                 "isSubscribed", long.class, long.class);
 
-        _subscribeMethodKey60 = new MethodKey(_classLoaderProxy.getClassName(),
+        _subscribeMethodKey61 = new MethodKey(_classLoaderProxy.getClassName(),
                 "subscribe", long.class, long.class);
 
-        _subscribeMethodKey61 = new MethodKey(_classLoaderProxy.getClassName(),
+        _subscribeMethodKey62 = new MethodKey(_classLoaderProxy.getClassName(),
                 "subscribe", long.class, long.class, boolean.class);
 
-        _unsubscribeMethodKey62 = new MethodKey(_classLoaderProxy.getClassName(),
+        _unsubscribeMethodKey63 = new MethodKey(_classLoaderProxy.getClassName(),
                 "unsubscribe", long.class, long.class);
 
-        _unsubscribeMethodKey63 = new MethodKey(_classLoaderProxy.getClassName(),
+        _unsubscribeMethodKey64 = new MethodKey(_classLoaderProxy.getClassName(),
                 "unsubscribe", long.class, long.class, boolean.class);
 
-        _hasUserVotedMethodKey64 = new MethodKey(_classLoaderProxy.getClassName(),
+        _hasUserVotedMethodKey65 = new MethodKey(_classLoaderProxy.getClassName(),
                 "hasUserVoted", long.class, long.class, long.class);
     }
 
@@ -1374,13 +1378,43 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         return (java.util.List<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
     }
 
+    public long countProposalsInContestPhase(long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_countProposalsInContestPhaseMethodKey37,
+                contestPhaseId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
     public java.util.List<com.liferay.portal.model.User> getMembers(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getMembersMethodKey37,
+        MethodHandler methodHandler = new MethodHandler(_getMembersMethodKey38,
                 proposalId);
 
         try {
@@ -1411,7 +1445,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getSupportersMethodKey38,
+        MethodHandler methodHandler = new MethodHandler(_getSupportersMethodKey39,
                 proposalId);
 
         try {
@@ -1441,7 +1475,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getSupportersCountMethodKey39,
+        MethodHandler methodHandler = new MethodHandler(_getSupportersCountMethodKey40,
                 proposalId);
 
         try {
@@ -1471,7 +1505,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_isSupporterMethodKey40,
+        MethodHandler methodHandler = new MethodHandler(_isSupporterMethodKey41,
                 proposalId, userId);
 
         try {
@@ -1499,7 +1533,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void addSupporter(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_addSupporterMethodKey41,
+        MethodHandler methodHandler = new MethodHandler(_addSupporterMethodKey42,
                 proposalId, userId);
 
         try {
@@ -1526,7 +1560,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_addSupporterMethodKey42,
+        MethodHandler methodHandler = new MethodHandler(_addSupporterMethodKey43,
                 proposalId, userId, publishActivity);
 
         try {
@@ -1552,7 +1586,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void removeSupporter(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_removeSupporterMethodKey43,
+        MethodHandler methodHandler = new MethodHandler(_removeSupporterMethodKey44,
                 proposalId, userId);
 
         try {
@@ -1581,7 +1615,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getVotersMethodKey44,
+        MethodHandler methodHandler = new MethodHandler(_getVotersMethodKey45,
                 proposalId, contestPhaseId);
 
         try {
@@ -1610,7 +1644,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getVotesCountMethodKey45,
+        MethodHandler methodHandler = new MethodHandler(_getVotesCountMethodKey46,
                 proposalId, contestPhaseId);
 
         try {
@@ -1634,7 +1668,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void addVote(long proposalId, long contestPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_addVoteMethodKey46,
+        MethodHandler methodHandler = new MethodHandler(_addVoteMethodKey47,
                 proposalId, contestPhaseId, userId);
 
         try {
@@ -1661,7 +1695,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_addVoteMethodKey47,
+        MethodHandler methodHandler = new MethodHandler(_addVoteMethodKey48,
                 proposalId, contestPhaseId, userId, publishActivity);
 
         try {
@@ -1687,7 +1721,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void removeVote(long contestPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_removeVoteMethodKey48,
+        MethodHandler methodHandler = new MethodHandler(_removeVoteMethodKey49,
                 contestPhaseId, userId);
 
         try {
@@ -1715,7 +1749,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey49,
+        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey50,
                 proposalId);
 
         try {
@@ -1745,7 +1779,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_isUserAMemberMethodKey50,
+        MethodHandler methodHandler = new MethodHandler(_isUserAMemberMethodKey51,
                 proposalId, userId);
 
         try {
@@ -1775,7 +1809,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_isOpenMethodKey51,
+        MethodHandler methodHandler = new MethodHandler(_isOpenMethodKey52,
                 proposalId);
 
         try {
@@ -1806,7 +1840,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getMembershipRequestsMethodKey52,
+        MethodHandler methodHandler = new MethodHandler(_getMembershipRequestsMethodKey53,
                 proposalId);
 
         try {
@@ -1835,7 +1869,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         java.lang.String comment)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_addMembershipRequestMethodKey53,
+        MethodHandler methodHandler = new MethodHandler(_addMembershipRequestMethodKey54,
                 proposalId, userId, ClpSerializer.translateInput(comment));
 
         try {
@@ -1861,7 +1895,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void removeUserFromTeam(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_removeUserFromTeamMethodKey54,
+        MethodHandler methodHandler = new MethodHandler(_removeUserFromTeamMethodKey55,
                 proposalId, userId);
 
         try {
@@ -1888,7 +1922,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         long membershipRequestId, java.lang.String reply, long updateAuthorId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_dennyMembershipRequestMethodKey55,
+        MethodHandler methodHandler = new MethodHandler(_dennyMembershipRequestMethodKey56,
                 proposalId, userId, membershipRequestId,
                 ClpSerializer.translateInput(reply), updateAuthorId);
 
@@ -1918,7 +1952,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         java.lang.String reply, java.lang.Long updateAuthorId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_approveMembershipRequestMethodKey56,
+        MethodHandler methodHandler = new MethodHandler(_approveMembershipRequestMethodKey57,
                 proposalId, ClpSerializer.translateInput(userId),
                 ClpSerializer.translateInput(request),
                 ClpSerializer.translateInput(reply),
@@ -1949,7 +1983,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_hasUserRequestedMembershipMethodKey57,
+        MethodHandler methodHandler = new MethodHandler(_hasUserRequestedMembershipMethodKey58,
                 proposalId, userId);
 
         try {
@@ -1977,7 +2011,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void joinIfNotAMemberAndProposalIsOpen(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_joinIfNotAMemberAndProposalIsOpenMethodKey58,
+        MethodHandler methodHandler = new MethodHandler(_joinIfNotAMemberAndProposalIsOpenMethodKey59,
                 proposalId, userId);
 
         try {
@@ -2005,7 +2039,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_isSubscribedMethodKey59,
+        MethodHandler methodHandler = new MethodHandler(_isSubscribedMethodKey60,
                 proposalId, userId);
 
         try {
@@ -2033,7 +2067,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void subscribe(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_subscribeMethodKey60,
+        MethodHandler methodHandler = new MethodHandler(_subscribeMethodKey61,
                 proposalId, userId);
 
         try {
@@ -2059,7 +2093,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void subscribe(long proposalId, long userId, boolean automatic)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_subscribeMethodKey61,
+        MethodHandler methodHandler = new MethodHandler(_subscribeMethodKey62,
                 proposalId, userId, automatic);
 
         try {
@@ -2085,7 +2119,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void unsubscribe(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_unsubscribeMethodKey62,
+        MethodHandler methodHandler = new MethodHandler(_unsubscribeMethodKey63,
                 proposalId, userId);
 
         try {
@@ -2111,7 +2145,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     public void unsubscribe(long proposalId, long userId, boolean automatic)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_unsubscribeMethodKey63,
+        MethodHandler methodHandler = new MethodHandler(_unsubscribeMethodKey64,
                 proposalId, userId, automatic);
 
         try {
@@ -2138,7 +2172,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         long userId) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_hasUserVotedMethodKey64,
+        MethodHandler methodHandler = new MethodHandler(_hasUserVotedMethodKey65,
                 proposalId, contestPhaseId, userId);
 
         try {
