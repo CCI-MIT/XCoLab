@@ -20,7 +20,7 @@ public class ContestsBean implements Serializable {
 	public List<ContestWrapper> getContests() throws SystemException, PortalException {
         List<ContestWrapper> ret = new ArrayList<>();
         
-        for (Contest contest: ContestLocalServiceUtil.findByActiveFlagText(true, "Featured")) {
+        for (Contest contest: ContestLocalServiceUtil.findByActiveFlagText(true, "Open")) {
             ret.add(new ContestWrapper(contest));
         }
         return ret;
