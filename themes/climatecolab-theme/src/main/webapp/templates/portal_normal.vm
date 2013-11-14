@@ -214,16 +214,24 @@ $theme.include($top_messages_include)
 #if ($request.getSession().getAttribute('collab_user_has_registered'))
     <script type="text/javascript"§>
 // disabled in test env
-        $request.getSession().removeAttribute('collab_user_has_registered')
-        pageTracker._trackPageview('/colab/$user.screenName/registered');
-	pageTracker._trackEvent('Users', 'registered', '', 1);
+	try {
+	        $request.getSession().removeAttribute('collab_user_has_registered')
+        	pageTracker._trackPageview('/colab/$user.screenName/registered');
+		pageTracker._trackEvent('Users', 'registered', '', 1);
+	}
+	catch(err) {
+	}
     </script>
 #end
 
 #if ($request.getSession().getAttribute('user_from_landing_page'))
     <script type="text/javascript">
-        pageTracker._trackPageview('$request.getSession().getAttribute("user_from_landing_page")');
-        $request.getSession().removeAttribute('user_from_landing_page')
+        try {
+		pageTracker._trackPageview('$request.getSession().getAttribute("user_from_landing_page")');
+        	$request.getSession().removeAttribute('user_from_landing_page')
+	}
+	catch(err) {
+	}
     </script>
 #end
 
