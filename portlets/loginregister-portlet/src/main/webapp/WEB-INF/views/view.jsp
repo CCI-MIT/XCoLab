@@ -163,7 +163,7 @@
 					<th></th>
 					<td colspan="3">
 						<div class="blue-button">
-							<a href="javascript:;" onclick="pageTracker._trackPageview('/user/registerSubmit');updateTextarea();jQuery('#registrationForm').submit();">CREATE
+							<a href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();">CREATE
 								account</a>
 						</div>
 					</td>
