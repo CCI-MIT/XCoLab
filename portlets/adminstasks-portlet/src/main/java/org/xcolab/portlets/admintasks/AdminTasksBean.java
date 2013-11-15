@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import org.xcolab.portlets.admintasks.data.DataBean;
 import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
 import org.xcolab.portlets.admintasks.migration.DataMigrator;
 import org.xcolab.portlets.admintasks.migration.persistence.OldPersistenceQueries;
@@ -80,6 +81,7 @@ public class AdminTasksBean {
 
     private DataMigrator dataMigrator;
     private DataIntegrityChecker dataIntegrityChecker;
+    private DataBean dataBean = new DataBean();
     private List<String> messages;
     private Thread dataMigrationThread;
     private Thread dataIntegrityCheckerThread;
@@ -788,5 +790,9 @@ public class AdminTasksBean {
             }
         }
         System.out.println("Bad activities count: " + badCount);
+    }
+
+    public DataBean getDataBean() {
+        return dataBean;
     }
 }

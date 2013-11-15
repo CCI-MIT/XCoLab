@@ -51,12 +51,31 @@
                         <li><ice:commandButton action="#{adminTask.upPlanAttributeIdCounter}" value="Up plan attribute id counter" /></li>
                         <li><ice:commandButton action="#{adminTask.copyProposalsToCompletedPhase}" value="Copy propsals to completed phase" /></li>
                         <li><ice:commandButton action="#{adminTask.promoteProposal}" value="Promote single proposal" /></li>
+                        <li><ice:commandButton action="#{adminTask.dataBean.interpretActivities}" value="Interpret activities" /></li>
 
                     </ul>
                 </ice:panelTab>
+                <ice:panelTab label="all activities">
+                    <ice:dataExporter for="activityData"
+                                      type="csv"
+                                      label="Download as CSV"
+                                      style="font-weight: bold;"
+                                      popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
+
+                    <ice:dataTable id="activityData" value="#{adminTask.dataBean.activities}" var="a" rows="99999999" width="100%">
+                        <ice:column>
+                            <ice:outputText value="#{a.body}" />
+                        </ice:column>
+                        <ice:column>
+                            <ice:outputText value="#{a.date}" />
+                        </ice:column>
+                        <ice:column>
+                            <ice:outputText value="#{a.userId}" />
+                        </ice:column>
+                    </ice:dataTable>
+                </ice:panelTab>
+
             </ice:panelTabSet>
-            
-            
         </ice:form>
     </ice:portlet>
 </f:view>         
