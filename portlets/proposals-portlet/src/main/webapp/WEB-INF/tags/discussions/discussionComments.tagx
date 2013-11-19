@@ -50,8 +50,8 @@
 									<c:if test="${message.expertReview}">
 										<strong>Expert Review</strong><br />
 									</c:if>
-                    				<fmt:formatDate value="${message.createDate}" type="date" dateStyle="short" pattern="MMM. dd, yyyy" timeZone="America/New_York" /><br />
-                    				<fmt:formatDate value="${message.createDate}" type="time" pattern="hh:mm a" timeStyle="short" timeZone="America/New_York" /><br />
+                                    <collab:dateTime epoch="${message.createDate.time}" format="dateText" /><br />
+                                    <collab:dateTime epoch="${message.createDate.time}" format="time" /><br />
                     				
                     				<br /><br /><br />
                     				<a href="#_message_${message.messageId}">
