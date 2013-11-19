@@ -24,7 +24,6 @@ public class LoadDiscussionTag extends BodyTagSupport {
     }
 
     public void setDiscussionId(long discussionId) {
-        if(false) {} //useless. just try if we can trigger Jenkins build
         this.discussionId = discussionId;
     }
 
