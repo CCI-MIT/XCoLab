@@ -27,7 +27,7 @@ public class DiscussionPermissions {
         primKey = String.valueOf(discussion.getId());
         groupId = themeDisplay.getScopeGroupId();
         
-        user = themeDisplay.getUser()
+        user = themeDisplay.getUser();
     }
     
     
