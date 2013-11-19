@@ -102,11 +102,10 @@ month--;
 
 	int total = 0;
 	List results = BlogsEntryLocalServiceUtil.dynamicQuery(dq, searchContainer.getStart(), searchContainer.getEnd());
+    List resultsTotal = BlogsEntryLocalServiceUtil.dynamicQuery(dq, 0, Integer.MAX_VALUE);
+	total = (results == null) ? 0 : resultsTotal.size();
 
 
-	dq.setProjection(ProjectionFactoryUtil.rowCount());
-	List countResult = BlogsEntryLocalServiceUtil.dynamicQuery(dq);
-	total = countResult.isEmpty() ? 0 : ((Long) countResult.get(0)).intValue();
 /*
 	if ((assetCategoryId != 0) || Validator.isNotNull(assetTagName)) {
 		AssetEntryQuery assetEntryQuery = new AssetEntryQuery(BlogsEntry.class.getName(), searchContainer);
@@ -131,7 +130,7 @@ month--;
 		results = BlogsEntryServiceUtil.getGroupEntries(scopeGroupId, status, searchContainer.getStart(), searchContainer.getEnd());
 	}
 */
-
+    System.out.println("total: " + total);
 	searchContainer.setTotal(total);
 	searchContainer.setResults(results);
 	%>

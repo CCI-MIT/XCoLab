@@ -1,0 +1,10 @@
+<jsp:root
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+        version="2.0">
+    <jsp:directive.attribute name="epoch" type="java.lang.Long" required="true" rtexprvalue="true" description="Unix Epoch" />
+    <jsp:directive.attribute name="format" type="java.lang.String" required="true" rtexprvalue="true" description="Format of Date" />
+    <script>document.write(dateTimeFormatter.${format}(${epoch}));</script>
+</jsp:root>
