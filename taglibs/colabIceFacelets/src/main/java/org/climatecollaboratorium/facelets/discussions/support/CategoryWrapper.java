@@ -10,9 +10,9 @@ import java.util.List;
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
 
+import com.ext.portlet.DiscussionActivityKeys;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.facelets.discussions.ThreadSortClumns;
-import org.climatecollaboratorium.facelets.discussions.activity.DiscussionActivityKeys;
 import org.climatecollaboratorium.utils.ContentFilterHelper;
 import org.climatecollaboratorium.utils.Helper;
 import org.climatecollaboratorium.utils.HumanTime;
@@ -136,7 +136,7 @@ public class CategoryWrapper implements Serializable {
             ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                     DiscussionCategoryGroup.class.getName(), discussionBean.getDiscussionId(), 
-                    DiscussionActivityKeys.ADD_CATEGORY.id(), 
+                    DiscussionActivityKeys.ADD_CATEGORY.id(),
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryId()), 0);
         }
     }
